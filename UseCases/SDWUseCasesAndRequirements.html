@@ -112,6 +112,7 @@
         The requirements described in this document will be the basis for development of the other four deliverables of the Working Group.
       </p>
     </section>
+    </br>
     <section id="Deliverables">
       <h2>Deliverables</h2>
       <p>
@@ -146,6 +147,7 @@
         <p>Given that coverage data can often be extremely large in size, publication of the individual data points as Linked Data may not always be appropriate. The Recommendation will include provision for describing an entire coverage dataset and subsets thereof published in more compact formats using Linked Data. For example where a third party wishes to annotate a subset of a large coverage dataset or a data provider wishes to publish a large coverage dataset in smaller subsets to support convenient reuse.</p>
       </section>
     </section>
+    </br>
     <section id="Methodology">
       <h2>Methodology</h2>
       <p>The Working Group has derived requirements from the collected use cases. Care was taken to only derive requirements that are considered to in scope for the further work of the Working Group. To aid in this process, the following scoping questions were applied:
@@ -156,13 +158,14 @@
       </ol>
       </p>
     </section>
+    </br>
     <section id="UseCases">
       <!--A HTML template for use cases can be found at the end of this section -->
       <h2>Use Cases</h2>
         <p>Use cases that describe current problems or future opportunities for spatial data on the web have been gathered as a first activity of the Working Group. They were mainly contributed by members of Working Group, but there were also contributions from other interested parties. In this chapter the use cases are listed and identified. Each use case is related to one or more Working Group <a href="#Deliverables">deliverables</a>. The use cases were analyzed by the Working Group, which led to a set of <a href="#Requirements">requirements</a> for future deliverables. For each use case related requirements are also listed.</p>
         <section id="MeteorologicalDataRescue">
           <h3>Meteorological Data Rescue</h3>
-          <p class="contributor">Chris Little, based on scenarios used for the WMO insfrastructure requirements.</p>
+          <p class="contributor">Chris Little, based on scenarios used for the WMO infrastructure requirements.</p>
           <label class="expand" for="uc1"></label>
           <input id="uc1" type="checkbox">
           <div>
@@ -407,6 +410,393 @@
           <p class="relatedDeliverables"><a href="#BestPractices"></a></p>
           <p class="relatedRequirements"></p>
         </section>
+        <section id="PublicationOfAirQualityDataAggregations">
+          <h3>Publication of air quality data aggregations</h3>
+          <p class="contributor"> Alejandro Llaves, Miguel Angel García-Delgado (OEG-UPM), Rubén Notivol, Javier Celma (Ayuntamiento de Zaragoza)</p>
+          <label class="expand" for="uc13"></label>
+          <input id="uc13" type="checkbox">
+          <div>
+          <p><b>What:</b> The local authorities of Zaragoza (Spain) want to publish the air quality data of the city. Each observation station has a spatial location described with an address. The dataset contains hourly observations and daily aggregations of different gases, e.g., SO2, NO2, O3, CO, etc.</p>
+          <p><b>How:</b> We use the <a href="http://www.w3.org/ns/locn">Location Core vocabulary</a> to model the address, e.g. :station locn:address "C/ Gran Vía (Paraninfo)"^^xsd:string. We use xsd:dateTime to represent hourly observations, e.g. :obs ssn:observationResultTime "2003-03-08T11:00:00Z"^^xsd:dateTime.</p>
+          <p>Open challenges: The combination of hourly observations and daily aggregations in the same dataset may cause confusion because the granularity of the observation is not explicit. For daily aggregations, we suggest using time:Interval from the Time Ontology. To make the temporal modelling more homogeneous, time:Instant could be used for the hourly observations. [LINK TO DATA SAMPLE TO BE ADDED]</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#SemanticSensorNetworkVocabulary"></a>, <a href="#TimeOntologyInOWL"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="PublicationOfTransportCardValidationAndRechargingData">
+          <h3>Publication of transport card validation and recharging data</h3>
+          <p class="contributor">Alejandro Llaves (OEG-UPM)</p>
+          <label class="expand" for="uc14"></label>
+          <input id="uc14" type="checkbox">
+          <div>
+          <p><b>What:</b> The Regional Transport Consortium of Madrid (CRTM) wants to make available data about transport card validations and transport card recharging. In the case of transport card validations, the NFC sensors are located on buses, and at the entrance and (some) exit points of metro stations. The observation value of a validation includes data related to the transport card, such as the card identifier and the user profile. The sensors for transport card recharging are ATMs and ticket selling points distributed around Madrid. The observation value of a recharging includes the card identifier and the type of recharging.</p>
+          <p><b>How:</b> To model transport card validations, we consider two observed properties: user entry (EntradaUsuario) and user exit (SalidaUsuario). Validation sensors at metro stations have a fixed location and a unique identifier, e.g. 02_L12_P2. A bus validation sensor is moving continuously, so for the sake of pragmatism, there is a unique sensor identifier for each bus stop in every line, e.g. 03_L20_P837. Those identifiers point to an address and geographic coordinates. The observed property when a user adds money to her transport card is the act of recharging (CargaTTP). In both cases, validation and recharging observations, the feature of interest is the transport card.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#SemanticSensorNetworkVocabulary"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="CombiningSpatialRDFDataForIntegratedQueryingInATriplestore">
+          <h3>Combining spatial RDF data for integrated querying in a triplestore</h3>
+          <p class="contributor">Matthew Perry (Oracle)</p>
+          <label class="expand" for="uc15"></label>
+          <input id="uc15" type="checkbox">
+          <div>
+          <p>RDF datasets with spatial components are becoming more common on the Web. Many applications could benefit from the ability to combine, analyze and query this data with an RDF triplestore (or across triplestores with a federated query). Challenges arise, however, when trying to integrate such datasets.
+          <ul>
+            <li>Inconsistent, incomplete, and non-standard metadata descriptions of spatial data</li>
+            <li>Different representations of geometry data across different datasets</li>
+            <li>Different spatial reference systems used across different datasets</li>
+            <li>Different scales used across different datasets</li>
+          </ul><p>For example, <a href="http://data.ordnancesurvey.co.uk/">Ordnance Survey</a> linked data uses British National Grid SRS and represents geometries with an Ordnance Survey-developed ontology, and <a href="http://linkedgeodata.org/Datasets">LinkedGeoData</a> uses WGS84 longitude latitude and represents geometries as GeoSPARQL WKT literals.</p>
+          <p>Best practices in the following areas would help make integration more straightforward.
+          <li>Agreed-upon vocabulary for metadata about spatial datasets</li>
+          <li>Agreed-upon URIs for common spatial reference systems</li>
+          <li>Recommendations for a default, canonical spatial reference system for spatial data published on the web</li>
+          <li>Recommendations for serializing geometries as RDF</li>
+          <p>Consistent metadata descriptions about spatial datasets will take out a lot of guess work when combining datasets, and standard URIs for spatial reference systems will be an important part of this metadata description. A recommended canonical SRS would make combining datasets more efficient by eliminating the coordinate transformation step, which would make federated GeoSPARQL queries more feasible.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="DutchBaseRegistry">
+          <h3>Dutch Base Registry</h3>
+          <p class="contributor">Linda van den Brink</p>
+          <label class="expand" for="uc16"></label>
+          <input id="uc16" type="checkbox">
+          <div>
+          <p>Dutch government data is for a large part open data. However, at the moment the data is difficult to find, and it cannot be easily linked to other data. It is not helping that most registrations are making use of their heavy backoffice standards for opening their data. These problems are counteracted by copying data of others, involving heavy expenses for collecting, converting and synchronising the data, or by building expensive national provisions. The result is an abundance of copies and much doubt regarding the authenticity of the information.</p>
+          <p>A better solution would be to make the authentic data permanently available as linked data, so that everyone can use it and the datasets can be interlinked, resulting in more coherence and improved traceability and no more need for copying and synchronisation.</p>
+          <p>There are now 13 Dutch ‘base registries’ containing government reference data: e.g.
+          <ul>
+            <li>BAG (Buildings and Adresses)</li>
+            <li>NHR (Businesses, organizations)</li>
+            <li>BRP (Citizens)</li>
+            <li>BGT (large scale topography)</li>
+            <li>BRT (small scale topography)</li>
+            <li>BRK (cadastre)</li>
+            <li>WOZ (building tax)</li>
+          </ul>
+          A lot of these have geospatial content or refer to geospatial resources in other base registries (such as addresses). At the moment these references are informal and often incorrect or outdated. This means there is a need to express geospatial content in linked data (i.e. a standard vocabulary) and to perform spatial queries over linked data.</p>
+          <p>Geometries, especially lines and polygons, may contain many coordinates. For example, a municipal boundary could easily contain more than 1500 coordinate pairs. Compared to non-geometric properties, this can result in large amounts of data to transfer and process. The coordinates can easily be 95% of all data of an object when using polygons. The question rises whether there is a need for performance optimization and/or compression techniques for large amounts of coordinates. If so, there could also be a need to standardize such a technique, similar to the PNG format for encoding images.</p>
+          <p>Coordinate reference systems (CRS) are to geo-information what character encodings are to text. If you don’t know which CRS is used, you can’t use the coordinates. Different CRSs exist for a reason: localized CRSs provide more precise coordinates for a certain part of the globe. It is not possible for a global CRS to be as precise, for example because the continental plates move a few centimetres every year. For large scale data and applications this continental drift could be very relevant over time. Take for example the boundary of cadastral parcels. If this drift is not taken into account, there could be issues if parcel boundaries that were established e.g. 10 years ago are overlaid over recently acquired aerial imagery with high accuracy (e.g. 10 cm). There could be visual differences, while the actual situation did not change.</p>
+          <p>While the possibility to use different CRSs hinders interoperability (datasets using different CRSs cannot be easily combined, a complex transformation is necessary), on the other hand this option is perhaps needed for use cases where a high precision of coordinates is important. The BGT (large scale topography) is an example of such a use case.</p>
+          <p>A prototype application, based on linked data, where BGT, BAG, NHR and WOZ data is combined, is <a href="http://almere.pilod.nl/bgtld">here</a>. BAG linked data is <a href="http://bag.kadaster.nl">here</a> (“Begrippen”: the vocabulary; “BAG Data”: the data)</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="PublishingCulturalHeritageData">
+          <h3>Publishing Cultural Heritage Data</h3>
+          <p class="contributor">Lars G. Svensson</p>
+          <label class="expand" for="uc17"></label>
+          <input id="uc17" type="checkbox">
+          <div>
+          <p>Cultural Heritage Data such as library authority files are increasingly being published as Linked (Open) Date. Those datasets contain, among other entities, descriptions of spatio-temporal events such as <i>World War I</i>, the <i>Birth of Albert Einstein</i> (date and place) or <i>Martin Luther's pinning of his 95 theses</i>. The problem is that most of the spatio-temporal information is inexact. This inexactness ranges from time spans (<i>second quarter of the 9th century</i>, e.g. approx. 825-850, which also could be 823 or 852) to geographic entities such as <i>Renaissance Italy</i> (what did Italy look like at that time, and to what extent is the Italian renaissance as a time period different from the English?).</p>
+          <p>When cultural heritage institutions put their data on the web, the staff members mapping their data to web standards often do not have expertise in temporal or geospatial data formats. Formats such as WKT are standardised but it is difficult to know if the mapping from the local data source is done correctly. A validator for commonly used formats such as WKT or GeoJSON would prove helpful.</p>
+          <p>Challenges include:
+          <ol>
+          <li>There is no framework available to describe fuzzy temporal information. ISO 8601 and the related XSD datatypes assume a precision that cannot be supplied by the data publishers.</li>
+          <li>In addition to that, OWL reasoning over cultural heritage datasets is severely hampered since OWL only accepts the datatypes xsd:dateTime and xsd:dateTimeStamp as temporal datatypes (cf. <a href="http://www.w3.org/TR/owl2-syntax/#Time_Instants%7COWL">Time Instants</a>).</li>
+          <li>Little or no possibilities to perform validation of temporal and/or spatial data formats (e.g. WKT).</li>
+          </ol>
+          Note: This use case has similarities to <a href="#EnablingPublicationDiscoveryAndAnalysisOfSpatiotemporalDataInTheHumanities"></a>.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="DisseminationOf3DGeologicalData">
+          <h3>Dissemination of 3D geological data</h3>
+          <p class="contributor">Rachel Heaven</p>
+          <label class="expand" for="uc18"></label>
+          <input id="uc18" type="checkbox">
+          <div>
+            <p>The British Geological Survey (BGS), like all Geological Survey Organisations (GSOs), has as one of its principal roles to be the primary provider of geoscience information within its national territory. Increasingly the information provided is digital and dissemination is over the internet, and there is a trend towards making more information freely available. For BGS’s 2D information this requirement has been met by the provision of <a href="http://bgs.ac.uk/data/services/wms.html">various OGC web map services</a>.</p>
+            <p>However, geological units and structures are three-dimensional bodies and their traditional depiction on two-dimensional geological maps leads to a loss of information and the requirement of quite a high level of geological understanding on the part of the user to interpret them. The geoscience data user community includes scientific users, but also includes many other stakeholders such as exploration companies, civil engineers, local authority planners, as well as the general public. It is therefore the aim of many Geological Surveys, including BGS, to move towards the provision of geological information as spatial 3D datasets on the web that are accessible and useable by non-experts.</p>
+            <p>We have implemented a few ways of disseminating the 3D data on the web (<a href="http://www.bgs.ac.uk/services/3Dgeology/lithoframeSamples.html">http://www.bgs.ac.uk/services/3Dgeology/lithoframeSamples.html</a>, <a href="http://www.bgs.ac.uk/services/3Dgeology/virtualBoreholeViewer.html">http://www.bgs.ac.uk/services/3Dgeology/virtualBoreholeViewer.html</a>,<a href="http://earthserver.bgs.ac.uk/">http://earthserver.bgs.ac.uk/</a>, investigation of augmented reality smartphone application) but the remaining issues are
+            <ul>
+              <li>user should not need any special software for discovery and assessment purposes</li>
+              <li>user can subset the data by x,y,z limits</li>
+              <li>user can overlay their own area/volume of interest on the model (e.g. for tunnelling projects)</li>
+              <li>user may have to overlay their own (or an open data) DTM if the model is built using a non-open data DTM to represent complex geology (folding, faulting, intrusions etc) and varying data resolution the delivery method must be able to handle triangulated irregular networks (TINs) and heterogeneous resolution voxel grids. </li>
+            </ul>
+            If there existed a best practise or standard way of publishing this sort of data then it would encourage development of applications on the web to handle them. The datasets that BGS is generating are
+            <ul>
+              <li>3D spatial models of rock type and/or lithology currently represented as stacks of 2d subsurface grids representing the interfaces between different layers.</li>
+              <li>3D voxel datasets of x,y,z grid cell and geological, physical or chemical property (+ associated uncertainty).</li>
+              <li>3D LIDAR point cloud data e.g. of retreating cliff faces, underground mine structures</li>
+            </ul>
+            </p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="PublicationOfRawSubsurfaceMonitoringData">
+          <h3>Publication of Raw Subsurface Monitoring Data</h3>
+          <p class="contributor">Rachel Heaven</p>
+          <label class="expand" for="uc19"></label>
+          <input id="uc19" type="checkbox">
+          <div>
+          <p>The UK Government is funding a new Energy Security and Innovation Observing System for the Subsurface (ESIOS). ESIOS will consist of a group of science research facilities where new subsurface activities such as fracking (hydraulic fracturing) for shale gas can be tested and monitored under controlled conditions. This research will address many of the environmental issues that need to be answered for the development of the UK’s home-grown, secure energy solutions. This includes carbon capture and storage, geothermal energy, nuclear waste disposal, underground coal gasification and underground gas storage.</p>
+          <p>Data will be collected from monitoring boreholes and from surface, airborne and satellite sensors. The raw scientific data will be published freely online, possibly in real-time or near real-time, to encourage transparency and public confidence in the industry, and to provide underpinning science for regulation.</p>
+          <p>The scientific data will consist of:
+          <ul>
+            <li>Location data for the sensor facilities</li>
+            <li>Time series data consisting of x,y,z (depth), time, and an observed property (e.g. porosity, resistivity, density, methane content, fracture orientation, groundwater flow direction, seismic ground motion).</li>
+          </ul>
+          We want to be able to publish this raw data on the web in such a way that it can be easily consumed by third party web applications for visualisation, spatio-temporal filtering, statistical analysis and alerts.</p>
+          <p>(Another similar use case is for publication of geomagnetic monitoring data, for which the primary outputs are time series tables or graphs, and the location data for the observation station is relatively simple and low accuracy)</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a>, <a href="#SSN"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="UseOfAPlaceNameOntologyForGeo-parsingTextAndGeo-enablingSearches">
+          <h3>Use of a place name ontology for geo-parsing text and geo-enabling searches</h3>
+          <p class="contributor">Rachel Heaven</p>
+          <label class="expand" for="uc20"></label>
+          <input id="uc20" type="checkbox">
+          <div>
+          <p>BGS has valuable geoscience data in text form dating back 180 years, which is gradually being scanned and OCR to make it more accessible and searchable. Much of the information in the reports concerns observations or interpretations made at a location or about a named geological feature. We would like the relevant information in those documents to be retrievable from a web search using coordinate limit criteria or using a place name criteria, so this use case requires a place name ontology (or federated ontologies).</p>
+          <p>For BGS's purposes the ontology should contain historical place names, named subsurface geological features (e.g. Widmerpool Gulf), palaeogeographic place names, and named submarine features (e.g. <a href="http://www.gebco.net/data_and_products/undersea_feature_names/">GEBCO undersea feature names </a>).</p>
+          <p>To extend the capabilities into the vertical dimension then the ontology should also contain the names of qualitative earth realms (vertical divisions within the atmosphere, ocean and solid earth – such as in <a href=" https://sweet.jpl.nasa.gov/">the SWEET ontology</a>).</p>
+          <p>To extend the capabilities into the time dimension then the ontology should also contain the names of historical and geological time periods (e.g. <a href="https://www.seegrid.csiro.au/wiki/CGIModel/GeologicTime#GeologicTime_XML">https://www.seegrid.csiro.au/wiki/CGIModel/GeologicTime#GeologicTime_XML</a>, used in a recent example of geological age name parser at <a href="http://www.agenames.org">http://www.agenames.org</a>)</p>
+          <p>With a resource like this, all text resources could be parsed to locate them in time and space.</p>
+          <p>Each named feature should have a spatial attribute, either as topological relations to other named features, or as spatial-temporal extent appropriate for various scales and with appropriate uncertainties (i.e. fuzzy definitions of geometry and time periods). Versioning will be important e.g. for administrative boundaries that change frequently.</p>
+          <p>(NB <a href="http://www.geonames.org/">Geonames</a> goes much of the way to meeting this requirement)</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="DrivingToWorkInTheSnow">
+          <h3>Driving to work in the snow</h3>
+          <p class="contributor">Cory Henson (Bosch RTC)</p>
+          <label class="expand" for="uc21"></label>
+          <input id="uc21" type="checkbox">
+          <div>
+            <p>Consider the following wildly-fictional scenario: Sue is driving to work in the snow on a cold Pittsburgh morning. On entry, her car recognizes the cold weather and automatically heats the interior to Sue's preferred temperature and turns on the defrost to clear the frost from the wind-shield. On the way, the snow causes significant traffic delay on her route forcing her to re-schedule an early morning meeting. In response, the car suggests she stop at her favorite nearby coffee shop for a Flat White until the roads are clear.</p>
+            <p>The scenario above requires access to multiple types of observation, spatial, and temporal data which may be local to the car or available on the Web.</p>
+            <p>The different types of observation data may include:
+            <ul>
+              <li>sensed environmental observations (e.g,. freezing-temperature, frost-on-windshield)</li>
+              <li>user behavior observations (e.g., Sue sets the thermostat to 75F, Sue stops at the coffee shop, Sue updates her calendar)</li>
+              <li>bservations on the Web (e.g., current weather conditions, traffic conditions)</li>
+            </ul>
+            The different types of spatial data may include:
+            <ul>
+              <li>points-of-interest (e.g., home, work, coffee shop)</li>
+              <li>spatial relations (e.g., coffee shop is NEAR Sue's current location)</li>
+            </ul>
+            The different types of temporal data may include:
+            <ul>
+              <li>calendar events (e.g., Sue's meeting on calendar)</li>
+              <li>schedules (e.g., schedule when the coffee-shop is open)</li>
+              <li>temporal relations (e.g., the predicted time to reach work occurs after the beginning of a scheduled meeting)</li>
+            </ul>
+            In addition, the car uses light-weight communication protocols, such as CoAP and/or MQTT, to exchange data (i.e., observations, spatial, and temporal data) between networked components.</p>
+            <p>This scenario may face the following general challenges for representing, managing, and querying observation data:
+            <ul>
+              <li>discover observation streams within a given spatial context (and matching some criteria)</li>
+              <li>query for observations within a given spatiotemporal context (and matching some criteria)</li>
+              <li>publish and subscribe to an observation stream within a given spatial context (and matching some criteria)</li>
+              <li>filter an observation stream based on given set of criteria (e.g., quality, feature-of-interest, observed-property)</li>
+              <li>represent data with a small syntactic footprint (for exchange between resource-constrained devices)</li>
+              <li>integration of SSN with existing, well-known, IoT protocols (CoAP, MQTT, etc.)</li>
+              <li>represent "high-level" qualitative observations (such as observations of user behavior, e.g., Sue stopped at the coffee shop)</li>
+            </ul>
+            </p>
+          </div>
+          <p class="relatedDeliverables"><a href="#TimeOntologyInOWL"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="IntelligentTransportationSystem">
+          <h3>Intelligent Transportation System</h3>
+          <p class="contributor">Antoine Zimmermann</p>
+          <label class="expand" for="uc22"></label>
+          <input id="uc22" type="checkbox">
+          <div>
+          <p>Intelligent Transportation Systems (ITS) can be defined as the application of advanced information and communications technology to surface transportation in order to achieve enhanced safety and mobility while reducing the environmental impact of transportation. The addition of wireless communications offers a powerful and transformative opportunity to establish transportation connectivity that further enables cooperative systems and dynamic data exchange using a broad range of advanced systems and technologies. - See more at: <a href="http://www.its.dot.gov/standards_strategic_plan">http://www.its.dot.gov/standards_strategic_plan</a><p>
+          <p>ITS do so by exploiting information from various origins, especially the Web. Several web sites, web services, datasets related to public transport services, traffic, road network structure, localized incidents, and so on have to be exploited in order to convey users with the best decisions, in real time. All of these information sources rely considerably on spatio-temporal data. The challenge is to model dependency in both space and time seamlessly and simultaneously so that the accuracy of analysis can be improved (for instance for regulation of multimodal transportation network) or the processing of aggregated information can be simplified (for instance for multimodal traveler information system). For such systems to work well in a pervasive way, it is also important that the system can easily discover relevant datasets/services based on the user current location.</p>
+          <p>Consequently, such systems would greatly benefit from standardized formats, standard practices for publishing or making spatial data available online. A standard way of indicating time and time frames would also help correlate several temporally situated entities such as bus schedules, real time bus position, and traffic light durations.</p>
+          <p>A specific type of ITS is Advanced Traveler Information System (ATIS) that computes an accurate travel duration. To do so, ATIS should be able to combine data following different spatio-temporal scales. These data could be related to the current or anticipated network traffic (the congestion level), the network topology (number of lines on the routes, presence of traffic lights, etc.), the presence of expected events (which can be static, like work on the road, or dynamic like demonstrations), the weather state (the presence of rain or mist on a part of the itinerary), and so on.</p>
+          <p>ITSs can also be dedicated to the management of parking spots. For a driver, the choice of its parking spot is a multi-criteria decision process that takes into account static data given by the description of the infrastructure (whether the spot is private or public, reserved for disabled, etc.), dynamic data given by sensors (like traffic) and personal data (destination, budget).</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="OptimizingEnergyConsumptionProductionSalesAndPurchasesInSmartGrids">
+          <h3>Optimizing energy consumption, production, sales and purchases in Smart Grids</h3>
+          <p class="contributor">Antoine Zimmermann</p>
+          <label class="expand" for="uc23"></label>
+          <input id="uc23" type="checkbox">
+          <div>
+            <p>In smart grids, energy management has to take into account the fact that any energy consummer may also be a producer (they are thus "prosumers"). This leads to new load balancing problems as well as new forms of economic exchanges regarding selling and buying energy. In order to take an informed decision on what amount of energy to buy from whom at what cost, or to sell, decision algorithms must use information that can be local (their own consumption and production), global (statistical data on seasonal household energy consumption), and possibly external to grid (meteorological data). In such context, reliance on Web data from several sources adds real value to the decision process.</p>
+            <p>The kind of data that has to be considered are, for the most part, highly fluctuating: weather for assessing heating needs, stock exchange for pricing appropriately, current and future offer and demand, etc.</p>
+            <p>There is a need for a temporal model that covers historical data for statistical analysis, short term timestamped sensed data, and data about future predictions.</p>
+            <p>The need for spatio-temporal information is even increased if the smart grid is including electric vehicles that can serve as energy producers when they are not consuming electricity for recharging.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#TimeOntologyInOWL"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="Linked Data for Tax Assessment">
+          <h3>Linked Data for Tax Assessment</h3>
+          <p class="contributor">Luigi Selmi (via public-sdw-comments)</p>
+          <label class="expand" for="uc24"></label>
+          <input id="uc24" type="checkbox">
+          <div>
+            <p>Tax assessments are based on the comparison of what is due by a citizen in a year for her ownership of real estates in the area administered by a municipality and what has been paid. The tax amount is regulated by laws and based on many criteria like the size of the real estate, the area in which it is located, its type: house, office, farm, factory and others. Taxpayers can save money from the original due depending on the usage of the estate. A family that owns the house in which they live can save the entire amount. Many other regulations lighten in different ways the burden of the tax for other categories of taxpayers. Furthermore the situation about a taxpayer changes over the years in relation to her properties share and family status. Due to the many different situations met, an employee in charge of performing tax assessments on behalf of a municipality must collect many information before being able to assert with a good degree of confidence that a difference between the original amount and what has been paid is not justified and an advice has to be sent to the taxpayer starting a long and expensive process to recover the difference. Currently each single assessment requires the employee to collect information from different public administrations web sites, archives, registries, documents. Data scattered in so many silos and formats dramatically reduce employees productivity and assessment effectiveness at the point that it is not always clear whether the money recovered is worth the cost of the assessment. A Linked Data approach for sharing spatial and temporal data would certainly increase the productivity of the assessor.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="ImagesEGATimeSeriesOfAWaterCourse">
+          <h3>Images, e.g. a Time series of a Water Course</h3>
+          <p class="contributor">Kerry Taylor (on behalf of Jamie Baker, Australian Commonwealth Department of Communications)</p>
+          <label class="expand" for="uc25"></label>
+          <input id="uc25" type="checkbox">
+          <div>
+            <p>This use case is provided to extend three primary use cases already before the Working Group:
+            <ul>
+              <li><a href="#PublishingGeographicalData"></a></li>
+              <li><a href="#ConsumingGeographicalDataInAWebApplication"></a></li>
+              <li><a href="#PublishingGeospatialReferenceData"></a></li>
+            </ul>
+            More broadly the Commonwealth of Australia has developed a National Map web platform which is currently making available authoritative national datasets. There is a need to recognise that data can an image (e.g. an image-based tile set for example) and therefore in itself also create a time series-based resource (for example, the change in a water course over time which can be visualised as time series layers). Indeed both the ISO and OGC have recognised this in their standards. It is the Australian Government Department of Communication’s view, as the lead agency stewarding spatial data policy, that image-based resources should also be included in the consideration of this working group as it relates to geographic and spatial features geometries. Wheresoever possible the Commonwealth view is to maintain the highest applicability of a standard or best practice guide and not limit conformance options for data holdings (especially of public origin). This also applies to cadastral and other data at the state/territory level which could show the change in land parcel, development or other property and built environment features over time. In terms of our future cities, sensors and other data sources may also need linkage to image-based resources for citizen use. As such:
+            <ol>
+              <li>Image-based data needs to be recognised and discoverable as it too tells a story</li>
+              <li>Time series data can be visual and therefore visualised as a data layer or an image in time or both</li>
+              <li>Linking of data whether image-based or not should be discoverable and mix or match just as easily as data of a similar or dissimilar type</li>
+              <li>Metadata conformance is crucial to support discoverability, interoperability and provide information on the nature of a data resource (e.g. Time series image or time series data)</li>
+              <li>A challenge exists in maximising the interoperability of geographic and/or spatial data both above and below ground level. (An example may be subsurface water imaging data combined with sensor data).</li>
+            </ol>
+            This additional information supports a broader need for SSN, Coverage and Time considerations for the above three current use cases.
+            </p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="DroughtsInGeologicalComplexEnvironmentsWhereGroundwaterIsImportant">
+          <h3>Droughts in geological complex environments where groundwater is important</h3>
+          <p class="contributor">Chris Little (on behalf of Andrew G Hughes, British Geological Survey)</p>
+          <label class="expand" for="uc26"></label>
+          <input id="uc26" type="checkbox">
+          <div>
+            <p>During the period 2011-2013, the UK faced an extraordinary drought only to be saved from a likely major crisis by very high spring and summer rainfall (CEH, 2012). Government asked questions such as “how much water is left in the tank?”, at which point managers and regulators realised that they didn’t know the answer with any certainty (EA, 2012). A National Drought Group of leading stakeholders was formed and led by the Chief Executive of the Environment Agency (EA) reporting to the Secretary of State for Environment, Food and Rural Affairs. The whole of the UK was affected, but the south-east most severely because of the lower rainfall and high water demand.</p>
+            <p>When will London run out of water? How socially accepted is drought and associated water restrictions to the general public? When will water company groundwater sources begin to switch off? Questions like these are critical for drought management, but often the science is not sufficiently advanced to address them, and where it is, not fully integrated to satisfactorily answer them.</p>
+            <p>The River Thames Basin is home to 13 Million people, considerable industry and valuable aquatic ecosystems all of which require the effective and sustainable management of the water environment in the basin to thrive. A thorough understanding of the hydrology of the basin is vital to underpin this management to ensure the best use of resources. This is particularly important given the twin pressures of increasing water consumption and climate change. The groundwater system of the Thames consists of around 12 aquifers most of which are not hydraulically connected, except via the River Thames and its tributaries. These aquifers are locally very important for water supply and their provision of base flow sustains the ecology of the river system in dry summer periods and droughts.</p>
+            <p>To properly simulate the system then a good geological understanding has to be translated into a hydrogeological knowledge and then simulated. This is not a straight-forward task. The important elements of the system include: 3D geological understanding encapsulated into a geological model, dynamic model of the surface processes, groundwater and river systems along with a model of water supply (e.g. IRAS; Mastrosov et al., 2010). This will ultimately involve:
+            <ul>
+              <li>tatic data (updated as understanding increases)</li>
+              <li>Data passed in a one way chain between models runs separately</li>
+              <li>Dynamically linked models to investigate feedbacks between different parts of the system</li>
+            </ul>
+            The aim would be to develop an integrated system that can address the question “When will water company groundwater sources begin to switch off” or similar.</p>
+            <h4>References</h4>
+            <p>
+            <ul>
+              <li>CEH. (2012). Retrieved 7 Sep 2013, from <a href="www.ceh.ac.uk/data/nrfa/nhmp/other_reports/2012_Drought_Transformation.pdf">www.ceh.ac.uk/data/nrfa/nhmp/other_reports/2012_Drought_Transformation.pdf</a></li>
+              <li>EA (2012). Review of the 2010-2012 drought and prospects for water resources in 2013. Environment Agency Report.</li>
+              <li>Matrosov E.S., Harou, J.J. and Loucks D.P., 2010. A computationally efficient open-source water resource system simulator - Application to London and the Thames Basin. Environmental Modelling & Software. Volume 26, Issue 12, December 2011, Pages 1599–1610</li>
+            </ul>
+            </p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="SoilDataApplications">
+          <h3>Soil data applications</h3>
+          <p class="contributor">Simon Cox (on behalf of Peter Wilson, Bruce Simons @ CSIRO)</p>
+          <label class="expand" for="uc27"></label>
+          <input id="uc27" type="checkbox">
+          <div>
+            <p><ol>
+            <li>Farmer wants to know soil types and properties in an adjacent property which he is considering purchasing. ... the global soil community wants to be able to publish standardised soil site description/classification and soil analysis data which can then be collated (such as in the Harmonised World Soil Database) and used for modelling the spatial distribution of soil properties (digital soil mapping) (for example as part of the ISRIC 1kmSoilGirds or IUSS GlobalSoilMap projects). This would utilise our efforts with the SoilML (ISO28258) meta-model and the fully attributed implementable extension (currently ANZSoilML) to deliver the standardised soil data services.</li>
+            <li>Compare similar soils and productivity responses to addition ... the IUSS GlobalSoilMap project wants to deliver high resolution estimates of functional soil properties as 90m raster data across the globe, constructed through bottom up, country delivery of standardised data. Our TERN Soil and Landscape Grid of Australia project has now developed the required data for Australia and we need to progress delivery as standardised services (using WMS,WFS and WCS) as a demonstrator of how to do this globally. The GlobalSoilMap project (maybe through the UN Global Soil Partnership, or via ISRIC the World Soil Data Centre) could develop a portal to allow discovery/display of all the contributing country data and to facilitate user (eg global climate or food security modellers) connection to the services from multiple sources.</li>
+            <li>Agronomist needs observations of soil properties such as pH, Nitrogen, and soil-type and derive new properties using locally defined pedo-transfer functions ... Access observed and interpreted soil properties (by soil type and/or by spatial distribution) in a standard format that allows using algorithms/pedotransfer functions to use these properties to calculate additional interpreted soil properties.</li>
+            </p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="BushfireResponseCoordinationCentre">
+          <h3>Bushfire response coordination centre</h3>
+          <p class="contributor">Simon Cox (on behalf of Paul Box, Simon Cox and Ryan Fraser @ CSIRO)</p>
+          <label class="expand" for="uc28"></label>
+          <input id="uc28" type="checkbox">
+          <div>
+            <p>
+            This user story covers a number of interrelated use cases:
+              <ul>
+                <li>UC1 Search for place name</li>
+                <li>UC2 Disambiguate place, based on type and provide</li>
+                <li>UC3 Find the location of a place (centroid, representative location)– where is it?</li>
+                <li>UC4 Find information about a place</li>
+                <li>UC5 Find and use a suitable alternative geometric representations of a place – its shape, for a given scale and application</li>
+                <li>UC6 Discover, access and use measurements relating to a place</li>
+                <li>UC7.1 Discover related places - find synonyms</li>
+                <li>UC7.2 Discover related places - topologically related places such as neighbouring, or containing regions</li>
+              </ul>
+            </p>
+            <h4>User story</h4>
+            <p>A bush-fire is underway in Blue Mountains NSW. An incident management team has been established, with an incident controller from NSW Fire and Rescue in charge, based in a coordination centre. She notices that the Twitter analytics feed has flagged a Tweet that mentions a fire in ‘Springwood’. The location of the Tweet shows on the incident map as being in the ‘Blue Mountains’ – (this location is a geocode of place name used in the Tweeter’s Profile). The watch officer enters ‘Springwood’ [uc1] in a multi-gazetteer index and gets 41 hits for Springwood in Australia. She zooms to the Blue Mountains and sees there are 13 places called Springwood. These results include a school, a number of rural properties, and an official suburb named Springwood [uc2] near which most of the other places are located. The officer selects the suburb name in the National Gazetteer, and the map zooms to the bounding box for the selected place [uc3]. The controller wants to find more detailed information about the place and clicks on its identifier (a URI for the place). The user is provided with information about:
+            <ul>
+              <li>identity of the place and data sets/collection to which it belongs [uc4]– e.g. the national gazetteer</li>
+              <li>available geometries for the place [uc5]- e.g. a feature-service for a gazetteer data source, hosted by Geosciences Australia</li>
+              <li>existence of links to additional sources of information about the place [uc6] – e.g. links to data about the suburb provided by the local government</li>
+              <li>synonyms for the place – alternative identifiers used for the place [uc7.1] – e.g. identifiers used for suburbs in the Australian Statistical Geographic Standard (ASGS)</li>
+              <li>related places [uc7.2] – e.g. a local government area that contains the suburb, or hydrological reporting units cover the suburb.
+              <li>information about related places e.g:
+                <ul>
+                  <li>population profiles for the place codes using ASGS codes [uc7.1&6]</li>
+                  <li>nearby sensors providing hydro/met data that are in the containing hydrological reporting unit [7.2 & 6]</li>
+                </ul>
+              </li>
+            </ul>
+            </p>
+            <p>
+            An official report of the fire location now also appears on the screen, from a fire service operator on the ground. With the fire location now confirmed, the priority is to identify the areas at risk, and assess community impact, locate possible evacuation centres and set in place evacuation plans.</p>
+            <p>A fire spread model has been run using reported fire location. An impact analysis and evacuation plan is being developed. The predicted fire spread polygon is shown on the incident map. To assess affected population the analyst needs to find population geography and data. [uc5]</p>
+            <p>The Springwood place landing page has a link to get information about the data source [uc4]. This is the national gazetteer, which provides bounding box geometries only. This is not accurate enough for her analysis. Returning to the graph of linked resources, the analysis determines that the gazetteer entry has a synonym in the ASGS [uc7.1]. She clicks on this and sees it’s the census geography for the same place (Springwood suburb) [uc4]. She finds the data source link which she discovers uses polygonal geometry and adds this as a service to her map.</p>
+            <p>She is now able to see that Springwood suburb will be within the predicted fire polygon and will need to be evacuated. The analyst clicks linked information resources for Springwood (the synonym in the ASGS dataset) and a graph of related resources is displayed [uc 7.1, 7.2, 6]. This shows a link to a suburb profile based on the most recent national population and census data is available the analyst clicks on this and a query for predefined measurements (plus the place identifier) is passed to a census data cube service. The analyst visualises and saves the result set locally.</p>
+            <p>The analyst also notices that information resources are connected to Springwood (in the gazetteer dataset) [uc 7.1, 7.2, 6]. These include a link to a containing local government area (LGA) and links to LGA emergency management resources on the website. This lists contact information and evacuation centres information which is used to inform development of the evacuation plan.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#SSN"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="ObservationsOnGeologicalSamples">
+          <h3>Observations on geological samples</h3>
+          <p class="contributor">Simon Cox</p>
+          <label class="expand" for="uc29"></label>
+          <input id="uc29" type="checkbox">
+          <div>
+            <p>Geological samples are retrieved from the field and then processed in the laboratory to determine various properties, including chemistry, mineralogy, age, and petrophysical properties like density, porosity, permeability.</p>
+            <p>Samples obtained as part of economic activities, such as mineral exploration, are usually processed in commercial assay and chemistry labs. For QA/QC purposes, each batch of samples will have a number of control samples inserted, for which the concentration of particular chemical species are already known. For confidentiality reasons the location information associated with each sample is not provided to the lab, but must be re-attached during the interpretation phase. During processing, many derived samples will be generated by various physical and chemical procedures. In some cases the derived samples are strict sub-samples, whose intensive properties are intended to be the same as the parent. In other cases, the split is 'biased', with the derived sample intended to select a specific sub-sample, defined by a particular particle size, density, magnetic properties, etc. The link from the derived sample to the parent sample must be preserved, and the link from the parent to the location from which it was obtained also. In some cases the location is associated with another sampling artefact, such as a drill-hole or traverse or cruise, with the latter carrying the detailed location information.</p>
+            <p>In a research context some samples have a particularly high-value, having been obtained by an expensive process (involving drilling or ships or spacecraft) or from a location that is hard to visit (remote, offshore, in space). These samples are sometimes sub-divided and distributed to multiple research teams or labs for different specialized observations. Each lab will run its own LIMS system, which will usually asign a local identifier for the sample. When the results of these observations are reported, it is necessary that observations from different labs can be correlated with each other, so that the complete picture around each sample can be assembled.</p>
+            <p>These stories focus on sensing applications involving ex-situ sampling, where a location is visited and a specimen obtained using some sampling process, then transported to one or more laboratories where it is processed into one or more sub-samples and various observations made. Sample identity is usually key, and the relationships between samples, between samples and other artefacts of the sampling process, and also with other geographic features or locations. The sampling time and analysis and reporting time are all different.</p>
+            <p>Similar process apply to botanical sampling, and to environmental sampling (water, air, dust).</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#TimeOntologyInOWL"></a>, <a href="#SSN"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="SpatialSampling">
+          <h3>Spatial Sampling</h3>
+          <p class="contributor">Simon Cox</p>
+          <label class="expand" for="uc30"></label>
+          <input id="uc30" type="checkbox">
+          <div>
+            <p>Most observations are made on <em>samples</em> that are selected to be somehow representative of the feature of ultimate interest which is being characterized. The sample may be statistical, or related to accessibility, or may be of a proxy phenomenon which can be related to the property of ultimate interest.</p>
+            <p>In environmental observations, certain spatial distributions are commonly used across multiple disciplines, such as
+            <ul>
+              <li>grids</li>
+              <li>transects, cruises, flight-lines</li>
+              <li>cross-sections</li>
+              <li>physical sampling</li>
+            </ul>
+            These may be related to each other (samples taken along a drill-hole, stations on a traverse, shots along a seismic section) and the relationships provide a kind of 'topology' of sampling which assists access and processing. Sampling features may also be associated with other organizational structures, such as cruises, field trips, campaigns, projects, missions, orbits, deployments, platforms, which are used for discovery and for navigation within a datasets. Sampling strategies are often combined with an observational procedure or instrument to define a standard 'protocol' for observations. The protocol may be identified by name.</p>
+            <i>Additional comment by Rachel Heaven:</i>
+            <p>The locations within a spatial distribution may have a different degree of certainty with respect to each other than the positional certainty of the spatial distribution as a whole e.g. the ends of a sampling traverse may be known in a national or global coordinate reference system to +/-5m accuracy; soil samples may be taken along the traverse at every 1m +/-0.01m interval, or species sightings that need to be re-visited may be described in real world terms such as "half way up the burn on the left hand bank". Similarly, measurements taken down a drill hole are known accurately in down hole depth with respect to the drilling datum, but less accurately in true vertical depth and with respect to a national vertical datum. If the hole deviates from vertical, the absolute location will be even more uncertain.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
         <!-- TO DO: link related use cases -->
         <!-- Template for use cases
         <section id="">
@@ -415,13 +805,14 @@
           <label class="expand" for="ucX"></label>
           <input id="ucX" type="checkbox">
           <div>
-          <p></p>
+            <p></p>
           </div>
-          <p class="relatedDeliverables"></p>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
           <p class="relatedRequirements"></p>
         </section>
         -->
       </section>
+      </br>
       <section>
       <h2>Requirements</h2>
       <p>This chapter lists the requirements for the deliverables of the Working Group.</p>
@@ -461,6 +852,14 @@
         <p class="relatedDeliverables"><a href="#BestPractices"></a> ...</p>
         <p class="relatedUseCases"></a></p>
       </section>
+      <!-- Template for requirements:
+       <section id="">
+        <h3></h3>
+        <p></p>
+        <p class="relatedDeliverables"></a></p>
+        <p class="relatedUseCases"></a></p>
+      </section>
+      -->
     </section>
   </body>
 
