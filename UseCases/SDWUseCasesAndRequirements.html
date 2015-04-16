@@ -797,6 +797,301 @@
           <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
           <p class="relatedRequirements"></p>
         </section>
+        <section id="SelectHierarchicalGeographicalRegionsForUseInDataAnalysisOrVisualisation">
+          <h3>Select hierarchical geographical regions for use in data analysis or visualisation</h3>
+          <p class="contributor">Bill Roberts (based on needs arising from Swirrl's own work)</p>
+          <label class="expand" for="uc31"></label>
+          <input id="uc31" type="checkbox">
+          <div>
+            <p>Statistical data is frequently referenced against geographical regions. A common requirement is to select a collection of non-overlapping regions with complete coverage of a 'parent' region (a 'Mutually Exclusive Collectively Exhaustive' - MECE - set). This might be used for data aggregation: given the population statistics for all council areas in Scotland, calculate the population of Scotland.</p>
+            <p>Or it might be for data visualisation: retrieve data on average house prices for all parliamentary constituencies in the UK, then combine this with polygons of the constituency boundaries and use it to draw a choropleth map.</p>
+            <p>Although geographical data frequently includes 'contains' or 'within' relationships between larger and smaller areas, this is not sufficient for the above use cases. A larger area can be broken down into smaller areas in a variety of ways. Sometimes a combination of 'contains' relationships and knowledge of the 'type' of region can be enough: it may allow separating out a particular level in a geographical hierarchy. But that doesn't allow for cases where regions of a particular type don't have full coverage of the parent. An example is 'parishes' in England. The collection of all current parishes is non-overlapping, but it is not exhaustive. Some locations are not in any parish.</p>
+            <p>The variation of administrative, statistical and political geography over time is also an issue. A particular division of a region into sub-regions may be valid only for a specific period. For example, council boundaries change from time to time. At any given time, there is a MECE set of council boundaries in a region, but the boundaries change occasionally, so if analysing data on English councils from 2014, a different set of areas is required than would be needed for say 2012. 2012 might involve areas A,B,C,D,E,F whereas 2014 requires A,B,C,D,G,H. A similar issue arises when dividing Europe up into countries for example.</p>
+            <p>These are common problems and there are probably many separate solutions already in active use. It would be useful however to have a standardised vocabulary to represent these kind of relationships, which would increase the interoperability of data analysis tools.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="SatelliteDataProcessing">
+          <h3>Satellite data processing</h3>
+          <p class="contributor">Kerry Taylor (informed by Matt Paget and Juan Guerschman, CSIRO)</p>
+          <label class="expand" for="uc32"></label>
+          <input id="uc32" type="checkbox">
+          <div>
+            <p><em>Vegetation fractional cover</em> is a key metric for monitoring land management, both in pastoral and agricultural settings. The aim is to estimate the fractions of photosynthetic and non-photosynthetic vegetation and the remaining fraction of bare soil. Fractional cover is computed from both Landsat and MODIS satellite surface reflectance products but calibration and validation via ground-based observations is also needed.</p>
+            <p>The method for computing fractional cover was developed by comparing geo-aligned Landsat sensor and two MODIS-derived surface reflectance products. Scaling issues associated with different sensors and spatial resolutions were addressed, along with locally-measured effects of soil colour and soil moisture.</p>
+            <p>
+            Source Data:
+            <ol>
+              <li>Data from the TM (Landsat 5) and ETM+ (Landsat 7) sensors were downloaded from the United States Geological Survey (USGS) and corrected for atmosphere, topographic and bi-directional surface reflectance effects, standardised to a nadir view (i.e., satellite zenith angle is zero) and a solar zenith angle of 45°)</li>
+              <li>The MODIS 16-Day Nadir BRDF-Adjusted Reflectance product (MCD43A4) provides surface reflectance data as if they were taken from the nadir view and uses the solar angle calculated at local solar noon (Schaaf et al., 2002). MCD43A4 data were obtained from the Land Processes Distributed Active Archive Center (LPDAAC). These data were resampled to a geographic coordinate system.</li>
+              <li>The MODIS surface reflectance products from the Terra satellite (MOD09) provide an estimate of the surface spectral reflectance as it would be measured at ground level in the absence of atmospheric scattering and absorption (Vermote et al, 2011; Vermote & Kotchenova, 2008). The 8-day composite (MOD09A1) selects the best possible observation from an 8-day window, selected on the basis of high observation coverage, low viewing angle, cloud free and low aerosol loading, with a spatial resolution of 500 metres and seven spectral bands. The MOD09A1 surface reflectance data used here were subject to the same geometric processing as the MCD43A4 data.</li>
+              <li>Field measurements of fractional cover were obtained at 913 sites across Australia (ABARES, 2013). Exactly 78 of those sites were sampled repeatedly, resulting in a total of 127 observations (a measurement taken at a given site on a specific date). The field observations did not systematically record soil colour or soil moisture. Recent observations include soil colour (Munsell Soil Color Charts, 1994), yet soil moisture is only subjectively measured (i.e., wet or dry). To derive these two soil properties consistently and objectively for the entire series we used information derived from other sources.</li>
+            </ol>
+            <p>As a result, a combined product is proposed which gives flexibility to use MODIS-derived estimates when large areas and high temporal repetition is desired, and Landsat-derived estimates when high spatial resolution is essential and/or when data prior to 2000 is needed. The algorithms needed for implementing a fractional cover product based on a blended Landsat-MODIS product are given <a href="#refGuerschman">[1]</a>.</p>
+            <p>Now, this fractional cover coverage product over Australia is computed monthly and <a href="http://www.auscover.org.au/xwiki/bin/view/Product+pages/FC+Composites+MODIS+OEH">distributed by the NSW government</a>, where it is used for their <a href="http://www.environment.nsw.gov.au/dustwatch">Dustwatch program</a> amongst other things. The Dustwatch program publishes monthly (PDF) reports of wind-related erosion and groundcover change.</p>
+            <p><b id="refGuerschman">[1]</b> <a href="http://www.sciencedirect.com/science/article/pii/S0034425715000395">Guerschman et al, "Assessing the effects of site heterogeneity and soil properties when unmixing photosynthetic vegetation, non-photosynthetic vegetation and bare soil fractions from Landsat and MODIS data", Remote Sensing of Environment, to appear 2015.</a>(Note that this paper provides several references to similar approaches to using multispectral coverages to determine vegetation)</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="MarineObservationsEMII">
+          <h3>Marine observations - eMII</h3>
+          <p class="contributor">Simon Cox (on behalf of <a href="http://imos.org.au/emii.html">IMOS eMII</a>)</p>
+          <label class="expand" for="uc33"></label>
+          <input id="uc33" type="checkbox">
+          <div>
+            <section>
+            <h4>Water column observations</h4>
+            <p>I am a modeller and I want to find, filter and extract water column data that has been collected by profiling instruments (e.g. CTD, XBT, ARGO Floats, CTD’s mounted on animals) so that I can prime my models. I want to easily be able to discover these data either by nominating the collection device type, or by nominating data parameters of interest. Once I can see which datasets meet my broad discovery criteria, and whilst still in the Portal, I want to be able to filter out data that is not of interest (e.g. those data outside of my region of interest, those not covering my features of interest, data which is unqualified, data below a certain depth and data from institutions I don’t trust). I want to extract these data in a harmonised format (i.e. receive a single file of aggregated data expressed using common data fields, or in multiple files where each file has a similar syntactic and semantic encoding). I don’t want to have to spend time transforming datasets with differing formats, nor guess which data fields in datasets from different sources are semantically covering the same information. I need to know what each field in the downloaded data represents.</p>
+            </section>
+            <section>
+            <h4>Reconfiguring data ingestion process</h4>
+            <p>I am an eMII Project Officer. I spend my day pulling data from partner services and transforming it so that it can be published through the 1-2-3 Portal. Just when I think I have tweaked all of the systems I need to in order to successfully ingest and publish provider data, the provider changes his/her data format, schema syntax or semantics. I then have to re-write or re-configure systems to obtain any new data. This happens very frequently. Even data providers who supply me with data from the same instruments use different data encodings and formats so I have to create individualised database tables to manage their incoming data. I would like data providers to agree on common schema for expressing similar data types and in collaboration develop some ‘governance’ rules surrounding data publication to the Portal to reduce the time I spend on repetitive (and often unnecessary) tasks.</p>
+            </section>
+            <section>
+            <h4>Observations along profiles</h4>
+            <p>I am an eMII Project Officer and I manage multiple profile type datasets (e.g.: Argo profile, seals profile, XBT profile …). I want to be able to assess the quality of the data provided by partners before inclusion into the IMOS database and making it available through the IMOS portal. I want to set up a system whereby every new profile will be compared with existing profiles available in the IMOS database. The incoming profile will have to conform to a standard format so that it is relatively easy to implement and develop different set of rules to enable comparison with existing profiles. The system will send me an alert if one or multiple profiles failed some tests. Then I will be able to follow up more quickly with the corresponding partners to check if an error occurs during the processing of the data or if actually the data is correct. In the end, this process will enable an increase of the quality of the data provided to the end user.</p>
+            </section>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="MarineObservationsDataProviders">
+          <h3>Marine observations - data providers</h3>
+          <p class="contributor">Simon Cox (on behalf of <a href="http://imos.org.au/emii.html">IMOS eMII</a>)</p>
+          <label class="expand" for="uc34"></label>
+          <input id="uc34" type="checkbox">
+          <div>
+            <section>
+            <h4>Atlas of Living Australia (ALA)</h4>
+            <p>The ALA would like to integrate their data into the AODN. The ALA serves a range of web services including WMS and corresponding ISO19115/MCP metadata. The ALA's use case is unusual in that it has tens of thousands of WMS layers and metadata records. This data cannot be added to version 2 of the AODN portal because it is too large to be harvested into the menu tree. ALA will need to be integrated with the 123 portal. Dave Martin's team has created a proof of concept integration. There would be a single metadata record for ALA, which will allow it to be discovered in Step 1 of the portal. After proceeding to Step 2 the user would see something like <a href="http://bl.ocks.org/nickdos/raw/119e3c16edeced2a9355/">this mockup</a>. 
+            </p>
+            </section>
+            <section>
+            <h4>Reef Life Survey (RLS)</h4>
+            <p>RLS have visited 2500+ coral and rocky reef sites and have conducted approx 6000 surveys across those sites. Each survey is conducted at a nominal ‘site’.
+              <section>
+              <h5>Methods 1 & 2</h5>
+              <p>During a survey observations are recorded of each of (1) vertebrate species abundance and biomass and (2) invertebrate species abundance.<p>
+              </section>
+              <section>
+              <h5>Method 3</h5>
+              <p>During a survey downward looking photographs are taken. The photographs are sequenced 1-20 for each site and are not geolocated. Subsequently, the photographs are scored at 5 points within each image. Each point is scored into one of 36 categories. Parameters are date, depth, resolution, major category, minor category, numerical value.</p>
+              </section>
+              <section>
+              <h5>User Story 1</h5>
+              <p>I’m interested in ecosystems, reef assemblages and inter-species interactions. Show me what vertebrate and invertebrate species were found at this site (and any corresponding location/depth/habitat information).</p>
+              <p>What I want to see:
+                <ul>
+                  <li>By site, all vertebrate species abundance and biomass values (for each survey?)</li>
+                  <li>By site, all invertebrate abundance values (for each survey?)</li>
+                </ul>
+              </p>-
+              </section>
+              <section>
+              <h5>User Story 2</h5>
+              <p>I have a large-scale question to ask about a particular species, for example, I am interested in broad distribution patterns of lobsters, plankton dispersal and settling rates. Show me all of the sites that were surveyed and the presence/absence of a particular species at each of those sites.</p>
+              <p>What I want to see:
+                <ul>
+                  <li>Across all sites that have been surveyed by RLS, the latitude, longitude, depth and presence/absence of a particular vertebrate or invertebrate species (no time component)</li>
+                  <li>A time selector that shows changing or stable presence/absence values for repeat surveys at the same site</li>
+                </ul>
+              </p>
+              </section>
+            </section>
+            <section>
+            <h4>Institute for Marine and Antarctic Studies (IMAS)</h4>
+            <p>The IMAS use case includes a number of data collections. The main requirements is a mechanism to easily install the necessary applications. Ideally the AODN will host the applications (GeoNetwork, Geoserver etc) in the NeCTAR Cloud. This cloud based infrastructure will be manged by the AODN, but IMAS will have administrator accounts on each application and will be responsible for data content.</p>
+            </section>
+          </div>
+          <p class="relatedDeliverables"><a href="#SSN"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="MarineObservationsDataConsumers">
+          <h3>Marine observations - data consumers</h3>
+          <p class="contributor">Simon Cox (on behalf of <a href="http://imos.org.au/emii.html">IMOS eMII</a>)</p>
+          <label class="expand" for="uc35"></label>
+          <input id="uc35" type="checkbox">
+          <div>
+            <section>
+              <h4>Download Temperature and Velocity Data from NSW Moorings</h4>
+              <p>The user would like to download temperature and velocity data from NSW moorings without downloading large numbers of NetCDF files, and without needing many clicks.</p><p>(Based on feedback from Robin Robertson)</p>
+            </section>
+            <section>
+              <h4>Download Glider Data</h4>
+              <p>The user would like an easy way to download the calibrated glider data. The user does not want the data delivered manually via drop box, or to face the difficulty of downloading NetCDF files in the way they are currently provided.</p><p>(Based on feedback from Robin Robertson)</p>
+            </section>
+            <section>
+              <h4>Download ANMN Timor South moorings data</h4>
+              <p>The user would like to download the ANMN Timor South moorings data - without needing 160 clicks.</p><p>(Based on feedback from Rebecca Cowley)</p>
+            </section>
+            <section>
+              <h4>Download XBT data</h4>
+              <p>The user would like to download XBT data from the portal. Not just the metadata - but the actual data.</p><p>(Based on feedback from Rebecca Cowley)</p>
+            </section>
+            <section>
+              <h4>Download NRS data</h4><p>The user would like to be able to download NRS moorings data.</p><p>(Based on feedback by Peter Thompson)</p>
+            </section>
+            <section>
+              <h4>Understandable by scientists from other fields</h4>
+              <p>The user would like to be able to understand the portal even though she is from another field (e.g. genomics).</p><p>(Based on feedback from Levente Bodrossy)</p>
+            </section>
+            <section>
+              <h4>Filter moorings data by deployment and instrument type</h4><p>The user would like to be able to filter moorings data by deployment and instrument type.</p><p>(Based on feedback from Craig Steinberg)</p>
+            </section>
+            <section>
+              <h4>Download data as CSV</h4><p>The user would like to download sea surface temperature from the Bass Straight as a CSV file - not NetCDF</p><p>(Based on feedback from Andre Chiaradia)</p>
+            </section>
+            <section>
+              <h4>Argo float data in a bounding box in the Southern Ocean.</h4><p>The user would like to download argo data from a particular region in the Southern Ocean.</p><p>(Based on feedback from Esmee)</p>
+            </section>
+            <p>Also see <a href="https://sites.google.com/site/aodntag/working-groups/use-cases/data-consumers">additional stories in un-edited emails</a></p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#SSN"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="BuildingInformationManagementAndDataSharing">
+          <h3>Building information management and data sharing</h3>
+          <p class="contributor"> Linda van den Brink (with thanks to Henk Schaap - Gobar)</p>
+          <label class="expand" for="uc36"></label>
+          <input id="uc36" type="checkbox">
+          <div>
+            <p>The Dutch organization <a href="http://www.rws.nl/en">Rijkswaterstaat</a> is responsible for the practical execution of the public works and water management, including the construction and maintenance of waterways and roads, and flood protection and prevention in the Netherlands. The following is a use case about sharing Rijkswaterstaat information to support building processes.</p>
+            <p>A part of a highway is in need of a new tarmac layer. This involves a lot of information sharing between the contractor (Rijkswaterstaat), the organization responsible for organizing the project and the organization responsible for carrying out the maintenance work. Building Information Management (BIM) is used for this and the data is published via a webserver.</p>
+            <p>The information being exchanged is asset management information, i.e. the location of the roads, tunnels, bridges, aquaducts, railway lines, surrounding terrain and waterbodies involved (geometric information). In addition, non-spatial information is important, like the layers of material the road consists of, when it was last maintained etc. The spatial information is not only shared as 2D geometries: (detailed) 3D information is also used in the building process. The area involved contains about 9.000 relevant physical objects (about 100 different object types) and about 2.000 spatial objects that relate to the traffic network, about which information is exchanged.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="LandsatDataServices">
+          <h3>Landsat data services</h3>
+          <p class="contributor">Kerry Taylor (on behalf of Aaron Sedgmen of Geoscience Australia)</p>
+          <label class="expand" for="uc37"></label>
+          <input id="uc37" type="checkbox">
+          <div>
+            <p>Geoscience Australia (GA) maintains an archive of Landsat 5, 7 and 8 satellite imagery over the Australian continent from 1986 to present. The Australian Reflectance Grid 25 (ARG25) dataset produced from the Landsat archive is a collection of approximately 184,000 individual Landsat 5 and Landsat 7 scenes processed to the ARG25 specification. The ARG25 data are available to the public as file downloads and OGC web services. The ARG25 collection can be searched using an OGC Catalogue Service (CSW) containing ISO 19115 metadata for each scene. Note that the ARG25 data services are expected to be superseded by the Australian Geoscience Data Cube when it becomes publically available.</p>
+            <p>The ARG25 data services were promoted for use at the 2013 and 2014 Australian GovHack events, a competition aimed at mainstream (i.e. largely non geoscience/geospatial specialist) web and application developers, to mashup, reuse, and remix open government data. The predominant use case for the ARG25 data at GovHack has been to perform spatiotemporal searches on the catalogue for an area of interest, retrieve and subset/stitch scenes from the web services, and provide an animated time sequence of the imagery to allow users to visualise changes in land cover over time, e.g. “show me how my town has grown over the last 10 years”.</p>
+            <p>The relative complexity and richness of the OGC/ISO web service APIs and data exchange formats presented a barrier to developers who were accustomed to lighter weight APIs and formats optimised for rapid integration and mashing up of data in mobile and browser based applications. As a result, uptake of the ARG25 data at GovHack was less than hoped for, and we see this as indicative of the mainstream web app development community in the real world.</p>
+            <p>GA has had much success with OGC and ISO standards in the sharing of data with government, research and industry partners and clients who are power users of spatial data and savvy in the standards. The less traditional users who are not spatial data specialists are less likely to access GA’s data delivered using OGC and ISO standards, and this is a section of the user community that can potentially apply the data to highly innovative and entrepreneurial uses.</p>
+            <p>GA does use proprietary and quasi-standard light weight data exchange formats (e.g. JSON) and web APIs (e.g. ESRI RESTful API) for delivering some geospatial data, although, in accordance with government policy, it is GA’s preference to adopt standards when possible to maximise interoperability.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="MetadataAndSearchGranularity">
+          <h3>Metadata and Search Granularity</h3>
+          <p class="contributor">Kerry Taylor (on behalf of Aaron Sedgmen of Geoscience Australia)</p>
+          <label class="expand" for="uc38"></label>
+          <input id="uc38" type="checkbox">
+          <div>
+            <p>Geoscience Australia (GA) collects and curates Australian national geoscience and geographic data sets, for use by government, industry and the community. Following is a typical requirement of a user of GA data - “A mineral exploration company is collating published geological data for their mining lease. They are particularly interested in sample locations where gold ppm values are above 0.1ppm, occurring in greenstone, located on or near a fault line, and aged around 2.6 Ga”.<p>
+            <p>Users are able to perform structured searches for GA datasets at the collection level using catalogues of ISO 19115 metadata. The collection level metadata provides users with download links to the packaged datasets, and in limited instances, links for accessing the data via web services and/or applications that provide visualisation and GIS analysis capability.</p>
+            <p>To perform fine grained searches within the dataset, such as feature level searches (e.g. show me sample locations in the OZCHEM database with gold ppm > 0.1), users must download the packaged datasets to their local environment and use their own tools to search through the data. Web services providing data access, e.g. WFS, and web applications with GIS capability served by GA, e.g. the Rock Properties Explorer app, can provide some capability for searching within data collections.</p>
+            <p>Usability of search and discovery systems would be enhanced by having standards that define the line between spatial data and metadata in the context of searches, and standard methodologies for searching across collection level and feature level data.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#TimeOntologyInOWL"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="CrowdSourcedEarthquakeObservationInformation">
+          <h3>Crowd sourced earthquake observation information</h3>
+          <p class="contributor">Kerry Taylor (on behalf of Aaron Sedgmen of Geoscience Australia)</p>
+          <label class="expand" for="uc39"></label>
+          <input id="uc39" type="checkbox">
+          <div>
+            <p>Geoscience Australia (GA) collects earthquake observation information from the general public to improve its knowledge base of the impact of earthquakes across the Australian continent. An online HTML form is available on the GA website for members of the public to report their experiences of earthquake events. Information collected includes the person’s location (both geographic and within a building), time of event, perception of intensity and observed effects on the built environment. The information provided by the public is rated against the Modified Mercalli Intensity (MMI) Scale and is used to improve the accuracy of shake maps for earthquake prone regions of the country. This feeds into GA’s understanding of exposure of the Australian built environment to natural disaster, and is used for disaster mitigation purposes including the determination of minimum building codes for various regions of the country.</p>
+            <p>There is potential for GA to improve the efficiency by which it obtains earthquake observation information from the general public by leveraging popular social media services (such as Twitter), and adopting common standards and best practices for collecting crowd sourced information.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#SSN"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="TCGAMicroscopyImaging">
+          <h3>TCGA / Microscopy Imaging</h3>
+          <p class="contributor">Erich Bremer</p>
+          <label class="expand" for="uc40"></label>
+          <input id="uc40" type="checkbox">
+          <div>
+            <p>Studying the morphology of disease at the cellular and sub-cellular levels using high resolution tissue images is extremely important to help understand the nature of various cancers. <a href="http://cancergenome.nih.gov/">The Cancer Genome Atlas (TCGA)</a> contains over 32,000 de-identified whole-slide microscopy images (WSI) of over two dozen cancer types. These images can contain between 100K-1M nuclei each. Biomedical informatics researcher have developed (and continue to develop) software to automatically segment nuclei for study. The spatial features of each nucleus and groups of nuclei as it relates to other nuclei combined with other linked data such as other morphological features (crypts, ducts, etc.) and/or patient lab results are used in analyzing and categorizing tissues and patients into groups and in comparing such groupings to understand disease mechanisms in a particular cancer type as well as across cancer types.<p>
+            <p>Representing nuclear segmentations is often done with binary masks or through polygon representations (e.g., the use of Well Known Text (WKT) representations) and also by leveraging work from the Geospatial community. However, in the case of nuclear segmentations, coordinate systems are 2D & 3D Cartesian based. Although the majority of work is this area is 2D-based, a growing segment of microscopy is also 3D-based as the technology develops and become more sophisticated. As living tissue can change over time through growth, infection, cancer, damage, etc, (as well as its associated organism’s various properties) it is important that spatial locations of features such as nuclear segmentation be also represented in a temporal aspect for proper comparisons.</p>
+            <p>Samples of TCGA WSI data can be viewed at: <a href="http://cancer.digitalslidearchive.net">http://cancer.digitalslidearchive.net</a></p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="CropYieldEstimationUsingMultipleSatellites">
+          <h3>Crop Yield Estimation using multiple satellites</h3>
+          <p class="contributor">Kerry Taylor with Zheng-Shu Zhou, CSIRO</p>
+          <label class="expand" for="uc41"></label>
+          <input id="uc41" type="checkbox">
+          <div>
+            <p>Space-borne Synthetic Aperture Radar (SAR) observations are coming on line rapidly over the next few years. SAR signals are represented in 2D space but can be processed to point observations in 3D space, or to 3D triangulated surfaces using polarimetric and phase information. A compelling use case for SAR data is crop classification, i.e., identification of cereal crops (wheat, barley, rice etc.), through analysis of the radar backscatters and polarisations over the variable-height surface and volume of the crop.</p>
+            <p>Multispectral (e.g. Landsat or MODIS) satellite imagery has been widely used to estimate vegetation cover and growth rates. It seems that combining SAR derived crop-type observations with Landsat-derived vegetation estimations could be used to estimate crop yields throughout the growth cycle. In principle, access to such data is open, but in practice it is difficult to get hold of and difficult to process for anyone other than well-connected scientists in developed nations. How could this data be opened up to a bigger community to help solve this problem, perhaps aided by reference to local knowledge?</p>
+            <p>We might expect that this will be used to assist in logistics and market planning in developed countries, and for food security in developing and war-torn nations.</p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a>, <a href="#SSN"></a>, <a href="#CoverageInLinkedData"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="GeospatialExtensionsToDomainIndependentMetadataSchemas">
+          <h3>Geospatial extensions to domain-independent metadata schemas</h3>
+          <p class="contributor">Andrea Perego (<a href="https://ec.europa.eu/jrc/">European Commission - Joint Research Centre</a>)</p>
+          <label class="expand" for="uc42"></label>
+          <input id="uc42" type="checkbox">
+          <div>
+            <p><a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/">DCAT-AP (DCAT application profile for data portals in Europe)</a> is a metadata interchange format, based on and compliant with the <a href="http://www.w3.org/TR/vocab-dcat">W3C Data Catalog vocabulary (DCAT)</a>, defining a minimum set of metadata elements to ensure cross-domain and cross-border interoperability across European data portals.</p>
+            <p>Work is under-way for a development of an extension aiming at defining a DCAT-AP compliant representation of geospatial metadata, referred to as <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/#Geo-DCAT-AP">GeoDCAT-AP</a>.</p>
+            <p>GeoDCAT-AP will build on preliminary work concerning the <a href="https://ies-svn.jrc.ec.europa.eu/projects/metadata/wiki/INSPIRE_profile_of_DCAT-AP_-_Reference">alignment of INSPIRE metadata with DCAT-AP (referred to as INSPIRE+DCAT-AP)</a>. The objective is to consolidate this work, and to extend it in order to cover the set of metadata elements corresponding to the union of the <a href="http://eur-lex.europa.eu/eli/reg/com/2008/1205#d1e38-14-1">INSPIRE metadata schema</a> and the core profile of ISO 19115.</p>
+            <p>Methodologically, GeoDCAT-AP will be designed based on the following requirements:
+            <ol>
+              <li>agree on mappings with metadata elements available in DCAT-AP (e.g., title, abstract, licence, distributions)</li>
+              <li>define alignment with elements not available in DCAT-AP, by using, whenever possible, popular RDF vocabularies</li>
+            </ol>
+            The requirement for point (2) is to identify an RDF representation of elements missing in DCAT-AP that can be re-used, if relevant, in other domains. E.g., elements concerning data quality (e.g., conformity, topological consistency) and granularity (e.g., spatial / temporal resolution), two notions not supported in DCAT-AP (nor in DCAT). This implies that, in many cases, there may be the need of relaxing the ISO 19115 specification whenever it may be a barrier to re-use.</p>
+            <p>Another key design principle is that GeoDCAT-AP is not meant to be a replacement of ISO 19115 / 19139, but an alternative representation, built on a set of harmonised mappings. For this reason, the principle is that any ISO 19115-conformant metadata record could be transformed into a GeoDCAT-AP one, but the opposite is not a requirement.</p>
+            <p>Issues to be addressed include the following:
+            <ul>
+              <li>Recommendations on the use of HTTP URIs for geospatial data and metadata</li>
+              <li>Recommendations on the representation of geometries, and for the specification of bounding boxes, centroids, etc.</li>
+              <li>Recommendations for the specification of spatial and temporal reference systems</li>
+              <li>Recommendations for the specification of spatial and temporal resolution</li>
+            </ul>
+            </p><p>Related use cases:
+            <ul>
+              <li><a href="#CombiningSpatialRDFDataForIntegratedQueryingInATriplestore"></a></li>
+              <li><a href="#PublishingGeospatialReferenceData"></a></li>
+              <li><a href="#ImprovingDiscoveryOfSpatialDataOnTheWeb"></a></li>
+            </ul>
+            </p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
+        <section id="ImprovingDiscoveryOfSpatialDataOnTheWeb">
+          <h3>Improving discovery of spatial data on the Web</h3>
+          <p class="contributor">Andrea Perego (<a href="https://ec.europa.eu/jrc/">European Commission - Joint Research Centre</a>)</p>
+          <label class="expand" for="uc43"></label>
+          <input id="uc43" type="checkbox">
+          <div>
+            <p><i>Use case based on <a href="http://inspire.ec.europa.eu/events/conferences/inspire_2014/pdfs/19.06_4_11.00_Adam_Iwaniak.pdf">work presented at INSPIRE 2014</a> by Adam Iwaniak (Wroclaw University of Environmental and Life Sciences, Poland)</i><p>
+            <p>Geoportals offer effective discovery functionalities for specialists. However, as in most data portals, using basic free text search is usually far from being a satisfactory experience. Actually, users (both non-experts and specialists), when searching for data, are frequently making use of popular search engines as a first step to get to the data they are looking for.</p>
+            <p>Improving free text search in (geo)data portals is unlikely to address this issue. Moreover, it would not help users who do not know in which portal(s) the relevant data are available. Users will keep on using in any case search engines for this purpose.</p>
+            <p>An option would be optimising geoportals for Web discovery, by implementing consistently SEO (Search Engine Optimisation) techniques. The advantages include (but are not limited to) the following:
+            <ul>
+            <li>Increase visibility of spatial data - as well as of the geoportals giving access to them.</li>
+            <li>Enabling queries not limited to free free text fields (e.g., dataset title and description), but concerning also coordinates, spatial / temporal resolution, etc.</li>
+            <li>Enabling users to find the data better satisfying their requirements (in terms of spatial and temporal coverage, granularity, formats, access and licensing conditions, etc.)</li>
+            </ul>
+            The SDW WG BPs may contribute to this by recommending best practices for publishing geospatial metadata on the Web. For example, by proposing standard serialisations of geospatial metadata in formats and vocabularies used by search engines to index Web resources - e.g., RDFa, Microdata, Microformats.</p>
+            </p>
+            <p>Related use cases:
+              <ul>
+                <li><a href="#ConsumingGeographicalDataInAWebApplication"></a></li>
+                <li><a href="#GeospatialExtensionsToDomainIndependentMetadataSchemas"></a></li>
+              </ul>
+            </p>
+          </div>
+          <p class="relatedDeliverables"><a href="#BestPractices"></a></p>
+          <p class="relatedRequirements"></p>
+        </section>
         <!-- TO DO: link related use cases -->
         <!-- Template for use cases
         <section id="">
