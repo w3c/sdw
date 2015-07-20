@@ -1434,7 +1434,7 @@
       </section>      
       <section id="SpatialMetadata">
         <h3>Spatial metadata</h3>
-        <p>There should be standards that allow describing the spatial characteristics of data (data objects, data sets or data services), like:
+        <p>There should be standards that allow describing the spatial characteristics of data (data objects, data sets or data services), like:</p>
         <ul>
         <li>number of dimensions (1D, 2D, 3D)</li>
         <li>data type (raster or vector)</li>
@@ -1443,7 +1443,6 @@
         <li>spatial resolution</li>
         <li>positioning system used for acquiring location</li>
         </ul>
-        </p>
         <p class="relatedDeliverables"><a href="#BestPractices"></a></p>
         <p class="relatedUseCases"><a href="#MeteorologicalDataRescue"></a>, <a href="#HarvestingLocalSearchContent"></a>, <a href="#PublishingGeographicalData"></a>, <a href="#ConsumingGeographicalDataInAWebApplication"></a>, <a href="#UsingSpatialDataFromTheWebInGISSystemsDuringEmergencyResponseOperations"></a>, <a href="#CombiningSpatialRDFDataForIntegratedQueryingInATriplestore"></a>, <a href="#PublicationOfRawSubsurfaceMonitoringData"></a>, <a href="#IntelligentTransportationSystem"></a>, <a href="#ImagesEGATimeSeriesOfAWaterCourse"></a>, <a href="#SoilDataApplications"></a>, <a href="#LandsatDataServices"></a>, <a href="#MetadataAndSearchGranularity"></a>, <a href="#GeospatialExtensionsToDomainIndependentMetadataSchemas"></a>, <a href="#ImprovingDiscoveryOfSpatialDataOnTheWeb"></a>, <a href="#INSPIREComplianceUsingWebStandards"></a>, <a href="#TCGAMicroscopyImaging"></a>, <a href="#DisseminationOf3DGeologicalData"></a>, <a href="#CrowdsourcedEarthquakeObservationInformation"></a></p>
       </section>
@@ -1572,9 +1571,58 @@
        </div>
       --> 
     </section>
-    <section id="ack"><h3>Acknowledgements</h3>
+    <section id="RequirementsByDeliverable">
+      <h2>Requirements by deliverable</h2>
+      <p>For convenience, this chapter lists requirements grouped by Working Group deliverable.</p>
+      <div id="table1"></div>
+    </section>
+    <section id="ack"><h2>Acknowledgements</h2>
     <p>The editors are grateful for all contributions made to this document, in particular the use case
     authors.</p>
     </section>
+    <script class='remove'> 
+      <!-- Create a list of deliverables with related requirements. -->
+      var tab = document.getElementById("table1");
+      var deliverables = document.getElementById("Deliverables").getElementsByTagName("section");
+      var requirements = document.getElementById("Requirements").getElementsByTagName("section");
+      var relatedDelivs = [];
+      var dId, rId, dLabel, rLabel, dp, dpb, dpbt1, dpbt2, dpba, dbpat, dpo, dpol, dpola, dpolat;
+      for (i = 0; i < deliverables.length; i++) {
+        dId = deliverables[i].id;
+        if (dId == "UseCasesAndRequirements") {continue;}
+        dLabel = deliverables[i].getElementsByTagName("h3")[0].innerText;
+        dp = document.createElement("p");
+        dpb = document.createElement("b");
+        dpbt1 = document.createTextNode("Requirements for deliverable ");
+        dpb.appendChild(dpbt1);
+        dpba = document.createElement("a");
+        dpbat = document.createTextNode(dLabel);
+        dpba.appendChild(dpbat);
+        dpba.href = "#" + dId;
+        dpb.appendChild(dpba);
+        dpbt2 = document.createTextNode(":");
+        dpb.appendChild(dpbt2);
+        dp.appendChild(dpb);
+        dpo = document.createElement("ol");
+        for (j = 0; j < requirements.length; j++) {
+          rId = requirements[j].id;
+          rLabel = requirements[j].getElementsByTagName("h3")[0].innerText;
+          relatedDelivs = requirements[j].getElementsByClassName("relatedDeliverables")[0].getElementsByTagName("a");
+          for (k = 0; k < relatedDelivs.length; k++) {
+            if (relatedDelivs[k].getAttribute("href") == "#" + dId) {
+              dpol = document.createElement("li");
+              dpola = document.createElement("a");
+              dpolat = document.createTextNode(rLabel);
+              dpola.appendChild(dpolat);
+              dpola.href = "#" + rId;
+              dpol.appendChild(dpola);
+              dpo.appendChild(dpol);           
+            }
+          }
+        }
+        dp.appendChild(dpo);
+        tab.appendChild(dp);
+      }
+    </script>
   </body>
 </html>
