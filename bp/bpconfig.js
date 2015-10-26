@@ -17,6 +17,10 @@ var respecConfig = {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
 			companyURL: "http://www.surrey.ac.uk/",
+		}, {
+			name: "Linda van den Brink",
+			company: "Geonovum",
+			companyURL: "http://www.geonovum.nl/",
 		}],
     otherLinks: [
     {
@@ -30,7 +34,7 @@ var respecConfig = {
       key: "OGC Document Number:",
       data: [
       {
-        value: "OGC 15-xxx"
+        value: "OGC 15-107"
       }]
       }],
     wg: "Spatial Data on the Web Working Group",
