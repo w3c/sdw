@@ -96,5 +96,6 @@ var respecConfig = {
         "status":"RFC 4180",
         "date":"October 2005"
        },
-    }
+    },
+    issueBase: "https://github.com/w3c/sdw/issues/"
 };
