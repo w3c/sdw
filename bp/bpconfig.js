@@ -96,13 +96,6 @@ var respecConfig = {
         "status":"RFC 4180",
         "date":"October 2005"
        },
-       "BP-LD":{
-        "authors":["Bernadette Hyland", "Ghislain Atemezing", "Boris Villazón-Terrazas"],
-        "href":"http://www.w3.org/TR/ld-bp/",
-        "title":"Best Practices for Publishing Linked Data",
-        "status":"W3C Working Group Note",
-        "date":"09 January 2014"   
-       },
        "DWBP":{
         "authors":["Bernadette Farias Lóscio", "Caroline Burle", "Newton Calegari"],
         "href":"http://www.w3.org/TR/dwbp/",
