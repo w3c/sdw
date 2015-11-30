@@ -248,7 +248,189 @@ figure figcaption {
             <p><span id="satNav" class="practicelab">If in doubt, use Sat Nav</span></p>
           </div>
         </section>
+      
+      <section id="bp-identifiers">
+        <h3>Assigning identifiers to real world things and information resources</h3>
+        <p>NOTES:</p>
+        <p>Mostly, people looking for information are interested in real world things, not in information records. </p>
+        <p>A lighthouse is a real world thing, a feature is an information record about the thing, but often in current practice has properties that are about the real thing (e.g. height) and properties about the information record (e.g. last modified). The features are in a dataset, the dataset has an id and the features have a local id. So currently you cannot link to them; the features need to have http URI identifiers instead. Often there are more information records about the same real world thing, in different datasets.</p>
+        <p>Examples: CSIRO spatial identifier reference framework; http://almere.pilod.nl/bgtld/v2; ...</p>
+        <p>tell people what to do if they've got feature data and publish that in a linked data way. First see if there's an authoritative URI already that you can link to and if so do that; else how to mint the identifier yourself based on the features in your dataset and how the identifier is for the real world thing the feature describes. Local names are not typically URIs. We know we want to use URIs as identifiers. So we might take the dataset URI - which identifies a silo
+          ... think of a different dataset, this one about shipwrecks near lighthouses. But problem is mapping the local IDs, we want to be able to express the linkages within the dataset
+        </p>
+        <p>add reference to DWBP BP 11 (once phila gets this addition approved by the wg).</p>
+        <p>datasets need to be identified</p>
+        <p>features (things) need to be identified</p>
+        <p>representations (geometry, topology) should be identified and must be if they are managed elsewhere.</p>
+        <p>Identifiers should be URLs (http URIs) and must be globally unique.</p>
+        <p>in order for identifiers to be useful, people should be comfortable creating them themselves (bottom up, like hashtags) and this BP will give some pointers about how to create good URIs (should be dereferenceable/resolvable). There is no top down authority that you have to go to in order to create identifiers for spatial objects. So just make them up yourself if you need them and they don't exist.</p>
+        <p>There are many mechanisms to reconcile (i.e. map/link) objects from different datasets. You might determine that two datasets are talking about the same places and then can use spatial correlation, but this is often not enough. There is also danger in doing so (we need to expand on this - what's the danger?). Then there's the question of using sameAs or e.g. skos mapping relations like skos:related etc. The matter of reconciliation between thematic things or properties is one that we will not address. I.e. in this best practice we only give guidance on spatial reconciliation (e.g. two mentions of Paris are talking about the same place), and are not addressing thematic reconciliation. </p>
+        <div class="practice">
+          <p><span id="globally-unique-ids">Use globally unique identifiers for entity-level resources</span></p>
+          <ul>
+            <li>… better still, use durable HTTP URIs … ref DWBP BP 10 Use persistent</li>
+            <li>URIs as identifiers of datasets for guidance on how to structure good URIs</li>
+            <li>… don’t use service endpoint URLs (technology / implementation / API version dependent)</li>
+            <li>… discussion on geometry vs. Features vs. Real World Things; attribute vs.
+            record vs. Thing</li>
+            <li>… ISSUE: discussion on ‘punning’ to allow conflation of concerns? ref
+            @timbl’s statement about vCard; ref URIs in data primer for direct and
+            shorthand properties?</li>
+            <li>¿ … discussion on identification of coverages as a property of a Thing</li>
+          </ul>
+        </div>
+        <div class="practice">
+          <p><span id="reuse-ids">Reuse existing (authoritative) identifiers when available</span></p>
+          <ul>
+            <li>… avoid proliferation of identifiers for the same resource</li>
+            <li>… ref: ‘Appendix: authoritative sources of geographic identifiers’</li>
+          </ul>
+        </div>
+        <div class="practice">
+          <p><span id="lacking-ids">Working with data that lacks globally unique identifiers for entity-level
+            resources</span></p>
+          <ul>
+            <li>incorporates assignment of URIs based on scoped identifiers (e.g. Feature</li>
+            <li>IDs from a dataset or local identifiers within tabular data); assignment of
+            URIs to ‘blank nodes’ (plus note on subsequent reconciliation; non-unique
+            naming is inevitable) … SIRF, schema.org etc.</li>
+            <li>… toponyms?</li>
+            <li>should this move to “Exposing data through APIs” section?</li>
+          </ul>
+        </div>
+        <div class="practice">
+          <p><span id="ids-for-changing-things">Provide stable identifiers for Things (resources) that change over time</span></p>
+        </div>
+        <div class="practice">
+          <p><span id="ids-for-chuncks">Provide identifiers for parts of larger information resources</span></p>
+        </div>
+      </section>
+      
+      <section id="bp-expressing-spatial">
+        <h3>Expressing spatial data</h3>
+        
+        <section id="bp-expr-geo">
+          <h4>(geo)spatial data</h4>
+          <p>spatial relationship types like geograhpical, topological and social hierarchy (partOf), will be described here and be entered eventually as link relationship types into IANA registry. </p>
+          <p>choosing the right format.</p>
+          <p>You should return useful information when a resource is referenced. What is useful? We will explain this in more detail. This could also fit in the Enabling discovery section. Make each resource available as a URL, e.g. http://maps.nanaimo.ca/data/property/</p>
+          <p>Spatial things could also be identified with one or more names. These could be toponyms (names that appear on a map) or colloquial names (that local people use for a place). This part will explain how you provide the names / labels for the spatial things you are referring to. (a way to do this could be rdfs:label)</p>
+          <p>Fuzzyness of spatial data: it is often in social discourse useful to identify spatial things even though they're fuzzy. E.g. Renaissance Italy or the American West. </p>
+          <p class="issue" data-number="37">Do we need a subclass of SpatialThing or a property that expresses the fuzzyness of a spatial thing.</p>
+          <p>Spatial things can change over time. The data on the web best practice #8 addresses the topic of versioning things. Include reference here. </p>
+          <p class="example">An example of a versioned spatial thing goes here.</p>
 
+          <div class="practice">
+            <p><span id="minimum">Provide a minimum set of information for your intended application</span></p>
+            <ul>
+              <li>to distinguish one Thing from another by looking at its properties; type, label</li>
+              <li>… others? e.g. if you want to plot on a map, you need to know where to put
+                the pin</li>
+              <li>expressing names of places; toponyms, multiple names etc.</li>
+              <li>… discussion on fuzzy boundaries; hard geometric boundary is not essential</li>
+              <li>… ‘place’ may have an indistinct (or even undefined) boundary</li>
+              <li>… discussion on provision of multiple geometric representations</li>
+            </ul>
+          </div>
+          
+          <div class="practice">
+            <p><span id="describe-geometry">how to describe geometry</span></p>
+            <ul>
+              <li>determining the dimensionality of geometry data (0d ‘point’ to 3d ‘volume’)</li>
+              <li>when to use geometry literals (e.g. WKT representations or GeoHash &
+                other geocoding representations) or structured geometry objects</li>
+              <li>… base on tool support?</li>
+              <li>… base on performance considerations? “geometry can be 95% of the total
+                data size” … consideration of binary data formats … e.g. protocol buffers for
+                vector tiling … but some binary formats don’t really work “on the web” - you
+                need to download the data and work with it offline e.g. netCDF [?]</li>
+              <li>examples (from R5.1): bounding box, centroid</li>
+              <li>examples (from R5.8): show CRS definition</li>
+              <li>CLARIFICATION REQUIRED: R5.47 ‘time dependencies in CRS</li>
+              <li>definitions’ … is this feasible for main-stream usage in a BP?</li>
+              <li>examples (from R5.12): vector geometry</li>
+              <li>examples (from R5.17): non-geospatial example e.g. microscopy</li>
+            </ul>
+          </div>
+          
+          <div class="practice">
+            <p><span id="ref-crs">Specify Coordinate Reference System for high-precision applications</span></p>
+            <ul>
+              <li>When default Coordinate Reference System is (in)sufficient</li>
+            </ul>
+          </div>
+          
+          <div class="practice">
+            <p><span id="relative-position">How to describe relative positions</span></p>
+            <ul>
+              <li> … [linear referencing][gap?]</li>
+            </ul>
+          </div>
+          
+          <div class="practice">
+            <p><span id="desc-accuracy">How to describe positional (in)accuracy</span></p>
+          </div>
+          
+          <div class="practice">
+            <p><span id="desc-changing-properties">How to describe properties that change over time</span></p>
+            <ul>
+              <li>(or are valid only at a given time)</li>
+              <li>incorporate information on how often that information might change; frequency of update</li>
+              <li>ISSUE: how to work with data that is such high volume (e.g. sensor data
+              streams) that the data is discarded after a period of time</li>
+            </ul>
+          </div>
+        </section>
+        <section id="bp-geo-voc">
+          <p class="note">This section will be moved to Publishing data with clear semantics.</p>
+          <h4>Which vocabulary should I use to describe my spatial data?</h4>
+          <p>There are different vocabularies about spatial things available. This section will have information about when to use which vocabulary. This could be in the form of a durable methodology or an actionable bucket list in some form that helps them choose the best vocabulary for their task. </p>
+          <p class="issue" data-number="38">We might publish in the BP or a complimentary note a set of statements mapping the set of available vocabularies about spatial things. There are mappings available e.g. GeoNames has a mapping with schema.org. <a href="http://www.geonames.org/ontology/mappings_v3.01.rdf">http://www.geonames.org/ontology/mappings_v3.01.rdf</a></p>
+          <p>The Basic Geo vocabulary has a class SpatialThing which has a very broad definition. This is ok for a lot of use cases. </p>
+          <p class="issue" data-number="39">For some use cases we might need something more specific.</p>
+          <p>This section of the BP will also give recommendations about CRS referencing. </p>
+          
+          <div class="practice">
+            <p><span id="semantic-thing">Use spatial semantics for spatial Things</span></p>
+          </div>
+          
+          <div class="practice">
+            <p><span id="semantic-rels">Assert known relationships</span></p>
+          </div>
+        </section>
+        
+        <section id="bp-expr-tempo">
+          <h4>temporal data</h4>
+          <p>temporal relationship types will be desrcibed here and be entered eventually as link relationship types into IANA registry. </p>
+          <p>Fuzzyness of temporal data in the same sense as is relevant for spatial data. We might give an example about an event.</p>
+          <p class="issue">{do we need this … or is ‘time’ sufficiently covered in #2.1 “how to describe properties that change over time […]” and within #2.3?}
+            … retain section; point to where temporal data is discussed in detail</p>
+        </section>
+        
+        <section id="bp-expr-sensor">
+          <h4>sensor and observation  data</h4>
+          <div class="practice">
+            <p><span id="provide-context">Provide context required to interpret observation data values</span></p>
+          </div>
+        
+          <div class="practice">
+            <p><span id="describe-process">Describe sensor data processing workflows</span></p>
+          </div>
+          
+          <div class="practice">
+            <p><span id="relate-obs">Relate observation data to the real world</span></p>
+          </div>
+          
+          <div class="practice">
+            <p><span id="crowd-obs">How to work with crowd-sourced observations</span></p>
+          </div>
+          
+          <div class="practice">
+            <p><span id="pub-streams">How to publish (and consume) sensor data streams</span></p>
+          </div>
+          
+      </section>
+      
         <section id="bp-linking">
           <h3>Linking Data</h3>
           <p>linking between things at the dataset level is largely covered by DWBP. Put reference here. </p>
@@ -301,62 +483,7 @@ figure figcaption {
           <p>Some data is behind a paywall or security because of privacy. Metadata for such datasets should be published in a way that it is crawlable even though the data itself is not within reach of the crawler. There are practices existing for this; the SDWBP will point to them.</p>
         </section>
         
-        <section id="bp-identifiers">
-          <h3>Assigning identifiers to real world things and information resources</h3>
-          <p>Mostly, people looking for information are interested in real world things, not in information records. </p>
-          <p><img src="images/lighthouse.jpg"></img></p>
-          <p>A lighthouse is a real world thing, a feature is an information record about the thing, but often in current practice has properties that are about the real thing (e.g. height) and properties about the information record (e.g. last modified). The features are in a dataset, the dataset has an id and the features have a local id. So currently you cannot link to them; the features need to have http URI identifiers instead. Often there are more information records about the same real world thing, in different datasets.</p>
-          <p>Examples: CSIRO spatial identifier reference framework; http://almere.pilod.nl/bgtld/v2; ...</p>
-          <p>tell people what to do if they've got feature data and publish that in a linked data way. First see if there's an authoritative URI already that you can link to and if so do that; else how to mint the identifier yourself based on the features in your dataset and how the identifier is for the real world thing the feature describes. Local names are not typically URIs. We know we want to use URIs as identifiers. So we might take the dataset URI - which identifies a silo
-          ... think of a different dataset, this one about shipwrecks near lighthouses. But problem is mapping the local IDs, we want to be able to express the linkages within the dataset
-          </p>
-          <p>add reference to DWBP BP 11 (once phila gets this addition approved by the wg).</p>
-          <p>datasets need to be identified</p>
-          <p>features (things) need to be identified</p>
-          <p>representations (geometry, topology) should be identified and must be if they are managed elsewhere.</p>
-          <p>Identifiers should be URLs (http URIs) and must be globally unique.</p>
-          <p>in order for identifiers to be useful, people should be comfortable creating them themselves (bottom up, like hashtags) and this BP will give some pointers about how to create good URIs (should be dereferenceable/resolvable). There is no top down authority that you have to go to in order to create identifiers for spatial objects. So just make them up yourself if you need them and they don't exist.</p>
-          <p>There are many mechanisms to reconcile (i.e. map/link) objects from different datasets. You might determine that two datasets are talking about the same places and then can use spatial correlation, but this is often not enough. There is also danger in doing so (we need to expand on this - what's the danger?). Then there's the question of using sameAs or e.g. skos mapping relations like skos:related etc. The matter of reconciliation between thematic things or properties is one that we will not address. I.e. in this best practice we only give guidance on spatial reconciliation (e.g. two mentions of Paris are talking about the same place), and are not addressing thematic reconciliation. </p>
-          
-        </section>
-        
-        <section id="bp-expressing-spatial">
-          <h3>Expressing spatial data</h3>
-
-          <section id="bp-expr-geo">
-            <h4>(geo)spatial data</h4>
-            <p>spatial relationship types like geograhpical, topological and social hierarchy (partOf), will be described here and be entered eventually as link relationship types into IANA registry. </p>
-            <p>choosing the right format.</p>
-            <p>You should return useful information when a resource is referenced. What is useful? We will explain this in more detail. This could also fit in the Enabling discovery section. Make each resource available as a URL, e.g. http://maps.nanaimo.ca/data/property/</p>
-            <p>Spatial things could also be identified with one or more names. These could be toponyms (names that appear on a map) or colloquial names (that local people use for a place). This part will explain how you provide the names / labels for the spatial things you are referring to. (a way to do this could be rdfs:label)</p>
-            <p>Fuzzyness of spatial data: it is often in social discourse useful to identify spatial things even though they're fuzzy. E.g. Renaissance Italy or the American West. </p>
-            <p class="issue" data-number="37">Do we need a subclass of SpatialThing or a property that expresses the fuzzyness of a spatial thing.</p>
-            <p>Spatial things can change over time. The data on the web best practice #8 addresses the topic of versioning things. Include reference here. </p>
-            <p class="example">An example of a versioned spatial thing goes here.</p>
-          </section>
-            <section id="bp-geo-voc">
-            <h4>Which vocabulary should I use to describe my spatial data?</h4>
-            <p>There are different vocabularies about spatial things available. This section will have information about when to use which vocabulary. This could be in the form of a durable methodology or an actionable bucket list in some form that helps them choose the best vocabulary for their task. </p>
-            <p class="issue" data-number="38">We might publish in the BP or a complimentary note a set of statements mapping the set of available vocabularies about spatial things. There are mappings available e.g. GeoNames has a mapping with schema.org. <a href="http://www.geonames.org/ontology/mappings_v3.01.rdf">http://www.geonames.org/ontology/mappings_v3.01.rdf</a></p>
-            <p>The Basic Geo vocabulary has a class SpatialThing which has a very broad definition. This is ok for a lot of use cases. </p>
-            <p class="issue" data-number="39">For some use cases we might need something more specific.</p>
-            <p>This section of the BP will also give recommendations about CRS referencing. </p>
-            </section>
-
-          <section id="bp-expr-tempo">
-            <h4>temporal data</h4>
-            <p>temporal relationship types will be desrcibed here and be entered eventually as link relationship types into IANA registry. </p>
-            <p>Fuzzyness of temporal data in the same sense as is relevant for spatial data. We might give an example about an event.</p>
-          </section>
-
-          <section id="bp-expr-sensor">
-            <h4>sensor and observation  data</h4>
-          </section>
-
-        </section>
-        
-        
-        <section id="bp-large-datasets">
+       <section id="bp-large-datasets">
             <h4>Dealing with large datasets</h4>
           <p>describing large datasets (more specifically: this is mostly about coverages) in order to get space/time subsets of that dataset. Identifiers for the resource should be separate from the URL of the service-end point(s) that can be used to access that resource ... we need a "protocol independent" way to identify [coverage] dataset subsets.</p>
         </section>
