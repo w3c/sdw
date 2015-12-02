@@ -72,36 +72,12 @@ var respecConfig = {
       "SCHEMA-ORG":{
         "href":"http://schema.org/",
         "title":"Schema.org"
-       }, 
-      "PROV-IMP":{
-        "authors":["Trung Dong Huynh","Paul Groth","Stephan Zednik"],
-        "href":"http://www.w3.org/TR/prov-implementations/",
-        "title":"PROV Implementation Report",
-        "status":"W3C Working Group Note",
-        "publisher":"W3C",
-        "deliveredBy":[{"url":"http://www.w3.org/2011/prov/","shortname":"prov"}],
-        "date":"30 April 2013"
-       }, 
-      "DCAT":{
-        "authors":["Fadi Maali", "John Erickson"],
-        "href":"http://www.w3.org/TR/vocab-dcat/",
-        "title":"Data Catalog Vocabulary (DCAT)",
-        "status":"W3C Recommendation",
-        "date":"16 January 2014"
-       }, 
-      "CSV":{
-        "authors":["Y. Shafranovich"],
-        "href":"https://www.ietf.org/rfc/rfc4180.txt",
-        "title":"Common Format and MIME Type for Comma-Separated Values (CSV) Files",
-        "status":"RFC 4180",
-        "date":"October 2005"
        },
-       "DWBP":{
-        "authors":["Bernadette Farias Lóscio", "Caroline Burle", "Newton Calegari"],
-        "href":"http://www.w3.org/TR/dwbp/",
-        "title":"Data on the Web Best Practices",
-        "status":"W3C Working Draft",
-        "date":"25 June 2015"   
+      "GeoJSON":{
+        href:"http://geojson.org/geojson-spec.html",
+        title:"The GeoJSON Format Specification",
+        authors: ["Howard Butler", "Martin Daly", "Allan Doyle", "Sean Gillies", "Tim Schaub", "Christopher Schmidt"],
+        date: "16 June 2008"
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
