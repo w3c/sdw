@@ -1091,8 +1091,10 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         <p>One way of discovering is browsing through data using semantics; which allows you to find related data through semantic similarity.</p>
         <p>Linksets are useful for making links between entities in the dataset discoverable and crawlable. Using linksets are one example of doing that at the dataset level, a third party making collections of links browsable and allowing discovery of backlinks.  Note that this is an emerging practice, not an established one.  Also address here: how do you deal with maintaining links over time (when resources you link to may change or disappear). Example: OpenPHACTS. </p>
         <p class="issue" data-number="36">This needs further discussion. Linksets does not seem to be an evidence-based best practice. It might be an emerging practice; CSIRO example. This might go in a shared note with the DWBP. An example of expressing a collection of links from the library community is <a href="https://gbv.github.io/beaconspec/beacon.html">here</a>. An example vocabulary for expressing link sets is <a href="http://www.w3.org/TR/void/#describing-linksets">in VoID</a>.</p>
-       <p>Datacubes can have a dimension which is a place name from a gazetteer and this allows the discovery of thematic data about a place.</p>
+        <p>Datacubes can have a dimension which is a place name from a gazetteer and this allows the discovery of thematic data about a place.</p>
         <p>Some data is behind a paywall or security because of privacy. Metadata for such datasets should be published in a way that it is crawlable even though the data itself is not within reach of the crawler. There are practices existing for this; the SDWBP will point to them.</p>
+
+        <p class="note">Dataset-level discovery is covered by DWBP <span style="background-color:yellow">[ref?]</span>; <em>spatial</em> data is typically more structured and contains Things that can be discovered individually</p>
 
         <div class="practice">
           <p><span id="find-related-data" class="practicelab">Use links to find related data</span></p>
@@ -1120,6 +1122,19 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
+          <div style="background-color:yellow">
+            <ul>
+              <li>incorporates following ‘forward links’ … this is the way the document web works today; browsing by humans</li>
+              <li>incorporates aggregation of links to enable referring URLs to be indexed e.g. “what points to me?” … ‘back links’
+                <ul>
+                  <li>use ‘frequency of update’ to determine mechanisms for keeping indexes fresh</li>
+                  <li>network / graph analysis to find disparate information; looking for room temperature & discovering the presence of a temperature sensor in the room which can be actuated</li>
+                </ul>
+              </li>
+              <li>¿link from entity to the ‘dataset’ in which it is defined in order to find ‘peer’ entities e.g. RDF Data Cube observation</li>
+              <li>¿use of gazetteer to find related information; [CSIRO SIRF]</li>
+            </ul>
+          </div>
         </div>
 
         <div class="practice">
@@ -1150,6 +1165,12 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
+          <div style="background-color:yellow">
+            <ul>
+              <li>ref <a href="#indexable-by-search-engines">Best Practice 25: Make your entity-level data indexable by search engines</a></li>
+              <li>incorporates @eparsons' perspective on evolution of SDIs; one HTML page (plus structured markup) per resource; use of <a href="http://www.sitemaps.org">sitemaps</a></li>
+            </ul>
+          </div>
         </div>
 
         <div class="practice">
@@ -1179,10 +1200,21 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
         </div>
+        <div style="background-color:yellow">
+          <ul>
+            <li>ref: <a href="https://joinup.ec.europa.eu/node/139283/">GeoDCAT AP</a> that provide extensions to the <a href="http://www.w3.org/TR/vocab-dcat/">DCAT vocabulary</a> for describing spatial data</li>
+          </ul>
+        </div>
       </section>
 
       <section id="bp-exposing-via-api">
         <h3>Exposing datasets through APIs</h3>
+
+        <div style="background-color:yellow">
+          <p>scope: API covers both the (query) <em>interface</em> used and the <em>content</em> exposed by the given endpoint</p>
+          <p>… 4 categories: question/answer, event based, pub/sub, transactional </p>
+        </div>
+
         <p>using an API that supports content negotiation when necessary.</p>
         <p>the URL for accessing a dataset does not equal a persistent identifier for the dataset itself.</p>
         <p>There's no best practice for exposing Web Feature Service content in a more accessible way from a linked data point of view. However we describe here a recommended way of doing it, giving each feature its own stable URI and extending the API to make it more discoverable.  </p>
@@ -1215,6 +1247,21 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
+          <div style="background-color:yellow">
+            <ul>
+              <li>what is the unit of governance? dataset or individual entities? … it’s ok to publish a data dump so long as it is indexable (etc.)</li>
+              <li>from data-dump (bulk-download) to pub/sub data-streams (e.g. MQTT, AMQP) to rich APIs
+                <ul>
+                  <li>it’s not necessarily the data owner that provides the rich APIs; e.g. a government agency could provide a bulk-download (or generalised query interface; e.g. SPARQL end-point or WFS) upon which commercial organisations provide value-added services including rich APIs … ecosystem of data and service providers; you don’t need to do it all yourself</li>
+                </ul>
+              </li>
+              <li>exposure of parts of large information resources; subsetting coverages, paging responses (see <a href="http://www.w3.org/TR/ldp-paging/">W3C Linked Data Platform Paging 1.0</a> and <a href="https://www.w3.org/community/hydra/wiki/Pagination">Hydra pagination</a>, <a href="http://www.w3.org/TR/vocab-data-cube/#cubes-slices">RDF Data Cube Slices</a> etc.)
+                <ul>
+                  <li>¿should we provide a discussion on scaleability - when working with large datasets</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div class="practice">
@@ -1232,7 +1279,13 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Possible Approach to Implementation</p>
             <p>...</p>
             <aside class="example">
-              <p>example(s) to be added</p>
+              <p>example(s) to be added; including ...</p>
+              <ul>
+                <li>event based API for traffic information; tell me when speed threshold is exceeded (e.g. traffic is too slow)</li>
+                <li>wrap WFS in RESTful API (<a href="https://swaggerhub.com/api/pdok/arcgis-services-Cultuurhist_Archeologie-ArcheologischeBeleidskaart-MapServer/1.0">Cultural Archeology from NL Cadastre</a>)</li>
+                <li><a href="http://ogc-iot.github.io/ogc-iot-api/index.html">OGC Sensor Things API</a></li>
+                <li>'triple pattern fragments' from <a href="http://linkeddatafragments.org">Linked Data Fragments</a></li>
+              </ul>
             </aside>
           </section>
           <section class="test">
@@ -1243,6 +1296,11 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
+          <div style="background-color:yellow">
+            <ul>
+              <li>incorporates use of RESTful web service pattern (see <a href="http://w3c.github.io/dwbp/bp.html#DesigningAPIs">DWBP BP 20 Follow REST principles when designing APIs</a> and ‘API design guidelines’ [ref?]); encapsulation of complexity; … </li>
+            </ul>
+          </div>
         </div>
 
         <div class="practice">
@@ -1271,6 +1329,11 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
+          <div style="background-color:yellow">
+            <ul>
+              <li>incorporates binding the service endpoint to the data(set) it exposes; describing the APIs operations and parameters; binding parameters to domains (e.g. spatial extent, controlled vocabulary) to enable meaningful queries to be made; what kind of format / payload the API offers; API versioning (see <a href="http://w3c.github.io/dwbp/bp.html#VersionsForAPI">DWBP BP 23 Maintain separate versions for a data API</a>)</li>
+            </ul>
+          </div>
         </div>
 
         <div class="practice">
@@ -1337,6 +1400,11 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
       <section id="bp-large-datasets">
         <h3>Dealing with large datasets</h3>
         <p>describing large datasets (more specifically: this is mostly about coverages) in order to get space/time subsets of that dataset. Identifiers for the resource should be separate from the URL of the service-end point(s) that can be used to access that resource ... we need a "protocol independent" way to identify [coverage] dataset subsets.</p>
+
+        <div style="background-color:yellow">
+          <p>keep this as a top-level subject area, but link back to BPs in other sections</p>
+          <p>… should we discuss scaleability issues?</p>
+        </div>
       </section>
 
       <!-- end best practices -->
@@ -1345,12 +1413,93 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
     <section id="conclusions">
       <h2>Conclusions</h2>
     </section>
-      
-    <section id="glossary">
-      <h2>Glossary</h2>
+
+    <section class="appendix" id="applicability-formatVbp">
+      <h2>Applicability of common formats to implementation of Best Practices</h2>
+      <table id="x-ref_formatVbp">
+        <caption>An attempt at matrix of the common formats (GeoJSON, GML, RDF, JSON-LD) and what you can or can't achieve with it. (<span style="background-color:yellow">source: @eparsons</span>)</caption>
+        <tr>
+          <th>Format</th>
+          <th>Openness</th>
+          <th>Binary/text</th>
+          <th>Usage</th>
+          <th>Discoverability</th>
+          <th>Granular links</th>
+          <th>CRS Support</th>
+          <th>Verbosity</th>
+          <th>Semantics vocbab?</th>
+          <th>Streamable</th>
+          <th>3D Support</th>
+        </tr>
+        <tr>
+          <td><a href="https://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">ESRI Shape</td>
+          <td>Open'ish</td>
+          <td>Binary</td>
+          <td>Geometry only attributes and metadata in linked DB files</td>
+          <td>Poor</td>
+          <td>In Theory?</td>
+          <td>Yes</td>
+          <td>Lightweight</td>
+          <td>No</td>
+          <td>No</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><a href="http://geojson.org/geojson-spec.html">GeoJSON</a></td>
+          <td>Open</td>
+          <td>Text</td>
+          <td>Geometry and attributes inline array</td>
+          <td>Good ?</td>
+          <td>In Theory?</td>
+          <td>No</td>
+          <td>Lightweight</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><a href="http://www.autodesk.com/techpubs/autocad/acadr14/dxf/ascii_dxf_file_format_al_u05_b.htm">DXF</a></td>
+          <td>Proprietary</td>
+          <td>Binary</td>
+          <td>Geometry only attributes and metadata in linked DB files</td>
+          <td>Poor</td>
+          <td>Poor</td>
+          <td>No</td>
+          <td>Lightweight</td>
+          <td>No</td>
+          <td>No</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><a href="http://www.opengeospatial.org/standards/gml">GML</a></td>
+          <td>Open</td>
+          <td>Text</td>
+          <td>Geometry and attributes inline or xlinked</td>
+          <td>Good ?</td>
+          <td>In Theory ?</td>
+          <td>Yes</td>
+          <td>Verbose</td>
+          <td>No</td>
+          <td>No</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><a href="http://www.opengeospatial.org/standards/kml">KML</a></td>
+          <td>Open</td>
+          <td>Text</td>
+          <td>Geometry and attributes inline or xlinked</td>
+          <td>Good ?</td>
+          <td>In Theory ?</td>
+          <td>No</td>
+          <td>Lightweight</td>
+          <td>No</td>
+          <td>Yes?</td>
+          <td>Yes</td>
+        </tr>
+      </table>
     </section>
     
-    <section id="requirements">
+    <section class="appendix" id="requirements">
       <h2>Cross reference of use case requirements against best practices</h2>
       <p class="issue" data-number="51">TO DO: cross reference the Best Practices to determine if any do not have an associated Requirement</p>
       <table id="x-ref_ucrVbp">
@@ -1668,90 +1817,10 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         </tbody>
       </table>
     </section>
-
-    <section class="appendix" id="applicability-formatVbp">
-      <h2>Applicability of common formats to implementation of Best Practices</h2>
-      <table id="x-ref_formatVbp">
-        <caption>An attempt at matrix of the common formats (GeoJSON, GML, RDF, JSON-LD) and what you can or can't achieve with it. (<span style="background-color:yellow">source: @eparsons</span>)</caption>
-        <tr>
-          <th>Format</th>
-          <th>Openness</th>
-          <th>Binary/text</th>
-          <th>Usage</th>
-          <th>Discoverability</th>
-          <th>Granular links</th>
-          <th>CRS Support</th>
-          <th>Verbosity</th>
-          <th>Semantics vocbab?</th>
-          <th>Streamable</th>
-          <th>3D Support</th>
-        </tr>
-        <tr>
-          <td><a href="https://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">ESRI Shape</td>
-          <td>Open'ish</td>
-          <td>Binary</td>
-          <td>Geometry only attributes and metadata in linked DB files</td>
-          <td>Poor</td>
-          <td>In Theory?</td>
-          <td>Yes</td>
-          <td>Lightweight</td>
-          <td>No</td>
-          <td>No</td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td><a href="http://geojson.org/geojson-spec.html">GeoJSON</a></td>
-          <td>Open</td>
-          <td>Text</td>
-          <td>Geometry and attributes inline array</td>
-          <td>Good ?</td>
-          <td>In Theory?</td>
-          <td>No</td>
-          <td>Lightweight</td>
-          <td>No</td>
-          <td>No</td>
-          <td>No</td>
-        </tr>
-        <tr>
-          <td><a href="http://www.autodesk.com/techpubs/autocad/acadr14/dxf/ascii_dxf_file_format_al_u05_b.htm">DXF</a></td>
-          <td>Proprietary</td>
-          <td>Binary</td>
-          <td>Geometry only attributes and metadata in linked DB files</td>
-          <td>Poor</td>
-          <td>Poor</td>
-          <td>No</td>
-          <td>Lightweight</td>
-          <td>No</td>
-          <td>No</td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td><a href="http://www.opengeospatial.org/standards/gml">GML</a></td>
-          <td>Open</td>
-          <td>Text</td>
-          <td>Geometry and attributes inline or xlinked</td>
-          <td>Good ?</td>
-          <td>In Theory ?</td>
-          <td>Yes</td>
-          <td>Verbose</td>
-          <td>No</td>
-          <td>No</td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td><a href="http://www.opengeospatial.org/standards/kml">KML</a></td>
-          <td>Open</td>
-          <td>Text</td>
-          <td>Geometry and attributes inline or xlinked</td>
-          <td>Good ?</td>
-          <td>In Theory ?</td>
-          <td>No</td>
-          <td>Lightweight</td>
-          <td>No</td>
-          <td>Yes?</td>
-          <td>Yes</td>
-        </tr>
-      </table>
+      
+    <section class="appendix" id="glossary">
+      <h2>Glossary</h2>
+      <p><dfn>SpatialThing</dfn>: Anything with spatial extent, i.e. size, shape, or position. e.g. people, places, bowling balls, as well as abstract areas like cubes (<span style="background-color:yellow">ref. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary (geo)</a></span>)</p>
     </section>
     
     <section class="appendix" id="acknowledgements">
