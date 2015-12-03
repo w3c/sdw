@@ -287,8 +287,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
           <ul style="background-color:yellow">
-            <li>… better still, use durable HTTP URIs … ref DWBP BP 10 Use persistent</li>
-            <li>URIs as identifiers of datasets for guidance on how to structure good URIs
+            <li>… better still, use durable HTTP URIs … ref DWBP BP 10 Use persistent URIs as identifiers of datasets for guidance on how to structure good URIs
               <ul><li>datasets need to be identified</li></ul></li>
             <li>… don’t use service endpoint URLs (technology / implementation / API version dependent)</li>
             <li>… discussion on geometry vs. Features vs. Real World Things; attribute vs.
@@ -307,6 +306,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               world thing the feature describes. Local names are not typically URIs. We know we want to use URIs as identifiers. So we might take the dataset URI -
               which identifies a silo ... think of a different dataset, this one about shipwrecks near lighthouses. But problem is mapping the local IDs, we want to 
               be able to express the linkages within the dataset</li>
+            <li>avoid using the URL of a service endpoint through which the dataset may be accessed; API URLs are often not durable (they contain version numbers and are prone to change) … also note that a dataset may be published from multiple endpoints etc.</li>
           </ul>
         </div>
         
@@ -1213,7 +1213,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>...</p>
-            <p style="background-color:yellow">ref. <a href="auth-id-sources" class="sectionRef"></a></p>
+            <p style="background-color:yellow">ref. <a href="#auth-id-sources" class="sectionRef"></a></p>
             <aside class="example">
               <p>example(s) to be added</p>
             </aside>
@@ -1257,17 +1257,17 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
-        </div>
-        <div style="background-color:yellow">
-          <ul>
-            <li>resolving non-unique names for the same (or similar) entity … non-unique naming … linking related resources
-              <ul>
-                <li>the perils of <code>owl:sameAs</code> [<em>further discussion required?</em> …]</li>
-                <li>reconciliation of identifiers is tricky as it requires ‘semantic discrimination’ … “there be dragons” … “sameness” is in the eye of the beholder; it will mean different things to different people depending on context … mechanics of how to decide when two resources are the same are beyond the scope of this best practice … tools are emerging to help with such activities (e.g. <a href="http://openrefine.org">OpenRefine</a> and <a href="http://silk-framework.com">Silk Linked Data Integration Framework</a>)</li>
-                <li>data from different sources about the same physical or conceptual thing may provide different view points, e.g. provide extra information that can be merged into a single graph of information about the thing … such merging of data requires an understanding of the semantics involved and is beyond the scope of this best practice</li>
-              </ul>
-            </li>
-          </ul>
+          <div style="background-color:yellow">
+            <ul>
+              <li>resolving non-unique names for the same (or similar) entity … non-unique naming … linking related resources
+                <ul>
+                  <li>the perils of <code>owl:sameAs</code> [<em>further discussion required?</em> …]</li>
+                  <li>reconciliation of identifiers is tricky as it requires ‘semantic discrimination’ … “there be dragons” … “sameness” is in the eye of the beholder; it will mean different things to different people depending on context … mechanics of how to decide when two resources are the same are beyond the scope of this best practice … tools are emerging to help with such activities (e.g. <a href="http://openrefine.org">OpenRefine</a> and <a href="http://silk-framework.com">Silk Linked Data Integration Framework</a>)</li>
+                  <li>data from different sources about the same physical or conceptual thing may provide different view points, e.g. provide extra information that can be merged into a single graph of information about the thing … such merging of data requires an understanding of the semantics involved and is beyond the scope of this best practice</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
       
@@ -1440,6 +1440,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         <div style="background-color:yellow">
           <p>scope: API covers both the (query) <em>interface</em> used and the <em>content</em> exposed by the given endpoint</p>
           <p>… 4 categories: question/answer, event based, pub/sub, transactional </p>
+          <p>“pointy” APIs (with wide adoption; e.g. focused on simple point-based data) vs. specialist “expert” APIs … spatial data needs be simple to incorporate within a web environment … (or is it the APIs that need to be simple?)</p>
         </div>
 
         <p>using an API that supports content negotiation when necessary.</p>
@@ -1477,11 +1478,15 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <div style="background-color:yellow">
             <ul>
               <li>what is the unit of governance? dataset or individual entities? … it’s ok to publish a data dump so long as it is indexable (etc.)</li>
-              <li>from data-dump (bulk-download) to pub/sub data-streams (e.g. MQTT, AMQP) to rich APIs
+              <li>granular publication - data providers need to be free to publish content at the level that they can manage to maintain … a data-dump provided via HTTP GET is the simplest form of data access service</li>
+              <li>from data-dump (bulk-download) to pub/sub data-streams (e.g. MQTT, AMQP) to generalised query interfaces to rich APIs
                 <ul>
-                  <li>it’s not necessarily the data owner that provides the rich APIs; e.g. a government agency could provide a bulk-download (or generalised query interface; e.g. SPARQL end-point or WFS) upon which commercial organisations provide value-added services including rich APIs … ecosystem of data and service providers; you don’t need to do it all yourself</li>
+                  <li>offering a data-dump of the entire dataset (aka ‘bulk download’) is not really “data on the web”; users need to download the data and work with it locally</li>
+                  <li>offering a generalised query interface, such as a SPARQL endpoint, requires the user to understand the entire data model in order to make meaningful queries ... which is not particularly helpful either!</li>
                 </ul>
               </li>
+              <li>data publishers, or third parties, may choose to add further value added APIs based on the underpinning granular level of access (e.g. an EO scene may originally be published as an atomic unit; additional subsetting or aggregation APIs may be provided if desired / warranted)</li>
+              <li>it’s not necessarily the data owner that provides the rich APIs; e.g. a government agency could provide a bulk-download (or generalised query interface; e.g. SPARQL end-point or WFS) upon which commercial organisations provide value-added services including rich APIs … ecosystem of data and service providers; you don’t need to do it all yourself</li>
               <li>exposure of parts of large information resources; subsetting coverages (maybe using a well-known pattern such as <a href="http://www.opengeospatial.org/standards/opensearchgeo">OpenSearch Geo and Temporal extensions</a>), paging responses (see <a href="http://www.w3.org/TR/ldp-paging/">W3C Linked Data Platform Paging 1.0</a> and <a href="https://www.w3.org/community/hydra/wiki/Pagination">Hydra pagination</a>, <a href="http://www.w3.org/TR/vocab-data-cube/#cubes-slices">RDF Data Cube Slices</a> etc.)
                 <ul>
                   <li>¿should we provide a discussion on scaleability - when working with large datasets</li>
@@ -1510,9 +1515,18 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p>example(s) to be added; including ...</p>
               <ul>
                 <li>event based API for traffic information; tell me when speed threshold is exceeded (e.g. traffic is too slow)</li>
-                <li>wrap WFS in RESTful API (<a href="https://swaggerhub.com/api/pdok/arcgis-services-Cultuurhist_Archeologie-ArcheologischeBeleidskaart-MapServer/1.0">Cultural Archeology from NL Cadastre</a>)</li>
+                <li>wrap WFS in RESTful API and provide GML content as Linked Data (<a href="https://swaggerhub.com/api/pdok/arcgis-services-Cultuurhist_Archeologie-ArcheologischeBeleidskaart-MapServer/1.0">Cultural Archeology from NL Cadastre</a> and planned example from @bartvanleeuwen)
+                  <ul style="background-color:yellow">
+                    <li>@timbl’s concept of a ‘shim’ layer</li>
+                    <li>@danbri: “this is similar to the use of Z39.50 in the library community; that protocol is still used but ‘modern’ websites / web services are wrapped around it”</li>
+                    <li>@eparsons: “adding URIs [in (GML) data exposed by a WFS] is pretty straightforward, but making it ‘webby’ is harder”</li>
+                    <li>rather than adapting the WFS (GML) output, it may be more effective to provide an alternative ‘Linked Data friendly’ access path to the data source; creating a new, complementary service endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using something like <a href="http://www.melodiesproject.eu/content/ontop-spatial">ontop-spatial</a>) and Linked Data API</li>
+                  </ul>
+                </li>
                 <li><a href="http://ogc-iot.github.io/ogc-iot-api/index.html">OGC Sensor Things API</a></li>
                 <li>'triple pattern fragments' from <a href="http://linkeddatafragments.org">Linked Data Fragments</a></li>
+                <li><a href="http://environment.data.gov.uk/bwq/">Environment Agency Bathing Water Quality API</a> (implemented using the Epimorphic’s <a href="https://github.com/epimorphics/elda">ELDA implementation</a> of the <a href="https://github.com/UKGovLD/linked-data-api/blob/wiki/Specification.md">Linked Data API</a>; enables configured queries against (general) SPARQL endpoints to be exposed as RESTful web services)</li>
+                <li>OGC Web Processing Service (WPS) … encapsulate complexity … [there is significant evidence that complex services like OGC WCS will only ever be exposed in operational environments via a WPS proxy]</li>
               </ul>
             </aside>
           </section>
@@ -1526,7 +1540,23 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           </section>
           <div style="background-color:yellow">
             <ul>
+              <li><strong>convenience APIs</strong> are tailored to meet a specific goal - which makes them (arguably) simpler to use
+                <ul>
+                  <li>the API should allow a user to engage with arbitrarily complex data structures using (a set of) simple queries … the user does not need to understand those complex semantics before using the API (as is necessary when working with a generalised query service such as a SPARQL endpoint)</li>
+                  <li>the API should be targeted to deliver a coherent set of functions; focused on helping a particular user role fulfil common tasks; light-weight … i.e. be simple for users in that role to get done what they need to do! ... groups of API operations can be chained together (like unix pipes) to fulfil complex functions</li>
+                  <li>the API should encapsulate complexity (e.g. hide unnecessary complexity from the user)</li>
+                  <li>the convenience API = “here’s a bunch of stuff that you will find useful for a given purpose [and here’s the machine-readable API description]"</li>
+                </ul>
+              </li>
               <li>incorporates use of RESTful web service pattern (see <a href="http://w3c.github.io/dwbp/bp.html#DesigningAPIs">DWBP BP 20 Follow REST principles when designing APIs</a> and ‘API design guidelines’ [ref?]); encapsulation of complexity; … </li>
+              <li><em>some</em> API design guidelines
+                <ul>
+                  <li><strong>state</strong> e.g. sessionID, API key … request header (see OAuth2) … (but request headers are difficult to access from a user-agent so these parameters may also need to be URL encoded)</li>
+                  <li><strong>content</strong> e.g. data being retrieved or stored … request body … use Content Negotiation and Accept headers to request different formats/encodings</li>
+                  <li><strong>locators</strong> e.g. identifiers … URL path</li>
+                  <li><strong>filters</strong> e.g. sorting … query parameters</li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -1559,7 +1589,18 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           </section>
           <div style="background-color:yellow">
             <ul>
+              <li>how the API works … ideally providing a machine-readable description (such as HAL: ‘JSON Hypertext Application Language’, see <a href="https://tools.ietf.org/html/draft-kelly-json-hal-07">IETF draft</a>) … [also note that with HAL, generation of the documentation is coupled to the _code_ for the API so that the API docs never get out of date]</li>
+              <li>indicating what data is <em>actually</em> available … i.e. bounding the values used for the API parameters (e.g. using a value range or controlled vocabulary) so that one can only request data that <em>actually</em> exists</li>
+              <li>APIs should be versioned - example: <a href="http://wiki.openstreetmap.org/wiki/API">OpenStreetMap API</a> … see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#VersionsForAPI">Best Practice 23 Maintain separate versions for a data API</a></li>
+              <li>OGC ‘capabilities documents’ provide an example of this behaviour</li>
+              <li>predictably structured datasets that are available through services can be described as a <a href="http://www.w3.org/TR/vocab-data-cube/#data-cubes">Data Cube</a> with Dimensions of “what, where, when” … each Dimension of the Data Cube is bound to a parameter in the API method … furthermore, the “where” Dimension of a Data Cube, if specified as a <code>qb:CodedProperty</code>, may bound to a set of SpatialThings (e.g. using the property <code>qb:codeList</code>) such that the URI Set provides a ‘controlled vocabulary’ of locations that for which ‘observations’ (data points) in the Data Cube are available (e.g. air quality data is available at these locations) [<em>needs further elaboration; see <a href="http://www.w3.org/2015/spatial/track/actions/89">ACTION-89</a></em>]</li>
               <li>incorporates binding the service endpoint to the data(set) it exposes; describing the APIs operations and parameters; binding parameters to domains (e.g. spatial extent, controlled vocabulary) to enable meaningful queries to be made; what kind of format / payload the API offers; API versioning (see <a href="http://w3c.github.io/dwbp/bp.html#VersionsForAPI">DWBP BP 23 Maintain separate versions for a data API</a>)</li>
+              <li>possible approach (ref. GNON/SIRF):
+                <ol>
+                  <li>describe the content exposed by a service endpoint as a <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a>; use the <code>void:TechnicalFeature</code> to describe the service</li>
+                  <li>each API parameter may be bound to a given <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a> (or subset) to provide a set of values/terms/entities for that parameter that provide meaningful queries (e.g. a controlled vocabulary) … use [[RFC6570]] URI Templates to bind parameters into RESTful API URLs … a ‘short-form’ of the identifier may be required for usage in the API; this may be defined as a SKOS notation</li>
+                </ol>
+              </li>
             </ul>
           </div>
         </div>
@@ -1590,6 +1631,12 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
+          <div style="background-color:yellow">
+            <ul>
+              <li>the queries offered by the API should be packaged as a discoverable, self-describing resource</li>
+              <li>for example, how do I package a coordinate transformation API for simple re-use?</li>
+            </ul>
+          </div>
         </div>
 
         <div class="practice">
