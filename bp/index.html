@@ -429,6 +429,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>...</p>
+            <p style="background-color:yellow">mint a new identifier for the subset &amp; record the provenance … use a <a href="http://www.w3.org/TR/prov-o/">PROV-O</a> description to describe source dataset, the endpoint from which the subset was extracted</p>
             <aside class="example">
               <p>example(s) to be added</p>
             </aside>
@@ -574,7 +575,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
                   <li>vector geometry (ref: <a href="http://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry">R-EncodingForVectorGeometry</a>)</li>
                   <li>non-geospatial example e.g. microscopy (ref: <a href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems">R-IndependenceOnReferenceSystems</a>)</li>
                   <li>encoding information in different ways; e.g. height … above mean sea level, or floor 5 of <a href="http://dbpedia.org/resource/The_Shard">The Shard</a></li>
-                  <li>* provision of multiple geometries for a single feature; e.g. a single reference point (for “pin on map”), a bounding box (for search), a simple geometry (for coarse spatial analysis), a detailed geometry (for resolving cadastral boundary disputes) etc.</li>
+                  <li>provision of multiple geometries for a single feature; e.g. a single reference point (for “pin on map”), a bounding box (for search), a simple geometry (for coarse spatial analysis), a detailed geometry (for resolving cadastral boundary disputes) etc.</li>
                 </ul>
               </aside>
             </section>
@@ -598,8 +599,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
                   need to download the data and work with it offline e.g. netCDF [?]</li>
                 <li>ref: “Appendix: applicability of common formats and vocabularies to implementation of Best Practices”</li>
                 <li>ref: “NOTE: Comparison of geospatial vocabularies”</li>
-                <li>CLARIFICATION required: R5.47 ‘time dependencies in CRS</li>
-                <li>definitions’ … is this feasible for main-stream usage in a BP?</li>
+                <li>CLARIFICATION required: R5.47 ‘time dependencies in CRS definitions’ … is this feasible for main-stream usage in a BP?</li>
               </ul>
             </div>
             <div style="background-color:yellow">
@@ -773,6 +773,15 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         
         <section id="bp-geo-voc">
           <h4>Publishing data with clear semantics</h4>
+
+          <p>In most cases, the effective use of information resources requires understanding thematic concepts in addition to the spatial ones; “spatial” is just a facet of the broader information space. For example, when the Dutch Fireservice [<span style="background-color:yellow">ref?</span>] responded to an incident at a day care centre, they needed to evacuate the children. In this case, the <em>2nd</em> closest alternative day care centre was preferred because it was operated by the same organization as the one that was subject of the incident.</p>
+
+          <p>This best practice document provides mechanisms for determining how places and locations are related - but determining the compatibility or validity of thematic data elements is beyond our scope; we’re not attempting to resolve the problem of ‘different views on the same/similar resources’</p>
+
+          <div class="note">
+            <p><em>Thematic</em> semantics are out of scope for this best practice document. For associated best practices, please refer to [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#metadata">Metadata</a>, <a href="http://w3c.github.io/dwbp/bp.html#StructuralMetadata">Best Practice 4 Provide structural metadata</a>; and [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#metadata">Vocabularies</a>, <a href="http://w3c.github.io/dwbp/bp.html#MetadataStandardized">Best Practice 15 Use standardised terms</a>, <a href="http://w3c.github.io/dwbp/bp.html#ReuseVocabularies">Best Practice 16 RE-use vocabularies</a> and <a href="http://w3c.github.io/dwbp/bp.html#ChoseRightFormalizationLevel">Best Practice 17 Choose the right formalisation level.</p>
+            <p>See also [[LD-BP]] <a href="http://www.w3.org/TR/ld-bp/#VOCABULARIES">Vocabularies</a>.</p>
+          </div>
           
           <div class="practice">
             <p><span id="semantic-thing" class="practicelab">Use spatial semantics for spatial Things</span></p>
@@ -837,6 +846,33 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p style="background-color:yellow">spatial relationship types like geograhpical, topological and social hierarchy (partOf), will be described here and be entered eventually as link relationship types into IANA registry. </p>
             <p style="background-color:yellow">Examples of spatial semantics are relationship types like nearby, contains, etc. This best practice will list the geometric, topological and social spatial relationships. </p>
             <p class="issue" data-number="34">Which vocabularies out there have social spatial relationships? FOAF, GeoNames, ... </p>
+            <div style="background-color:yellow">
+              <ul>
+                <li>describing the (spatial / topological) relationships <em>between</em> physical and conceptual resources
+                  <ul>
+                    <li>these relationships will often by published in a gazetteer</li>
+                  </ul>
+                </li>
+                <li>it is often better to rely on relationships asserted between SpatialThings rather than rely on, say, analysis of geometries … collocation may contribute to the assertion of a relationship between two Things (perhaps even ‘sameness’) but it is also necessary to look at context (semantics) … the determining which relationships are appropriate for a given case is beyond the scope of this BP … we list those relationships that may be applied</li>
+                <li>hierarchical relationships … @billroberts notes specific need for “Mutually Exclusive Collectively Exhaustive” (MECE) set</li>
+                <li>topological relationships … including over, under etc.</li>
+                <li>spatial relationships … Regional Connection Calculus [RCC8] … contains, overlaps, touches, intersects, adjacent to etc. … "<a href="https://en.wikipedia.org/wiki/DE-9IM#Spatial_predicates">spatial predicates</a>" … also similar concepts for time; Allen Calculus</li>
+                <li>social relationships … based on perception; e.g. “samePlaceAs”, nearby, south of … also for time: after, around etc.
+                  <ul>
+                    <li><code>samePlaceAs</code> &lt; recommended practice - there is no practice in the wild to refer to … [should this also include the temporal aspect; e.g. Renaissance Italy? … “place” with both temporal and location context]</li>
+                  </ul>
+                </li>
+                <li>@phila: register these (stable) relationships with IANA; <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link relations</a> … [begin process following FPWD]</li>
+                <li>these relationships likely provide useful information for digital personal assistants (e.g. Siri, Cortana); @DDahl introduces <a href="http://www.w3.org/TR/emma/">W3C EMMA 2.0</a>; devices provide location and time-stamp data … relating this to other spatial data enables the digital personal assistant to make helpful suggestions or infer useful information  … “address” and “description” attributes added to extent data model of GeoLocation API
+                  <ul>
+                    <li>example: determining whether ‘this’ device interaction was `within` a car, rather than the device being carried by a pedestrian, may result in different outcomes or suggestions</li>
+                    <li>example: determining whether an event for a traveller took place after the journey started and before it ended … we can infer the event was on-route</li>
+                    <li>example: ‘near’ is contextual - it depends if you’re walking or driving</li>
+                    <li>example: capturing social information; “I’m on my way to work” rather than “I’m here” … where work is a SpatialThing with indistinct boundaries</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
         
@@ -849,6 +885,12 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         
         <section id="bp-expr-sensor">
           <h4>Sensor and observation data</h4>
+          <div style="background-color:yellow">
+            <p>incorporate practice from both O&amp;M and SSN</p>
+            <p>see also <a href="http://www.w3.org/TR/generic-sensor/">W3C Generic Sensor API</a> - <em>is this relevant to SDW?</em></p>
+            <p>see also <a href="http://ogc-iot.github.io/ogc-iot-api/index.html">OGC Sensor Things API</a></p>
+          </div>
+
           <div class="practice">
             <p><span id="provide-context" class="practicelab">Provide context required to interpret observation data values</span></p>
             <p class="practicedesc">... best practice description ...</p>
@@ -875,6 +917,11 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
+            <div style="background-color:yellow">
+              <ul>
+                <li>observation / sensor data context includes: location, time, observed property, sensor, quality …</li>
+              </ul>
+            </div>
           </div>
         
           <div class="practice">
@@ -883,6 +930,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <section class="axioms">
               <p class="subhead">Why</p>
               <p>...</p>
+              <p style="background-color:yellow">Processing workflows are often employed to raw observation data into more useable forms. For example, satellite data often undergoes multiple processing steps (e.g. pixel classification, georeferencing) to create usable EO products. It is important to understand the provenance of the data and how it has been modified in order to determine whether the resulting data product can be used for a given purpose.</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
@@ -891,6 +939,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
               <p>...</p>
+              <p style="background-color:yellow">use of <a href="http://www.w3.org/TR/prov-o/">W3C PROV ontology</a> to describe the processing steps</p>
               <aside class="example">
                 <p>example(s) to be added</p>
               </aside>
@@ -919,6 +968,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
               <p>...</p>
+              <p style="background-color:yellow">concepts of ’sampling feature’ from O&amp;M (that is representative of the _subject of interest_; statistical, spatial or proxy) and the more specific concept of “specimen” (which is tested ex-situ)</p>
               <aside class="example">
                 <p>example(s) to be added</p>
               </aside>
@@ -948,7 +998,12 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Possible Approach to Implementation</p>
               <p>...</p>
               <aside class="example">
-                <p>example(s) to be added</p>
+                <p>example(s) to be added; including ...</p>
+                <ul>
+                  <li>#uksnow for snowfall observations (see <a href="http://uksnowmap.com/">#uksnow Map</a>)</li>
+                  <li>earthquake damage reports using address locations</li>
+                  <li>(geocoded) bushfire reports</li>
+                </ul>
               </aside>
             </section>
             <section class="test">
@@ -959,6 +1014,9 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
+            <div style="background-color:yellow">
+              <p>note: some of these social media channels don’t allow use of structured data; how do we parse textual reports to extract, say, location etc.</p>
+            </div>
           </div>
           
           <div class="practice">
@@ -1006,6 +1064,12 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         <p>Using sameAs to establish that two resources are about the same thing. These sameAs statements could be collected into one set and this set could have provenance so that you can see who created the sameAs statements and decide if you'd trust them. </p>
         <p class="note">There's an owl:sameAs as well as schema.org/sameAs. The latter is less strong. </p>
 
+        <div style="background-color:yellow">
+          <ul>
+            <li>in <em>spatial</em> data on the web, links are first class citizens … it is ‘connectedness’ that makes for “Data on the Web” … @eparsons: “this is where the biggest change will come in the GIS world”</li>
+          </ul>
+        </div>
+
         <div class="practice">
           <p><span id="entity-level-links" class="practicelab">Make your entity-level links visible on the web</span></p>
           <p class="practicedesc">... best practice description ...</p>
@@ -1013,6 +1077,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Why</p>
             <p>...</p>
             <p>Exposing entity-level links to web applications, user-agents and web crawlers allows the relationships between resources to be found without the data user needing to download the entire dataset for local analysis.</p>
+            <p style="background-color:yellow">visibility of [entity-level] links allows one to determine (and find) relationships within the information network - finding related information that can be used to provide greater insight … entity level links can be used to combine information from different sources; for example, to determine correlations in statistical data relating to the same location … [benefitting from the “network effect”]</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
@@ -1021,10 +1086,29 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>...</p>
+            <ol>
+              <li>Publish the data itself with the links (to uniquely identified objects) embedded in the data … one “page” per resource [see City of Nanaimo example]</li>
+              <li>Publish summaries of links for the dataset so that these can be evaluated … <a href="http://www.w3.org/TR/void/#describing-linksets">VoID Linksets</a>
+                <ul>
+                  <li>example approach: SIRF / GNON … individual links cached or computed at run-time; accessed via “technical features” of the Linkset</li>
+                  <li>example: life sciences (<a href="http://www.openphacts.org">openphacts</a>)</li>
+                  <li style="background-color:yellow">note: VoID provides guidance on <a href="http://www.w3.org/TR/void/#discovery">how to discover VoID descriptions</a> (including Linksets)- (i) by browsing the VOiD dataset descriptions themselves to find related datasets, (ii) using <code>/.well-known/void</code> (as described in [[RFC5758]]</li>
+                </ul>
+              </li>
+              <li>3rd-party publication of link-sets … (when the publisher owns neither the subject or object resources)
+                <ul>
+                  <li><a href="http://sameas.org">sameas.org</a> provides an example of a (collection of) Link-set(s) maintained by a third party … </li>
+                  <li>also see <a href="https://gbv.github.io/beaconspec/beacon.html">Beacon link dump format</a> … <span style="background-color:yellow">question: what about use of wild cards / regex in URLs (e.g. URI Template [[RFC6570]])</span></li>
+                </ul>
+              </li>
+            </ol>
+            
+            <p class="issue">how would a (user) agent discover that these 3rd-party link-sets existed? search for <code>/.well-known/void</code> on a specified set of domains? is there any practice in the wild that can be referenced?</p>
+
             <aside class="example">
               <p>example(s) to be added; including ...</p>
               <ul>
-                <li>encoding of entity-level links in a number of formats</li>
+                <li>encoding of entity-level links in a number of formats; <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a>, GML (<a href="http://www.w3.org/TR/xlink11/">xlink</a> ... noting <a href="https://lists.w3.org/Archives/Public/public-sdw-wg/2015Oct/0149.html">@clemens point about xlink adoption in GML</a>), <a href="https://gbv.github.io/beaconspec/beacon.html">Beacon link dump format</a> etc.</li>
                 <li>linking to a Thing as it was at a particular time</li>
               </ul>
             </aside>
@@ -1066,6 +1150,12 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
+          <div style="background-color:yellow">
+            <ul>
+              <li>Erik Wilde says: “‘webby data’ is a necessary but not sufficient condition to have hypermedia; hypermedia is not (only) about linking data (i.e., using "web data"), it's also about providing navigational affordances to get things done with that data. this means that the links are about *services* (or whatever you might call this).”</li>
+              <li>how do we know what is at the end of a link - and what can I do with it / can it do for me (e.g. the 'affordances' of the target resource) … is the 'profile' Link Relation relevant here? (see [[RFC6906]])</li>
+            </ul>
+          </div>
         </div>
 
         <div class="practice">
@@ -1084,8 +1174,14 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>...</p>
+            <p style="background-color:yellow">ref. <a href="#semantic-rels">Best Practice 13: Assert known relationships</a> for details of the semantics that different links may use.</p>
             <aside class="example">
-              <p>example(s) to be added</p>
+              <p>example(s) to be added; including ...</p>
+              <ul>
+                <li>@eparsons: link between (social) places - with indistinct boundaries (e.g. 'trafalgar square', a meeting place)</li>
+                <li>link to to SpatialThings with well-defined boundaries</li>
+                <li>how to link to a Thing as it was at a particular time; ref. <a href="#ids-for-changing-things">Best Practice 4: Provide stable identifiers for Things (resources) that change over time</a> ... (point to particular version of target resource; provide date-time context with the assertion?)</li>
+              </ul>
             </aside>
           </section>
           <section class="test">
@@ -1096,6 +1192,11 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
+          <div style="background-color:yellow">
+            <ul>
+              <li>link to the identifier for the Thing itself … recognising that objects that describe those Things (e.g. the geometry of a hydrological catchment) are prone to change as the information is updated … information objects may be versioned - or just replaced … the identifiers for the Thing are <em>durable</em></li>
+            </ul>
+          </div>
         </div>
 
         <div class="practice">
@@ -1112,6 +1213,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>...</p>
+            <p style="background-color:yellow">ref. <a href="auth-id-sources" class="sectionRef"></a></p>
             <aside class="example">
               <p>example(s) to be added</p>
             </aside>
@@ -1132,6 +1234,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <section class="axioms">
             <p class="subhead">Why</p>
             <p>...</p>
+            <p style="background-color:yellow">use links to browse between [information about] related resources</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
@@ -1155,6 +1258,17 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
         </div>
+        <div style="background-color:yellow">
+          <ul>
+            <li>resolving non-unique names for the same (or similar) entity … non-unique naming … linking related resources
+              <ul>
+                <li>the perils of <code>owl:sameAs</code> [<em>further discussion required?</em> …]</li>
+                <li>reconciliation of identifiers is tricky as it requires ‘semantic discrimination’ … “there be dragons” … “sameness” is in the eye of the beholder; it will mean different things to different people depending on context … mechanics of how to decide when two resources are the same are beyond the scope of this best practice … tools are emerging to help with such activities (e.g. <a href="http://openrefine.org">OpenRefine</a> and <a href="http://silk-framework.com">Silk Linked Data Integration Framework</a>)</li>
+                <li>data from different sources about the same physical or conceptual thing may provide different view points, e.g. provide extra information that can be merged into a single graph of information about the thing … such merging of data requires an understanding of the semantics involved and is beyond the scope of this best practice</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </section>
       
       <section id="bp-discovery">
@@ -1169,6 +1283,20 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         <p class="issue" data-number="36">This needs further discussion. Linksets does not seem to be an evidence-based best practice. It might be an emerging practice; CSIRO example. This might go in a shared note with the DWBP. An example of expressing a collection of links from the library community is <a href="https://gbv.github.io/beaconspec/beacon.html">here</a>. An example vocabulary for expressing link sets is <a href="http://www.w3.org/TR/void/#describing-linksets">in VoID</a>.</p>
         <p>Datacubes can have a dimension which is a place name from a gazetteer and this allows the discovery of thematic data about a place.</p>
         <p>Some data is behind a paywall or security because of privacy. Metadata for such datasets should be published in a way that it is crawlable even though the data itself is not within reach of the crawler. There are practices existing for this; the SDWBP will point to them.</p>
+
+        <div style="background-color:yellow">
+          <ul>
+            <li>current practice within SDI is to publish information (metadata records) about datasets within catalogues … these catalogue records are then indexed to help users find the dataset(s) that meets their needs and then signpost them to a service through which they can access the data itself … which may be as simple as providing a mechanism to download the entire dataset for local usage or provide a richer API to request only the requisite parts</li>
+            <li>@eparsons: “it’s time to stop treating data as books” … where we have a catalogue card index for the library that helps you find the book, but not the Things that the books describe</li>
+            <li>this 2-step approach to find desired information, e.g. search catalogue and then search the dataset, is suboptimal - the metadata in the catalogue may be neither accurate nor up to date, you cannot directly find the entities AND you will likely need to formulate a query in a given protocol in order to get data from the service endpoint</li>
+            <li>[[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#metadata">Metadata</a>: <a href="http://w3c.github.io/dwbp/bp.html#DescriptiveMetadata">Best Practice 2 Provide descriptive metadata</a> provides guidance on the information that may be provided at the dataset-level in order to assist discovery of the dataset or the service endpoint(s) from which the data can be accessed; e.g. using a catalogue
+              <ul>
+                <li>reference <a href="https://joinup.ec.europa.eu/node/139283/">GeoDCAT AP</a> that provide extensions to the <a href="http://www.w3.org/TR/vocab-dcat/">DCAT vocabulary</a> for describing spatial data</li>
+                <li>dataset metadata <em>is</em> useful as it corresponds to the unit of governance for the data; e.g. license, ownership, maintenance regime etc. apply to the set and are applicable to each information entity within that set</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
 
         <p class="note">Dataset-level discovery is covered by DWBP <span style="background-color:yellow">[ref?]</span>; <em>spatial</em> data is typically more structured and contains Things that can be discovered individually</p>
 
@@ -1200,7 +1328,9 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           </section>
           <div style="background-color:yellow">
             <ul>
+              <li>entity-level links enable a user to browse to find related information - or algorithmically discover related information through analysis of a graph comprised of multiple links</li>
               <li>incorporates following ‘forward links’ … this is the way the document web works today; browsing by humans</li>
+              <li>collation of links that point to a given resource provides a list of referring objects … the subject resource need not know about the referral … these ‘back links’ can be traversed to find related information - and also help a publisher assess the value of their content by making it possible to see who is using (or referencing) their data</li>
               <li>incorporates aggregation of links to enable referring URLs to be indexed e.g. “what points to me?” … ‘back links’
                 <ul>
                   <li>use ‘frequency of update’ to determine mechanisms for keeping indexes fresh</li>
@@ -1209,6 +1339,12 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               </li>
               <li>¿link from entity to the ‘dataset’ in which it is defined in order to find ‘peer’ entities e.g. RDF Data Cube observation</li>
               <li>¿use of gazetteer to find related information; [CSIRO SIRF]</li>
+              <li>not all links are equal; need to be able to determine which links to ‘trust’ … include metadata in data publications that enable users to make inferences about whether to use the data
+                <ul>
+                  <li>e.g. owner / publisher, quality information, community annotations (“likes”), publication date etc.</li>
+                  <li>dataset-level metadata is often the best way to convey such information for a set of entities or resources</li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -1219,6 +1355,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <section class="axioms">
             <p class="subhead">Why</p>
             <p>...</p>
+            <p>Search engines use links to discover content to index and to prioritise that content within a search result.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
@@ -1229,8 +1366,15 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>...</p>
+            <p>Generate one HTML page per resource. Include structured markup (see <a href="http://schema.org/">schema.org</a>) that the search engines can use to make more detailed assumptions about your resource(s) and drive better search performance. Either create pages a priori or generate them at query time via an API.</p>
+            <p>Provide a path for search engines to find your pages - either crawling to each entity from a ’collection’ object (which provides the entry point for the web crawler) or being directed by <a href="http://www.sitemaps.org/">sitemaps</a>.</p>
+            <p style="background-color:yellow">will Google index KML too? what about GeoJSON?</p>
+            <p style="background-color:yellow">question: what if the data is provided as a record in a dataset or data stream (that is not exposed as an HTML page) … how can you ‘crawl’ that?</p>
             <aside class="example">
-              <p>example(s) to be added</p>
+              <p>example(s) to be added; including ...</p>
+              <ul>
+                <li><a href="http://maps.nanaimo.ca/data/property/">City of Nanaimo, Canada</a> … one page per resource; generated at request time</li>
+              </ul>
             </aside>
           </section>
           <section class="test">
@@ -1243,8 +1387,15 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           </section>
           <div style="background-color:yellow">
             <ul>
+              <li>can we make this assertion: “<strong>data is not really ‘on the web’ until it’s crawlable</strong>”?</li>
               <li>ref <a href="#indexable-by-search-engines">Best Practice 25: Make your entity-level data indexable by search engines</a></li>
               <li>incorporates @eparsons' perspective on evolution of SDIs; one HTML page (plus structured markup) per resource; use of <a href="http://www.sitemaps.org">sitemaps</a></li>
+              <li>need more discussion on how search engines might be used to search … based on identifier, location, time etc. … not just the typical search query, but other services like Google Now that interpret information ... 
+                <ul>
+                  <li>@eparsons: “the more that structured markup is included in web pages [using the recommendations of SDW] the more likely that search engines will [provide mechanisms to exploit that information when searching] … it’s a bit chicken and egg”</li>
+                  <li>@danbri demonstrates that Google can provide search over structured content; example of structured markup (<a href="https://developers.google.com/structured-data/testing-tool/?url=http://travel.cnn.com/tokyo/sleep/hokutosei-sleeper-train-tokyo-sapporo-905418">https://developers.google.com/structured-data/testing-tool/?url=http://travel.cnn.com/tokyo/sleep/hokutosei-sleeper-train-tokyo-sapporo-905418</a>) which has `City` named `Tokyo` … Google Custom Search restricted to pages describing a <code><a href="https://schema.org/City">schema:City</a></code>: <a href="https://cse.google.com/cse/publicurl?cx=013484121852858951051:_k8pkh6pfio">https://cse.google.com/cse/publicurl?cx=013484121852858951051:_k8pkh6pfio</a> [<em>needs further elaboration</em>]</li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -1331,9 +1482,10 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
                   <li>it’s not necessarily the data owner that provides the rich APIs; e.g. a government agency could provide a bulk-download (or generalised query interface; e.g. SPARQL end-point or WFS) upon which commercial organisations provide value-added services including rich APIs … ecosystem of data and service providers; you don’t need to do it all yourself</li>
                 </ul>
               </li>
-              <li>exposure of parts of large information resources; subsetting coverages, paging responses (see <a href="http://www.w3.org/TR/ldp-paging/">W3C Linked Data Platform Paging 1.0</a> and <a href="https://www.w3.org/community/hydra/wiki/Pagination">Hydra pagination</a>, <a href="http://www.w3.org/TR/vocab-data-cube/#cubes-slices">RDF Data Cube Slices</a> etc.)
+              <li>exposure of parts of large information resources; subsetting coverages (maybe using a well-known pattern such as <a href="http://www.opengeospatial.org/standards/opensearchgeo">OpenSearch Geo and Temporal extensions</a>), paging responses (see <a href="http://www.w3.org/TR/ldp-paging/">W3C Linked Data Platform Paging 1.0</a> and <a href="https://www.w3.org/community/hydra/wiki/Pagination">Hydra pagination</a>, <a href="http://www.w3.org/TR/vocab-data-cube/#cubes-slices">RDF Data Cube Slices</a> etc.)
                 <ul>
                   <li>¿should we provide a discussion on scaleability - when working with large datasets</li>
+                  <li>note: @ahaller indicates that "<a href="http://spinrdf.org/">SPIN</a> solves this problem; it is widely adopted" - CLARIFICATION REQUIRED</li>
                 </ul>
               </li>
             </ul>
@@ -1573,6 +1725,20 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <td>Yes</td>
         </tr>
       </table>
+    </section>
+
+    <section class="appendix" id="auth-id-sources">
+      <h2>Authoritative sources of geographic identifiers</h2>
+      <div style="background-color:yellow">
+        <p>list of sources of “good” identifiers” … authoritative URI Sets</p>
+        <ul>
+          <li>geonames</li>
+          <li>dbpedia</li>
+          <li>openstreetmap (although the ‘nodes’ and ‘ways’ are geometric constructs rather than SpatialThings themselves)</li>
+          <li>national datasets … use NL as example</li>
+          <li>etc.</li>
+        </ul>
+      </div>
     </section>
     
     <section class="appendix" id="requirements">
