@@ -78,6 +78,11 @@ var respecConfig = {
         title:"The GeoJSON Format Specification",
         authors: ["Howard Butler", "Martin Daly", "Allan Doyle", "Sean Gillies", "Tim Schaub", "Christopher Schmidt"],
         date: "16 June 2008"
+       },
+       "UCR":{
+        href:"http://www.w3.org/TR/sdw-ucr/",
+        title:"Spatial Data on the Web Use Cases & Requirements",
+        authors: ["Frans Knibbe", "Alejandro Llaves"]
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
