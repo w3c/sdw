@@ -132,8 +132,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
 
         <section id="intro-general">
         <h3>General introduction</h3>
-          <p>To quote the [[DWBP]], there is a growing interest in publishing and consuming data on the Web. Very often the common factor across multiple datasets is the location data. Spatial data, or data related to a specific location, is what this Best Practice document is all about. </p>
-          <p class="issue" data-number="82">The intro should make clear that this document provides best practices for coverage data too.</p>
+          <p>To quote the [[DWBP]], there is a growing interest in publishing and consuming data on the Web. Very often the common factor across multiple datasets is the location data. Spatial data, or data related to a location, is what this Best Practice document is all about. </p>
           <p>It's not that there is a lack of geospatial data on the Web, but the data that has been published is difficult to find and often problematic to access for non-specialist users. The key problems we are try to solve in this document are discoverability and accessibility, and our overarching goal is to bring publishing geospatial data into the web mainstream as a mechanism for solving these twin problems.</p>
           <p>There's already a lot of spatial data on the Web. The maps, satellite and street level images offered by search engines are familiar and there are many more nice examples of spatial data being used in Web applications. </p>
           <aside class="example"><a href="http://sfpark.org/">SFpark</a> is a Web site where users can look at a map of San Francisco to see where parking is available and at what price. Parking prices are incrementally raised or lowered in SFpark pilot areas based on demand. In this application, static data on existing parking spaces is combined with changing data about where people park the most, which is measured by parking sensors. </aside>
@@ -308,6 +307,8 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             <p class="subhead">Why</p>
             <p>In general, re-using identifers for well-known resources is a good idea, because it prevents having an abundance of copies and much doubt regarding the authenticity of the information. Linking your own resources to well-known or authoritative resources also makes relationships between your data and other data, which refers to the same well-known resource, discoverable. The result is a network of related resources using the identifiers for the Things.</p>
             <p>In the case of Spatial Things, a simple way of indicating a location is by referencing an already existing named place resource on the Web. For example, DBPedia and GeoNames are existing datasets with well-known spatial resources, i.e. besides place names and a lot of other information, a set of coordinates is also available for the resources in these datasets. The advantage of referring to these named place resources is that it makes clear that different resources which refer to, for example, http://dbpedia.org/page/Utrecht, are all referring to the same city. If these resources would not use a URI reference but a literal value “Utrecht” this could mean the province Utrecht, the city Utrecht (both places in the Netherlands), the South African town called Utrecht, or maybe something else entirely. </p>
+            <p>See also <a href="#link-to-auth-identifiers">Best Practice 22: Link to resources with well-known or authoritative identifiers</a>.</p>
+            <p class="issue" data-number="100">Some content of this BP may be moved to BP link-to-auth-identifiers.</p>              
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
@@ -336,18 +337,21 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         
         <div class="practice">
           <p><span id="lacking-ids" class="practicelab">Working with data that lacks globally unique identifiers for entity-level resources</span></p>
-          <p class="practicedesc">... best practice description ...</p>
+          <p class="practicedesc">Spatial reconciliation across datasets</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>...</p>
+            <p>There are many mechanisms to reconcile (i.e. map/link) objects from different datasets. When two spatial datasets contain geometries, you can use spatial functions to find out which objects overlap, touch, etc. Based on this spatial correlation you might determine that two datasets are talking about the same places, but this is often not enough. For reasons of efficiency or simply for being able to use these spatial correlations in a context where spatial functions are not available, it is a good idea to express these spatial relationships in your data. There is also danger in relying on spatial correlation alone; you might conclude that two resources represent the same thing when in reality they represent, for example, a shop at ground level and living appartment above it.</p>
+            <p>So, the idea is: if you want to link two spatial datasets, find out if they have corresponding geometries using spatial functions; and express these correspondances as explicit relationships.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>...</p>
+            <p>Links between resources in datasets created from spatial correspondances.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>...</p>
+            <p>In this best practice we only give guidance on spatial reconciliation (e.g. two mentions of Paris are talking about the same place), and are not addressing thematic reconciliation.</p>
+            <p>How to express discovered relationships is discussed in <a href="#semantic-rels">Best Practice 13: Assert known relationships</a>. </p>
+            <p class="issue" data-number="102">This Best Practice needs more content</p>
             <aside class="example">
               <p>example(s) to be added</p>
             </aside>
@@ -358,20 +362,8 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
-          </section>
-          <ul style="background-color:yellow">
-            <li>incorporates assignment of URIs based on scoped identifiers (e.g. Feature IDs from a dataset or local identifiers within tabular data);
-              assignment of URIs to ‘blank nodes’ (plus note on subsequent reconciliation; non-unique naming is inevitable) … SIRF, schema.org etc.</li>
-            <li>… toponyms?</li>
-            <li>should this move to “Exposing data through APIs” section?</li>
-          </ul>
-          <p style="background-color:yellow">There are many mechanisms to reconcile (i.e. map/link) 
-            objects from different datasets. You might determine that two datasets are talking about the same places and then can use spatial correlation,
-            but this is often not enough. There is also danger in doing so (we need to expand on this - what's the danger?). Then there's the question of
-            using sameAs or e.g. skos mapping relations like skos:related etc. The matter of reconciliation between thematic things or properties is one that
-            we will not address. I.e. in this best practice we only give guidance on spatial reconciliation 
-            (e.g. two mentions of Paris are talking about the same place), and are not addressing thematic reconciliation. </p>
+            <p><span>Relevant requirements</span>: <a href="http://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>.</p>
+          </section>  
         </div>
         
         <div class="practice">
@@ -709,22 +701,23 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           
           <div class="practice">
             <p><span id="desc-changing-properties" class="practicelab">How to describe properties that change over time</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">Entities and their data should have versioning with time/location references</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
+              <p>Entities and their properties can change over time and by moving from one location to another location. The properties that are described for an entity should have referencesto the time and location that the data is captured and should retain a version history. This will allow to identify the most recent data and to also follow the changes of the properties.</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>Properties described in a dataset will include a time (and/or location) stamp and also versioning information to allow tracking of the changes and accessing the most up-to-date properties data.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>...</p>
-              <div style="background-color:yellow">
+              <p>In scenarios that entities and their properties can change over time, it is important to specify a clear relationship between a property data and the specification that defines its verioning information. Each property should explain that relationship in the defining specification and/or schema and should provide temporal and/or spatial data in the versioning to indicate when and where the data is captured; </p>
+              <div>
                 <ol>
-                  <li>versioning the information resource and retaining a version history (see <code>version:VersionedThing</code> and <code>version:Version</code> at <a href="https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types">https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types</a></li>
-                  <li>recording the history of changes _within_ the information resource < do people really do this?</li>
+                  <li>Versioning information about entities and their properties and retaining a version history (see <code>version:VersionedThing</code> and <code>version:Version</code> at <a href="https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types">https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types</a></li>
+                  <li>Recording the history of changes within the information resource and defining the links in the specification and/or schema</li>
+                    <li>The entities should be versioned in a way that one can explicitly refer to a particular version or the versioning should enable to infer which geometry is appropriate based on the time</li>
                 </ol>
               </div>
               <aside class="example">
@@ -743,17 +736,15 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
-            <div style="background-color:yellow">
+            <div>
               <ul>
-                <li>(or are valid only at a given time)</li>
-                <li>incorporate information on how often that information might change; frequency of update</li>
-                <li>ISSUE: how to work with data that is such high volume (e.g. sensor data
-                streams) that the data is discarded after a period of time</li>
+                <li>Defining properties that are valid only at a given time</li>
+                <li>Incorporating information on how often that information might change; frequency of update</li>
+                <li>ISSUE: how to work with data that is such high volume (e.g. sensor data streams) that the data is discarded after a period of time</li>
               </ul>
             </div>
             <div style="background-color:yellow">
               <ul>
-                <li>should these resources be versioned so that one can explicitly refer to a particular version? … or just be able to infer which geometry is appropriate based on the time?</li>
                 <li>how much change is allowed before the resources cannot be considered equivalent?</li>
               </ul>
             </div>
@@ -774,18 +765,26 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           
           <div class="practice">
             <p><span id="semantic-thing" class="practicelab">Use spatial semantics for spatial Things</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">The best vocabluary should be chosen to describe the avaiable spatial things.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
+              <p>The spatial things can be described using several available vocabularies. A robust methodology or an informed decision making process should be adapted to choose the best available vocabulary to describe the entities.</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>Entities and their properties to be described using common and reusable vocabularies to increase and improve the interoperability of the descriptions.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>...</p>
+              <p>There are various vocabularies such as <a href=”http://www.geonames.org/”>GeoNames</a> or <a href=”http://www.w3.org/2003/01/geo/”> Basic Geo vocabulary </a> that provide common information about spatial things. This requirments describes when to use which vocabulary. The semantic description of entities and their properties should use the existing common vocabularies in their descriptions to increase the interoperability with other descriptions that may refer to the same vocabularies.  For this it is required to:</p>
+              <div>
+                <ul>
+                  <li>Consider a selection process to decide on the existing and relevant vocabularies that can be used to describe the spatial things and their properties. </li>
+                  <li>Maintain links to the vocabularies in the schema definitions and provide linked-data descriptions.</li>
+                  <li>Define location and spatial references using the common vocabulary concepts whenever applicable instead of defining your own location instance. </li>
+                  <li>Thematic semantics and general descriptions of spatial things and their properties should be provided as linked-data. e.g. predicates should have URIs in which when one looks those up can see what they mean. For more information refer to <a href="http://www.w3.org/TR/dwbp/#StructuralMetadata">DWBP BP #4 Provide structural metadata</a>.</li>
+                </ul>
+              </div>
               <aside class="example">
                 <p>example(s) to be added</p>
                 <p>fire car example</p>
@@ -799,27 +798,36 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
-            <p style="background-color:yellow">There are different vocabularies about spatial things available. This section will have information about when to use which vocabulary. This could be in the form of a durable methodology or an actionable bucket list in some form that helps them choose the best vocabulary for their task. </p>
+            <p>There are different vocabularies that are related to Spatial Things. This vocabluary selection could be in the form of a durable methodology or an actionable selection list to help developers choose the best vocabulary for their task. </p>
             <p class="issue" data-number="38">We might publish in the BP or a complimentary note a set of statements mapping the set of available vocabularies about spatial things. There are mappings available e.g. GeoNames has a mapping with schema.org. <a href="http://www.geonames.org/ontology/mappings_v3.01.rdf">http://www.geonames.org/ontology/mappings_v3.01.rdf</a></p>
-            <p style="background-color:yellow">The Basic Geo vocabulary has a class SpatialThing which has a very broad definition. This is ok for a lot of use cases. </p>
+            <p>The Basic Geo vocabulary has a class SpatialThing which has a very broad definition. This can be applicable (as a generic concept) to most of the common use-cases.</p>
             <p class="issue" data-number="39">For some use cases we might need something more specific.</p>
-            <p style="background-color:yellow">Thematic semantics: This document will give some pointers on how to publish the general semantics of spatial things and their properties in a LD context. E.g. predicates have URIs and you can look those up to see what they mean). Refer to DWBP BP #4 Provide structural metadata. </p>
           </div>
           
           <div class="practice">
             <p><span id="semantic-rels" class="practicelab">Assert known relationships</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">Spatial relationships between Things should be specified in forms of geographical, topological and hierarchical links.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
+              <p>It is often more efficient to rely on relationships asserted between SpatialThings rather than rely on solutions such as analysis of geometries to assert a relationship between two Things. Describing the spatial relationships between SpatialThings can be based on relationships such as topological,  geographical and hierarchical (e.g. partOf) links.</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>This requirement will allow defining explicit spatial relationships between Things specified in forms of geographical, topological and hierarchical links that will not need post geometric processing and inferring to find the spatial links.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>...</p>
+              <p>The asserted spatial semantics can include relationship such as nearby, contains, etc. This best practice requires specifying geometric, topological and social spatial relationships. It is also important to determine which relationships are appropriate for a given case (This is beyond the scope of this BP).  This best practice will require:</p>
+              <div>
+                <ul>
+                  <li>Describing the spatial and/or topological relationships between physical and conceptual resources.</li>
+                  <li>The geographical, topological and social hierarchy (part of) should be described with clear semantics and should be eventually entered as a relationship link into a registry (e.g. IANA).</li>
+                  <li>Hierarchical relationships have a specific need for defining “Mutually Exclusive Collectively Exhaustive” (MECE) set.</li>
+                  <li>Topological relationships that are described for an entity should have references to concepts such as over, under etc.</li>
+                  <li>Spatial relationships can use concepts such as Regional Connection Calculus [RCC8] that contains, overlaps, touches, intersects, adjacent to, or "<a href="https://en.wikipedia.org/wiki/DE-9IM#Spatial_predicates">"spatial predicates"</a> or also other similar concepts from Allen Calculus.</li>
+                  <li>Social relationships can be defined based on perception; e.g. “samePlaceAs”, nearby, south of. These relationships can also be defined based on temporal concepts such as: after, around, etc.</li>
+                </ul>
+              </div>
               <aside class="example">
                 <p>example(s) to be added</p>
               </aside>
@@ -832,27 +840,17 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
-            <p style="background-color:yellow">spatial relationship types like geograhpical, topological and social hierarchy (partOf), will be described here and be entered eventually as link relationship types into IANA registry. </p>
-            <p style="background-color:yellow">Examples of spatial semantics are relationship types like nearby, contains, etc. This best practice will list the geometric, topological and social spatial relationships. </p>
             <p class="issue" data-number="34">Which vocabularies out there have social spatial relationships? FOAF, GeoNames, ... </p>
-            <div style="background-color:yellow">
+            <div>
               <ul>
-                <li>describing the (spatial / topological) relationships <em>between</em> physical and conceptual resources
-                  <ul>
-                    <li>these relationships will often by published in a gazetteer</li>
-                  </ul>
-                </li>
-                <li>it is often better to rely on relationships asserted between SpatialThings rather than rely on, say, analysis of geometries … collocation may contribute to the assertion of a relationship between two Things (perhaps even ‘sameness’) but it is also necessary to look at context (semantics) … the determining which relationships are appropriate for a given case is beyond the scope of this BP … we list those relationships that may be applied</li>
-                <li>hierarchical relationships … @billroberts notes specific need for “Mutually Exclusive Collectively Exhaustive” (MECE) set</li>
-                <li>topological relationships … including over, under etc.</li>
-                <li>spatial relationships … Regional Connection Calculus [RCC8] … contains, overlaps, touches, intersects, adjacent to etc. … "<a href="https://en.wikipedia.org/wiki/DE-9IM#Spatial_predicates">spatial predicates</a>" … also similar concepts for time; Allen Calculus</li>
-                <li>social relationships … based on perception; e.g. “samePlaceAs”, nearby, south of … also for time: after, around etc.
-                  <ul>
-                    <li><code>samePlaceAs</code> &lt; recommended practice - there is no practice in the wild to refer to … [should this also include the temporal aspect; e.g. Renaissance Italy? … “place” with both temporal and location context]</li>
-                  </ul>
-                </li>
-                <li>@phila: register these (stable) relationships with IANA; <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link relations</a> … [begin process following FPWD]</li>
-                <li>these relationships likely provide useful information for digital personal assistants (e.g. Siri, Cortana); @DDahl introduces <a href="http://www.w3.org/TR/emma/">W3C EMMA 2.0</a>; devices provide location and time-stamp data … relating this to other spatial data enables the digital personal assistant to make helpful suggestions or infer useful information  … “address” and “description” attributes added to extent data model of GeoLocation API
+                <li>This best practice requires describing the (spatial/topological) relationships <em>between</em> physical and conceptual resources</li>
+                <li>It is often better to rely on relationships asserted between SpatialThings rather than rely on analysis of geometries.</li> 
+                <li> Collocation may contribute to the assertion of a relationship between two Things (perhaps even ‘sameness’) but it is also necessary to look at context (semantics)</li>
+
+                <li><code>samePlaceAs</code> &lt; recommended practice - there is no practice in the wild to refer to … [should this also include the temporal aspect; e.g. Renaissance Italy? … “place” with both temporal and location context]</li>
+                <li>The (stable) relationships should be registered with IANA; <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link relations</a> … [begin process following FPWD]</li>  
+                <li>These relationships likely provide useful information for digital personal assistants (e.g. Siri, Cortana); refer to <a href="http://www.w3.org/TR/emma/">W3C EMMA 2.0</a>; devices provide location and time-stamp data</li>
+                <li>Relating SpatialThings to other spatial data enables the digital personal assistants to make helpful suggestions or infer useful information  such as “address” and “description” attributes added to extent data model of GeoLocation API
                   <ul>
                     <li>example: determining whether ‘this’ device interaction was `within` a car, rather than the device being carried by a pedestrian, may result in different outcomes or suggestions</li>
                     <li>example: determining whether an event for a traveller took place after the journey started and before it ended … we can infer the event was on-route</li>
@@ -882,18 +880,26 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
 
           <div class="practice">
             <p><span id="provide-context" class="practicelab">Provide context required to interpret observation data values</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">Observation data should be linked to spatial, temporal and thematic information that describe the data.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
+              <p>Processing and interpreting observation and measurement data in many use-cases will require other contextual information including spatial, temporal and thematic information. This information should be specified as explicit semantic data and/or be provided as linked to other resources.</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>The contextual data will specify spatial, temporal and thematic data and other information that can assist to interpret the observation data; this can include information related to quality, observed property, location, time, topic, type, etc.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>...</p>
+              <p>The context required to interpret observation values will require:</p>
+              <div>
+                <ul>
+                  <li> Specify explicit semantics that describe temporal, spatial and thematic information related to and Entity</li>
+                  <li>Provide links to to other related resources that can describe contextual information related to observation data</li>
+                  <li>Specify provenance and other related information to the observation</li>
+                  <li>Information related to the resource that provide the data (and properties of that resource/device; e.g. quality of measurement) can also help to interpret the observation data more effectively. For more information refer to <a href="http://www.w3.org/2005/Incubator/ssn/XGR-ssn-20110628/">SSN Ontology</a><li>
+                </ul>
+              </div>
               <aside class="example">
                 <p>example(s) to be added</p>
               </aside>
@@ -906,28 +912,29 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
-            <div style="background-color:yellow">
-              <ul>
-                <li>observation / sensor data context includes: location, time, observed property, sensor, quality …</li>
-              </ul>
-            </div>
           </div>
-        
+
           <div class="practice">
             <p><span id="describe-process" class="practicelab">Describe sensor data processing workflows</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">Processing steps that are used in collecting and publication of sensor data should be specified as semantic data associated to the sensor observations.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
-              <p style="background-color:yellow">Processing workflows are often employed to raw observation data into more useable forms. For example, satellite data often undergoes multiple processing steps (e.g. pixel classification, georeferencing) to create usable EO products. It is important to understand the provenance of the data and how it has been modified in order to determine whether the resulting data product can be used for a given purpose.</p>
+              <p>Sensor data in several use-cases goes through different pre-processing steps before making the data available to end-users. Providing information about these processes and workflows that are undertaken in collection and preparation of sensor data will allow understanding of how the data is modified and will support to decide whether the data is appropriate for a given application/purpose.</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>Explicit semantic descriptions and/or links to external resources that describe the processing workflows that are used in collection and preparation of the sensor data.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>...</p>
+              <p>Processing workflows are often employed to transform raw observation data into more useable forms. For example, satellite data often undergoes multiple processing steps (e.g. pixel classification, georeferencing) to create usable EO products. It is important to understand the provenance of the data and how it has been modified in order to determine whether the resulting data product can be used for a given purpose. This will require: </p>
+                <div>
+                  <ul>
+                    <li>Providing explicit semantics or links related to provenance data and semantic description of processing workflows that are applied to the raw data. </li>
+                    <li>Describing processing methods and their parameters (for example aggregation methods and their settings and functions that are applied).</li>
+                    <li>Providing links to the original data for each step (if the data is available).</li>
+                  </ul>
+                </div>
               <p style="background-color:yellow">use of <a href="http://www.w3.org/TR/prov-o/">W3C PROV ontology</a> to describe the processing steps</p>
               <aside class="example">
                 <p>example(s) to be added</p>
@@ -942,7 +949,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
           </div>
-          
+        
           <div class="practice">
             <p><span id="relate-obs" class="practicelab">Relate observation data to the real world</span></p>
             <p class="practicedesc">... best practice description ...</p>
@@ -1785,7 +1792,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         
         <p><a href="http://statistics.data.gov.uk/id/statistical-geography/S12000036">http://statistics.data.gov.uk/id/statistical-geography/S12000036</a></p> 
         
-        <p>The Scottisch identifier is directly based on this one, but the Scottish Government wanted the ability to create something dereferenceable, potentially with additional or different info to the data.gov.uk one. These two are owl:sameAs.</p>
+        <p>The Scottish identifier is directly based on this one, but the Scottish Government wanted the ability to create something dereferenceable, potentially with additional or different info to the data.gov.uk one. These two are owl:sameAs.</p>
         
         <p><a href="http://dbpedia.org/resource/Edinburgh"></a></p> 
         <p>DBpedia also includes a resource about Edinburgh. Relationship: "more or less the same as" but probably not the strict semantics of owl:sameAs.</p>
@@ -1804,7 +1811,6 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
         Once you have found a place in geonames, there are other useful services to find things that are nearby. </p>
 
       </div>
-      </p>
     </section>
     
     <section class="appendix" id="requirements">
