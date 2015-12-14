@@ -580,47 +580,35 @@ There could be many maps of a place - none of them the same- one needs to know w
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
-            <ul style="background-color:yellow">
-              <li>determining the dimensionality of geometry data (0d ‘point’ to 3d ‘volume’)</li>
-              <li>choosing the right format: when to use geometry literals (e.g. WKT representations or GeoHash &amp;
-                other geocoding representations) or structured geometry objects</li>
-              <li>… base on tool support?</li>
-              <li>… base on performance considerations? “geometry can be 95% of the total
-                data size” … consideration of binary data formats … e.g. protocol buffers for
-                vector tiling … but some binary formats don’t really work “on the web” - you
-                need to download the data and work with it offline e.g. netCDF [?]</li>
-              <li>ref: “Appendix: applicability of common formats and vocabularies to implementation of Best Practices”</li>
-              <li>ref: “NOTE: Comparison of geospatial vocabularies”</li>
-              <li>examples (from R5.1): bounding box, centroid</li>
-              <li>examples (from R5.8): show CRS definition</li>
-              <li>CLARIFICATION required: R5.47 ‘time dependencies in CRS</li>
-              <li>definitions’ … is this feasible for main-stream usage in a BP?</li>
-              <li>examples (from R5.12): vector geometry</li>
-              <li>examples (from R5.17): non-geospatial example e.g. microscopy</li>
-            </ul>
-            <div style="background-color:yellow">
-              <ul>
-                <li>endorse widespread practice using <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary (geo)</a> … <code><a href="http://www.w3.org/2003/01/geo/wgs84_pos#lat">geo:lat</a></code> and <code><a href="http://www.w3.org/2003/01/geo/wgs84_pos#long">geo:long</a></code> used extensively for describing <code><a href="http://www.w3.org/2003/01/geo/wgs84_pos#Point">geo:Point</a></code> objects</li>
-                <li>question: should we limit our scope to the seven concrete geometry types defined in the <a href="http://www.opengeospatial.org/standards/sfa">OpenGIS Simple Features Specification</a>? namely 0-dimensional Point and MultiPoint; 1-dimensional curve LineString and MultiLineString; 2-dimensional surface Polygon and MultiPolygon; and the heterogeneous GeometryCollection … what about 3d geometries - noting a growing usage of these in online mapping applications? … is the <a href="https://www.khronos.org/gltf/">gITF format</a> (for interoperable transmission of 3D assets into OpenGL-aware apps; like JPEG for 3D) relevant?</li>
-                <li>geometry objects as literals e.g. WKT or expanded into triples? (@phila referenced a <a href="https://github.com/geojson/geojson-ld/issues/32">blocking issue for GeoJSON-LD</a>: "<em>Yes, it's a known issue. RDF applications are going to have to treat the coordinates as a blob, like it was imagery or audio. I can't see any way around that. I also can't see any benefit to exploding a complex multipolygon into triples.</em>")</li>
-              </ul>
-            </div>
+            
+            
           </div>
           
           <div class="practice">
             <p><span id="ref-crs" class="practicelab">Specify Coordinate Reference System for high-precision applications</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">A spatial referencing should be specified for high-precision applications to locate geospatial entities.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
+              <p>The choice of Coordinate Reference System (CRS) is sensitive to the intended domain of application for the geospatial data. High precision applications (such as precision agriculture and defense) require spatial referencing to be accurate to a few meters or even centimeters.
+                <p><i>[note: the misuse of spatial data can result in catastrophic results; e.g. both the bombing of the Chinese Embassy in Belgrade during the Balkan conflict and fatal incidents along the East Timor boarder are attributable spatial referencing problems.]</i></p>
+
+</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>A Coordinate Reference System (CRS) sensitive to the intended domain of application (e.g. high precision applications) for the geospatial data should be chosen.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>...</p>
+              <p>Recommendations about CRS referencing should consider:</p>
+                <ul>
+                    <li>When default Coordinate Reference System is (in)sufficient</li>
+                    <li>The choice of CRS should be sensitive to the intended domain of application for the geospatial data </li>
+                    <li><a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a> is a common choice of CRS - although this in itself is ambiguous: we need to assert whether data relates to the ellipsoid (datum surface) or the geoid (gravitational equipotential surface; <a href="https://en.wikipedia.org/wiki/EGM96">EGM96</a>).</li>
+                    <li>WGS84 is a reasonable choice for many human-scale activities (e.g. navigation). However, given that the earth’s surface is constantly moving (e.g. Australia moves by 7cm per year), <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a> is not appropriate for precision applications. For example, the defense community uses 12 separate Mercator projections to maintain accuracy around the globe whilst Australia is moving to a dynamic datum.</li>
+                    <li>For convenience, the CRS is often designated within the data format or vocabulary specification (e.g. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary</a>) and, therefore, does not appear in the data itself. This is often considered as a default CRS. Data publishers and consumers should make sure they are aware of the specified CRS and any limitations that this may pose regarding the use of the data.</li>
+                    <li>Where a specific CRS is required, the data publisher should choose a vocabulary where the CRS can be defined explicitly within the data.</li>
+                </ul>
               <aside class="example">
                 <p>example(s) to be added</p>
               </aside>
@@ -639,16 +627,7 @@ There could be many maps of a place - none of them the same- one needs to know w
                 <li>When default Coordinate Reference System is (in)sufficient</li>
               </ul>
             </div>
-            <div style="background-color:yellow">
-              <ul>
-                <li>the choice of CRS is sensitive to the intended domain of application for the geospatial data - high precision applications (such as precision agriculture and defence) require spatial referencing to be accurate to a few metres or even centimetres</li>
-                <li>[note: the misuse of spatial data can result in catastrophic results … both the bombing of the Chinese Embassy in Belgrade during the Balkan conflict and fatal incidents along the East Timor boarder are attributable spatial referencing problems]</li>
-                <li><a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a> is a common choice of CRS - although this in itself is ambiguous: we need to assert whether data relates to the ellipsoid (datum surface) or the geoid (gravitational equipotential surface; <a href="https://en.wikipedia.org/wiki/EGM96">EGM96</a>). WGS84 is a reasonable choice for many human-scale activities (e.g. navigation). However, given that the earth’s surface is constantly moving (e.g. Australia moves by 7cm per year), WGS84 is not appropriate for precision applications. For example, the defence community use 12 separate mercator projections to maintain accuracy around the globe whilst Australia is moving to a dynamic datum.</li>
-                <li>for convenience, the CRS is often designated within the data format or vocabulary specification (e.g. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary</a>) and, therefore, does not appear in the data itself. This is often considered as a default CRS. Data publishers and consumers should make sure they are aware of the specified CRS and any limitations that this may pose regarding the use of the data.</li>
-                <li>where a specific CRS is required, the data publisher should choose a vocabulary where the CRS can be defined explicitly within the data</li>
-                <li>… which geometry definitions allow user specification of a CRS?</li>
-              </ul>
-            </div>
+            
           </div>
           
           <div class="practice">
