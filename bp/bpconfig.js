@@ -83,6 +83,12 @@ var respecConfig = {
         href:"http://www.w3.org/TR/sdw-ucr/",
         title:"Spatial Data on the Web Use Cases & Requirements",
         authors: ["Frans Knibbe", "Alejandro Llaves"]
+       },
+       "GeoSPARQL":{
+        href:"http://www.opengeospatial.org/standards/geosparql",
+        title:"GeoSPARQL - A Geographic Query Language for RDF Data",
+        authors: ["Matthew Perry, John Herring"],
+        date: "10 September 2012"  
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
