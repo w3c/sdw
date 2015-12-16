@@ -83,6 +83,18 @@ var respecConfig = {
         href:"http://www.w3.org/TR/sdw-ucr/",
         title:"Spatial Data on the Web Use Cases & Requirements",
         authors: ["Frans Knibbe", "Alejandro Llaves"]
+       },
+       "GeoSPARQL":{
+        href:"http://www.opengeospatial.org/standards/geosparql",
+        title:"GeoSPARQL - A Geographic Query Language for RDF Data",
+        authors: ["Matthew Perry, John Herring"],
+        date: "10 September 2012"  
+       }, 
+       "Simple-Features":{
+        href:"http://www.opengeospatial.org/standards/sfa",
+        title:"Simple Feature Access - Part 1: Common Architecture",
+        authors: ["John Herring"],
+        date: "28 May 2011"    
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
