@@ -146,8 +146,9 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <p>In short, there is a large demand for spatial data on the Web. But there are some questions around publishing spatial data on the Web that keep popping up and need to be answered. One is that many relevant standards already exist. These include informal 'community standards' - geospatial formats and/or vocabularies that enjoy widespread adoption (GeoJSON being the prime example [[GeoJSON]]) - and others for which the formal standardization process has not been completed. Where standards have been completed there are competing ideas and engineers are often unsure which ones to adopt. With these factors in mind, this Best Practice  document aims to clarify and formalize the relevant standards landscape.</p>
           <p>The best practices we describe in this document are different to how a typical SDI works; we've adopted a Linked Data approach as the underlying principle of the best practices, although not all of them require the use of Linked Data standards. </p>
           <p>Questions answered in this document include: how spatial information can best be integrated with other data on the Web; how machines and people can discover that different facts in different datasets relate to the same place, especially when 'place' is expressed in different ways and at different levels of granularity; how spatial aspects of metadata can be provided; how to express temporal properties; how to publish environmental monitoring data, such as sensor output, with sufficient context to unambiguously interpret the values, and many other things.</p>
-          <p>The best practices in this document are based on what is already there. It is not meant to be a 'best theories' document: it takes its examples and solutions from what is being done in practice right now. The examples point to publicly available non-toy datasets. In other words, this document is as much as possible evidence based. In addition, this document may describe 'emerging practices' when no established solutions can be found in practice yet. </p>
-          <p>The best practices in this document are designed to be testable by humans and/or machines in order to determine whether you are following them or not. They are predicated on using the Web as a data sharing platform [WEBARCH]. </p>
+          <p>The best practices in this document are based on what is already there. It is not meant to be a 'best theories' document: it takes its examples and solutions from what is being done in practice right now. The examples point to publicly available real-world datasets. In other words, this document is as much as possible evidence based. However, where a lack of real-world practice is impeding publication or use of spatial data on the web, clearly identified <em>recommended practices</em> are provided.</p>
+
+          <p>The best practices in this document are designed to be testable by humans and/or machines in order to determine whether you are following them or not. They are predicated on using the Web as a data sharing platform [[webarch]]. </p>
           <p class="issue" data-number="81">Devise a way to make best versus emerging practices clearly recognizable in this document.</p>
         </section>
         
@@ -488,21 +489,38 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           </div>
           <p class="issue" data-number="37">Do we need a subclass of SpatialThing or a property that expresses the fuzzyness of a spatial thing.</p>
           
-          <div class="practice">
+            <div class="practice">
             <p><span id="minimum" class="practicelab">Provide a minimum set of information for your intended application</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">When someone looks up a URI for a SpatialThing, provide useful information, using the common representation formats 
+</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
+              <p>This will allow to distinguish SpatialThings from another by looking at their properties; e.g. type, label. It will also allow to get the basic information about SpatialThings by refrerring to their URI. 
+</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>This requirement should serve a minimum set of information for a SpatialThing against a URI. In general,  this will allow to look up the properties and features of a SpatialThings, and get information from machine-interpretable and/or human-readable descriptions. 
+</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>...</p>
+              <p>This requirement specifies that useful information should be returned when a resource is referenced. This can include: 
+
+                <ul>
+                    <li>Expressing properties and features of interest for a SpatialThings using common semantic descriptions.</li>
+                    <li>Expressing names of places; toponyms, multiple names etc. Spatial things could also be identified with one or more names. These could be toponyms (names that appear on a map) or colloquial names (that local people use for a place). This part will explain how one provide the names/labels for the spatial things that are referred to. (e.g. a way to do this could be rdfs:label)</li>
+                    <li>A ‘place’ may have an indistinct (or even undefined) boundary. It is often useful to identify spatial things even though they are fuzzy. e.g. Renaissance Italy or the American West.</li>
+                    <li>Information (about a SpatialThing, a place) should be provided with information about authority (owner, publisher), timeliness (i.e. is it valid now? is it historical data?) and, (if applicable) quality; e.g.
+There could be many maps of a place - none of them the same- one needs to know who produced each one, to be able to choose the right one to use.
+                    </li>
+                
+                </ul>
+                
+                </p>
               <aside class="example">
+                <p>example(s) to be added</p>
+
                 <p>example(s) to be added; includeing ... </p>
                 <ul>
                   <li>"American West" (indistinct boundary)</li>
@@ -518,29 +536,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
-            <div style="background-color:yellow">
-              <ul>
-                <li>You should return useful information when a resource is referenced. What is useful? We will explain this in more detail. This could also fit in the Enabling discovery section. Make each resource available as a URL, e.g. http://maps.nanaimo.ca/data/property/</li>
-                <li>to distinguish one Thing from another by looking at its properties; type, label</li>
-                <li>… others? e.g. if you want to plot on a map, you need to know where to put
-                  the pin</li>
-                <li>expressing names of places; toponyms, multiple names etc. Spatial things could also be identified with one or more names. These could be toponyms (names that appear on a map) or colloquial names (that local people use for a place). This part will explain how you provide the names / labels for the spatial things you are referring to. (a way to do this could be rdfs:label)</li>
-                <li>… ‘place’ may have an indistinct (or even undefined) boundary (“social boundaries”)… discussion on fuzzy boundaries; hard geometric boundary is not essential. It is often in social discourse useful to identify spatial things even though they're fuzzy. E.g. Renaissance Italy or the American West. </li>
-                <li>… discussion on provision of multiple geometric representations</li>
-              </ul>
             </div>
-            <div style="background-color:yellow">
-              <ul>
-                <li>question: are there any limitations with usage of <a>SpatialThing</a>?</li>
-                <li>@eparsons: “Boston University has done an experiment asking people to draw boundaries around Boston and there was no agreement, as expected, but there [was] a core subset [included by all respondees]”</li>
-                <li>* information (about a <a>SpatialThing</a>, a place) should be provided with information about authority (owner, publisher), currency (is it valid now? is it historical data?) and, perhaps, quality
-                  <ul>
-                    <li>@eparsons: “the many maps of Jerusalem - none of them the same […] you need to know who produced each one so you can choose the right one for you to use”</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
           
           <div class="practice">
             <p><span id="describe-geometry" class="practicelab">How to describe geometry</span></p>
@@ -585,47 +581,35 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
-            <ul style="background-color:yellow">
-              <li>determining the dimensionality of geometry data (0d ‘point’ to 3d ‘volume’)</li>
-              <li>choosing the right format: when to use geometry literals (e.g. WKT representations or GeoHash &amp;
-                other geocoding representations) or structured geometry objects</li>
-              <li>… base on tool support?</li>
-              <li>… base on performance considerations? “geometry can be 95% of the total
-                data size” … consideration of binary data formats … e.g. protocol buffers for
-                vector tiling … but some binary formats don’t really work “on the web” - you
-                need to download the data and work with it offline e.g. netCDF [?]</li>
-              <li>ref: “Appendix: applicability of common formats and vocabularies to implementation of Best Practices”</li>
-              <li>ref: “NOTE: Comparison of geospatial vocabularies”</li>
-              <li>examples (from R5.1): bounding box, centroid</li>
-              <li>examples (from R5.8): show CRS definition</li>
-              <li>CLARIFICATION required: R5.47 ‘time dependencies in CRS</li>
-              <li>definitions’ … is this feasible for main-stream usage in a BP?</li>
-              <li>examples (from R5.12): vector geometry</li>
-              <li>examples (from R5.17): non-geospatial example e.g. microscopy</li>
-            </ul>
-            <div style="background-color:yellow">
-              <ul>
-                <li>endorse widespread practice using <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary (geo)</a> … <code><a href="http://www.w3.org/2003/01/geo/wgs84_pos#lat">geo:lat</a></code> and <code><a href="http://www.w3.org/2003/01/geo/wgs84_pos#long">geo:long</a></code> used extensively for describing <code><a href="http://www.w3.org/2003/01/geo/wgs84_pos#Point">geo:Point</a></code> objects</li>
-                <li>question: should we limit our scope to the seven concrete geometry types defined in the <a href="http://www.opengeospatial.org/standards/sfa">OpenGIS Simple Features Specification</a>? namely 0-dimensional Point and MultiPoint; 1-dimensional curve LineString and MultiLineString; 2-dimensional surface Polygon and MultiPolygon; and the heterogeneous GeometryCollection … what about 3d geometries - noting a growing usage of these in online mapping applications? … is the <a href="https://www.khronos.org/gltf/">gITF format</a> (for interoperable transmission of 3D assets into OpenGL-aware apps; like JPEG for 3D) relevant?</li>
-                <li>geometry objects as literals e.g. WKT or expanded into triples? (@phila referenced a <a href="https://github.com/geojson/geojson-ld/issues/32">blocking issue for GeoJSON-LD</a>: "<em>Yes, it's a known issue. RDF applications are going to have to treat the coordinates as a blob, like it was imagery or audio. I can't see any way around that. I also can't see any benefit to exploding a complex multipolygon into triples.</em>")</li>
-              </ul>
-            </div>
+            
+            
           </div>
           
           <div class="practice">
             <p><span id="ref-crs" class="practicelab">Specify Coordinate Reference System for high-precision applications</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">A spatial referencing should be specified for high-precision applications to locate geospatial entities.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
+              <p>The choice of Coordinate Reference System (CRS) is sensitive to the intended domain of application for the geospatial data. High precision applications (such as precision agriculture and defense) require spatial referencing to be accurate to a few meters or even centimeters.
+                <p><i>[note: the misuse of spatial data can result in catastrophic results; e.g. both the bombing of the Chinese Embassy in Belgrade during the Balkan conflict and fatal incidents along the East Timor boarder are attributable spatial referencing problems.]</i></p>
+
+</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>A Coordinate Reference System (CRS) sensitive to the intended domain of application (e.g. high precision applications) for the geospatial data should be chosen.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>...</p>
+              <p>Recommendations about CRS referencing should consider:</p>
+                <ul>
+                    <li>When default Coordinate Reference System is (in)sufficient</li>
+                    <li>The choice of CRS should be sensitive to the intended domain of application for the geospatial data </li>
+                    <li><a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a> is a common choice of CRS - although this in itself is ambiguous: we need to assert whether data relates to the ellipsoid (datum surface) or the geoid (gravitational equipotential surface; <a href="https://en.wikipedia.org/wiki/EGM96">EGM96</a>).</li>
+                    <li>WGS84 is a reasonable choice for many human-scale activities (e.g. navigation). However, given that the earth’s surface is constantly moving (e.g. Australia moves by 7cm per year), <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a> is not appropriate for precision applications. For example, the defense community uses 12 separate Mercator projections to maintain accuracy around the globe whilst Australia is moving to a dynamic datum.</li>
+                    <li>For convenience, the CRS is often designated within the data format or vocabulary specification (e.g. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary</a>) and, therefore, does not appear in the data itself. This is often considered as a default CRS. Data publishers and consumers should make sure they are aware of the specified CRS and any limitations that this may pose regarding the use of the data.</li>
+                    <li>Where a specific CRS is required, the data publisher should choose a vocabulary where the CRS can be defined explicitly within the data.</li>
+                </ul>
               <aside class="example">
                 <p>example(s) to be added</p>
               </aside>
@@ -644,32 +628,30 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
                 <li>When default Coordinate Reference System is (in)sufficient</li>
               </ul>
             </div>
-            <div style="background-color:yellow">
-              <ul>
-                <li>the choice of CRS is sensitive to the intended domain of application for the geospatial data - high precision applications (such as precision agriculture and defence) require spatial referencing to be accurate to a few metres or even centimetres</li>
-                <li>[note: the misuse of spatial data can result in catastrophic results … both the bombing of the Chinese Embassy in Belgrade during the Balkan conflict and fatal incidents along the East Timor boarder are attributable spatial referencing problems]</li>
-                <li><a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a> is a common choice of CRS - although this in itself is ambiguous: we need to assert whether data relates to the ellipsoid (datum surface) or the geoid (gravitational equipotential surface; <a href="https://en.wikipedia.org/wiki/EGM96">EGM96</a>). WGS84 is a reasonable choice for many human-scale activities (e.g. navigation). However, given that the earth’s surface is constantly moving (e.g. Australia moves by 7cm per year), WGS84 is not appropriate for precision applications. For example, the defence community use 12 separate mercator projections to maintain accuracy around the globe whilst Australia is moving to a dynamic datum.</li>
-                <li>for convenience, the CRS is often designated within the data format or vocabulary specification (e.g. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary</a>) and, therefore, does not appear in the data itself. This is often considered as a default CRS. Data publishers and consumers should make sure they are aware of the specified CRS and any limitations that this may pose regarding the use of the data.</li>
-                <li>where a specific CRS is required, the data publisher should choose a vocabulary where the CRS can be defined explicitly within the data</li>
-                <li>… which geometry definitions allow user specification of a CRS?</li>
-              </ul>
-            </div>
+            
           </div>
           
           <div class="practice">
             <p><span id="relative-position" class="practicelab">How to describe relative positions</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">Provide a relative positioning capability in which the entities can be linked to a specific position.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
+              <p>In some cases it is needed to describe the location of an entitiy in realtion to another location or in realtion to locaiton of another entitiy. e.g. Soth-west of Guilford, close to London Bridge</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>It should be possible to describe the location of an entity in relation to another entity or in relation to a specific location. <p>
+
+                <p>The relative positioning descriptions should be machine-interpretable and/or human-readable.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>...</p>
+              <p>The relative positioning should be provided as: </p>
+                <ul>
+                    <li>A positioning capability to describe the position of entities with explicit links to a specific location and/or other entities. </li>
+                    <li>Semantic descriptions for relative positions and relative associations to an explicit or absolute positioning capability.</li>
+                </ul>
+                <p class="issue" data-number="121">Do we need this as a best practice; if yes, this BP needs more content</p>
               <aside class="example">
                 <p>example(s) to be added</p>
               </aside>
@@ -682,25 +664,24 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
             </section>
-            <ul style="background-color:yellow">
-              <li> … [linear referencing][gap?]</li>
-            </ul>
+            
           </div>
           
           <div class="practice">
             <p><span id="desc-accuracy" class="practicelab">How to describe positional (in)accuracy</span></p>
-            <p class="practicedesc">... best practice description ...</p>
+            <p class="practicedesc">Accuracy and precision of spatial data should be specified in machine-interpretable and human-readable form.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>...</p>
+                <p>The amount of detail that is provided for a spatial data and the resolution of data can vary. No measurement system is infinitely precise and in some cases the spatial data can be intentionally generalised (e.g. merging entities, reducing the details, and aggregation of the data) [H Veregin, <a href="http://www.geos.ed.ac.uk/~gisteac/gis_book_abridged/files/ch12.pdf">Data Quality Parameters </a>]. </p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>...</p>
+              <p>The resolution and precision of spatial data should be specified in a way to allow consumers of the data to be aware of the resolution and level of details that are considered in the specifications.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
               <p>...</p>
+               <p class="issue" data-number="125">We need some exaplanations for the appraohes to describe positional (in)accuracy</p>
               <aside class="example">
                 <p>example(s) to be added; including ...</p>
                 <ul>
@@ -816,7 +797,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
             </section>
             <section class="ucr">
               <p class="subhead">Evidence</p>
-              <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
+              <p><span>Relevant requirements</span>: {...hyperlinked list of use cases...}</p>
             </section>
             <p>There are different vocabularies that are realted to spatial things. This vocabluary selection could be in the form of a durable methodology or an actionable selection list to help developers choose the best vocabulary for their task. </p>
             <p class="issue" data-number="38">We might publish in the BP or a complimentary note a set of statements mapping the set of available vocabularies about spatial things. There are mappings available e.g. GeoNames has a mapping with schema.org. <a href="http://www.geonames.org/ontology/mappings_v3.01.rdf">http://www.geonames.org/ontology/mappings_v3.01.rdf</a></p>
@@ -867,7 +848,8 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
                 <li>It is often better to rely on relationships asserted between SpatialThings rather than rely onanalysis of geometries.</li> 
                 <li> Collocation may contribute to the assertion of a relationship between two Things (perhaps even ‘sameness’) but it is also necessary to look at context (semantics)</li>
 
-                <li><code>samePlaceAs</code> &lt; recommended practice - there is no practice in the wild to refer to … [should this also include the temporal aspect; e.g. Renaissance Italy? … “place” with both temporal and location context]</li>
+                <li><code>samePlaceAs</code> &lt; recommended practice (there is no practice in the wild to refer to); this is the social notion of different communities or people talking about a place and meaning the same place … [should this also include the temporal aspect; e.g. Renaissance Italy? … “place” with both temporal and location context]</li>
+
                 <li>The (stable) relationships should be registered with IANA; <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link relations</a> … [begin process following FPWD]</li>  
                 <li>These relationships likely provide useful information for digital personal assistants (e.g. Siri, Cortana); refer to <a href="http://www.w3.org/TR/emma/">W3C EMMA 2.0</a>; devices provide location and time-stamp data</li>
                 <li>Relating SpatialThings to other spatial data enables the digital personal assistants to make helpful suggestions or infer useful information  such as “address” and “description” attributes added to extent data model of GeoLocation API
@@ -1090,23 +1072,27 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
       
       <section id="bp-linking">
         <h3>Linking Data</h3>
-        <p style="background-color:yellow">This section is about <em>creating</em> links, whereas <a href="#bp-discovery" class="sectionRef"></a> is concerned with <em>using</em> links for discovery.</p>
-        <p>linking between things at the dataset level is largely covered by DWBP. Put reference here. </p>
-        <p>make the links within the dataset discoverable</p>
-        <p>it's useful to have hyperlinks to things like Geonames, wikipedia, OSM etc (see list on the mailiing list, keyword: stamp collecting)</p>
-        <p>how to publish your semantics if you're using XML / GML</p>
-        <p>put reference here to LDBP: http://www.w3.org/TR/ld-bp/ Best Practices for Publishing Linked Data (includes info on publishing vocabularies)</p>
-        <p>research paper on using PROV to distinguish between world views is at http://link.springer.com/article/10.1186/s13326-015-0008-2/fulltext.html</p>
-        <p>about representations changing over time: administrative boundaries and catchment datasets as examples of how you shouldn't create new objects when for some reason the records change while the real world thing stays the same. Dataset owners need to be aware of this.</p>
-        <p>(here or in a different section) A list/matrix of the common formats (GeoJSON, GML, RDF, JSON-LD) and what you can or can't achieve with it.</p>
-        <p class="note">Possible gap in best practice and something we might recommend (as a recommended way) even though we don't label it a best practice: we may need to come up with a new sameAs which is a spatial:samePlaceAs. If we feel that the lack of that expression is impeding getting spatial data on the web. Not meaning spatial intersection, but the social notion of different communities or people talking about a place and meaning the same place. 'placial instead of spatial view'. </p>
-        <p>Using sameAs to establish that two resources are about the same thing. These sameAs statements could be collected into one set and this set could have provenance so that you can see who created the sameAs statements and decide if you'd trust them. </p>
-        <p class="note">There's an owl:sameAs as well as schema.org/sameAs. The latter is less strong. </p>
 
-        <div style="background-color:yellow">
-          <ul>
-            <li>in <em>spatial</em> data on the web, links are first class citizens … it is ‘connectedness’ that makes for “Data on the Web” … @eparsons: “this is where the biggest change will come in the GIS world”</li>
-          </ul>
+        <p>For data to be <em>on the web</em> the resources it describes need to be connected, or <em>linked</em>, to other resources. The <em>connectedness</em> of data is one of the fundamentals of the Linked Data approach that these best practices build upon. The <a href="http://5stardata.info">5-star rating for Linked Open Data</a> asserts that to achieve the fifth star you must "link your data to other data to provide context". The benefits for consumers and publishers of linking to other data are <a href="http://5stardata.info/en/#addendum5">listed</a> as:</p>
+
+        <ul>
+          <li>You can discover more (related) data while consuming the data.</li>
+          <li>You can directly learn about the data schema.</li>
+          <li>You make your data discoverable.</li>
+          <li>You increase the value of your data.</li>
+          <li>Your own organisation will gain the same benefits from the links as the [other] consumers.</li>
+        </ul>
+
+        <p>Just like any type of data, spatial data benefits massively from linking when publishing on the web.</p>
+
+        <p class="note">The widespread use of links within data is regarded as one of the most significant departures from contemporary practices used within SDIs.</p>
+
+        <p>Crucially, the use of links is predicated on the ability to identify the origin and target, or <em>beginning</em> and <em>end</em>, of the link. <a href="#globally-unique-ids">Best Practice 1: Use globally unique identifiers for entity-level resources</a> is a prerequisite.</p>
+
+        <p>This section extends [[DWBP]] by providing best practices that are concerned with <em>creating</em> links between the resources described inside datasets. Best practices detailing the use of links to support discovery are provided in <a href="#bp-discovery" class="sectionRef"></a>.</p>
+
+        <div class="note">
+          <p>[[DWBP]] identifies <em>Linkability</em> as one of the <a href="http://www.w3.org/TR/dwbp/#bp-benefits">benefits</a> gained from implementing the Data on the Web best practices (see [[DWBP]] <a href="http://www.w3.org/TR/dwbp/#DataIdentification">Data Identification</a> <a href="http://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 11 Use persistent URIs as identifiers of datasets</a> and <a href="http://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 12 Use persistent URIs as identifiers within datasets</a>). However, no discussion is provided about how to create the links that the use those persistent URIs.</p>
         </div>
 
         <div class="practice">
@@ -1125,6 +1111,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>...</p>
+            <p style="background-color:yellow">need to provide summary of the approach to implementation and enable readers to drill-down to more detailed documentation- else this document will become (very) unwieldy.</p>
             <ol>
               <li>Publish the data itself with the links (to uniquely identified objects) embedded in the data … one “page” per resource [see City of Nanaimo example]</li>
               <li>Publish summaries of links for the dataset so that these can be evaluated … <a href="http://www.w3.org/TR/void/#describing-linksets">VoID Linksets</a>
@@ -1244,6 +1231,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
           <section class="axioms">
             <p class="subhead">Why</p>
             <p>...</p>
+            <p style="background-color:yellow">It is useful to have hyperlinks to things like Geonames, wikipedia, OSM etc (see list on the mailiing list, keyword: stamp collecting)</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
@@ -1274,6 +1262,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
             <p class="subhead">Why</p>
             <p>...</p>
             <p style="background-color:yellow">use links to browse between [information about] related resources</p>
+            <p style="background-color:yellow">Using sameAs to establish that two resources are about the same thing (noting difference between <code>owl:sameAs</code> and <code>schema:sameAs</code>). These sameAs statements could be collected into one set and this set could have provenance so that you can see who created the sameAs statements and decide if you'd trust them.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
