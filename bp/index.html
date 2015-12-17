@@ -142,7 +142,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
           <p class="note">If you're not a geospatial expert, this may be the first time you've heard terms like <a>SDI</a>, <a>WMS</a> and <a>WFS</a>. But in fact, there is a whole world of geospatial standards, maintained by the Open Geospatial Consortium (<abbr title="Open Geospatial Consortium">OGC</abbr>), aimed at publishing geospatial data in a related series of standardized Web services and processing it with specialized tools. These standards have a steep learning curve.</p>
           <p>The intended users of the SDI are experts in the geospatial domain. The <abbr title="Open Geospatial Consortium">OGC</abbr> standards cover the full range of geospatial use cases – some of which are very complex. Because of this, it requires significant expertise in geospatial information technology to be able to use the SDI.</p>
           <p>For <em><a>Web developer</a>s</em>, who come from outside the geospatial domain, the data behind the OGC services is part of the "Deep Web" - the data is published behind specialized Web services and is not easy to get at, unless you're an expert. But Web developers are increasingly creating and using data related to locations, so they are an important factor for geospatial data.</p>
-          <p>The <em><a>public sector</a></em> creates a lot of geospatial data, much of which is open and can be useful to others who may or may not be geospatial data experts. This includes statistical data, for example regions identified by NUTS codes used as territorial units for statistics by the European Union. Spatial data often has a temporal component; things move, and boundaries change over time. Geospatial data is becoming more and more important for the Web and its importance is still growing, among other things because of the rise of the Internet of Things. The importance of spatial data is far beyond serving static ‘pixels'. Semantically meaningful information about objects is required. </p>
+          <p>The <em><a>public sector</a></em> creates a lot of geospatial data, much of which is open and can be useful to others who may or may not be geospatial data experts. This includes statistical data, for example regions identified by NUTS codes used as territorial units for statistics by the European Union. Spatial data often has a temporal component; things move, and boundaries change over time. Geospatial data is becoming more and more important for the Web and its importance is still growing, among other things because of the rise of the Internet of Things. The importance of spatial data is far beyond serving static 'pixels'. Semantically meaningful information about objects is required. </p>
           <p>In short, there is a large demand for spatial data on the Web. But there are some questions around publishing spatial data on the Web that keep popping up and need to be answered. One is that many relevant standards already exist. These include informal 'community standards' - geospatial formats and/or vocabularies that enjoy widespread adoption ([[GeoJSON]] being the prime example) - and others for which the formal standardization process has not been completed. Where standards have been completed there are competing ideas, and it is often unclear which one you should use. With these factors in mind, this Best Practice  document aims to clarify and formalize the relevant standards landscape.</p>
           <p>The best practices we describe in this document are different to how a typical <a>SDI</a> works; we've adopted a Linked Data approach as the underlying principle of the best practices, although not all of them require the use of Linked Data standards. </p>
           <p>Questions answered in this document include: how spatial information can best be integrated with other data on the Web; how machines and people can discover that different facts in different datasets relate to the same place, especially when 'place' is expressed in different ways and at different levels of granularity; how spatial aspects of metadata can be provided; how to express temporal properties; how to publish environmental monitoring data, such as sensor output, with sufficient context to unambiguously interpret the values, and many other things.</p>
@@ -517,7 +517,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p>Steps to follow: 
                 <ul>
                     <li>Decide on the geometric data representations based on performance; in some cases, geometry can be 95% of the total data size;</li>
-                    <li>Determine the dimensionality of geometry data (0d ‘point' to 3d ‘volume')</li>
+                    <li>Determine the dimensionality of geometry data (0d 'point' to 3d 'volume')</li>
                   <li>Choose the right format and deciding on when to use geometry literals. For geometry literals, several solutions are availabe, like <a>WKT</a>representations, GeoHash and other geocoding representations. The alternative is to use structured geometry objects as is possible, for example, in[[GeoSPARQL]].</li>
                     <li>There are also several suitable binary data formats (e.g. protocol buffers for vector tiling); however, some binary formats don not (effectively) work on the Web" - one needs to download the data and work with it offline. </li>
                     <li>There are widespread practices for representing geometric data as linked data, such as using W3C WGS84 Geo Positioning vocabulary (geo) geo:lat and geo:long that are used extensively for describing geo:Point objects.</li>
@@ -665,8 +665,11 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>When entities and their properties can change over time, and this change needs to be captured, it is important to specify a clear relationship between property data and its versioning information. How pproperties are versioned should explain in the defining specification and/or schema and temporal and/or spatial metadata should be provided to indicate when and where the data was captured. </p>
+              <p>When entities and their properties can change over time, or are valid only at a given time, and this needs to be captured, it is important to specify a clear relationship between property data and its versioning information. How properties are versioned should explain in the defining specification and/or schema and temporal and/or spatial metadata should be provided to indicate when and where the data was captured. </p>
               <p>For an example of how to version information about entities and their properties and retaining a version history, see <code>version:VersionedThing</code> and <code>version:Version</code> at <a href="https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types">https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types</a>.</p>
+              <p>It is also useful to incorporate information on how often the information might change: the frequency of update.</p>
+              <p>How much change is acceptable before the resources cannot be considered equivalent, and you should create a new resource instead of a new version of the same resource, is discussed in <a href="#ids-for-changing-things">Best Practice 4: Provide stable identifiers for Things (resources) that change over time</a>.</p>
+              <p class="issue" data-number="">How to work with data that is such high volume (e.g. sensor data streams) that the data is discarded after a period of time?</p>
               <aside class="example">
                 <p>Example(s) to be added; including:</p>
                 <ul>
@@ -683,55 +686,41 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption {
               <p class="subhead">Evidence</p>
               <p><span>Relevant requirements</span>: <a href="http://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, <a href="http://www.w3.org/TR/sdw-ucr/#MovingFeatures">R-MovingFeatures</a>, <a href="http://www.w3.org/TR/sdw-ucr/#Streamable">R-Streamable</a></p>
             </section>
-            <div>
-              <ul>
-                <li>Defining properties that are valid only at a given time</li>
-                <li>Incorporating information on how often that information might change; frequency of update</li>
-                <li>ISSUE: how to work with data that is such high volume (e.g. sensor data
-                streams) that the data is discarded after a period of time</li>
-              </ul>
-            </div>
-            <div style="background-color:yellow">
-              <ul>
-                <li>how much change is allowed before the resources cannot be considered equivalent?</li>
-              </ul>
-            </div>
           </div>
         </section>
         
         <section id="bp-geo-voc">
           <h4>Publishing data with clear semantics</h4>
-
-          <p>In most cases, the effective use of information resources requires understanding thematic concepts in addition to the spatial ones; "spatial" is just a facet of the broader information space. For example, when the Dutch Fireservice [<span style="background-color:yellow">ref?</span>] responded to an incident at a day care centre, they needed to evacuate the children. In this case, the <em>2nd</em> closest alternative day care centre was preferred because it was operated by the same organization as the one that was subject of the incident.</p>
-
-          <p>This best practice document provides mechanisms for determining how places and locations are related - but determining the compatibility or validity of thematic data elements is beyond our scope; we're not attempting to resolve the problem of ‘different views on the same/similar resources'</p>
-
+          <p>In most cases, the effective use of information resources requires understanding thematic concepts in addition to the spatial ones; "spatial" is just a facet of the broader information space. For example, when the <a href="http://www.brandweer.nl/amsterdam-amstelland">Dutch Fireservice</a> responded to an incident at a day care centre, they needed to evacuate the children. In this case, the <em>2nd</em> closest alternative day care centre was preferred because it was operated by the same organization as the one that was subject of the incident, and they knew who all the children were.</p>
+          <p>This best practice document provides mechanisms for determining how places and locations are related - but determining the compatibility or validity of thematic data elements is beyond our scope; we're not attempting to solve the problem of 'different views on the same/similar resources'.</p>
           <div class="note">
-            <p><em>Thematic</em> semantics are out of scope for this best practice document. For associated best practices, please refer to [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#metadata">Metadata</a>, <a href="http://w3c.github.io/dwbp/bp.html#StructuralMetadata">Best Practice 4 Provide structural metadata</a>; and [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#metadata">Vocabularies</a>, <a href="http://w3c.github.io/dwbp/bp.html#MetadataStandardized">Best Practice 15 Use standardised terms</a>, <a href="http://w3c.github.io/dwbp/bp.html#ReuseVocabularies">Best Practice 16 RE-use vocabularies</a> and <a href="http://w3c.github.io/dwbp/bp.html#ChoseRightFormalizationLevel">Best Practice 17 Choose the right formalisation level</a>.</p>
+            <p><em>Thematic</em> semantics are out of scope for this best practice document. For associated best practices, please refer to [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#metadata">Metadata</a>, <a href="http://w3c.github.io/dwbp/bp.html#StructuralMetadata">Best Practice 4 Provide structural metadata</a>; and [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#dataVocabularies">Vocabularies</a>, <a href="http://w3c.github.io/dwbp/bp.html#MetadataStandardized">Best Practice 15 Use standardised terms</a>, <a href="http://w3c.github.io/dwbp/bp.html#ReuseVocabularies">Best Practice 16 RE-use vocabularies</a> and <a href="http://w3c.github.io/dwbp/bp.html#ChoseRightFormalizationLevel">Best Practice 17 Choose the right formalisation level</a>.</p>
             <p>See also [[LD-BP]] <a href="http://www.w3.org/TR/ld-bp/#VOCABULARIES">Vocabularies</a>.</p>
           </div>
-          
           <div class="practice">
             <p><span id="semantic-thing" class="practicelab">Use spatial semantics for spatial Things</span></p>
-            <p class="practicedesc">The best vocabluary should be chosen to describe the avaiable spatial things.</p>
+            <p class="practicedesc">The best vocabulary should be chosen to describe the available spatial things.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
               <p>The spatial things can be described using several available vocabularies. A robust methodology or an informed decision making process should be adapted to choose the best available vocabulary to describe the entities.</p>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>Entities and their properties to be described using common and reusable vocabularies to increase and improve the interoperability of the descriptions.</p>
+              <p>Entities and their properties are described using common and reusable vocabularies to increase and improve the interoperability of the descriptions.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>There are various vocabularies such as <a href="http://www.geonames.org/">GeoNames</a> or <a href="http://www.w3.org/2003/01/geo/">
-Basic Geo vocabulary </a> that provide common information about spatial things. This requirments describes when to use which vocabulary. The semantic description of entities and their properties should use the existing common vocabularies in their descriptions to increase the interoperability with other descriptions that may refer to the same vocabularies.  For this it is required to: </p>
+              <p>There are various vocabularies that provide common information (semantics) about spatial things, such as <a href="http://www.w3.org/2003/01/geo/">
+                Basic Geo vocabulary </a>, [[GeoSPARQL]] or <a href="http://schema.org">schema.org</a> that provide common information about spatial things. This best practice helps you decide which vocabulary to use. The semantic description of entities and their properties should use the existing common vocabularies in their descriptions to increase the interoperability with other descriptions that may refer to the same vocabularies.  For this it is required to: </p>
                 <ul>
-                  <li>Consider a selection process to decide on the existing and relevant vocabularies that can be used to describe the spatial things and their properties. </li>
+                  <li>Go through a selection process to decide on the existing and relevant vocabularies that can be used to describe the spatial things and their properties. </li>
                   <li>Maintain links to the vocabularies in the schema definitions and provide linked-data descriptions.</li>
                   <li>Define location and spatial references using the common vocabulary concepts whenever applicable instead of defining your own location instance. </li>
-                  <li>Thematic semantics and general descriptions of spatial things and their properties should be provided as linked-data. e.g. predicates should have URIs in which when one looks those up can see what they mean. For more information refer to <a href="http://www.w3.org/TR/dwbp/#StructuralMetadata">DWBP BP #4 Provide structural metadata</a>.</li>
+                  <li>Provide thematic semantics and general descriptions of spatial things and their properties as linked data. They should have URIs in which when you look those up you can see what they mean. For more information refer to <a href="http://www.w3.org/TR/dwbp/#StructuralMetadata">DWBP BP #4 Provide structural metadata</a>.</li>
                 </ul>
+              <p>There are different vocabularies that are related to spatial things. This best practice will provide a method for selecting the right vocabulary for your task, in the form of a durable methodology or an actionable selection list.</p>
+              <p>The Basic Geo vocabulary has a class SpatialThing which has a very broad definition. This can be applicable (as a generic concept) to most of the common use-cases.</p>
+              <p class="issue" data-number="39">For some use cases we might need something more specific.</p>
               <aside class="example">
                 <p>example(s) to be added</p>
                 <p>fire car example</p>
@@ -743,12 +732,9 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
             </section>
             <section class="ucr">
               <p class="subhead">Evidence</p>
-              <p><span>Relevant requirements</span>: {...hyperlinked list of use cases...}</p>
+              <p><span>Relevant requirements</span>: <a href="http://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, <a href="http://www.w3.org/TR/sdw-ucr/#MobileSensors">R-MobileSensors</a>, <a href="http://www.w3.org/TR/sdw-ucr/#MovingFeatures">R-MovingFeatures</a>.</p>
             </section>
-            <p>There are different vocabularies that are realted to spatial things. This vocabluary selection could be in the form of a durable methodology or an actionable selection list to help developers choose the best vocabulary for their task. </p>
             <p class="issue" data-number="38">We might publish in the BP or a complimentary note a set of statements mapping the set of available vocabularies about spatial things. There are mappings available e.g. GeoNames has a mapping with schema.org. <a href="http://www.geonames.org/ontology/mappings_v3.01.rdf">http://www.geonames.org/ontology/mappings_v3.01.rdf</a></p>
-            <p>The Basic Geo vocabulary has a class SpatialThing which has a very broad definition. This can be applicable (as a generic concept) to most of the common use-cases.</p>
-            <p class="issue" data-number="39">For some use cases we might need something more specific.</p>
           </div>
           
           <div class="practice">
@@ -756,25 +742,31 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
             <p class="practicedesc">Spatial relationships between Things should be specified in forms of geographical, topological and hierarchical links.</p>
             <section class="axioms">
               <p class="subhead">Why</p>
-              <p>It is often more efficient to rely on relationships asserted between SpatialThings rather than rely on solutions such as analysis of geometries to assert a relationship between two Things. Describing the spatial relationships between SpatialThings can be based on relationships such as topological,  geographical and hierarchical (e.g. partOf) links.</p>
+              <p>It is often more efficient to rely on relationships asserted between SpatialThings rather than rely on solutions such as analysis of geometries to find out that two Things are, for example, at the same place, near each other, or one is inside the other. Describing the spatial relationships between SpatialThings can be based on relationships such as topological,  geographical and hierarchical (e.g. partOf) links.</p>
+              <p>Relating SpatialThings to other spatial data enables, for example, digital personal assistants (e.g. Siri, Cortana) to make helpful suggestions or infer useful information  such as "address" and "description" attributes added to extent data model of GeoLocation API. See also <a href="http://www.w3.org/TR/emma/">W3C EMMA 2.0</a>; devices provide location and time-stamp data, and this helps us, for example:</p>
+              <ul>
+                <li>Determining whether 'this' device interaction was 'within' a car, rather than the device being carried by a pedestrian, may result in different outcomes or suggestions</li>
+                <li>Determining whether an event for a traveller took place after the journey started and before it ended … we can infer the event was on-route</li>
+                <li>'near' is contextual - it depends if you're walking or driving</li>
+                <li>Capturing social information; "I'm on my way to work" rather than "I'm here" … where work is a SpatialThing with indistinct boundaries</li>
+              </ul>
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>This requirement will allow defining explicit spatial relationships between Things specified in forms of geographical, topological and hierarchical links that will not need post geometric processing and inferring to find the spatial links.</p>
+              <p>This requirement will allow expressing explicit spatial relationships between Things in the form of geographical, topological and hierarchical links that will not need post geometric processing and inferring to find the spatial links.</p>
             </section>
             <section class="how">
               <p class="subhead">Possible Approach to Implementation</p>
-              <p>The asserted spatial semantics can include relationship such as nearby, contains, etc. This best practice requires specifying geometric, topological and social spatial relationships. It is also important to determine which relationships are appropriate for a given case (This is beyond the scope of this BP).  This best practice will require:</p>
-              <div>
+              <p>How to use spatial functions to find out if spatial things have corresponding geometries is described in <a href="#lacking-ids">Best Practice 3: Working with data that lacks globally unique identifiers for entity-level resources</a>. This best practice describes how to express these discovered relationships between resources about physical and conceptual spatial things.</p>
+              <p>The asserted spatial semantics can include relationship such as nearby, contains, etc. This best practice requires specifying geometric, topological and social spatial relationships. It is also important to determine which relationships are appropriate for a given case (This is beyond the scope of this BP).  This best practice requires:</p>
                 <ul>
-                  <li>Describing the spatial and/or topological relationships between physical and conceptual resources.</li>
-                  <li>The geographical, topological and social hierarchy (part of) should be described with clear semantics and should be eventually entered as a relationship link into a registry (e.g. IANA).</li>
-                  <li>Hierarchical relationships have a specific need for defining "Mutually Exclusive Collectively Exhaustive" (MECE) set.</li>
+                  <li>The geographical, topological and social hierarchy (part of) should be described with clear semantics and registered with IANA <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link relations</a>.</li>
+                  <li>Hierarchical relationships (i.e. part of, for example betweeen administrative regions, have a specific need for defining "Mutually Exclusive Collectively Exhaustive" (MECE) set.</li>
                   <li>Topological relationships that are described for an entity should have references to concepts such as over, under etc.</li>
-                  <li>Spatial relationships can use concepts such as Regional Connection Calculus [RCC8] that contains, overlaps, touches, intersects, adjacent to, or "<a href="https://en.wikipedia.org/wiki/DE-9IM#Spatial_predicates">"spatial predicates"</a> or also other similar concepts from Allen Calculus.</li>
-                  <li>Social relationships can be defined based on perception; e.g. "samePlaceAs", nearby, south of. These relationships can also be defined based on temporal concepts such as: after, around, etc.</li>
+                  <li>Spatial relationships can use concepts such as Regional Connection Calculus [RCC8] that contains, overlaps, touches, intersects, adjacent to, or "<a href="https://en.wikipedia.org/wiki/DE-9IM#Spatial_predicates">spatial predicates</a>" or also other similar concepts from Allen Calculus.</li>
                 </ul>
-              </div>
+              <p>Spatial relationships are 'hard', geometric or topological relationships such as contains, overlaps, touches, intersects, or adjacent to (more: "<a href="https://en.wikipedia.org/wiki/DE-9IM#Spatial_predicates">spatial predicates</a>". Concepts such as Regional Connection Calculus [RCC8] or similar concepts from Allen Calculus can be used here.</p>
+              <p>Social relationships can be defined based on perception; e.g. "samePlaceAs", nearby, south of. These relationships can also be defined based on temporal concepts such as: after, around, etc. In current practice, there is no such property as <code>samePlaceAs</code> but this could be a recommended practice;; this is the social notion of different communities or people talking about a place and meaning the same place.</p>
               <aside class="example">
                 <p>example(s) to be added</p>
               </aside>
@@ -785,29 +777,9 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
             </section>
             <section class="ucr">
               <p class="subhead">Evidence</p>
-              <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
+              <p><span>Relevant requirements</span>: <a href="http://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, <a href="http://www.w3.org/TR/sdw-ucr/#SamplingTopology">R-SamplingTopology</a>, <a href="http://www.w3.org/TR/sdw-ucr/#SpatialRelationships">R-SpatialRelationships</a>, <a href="http://www.w3.org/TR/sdw-ucr/#SpatialOperators">R-SpatialOperators</a>.</p>
             </section>
             <p class="issue" data-number="34">Which vocabularies out there have social spatial relationships? FOAF, GeoNames, ... </p>
-            <div>
-              <ul>
-                <li>This best practice requires describing the (spatial/topological) relationships <em>between</em> physical and conceptual resources</li>
-                <li>It is often better to rely on relationships asserted between SpatialThings rather than rely onanalysis of geometries.</li> 
-                <li> Collocation may contribute to the assertion of a relationship between two Things (perhaps even ‘sameness') but it is also necessary to look at context (semantics)</li>
-
-                <li><code>samePlaceAs</code> &lt; recommended practice (there is no practice in the wild to refer to); this is the social notion of different communities or people talking about a place and meaning the same place … [should this also include the temporal aspect; e.g. Renaissance Italy? … "place" with both temporal and location context]</li>
-
-                <li>The (stable) relationships should be registered with IANA; <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link relations</a> … [begin process following FPWD]</li>  
-                <li>These relationships likely provide useful information for digital personal assistants (e.g. Siri, Cortana); refer to <a href="http://www.w3.org/TR/emma/">W3C EMMA 2.0</a>; devices provide location and time-stamp data</li>
-                <li>Relating SpatialThings to other spatial data enables the digital personal assistants to make helpful suggestions or infer useful information  such as "address" and "description" attributes added to extent data model of GeoLocation API
-                  <ul>
-                    <li>example: determining whether ‘this' device interaction was 'within' a car, rather than the device being carried by a pedestrian, may result in different outcomes or suggestions</li>
-                    <li>example: determining whether an event for a traveller took place after the journey started and before it ended … we can infer the event was on-route</li>
-                    <li>example: ‘near' is contextual - it depends if you're walking or driving</li>
-                    <li>example: capturing social information; "I'm on my way to work" rather than "I'm here" … where work is a SpatialThing with indistinct boundaries</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
           </div>
         </section>
         
@@ -1124,7 +1096,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
           </section>
           <div style="background-color:yellow">
             <ul>
-              <li>Erik Wilde says: "‘webby data' is a necessary but not sufficient condition to have hypermedia; hypermedia is not (only) about linking data (i.e., using "web data"), it's also about providing navigational affordances to get things done with that data. this means that the links are about *services* (or whatever you might call this)."</li>
+              <li>Erik Wilde says: "'webby data' is a necessary but not sufficient condition to have hypermedia; hypermedia is not (only) about linking data (i.e., using "web data"), it's also about providing navigational affordances to get things done with that data. this means that the links are about *services* (or whatever you might call this)."</li>
               <li>how do we know what is at the end of a link - and what can I do with it / can it do for me (e.g. the 'affordances' of the target resource) … is the 'profile' Link Relation relevant here? (see [[RFC6906]])</li>
             </ul>
           </div>
@@ -1236,7 +1208,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
               <li>resolving non-unique names for the same (or similar) entity … non-unique naming … linking related resources
                 <ul>
                   <li>the perils of <code>owl:sameAs</code> [<em>further discussion required?</em> …]</li>
-                  <li>reconciliation of identifiers is tricky as it requires ‘semantic discrimination' … "there be dragons" … "sameness" is in the eye of the beholder; it will mean different things to different people depending on context … mechanics of how to decide when two resources are the same are beyond the scope of this best practice … tools are emerging to help with such activities (e.g. <a href="http://openrefine.org">OpenRefine</a> and <a href="http://silk-framework.com">Silk Linked Data Integration Framework</a>)</li>
+                  <li>reconciliation of identifiers is tricky as it requires 'semantic discrimination' … "there be dragons" … "sameness" is in the eye of the beholder; it will mean different things to different people depending on context … mechanics of how to decide when two resources are the same are beyond the scope of this best practice … tools are emerging to help with such activities (e.g. <a href="http://openrefine.org">OpenRefine</a> and <a href="http://silk-framework.com">Silk Linked Data Integration Framework</a>)</li>
                   <li>data from different sources about the same physical or conceptual thing may provide different view points, e.g. provide extra information that can be merged into a single graph of information about the thing … such merging of data requires an understanding of the semantics involved and is beyond the scope of this best practice</li>
                 </ul>
               </li>
@@ -1303,17 +1275,17 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
           <div style="background-color:yellow">
             <ul>
               <li>entity-level links enable a user to browse to find related information - or algorithmically discover related information through analysis of a graph comprised of multiple links</li>
-              <li>incorporates following ‘forward links' … this is the way the document web works today; browsing by humans</li>
-              <li>collation of links that point to a given resource provides a list of referring objects … the subject resource need not know about the referral … these ‘back links' can be traversed to find related information - and also help a publisher assess the value of their content by making it possible to see who is using (or referencing) their data</li>
-              <li>incorporates aggregation of links to enable referring URLs to be indexed e.g. "what points to me?" … ‘back links'
+              <li>incorporates following 'forward links' … this is the way the document web works today; browsing by humans</li>
+              <li>collation of links that point to a given resource provides a list of referring objects … the subject resource need not know about the referral … these 'back links' can be traversed to find related information - and also help a publisher assess the value of their content by making it possible to see who is using (or referencing) their data</li>
+              <li>incorporates aggregation of links to enable referring URLs to be indexed e.g. "what points to me?" … 'back links'
                 <ul>
-                  <li>use ‘frequency of update' to determine mechanisms for keeping indexes fresh</li>
+                  <li>use 'frequency of update' to determine mechanisms for keeping indexes fresh</li>
                   <li>network / graph analysis to find disparate information; looking for room temperature &amp; discovering the presence of a temperature sensor in the room which can be actuated</li>
                 </ul>
               </li>
-              <li>¿link from entity to the ‘dataset' in which it is defined in order to find ‘peer' entities e.g. RDF Data Cube observation</li>
+              <li>¿link from entity to the 'dataset' in which it is defined in order to find 'peer' entities e.g. RDF Data Cube observation</li>
               <li>¿use of gazetteer to find related information; [CSIRO SIRF]</li>
-              <li>not all links are equal; need to be able to determine which links to ‘trust' … include metadata in data publications that enable users to make inferences about whether to use the data
+              <li>not all links are equal; need to be able to determine which links to 'trust' … include metadata in data publications that enable users to make inferences about whether to use the data
                 <ul>
                   <li>e.g. owner / publisher, quality information, community annotations ("likes"), publication date etc.</li>
                   <li>dataset-level metadata is often the best way to convey such information for a set of entities or resources</li>
@@ -1343,7 +1315,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
             <p>Generate one HTML page per resource. Include structured markup (see <a href="http://schema.org/">schema.org</a>) that the search engines can use to make more detailed assumptions about your resource(s) and drive better search performance. Either create pages a priori or generate them at query time via an API.</p>
             <p>Provide a path for search engines to find your pages - either crawling to each entity from a 'collection' object (which provides the entry point for the web crawler) or being directed by <a href="http://www.sitemaps.org/">sitemaps</a>.</p>
             <p style="background-color:yellow">will Google index KML too? what about GeoJSON?</p>
-            <p style="background-color:yellow">question: what if the data is provided as a record in a dataset or data stream (that is not exposed as an HTML page) … how can you ‘crawl' that?</p>
+            <p style="background-color:yellow">question: what if the data is provided as a record in a dataset or data stream (that is not exposed as an HTML page) … how can you 'crawl' that?</p>
             <aside class="example">
               <p>example(s) to be added; including ...</p>
               <ul>
@@ -1361,7 +1333,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
           </section>
           <div style="background-color:yellow">
             <ul>
-              <li>can we make this assertion: "<strong>data is not really ‘on the web' until it's crawlable</strong>"?</li>
+              <li>can we make this assertion: "<strong>data is not really 'on the web' until it's crawlable</strong>"?</li>
               <li>ref <a href="#indexable-by-search-engines">Best Practice 25: Make your entity-level data indexable by search engines</a></li>
               <li>incorporates @eparsons' perspective on evolution of SDIs; one HTML page (plus structured markup) per resource; use of <a href="http://www.sitemaps.org">sitemaps</a></li>
               <li>need more discussion on how search engines might be used to search … based on identifier, location, time etc. … not just the typical search query, but other services like Google Now that interpret information ... 
@@ -1455,7 +1427,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
               <li>granular publication - data providers need to be free to publish content at the level that they can manage to maintain … a data-dump provided via HTTP GET is the simplest form of data access service</li>
               <li>from data-dump (bulk-download) to pub/sub data-streams (e.g. MQTT, AMQP) to generalised query interfaces to rich APIs
                 <ul>
-                  <li>offering a data-dump of the entire dataset (aka ‘bulk download') is not really "data on the web"; users need to download the data and work with it locally</li>
+                  <li>offering a data-dump of the entire dataset (aka 'bulk download') is not really "data on the web"; users need to download the data and work with it locally</li>
                   <li>offering a generalised query interface, such as a SPARQL endpoint, requires the user to understand the entire data model in order to make meaningful queries ... which is not particularly helpful either!</li>
                 </ul>
               </li>
@@ -1472,7 +1444,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
         </div>
 
         <div class="practice">
-          <p><span id="convenience-apis" class="practicelab">Expose entity-level data through ‘convenience APIs'</span></p>
+          <p><span id="convenience-apis" class="practicelab">Expose entity-level data through 'convenience APIs'</span></p>
           <p class="practicedesc">... best practice description ...</p>
           <section class="axioms">
             <p class="subhead">Why</p>
@@ -1491,10 +1463,10 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
                 <li>event based API for traffic information; tell me when speed threshold is exceeded (e.g. traffic is too slow)</li>
                 <li>wrap WFS in RESTful API and provide GML content as Linked Data (<a href="https://swaggerhub.com/api/pdok/arcgis-services-Cultuurhist_Archeologie-ArcheologischeBeleidskaart-MapServer/1.0">Cultural Archeology from NL Cadastre</a> and planned example from @bartvanleeuwen)
                   <ul style="background-color:yellow">
-                    <li>@timbl's concept of a ‘shim' layer</li>
-                    <li>@danbri: "this is similar to the use of Z39.50 in the library community; that protocol is still used but ‘modern' websites / web services are wrapped around it"</li>
-                    <li>@eparsons: "adding URIs [in (GML) data exposed by a WFS] is pretty straightforward, but making it ‘webby' is harder"</li>
-                    <li>rather than adapting the WFS (GML) output, it may be more effective to provide an alternative ‘Linked Data friendly' access path to the data source; creating a new, complementary service endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using something like <a href="http://www.melodiesproject.eu/content/ontop-spatial">ontop-spatial</a>) and Linked Data API</li>
+                    <li>@timbl's concept of a 'shim' layer</li>
+                    <li>@danbri: "this is similar to the use of Z39.50 in the library community; that protocol is still used but 'modern' websites / web services are wrapped around it"</li>
+                    <li>@eparsons: "adding URIs [in (GML) data exposed by a WFS] is pretty straightforward, but making it 'webby' is harder"</li>
+                    <li>rather than adapting the WFS (GML) output, it may be more effective to provide an alternative 'Linked Data friendly' access path to the data source; creating a new, complementary service endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using something like <a href="http://www.melodiesproject.eu/content/ontop-spatial">ontop-spatial</a>) and Linked Data API</li>
                   </ul>
                 </li>
                 <li><a href="http://ogc-iot.github.io/ogc-iot-api/index.html">OGC Sensor Things API</a></li>
@@ -1522,7 +1494,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
                   <li>the convenience API = "here's a bunch of stuff that you will find useful for a given purpose [and here's the machine-readable API description]"</li>
                 </ul>
               </li>
-              <li>incorporates use of RESTful web service pattern (see <a href="http://w3c.github.io/dwbp/bp.html#DesigningAPIs">DWBP BP 20 Follow REST principles when designing APIs</a> and ‘API design guidelines' [ref?]); encapsulation of complexity; … </li>
+              <li>incorporates use of RESTful web service pattern (see <a href="http://w3c.github.io/dwbp/bp.html#DesigningAPIs">DWBP BP 20 Follow REST principles when designing APIs</a> and 'API design guidelines' [ref?]); encapsulation of complexity; … </li>
               <li><em>some</em> API design guidelines
                 <ul>
                   <li><strong>state</strong> e.g. sessionID, API key … request header (see OAuth2) … (but request headers are difficult to access from a user-agent so these parameters may also need to be URL encoded)</li>
@@ -1563,16 +1535,16 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
           </section>
           <div style="background-color:yellow">
             <ul>
-              <li>how the API works … ideally providing a machine-readable description (such as HAL: ‘JSON Hypertext Application Language', see <a href="https://tools.ietf.org/html/draft-kelly-json-hal-07">IETF draft</a>) … [also note that with HAL, generation of the documentation is coupled to the _code_ for the API so that the API docs never get out of date]</li>
+              <li>how the API works … ideally providing a machine-readable description (such as HAL: 'JSON Hypertext Application Language', see <a href="https://tools.ietf.org/html/draft-kelly-json-hal-07">IETF draft</a>) … [also note that with HAL, generation of the documentation is coupled to the _code_ for the API so that the API docs never get out of date]</li>
               <li>indicating what data is <em>actually</em> available … i.e. bounding the values used for the API parameters (e.g. using a value range or controlled vocabulary) so that one can only request data that <em>actually</em> exists</li>
               <li>APIs should be versioned - example: <a href="http://wiki.openstreetmap.org/wiki/API">OpenStreetMap API</a> … see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#VersionsForAPI">Best Practice 23 Maintain separate versions for a data API</a></li>
-              <li>OGC ‘capabilities documents' provide an example of this behaviour</li>
-              <li>predictably structured datasets that are available through services can be described as a <a href="http://www.w3.org/TR/vocab-data-cube/#data-cubes">Data Cube</a> with Dimensions of "what, where, when" … each Dimension of the Data Cube is bound to a parameter in the API method … furthermore, the "where" Dimension of a Data Cube, if specified as a <code>qb:CodedProperty</code>, may bound to a set of SpatialThings (e.g. using the property <code>qb:codeList</code>) such that the URI Set provides a ‘controlled vocabulary' of locations that for which ‘observations' (data points) in the Data Cube are available (e.g. air quality data is available at these locations) [<em>needs further elaboration; see <a href="http://www.w3.org/2015/spatial/track/actions/89">ACTION-89</a></em>]</li>
+              <li>OGC 'capabilities documents' provide an example of this behaviour</li>
+              <li>predictably structured datasets that are available through services can be described as a <a href="http://www.w3.org/TR/vocab-data-cube/#data-cubes">Data Cube</a> with Dimensions of "what, where, when" … each Dimension of the Data Cube is bound to a parameter in the API method … furthermore, the "where" Dimension of a Data Cube, if specified as a <code>qb:CodedProperty</code>, may bound to a set of SpatialThings (e.g. using the property <code>qb:codeList</code>) such that the URI Set provides a 'controlled vocabulary' of locations that for which 'observations' (data points) in the Data Cube are available (e.g. air quality data is available at these locations) [<em>needs further elaboration; see <a href="http://www.w3.org/2015/spatial/track/actions/89">ACTION-89</a></em>]</li>
               <li>incorporates binding the service endpoint to the data(set) it exposes; describing the APIs operations and parameters; binding parameters to domains (e.g. spatial extent, controlled vocabulary) to enable meaningful queries to be made; what kind of format / payload the API offers; API versioning (see <a href="http://w3c.github.io/dwbp/bp.html#VersionsForAPI">DWBP BP 23 Maintain separate versions for a data API</a>)</li>
               <li>possible approach (ref. GNON/SIRF):
                 <ol>
                   <li>describe the content exposed by a service endpoint as a <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a>; use the <code>void:TechnicalFeature</code> to describe the service</li>
-                  <li>each API parameter may be bound to a given <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a> (or subset) to provide a set of values/terms/entities for that parameter that provide meaningful queries (e.g. a controlled vocabulary) … use [[RFC6570]] URI Templates to bind parameters into RESTful API URLs … a ‘short-form' of the identifier may be required for usage in the API; this may be defined as a SKOS notation</li>
+                  <li>each API parameter may be bound to a given <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a> (or subset) to provide a set of values/terms/entities for that parameter that provide meaningful queries (e.g. a controlled vocabulary) … use [[RFC6570]] URI Templates to bind parameters into RESTful API URLs … a 'short-form' of the identifier may be required for usage in the API; this may be defined as a SKOS notation</li>
                 </ol>
               </li>
             </ul>
@@ -1807,7 +1779,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
           </tr>
           <tr>
             <td><a href="http://www.w3.org/TR/sdw-ucr/#Compatibility">R-Compatibility</a></td>
-            <td>Best Practice 28: Expose entity-level data through ‘convenience APIs'</td>
+            <td>Best Practice 28: Expose entity-level data through 'convenience APIs'</td>
           </tr>
           <tr>
             <td><a href="http://www.w3.org/TR/sdw-ucr/#Compressible">R-Compressible</a></td>
@@ -1877,7 +1849,7 @@ Basic Geo vocabulary </a> that provide common information about spatial things. 
             <td><a href="http://www.w3.org/TR/sdw-ucr/#LightweightAPI">R-LightweightAPI</a></td>
             <td>
               <p><em>Not a Best Practice deliverable, but referenced in -</em></p> 
-              <p>Best Practice 28: Expose entity-level data through ‘convenience APIs'</p>
+              <p>Best Practice 28: Expose entity-level data through 'convenience APIs'</p>
             </td>
           </tr>
           <tr>
