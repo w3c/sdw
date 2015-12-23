@@ -16,11 +16,11 @@ var respecConfig = {
     }, {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
-			companyURL: "http://www.surrey.ac.uk/",
+			companyURL: "http://www.surrey.ac.uk/"
 		}, {
 			name: "Linda van den Brink",
 			company: "Geonovum",
-			companyURL: "http://www.geonovum.nl/",
+			companyURL: "http://www.geonovum.nl/"
 		}],
     otherLinks: [
     {
