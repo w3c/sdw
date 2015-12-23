@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta content="text/html; charset=utf-8" http-equiv="content-type">
-    <meta name="generator" content="HTML Tidy for HTML5 (experimental) for Linux https://github.com/w3c/tidy-html5/tree/c63cc39">
-    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="generator" content="HTML Tidy for HTML5 (experimental) for Linux https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
     <title>Spatial Data on the Web Best Practices</title>
     <script class="remove" src="http://www.w3.org/Tools/respec/respec-w3c-common"></script>
     <script class="remove" src="bpconfig.js"></script>
@@ -591,7 +591,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             </section>
             <section class="outcome">
               <p class="subhead">Intended Outcome</p>
-              <p>It should be possible to describe the location of an entity in relation to another entity or in relation to a specific location, instead of specifying a geometry.<p>
+              <p>It should be possible to describe the location of an entity in relation to another entity or in relation to a specific location, instead of specifying a geometry.</p>
               <p>The relative positioning descriptions should be machine-interpretable and/or human-readable.</p>
             </section>
             <section class="how">
@@ -1517,20 +1517,35 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
 
         <div class="practice">
           <p><span id="self-describing-apis" class="practicelab">APIs should be self-describing</span></p>
-          <p class="practicedesc">... best practice description ...</p>
+          <p class="practicedesc">APIs should provide a description of their contents and how to interact with it. Ideally this should be a machine-readable description.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>...</p>
+            <p>Good information about an API lets potential users determine if the API is a good resource to use for a given task and how to use it, as well as letting machines find out how to interact with it.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>...</p>
+            <p>The description describes what data is available in the API, how the API works, how the data is structured, what formats are available, and so on.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>...</p>
+            <p>Any description of the API is better than none, but ideally you should provide a machine-readable description. For example, HAL: 'JSON Hypertext Application Language', see <a href="https://tools.ietf.org/html/draft-kelly-json-hal-07">IETF draft</a>. An additional benefit of Hal is that generation of the documentation is coupled to the code for the API so that the API docs never get out of date.</p>
+            <p>The API description should indicate what data is <em>actually</em> available. For example, it should give the boundaries of values used for the API parameters (e.g. using a value range or controlled vocabulary) so that one can only request data that <em>actually</em> exists.</p>
+            <p>Describing an API includes binding the service endpoint to the data(set) it exposes; describing the APIs operations and parameters; binding parameters to domains (e.g. spatial extent, controlled vocabulary) to enable meaningful queries to be made; what kind of format / payload the API offers; and API versioning. APIs should be versioned. For more information about this, see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#VersionsForAPI">Best Practice 23 Maintain separate versions for a data API</a>.</p>
+            <p>Predictably structured datasets that are available through services can be described as a <a href="http://www.w3.org/TR/vocab-data-cube/#data-cubes">Data Cube</a> with Dimensions of "what, where, when", and so on. Each Dimension of the Data Cube is bound to a parameter in the API method. The "where" Dimension of a Data Cube, if specified as a <code>qb:CodedProperty</code>, may bound to a set of SpatialThings (e.g. using the property <code>qb:codeList</code>). The URI Set (the set of all SpatialThings mentioned in the Data Cube) provides a 'controlled vocabulary' of locations for which 'observations' (data points) in the Data Cube are available (e.g. air quality data is available at these locations).</p>
+            <p>A possible approach <span style="background-color:yellow">(ref. GNON/SIRF)</span>:</p>
+            <ol>
+              <li>Describe the content exposed by a service endpoint as a <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a>; use the <code>void:TechnicalFeature</code> to describe the service.</li>
+              <li>Each API parameter may be bound to a given <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a> (or subset) to provide a set of values, terms or entities for that parameter that provide meaningful queries (e.g. a controlled vocabulary).</li>
+              <li>Use [[RFC6570]] URI Templates to bind parameters into RESTful API URLs.</li>
+              <li>A 'short-form' of the identifier may be required for usage in the API; this may be defined as a SKOS notation.</li>
+            </ol>
             <aside class="example">
-              <p>example(s) to be added</p>
+              <p>Example(s):</p>
+              <ul>
+                <li>OGC 'capabilities documents' provide an example of a standardized API description. Every <a>WFS</a> or <a>WMS</a> service, for example, understands the request 'getCapabilities', and then returns an XML document giving information about the service such as the Coordinate Reference system used, the data structure schema, available map layers, and so on. </li>
+                <li>A versioned API: <a href="http://wiki.openstreetmap.org/wiki/API">OpenStreetMap API</a></li>
+                <li>More examples to be added</li>
+              </ul>
             </aside>
           </section>
           <section class="test">
@@ -1541,7 +1556,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
-          <div style="background-color:yellow">
+          <div style="background-color:cyan">
             <ul>
               <li>how the API works … ideally providing a machine-readable description (such as HAL: 'JSON Hypertext Application Language', see <a href="https://tools.ietf.org/html/draft-kelly-json-hal-07">IETF draft</a>) … [also note that with HAL, generation of the documentation is coupled to the _code_ for the API so that the API docs never get out of date]</li>
               <li>indicating what data is <em>actually</em> available … i.e. bounding the values used for the API parameters (e.g. using a value range or controlled vocabulary) so that one can only request data that <em>actually</em> exists</li>
@@ -1585,7 +1600,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: <a href"http://www.w3.org/TR/sdw-ucr/#Discoverability">R-Discoverability</a>.</p>
+            <p><span>Relevant requirements</span>: <a href="http://www.w3.org/TR/sdw-ucr/#Discoverability">R-Discoverability</a>.</p>
           </section>
           <div style="background-color:cyan">
             <ul>
