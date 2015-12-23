@@ -93,24 +93,24 @@ var respecConfig = {
        "Simple-Features":{
         href:"http://www.opengeospatial.org/standards/sfa",
         title:"Simple Feature Access - Part 1: Common Architecture",
-        authors: "John Herring",
+        authors: ["John Herring"],
         date: "28 May 2011"    
        }, 
        "Veregin":{
         href:"http://www.geos.ed.ac.uk/~gisteac/gis_book_abridged/files/ch12.pdf",
         title:"Data quality parameters. In: Geographical Information Systems: Principles, Techniques, Management and Applications",
-        authors:"H. Veregin"
+        authors:["H. Veregin"]
        },
        "OandM":{
         href:"http://www.opengeospatial.org/standards/om",
         title:"Observations and Measurements - XML Implementation",
-        authors: "Simon Cox",
+        authors: ["Simon Cox"],
         date: "22 March 2011"      
        },
        "SSN":{
         href:"http://purl.oclc.org/NET/ssnx/ssn",
         title:"Semantic Sensor Network Ontology",
-        authors: "W3C Semantic Sensor Network Incubator Group"
+        authors: ["W3C Semantic Sensor Network Incubator Group"]
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
