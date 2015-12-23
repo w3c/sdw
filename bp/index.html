@@ -1453,34 +1453,54 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
 
         <div class="practice">
           <p><span id="convenience-apis" class="practicelab">Expose entity-level data through 'convenience APIs'</span></p>
-          <p class="practicedesc">... best practice description ...</p>
+          <p class="practicedesc">If you have a specific goal in mind for publishing your data, and you know your 'small set of known developers', tailor the API for your data to that specific goal.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>...</p>
+            <p><strong>Convenience APIs</strong> are tailored to meet a specific goal - which makes them (arguably) simpler to use. The API should allow a user to engage with arbitrarily complex data structures using (a set of) simple queries. </p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>...</p>
+            <ul>
+              <li>The API user does not need to understand those complex semantics before using the API (as is necessary when working with a generalized query service such as a SPARQL endpoint).</li>
+              <li>The API is focused on helping a particular user role fulfill common tasks.</li>
+              <li>The API is light-weight: simple for users in that role to get done what they need to do.</li>
+              <li>The API hides complexity from the user.</li>
+            </ul>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>...</p>
+            <p>The API should be targeted to deliver a coherent set of functions, so that it helps fulfill common tasks. Groups of API operations can be chained together (like unix pipes) to fulfill complex functions and hide this complexity from the user.</p>
+            <p>A good practice for desigining convenience APIs is that of a RESTful web service pattern (see <a href="http://w3c.github.io/dwbp/bp.html#DesigningAPIs">DWBP BP 20 Follow REST principles when designing APIs</a> and 'API design guidelines' <span style="background-color:yellow">[ref?]</span>).</p>
+            <p><em>Some</em> API design guidelines:</p>
+            <ul>
+              <li><strong>state</strong> e.g. sessionID, API key, request header (see OAuth2). However, request headers are difficult to access from a user-agent so these parameters may also need to be URL encoded).</li>
+              <li><strong>content</strong> e.g. data being retrieved or stored, request body, use Content Negotiation and Accept headers to request different formats/encodings.</li>
+              <li><strong>locators</strong> e.g. identifiers, URL path.</li>
+              <li><strong>filters</strong> e.g. sorting, query parameters.</li>
+            </ul>
+            <p>In the world of geospatial data there are a lot of <a>WFS</a> services providing data. A RESTful API as a wrapper or a shim layer could be created around WFS services. GML content from the WFS service could be provided in this way as linked data or another Web friendly format. This approach is similar to the use of Z39.50 in the library community; that protocol is still used but 'modern' Web sites and web services are wrapped around it. Adding URIs in (GML) data exposed by a WFS is pretty straightforward, but making the data 'webby' is harder. There are examples of this approach of creating a convenience API on top of WFS, but rather than adapting the WFS (GML) output, it may be more effective to provide an alternative 'Linked Data friendly' access path to the data source; creating a new, complementary service endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using something like <a href="http://www.melodiesproject.eu/content/ontop-spatial">ontop-spatial</a>) and Linked Data API.</p>
+            <figure>
+              <img src="images/bp28-example.PNG" alt="Example of providing an alternative access path to WFS GML source data" />
+              <figcaption>Providing an alternative 'Linked Data friendly' access path to a WFS data source.</figcaption>
+            </figure>
             <aside class="example">
-              <p>example(s) to be added; including ...</p>
+              <p>Example(s):</p>
               <ul>
-                <li>event based API for traffic information; tell me when speed threshold is exceeded (e.g. traffic is too slow)</li>
-                <li>wrap WFS in RESTful API and provide GML content as Linked Data (<a href="https://swaggerhub.com/api/pdok/arcgis-services-Cultuurhist_Archeologie-ArcheologischeBeleidskaart-MapServer/1.0">Cultural Archaeology from NL Cadastre</a> and planned example from @bartvanleeuwen)
-                  <ul style="background-color:yellow">
+                <li>An event based API for traffic information, that tells you when a certain speed threshold is exceeded (e.g. traffic is too slow).</li>
+                <li>A RESTful API as a wrapper or a shim layer around a WFS service, providing GML content as Linked Data. (<a href="https://swaggerhub.com/api/pdok/geluidskaarten/1.0">Geluidskaarten</a> API in SwaggerHub, based on a WFS service published in the Dutch geoportal <a href="http://www.pdok.nl">Publieke Dienstverlening op de Kaart</a>(PDOK). </li>
+                <li><a href="http://geo.resc.info:8080/geoserver/netage/wms?service=WMS&amp;version=1.1.0&amp;request=GetMap&amp;layers=netage:provincie&amp;styles=&amp;bbox=10426.282,306846.198,278026.09,621876.3&amp;width=652&amp;height=768&amp;srs=EPSG:28992&amp;format=application/openlayers">Example</a> of an API providing an alternative access path to the data source <span style="background-color:yellow">provided by @bartvanleeuwen</span>.
+                  <ul style="background-color:cyan">
                     <li>@timbl's concept of a 'shim' layer</li>
                     <li>@danbri: "this is similar to the use of Z39.50 in the library community; that protocol is still used but 'modern' websites / web services are wrapped around it"</li>
                     <li>@eparsons: "adding URIs [in (GML) data exposed by a WFS] is pretty straightforward, but making it 'webby' is harder"</li>
                     <li>rather than adapting the WFS (GML) output, it may be more effective to provide an alternative 'Linked Data friendly' access path to the data source; creating a new, complementary service endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using something like <a href="http://www.melodiesproject.eu/content/ontop-spatial">ontop-spatial</a>) and Linked Data API</li>
                   </ul>
                 </li>
-                <li><a href="http://ogc-iot.github.io/ogc-iot-api/index.html">OGC Sensor Things API</a></li>
-                <li>'triple pattern fragments' from <a href="http://linkeddatafragments.org">Linked Data Fragments</a></li>
-                <li><a href="http://environment.data.gov.uk/bwq/">Environment Agency Bathing Water Quality API</a> (implemented using the Epimorphic's <a href="https://github.com/epimorphics/elda">ELDA implementation</a> of the <a href="https://github.com/UKGovLD/linked-data-api/blob/wiki/Specification.md">Linked Data API</a>; enables configured queries against (general) SPARQL endpoints to be exposed as RESTful web services)</li>
-                <li>OGC Web Processing Service (WPS) … encapsulate complexity … [there is significant evidence that complex services like OGC WCS will only ever be exposed in operational environments via a WPS proxy]</li>
+                <li>The <a href="http://ogc-iot.github.io/ogc-iot-api/index.html">OGC Sensor Things API</a>.</li>
+                <li>'triple pattern fragments' from <a href="http://linkeddatafragments.org">Linked Data Fragments</a> provide a very efficient, lightweight way of querying linked data.</li>
+                <li><a href="http://environment.data.gov.uk/bwq/">Environment Agency Bathing Water Quality API</a> (implemented using the Epimorphic's <a href="https://github.com/epimorphics/elda">ELDA implementation</a> of the <a href="https://github.com/UKGovLD/linked-data-api/blob/wiki/Specification.md">Linked Data API</a>; enables configured queries against (general) SPARQL endpoints to be exposed as RESTful web services).</li>
+                <li>OGC Web Processing Service (<a>WPS</a>) encapsulate the underlying complexity of complex services like OGC <a>WCS</a>. This is probably the only way such complex services will ever be exposed in operational environments.</li>
+                <li>More examples to be added.</li>
               </ul>
             </aside>
           </section>
@@ -1490,9 +1510,9 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
+            <p><span>Relevant requirements</span>: <a href="http://www.w3.org/TR/sdw-ucr/#Compatibility">R-Compatibility</a>, <a href="http://www.w3.org/TR/sdw-ucr/#LightweightAPI">R-LightweightAPI</a>.</p>
           </section>
-          <div style="background-color:yellow">
+          <div style="background-color:cyan">
             <ul>
               <li><strong>convenience APIs</strong> are tailored to meet a specific goal - which makes them (arguably) simpler to use
                 <ul>
@@ -2367,9 +2387,11 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
       <p><dfn>SpatialThing</dfn>: Anything with spatial extent, i.e. size, shape, or position. e.g. people, places, bowling balls, as well as abstract areas like cubes (<span style="background-color:yellow">ref. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary (geo)</a></span>)</p>
       <p><dfn>TemporalThing</dfn>: Anything with temporal extent, i.e. duration. e.g.  the taking of a photograph, a scheduled meeting, a GPS time-stamped trackpoint (<span style="background-color:yellow">ref. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary (geo)</a></span>)</p>
       <p><dfn>Web developer</dfn>: A programmer who specializes in, or is specifically engaged in, the development of World Wide Web applications, or distributed network applications that are run over HTTP from a Web server to a Web browser. (<span style="background-color:yellow">ref. <a href="https://en.wikipedia.org/wiki/Web_developer">Web developer</a></span>)</p>
+      <p><dfn>WCS</dfn>: Web Coverage service, a service offering multi-dimensional coverage data for access over the Internet. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wcs">OGC WCS</a></span>)</p>
       <p><dfn>WFS</dfn>: Web Feature Service, a standardized HTTP interface allowing requests for geographical features across the web using platform-independent calls. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wfs">OGC WFS</a></span>)</p>
       <p><dfn>WMS</dfn>: Web Map Service, a standardized HTTP interface for requesting geo-registered map images from one or more distributed geospatial databases. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wms">OGC WMS</a></span>)</p>
       <p><dfn>WKT</dfn>: Well Known Text, a text markup language for representing vector geometry objects on a map, spatial reference systems of spatial objects and transformations between spatial reference systems. </p>
+      <p><dfn>WPS</dfn>: Web Processing Service, an interface standard which provides rules for standardizing inputs and outputs (requests and responses) for invoking geospatial processing services, such as polygon overlay, as a Web service. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wps">OGC WPS</a></span>)</p>
     </section>
     
     <section class="appendix" id="acknowledgments">
