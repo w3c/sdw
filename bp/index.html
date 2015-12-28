@@ -1008,13 +1008,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           <p class="practicedesc">The data should be published with explicit links to other resources.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>Exposing entity-level links to web applications, user-agents and web crawlers allows the relationships between resources to be found without the data user needing to download the entire dataset for local analysis.</p>
-            
-              <p style="background-color:cyan">Explicit description of [entity-level] links allows one to determine (and find) relationships within the information network - finding related information that can be used to provide better insights.</p>
-              
-              <p style="background-color:cyan">Entity level links can be used to combine information from different sources; for example, to determine correlations in statistical data relating to the same location.</p>
-              
-            <p style="background-color:yellow">visibility of [entity-level] links allows one to determine (and find) relationships within the information network - finding related information that can be used to provide greater insight … entity level links can be used to combine information from different sources; for example, to determine correlations in statistical data relating to the same location … [benefiting from the "network effect"]</p>
+            <p>Exposing entity-level links to web applications, user-agents and web crawlers allows the relationships between resources to be found without the data user needing to download the entire dataset for local analysis. Entity-level links provide explicit description of the relationships between resources and enable users to find related data and determine whether the related data is worth accessing. Entity-level links can be used to combine information from different sources; for example, to determine correlations in statistical data relating to the same location.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
@@ -1023,38 +1017,49 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
                   <li>It should be possible for humans to understand and follow the the entity-level links between resources.</li>
                   <li>It should be possible for machine agents to interpret and explore the the entity-level links between resources.</li>
                   <li>It should be possible for machine agents to automatically determine (and find) relationships between entities by exploring the links between them.</li>
+                  <li>It should be possible for a third party, who owns neither subject or object resources, to publish a set of links between resources.</li>
               </ul>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>To provide explicit entity-level links:</p>
             <ul>
-              <li>Publish the data with links (to uniquely identified objects) embedded in the data (e.g. one "page" per resource [see City of Nanaimo example])</li>
-              <li>Publish summaries of links for the dataset so that these can be evaluated; e.g. <a href="http://www.w3.org/TR/void/#describing-linksets">VoID Linksets</a>
-                <ul>
-                  <li>example approach: SIRF / GNON in which individual links cached or computed at run-time; accessed via "technical features" of the Linkset</li>
-                  <li>example: life sciences (<a href="http://www.openphacts.org">openphacts</a>)</li>
-                  <li style="background-color:yellow">note: VoID provides guidance on <a href="http://www.w3.org/TR/void/#discovery">how to discover VoID descriptions</a> (including Linksets)- (i) by browsing the VoID dataset descriptions themselves to find related datasets, (ii) using <code>/.well-known/void</code> (as described in [[RFC5758]]</li>
-                </ul>
-              </li>
-              <li>Provide 3rd-party links when the publisher owns neither the subject or object resources.
-                <ul>
-                  <li>For example <a href="http://sameas.org">sameas.org</a> provides a (collection of) Link-set(s) maintained by a third party.</li>
-                  <li>See also <a href="https://gbv.github.io/beaconspec/beacon.html">Beacon link dump format</a>
-                      <span style="background-color:yellow">question: what about use of wild cards / regex in URLs (e.g. URI Template [[RFC6570]])</span></li>
-                </ul>
-              </li>
+              <li>Publish the data with links (to uniquely identified objects) embedded in the data.</li>
+              <li>Publish sets of links as a complementary resource.</li>
+              <li>Publish summaries of links for the dataset so that the semantics of the links can be evaluated and accessed if deemed appropriate.</li>
             </ul>
-            
-            <p class="issue">how would a (user) agent discover that these 3rd-party link-sets existed? search for <code>/.well-known/void</code> on a specified set of domains? is there any practice in the wild that can be referenced?</p>
 
             <aside class="example">
               <p>example(s) to be added; including ...</p>
               <ul>
-                <li>encoding of entity-level links in a number of formats; <a href="http://www.w3.org/TR/json-ld/">JSON-LD</a>, GML (<a href="http://www.w3.org/TR/xlink11/">xlink</a> ... noting <a href="https://lists.w3.org/Archives/Public/public-sdw-wg/2015Oct/0149.html">@clemens point about xlink adoption in GML</a>), <a href="https://gbv.github.io/beaconspec/beacon.html">Beacon link dump format</a> etc.</li>
-                <li>linking to a Thing as it was at a particular time</li>
+                <li>Encoding of entity-level links in a number of formats; 
+                  <ul>
+                    <li>[[json-ld]]</li>
+                    <li>[[gml]] (using [[xlink11]])</li>
+                    <li>[[beacon]] link dump format</li>
+                  </ul>
+                </li>
+                <li>Linking to a Thing as it was at a particular time</li>
+                <li>Publish summary of links for dataset using [[void]] <a href="http://www.w3.org/TR/void/#linkset" class="externalDFN">Linksets</a>;
+                  <ul>
+                    <li><a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference Framework</a> (SIRF) in which a summary of links for the data set is published as a Linkset; individual links are cached or computed at run-time and may be discovered via "technical features" of the Linkset.</li>
+                    <li><a href="https://www.openphacts.org">Open PHACTS Discovery Platform</a>; bringing together pharmacological data resources in an integrated, interoperable infrastructure.</li>
+                  </ul>
+                </li>
+                <li>Third-party provision of links: <a href="http://sameas.org">sameas.org</a> provides a (collection of) Link-set(s).</li>
               </ul>
             </aside>
+
+            <p class="note">[[gml]] adopted the [[xlink11]] standard to represent links between resources. At the time of adoption, XLink was the only W3C-endorsed standard mechanism for describing links between resources within XML documents. The <a href="http://www.opengeospatial.org/">Open Geospatial Consortium</a> anticipated broad adoption of XLink over time - and, with that adoption, provision of support within software tooling. While XML Schema, XPath, XSLT and XQuery etc. have seen good software support over the years, this never happened with XLink. The authors of GML note that given the lack of widespread support, use of Xlink within GML provided no significant advantage over and above use a bespoke mechanism tailored to the needs of GML.</p>
+
+            <p class="note">[[void]] provides guidance on <a href="http://www.w3.org/TR/void/#discovery">how to discover VoID descriptions</a> (including <a href="http://www.w3.org/TR/void/#linkset">Linksets</a>)- both by browsing the VoID dataset descriptions themselves to find related datasets, and using <code>/.well-known/void</code> (as described in [[RFC5758]]).</p>
+
+            <p class="issue" data-number="162">How would a (user) agent discover that these 3rd-party link-sets existed? Is there evidence of usage in the wild?</p>
+
+            <p class="issue" data-number="163">Does the [[beacon]] link dump format</a> allow the use of wild cards / regex in URLs (e.g. URI Template as defined in [[RFC6570]]?</p>
+
+            <p class="issue" data-number="164">The examples contain only outline information; further details must be added.</p>
+
           </section>
           <section class="test">
             <p class="subhead">How to Test</p>
@@ -1336,7 +1341,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <aside class="example">
               <p>example(s) to be added; including ...</p>
               <ul>
-                <li><a href="http://maps.nanaimo.ca/data/property/">City of Nanaimo, Canada</a> … one page per resource; generated at request time</li>
+                <li><a href="http://maps.nanaimo.ca/data/property/">City of Nanaimo, Canada</a> … one page per resource; generated at request time; uses [[microdata]] and [[SCHEMA-ORG]]</li>
               </ul>
             </aside>
           </section>
