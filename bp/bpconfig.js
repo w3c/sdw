@@ -111,6 +111,18 @@ var respecConfig = {
         href:"http://purl.oclc.org/NET/ssnx/ssn",
         title:"Semantic Sensor Network Ontology",
         authors: ["W3C Semantic Sensor Network Incubator Group"]
+       },
+       "gml":{
+        href:"http://www.opengeospatial.org/standards/gml",
+        title:"Geography Markup Language",
+        authors: ["Clemens Portele (editor)"],
+        date: "27 August 2007"
+       },
+       "beacon":{
+        href:"https://gbv.github.io/beaconspec/beacon.html",
+        title:"BEACON link dump format",
+        authors: ["J. Voß", "M. Schindler"],
+        date: "6 July 2014"
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
