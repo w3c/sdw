@@ -14,4 +14,4 @@ Therefore, a URI that includes an API call or query directly should be treated a
 
 To be persistent, a URI must be technology-neutral. An intermediate layer should be used to translate a URI into a query.
 
-The [Linked Data API](https://github.com/UKGovLD/linked-data-api The Linked dfata API) is a well documented and widely implemented method of doing this for Linked Data.
+The [Linked Data API](https://github.com/UKGovLD/linked-data-api "The Linked dfata API") is a well documented and widely implemented method of doing this for Linked Data.
