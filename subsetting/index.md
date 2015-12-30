@@ -16,4 +16,20 @@ To be persistent, a URI must be technology-neutral. An intermediate layer should
 
 The [Linked Data API](https://github.com/UKGovLD/linked-data-api "The Linked Data API") is a well documented and widely implemented method of doing this. It takes a simple URL as input and interprets that as a SPARQL query, returning the output in any number of formats through content negotiation. The aim here is to provide a non-SPARQL interface to Linked Data resources, but the effect is to create persistent URIs for subsets of large datasets. The imntermediate layer could be replaced with en entirely different technology and still return the same data.
 
-[OpenSearch](http://www.opensearch.org/Specifications/OpenSearch/1.1 "OpenSearch") provides something similar, in that a simple URL is converted into an XML message that is posted to a search engine. A future version of OpenSearch could use an entirely different technology whilst the template URL remained unchanged. In the case of OpenSearch, the URL makes use of the query string portion of the URL (`http://search.example.com/?q=search%20term` for example)
+[OpenSearch](http://www.opensearch.org/Specifications/OpenSearch/1.1 "OpenSearch") provides something similar, in that a simple URL is converted into an XML message that is posted to a search engine. A future version of OpenSearch could use an entirely different technology whilst the template URL remained unchanged. The OpenSearch URL makes use of the query string portion  (`http://search.example.com/?q=search%20term` for example) however, this is not interpreted directly and is not technology dependent. OGC offers a set of [geo-temporal extensions](http://www.opengis.net/doc/IS/opensearchgeo/1.0 "OpenSearch Geo and Time Extensions") to OpenSearch and these can potentially be considered as persistent identifiers, however, as the query string becomes longer and longer, the more the URL is tied to an existing data structure and implementation.
+
+Persistent Structures
+---------------------
+
+Something about intended outcomes.
+
+* `http://weather.example.com/temperature/uk/london` for the current temperature in London
+* `http://weather.example.com/temperature/uk/london/2015-12-30/` for temperature readings in London for a specific day
+* `http://weather.example.com/temperature/uk/london/2015-12-30/12:00/` for the temperature reading in London for a specific day at a specifc time
+
+Implementation options
+----------------------
+
+Mod Rewrite examples
+
+SQL examples etc.
