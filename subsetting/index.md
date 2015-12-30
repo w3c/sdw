@@ -14,4 +14,6 @@ Therefore, a URI that includes an API call or query directly should be treated a
 
 To be persistent, a URI must be technology-neutral. An intermediate layer should be used to translate a URI into a query.
 
-The [Linked Data API](https://github.com/UKGovLD/linked-data-api "The Linked dfata API") is a well documented and widely implemented method of doing this for Linked Data.
+The [Linked Data API](https://github.com/UKGovLD/linked-data-api "The Linked Data API") is a well documented and widely implemented method of doing this. It takes a simple URL as input and interprets that as a SPARQL query, returning the output in any number of formats through content negotiation. The aim here is to provide a non-SPARQL interface to Linked Data resources, but the effect is to create persistent URIs for subsets of large datasets. The imntermediate layer could be replaced with en entirely different technology and still return the same data.
+
+[OpenSearch](http://www.opensearch.org/Specifications/OpenSearch/1.1 "OpenSearch") provides something similar, in that a simple URL is converted into an XML message that is posted to a search engine. A future version of OpenSearch could use an entirely different technology whilst the template URL remained unchanged. In the case of OpenSearch, the URL makes use of the query string portion of the URL (`http://search.emaple.com/?q=search%20term` for example)
