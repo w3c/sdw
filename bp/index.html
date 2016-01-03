@@ -1223,6 +1223,9 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <p>The link must convey the semantics appropriate to the application (see <a href="#semantic-rels">Best Practice 13: Assert known relationships</a> and <a href="#meaningful-links">Best Practice 20: Provide meaningful links</a> for more information).</p>
             <aside class="example">
               <p>example(s) to be added</p>
+              <ul>
+                <li>Links from entity to the 'dataset' in which it is defined (enabling a user to find 'peer' entities); e.g. RDF Data Cube observation</li>
+              </ul>
             </aside>
           </section>
           <section class="test">
@@ -1233,8 +1236,6 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
-
-          <p class="issue" data-number="66">What do we expect user-agents to do with a multitude of links?</p>
 
         </div>
       </section>
@@ -1251,37 +1252,33 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           <p class="practicedesc">Related data to a spatial dataset and its individual data items should be discoverable by browsing the links</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>Providing explicit links that relate data collections allows software agents to automatically discover related datasets (or data items) available on the Web and it allows human users to explore the links between a spatial data and other related data.</p>
-            <p style="background-color:yellow">spatial data is typically more structured and contains Things that can be discovered individually</p>
+            <p>In much the same way as the <em>document Web</em> allows one to find related content by following hyperlinks, the links between spatial datasets, <a>SpatialThings</a> described in those datasets and other resources on the Web enable humans and software agents to explore rich and diverse content without the need to download a collection of datasets for local processing in order to determine the relationships between resources.</p>
+            <p>Spatial data is typically well structured; datasets contain <a>SpatialThings</a> that can be uniquely identified. This means that spatial data is well suited to the use of links to find related content.</p>
+            <p class="note">The emergency response to natural disasters is often delayed by the need to download and correlate spatial datasets before effective planning can begin. Not only is the initial response hampered, but often the correlations between resources in datasets are discarded once the emergency response is complete because participants have not been able to capture and republish those correlations for subsequent usage.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
             <p>It should be possible for humans to explore the links between a spatial dataset (or its individual items) and other related data on the Web. </p> 
+            <p>It should be possible for software agents to automatically discover related data by exploring the links between a spatial dataset (or its individual items) and other resources on the Web.</p>
+            <p>It should be possible for a human or software agent to determine which links are relevant to them and which links can be considered trustworthy.</p>
 
-              <p>It should be possible for software agents to automatically discover related data by exploring the links between a spatial dataset (or its individual items) and other resources on the Web.</p>
+            <p class="issue" data-number="66">What do we expect user-agents to do with a multitude of links from a single resource? A document hyperlink has just one target; but in data, a resource may be related to many things.</p>
+
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-              <p>Discovery links and metadata should:</p>
-              <div style="background-color:cyan">
-                <ul>
-                    <li>Provide entity-level links to enable a user or a software agent to browse and find related information - or algorithmically discover related information through analysis of a graph comprised of multiple links.</li>
-                    <li>Incorporate 'forward links’ in the same way that the document web works today for browsing by humans.</li>
-                    <li>Provide a collation of links that point to a given resource; this will provides a list of referring objects. The subject resource does not need to know about the referral.  These 'backward links' can be traversed to find related information and also help a publisher assess the value of their content by making it possible to see who is using (or referencing) their data.</li>
-                    <li>incorporate aggregation of links to enable referring URLs to be indexed e.g. "what points to me?" </li>
-                        <ul>
-                            <li>using 'frequency of update' to determine mechanisms for keeping indexes fresh.</li>
-                            <li>network / graph analysis to find disparate information; e.g. looking for room temperature and discovering the presence of a temperature sensor in the room which can be actuated.</li>
-                        </ul>
-                    <li>Provide links from entity to the 'dataset' in which it is defined in order to find 'peer' entities e.g. RDF Data Cube observation</li>
-                    <li>Provide metdata data with the links to find related information; e.g. <a href="https://wiki.csiro.au/display/SIRF/The+SIRF+API">CSIRO SIRF</a>.</li>
-                    <li>not all links are equal; It should be possible to determine which links to 'trust' by including metadata in data publications that enable users to make inferences about whether to use the data or not. </li>
-                    <ul>
-                        <li>e.g. owner / publisher, quality information, community annotations (“likes”), publication date.</li>
-                        <li>dataset-level metadata is often the best way to convey such information for a set of entities or resources</li>   
-                    </ul>
-                </ul>
-              </div>
+            <ul>
+              <li>For a given subject resource find all the related resources that it refers to.</li>
+              <li>Evaluate the property type that is used to relate each resource in order to determine relevance (see <a href="http://w3c.github.io/sdw/bp/#meaningful-links">Best Practice 20: Provide meaningful links</a>).</li>
+              <li>Use the metadata for the dataset within which the subject resource is described in order to determine which links to "trust" (e.g. whether to use the data or not); owner / publisher, quality information, community annotations (“likes”), publication date etc.</li>
+              <li>Aggregate links from trusted sources into a database. Referring URLs can be indexed to determine which resources <em>refer to</em> the subject resource, i.e. "what points to me?". These referring links are sometimes called <em>back-links</em>. Dataset-level metadata may provide information regarding the frequency of update for the information sources, enabling one to determine a mechanism for keeping the aggregated link-set fresh.
+                <div class="note">
+                  <p>These "back-links" can be traversed to find related information and also help a publisher assess the value of their content by making it possible to see who is using (or referencing) their data.</p>
+                </div>
+              </li>
+              <li>Use network / graph analysis algorithms to determine related information that is not directly connected; i.e. resources that are connected via a chain of links and intermediate resources.</li>
+            </ul>
+
             <aside class="example">
               <p>example(s) to be added</p>
             </aside>
@@ -1294,27 +1291,6 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
-          <div style="background-color:yellow">
-            <ul>
-              <li>entity-level links enable a user to browse to find related information - or algorithmically discover related information through analysis of a graph comprised of multiple links</li>
-              <li>incorporates following 'forward links' … this is the way the document web works today; browsing by humans</li>
-              <li>collation of links that point to a given resource provides a list of referring objects … the subject resource need not know about the referral … these 'back links' can be traversed to find related information - and also help a publisher assess the value of their content by making it possible to see who is using (or referencing) their data</li>
-              <li>incorporates aggregation of links to enable referring URLs to be indexed e.g. "what points to me?" … 'back links'
-                <ul>
-                  <li>use 'frequency of update' to determine mechanisms for keeping indexes fresh</li>
-                  <li>network / graph analysis to find disparate information; looking for room temperature &amp; discovering the presence of a temperature sensor in the room which can be actuated</li>
-                </ul>
-              </li>
-              <li>¿link from entity to the 'dataset' in which it is defined in order to find 'peer' entities e.g. RDF Data Cube observation</li>
-              <li>¿use of gazetteer to find related information; [CSIRO SIRF]</li>
-              <li>not all links are equal; need to be able to determine which links to 'trust' … include metadata in data publications that enable users to make inferences about whether to use the data
-                <ul>
-                  <li>e.g. owner / publisher, quality information, community annotations ("likes"), publication date etc.</li>
-                  <li>dataset-level metadata is often the best way to convey such information for a set of entities or resources</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
         </div>
 
         <div class="practice">
@@ -1322,34 +1298,42 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           <p class="practicedesc">Search engines should receive a metadata response to a HTTP GET when dereferencing the link target URI.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>Search engines should be able to use links and URIs to discover spatial data to index and to prioritize those spatial data collections within a search result.</p>
+            <p>Current <a>SDI</a> approaches require a 2-step approach for discovery, beginning with a catalog query and then accessing the appropriate data service end-point.</p>
+            <p>Exposing data <em>on the Web</em> means that it can be discovered directly using search engines. This provides a number of benefits:</p>
+            <ul>
+              <li>Spatial data will become far more discoverable because a user does not need any special knowledge to find the <a>SDIs</a> catalog service.</li>
+              <li>Users can discover what data is <em>actually</em> available, rather than relying on the metadata that is infrquently published to the catalog and may have become stale.</li>
+              <li>Users do not need to be proficient with the query protocol of the dataset's service end-point in order to acquire the data they need.</li>
+            </ul>
+            <p>Search engines should be able to use links and URIs to discover indexable spatial data and to prioritize those spatial data collections within a search result.</p>
             <p>Search engines use links to discover content to index and to prioritize that content within a search result.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>A search engine web crawler should be able to find entity-level links within data and obtain descriptive and machine interpretable metadata response to a HTTP GET when dereferencing the link target URI.</p>
-<p>Search engine indexes can include details of entity-level resources enabling software agents and users to find information about those resources directly. For example search engines can use the <code>“robots.txt"</code> file at the root directory of a website to get information describing how the search bots should crawl that site.</p>        
+            <p>Spatial data should be discoverable directly using a search engine query.</p>
+            <p>Spatial data is indexable by search engines; a search engine Web crawler should be able to obtain descriptive and machine interpretable metadata response to a HTTP GET when dereferencing the URL of a <a>SpatialThing</a> and to determine links to related data for the Web crawler to follow.</p>
+            <p class="note">We make the assertion that data is not really 'on the web' until it's crawlable.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-              <div style="background-color:cyan">
-                <p>One can we make this assertion that "data is not really 'on the web' until it's crawlable". To make your entity-level data indexable by search engines:</p>
-              <ul>
-                  <li>Generate one HTML page per resource. Include structured markup (see <a href="http://schema.org/">schema.org</a>) that the search engines can use to make more detailed assumptions about your resource(s) and drive better search performance. Either create pages beforehand or generate them at query time via an API.</li>
-                  <li>Provide a path for search engines to find your pages - either crawling to each entity from a 'collection' object (which provides the entry point for the web crawler) or being directed by <a href="http://www.sitemaps.org/">sitemaps</a>.</li>
-                  <li>Search engines might be used to search spatial data based on identifier, location, time, etc (some examples are provided in [<a href="http://personal.ee.surrey.ac.uk/Personal/P.Barnaghi/doc/semantic_stream_iThings2013_167.pdf">Section III.A, Barnaghi et al.</a>]. The search for spatial data can be similar to the typical search query, but the search and use of results in many cases will be done by software agents and other services like Google Now that interpret information.</li>
-                  <li>Providing more that structured markup that is included in spatial datasets -using the recommendations of SDW- the more likely that search engines will provide mechanisms to exploit that information when searching.</li>
-                  <li>Refer to <a href="#indexable-by-search-engines">Best Practice 25: Make your entity-level data indexable by search engines</a>.</li>
-              </ul>
-              </div>   
-            <p style="background-color:yellow">will Google index KML too? what about GeoJSON?</p>
-            <p style="background-color:yellow">question: what if the data is provided as a record in a dataset or data stream (that is not exposed as an HTML page) … how can you 'crawl' that?</p>
+            <p>To make your entity-level data indexable by search engines:</p>
+            <ul>
+              <li>Generate one HTML page per resource. Include structured markup (see <a href="http://schema.org/">schema.org</a>) that the search engines can use to make more detailed assumptions about your resource(s) and drive better search performance. Either create pages beforehand or generate them at query time via an API.</li>
+              <li>Provide a path for search engines to find your pages - either crawling to each entity from a 'collection' object (which provides the entry point for the web crawler) or being directed by <a href="http://www.sitemaps.org/">sitemaps</a>.</li>
+              <li>Search engines may be used to search spatial data based on identifier, location, time, etc (some examples are provided in [<a href="http://personal.ee.surrey.ac.uk/Personal/P.Barnaghi/doc/semantic_stream_iThings2013_167.pdf">Section III.A, Barnaghi et al.</a>]. The search for spatial data can be similar to the typical search query, but the search and use of results in many cases will be done by software agents and other services like <a href="https://www.google.co.uk/landing/now/">Google Now</a> that interpret information.</li>
+            </ul>
+            <p class="issue" data-number="181">More discussion is required on how to structure meaningful (spatial) queries with search engines (e.g. based on identifier, location, time etc.).</p>
+            <p class="note">As more spatial datasets are published that provide structured markup to search engine Web crawlers enabling the content of those datasets to be indexed, the more likely that search engines will provide richer and more sophisticated search mechanisms to exploit that markup which will further improve the ability of users to find spatial data.</p>
+
             <aside class="example">
               <p>example(s) to be added; including ...</p>
               <ul>
-                  <li><div style="background-color:cyan"><a href="http://www.hypercat.io/standard.html">HyperCat</a> is an example of how referring to URIs for the resources can return meaningful and machine interpretable information.</div></li>
+                  <li><a href="http://www.hypercat.io/standard.html">HyperCat</a> is an example of how referring to URIs for the resources can return meaningful and machine interpretable information.</li>
                 <li><a href="http://maps.nanaimo.ca/data/property/">City of Nanaimo, Canada</a> … one page per resource; generated at request time; uses [[microdata]] and [[SCHEMA-ORG]]</li>
               </ul>
+              <p class="issue" data-number="179">Example required for search engine indexing of dataset / data-stream.</p>
+              <p class="issue" data-number="180">Example required for search engine directly indexing structured spatial data (e.g. GeoJSON or KML).</p>
+
             </aside>
           </section>
           <section class="test">
@@ -1360,19 +1344,6 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
-          <div style="background-color:yellow">
-            <ul>
-              <li>can we make this assertion: "<strong>data is not really 'on the web' until it's crawlable</strong>"?</li>
-              <li>ref <a href="#indexable-by-search-engines">Best Practice 25: Make your entity-level data indexable by search engines</a></li>
-              <li>incorporates @eparsons' perspective on evolution of SDIs; one HTML page (plus structured markup) per resource; use of <a href="http://www.sitemaps.org">sitemaps</a></li>
-              <li>need more discussion on how search engines might be used to search … based on identifier, location, time etc. … not just the typical search query, but other services like Google Now that interpret information ... 
-                <ul>
-                  <li>@eparsons: "the more that structured markup is included in web pages [using the recommendations of SDW] the more likely that search engines will [provide mechanisms to exploit that information when searching] … it's a bit chicken and egg"</li>
-                  <li>@danbri demonstrates that Google can provide search over structured content; example of structured markup (<a href="https://developers.google.com/structured-data/testing-tool/?url=http://travel.cnn.com/tokyo/sleep/hokutosei-sleeper-train-tokyo-sapporo-905418">https://developers.google.com/structured-data/testing-tool/?url=http://travel.cnn.com/tokyo/sleep/hokutosei-sleeper-train-tokyo-sapporo-905418</a>) which has 'City' named 'Tokyo' … Google Custom Search restricted to pages describing a <code><a href="https://schema.org/City">schema:City</a></code>: <a href="https://cse.google.com/cse/publicurl?cx=013484121852858951051:_k8pkh6pfio">https://cse.google.com/cse/publicurl?cx=013484121852858951051:_k8pkh6pfio</a> [<em>needs further elaboration</em>]</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
         </div>
 
         <div class="practice">
