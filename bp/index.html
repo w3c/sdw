@@ -395,20 +395,45 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
         
         <div class="practice">
           <p><span id="ids-for-chunks" class="practicelab">Provide identifiers for parts of larger information resources</span></p>
-          <p class="practicedesc">Identifiers are needed at a certain level of granularity.</p>
+          <p class="practicedesc">Identify subsets of large information resources that are a convenient size for applications to work with.</p>
+
+<p>. In order to make these datasets accessible, it is helpful to provide a mechanism to access subsets of that dataset; e.g. the data for a subregion of the entire dataset. A good way to do this is to have identifiers for subsets of the resource: a "protocol independent" way to identify dataset subsets. In order for that to work, identifiers for the resource itself should be separate from the URL of the service-end point(s) that can be used to access that resource. </p>
+
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>If information resources are large, it may be useful to be able to link to subsets of the resource. </p>
+            <p>Some datasets, particularly <a>coverages</a> such as satellite imagery, sensor measurement timeseries and climate prediction data, can be very large. It is difficult for Web applications to work with large datasets: it can take considerable time to download the data and requires sufficient volume local storage to be available. To remedy this challenge, it is often useful to provide identifiers for conveiently sized subsets of large datasets that Web applications can work with.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>Being able to refer to subsets of a large resource.</p>
+            <p>Being able to refer to subsets of a large information resource that are sized for convienient usage in Web applications.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>Mint a new identifier for the subset and record the provenance, that is, information about the created subset such as what the original source dataset is, and from which endpoint the subset was extracted. Use a <a href="http://www.w3.org/TR/prov-o/">PROV-O</a> description to provide this information.</p>
+            <p>Two possible approaches are described below:</p>
+            <ol>
+              <li>Create named subsets.
+                <ul>
+                  <li>Determine how users may seek to access the dataset, determining subsets of the larger dataset that are appropriate for the intended application. A data provider may consider a general approach to improve accessibility of a dataset, while a data user might want to publish details of a workflow for others to reuse referencing only the relevant parts of the large dataset.</li>
+                  <li>Given the anticipated access pattern, create new resources and mint a new identifier for each subset.</li>
+                  <li>Provide metadata to indicate how a given subset resource is related to the original large dataset.</li>
+                </ul>
+              </li>
+              <li>Map a URI pattern to an existing data-access API.
+                <p class="note">Web service URLs in general not a good URI for a resource as it is unlikely to be persistent. A Web service URL is often technology and implementation dependent and both are very likely to change with time. For example, consider oft used parameters such as <code>?version=</code>. Good practice is to use URIs that will resolve as long as the resource is relevant and may be referenced by others, therefore identifiers for subsets should be <em>protocol independent</em>.</p>
+                <ul>
+                  <li>Identify the service end-point that provides access to the larger dataset.</li>
+                  <li>Determine which parameters offered by the service end-point are required to construct a meaningful subset.</li>
+                  <li>Map these parameters into a URI pattern and configure an HTTP server to apply the necessary URL-rewrite.</li>
+                </ul>
+                </li>
+            </ol>
             <aside class="example">
-              <p>example(s) to be added</p>
+              <p>example(s) to be added; including ...</p>
+              <ul>
+                <li>Identifying a subset of a larger dataset that is used in a re-usable workflow (e.g. to enable others to validate a scientific conclusion); use <a href="http://www.w3.org/TR/prov-o/">PROV-O</a> to decsribe the relationship between the subset, the original large dataset and the mechanism used to derive the subset.</li>
+                <li>Predefining subsets of a larger dataset as <a href="http://www.w3.org/TR/vocab-data-cube/#cubes-slices">slices</a> (as defined by the RDF Data Cube [[vocab-data-cube]]).</li>
+                <li>Mapping a URI template (as specified in [[RFC6570]]) to a <a>WCS</a> or <a href="http://www.opendap.org/">OPeNDAP</a> service end-point.</li>
+              </ul>
             </aside>
           </section>
           <section class="test">
@@ -1387,21 +1412,16 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
 
       <section id="bp-exposing-via-api">
         <h3>Exposing datasets through APIs</h3>
-        <div style="background-color:cyan">
-            <p>Dataset APIs here refer to both the query <i>interface</i> used and the <i>content</i> exposed by the given endpoint.</p>
-            <p>Access to spatial data via APIs can include 4 main categories: question/answer, event based, publish/subscribe, and transactional.</p>
-            <p>Spatial data needs be simple to incorporate within a web environment. “Point-based” APIs (with wide adoption; e.g. focused on simple point-based data) should be provided to allow access to data items based on their spatial features and if needed more advance APIs should be also provided for specialist "expert" users.</p>
+        <p></p>
+        <p>Dataset APIs here refer to both the query <i>interface</i> used and the <i>content</i> exposed by the given endpoint.</p>
+        <p>Access to spatial data via APIs can include 4 main categories: question/answer, event based, publish/subscribe, and transactional.</p>
+        <p>Spatial data needs be simple to incorporate within a web environment. “Point-based” APIs (with wide adoption; e.g. focused on simple point-based data) should be provided to allow access to data items based on their spatial features and if needed more advance APIs should be also provided for specialist "expert" users.</p>
+        <div style="background-color:yellow"
+          <p>using an API that supports content negotiation when necessary.</p>
+          <p>the URL for accessing a dataset does not equal a persistent identifier for the dataset itself.</p>
+          <p>There's no best practice for exposing Web Feature Service content in a more accessible way from a linked data point of view. However we describe here a recommended way of doing it, giving each feature its own stable URI and extending the API to make it more discoverable.  </p>
+          <p>The current OGC WxS services need some form of redesign (perhaps in the form of an extra layer on top aka a shim) in order to make it more discoverable and the data inside linkable. To make the data inside a service more linkable stable URIs need to be minted for the spatial things in the service and be made available. This would require modifications to the service itself. </p>
         </div>
-        <div style="background-color:yellow">
-          <p>----to be removed---- scope: API covers both the (query) <em>interface</em> used and the <em>content</em> exposed by the given endpoint</p>
-          <p>… 4 categories: question/answer, event based, pub/sub, transactional </p>
-          <p>"pointy" APIs (with wide adoption; e.g. focused on simple point-based data) vs. specialist "expert" APIs … spatial data needs be simple to incorporate within a web environment … (or is it the APIs that need to be simple?)</p>
-        </div>
-
-        <p>using an API that supports content negotiation when necessary.</p>
-        <p>the URL for accessing a dataset does not equal a persistent identifier for the dataset itself.</p>
-        <p>There's no best practice for exposing Web Feature Service content in a more accessible way from a linked data point of view. However we describe here a recommended way of doing it, giving each feature its own stable URI and extending the API to make it more discoverable.  </p>
-        <p>The current OGC WxS services need some form of redesign (perhaps in the form of an extra layer on top aka a shim) in order to make it more discoverable and the data inside linkable. To make the data inside a service more linkable stable URIs need to be minted for the spatial things in the service and be made available. This would require modifications to the service itself. </p>
 
         <div class="practice">
           <p><span id="data-publication-granularity" class="practicelab">Publish data at the granularity you can support</span></p>
@@ -1690,17 +1710,13 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
       
       <section id="bp-large-datasets">
         <h3>Dealing with large datasets</h3>
-        <p>Some datasets, for example satellite imagery, sensor measurement timeseries, or climate and ocean data - i.e. especially coverages, can be very large. In order to make these datasets accessible, it is helpful to make it possible to get space/time subsets of that dataset. A good way to do this is to have identifiers for subsets of the resource: a "protocol independent" way to identify [coverage] dataset subsets. In order for that to work, identifiers for the resource itself should be separate from the URL of the service-end point(s) that can be used to access that resource. </p>
+
         <p>There are several Best Practices in this document dealing with large datasets and coverages: </p>
         <ul>
-          <li><a href="#ids-for-chunks" class="sectionRef"></a></li>
-          <li><a href="http://w3c.github.io/sdw/bp/#describe-geometry" class="sectionRef"></a></li>
+          <li><a href="#ids-for-chunks">Best Practice 5: Provide identifiers for parts of larger information resources</a></li>
+          <li><a href="#describe-geometry">Best Practice 7: How to describe geometry</a></li>
         </ul>
-        <p class="issue" data-number="149">Should we discuss scaleability issues?</p>
-        <div style="background-color:cyan">
-          <p>keep this as a top-level subject area, but link back to BPs in other sections</p>
-          <p>… should we discuss scaleability issues?</p>
-        </div>
+        <p class="issue" data-number="149">Should we discuss scaleability issues here?</p>
       </section>
 
       <!-- end best practices -->
@@ -2404,6 +2420,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
       
     <section class="appendix" id="glossary">
       <h2>Glossary</h2>
+      <p><dfn data-lt="Coverage|Coverages">Coverage</dfn>: A property of a <a>SpatialThing</a> whose value varies according to location and/or time.</p>
       <p><dfn>Commercial operator</dfn>: Search engine or similar company that operates on the Web and generates indexes from the information found in web pages and data published on the Web.</p>
       <p><dfn data-lt="CRS|Coordinate Reference System">CRS</dfn>: Coordinate Reference System, a coordinate-based local, regional or global system used to locate geographical entities.</p>
       <p><dfn>GIS</dfn>: Geographic information system or geographical information system, a system designed to capture, store, manipulate, analyze, manage, and present all types of spatial or geographical data. (<span style="background-color:yellow">ref. <a href="https://en.wikipedia.org/wiki/Geographic_information_system">Geographic information system</a></span>)</p>
