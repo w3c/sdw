@@ -1590,27 +1590,29 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>The description describes what data is available in the API, how the API works, how the data is structured, what formats are available, and so on.</p>
+            <p>The API description enables a user to construct meaningful queries against the API for data that the API can <em>actually</em> provide.</p>
+            <p>A user can find the API description; e.g. via referral from the API or via a search engine query.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>Any description of the API is better than none, but ideally you should provide a machine-readable description. For example, HAL: 'JSON Hypertext Application Language', see <a href="https://tools.ietf.org/html/draft-kelly-json-hal-07">IETF draft</a>. An additional benefit of Hal is that generation of the documentation is coupled to the code for the API so that the API docs never get out of date.</p>
-            <p>The API description should indicate what data is <em>actually</em> available. For example, it should give the boundaries of values used for the API parameters (e.g. using a value range or controlled vocabulary) so that one can only request data that <em>actually</em> exists.</p>
-            <p>Describing an API includes binding the service endpoint to the data(set) it exposes; describing the APIs operations and parameters; binding parameters to domains (e.g. spatial extent, controlled vocabulary) to enable meaningful queries to be made; what kind of format / payload the API offers; and API versioning. APIs should be versioned. For more information about this, see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#VersionsForAPI">Best Practice 23 Maintain separate versions for a data API</a>.</p>
-            <p>Predictably structured datasets that are available through services can be described as a <a href="http://www.w3.org/TR/vocab-data-cube/#data-cubes">Data Cube</a> with Dimensions of "what, where, when", and so on. Each Dimension of the Data Cube is bound to a parameter in the API method. The "where" Dimension of a Data Cube, if specified as a <code>qb:CodedProperty</code>, may bound to a set of SpatialThings (e.g. using the property <code>qb:codeList</code>). The URI Set (the set of all SpatialThings mentioned in the Data Cube) provides a 'controlled vocabulary' of locations for which 'observations' (data points) in the Data Cube are available (e.g. air quality data is available at these locations).</p>
-            <p>A possible approach <span style="background-color:yellow">(ref. GNON/SIRF)</span>:</p>
-            <ol>
-              <li>Describe the content exposed by a service endpoint as a <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a>; use the <code>void:TechnicalFeature</code> to describe the service.</li>
-              <li>Each API parameter may be bound to a given <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a> (or subset) to provide a set of values, terms or entities for that parameter that provide meaningful queries (e.g. a controlled vocabulary).</li>
-              <li>Use [[RFC6570]] URI Templates to bind parameters into RESTful API URLs.</li>
-              <li>A 'short-form' of the identifier may be required for usage in the API; this may be defined as a SKOS notation.</li>
-            </ol>
+            <p>API documentation should describe the data(set) it exposes; the APIs operations and parameters; what kind of format / payload the API offers; and API versioning.</p>
+            <p>As a minimum, you should provide a human readable description of your APIs so that developers can read about how the API works. We recommend providing machine readable API documentation that can be used by software development tools to help developers build API client software. API documentation should be crawlable via search engines.</p>
+            <p>The API documentation should be generated from the API code so that the documentation can be easily kept upto date.</p>
+            <p>Where a parameter domain is bound to a set of values (e.g. value range, spatial or temporal extent, controlled vocabulary etc.), the API documentation or the API itself should indicate the set of values that may be used in order to help users request data that is <em>actually</em> available.</p>
+            <p>The API documentation should be discoverable from the API itself.</p>
+
             <aside class="example">
               <p>Example(s):</p>
               <ul>
-                <li>OGC 'capabilities documents' provide an example of a standardized API description. Every <a>WFS</a> or <a>WMS</a> service, for example, understands the request 'getCapabilities', and then returns an XML document giving information about the service such as the Coordinate Reference system used, the data structure schema, available map layers, and so on. </li>
+                <li>OGC 'capabilities documents' provide an example of a standardized API description. Every <a>WFS</a> or <a>WMS</a> service, for example, understands the request 'getCapabilities', and then returns an XML document giving information about the service such as the Coordinate Reference system used, the data structure schema, available map layers, and so on.</li>
+                <li>Use of <code>void:TechnicalFeature</code> to describe the API for a <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a> (or subset); providing a set of values, terms or entities for each API parameter (ref. CSIRO's <a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference Framework</a>). Use [[RFC6570]] URI Templates to bind API parameters to RESTful URLs. A 'short-form' of the identifier may be required for usage in the API; this may be defined as a SKOS notation.</li>
+                <li>Use of <a href="http://www.w3.org/TR/vocab-data-cube/#data-cubes">Data Cube</a> with Dimensions (as specified in [[vocab-data-cube]]) to define the data available from a predicably structured dataset - "what, where, when", and so on (ref. CSIRO's <a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference Framework</a>); each Dimension of the Data Cube is bound to a parameter in the API method. The "where" Dimension of a Data Cube, if specified as a <code>qb:CodedProperty</code>, may bound to a set of SpatialThings (e.g. using the property <code>qb:codeList</code>). The URI Set (the set of all SpatialThings mentioned in the Data Cube) provides a 'controlled vocabulary' of locations for which 'observations' (data points) in the Data Cube are available (e.g. air quality data is available at these locations).</li>
                 <li>A versioned API: <a href="http://wiki.openstreetmap.org/wiki/API">OpenStreetMap API</a></li>
-                <li>More examples to be added</li>
+                <li>Use of HAL: 'JSON Hypertext Application Language', see <a href="https://tools.ietf.org/html/draft-kelly-json-hal-07">IETF draft</a>.</li>
+                <li>Use of <a href="http://swagger.io/">Swagger</a> and <a href="https://swaggerhub.com/">swaggerhub</a>; the Dutch Cadastre has published the WFS services in its national geo-portal, PDOK, as Swagger APIs on Swaggerhub, for example an API to get data about <a href="https://swaggerhub.com/api/pdok/geluidskaarten/1.0">noise pollution near highways</a>.</li>
+                <li>Packaging a coordinate transformation API for simple re-use.</li>
+                <li>Relating the API to its description using HTTP link headers.</li>
+                <li>More examples to be added ... </li>
               </ul>
             </aside>
           </section>
@@ -1620,71 +1622,19 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
+            <p><span>Relevant requirements</span>: <a href="http://www.w3.org/TR/sdw-ucr/#Discoverability">R-Discoverability</a> ... <span style="background-color:yellow">others to be added</span>.</p>
           </section>
-          <div style="background-color:cyan">
-            <ul>
-              <li>how the API works … ideally providing a machine-readable description (such as HAL: 'JSON Hypertext Application Language', see <a href="https://tools.ietf.org/html/draft-kelly-json-hal-07">IETF draft</a>) … [also note that with HAL, generation of the documentation is coupled to the _code_ for the API so that the API docs never get out of date]</li>
-              <li>indicating what data is <em>actually</em> available … i.e. bounding the values used for the API parameters (e.g. using a value range or controlled vocabulary) so that one can only request data that <em>actually</em> exists</li>
-              <li>APIs should be versioned - example: <a href="http://wiki.openstreetmap.org/wiki/API">OpenStreetMap API</a> … see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#VersionsForAPI">Best Practice 23 Maintain separate versions for a data API</a></li>
-              <li>OGC 'capabilities documents' provide an example of this behavior</li>
-              <li>predictably structured datasets that are available through services can be described as a <a href="http://www.w3.org/TR/vocab-data-cube/#data-cubes">Data Cube</a> with Dimensions of "what, where, when" … each Dimension of the Data Cube is bound to a parameter in the API method … furthermore, the "where" Dimension of a Data Cube, if specified as a <code>qb:CodedProperty</code>, may bound to a set of SpatialThings (e.g. using the property <code>qb:codeList</code>) such that the URI Set provides a 'controlled vocabulary' of locations that for which 'observations' (data points) in the Data Cube are available (e.g. air quality data is available at these locations) [<em>needs further elaboration; see <a href="http://www.w3.org/2015/spatial/track/actions/89">ACTION-89</a></em>]</li>
-              <li>incorporates binding the service endpoint to the data(set) it exposes; describing the APIs operations and parameters; binding parameters to domains (e.g. spatial extent, controlled vocabulary) to enable meaningful queries to be made; what kind of format / payload the API offers; API versioning (see <a href="http://w3c.github.io/dwbp/bp.html#VersionsForAPI">DWBP BP 23 Maintain separate versions for a data API</a>)</li>
-              <li>possible approach (ref. GNON/SIRF):
-                <ol>
-                  <li>describe the content exposed by a service endpoint as a <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a>; use the <code>void:TechnicalFeature</code> to describe the service</li>
-                  <li>each API parameter may be bound to a given <a href="http://www.w3.org/TR/void/#dataset">(VoID) Dataset</a> (or subset) to provide a set of values/terms/entities for that parameter that provide meaningful queries (e.g. a controlled vocabulary) … use [[RFC6570]] URI Templates to bind parameters into RESTful API URLs … a 'short-form' of the identifier may be required for usage in the API; this may be defined as a SKOS notation</li>
-                </ol>
-              </li>
-            </ul>
-          </div>
         </div>
 
         <div class="practice">
-          <p><span id="apis-as-discoverable-resources" class="practicelab">Package APIs as discoverable resources</span></p>
-          <p class="practicedesc">The queries offered by the API should be packaged as a self-describing resource.</p>
-          <section class="axioms">
-            <p class="subhead">Why</p>
-            <p>When APIs and their queries are self-describing, this makes the API discoverable. </p>
-          </section>
-          <section class="outcome">
-            <p class="subhead">Intended Outcome</p>
-            <p>...</p>
-          </section>
-          <section class="how">
-            <p class="subhead">Possible Approach to Implementation</p>
-            <p>Possible approach(es) to be described - for example, how to package a coordinate transformation API for simple re-use?</p>
-            <p>One possible approach could be <a href="http://swagger.io/">Swagger</a>.</p>
-            <aside class="example">
-              <p>The Dutch Cadastre has published the WFS services in its national geo-portal, PDOK, as Swagger APIs on Swaggerhub, for example an API to get data about <a href="https://swaggerhub.com/api/pdok/geluidskaarten/1.0">noise pollution near highways</a>.</p>
-              <p>More example(s) to be added</p>
-            </aside>
-          </section>
-          <section class="test">
-            <p class="subhead">How to Test</p>
-            <p>...</p>
-          </section>
-          <section class="ucr">
-            <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: <a href="http://www.w3.org/TR/sdw-ucr/#Discoverability">R-Discoverability</a>.</p>
-          </section>
-          <div style="background-color:cyan">
-            <ul>
-              <li>the queries offered by the API should be packaged as a discoverable, self-describing resource</li>
-              <li>for example, how do I package a coordinate transformation API for simple re-use?</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="practice">
-          <p><span id="include-search-api" class="practicelab">Include search API capability</span></p>
+          <p><span id="include-search-api" class="practicelab">Include search capability in your data access API</span></p>
           <p class="practicedesc">If you publish an API to access your data, make sure it allows users to search for specific data.</p>
 
           <p class="note">This Best Practice might also fit in <a href="#bp-discovery" class="sectionRef"></a>.</p>
           
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>...</p>
+            <p>It can be hard to find a particular resource within a dataset, requiring either prior knowledge of the respective identifier for that resource and/or some intelligent manual guesswork. It is likely that users will not know the URI of the resource that they are looking for- but may know (at least part of) the name of the resource or some other details. A search capability will help a user to determine the identifier for the resource(s) they need using the limited information they have.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
@@ -1692,9 +1642,13 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>...</p>
+            <p><span style="background-color:yellow">to be added</span></p>
             <aside class="example">
-              <p>example(s) to be added</p>
+              <p>example(s) to be added; including ...</p>
+              <ul>
+                <li>Search facility provided by <a href="http://data.ordnancesurvey.co.uk/">data.ordnancesurvey.co.uk</a>.</li>
+                <li>Use of <a href="http://www.opensearch.org/Home">OpenSearch</a> - perhaps with <a href="http://www.opengeospatial.org/standards/opensearchgeo">OGC Geo and Temporal extensions</a>.</li>
+              </ul>
             </aside>
           </section>
           <section class="test">
