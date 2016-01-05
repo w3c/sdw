@@ -1499,31 +1499,31 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
 
         <div class="practice">
           <p><span id="convenience-apis" class="practicelab">Expose entity-level data through 'convenience APIs'</span></p>
-          <p class="practicedesc">If you have a specific goal in mind for publishing your data, and you know your 'small set of known developers', tailor the API for your data to that specific goal.</p>
+          <p class="practicedesc">If you have a specific application in mind for publishing your data, tailor the spatial data API to meet that goal.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p><strong>Convenience APIs</strong> are tailored to meet a specific goal - which makes them (arguably) simpler to use. The API should allow a user to engage with arbitrarily complex data structures using (a set of) simple queries. </p>
+            <p>When access to spatial data is provided by bulk download or through a generalized query service, users need to understand how the data is structured in order to work effectively with that data. Given that spatial data may be arbitrarily complex, this burdens the data user with significant effort before they can even perform simple queries. <strong>Convenience APIs</strong> are tailored to meet a specific goal; enabling a user to engage with arbitrarily complex data structures using (a set of) simple queries. As stated in [[DWBP]], an API offers the greatest flexibility and processability for consumers of data; for example, enabling real-time data usage, filtering on request, and the ability to work with the data at an atomic level. If your dataset is large, frequently updated, or highly complex, a convenience API is likely to be helpful.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
             <ul>
-              <li>The API user does not need to understand those complex semantics before using the API (as is necessary when working with a generalized query service such as a SPARQL endpoint).</li>
-              <li>The API is focused on helping a particular user role fulfill common tasks.</li>
-              <li>The API is light-weight: simple for users in that role to get done what they need to do.</li>
-              <li>The API hides complexity from the user.</li>
+              <li>The API provides a coherent set of queries and operations that help users achieve common tasks.</li>
+              <li>Data users are presented with a set of simple operations within the API that enable them to get working with the data quickly; they do not need to understand the structure and semantics of the data up front.</li>
+              <li>Data users are able to use progressively more complex features of the API as their understanding of the data increases.</li>
+              <li>The API encapsulates (i.e. hides) the complexity of the data is exposes.</li>
+              <li>The API is versioned, enabling developers to upgrade their client application at a convenient time.</li>
             </ul>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>The API should be targeted to deliver a coherent set of functions, so that it helps fulfill common tasks. Groups of API operations can be chained together (like unix pipes) to fulfill complex functions and hide this complexity from the user.</p>
-            <p>A good practice for desigining convenience APIs is that of a RESTful web service pattern (see <a href="http://w3c.github.io/dwbp/bp.html#DesigningAPIs">DWBP BP 20 Follow REST principles when designing APIs</a> and 'API design guidelines' <span style="background-color:yellow">[ref?]</span>).</p>
-            <p><em>Some</em> API design guidelines:</p>
-            <ul>
-              <li><strong>state</strong> e.g. sessionID, API key, request header (see OAuth2). However, request headers are difficult to access from a user-agent so these parameters may also need to be URL encoded).</li>
-              <li><strong>content</strong> e.g. data being retrieved or stored, request body, use Content Negotiation and Accept headers to request different formats/encodings.</li>
-              <li><strong>locators</strong> e.g. identifiers, URL path.</li>
-              <li><strong>filters</strong> e.g. sorting, query parameters.</li>
-            </ul>
+
+            <p class="note">This best practice extends [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#useanAPI">Best Practice 26: Use an API</a>.</p>
+
+            <p>The API should be targeted to deliver a coherent set of functions that are design to meet the needs of common tasks. Work with your developer community to determine the tasks that they want to do with the data or use your experience to infer those tasks. Design your API to help developers achieve those tasks.</p>
+            <p>Include light-weight queries and/or operations in the API that help users start working with your data quickly. The complexity of the data should be hidden from inexperienced users.</p>
+            <p>When designing the API, each operation or query should be focused on achieving a single outcome; this should ensure that the API remains light-weight. Groups of API operations may be chained together (like unix pipes) in order to complete complex tasks.</p>
+            <p>APIs will often evolve as more data is added or usage changes; queries or operations may be changed or new ones added. APIs should be versioned in order to insulate downstream client applications from these changes.</p>
+            <p class="note">Regarding API design, also see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#APIHttpVerbs">Best Practice 21: Use Web Standardized Interfaces</a>.</p>
             <p>In the world of geospatial data there are a lot of <a>WFS</a> services providing data. A RESTful API as a wrapper or a shim layer could be created around WFS services. GML content from the WFS service could be provided in this way as linked data or another Web friendly format. This approach is similar to the use of Z39.50 in the library community; that protocol is still used but 'modern' Web sites and web services are wrapped around it. Adding URIs in (GML) data exposed by a WFS is pretty straightforward, but making the data 'webby' is harder. There are examples of this approach of creating a convenience API on top of WFS, but rather than adapting the WFS (GML) output, it may be more effective to provide an alternative 'Linked Data friendly' access path to the data source; creating a new, complementary service endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using something like <a href="http://www.melodiesproject.eu/content/ontop-spatial">ontop-spatial</a>) and Linked Data API.</p>
             <figure>
               <img src="images/bp28-example.PNG" alt="Example of providing an alternative access path to WFS GML source data" />
@@ -1534,14 +1534,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
               <ul>
                 <li>An event based API for traffic information, that tells you when a certain speed threshold is exceeded (e.g. traffic is too slow).</li>
                 <li>A RESTful API as a wrapper or a shim layer around a WFS service, providing GML content as Linked Data. (<a href="https://swaggerhub.com/api/pdok/geluidskaarten/1.0">Geluidskaarten</a> API in SwaggerHub, based on a WFS service published in the Dutch geoportal <a href="http://www.pdok.nl">Publieke Dienstverlening op de Kaart</a> (PDOK). </li>
-                <li><a href="http://geo.resc.info:8080/geoserver/netage/wms?service=WMS&amp;version=1.1.0&amp;request=GetMap&amp;layers=netage:provincie&amp;styles=&amp;bbox=10426.282,306846.198,278026.09,621876.3&amp;width=652&amp;height=768&amp;srs=EPSG:28992&amp;format=application/openlayers">Example</a> of an API providing an alternative access path to the data source <span style="background-color:yellow">provided by @bartvanleeuwen</span>.
-                  <ul style="background-color:cyan">
-                    <li>@timbl's concept of a 'shim' layer</li>
-                    <li>@danbri: "this is similar to the use of Z39.50 in the library community; that protocol is still used but 'modern' websites / web services are wrapped around it"</li>
-                    <li>@eparsons: "adding URIs [in (GML) data exposed by a WFS] is pretty straightforward, but making it 'webby' is harder"</li>
-                    <li>rather than adapting the WFS (GML) output, it may be more effective to provide an alternative 'Linked Data friendly' access path to the data source; creating a new, complementary service endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using something like <a href="http://www.melodiesproject.eu/content/ontop-spatial">ontop-spatial</a>) and Linked Data API</li>
-                  </ul>
-                </li>
+                <li><a href="http://geo.resc.info:8080/geoserver/netage/wms?service=WMS&amp;version=1.1.0&amp;request=GetMap&amp;layers=netage:provincie&amp;styles=&amp;bbox=10426.282,306846.198,278026.09,621876.3&amp;width=652&amp;height=768&amp;srs=EPSG:28992&amp;format=application/openlayers">Example</a> of an API providing an alternative access path to the data source complementing an existing <a>WFS</a> end-point (<span style="background-color:yellow">to be provided by @bartvanleeuwen</span>).</li>
                 <li>The <a href="http://ogc-iot.github.io/ogc-iot-api/index.html">OGC Sensor Things API</a>.</li>
                 <li>'triple pattern fragments' from <a href="http://linkeddatafragments.org">Linked Data Fragments</a> provide a very efficient, lightweight way of querying linked data.</li>
                 <li><a href="http://environment.data.gov.uk/bwq/">Environment Agency Bathing Water Quality API</a> (implemented using the Epimorphic's <a href="https://github.com/epimorphics/elda">ELDA implementation</a> of the <a href="https://github.com/UKGovLD/linked-data-api/blob/wiki/Specification.md">Linked Data API</a>; enables configured queries against (general) SPARQL endpoints to be exposed as RESTful web services).</li>
@@ -1558,27 +1551,6 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: <a href="http://www.w3.org/TR/sdw-ucr/#Compatibility">R-Compatibility</a>, <a href="http://www.w3.org/TR/sdw-ucr/#LightweightAPI">R-LightweightAPI</a>.</p>
           </section>
-          <div style="background-color:cyan">
-            <ul>
-              <li><strong>convenience APIs</strong> are tailored to meet a specific goal - which makes them (arguably) simpler to use
-                <ul>
-                  <li>the API should allow a user to engage with arbitrarily complex data structures using (a set of) simple queries … the user does not need to understand those complex semantics before using the API (as is necessary when working with a generalized query service such as a SPARQL endpoint)</li>
-                  <li>the API should be targeted to deliver a coherent set of functions; focused on helping a particular user role fulfill common tasks; light-weight … i.e. be simple for users in that role to get done what they need to do! ... groups of API operations can be chained together (like unix pipes) to fulfill complex functions</li>
-                  <li>the API should encapsulate complexity (e.g. hide unnecessary complexity from the user)</li>
-                  <li>the convenience API = "here's a bunch of stuff that you will find useful for a given purpose [and here's the machine-readable API description]"</li>
-                </ul>
-              </li>
-              <li>incorporates use of RESTful web service pattern (see <a href="http://w3c.github.io/dwbp/bp.html#DesigningAPIs">DWBP BP 20 Follow REST principles when designing APIs</a> and 'API design guidelines' [ref?]); encapsulation of complexity; … </li>
-              <li><em>some</em> API design guidelines
-                <ul>
-                  <li><strong>state</strong> e.g. sessionID, API key … request header (see OAuth2) … (but request headers are difficult to access from a user-agent so these parameters may also need to be URL encoded)</li>
-                  <li><strong>content</strong> e.g. data being retrieved or stored … request body … use Content Negotiation and Accept headers to request different formats/encodings</li>
-                  <li><strong>locators</strong> e.g. identifiers … URL path</li>
-                  <li><strong>filters</strong> e.g. sorting … query parameters</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
         </div>
 
         <div class="practice">
@@ -1595,6 +1567,9 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
+
+            <p class="note">This best practice extends [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#documentYourAPI">Best Practice 25: Document your API</a>.</p>
+
             <p>API documentation should describe the data(set) it exposes; the APIs operations and parameters; what kind of format / payload the API offers; and API versioning.</p>
             <p>As a minimum, you should provide a human readable description of your APIs so that developers can read about how the API works. We recommend providing machine readable API documentation that can be used by software development tools to help developers build API client software. API documentation should be crawlable via search engines.</p>
             <p>The API documentation should be generated from the API code so that the documentation can be easily kept upto date.</p>
