@@ -1412,16 +1412,12 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
 
       <section id="bp-exposing-via-api">
         <h3>Exposing datasets through APIs</h3>
-        <p></p>
-        <p>Dataset APIs here refer to both the query <i>interface</i> used and the <i>content</i> exposed by the given endpoint.</p>
-        <p>Access to spatial data via APIs can include 4 main categories: question/answer, event based, publish/subscribe, and transactional.</p>
-        <p>Spatial data needs be simple to incorporate within a web environment. “Point-based” APIs (with wide adoption; e.g. focused on simple point-based data) should be provided to allow access to data items based on their spatial features and if needed more advance APIs should be also provided for specialist "expert" users.</p>
-        <div style="background-color:yellow"
-          <p>using an API that supports content negotiation when necessary.</p>
-          <p>the URL for accessing a dataset does not equal a persistent identifier for the dataset itself.</p>
-          <p>There's no best practice for exposing Web Feature Service content in a more accessible way from a linked data point of view. However we describe here a recommended way of doing it, giving each feature its own stable URI and extending the API to make it more discoverable.  </p>
-          <p>The current OGC WxS services need some form of redesign (perhaps in the form of an extra layer on top aka a shim) in order to make it more discoverable and the data inside linkable. To make the data inside a service more linkable stable URIs need to be minted for the spatial things in the service and be made available. This would require modifications to the service itself. </p>
-        </div>
+        <p class="issue" data-number="187">Should content from this section be moved to [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#dataAccess">section 9.11 Data Access</a>?</p>
+
+        <p><a>SDIs</a> have long been used to provide access to spatial data via web services; typically using open standard specifications from the <a href="http://www.opengeospatial.org/">Open Geospatial Consortium</a> (OGC). With the exception of the <a>Web Map Service</a>, these OGC Web service specifications have not seen widespread adoption beyond the geospatial expert community. In parallel, we have seen widespread emergence of Web applications that use spatial data - albeit focusing largely on point-based data.</p>
+        <p>This section seeks to capture the best practices that have emerged from the wider Web community for accessing spatial data via the Web. While [[DWBP]] provides best practices discussing access to data using Web infrastructure (see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#dataAccess">section 9.11 Data Access</a>), this section provides additional insight for publishers of spatial data. In particular, we look at how <em>Application Program Interfaces</em> (API) may be used to make it easy to work with spatial data.</p>
+
+        <p class="note">The term API as used here refers to the combination of the <i>set of operations</i> provided and the <i>data content</i> exposed by a particular Web service end-point.</p>
 
         <div class="practice">
           <p><span id="data-publication-granularity" class="practicelab">Publish data at the granularity you can support</span></p>
@@ -1429,9 +1425,6 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           <section class="axioms">
             <p class="subhead">Why</p>
             <p>Making data available on the Web requires data publishers to provide some form of access to the data. There are numerous mechanisms available, each providing varying levels of utility and incurring differing levels of effort and cost to implement and maintain. Publishers of spatial data should make their data available on the Web using affordable mechanisms in order to ensure long-term, sustainable access to their data.</p>
-
-
-            <p>This will range from a simple bulk-download or streaming of the entire dataset to sophisticated APIs that vary in complexity from generalized query interfaces (such as SPARQL [[sparql11-overview]] or <a>WFS</a>) to bespoke APIs design with a particular application in mind (see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#BulkAccess">Best Practice 20: Provide bulk download</a> and <a href="http://w3c.github.io/dwbp/bp.html#useanAPI">Best Practice 26: Use an API</a> respectively).</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
@@ -1476,6 +1469,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
               <li>The API provides a coherent set of queries and operations that help users achieve common tasks.</li>
               <li>Data users are presented with a set of simple operations within the API that enable them to get working with the data quickly; they do not need to understand the structure and semantics of the data up front.</li>
               <li>Data users are able to use progressively more complex features of the API as their understanding of the data increases.</li>
+              <li>The API provides both machine readable data and human readable HTML markup; the latter is used by search engines to index the spatial data.</li>
               <li>The API encapsulates (i.e. hides) the complexity of the data is exposes.</li>
               <li>The API is versioned, enabling developers to upgrade their client application at a convenient time.</li>
             </ul>
@@ -1485,8 +1479,14 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
 
             <p class="note">This best practice extends [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#useanAPI">Best Practice 26: Use an API</a>.</p>
 
-            <p>The API should be targeted to deliver a coherent set of functions that are design to meet the needs of common tasks. Work with your developer community to determine the tasks that they want to do with the data or use your experience to infer those tasks. Design your API to help developers achieve those tasks.</p>
+            <p>The API should be targeted to deliver a coherent set of functions that are design to meet the needs of common tasks. Work with your developer community to determine the tasks that they want to do with the data or use your experience to infer those tasks. Design your API to help developers achieve those tasks. API operations may be one of:</p>
+            <ul>
+              <li>query and response - for requesting data</li>
+              <li>publish and subscribe - for disseminating real-time or event-based data</li>
+              <li>transaction - for storing, modifying, processing or analysing data</li>
+            </ul>
             <p>Include light-weight queries and/or operations in the API that help users start working with your data quickly. The complexity of the data should be hidden from inexperienced users.</p>
+            <p>The API should offer <em>both</em> machine readable data and human readable HTML that includes the structured metadata required by search engines seeking to index content (see <a href="#indexable-by-search-engines">Best Practice 25: Make your entity-level data indexable by search engines</a> for more details).</p>
             <p>When designing the API, each operation or query should be focused on achieving a single outcome; this should ensure that the API remains light-weight. Groups of API operations may be chained together (like unix pipes) in order to complete complex tasks.</p>
             <p>When designing APIs, data publishers must be aware of the constraints of operating in a Web environment. Providing access to large datasets, such as <a>coverages</a>, is a particular challenge. The API should provide mechanisms to request subsets of the dataset that are a convenient size for client applications to manage.</p>
             <p>APIs will often evolve as more data is added or usage changes; queries or operations may be changed or new ones added. APIs should be versioned in order to insulate downstream client applications from these changes.</p>
@@ -1499,7 +1499,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <aside class="example">
               <p>Example(s):</p>
               <ul>
-                <li>An event based API for traffic information, that tells you when a certain speed threshold is exceeded (e.g. traffic is too slow).</li>
+                <li>An event based API for traffic information, that tells you when a certain speed threshold is exceeded; e.g. traffic is too slow (using <a href="https://www.amqp.org/">AMQP</a> or <a href="http://mqtt.org/">MQTT</a> protocol?).</li>
                 <li>A RESTful API as a wrapper or a shim layer around a WFS service, providing GML content as Linked Data. (<a href="https://swaggerhub.com/api/pdok/geluidskaarten/1.0">Geluidskaarten</a> API in SwaggerHub, based on a WFS service published in the Dutch geoportal <a href="http://www.pdok.nl">Publieke Dienstverlening op de Kaart</a> (PDOK). </li>
                 <li><a href="http://geo.resc.info:8080/geoserver/netage/wms?service=WMS&amp;version=1.1.0&amp;request=GetMap&amp;layers=netage:provincie&amp;styles=&amp;bbox=10426.282,306846.198,278026.09,621876.3&amp;width=652&amp;height=768&amp;srs=EPSG:28992&amp;format=application/openlayers">Example</a> of an API providing an alternative access path to the data source complementing an existing <a>WFS</a> end-point (<span style="background-color:yellow">to be provided by @bartvanleeuwen</span>).</li>
                 <li>The <a href="http://ogc-iot.github.io/ogc-iot-api/index.html">OGC Sensor Things API</a>.</li>
@@ -2329,9 +2329,9 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
       <p><dfn data-lt="SpatialThing|SpatialThings">SpatialThing</dfn>: Anything with spatial extent, i.e. size, shape, or position. e.g. people, places, bowling balls, as well as abstract areas like cubes (<span style="background-color:yellow">ref. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary (geo)</a></span>)</p>
       <p><dfn data-lt="TemporalThing|TemporalThings">TemporalThing</dfn>: Anything with temporal extent, i.e. duration. e.g.  the taking of a photograph, a scheduled meeting, a GPS time-stamped trackpoint (<span style="background-color:yellow">ref. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning vocabulary (geo)</a></span>)</p>
       <p><dfn>Web developer</dfn>: A programmer who specializes in, or is specifically engaged in, the development of World Wide Web applications, or distributed network applications that are run over HTTP from a Web server to a Web browser. (<span style="background-color:yellow">ref. <a href="https://en.wikipedia.org/wiki/Web_developer">Web developer</a></span>)</p>
-      <p><dfn>WCS</dfn>: Web Coverage service, a service offering multi-dimensional coverage data for access over the Internet. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wcs">OGC WCS</a></span>)</p>
-      <p><dfn>WFS</dfn>: Web Feature Service, a standardized HTTP interface allowing requests for geographical features across the web using platform-independent calls. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wfs">OGC WFS</a></span>)</p>
-      <p><dfn>WMS</dfn>: Web Map Service, a standardized HTTP interface for requesting geo-registered map images from one or more distributed geospatial databases. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wms">OGC WMS</a></span>)</p>
+      <p><dfn data-lt="WCS|Web Coverage Service">WCS</dfn>: Web Coverage service, a service offering multi-dimensional coverage data for access over the Internet. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wcs">OGC WCS</a></span>)</p>
+      <p><dfn data-lt="WFS|Web Feature Service">WFS</dfn>: Web Feature Service, a standardized HTTP interface allowing requests for geographical features across the web using platform-independent calls. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wfs">OGC WFS</a></span>)</p>
+      <p><dfn data-lt="WMS|Web Map Service">WMS</dfn>: Web Map Service, a standardized HTTP interface for requesting geo-registered map images from one or more distributed geospatial databases. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wms">OGC WMS</a></span>)</p>
       <p><dfn>WKT</dfn>: Well Known Text, a text markup language for representing vector geometry objects on a map, spatial reference systems of spatial objects and transformations between spatial reference systems. </p>
       <p><dfn>WPS</dfn>: Web Processing Service, an interface standard which provides rules for standardizing inputs and outputs (requests and responses) for invoking geospatial processing services, such as polygon overlay, as a Web service. (<span style="background-color:yellow">ref. <a href="http://www.opengeospatial.org/standards/wps">OGC WPS</a></span>)</p>
     </section>
