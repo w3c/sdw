@@ -1425,43 +1425,30 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
 
         <div class="practice">
           <p><span id="data-publication-granularity" class="practicelab">Publish data at the granularity you can support</span></p>
-          <p class="practicedesc">Granularity of published data and granular level of access to dataset should be decided based on the available resources</p>
+          <p class="practicedesc">Granularity of mechanisms provided to access access a dataset should be decided based on available resources</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>Publishers of data should consider their resources and long-term sustainability (and scalability issues) to make sure that datasets are published at the best level of granularity that they can support.</p>
+            <p>Making data available on the Web requires data publishers to provide some form of access to the data. There are numerous mechanisms available, each providing varying levels of utility and incurring differing levels of effort and cost to implement and maintain. Publishers of spatial data should make their data available on the Web using affordable mechanisms in order to ensure long-term, sustainable access to their data.</p>
+
+
+            <p>This will range from a simple bulk-download or streaming of the entire dataset to sophisticated APIs that vary in complexity from generalized query interfaces (such as SPARQL [[sparql11-overview]] or <a>WFS</a>) to bespoke APIs design with a particular application in mind (see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#BulkAccess">Best Practice 20: Provide bulk download</a> and <a href="http://w3c.github.io/dwbp/bp.html#useanAPI">Best Practice 26: Use an API</a> respectively).</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>Granularity of published data and granular level of access to dataset should be decided based on available resources and at a level that can be sustained for the lifetime of the data (and its archives).</p>
+            <p>Data is published on the Web in a mechanism that the data publisher can afford to implement and support throughout the anticipated lifetime of the data.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>To decide on the best granularity level for publishing and providing access to your spatial datasets, you should consider:</p>
-              <div style="background-color:cyan">
-              <ul>
-                 <li>The unit of governance; whether it is dataset or individual entities.</li>
-                  <ul>
-                      <li>It is ok to publish a data dump so long as it is indexable (etc).</li>
-                  </ul>
-                  <li>Granularity of publication; data providers need to be free to publish content at the level that they can manage to maintain.</li>
-                  <ul>
-                      <li>for example, a data-dump provided via HTTP GET can be the simplest form of data access service</li>
-                  </ul>
-                  <li>From data-dump (bulk-download) to pub/sub data-streams (e.g. MQTT, AMQP) to generalized query interfaces to rich APIs.</li>
-                  <ul>
-                      <li>offering a data-dump of the entire dataset (i.e.  'bulk download') is not really "data on the web"; users need to download the data and work with it locally.</li>
-                      <li>offering a generalized query interface, such as a SPARQL endpoint, requires the user to understand the entire data model in order to make meaningful queries which is not usually helpful either.</li>
-                      <li>data publishers, or third parties, may choose to add further value added APIs based on the underpinning granular level of access (e.g. an EO scene may originally be published as an atomic unit; additional subsetting or aggregation APIs may be provided if desired/warranted).</li>
-                  </ul>
-                  <li>It is not necessarily the data owner that provides the rich APIs; e.g. a government agency could provide a bulk-download (or generalized query interface; e.g. SPARQL end-point or WFS) upon which commercial organizations provide value-added services including rich APIs.</li>
-                  <ul>
-                      <li>There is usually an ecosystem of data and service providers; you do not need to do it all yourself.</li>
-                  </ul>
-                  <li>Exposure of parts of large information resources; subsetting coverage can be also helpful;  this can be done using a well-known pattern such as <a href="http://www.opengeospatial.org/standards/opensearchgeo">OpenSearch Geo and Temporal extensions</a>), paging responses (see <a href="http://www.w3.org/TR/ldp-paging/">W3C Linked Data Platform Paging 1.0</a> and <a href="https://www.w3.org/community/hydra/wiki/Pagination">Hydra pagination</a>, <a href="http://www.w3.org/TR/vocab-data-cube/#cubes-slices">RDF Data Cube Slices, etc.</a>).</li>
-                  <li>Scalability, maintainability and sustainability issues of publishing datasets should be also considered when working with large datasets.</li>
-              </ul>
-              </div>
-            <p>Publishing an entire dataset as a single entity may be achieved by providing a bulk-download, a generalized query interface for the dataset (e.g. SPARQL endpoint), etc.</p>
+            <p>When determining the mechanism to be used provide Web access to data, publishers need to assess utility against cost. In order of increasing usefulness and cost:</p>
+            <ol>
+              <li>Bulk-download or streaming of the entire dataset (see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#BulkAccess">Best Practice 20: Provide bulk download</a>)</li>
+              <li>Generalized query API (such as <a>WFS</a> or SPARQL [[sparql11-overview]])</li>
+              <li>Bespoke API designed to support a particular application (see <a href="#convenience-apis">Best Practice 28: Expose entity-level data through 'convenience APIs'</a>)</li>
+            </ol>
+            <p class="note">[[DWBP]] indicates that when data that is logically organized as one container and is distributed across many URLs, accessing the data in bulk is useful. As a minimum, it should be possible for users to download data on the Web as a single resource; e.g. through bulk file formats.</p>
+
+            <p class="note">A data publisher need not incur all the costs alone. Given motivation, third parties (such as the open data community or commercial providers) may provide value-added services that build on simple bulk-download or generalized query interfaces. While establishing such arrangements is beyond the scope of this document, it is important to note that the data publisher should consider the end-to-end data publication chain. For example, one may need to consider including conditions in the usage license about the timeliness of frequently changing data.</p>
+
             <aside class="example">
               <p>example(s) to be added</p>
             </aside>
@@ -1474,27 +1461,6 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
-          <div style="background-color:yellow">
-              <p>----- to be removed-----</p>
-            <ul>
-              <li>what is the unit of governance? dataset or individual entities? … it's ok to publish a data dump so long as it is indexable (etc.)</li>
-              <li>granular publication - data providers need to be free to publish content at the level that they can manage to maintain … a data-dump provided via HTTP GET is the simplest form of data access service</li>
-              <li>from data-dump (bulk-download) to pub/sub data-streams (e.g. MQTT, AMQP) to generalized query interfaces to rich APIs
-                <ul>
-                  <li>offering a data-dump of the entire dataset (aka 'bulk download') is not really "data on the web"; users need to download the data and work with it locally</li>
-                  <li>offering a generalized query interface, such as a SPARQL endpoint, requires the user to understand the entire data model in order to make meaningful queries ... which is not particularly helpful either!</li>
-                </ul>
-              </li>
-              <li>data publishers, or third parties, may choose to add further value added APIs based on the underpinning granular level of access (e.g. an EO scene may originally be published as an atomic unit; additional subsetting or aggregation APIs may be provided if desired / warranted)</li>
-              <li>it's not necessarily the data owner that provides the rich APIs; e.g. a government agency could provide a bulk-download (or generalized query interface; e.g. SPARQL end-point or WFS) upon which commercial organizations provide value-added services including rich APIs … ecosystem of data and service providers; you don't need to do it all yourself</li>
-              <li>exposure of parts of large information resources; subsetting coverages (maybe using a well-known pattern such as <a href="http://www.opengeospatial.org/standards/opensearchgeo">OpenSearch Geo and Temporal extensions</a>), paging responses (see <a href="http://www.w3.org/TR/ldp-paging/">W3C Linked Data Platform Paging 1.0</a> and <a href="https://www.w3.org/community/hydra/wiki/Pagination">Hydra pagination</a>, <a href="http://www.w3.org/TR/vocab-data-cube/#cubes-slices">RDF Data Cube Slices</a> etc.)
-                <ul>
-                  <li>¿should we provide a discussion on scaleability - when working with large datasets</li>
-                  <li>note: @ahaller indicates that "<a href="http://spinrdf.org/">SPIN</a> solves this problem; it is widely adopted" - CLARIFICATION required</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
         </div>
 
         <div class="practice">
@@ -1522,9 +1488,10 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <p>The API should be targeted to deliver a coherent set of functions that are design to meet the needs of common tasks. Work with your developer community to determine the tasks that they want to do with the data or use your experience to infer those tasks. Design your API to help developers achieve those tasks.</p>
             <p>Include light-weight queries and/or operations in the API that help users start working with your data quickly. The complexity of the data should be hidden from inexperienced users.</p>
             <p>When designing the API, each operation or query should be focused on achieving a single outcome; this should ensure that the API remains light-weight. Groups of API operations may be chained together (like unix pipes) in order to complete complex tasks.</p>
+            <p>When designing APIs, data publishers must be aware of the constraints of operating in a Web environment. Providing access to large datasets, such as <a>coverages</a>, is a particular challenge. The API should provide mechanisms to request subsets of the dataset that are a convenient size for client applications to manage.</p>
             <p>APIs will often evolve as more data is added or usage changes; queries or operations may be changed or new ones added. APIs should be versioned in order to insulate downstream client applications from these changes.</p>
             <p class="note">Regarding API design, also see [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#APIHttpVerbs">Best Practice 21: Use Web Standardized Interfaces</a>.</p>
-            <p>In the world of geospatial data there are a lot of <a>WFS</a> services providing data. A RESTful API as a wrapper or a shim layer could be created around WFS services. GML content from the WFS service could be provided in this way as linked data or another Web friendly format. This approach is similar to the use of Z39.50 in the library community; that protocol is still used but 'modern' Web sites and web services are wrapped around it. Adding URIs in (GML) data exposed by a WFS is pretty straightforward, but making the data 'webby' is harder. There are examples of this approach of creating a convenience API on top of WFS, but rather than adapting the WFS (GML) output, it may be more effective to provide an alternative 'Linked Data friendly' access path to the data source; creating a new, complementary service endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using something like <a href="http://www.melodiesproject.eu/content/ontop-spatial">ontop-spatial</a>) and Linked Data API.</p>
+            <p>In the geospatial domain there are a lot of <a>WFS</a> services providing data. A RESTful API as a wrapper or a shim layer could be created around WFS services. GML content from the WFS service could be provided in this way as linked data or another Web friendly format. This approach is similar to the use of Z39.50 in the library community; that protocol is still used but 'modern' Web sites and web services are wrapped around it. Adding URIs in (GML) data exposed by a WFS is pretty straightforward, but making the data 'webby' is harder. There are examples of this approach of creating a convenience API on top of WFS, but rather than adapting the WFS (GML) output, it may be more effective to provide an alternative 'Linked Data friendly' access path to the data source; creating a new, complementary service endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using something like <a href="http://www.melodiesproject.eu/content/ontop-spatial">ontop-spatial</a>) and Linked Data API.</p>
             <figure>
               <img src="images/bp28-example.PNG" alt="Example of providing an alternative access path to WFS GML source data" />
               <figcaption>Providing an alternative 'Linked Data friendly' access path to a WFS data source.</figcaption>
@@ -1539,6 +1506,8 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
                 <li>'triple pattern fragments' from <a href="http://linkeddatafragments.org">Linked Data Fragments</a> provide a very efficient, lightweight way of querying linked data.</li>
                 <li><a href="http://environment.data.gov.uk/bwq/">Environment Agency Bathing Water Quality API</a> (implemented using the Epimorphic's <a href="https://github.com/epimorphics/elda">ELDA implementation</a> of the <a href="https://github.com/UKGovLD/linked-data-api/blob/wiki/Specification.md">Linked Data API</a>; enables configured queries against (general) SPARQL endpoints to be exposed as RESTful web services).</li>
                 <li>OGC Web Processing Service (<a>WPS</a>) encapsulate the underlying complexity of complex services like OGC <a>WCS</a>. This is probably the only way such complex services will ever be exposed in operational environments.</li>
+                <li>Paginating large responses from an API; using <a href="http://www.w3.org/TR/ldp-paging/">W3C Linked Data Platform Paging 1.0</a> or <a href="https://www.w3.org/community/hydra/wiki/Pagination">Hydra pagination</a>.</li>
+                <li>Requesting a subset of a <a>coverage</a> or an aggregate set of <a>SpatialThings</a>; for example, using a well-known pattern like <a href="http://www.opengeospatial.org/standards/opensearchgeo">OpenSearch Geo and Temporal extensions</a>.</li>
                 <li>More examples to be added.</li>
               </ul>
             </aside>
@@ -1644,6 +1613,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
         <ul>
           <li><a href="#ids-for-chunks">Best Practice 5: Provide identifiers for parts of larger information resources</a></li>
           <li><a href="#describe-geometry">Best Practice 7: How to describe geometry</a></li>
+          <li><a href="#convenience-apis">Best Practice 28: Expose entity-level data through 'convenience APIs'</a></li>
         </ul>
         <p class="issue" data-number="149">Should we discuss scaleability issues here?</p>
       </section>
