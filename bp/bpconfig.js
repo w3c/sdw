@@ -24,13 +24,6 @@ var respecConfig = {
 		}],
     otherLinks: [
     {
-      key: "Contributors",
-      data: [
-      { 
-        value: "William Roy"
-      }]
-    },
-    {
       key: "OGC Document Number:",
       data: [
       {
