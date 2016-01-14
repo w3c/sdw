@@ -1,7 +1,7 @@
 var respecConfig = {
-    specStatus: "ED",
+    specStatus: "FPWD",
     shortName: "sdw-bp",
-    //publishDate:  "2015-05-18",
+    publishDate:  "2016-01-19",
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
@@ -33,7 +33,7 @@ var respecConfig = {
     wg: "Spatial Data on the Web Working Group",
     wgURI: "http://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-wg",
-    wgPatentURI: "http://www.w3.org/2004/01/pp-impl/75471/status",
+    wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
@@ -58,10 +58,6 @@ var respecConfig = {
 
 
     localBiblio: {
-      "RDA" : {
-        title: "Research Data Alliance",
-        href: "http://rd-alliance.org"
-      },
       "SCHEMA-ORG":{
         "href":"http://schema.org/",
         "title":"Schema.org"
@@ -71,11 +67,6 @@ var respecConfig = {
         title:"The GeoJSON Format Specification",
         authors: ["Howard Butler", "Martin Daly", "Allan Doyle", "Sean Gillies", "Tim Schaub", "Christopher Schmidt"],
         date: "16 June 2008"
-       },
-       "UCR":{
-        href:"http://www.w3.org/TR/sdw-ucr/",
-        title:"Spatial Data on the Web Use Cases & Requirements",
-        authors: ["Frans Knibbe", "Alejandro Llaves"]
        },
        "GeoSPARQL":{
         href:"http://www.opengeospatial.org/standards/geosparql",
@@ -104,12 +95,6 @@ var respecConfig = {
         href:"http://purl.oclc.org/NET/ssnx/ssn",
         title:"Semantic Sensor Network Ontology",
         authors: ["W3C Semantic Sensor Network Incubator Group"]
-       },
-       "gml":{
-        href:"http://www.opengeospatial.org/standards/gml",
-        title:"Geography Markup Language",
-        authors: ["Clemens Portele (editor)"],
-        date: "27 August 2007"
        },
        "beacon":{
         href:"https://gbv.github.io/beaconspec/beacon.html",
