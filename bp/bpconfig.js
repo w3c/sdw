@@ -72,7 +72,7 @@ var respecConfig = {
         authors: ["Howard Butler", "Martin Daly", "Allan Doyle", "Sean Gillies", "Tim Schaub", "Christopher Schmidt"],
         date: "16 June 2008"
        },
-       "UCR":{
+       "SDW-UCR":{
         href:"http://www.w3.org/TR/sdw-ucr/",
         title:"Spatial Data on the Web Use Cases & Requirements",
         authors: ["Frans Knibbe", "Alejandro Llaves"]
@@ -116,6 +116,12 @@ var respecConfig = {
         title:"BEACON link dump format",
         authors: ["J. Voß", "M. Schindler"],
         date: "6 July 2014"
+       },
+       "Strong":{
+        href:"http://www.crcsi.com.au/assets/Resources/Stakeholder-Requirements-for-Modernising-Australias-Geocentric-Datum.pdf",
+        title:"Stakeholder Requirements for Modernising Australia’s Geocentric Datum",
+        authors:["Scott Strong (on behalf of the Cooperative Research Centre for Spatial Information and the Intergovernmental Committee on Surveying and Mapping"],
+        date: "July 2015"
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
