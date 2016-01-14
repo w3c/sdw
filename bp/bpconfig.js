@@ -116,6 +116,12 @@ var respecConfig = {
         title:"BEACON link dump format",
         authors: ["J. Voß", "M. Schindler"],
         date: "6 July 2014"
+       },
+       "Strong":{
+        href:"http://www.crcsi.com.au/assets/Resources/Stakeholder-Requirements-for-Modernising-Australias-Geocentric-Datum.pdf",
+        title:"Stakeholder Requirements for Modernising Australia’s Geocentric Datum",
+        authors:["Scott Strong (on behalf of the Cooperative Research Centre for Spatial Information and the Intergovernmental Committee on Surveying and Mapping"],
+        date: "July 2015"
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
