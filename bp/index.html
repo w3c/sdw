@@ -152,6 +152,10 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           <p>In short, there is a large demand for spatial data on the Web. But there are some questions around publishing spatial data on the Web that keep popping up and need to be answered. One is that many relevant standards already exist. These include informal 'community standards' - geospatial formats and/or vocabularies that enjoy widespread adoption ([[GeoJSON]] being a prime example) - and others for which the formal standardization process has not been completed. Where standards have been completed there are competing ideas, and it is often unclear which one you should use. With these factors in mind, this Best Practice  document aims to clarify and formalize the relevant standards landscape.</p>
           <p>Analysis of the requirements derived from scenarios that describe how spatial data is commonly published and used on the Web (as documented in [[UCR]]) indicates that, in contrast to the workings of a typical <a>SDI</a>, the <a href="http://www.w3.org/standards/semanticweb/data">Linked Data</a> approach is most appropriate for publishing and using spatial data on the Web. Linked Data provides a foundation to many of the best practices in this document.</p>
           <p class="issue" data-number="218">Need to describe why a Linked Data approach is chosen.</p>
+          <div class="issue" data-number="223">
+            <p>Need to illustrate the positive role of SDIs in publishing spatial data on the Web.</p>
+            <p>The wording in this document sometimes gives the impression, that by design SDIs do not fit what is the Web today. While that is true, it is only part of the story. SDIs offer the capability for linking data and for expressing models and semantics, but quite often these capabilities are not used and data is often published like GIS data more or less before we had the Web. One could in principle implement many of the BPs in current SDIs.</p>
+          </div>
           <p class="note">If you are not a Web developer, Linked Data may be one of those buzz words that doesn’t mean much to you. Essentially it is about publishing bite size information resources about real world or conceptual things, using URIs to identify those things, and publishing well described relationships between them, all in a machine readable way that enables data from different sources to be connected and queried.</p>
 
           <p>Questions answered in this document include:</p>
@@ -279,7 +283,10 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
         <p>In the geospatial community, the entities within datasets are usually information resources, representing areas on a map, which in turn represent real world things. These information resources are usually called 'features'. A feature is a representation of a real world thing and there could be, and often are, more than one feature representing the same real world thing. A feature often has, as a property, a geometry which describes the location of the feature.</p>
         <p>For example, a lighthouse standing somewhere on the coast is a real world thing. In some dataset, an information record about this lighthouse exists: a 'feature'. In current practice, this feature will often have properties that are about the real thing (e.g. the height of the lighthouse) and properties about the information record (e.g. when it was last modified). There could be several features, in different datasets, that refer to the same lighthouse; one dataset has its location and date it was built, another has data about its ownership or about shipwrecks near the same lighthouse.</p>
         <p>Mostly, people looking for information are interested in real world things, not in information resources. This means the real world things should get global identifiers so they can be found and referenced. The features and their map representations - geometries and topologies - should have global identifiers too so they can be referenced as well; and must have them if they are managed elsewhere.</p>
-        <p class="issue" data-number="208">Discussion on Features, information resources and real-world Things is unclear and needs redrafting</p>
+        <div class="issue" data-number="208">
+          <p>Discussion on Features, information resources and real-world Things is unclear and needs redrafting.</p>
+          <p>Also, we need to be consistent on terminology throughout the document; currently we have a mixture of terms: right now I see at least "spatial data", "spatial information",  "geospatial data", "geographic information" and "geospatial information" etc.</p>
+        </div>
         <div class="practice">
           <p><span id="globally-unique-ids" class="practicelab">Use globally unique HTTP identifiers for entity-level resources</span></p>
           <p class="practicedesc">Entities within datasets SHOULD have unique, persistent HTTP or HTTP(S) URIs as identifiers.</p>
@@ -294,7 +301,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>In order for identifiers to be useful, people should be comfortable creating them themselves without needing to refer to some top-level naming authority- in the way that Twitter's hashtags are created dynamically. Good identifiers for data on the web should be dereferenceable/resolvable, which makes it a good idea to use HTTP URIs as identifiers. There is no top down authority that you have to go to in order to create such identifiers for spatial objects. So just make them up yourself if you need them and they don't exist. <a href="#reuse-ids">Best Practice 2: Reuse existing (authoritative) identifiers when available</a> explains how to find already existing identifiers you can reuse.</p>
+            <p>Good identifiers for data on the Web should be dereferenceable/resolvable, which makes it a good idea to use HTTP URIs as identifiers. There is no top down authority that you have to go to in order to create such identifiers for spatial objects. So just make them up yourself if you need them and they don't exist. <a href="#reuse-ids">Best Practice 2: Reuse existing (authoritative) identifiers when available</a> explains how to find already existing identifiers you can reuse.</p>
             <p>Read [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#identifiersWithinDatasets">Best Practice 11: Use persistent URIs as identifiers within datasets</a> for general discussion on why persistent URIs should be used as identifiers for data entities. Using URIs means the data can be referenced using standard Web mechanisms; making them persistent means the links won't get broken. Note that ideally the URIs should resolve, however, they have value as globally scoped variables whether they resolve or not.</p>
             <p>For guidance about persistent URIs, read [[DWBP]] <a href="http://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 10: Use persistent URIs as identifiers</a>. Keep in mind not to use service endpoint URLs, as these are usually dependent on technology, implementation, and/or API version and will probably change when the implementation changes.</p>
             <p class="issue" data-number="56">update reference to DWBP BP 11 #identifiersWithinDatasets</p>
@@ -322,24 +329,27 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
           <p class="practicedesc">Avoiding the creation of lots of identifiers for the same resource</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>In general, re-using identifiers for well-known resources is a good idea, because it discourages proliferation of disparate copies with uncertain provenance. Linking your own resources to well-known or authoritative resources also makes relationships between your data and other data, which refers to the same well-known resource, discoverable. The result is a network of related resources using the identifiers for the <a>SpatialThings</a>.</p>
-            <p>In the case of <a>SpatialThings</a>, a simple way of indicating a location is by referencing an already existing named place resource on the Web. For example, DBpedia and GeoNames are existing datasets with well-known spatial resources, i.e. besides place names and a lot of other information, a set of coordinates is also available for the resources in these datasets. The advantage of referring to these named place resources is that it makes clear that different resources which refer to, for example, <code>http://dbpedia.org/resource/Utrecht</code>, are all referring to the same city. If these resources did not use a URI reference but a literal value "Utrecht" this could mean the province Utrecht, the city Utrecht (both places in the Netherlands), the South African town called Utrecht, or maybe something else entirely. </p>
-            <p>See also <a href="#link-to-auth-identifiers">Best Practice 22: Link to resources with well-known or authoritative identifiers</a>.</p>
+            <p>The URIs used by organizations such as <a href="http://dbpedia.org/">DBpedia</a> and <a href="http://www.geonames.org/">GeoNames</a> to identify <a>SpatialThings</a> are commonly used across many different applications and datasets. In general, re-using well-known identifiers such as these is good practice because it makes it easy to recognise that data from different sources is has the same subject.</p>
+            <p>Where possible, we want to avoid proliferation of identifiers for the same resource because this makes it difficult to link data. After all, these identifiers are like 'Web-scale foreign keys', allowing information from different sources to be stitched together.</p>
+            <p>Additionally, when these authoritative identifiers are resolved, a considerable amount of useful information about the <a>SpatialThing</a> is often provided that can be used to supplement that which is provided by your own application. Examples include place names in multiple languages and geographic boundaries.</p>
+
+            <p class="note">Where you are not able to re-use an existing URI, you should link the your URI to those well-known URIs published by third parties, thus enabling your data to be discovered by browsing between related resources. See <a href="#link-to-auth-identifiers">Best Practice 22: Link to resources with well-known or authoritative identifiers</a> for more information.</p>
             <p class="issue" data-number="100">Some content of this BP may be moved to BP link-to-auth-identifiers.</p>              
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>Already existing identifiers for spatial resources are reused instead of new ones being created.</p>
+            <p>Existing identifiers for spatial resources are reused instead of new ones being created.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>If you've got feature data and want to publish that as linked data, the first step is to see if there's an authoritative URI already available that you can reuse. If so, do that; else refer to <a href="#globally-unique-ids">Best Practice 1: Use globally unique identifiers for entity-level resources</a>.</p>
-            <p>DBpedia and GeoNames are examples of popular, community-driven resource collections. Another good source of resource collections is often found in public government data, such as national registers of addresses, buildings, and so on. Mapping and cadastral authorities maintain datasets that provide geospatial reference data.</p>
+            <p><a href="http://dbpedia.org/">DBpedia</a> and <a href="http://www.geonames.org/">GeoNames</a> are examples of popular, community-driven resource collections. Another good source of resource collections is often found in public government data, such as national registers of addresses, buildings, and so on. Mapping and cadastral authorities maintain datasets that provide geospatial reference data.</p>
             <p>See Appendix <a href="#auth-id-sources">B. Authoritative sources of geographic identifiers</a> for a list of good sources of geographic identifiers.</p>
             <p>Identifiers for resources should remain stable over time - even if the information about the identified resource changes. See <a href="#ids-for-changing-things">Best Practice 4: Provide stable identifiers for Things (resources) that change over time</a> for further information.</p>
             <aside class="example">
               <p>Example(s) to be added</p>
-              <p><code>http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam</code> is a resource linking to both DBpedia and GeoNames resources for Amsterdam.</p>
+              <p><code>http://dbpedia.org/resource/Utrecht</code> refers to the city of Utrecht in the Nederlands - not the similarly named town in South Africa.</p>
+              <p><code>http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam</code> is a resource linking to both <a href="http://dbpedia.org/">DBpedia</a> and <a href="http://www.geonames.org/">GeoNames</a> resources for Amsterdam.</p>
             </aside>
           </section>
           <section class="test">
@@ -405,7 +415,9 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
             <p class="subhead">Possible Approach to Implementation</p>
             <p>[[DWBP]] <a href="http://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 8: Provide versioning information</a> explains how to provide versioning info for datasets. It doesn't provide information about versioning individual resources. </p>
             <p>Spatial things can change in different ways, and sometimes the change is such that it's debatable if it's still the same thing. Think carefully about the life cycle of the spatial things in your care, and be reluctant to assign new identifiers. A lake that becomes smaller or bigger is generally still the same lake, but some links (e.g. from statistical datasets, or related to the boundary of the lake) need to target a specific version of its geometry.</p>
+            <p>Include information in your dataset that indicates when the statements made about the <a>SpatialThing</a> are valid.</p>
             <p>If your resources are versioned, a good solution is to provide a canonical, versionless URI for your resource, as well as date-stamped versions. You should also include information on the update frequency in the dataset metadata (see <a href="#spatial-info-dataset-metadata">Best Practice 26: Include spatial information in dataset metadata</a>).</p>
+            <p class="note">See also <a href="#desc-changing-properties">Best Practice 11: How to describe properties that change over time</a>.</p>
             <aside class="example">
               <p>example(s) of versioned spatial thing to be added</p>
             </aside>
@@ -480,6 +492,10 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
         <p>It is important to publish your spatial data with clear semantics. The primary use case for this is you have information about a collection of SpatialThings and you want to publish precise information about their attributes and how they are inter-related. Another use case is the publication on the Web of a dataset that has a spatial component in a form that search engines will understand. </p>
         <p>The attributes of a spatial thing can be described using existing vocabularies, where each term has a published definition. If you want to describe an aspect of the thing that matches that definition then it is good practice to use a term from an established widely used vocabulary. If you can't find a suitable existing vocabulary term, you should create your own, and publish a clear definition for the new term. If you need extra semantics not available in an existing vocabulary, you should create your own. </p>
         <p>How to publish your vocabulary, which describes the meaning of your data, is explained in [[LD-BP]]. We recommend that you link your own vocabulary to commonly used existing ones because this increases its usefulness. How to do this is out of scope for this document; however, we give some examples of mapping relations you can use from OWL, SKOS, RDFS. We also do the mapping between some commonly used spatial vocabularies. </p>
+        <div class="issue" data-number="225">
+          <p>We must avoid being overly focused on RDF.</p>
+          <p>The [[LD-BP]] reference makes this section very RDF dependent. Is there a need / justification for this? Are we saying that RDF is the only recommended way to publish data and models on the Web? Web developers may not care about RDF vocabularies and maybe they prefer a Swagger document (just to pick an example)?</p>
+        </div>
         <div class="note">
           <p>The current list of RDF vocabularies / OWL ontologies for spatial data being considered by the SDW WG are provided below. Some of these will be used in examples. Full details, including mapping between vocabularies, pointers about inconsistencies in vocabularies (if any are evident), and recommendations avoiding their use as these may lead to confusion, will be published in a complementary <strong>NOTE: Comparison of geospatial vocabularies</strong>.</p>
           <p>Vocabularies can discovered from <a href="http://lov.okfn.org/dataset/lov/">Linked Open Vocabularies (LOV)</a>; using search terms like 'location' or Tags <a href="http://lov.okfn.org/dataset/lov/terms?q=place">place</a>, <a href="http://lov.okfn.org/dataset/lov/vocabs?tag=Geography">Geography</a>, <a href="http://lov.okfn.org/dataset/lov/vocabs?tag=Geometry">Geometry</a> and <a href="http://lov.okfn.org/dataset/lov/vocabs?tag=Time">Time</a>.</p>
@@ -1295,6 +1311,7 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
               <p>The mechanics of how to decide when two resources are the same are beyond the scope of this best practice. Tools (e.g. <a href="http://openrefine.org">OpenRefine</a> and <a href="http://silk-framework.com">Silk Linked Data Integration Framework</a>) are available to assist with such reconciliation and may provide further insight.</p>
             </div>
             <p>The link must convey the semantics appropriate to the application (see <a href="#semantic-rels">Best Practice 13: Assert known relationships</a> and <a href="#meaningful-links">Best Practice 20: Provide meaningful links</a> for more information).</p>
+            <p class="issue" data-number="224">Maintaining links to *all* related resources doesn't scale. Redraft required.</p>
             <aside class="example">
               <p>example(s) to be added</p>
               <ul>
@@ -2373,6 +2390,11 @@ table#x-ref_ucrVbp caption, table#x-ref_formatVbp caption, table#detailed-format
       <div class="issue" data-number="212">
         <p>Glossary section needs improving; see existing sources of definitions.</p>
         <p>In particular, the <a>Coverage</a> definition is considered unclear.</p>
+      </div>
+
+      <div class="issue" data-number="222">
+        <p>Need consistency in how we cite existing specifications.</p>
+        <p>Why do some references go to the glossary (eg WFS) and some to the references (eg SPARQL)? Maybe WFS etc should be added to the references, too, and the text should include a link both to the glossary and the references?</p>
       </div>
 
       <p><dfn data-lt="Coverage|Coverages">Coverage</dfn>: A property of a <a>SpatialThing</a> whose value varies according to location and/or time.</p>
