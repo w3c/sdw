@@ -28,10 +28,10 @@ var respecConfig = {
 		}],
     otherLinks: [
     {
-      key: "OGC Document Number:",
+      key: "OGC Document Number",
       data: [
       {
-        value: "OGC 16-XXX"
+        value: "OGC 16-079"
       }]
       }],
     wg: "Spatial Data on the Web Working Group",
