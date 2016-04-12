@@ -1,7 +1,7 @@
 var respecConfig = {
     specStatus: "ED",
     shortName: "owl-time",
-    //publishDate:  "2015-05-18",
+    //publishDate:  "2016-05-18",
     previousPublishDate: "2006-09-27",
     previousMaturity: "FPWD",
     previousURI: "http://www.w3.org/TR/2006/WD-owl-time-20060927/",
@@ -23,7 +23,7 @@ var respecConfig = {
       key: "OGC Document Number:",
       data: [
       {
-        value: "OGC 16-XXX"
+        value: "OGC 16-071"
       }]
       }],
     wg: "Spatial Data on the Web Working Group",
