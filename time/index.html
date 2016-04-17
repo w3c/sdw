@@ -70,7 +70,7 @@ DIV.test H4 {
         positions, [<a  href="#Time-Plus-2015">22</a>].</p>
     </section>
     <section  id="general">
-      <h2>General issues</h2>
+      <h2>1. General issues</h2>
       <p>Temporal information is so common that it’s hard to find a real world
         Web service without it. For example, whenever you place an online order,
         the order date is always part of your order. When you reserve a car at a
@@ -78,10 +78,8 @@ DIV.test H4 {
         to this need, a temporal ontology, OWL-Time, has been developed for
         describing the temporal content of Web pages, or the temporal properties
         of any resource denoted using a web identifier (URI), including
-        real-world things if desired. Advantages of OWL-Time over XML Schema
-        datatype <code>duration</code> and <code>dateTime</code> will be
-        discussed.</p>
-      <p>This document only presents the OWL encodings of the ontology. For a
+        real-world things if desired.&nbsp;</p>
+      <p>This document presents the OWL encodings of the ontology. For a
         first-order logic axiomatization of the ontology, see [<a  href="#ref-4">4</a>,<a
            href="#ref-10">10</a>]. <em>In an extension of the time ontology [<a
              href="#ref-5">5</a>,<a  href="#ref-9">9</a>], we also allow
@@ -92,35 +90,275 @@ DIV.test H4 {
       <p>Elements mentioned in the original draft, but which did not appear in
         the published ontology: </p>
       <p>:durationOf</p>
-      <p><br>
-      </p>
+      <h2>2. Namespaces </h2>
+      <p>The namespace for OWL-Time is set as http://www.w3.org/2006/time#.
+        OWL-Time does not re-use elements from any other vocabularies, but does
+        use some of built-in datatypes from OWL and some additional types from
+        XML Schema Part 2. </p>
+      <p  style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">The
+        table below indicates the full list of namespaces and prefixes used in
+        this document.</p>
+      <table  id="namespacesTable"  style="border-collapse: collapse; color: rgb(0, 0, 0); font-family: sans-serif; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+        <thead>
+          <tr>
+            <th  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Prefix</th>
+            <th  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Namespace</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">owl</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">http://www.w3.org/2002/07/owl#</td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">rdf</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">http://www.w3.org/1999/02/22-rdf-syntax-ns#</td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">rdfs</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">http://www.w3.org/2000/01/rdf-schema#</td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">time</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">http://www.w3.org/2006/time#</td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">xsd</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">http://www.w3.org/2001/XMLSchema#</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
-    <section  id="examples">
-      <h2>Use case examples</h2>
-      <p>A simple use case example: "Suppose someone has a telecon scheduled for
-        6:00pm EST on November 5, 2006. You would like to make an appointment
-        with him for 2:00pm PST on the same day, and expect the meeting to last
-        45 minutes.&nbsp; Will there be an overlap?" In this use case we can
-        specify the facts about the telecon and the meeting using our ontology
-        in OWL that will allow a temporal reasoner to determine whether there is
-        a conflict. See [<a  href="#scheduling">A Use Case for Scheduling</a>]
-        section for details.</p>
-      <p>More examples: "Someone who does a Web search trying to find a place to
-        buy a book needed before next Tuesday may or may not be able to use an
-        online bookstore that promises delivery within five business days." </p>
-      <p>"Someone doing a genealogical search may want to specify that the
-        birthdate of a person is between 15 and 45 years before a known marriage
-        date."</p>
-      <p>More use case examples will be described in detail in [<a  href="#ref-time-in-owl-s">Use
-          Cases for Web Services</a>] section below. </p>
+    <section  id="examples"><br>
     </section>
-    <section  id="syntax">
-      <h2>Syntax for code</h2>
-      <p>The code within the body of the note is in Turtle [<a  href="#Turtle-2014">23</a>].
-        </p> </section>
+    <section  id="syntax"><br>
+    </section>
     <hr>
     <section  id="relations">
-      <h2>Topological Temporal Relations</h2>
+      <h2>3. Vocabulary overview</h2>
+      <h3>3.1 Topological Temporal Relations</h3>
+      <p>The basic structure of the ontology is based a calculus of binary
+        relations on intervals (e.g., meets, overlaps) developed by Allen and
+        Ferguson [<a  href="file:///C:/Users/cox075/dev/sdw/time/index.html#ref-1">1</a>,<a
+           href="file:///C:/Users/cox075/dev/sdw/time/index.html#ref-2">2</a>]
+        for representing qualitative temporal information, and to address the
+        problem of reasoning about such information. The class <code>TemporalEntity
+          </code>has properties that link to the instants that define its
+        beginning and end. There are two subclasses<code></code>: <code>Instant</code>
+        and <code>Interval</code>, and they are the only two subclasses of <code>TemporalEntity</code>.
+        Intervals are, intuitively, things with extent and instants are,
+        intuitively, point-like in that they have no interior points. It is
+        generally safe to think of an instant as an interval with zero length,
+        where the beginning and end are the same. There is one subclass of <code>Interval</code>:
+        <code>ProperInterval</code>, whose beginning and end are distinct, and
+        whose membership is disjoint from <code>Instant</code>. </p>
+      <div  style="text-align: center;"><img  style="width: 447px; height: 341px;"
+           title="Temporal Entity and sub-classes"  alt="UML-style diagram of temporal entity classes"
+           src="./TimeTopology.png"><br>
+        Fig. 1&nbsp; Core model model of temporal entities. </div>
+      <h3>3.2 Temporal position</h3>
+      <p>Three classes support the description of the position of an Instant:
+        all have a property to indicate the temporal reference system <code>TRS.&nbsp;</code><code>TimePosition
+          </code>has properties for alternatively describe the position using a
+        number or a name. <code>GenDateTimeDescription </code>has a set of
+        properties to specify a date-time using calendar and clock elements. Its
+        subclass <code>DateTimeDescription </code>fixes the temporal reference
+        system to the Gregorian calendar. </p>
+      <div  style="text-align: center;"><img  style="width: 433px; height: 406px;"
+           title="DataTimePosition"  alt="UML-style diagram of classes for temporal position"
+           src="./DateTimeDescription.png"><br>
+        Fig. 2 Classes for temporal position. </div>
+      <h3>3.3 Duration </h3>
+      <p>Three classes support the description of the duration of an entity: all
+        have a property to indicate the temporal reference system <code>TRS</code>.
+        <code>Duration </code>has properties for alternatively describe the
+        duration using a number or a name. <code>GenDurationDescription </code>has
+        a set of properties to specify a duration using calendar and clock
+        elements. Its subclass <code>DurationDescription </code>fixes the
+        temporal reference system to the Gregorian calendar.</p>
+      <div  style="text-align: center;"><img  style="width: 443px; height: 397px;"
+           title="Duration"  alt="UML-style diagram of duration classes"  src="./DurationDescription.png"><br>
+        Fig. 3 Classes for temporal duration.</div>
+      <h2>4. Vocabulary specification</h2>
+      <h3><a  id="time:TemporalEntity">4.1 Class: TemporalEntity</a></h3>
+      <table  class="definition"  style="border-collapse: collapse; width: 811.818px; color: rgb(0, 0, 0); font-family: sans-serif; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+        <thead>
+          <tr>
+            <th  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">RDF
+              Class:</th>
+            <th  style="border: 1px solid black; padding: 1em; font-family: sans-serif;"><a
+                 href="#time:TemporalEntity">time:TemporalEntity</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Definition:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">A
+              ... </td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Subclass
+              of:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">owl:Thing</td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Union
+              of:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">time:Instant
+              time:Interval</td>
+          </tr>
+        </tbody>
+      </table>
+      <h4><a  id="time:before">Property: before</a></h4>
+      <table  class="definition"  style="border-collapse: collapse; width: 812px; height: 310px;">
+        <thead>
+          <tr>
+            <th  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">RDF
+              Property:</th>
+            <th  style="border: 1px solid black; padding: 1em; font-family: sans-serif;"><a
+                 href="#time:before">time:before</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Definition:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">gives
+              directionality to time. If a temporal entity T<sub>1</sub> is
+              before another temporal entity T<sub>2</sub>, then the end of T<sub>1</sub>
+              is before the beginning of T<sub>2</sub>. Thus, before can be
+              considered to be basic to instants and derived for intervals. </td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Instance
+              of:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">owl:ObjectProperty</td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Domain:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">time:TemporalEntity</td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Range:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">time:TemporalEntity</td>
+          </tr>
+        </tbody>
+      </table>
+      <h4><a  id="time:after">Property: after</a></h4>
+      <table  class="definition"  style="border-collapse: collapse; width: 812px; height: 310px;">
+        <thead>
+          <tr>
+            <th  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">RDF
+              Property:</th>
+            <th  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">time:after</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Definition:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">gives
+              directionality to time. If a temporal entity T<sub>1</sub> is
+              after another temporal entity T<sub>2</sub>, then the beginning of
+              T<sub>1</sub> is after the end of T<sub>2</sub>.</td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Instance
+              of:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">owl:ObjectProperty</td>
+          </tr>
+          <tr>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">Inverse
+              Property:</td>
+            <td  style="border: 1px solid black; padding: 1em; font-family: sans-serif;">time:before</td>
+          </tr>
+        </tbody>
+      </table>
+      <h4>Property: hasBeginning</h4>
+      <h4>Property: hasEnd</h4>
+      <h4>Property: hasDuration</h4>
+      <h4>Property: hasDurationDescription</h4>
+      <h3> 4.2 Class: Instant</h3>
+      <h4>Property: inXSDDateTime</h4>
+      <h4>Property: inTimePosition</h4>
+      <h4>Property: inDateTime</h4>
+      <h3>4.3 Class: Interval</h3>
+      <h4>Property: inside</h4>
+      <h3>4.4 Class: ProperInterval</h3>
+      <h4>Property: intervalBefore</h4>
+      <h4>Property: intervalAfter</h4>
+      <h4>Property: intervalDuring</h4>
+      <h4> </h4>
+      <h4>Property: intervalContains</h4>
+      <h4> </h4>
+      <h4>Property: intervalEquals</h4>
+      <h4> </h4>
+      <h4>Property: intervalFinishes</h4>
+      <h4> </h4>
+      <h4>Property: intervalFinishedBy</h4>
+      <h4>Property: intervalMeets</h4>
+      <h4> </h4>
+      <h4>Property: intervalMetBy</h4>
+      <h4>Property: intervalOverlaps</h4>
+      <h4> </h4>
+      <h4>Property: intervalOverlappedBy</h4>
+      <p> </p>
+      <h4>Property: intervalStarts</h4>
+      <h4> </h4>
+      <h4>Property: intervalStartedBy</h4>
+      <p> </p>
+      <h3>4.5 Class: TRS</h3>
+      <h4>Property: hasTRS</h4>
+      <h3>4.6 Class: TimePosition</h3>
+      <h4>Property: nominalValue</h4>
+      <h4>Property: numericValue</h4>
+      <h3>4.7 Class: GenDateTimeDescription</h3>
+      <h4>Property: timeZone</h4>
+      <h4>Property: unitType</h4>
+      <h4>Property: year</h4>
+      <h4>Property: month</h4>
+      <h4>Property: week</h4>
+      <h4>Property: day</h4>
+      <h4>Property: hour</h4>
+      <h4>Property: minute</h4>
+      <h4>Property: second</h4>
+      <h4>Property: dayOfYear</h4>
+      <h4>Property: dayOfWeek</h4>
+      <h3>4.8 Class: DateTimeDescription</h3>
+      <h3>4.9 Class: Duration</h3>
+      <h3> </h3>
+      <h3>4.10 Class: GenDurationDescription</h3>
+      <h3> </h3>
+      <h3>4.11 Class: DurationDescription</h3>
+      <h4>Property: years<br>
+      </h4>
+      <h4> </h4>
+      <h4>Property: months<br>
+      </h4>
+      <h4> </h4>
+      <h4>Property: weeks<br>
+      </h4>
+      <h4> </h4>
+      <h4>Property: days<br>
+      </h4>
+      <h4> </h4>
+      <h4>Property: hours<br>
+      </h4>
+      <h4> </h4>
+      <h4>Property: minutes<br>
+      </h4>
+      <h4> </h4>
+      <h4>Property: seconds<br>
+      </h4>
+      <h4> </h4>
+      <h3>4.12 Class: DateTimeInterval</h3>
+      <h4>Property: hasDateTimeDescription</h4>
+      <h4>Property: xsd:DateTime</h4>
+      <h3>4.13 Class: DayOfWeek</h3>
+      <h3>4.14 Class: Number</h3>
+      <h3>4.15 Class: TemporalUnit</h3>
+      <h3>4.16 Class: Year</h3>
+      <h3> </h3>
+      <p><br>
+      </p>
       <p>There are two subclasses of <code>TemporalEntity</code>: <code>Instant</code>
         and <code>Interval</code>, and they are the only two subclasses of <code>TemporalEntity</code>:</p>
       <pre>:Instant
@@ -136,10 +374,8 @@ DIV.test H4 {
               [ a       owl:Class ;
                 owl:unionOf (:Instant :Interval)
               ] .</pre>
-      <p>Intervals are, intuitively, things with extent and instants are,
-        intuitively, point-like in that they have no interior points. It is
-        generally safe to think of an instant as an interval with zero length,
-        where the beginning and end are the same.</p>
+      <p><br>
+      </p>
       <p><code>hasBeginning</code> and <code>hasEnd</code> are relations
         between instants and temporal entities, and the beginnings and ends of
         temporal entities, if they exist, are unique. In some approach to
@@ -197,29 +433,22 @@ DIV.test H4 {
         durations and positions using the conventional Gregorian calendar and
         24-hour clock, with timezone offset from UTC if required. </p>
       <p  class="MsoNormal">While this satisfies many web applications,<span  lang="EN-US">
-          many other calendars and temporal reference
-          systems are used in particular cultural and scholarly contexts. For
-          example, the
-          Julian calendar was used throughout Europe until the 16<sup>th</sup>
-          century,
+          many other calendars and temporal reference systems are used in
+          particular cultural and scholarly contexts. For example, the Julian
+          calendar was used throughout Europe until the 16<sup>th</sup> century,
           and is still used for computing key dates in some orthodox Christian
           communities. Lunisolar (e.g. Hebrew) and lunar (e.g. Islamic)
-          calendars are still
-          used, and many similar have been used historically. Dynastic calendars
-          (counting years within eras defined by the reign of a monarch or
-          dynasty) were
-          used earlier in many cultures. In more contemporary applications,
-          Loran-C, Unix
-          and GPS time are based on seconds counted from a specified origin (in
-          1958,
+          calendars are still used, and many similar have been used
+          historically. Dynastic calendars (counting years within eras defined
+          by the reign of a monarch or dynasty) were used earlier in many
+          cultures. In more contemporary applications, Loran-C, Unix and GPS
+          time are based on seconds counted from a specified origin (in 1958,
           1970 and 1980, respectively). Archaeological and geological
-          applications use
-          chronometric scales based on years counted backwards from ‘the
-          present’
-          (defined as 1950 for radiocarbon dating </span><span  lang="EN-US"><span
-             style="mso-no-proof:yes">[15]</span></span><span  lang="EN-US">),
-          or named periods associated with specified correlation markers </span><span
-           lang="EN-US"><span  style="mso-no-proof:yes">[4,5,9]</span></span><span
+          applications use chronometric scales based on years counted backwards
+          from ‘the present’ (defined as 1950 for radiocarbon dating </span><span
+           lang="EN-US"><span  style="mso-no-proof:yes">[15]</span></span><span
+           lang="EN-US">), or named periods associated with specified
+          correlation markers </span><span  lang="EN-US"><span  style="mso-no-proof:yes">[4,5,9]</span></span><span
            lang="EN-US">. In order to support these more general applications,
           the representation of temporal position and duration must be flexible,
           and annotated with the 'temporal reference system' in use.&nbsp;</span></p>
@@ -306,8 +535,7 @@ DIV.test H4 {
       calendar, classes are provided for both duration and position for which
       the value of the reference system is fixed to the Gregorian Calendar. <br>
       <span  lang="EN-US"></span><span  style="font-family: monospace;"></span>
-      <p>
-      </p>
+      <p> </p>
       <section  id="timezones">
         <h2>Time Zones</h2>
         <p>What hour of the day an instant is in is relative to the time zone.
@@ -414,7 +642,7 @@ DIV.test H4 {
   rdfs:subClassOf :GenDurationDescription ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
-      owl:hasValue <http://dbpedia.org/resource/Gregorian_calendar> ;
+      owl:hasValue <http:  dbpedia.org=""  resource=""  gregorian_calendar=""> ;
       owl:onProperty :hasTRS ;
     ] ;
 .<br><br>:Duration
@@ -442,7 +670,7 @@ DIV.test H4 {
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
       owl:onProperty :hasTRS ;
     ] ;
-. </pre>
+. </http:></pre>
       <p>An interval can have multiple duration descriptions (e.g., 2 days, 48
         hours), but can only have one duration. </p>
       <p>We use two different sets of properties for <code>DateTimeDescription</code>
@@ -536,8 +764,7 @@ DIV.test H4 {
         that has values only for <code>unitType</code>(<code>unitDay</code>), <code>year</code>(2006),
         <code>month</code>(3), and <code>day</code>(12). <code>DateTimeDescription</code>
         and <code>hasDateTimeDescription</code> are defined in OWL as:</p>
-      <pre>
-:GenDateTimeDescription
+      <pre>:GenDateTimeDescription
   rdf:type owl:Class ;
   rdfs:comment "Clone of W3C Time time:DateTimeDescription, to allow non-Gregorian day/month/year values. :day :month :year properties are replaced with properties that permit essentially the same lexical pattern, but without the requirement that they denote Gregorian calendar elements."^^xsd:string ;
   rdfs:label "Generalized Date Time Description"^^xsd:string ;
@@ -622,7 +849,7 @@ DIV.test H4 {
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
-      owl:hasValue <http://dbpedia.org/resource/Gregorian_calendar> ;
+      owl:hasValue <http:  dbpedia.org=""  resource=""  gregorian_calendar=""> ;
       owl:onProperty :hasTRS ;
     ] ;
 .
@@ -632,7 +859,7 @@ DIV.test H4 {
       a       owl:ObjectProperty ;
       rdfs:domain :DateTimeInterval ;
       rdfs:range :GenDateTimeDescription .
-</pre>
+</http:></pre>
       <p><code>DateTimeInterval</code> is a subclass of <code>ProperInterval</code>.
         Any <code>TemporalEntity</code> has a duration, but only <code>DateTimeInterval</code>
         can have <code>DateTimeDescription</code> (e.g., May 8 has a <code>DateTimeDescription</code>,
@@ -742,7 +969,23 @@ DIV.test H4 {
       </section>
     </section>
     <section  id="ref-time-in-owl-s">
-      <h2>Use Cases for Web Services</h2>
+      <section  id="examples">
+            <h2>Use case examples</h2>
+            <p>A simple use case example: "Suppose someone has a telecon
+              scheduled for 6:00pm EST on November 5, 2006. You would like to              make an appointment with him for 2:00pm PST on the same day, and
+              expect the meeting to last 45 minutes.  Will there be an              overlap?" In this use case we can specify the facts about the
+              telecon and the meeting using our ontology in OWL that will allow              a temporal reasoner to determine whether there is a conflict. See
+              [<a  href="file:///C:/Users/cox075/dev/sdw/time/index.html#scheduling">A Use Case for Scheduling</a>] section for
+              details.</p>
+            <p>More examples: "Someone who does a Web search trying to find a
+              place to buy a book needed before next Tuesday may or may not be              able to use an online bookstore that promises delivery within five
+              business days." </p>
+            <p>"Someone doing a genealogical search may want to specify that the
+              birthdate of a person is between 15 and 45 years before a known              marriage date."</p>
+            <p>More use case examples will be described in detail in [<a  href="file:///C:/Users/cox075/dev/sdw/time/index.html#ref-time-in-owl-s">Use
+                Cases for Web Services</a>] section below. </p>
+          </section>
+<h2>Use Cases for Web Services</h2>
       <p><span  style="font-style: italic;">We also demonstrate in detail, using
           the Congo.com and Bravo Air examples from OWL-S [<a  href="file:///C:/Users/cox075/dev/sdw/time/index.html#ref-11">11</a>],
           how this time ontology can be used to support OWL-S, including use
@@ -1465,7 +1708,7 @@ DIV.test H4 {
       :<b>timeZonePart</b>
               :<b>IDIdahoPST</b> , :<b>IDIdahoMST</b> ;
       owl:sameIndividualAs
-              <http://www.daml.org/2003/02/fips55/ID.owl#c049> .</pre>
+              <http:  www.daml.org=""  2003=""  02=""  fips55=""  id.owl#c049=""> .</http:></pre>
         <a  name="ontology0"></a><code>DaylightSavingsPolicy</code> has one
         property:
         <ul>
@@ -1683,9 +1926,9 @@ DIV.test H4 {
   <o:AllowPNG/>
  </o:OfficeDocumentSettings>
 </xml><![endif]--><span  style="font-size:10.0pt;mso-bidi-font-size:
-12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:"MS Mincho";
-mso-ansi-language:EN-US;mso-fareast-language:JA;mso-bidi-language:AR-SA;
-mso-no-proof:yes"  lang="EN-US">[15]<span  style="mso-tab-count:1">    </span>Guidelines to
+12.0pt;font-family:"  times=""  new=""  roman",serif;mso-fareast-font-family:"ms=""
+ mincho";=""  mso-ansi-language:en-us;mso-fareast-language:ja;mso-bidi-language:ar-sa;=""
+ mso-no-proof:yes"=""  lang="EN-US">[15]<span  style="mso-tab-count:1">    </span>Guidelines to
 Authors, Radiocarb. Mag. (2014).
 https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissions#authorGuidelines
 (accessed September 9, 2014)</span><!--[if gte mso 9]><xml>
@@ -2320,9 +2563,9 @@ https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissions#author
   <o:AllowPNG/>
  </o:OfficeDocumentSettings>
 </xml><![endif]--><span  style="font-size:10.0pt;mso-bidi-font-size:
-12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:"MS Mincho";
-mso-ansi-language:EN-US;mso-fareast-language:JA;mso-bidi-language:AR-SA;
-mso-no-proof:yes"  lang="EN-US">[4] S.J.D. Cox, S.M. Richard, A formal model for the geologic
+12.0pt;font-family:"  times=""  new=""  roman",serif;mso-fareast-font-family:"ms=""
+ mincho";=""  mso-ansi-language:en-us;mso-fareast-language:ja;mso-bidi-language:ar-sa;=""
+ mso-no-proof:yes"=""  lang="EN-US">[4] S.J.D. Cox, S.M. Richard, A formal model for the geologic
 time scale and global stratotype section and point, compatible with geospatial
 information transfer standards, Geosphere. 1 (2005) 119. doi:10.1130/GES00022.1</span><!--[if gte mso 9]><xml>
  <w:WordDocument>
@@ -3598,6 +3841,4 @@ Informatics. 8 (2014) 5–19. doi:10.1007/s12145-014-0166-2.</span></p>
         Carroll, John McClure, Libby Miller, and Guus Schreiber, for their very
         helpful feedbacks and comments to the document.</p>
     </section>
-  
-
 </body></html>
