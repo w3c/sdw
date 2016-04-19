@@ -12,7 +12,7 @@ var respecConfig = {
     {
       name: "Kerry Taylor",
       company: "Australian National University",
-      companyURL: "http://cbe.anu.edu.au/"
+      companyURL: "https://cecs.anu.edu.au/"
     }, {
 			name: "Krzysztof Janowicz",
 			company: "University of California, Santa Barbara",
