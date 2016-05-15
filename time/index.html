@@ -67,9 +67,9 @@ DIV.test H4 {
     <section  id="changes">
       <h4>Changes from previous versions </h4>
       <p>This version of OWL-Time was developed in the Spatial Data on the Web Working Group (a joint activity involving
-        W3C and the Open Geospatial Consortium). It is based on the earlier draft by Hobbs and Pan, [<a  href="#OWL-Time-2006">21</a>]
-        with modifications proposed by Cox, [<a  href="#Time-Plus-2015">22</a>] to support more general temporal
-        positions. Specifically: </p>
+        W3C and the Open Geospatial Consortium). It is based on the earlier draft by Hobbs and Pan, [<a  href="#OWL-T">OWL-T</a>]
+        with modifications proposed by Cox, [<a  href="#CO-15"><span  style="color: rgb(0, 0, 238);"><span  style="text-decoration: underline;">CO-15</span></span></a>]
+        to support more general temporal positions. Specifically: </p>
       <p> </p>
       <ul>
         <li><code>GenDateTimeDescription </code>and <code>GenDurationDescription </code>generalize the corresponding
@@ -90,30 +90,41 @@ DIV.test H4 {
         has been developed for describing the temporal content of Web pages, or the temporal properties of any resource
         denoted using a web identifier (URI), including real-world things if desired.&nbsp;</p>
       <p>This document presents the OWL encodings of the ontology. For a first-order logic axiomatization of the
-        ontology, see [<a  href="#ref-4">4</a>,<a  href="#ref-10">10</a>]. <em>In an extension of the time ontology [<a
-             href="#ref-5">5</a>,<a  href="#ref-9">9</a>], we also allow temporal predicates to apply directly to
-          events, should the user wish, but here we restrict our treatment to temporal entities. </em></p>
+        ontology, see [<a  href="#HP-04"><span  style="text-decoration: underline;">HP-04</span></a>]. <em>In an
+          extension of the time ontology [<span  style="text-decoration: underline;"><a  href="#PH-04">PH-04</a>,</span>
+          <a  href="#OE-06">OE-06</a>], we also allow temporal predicates to apply directly to events, should the user
+          wish, but here we restrict our treatment to temporal entities. </em></p>
       <p  class="issue"><code>:durationOf</code> is mentioned in the original draft, but not in the published ontology</p>
       <p  class="issue"><code>:Year</code> is the only specialization of <code>:DurationDescription</code> - suggest
         moving it to an 'example' namespace</p>
       <p  class="issue"><code>tzont:TimeZone</code> is in a separate namespace</p>
-      <p  class="issue">Most of the properties defied in the ontology have global constraints on the domain and range.
-        In most cases the rdfs:domain could be left unspecified, which would allow the properties to be used more widely
-        without undesirable entailments. Their use in the context of the classes in the ontology is generally controlled
-        by local cardinality constraints. (However, I'm generally more inclined to leave global constraints on the
-        rdfs:range). </p>
-      <p  class="issue">The value of the temporal reference system (<code>:TRS</code>) is fixed to Gregorian on <code>:DateTimeDescription</code>
-        and <code>DurationDescription</code>. What is the best URI for the Gregorian calendar/clock system?<code><span
-             style="font-family: serif;"> </span>&lt;http://dbpedia.org/resource/Gregorian_calendar&gt;</code><span  style="font-family: monospace;">
-          or</span><code> &lt;http://www.opengis.net/def/uom/ISO-8601/0/Gregorian&gt;</code> .<code> </code></p>
-      <ol>
-      </ol>
+      The value of the temporal reference system (<code>:TRS</code>) is fixed to Gregorian on <code>:DateTimeDescription</code>
+      and <code>DurationDescription</code>. What is the best URI for the Gregorian calendar/clock system?<code>&lt;http://dbpedia.org/resource/Gregorian_calendar&gt;</code>
+      or <code>&lt;http://www.opengis.net/def/uom/ISO-8601/0/Gregorian&gt;</code> .Most of the properties defied in the
+      ontology have global constraints on the domain and range. In many cases the <code>rdfs:domain </code>could be
+      left unspecified, which would allow the properties to be used more widely without undesirable entailments. Their
+      use in the context of the classes in the ontology is adequately controlled through local cardinality constraints,
+      using <code>owl:Restriction</code> .&nbsp;
+      <p  class="issue">The Time ontology is concerned only with formalizing temporal intervals and instants, and does
+        not include any predicates to tie temporal objects to spatial entities or features, or other things. The editors
+        note that predicates that concern temporal behaviour and properties will usually be part of an application or
+        associated with a community of practice. Nevertheless, there may be some generic predicates that could be
+        conveniently provided as part of the generic time ontology. Some may already exist in the ontology (<code>before</code>,
+        <code>after</code>, <code>hasEnd</code>, <code>hasBeginning</code>) but their <code>rdfs:domain</code> is <code>:TemporalEntity</code>,
+        so this would need to be generalized to avoid inappropriate entailments. Else predicates with similar names
+        could be provided for linking to other entities. </p>
+      <p  class="issue">The UCR analysis identified the need to add support for uncertainty or fuzzy times. Some
+        examples of how this can be done by extending the <code>xsd:dateTime</code> syntax have been shown. The editors
+        consider this to be the wrong direction since it would make the encoding inconsistent with all XSD-based
+        processors. Additional capabilities would be better handled with specific RDF properties. </p>
+      <p  class="issue"><br>
+      </p>
     </section>
     <section  id="namespaces">
       <h2>Namespaces </h2>
-      <p>The namespace for OWL-Time is set as http://www.w3.org/2006/time#. OWL-Time does not re-use elements from any
-        other vocabularies, but does use some of built-in datatypes from OWL and some additional types from XML Schema
-        Part 2. </p>
+      <p>The namespace for OWL-Time is <code>http://www.w3.org/2006/time#</code>. OWL-Time does not re-use elements
+        from any other vocabularies, but does use some built-in datatypes from OWL and some additional types from XML
+        Schema Part 2. </p>
       <p>The table below indicates the full list of namespaces and prefixes used in this document.</p>
       <table  id="namespacesTable">
         <thead>
@@ -124,36 +135,37 @@ DIV.test H4 {
         </thead>
         <tbody>
           <tr>
-            <td>ex</td>
-            <td>http://example.org/time/</td>
+            <td><code>ex</code></td>
+            <td><code>http://example.org/time/</code></td>
           </tr>
           <tr>
-            <td>geol</td>
-            <td>http://example.org/geologic/</td>
+            <td><code>geol</code></td>
+            <td><code>http://example.org/geologic/</code></td>
           </tr>
           <tr>
-            <td>owl</td>
-            <td>http://www.w3.org/2002/07/owl#</td>
+            <td><code>owl</code></td>
+            <td><code>http://www.w3.org/2002/07/owl#</code></td>
           </tr>
           <tr>
-            <td>rdf</td>
-            <td>http://www.w3.org/1999/02/22-rdf-syntax-ns#</td>
+            <td><code>rdf</code></td>
+            <td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code></td>
           </tr>
           <tr>
-            <td>rdfs</td>
-            <td>http://www.w3.org/2000/01/rdf-schema#</td>
+            <td><code>rdfs</code></td>
+            <td><code>http://www.w3.org/2000/01/rdf-schema#</code></td>
           </tr>
           <tr>
-            <td>time</td>
-            <td>http://www.w3.org/2006/time#</td>
+            <td><code>time</code><br>
+              or no prefix</td>
+            <td><code>http://www.w3.org/2006/time#</code></td>
           </tr>
           <tr>
-            <td>tzont</td>
-            <td> http://www.w3.org/2006/timezone# </td>
+            <td><code>tzont</code></td>
+            <td> <code>http://www.w3.org/2006/timezone#</code> </td>
           </tr>
           <tr>
-            <td>xsd</td>
-            <td>http://www.w3.org/2001/XMLSchema#</td>
+            <td><code>xsd</code></td>
+            <td><code>http://www.w3.org/2001/XMLSchema#</code></td>
           </tr>
         </tbody>
       </table>
@@ -163,8 +175,9 @@ DIV.test H4 {
       <section  id="topology">
         <h3>Topological Temporal Relations</h3>
         <p>The basic structure of the ontology is based on an algebra of binary relations on intervals (e.g., meets,
-          overlaps) developed by Allen and Ferguson [<a  href="#ref-1">1</a>,<a  href="#ref-2">2</a>] for representing
-          qualitative temporal information, and to address the problem of reasoning about such information. </p>
+          overlaps) developed by Allen and Ferguson [<a  href="#AL-84">AL-84</a>, <a  href="#AF-97">AF-97</a>] for
+          representing qualitative temporal information, and to address the problem of reasoning about such information.
+        </p>
         <p>This is implemented in the ontology starting with a class <code>TemporalEntity </code>which has properties
           that link to the temporal instants that define its beginning and end. There are two subclasses<code></code>: <code>Interval</code>
           and <code>Instant</code>, and they are the only two subclasses of <code>TemporalEntity</code>. Intervals
@@ -176,12 +189,13 @@ DIV.test H4 {
           one subclass, <code>DateTimeInterval</code>, whose position and extent may be expressed using a single <code>GenDateTimeDescription
             </code>or <code>xsd:dateTime</code>. </p>
         <div  style="text-align: center;"><img  title="Temporal Entity and sub-classes"  alt="UML-style diagram of temporal entity classes"
-             src="./images/TemporalEntity.png"> Fig. 1 Core model model of temporal entities.
+             src="./images/TemporalEntity.png"> <br>
+          Fig. 1 Core model model of temporal entities.
           <div  style="text-align: left;">
-            <p>Allen and Ferguson [<a  href="#ref-1">1</a>,<a  href="#ref-2">2</a>] have developed a calculus of binary
-              relations on intervals (e.g., meets, overlaps) for representing qualitative temporal information and
-              address the problem of reasoning about such information. The relations between intervals defined in their
-              calculus can be defined in a relatively straightforward fashion in terms of <code>before</code> and
+            <p>Allen and Ferguson [<a  href="#AL-84">AL-84</a>, <a  href="#AF-97">AF-97</a>] have developed a calculus
+              of binary relations on intervals (e.g., meets, overlaps) for representing qualitative temporal information
+              and address the problem of reasoning about such information. The relations between intervals defined in
+              their calculus can be defined in a relatively straightforward fashion in terms of <code>before</code> and
               identity on the beginning and end points. The standard interval calculus assumes all intervals are proper,
               whose beginning and end are different. </p>
           </div>
@@ -202,15 +216,17 @@ DIV.test H4 {
         <p  class="note"><code>DurationDescription </code>covers the case that was in the original note, and retains
           the original class name. </p>
         <div  style="text-align: center;"><img  title="Duration description"  alt="UML representation of Duration Description and associated classes"
-             src="./images/DurationDescription.png"> Fig. 3 Classes for temporal duration.</div>
+             src="./images/DurationDescription.png"> <br>
+          Fig. 2 Classes for temporal duration.<br>
+        </div>
       </section>
       <section  id="position">
         <h3>Time position and time units</h3>
-        <p>OWL 2 has two built-in datatypes relating to time: <code>xsd:dateTime </code>and <code>xsd:dataTimeStamp </code>[24].
-          Other XSD types such as <code>xsd:date</code>, <code>xsd:gYear</code>, <code>xsd:gMonth </code>and <code>xsd:gMonth</code>
-          (https://www.w3.org/TR/xmlschema-2/#date ) are also commonly used in OWL applications. These provide for a
-          compact representation of time durations and positions using the conventional Gregorian calendar and 24-hour
-          clock, with timezone offset from UTC if required.</p>
+        <p>OWL 2 has two built-in datatypes relating to time: <code>xsd:dateTime </code>and <code>xsd:dataTimeStamp </code>[<a
+             href="#OWL-2">OWL-2</a>]. Other XSD types such as <code>xsd:date</code>, <code>xsd:gYear</code>, <code>xsd:gMonth
+            </code>and <code>xsd:gMonth</code> [<a  href="#XSD-D">XSD-D</a>] are also commonly used in OWL
+          applications. These provide for a compact representation of time durations and positions using the
+          conventional Gregorian calendar and 24-hour clock, with timezone offset from UTC if required.</p>
         <p>While this satisfies many web applications, many other calendars and temporal reference systems are used in
           particular cultural and scholarly contexts. For example, the Julian calendar was used throughout Europe until
           the 16<sup>th</sup> century, and is still used for computing key dates in some orthodox Christian communities.
@@ -219,7 +235,8 @@ DIV.test H4 {
           were used earlier in many cultures. In more contemporary applications, Loran-C, Unix and GPS time are based on
           seconds counted from a specified origin (in 1958, 1970 and 1980, respectively). Archaeological and geological
           applications use chronometric scales based on years counted backwards from ‘the present’ (defined as 1950 for
-          radiocarbon dating [15], or named periods associated with specified correlation markers [4,5,9]. In order to
+          radiocarbon dating [<a  href="#RC-14">RC-14</a>], or named periods associated with specified correlation
+          markers [<a  href="#CR-05">CR-05</a>, <a  href="#CR-14">CR-14</a>, <a  href="#MF-13">MF-13</a>]. In order to
           support these more general applications, the representation of temporal position and duration must be
           flexible, and annotated with the 'temporal reference system' in use. </p>
         <p>Three classes in the ontology support the description of temporal position<code></code>. All have a property
@@ -232,9 +249,11 @@ DIV.test H4 {
         <p  class="note"><code>DateTimeDescription </code>covers the case that was defined in the original note, and
           retains the original class name.&nbsp; </p>
         <div  style="text-align: center;"><img  title="DataTimePosition"  alt="UML-style diagram of classes for temporal position"
-             src="./images/DateTimeDescription.png"> Fig. 2 Classes for temporal position.
+             src="./images/DateTimeDescription.png"> <br>
+          Fig. 3 Classes for temporal position.<br>
+          <br>
           <div  style="text-align: left;"> Following the theoretical basis laid out by Allen and Ferguson, a time
-            position has a finite extent, corresponding to the precision or temporal unit used to describe it. Thus,a <code>GenDateTimeDescription</code>
+            position has a finite extent, corresponding to the precision or temporal unit used. Thus,a <code>GenDateTimeDescription</code>
             or <code>DateTimeDescription</code> is strictly always a description of an interval (<code>DateTimeInterval</code>),
             not an instant, with a duration corresponding to the value of its<span  style="font-family: monospace;"> </span><code>unitType</code>.
           </div>
@@ -1965,27 +1984,29 @@ DIV.test H4 {
     </section>
     <section  id="examples">
       <h2> Examples</h2>
-      <h3> iCalendar</h3>
-      iCalendar [<a  href="#ref-3">3</a>] is a widely supported standard for personal data interchange. It provides the
-      definition of a common format for openly exchanging calendaring and scheduling information across the Internet.
-      The representation of temporal concepts in this time ontology can be straightforwardly mapped to iCalendar. For
-      example, duration of 15 days, 5 hours and 20 seconds is represented in iCalendar as P15DT5H0M20S, which can be
-      represented in the time ontology as:
-      <pre>:hasDurationDescription
+      <section  id="iCal">
+        <h3>iCalendar</h3>
+        iCalendar [<a  href="#ref-3">3</a>] is a widely supported standard for personal data interchange. It provides
+        the definition of a common format for openly exchanging calendaring and scheduling information across the
+        Internet. The representation of temporal concepts in this time ontology can be straightforwardly mapped to
+        iCalendar. For example, duration of 15 days, 5 hours and 20 seconds is represented in iCalendar as P15DT5H0M20S,
+        which can be represented in the time ontology as:
+        <pre>:hasDurationDescription
       a       :DurationDescription ;
       :seconds 20 ;
       :hours 5 ;
       :days 15 .
-</pre>
-      <section  id="time-ontology-code">
-        <h3><a  id="geologictimescale">Geologic timescale</a> described as a graph of ProperInterval individuals</h3>
+</pre> </section>
+      <section  id="geologictimescale">
+        <h3>Geologic timescale described as a graph of ProperInterval individuals</h3>
         <p>The geologic timescale is defined as a set of named intervals arranged in a hierarchy, such that there is
           only one subdivision of the intervals of each rank (e.g. 'Era') by a set of intervals of the next rank (in
-          this case 'Period'). Since the relative ordering is well-defined this can therefore serve as an ordinal
-          temporal reference system. Fig. 5 shows how this can be expressed as a set of :ProperIntervals related to each
-          other using only <code>intervalMetBy</code>, <code>intervalStartedBy</code>, <code>intervalFinishedBy</code>.
-          Many other interval relationships follow logically from the ones shown (for example 'Neogene Period' :<code>intervalDuring
-            </code>'Cenozoic Era') but these are sufficient to describe the full topology.&nbsp; </p>
+          this case 'Period') [<a  href="#CR-05">CR-05</a>]. Since the relative ordering is well-defined this can
+          therefore serve as an ordinal temporal reference system. Fig. 5 shows how the geologic timescale can be
+          expressed as a set of :ProperIntervals related to each other using only <code>intervalMetBy</code>, <code>intervalStartedBy</code>,
+          <code>intervalFinishedBy</code>. Many other interval relationships follow logically from the ones shown (for
+          example 'Neogene Period' :<code>intervalDuring </code>'Cenozoic Era') but these are sufficient to describe
+          the full topology.&nbsp; </p>
         <img  title="(Part of) the international chronostratigraphic chart, formalized as a set of proper intervals"  src="images/GeologicTimescale-1.png">
         <div  style="text-align: center;">Fig. 5 Part of the geologic timescale formalized as ProperIntervals, with
           ordering relationships described using the predicates defined in this ontology.&nbsp; </div>
@@ -2012,7 +2033,8 @@ DIV.test H4 {
 . </pre>
         <p>Note that the position of this <code>Instant </code>is specified using a <code>TimePosition</code>, which
           is a numeric value relative to the temporal coordinate system indicated as the value of the <code>hasTRS </code>property.
-          </p>
+          </p> </section>
+      <section  id="dtd-vs-dt">
         <h3>DateTimeDescription vs dateTime</h3>
         <p>The following example illustrates the difference between using <code>DateTimeDescription </code>and using
           the XML datatype <code>dateTime<span  style="font-family: serif;">. A</span></code>n instant that represents
@@ -2041,13 +2063,15 @@ ex:meetingStartDescription
             </code>more information can be expressed<code></code>, such as "week", "day of week" and "day of year", so
           in the example, we can also know that 01/01/2006 is Sunday, on the first day of the year, and in the first
           week of the year. </p>
-        <p>The namespace “tz-us” points to our US time zone data [<a  href="#ref-17">17</a>]. Moreover, each field of <code>DateTimeDescription
-            </code>is separate so that it's easier to extract the value of some fields for the later use and easier to
-          reason about.</p>
+        <p>The namespace “tz-us” points to our US time zone data [<a  href="#TZ-US">TZ-US</a>]. Moreover, each field of
+          <code>DateTimeDescription </code>is separate so that it's easier to extract the value of some fields for the
+          later use and easier to reason about.</p>
+      </section>
+      <section  id="temporal-precision">
         <h3>Temporal precision using DateTimeDescription vs dateTime vs TimePosition</h3>
         <p>For the purposes of radiocarbon dating (which is the technique used in geological age determination for
-          materials up to around 60,000 years old) 1950 is conventionally defined as 'the Present' [Radiocarbon
-          Magazone]. This can be described as an individual :Instant, with its position expressed using any of the three
+          materials up to around 60,000 years old) 1950 is conventionally defined as 'the Present' [<a  href="#RC-14">RC-14</a>].
+          This can be described as an individual :Instant, with its position expressed using any of the three
           alternatives: </p>
         <pre>geol:Present
   a :Instant ;
@@ -2072,7 +2096,7 @@ ex:meetingStartDescription
           which has units of millions of years, positive backwards. For the value expressed using <code>xsd:dateTime </code>the
           position within the year is set arbitrarily to midnight at the beginning of 1st January. This level precision
           is strictly spurious, but is required to satisfy the lexical pattern of the datatype.</p>
-        <h3>Use of different temporal reference systems</h3>
+        <h3><a  id="different-TRS">Use of different temporal reference systems</a></h3>
         <p>The use of different temporal reference systems for the same absolute time is illustrated in the following
           examples. Abby's birthday is an <code>Instant</code> whose position may be expressed using the conventional
           XSD <code>dateTime </code>type as 2001-05-23T08:20:00+08:00: </p>
@@ -2101,7 +2125,7 @@ ex:meetingStartDescription
      :unitType :unitMinute ;
      :year "2001"^^xsd:gYear ;
 .</pre>
-        <p>The <code>GenDateTimeDescription </code>class must be used to express the same date using the Hebrew
+        <p>The <code>GenDateTimeDescription </code>class may be used to express the same date using the Hebrew
           calendar: </p>
         <pre>ex:AbbyBirthdayHebrew
      a :GenDateTimeDescription ;
@@ -2111,45 +2135,60 @@ ex:meetingStartDescription
      :year "5761"^^:genYear ;
      :unitType :unitDay ;
 .</pre>
-        <p>The position on the Unix time scale (number of seconds since January 1st 1970) may be expressed as a <code>TimePosition</code>:
-        </p>
+        <p>The <code>TimePosition</code> class may be used to express the same position on the Unix time scale (i.e.
+          the number of seconds since 1st January 1970): </p>
         <pre>ex:AbbyBirthdayUnix
      a :TimePosition ;
      :hasTRS &lt;http://dbpedia.org/resource/Unix_time&gt; ;
-     :numericPosition "990577200"^^:Number ;
+     :numericPosition 990577200 ;
      rdfs:label "Abby's birthdate in Unix time"^^xsd:string ;
 .         
-</pre> </section>
-    </section>
-    <section  id="ref-time-in-owl-s">
-      <section  id="examples">
-        <h2>Use case examples</h2>
-        <p>A simple use case example: "Suppose someone has a telecon scheduled for 6:00pm EST on November 5, 2006. You
-          would like to make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45
-          minutes.&nbsp; Will there be an overlap?" In this use case we can specify the facts about the telecon and the
-          meeting using our ontology in OWL that will allow a temporal reasoner to determine whether there is a
-          conflict. See [<a  href="#scheduling">A Use Case for Scheduling</a>] section for details.</p>
-        <p>More examples: "Someone who does a Web search trying to find a place to buy a book needed before next Tuesday
-          may or may not be able to use an online bookstore that promises delivery within five business days." </p>
-        <p>"Someone doing a genealogical search may want to specify that the birthdate of a person is between 15 and 45
-          years before a known marriage date."</p>
-        <p>More use case examples will be described in detail in [<a  href="#ref-time-in-owl-s">Use Cases for Web
-            Services</a>] section below. </p>
+</pre>
+        <p><br>
+        </p>
       </section>
-      <h2>Use Cases for Web Services</h2>
-      <p><span  style="font-style: italic;">We also demonstrate in detail, using the Congo.com and Bravo Air examples
-          from OWL-S [<a  href="#ref-11">11</a>], how this time ontology can be used to support OWL-S, including use
-          cases for defining input parameters and (conditional) output parameters. A use case for meeting scheduling is
-          also shown. In the appendix we also describe a time zone resource in OWL we developed for not only the US but
-          also the entire world, including the time zone ontology, the US time zone instances, and the world time zone
-          instances</span>.</p>
-      <p>Congo.com and Bravo Air are the two examples used in the OWL-S 0.9 draft release [<a  href="#ref-12">12</a>]
-        (the most recent release is OWL-S 1.1 [<a  href="#ref-13">13</a>], and we use code in 0.9 draft release here for
-        illustrative purpose). Congo.com is a fictitious book-selling service site, and Bravo Air is a fictitious
-        airline-ticketing service site. We use these two examples to demonstrate in detail how the time ontology can be
-        used to support OWL-S, including use cases for defining input parameters and (conditional) output parameters. </p>
-      <section  id="input">
-        <h3>Use Cases for Input Parameters</h3>
+      <section  id="scheduling">
+        <h3>A Use Case for Scheduling</h3>
+        <p  id="examples0">Suppose someone has a telecon scheduled for 6:00pm EST on November 5, 2006. You would like to
+          make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45 minutes.&nbsp;
+          Will there be an overlap? </p>
+        <p>In this use case we can specify the facts about the telecon and the meeting using our ontology in OWL that
+          will allow a temporal reasoner to determine whether there is a conflict:</p>
+        <pre>:telecon
+      a       :Interval ;
+      :hasBeginning :teleconStart .
+      
+:meeting
+      a       :Interval ;
+      :hasBeginning :meetingStart ;
+      :hasDurationDescription
+              :meetingDuration .
+
+:teleconStart
+      a       :Instant ;
+      :inXSDDateTime
+              2006-11-05T18:00:00-5:00 .
+
+:meetingStart
+      a       :Instant ;
+      :inXSDDateTime
+              2006-11-05T14:00:00-8:00 .
+
+:meetingDuration
+      a       :DurationDescription ;
+      :minutes 45 .
+</pre>
+        <p>The telecon and the meeting are defined as intervals. <code>hasBeginning</code> is used for specifying the
+          start times of the meetings. The datetimes are specified using <code>inXSDDateTime</code>. The duration of
+          the meeting is specified using the duration description class.</p>
+      </section>
+      <section  id="commerce">
+        <h3>Web commerce applications</h3>
+        <p>Congo.com and Bravo Air are examples from the OWL-S 0.9 draft release [<a  href="#OWL-S">OWL-S</a>].
+          Congo.com is a fictitious book-selling service site, and Bravo Air is a fictitious airline-ticketing service
+          site. These examples demonstrate how the time ontology can be used to support OWL-S, including use cases for
+          defining input parameters and (conditional) output parameters.&nbsp; </p>
+        <h4>Input Parameters</h4>
         <p>In the profile of the Congo.com example (i.e. CongoProfile.owl), for example, our time ontology is currently
           used for describing the input parameter <code>CreditCardExpirationDate</code>:</p>
         <pre>profile:CreditCardExpirationDate
@@ -2183,7 +2222,7 @@ ex:meetingStartDescription
           define the time in either way based on the trade-offs discussed in the previous section.</p>
       </section>
       <section  id="output">
-        <h3>Use Cases for (Conditional) Output Parameters</h3>
+        <h4>(Conditional) Output Parameters</h4>
         <p>In fact, there is much more that our time ontology can do to support OWL-S. In the Congo.com and Bravo Air
           examples, the time ontology is not used for any output parameters. However, in the real world many service
           outputs are time-related. For example, in the Congo.com example we can add two outputs that are very common in
@@ -2233,8 +2272,8 @@ ex:meetingStartDescription
             delivery types are FedExOneDay, FedEx2-3day, UPS, and OrdinaryMail. </p>
           <p>To add this output parameter may seem similar to the above <code>ProcessTime</code> example. However,
             since an instance of <code>Condition</code> is a logical formula that evaluates to true or false (see the
-            comment with the definition of Condition [<a  href="#ref-14">14</a>]), <code>DeliveryType</code> cannot be
-            directly used as a condition to determine the delivery duration. Thus one property and one condition are
+            comment with the definition of Condition [<a  href="#PR-OS">PR-OS</a>]), <code>DeliveryType</code> cannot
+            be directly used as a condition to determine the delivery duration. Thus one property and one condition are
             defined for each delivery type. </p>
           <p><code>DeliveryDuration</code> is defined with two boundaries: one <code>minDeliveryDuration</code> and one
             <code>maxDeliveryDuration</code>. For example, an order with the FedEx2-3day delivery type takes 2 to 3
@@ -2338,397 +2377,353 @@ ex:meetingStartDescription
           <p>Properties to output delivery durations when the user selects other delivery types (FedExOneDay, UPS, and
             OrdinaryMail) can be defined similarly.</p>
         </section>
-        <section  id="time-in-owls-09">
-          <h4>OWL code for these examples</h4>
-          <p>[<a  href="time-in-owls-09">RDF/XML</a>] </p>
+      </section>
+      <hr>
+      <section  class="appendix"  id="summary">
+        <h2>Summary of Classes and Properties in the Time Ontology</h2>
+        <section  id="changes">
+          <h3>Classes (subclass relations)</h3>
+          <ul>
+            <li>TemporalEntity
+              <ul>
+                <li>Instant</li>
+                <li>Interval
+                  <ul>
+                    <li>ProperInterval
+                      <ul>
+                        <li>DateTimeInterval</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>TRS</li>
+            <li>Duration</li>
+            <li>GenDurationDescription</li>
+            <ul>
+              <li>DurationDescription</li>
+            </ul>
+            <li>TimePosition</li>
+            <li>GenDateTimeDescription</li>
+            <ul>
+              <li>DateTimeDescription</li>
+            </ul>
+            <li>TemporalUnit </li>
+            <li>DayOfWeek</li>
+            <li>Number</li>
+          </ul>
+        </section>
+        <section  id="properties">
+          <h3>Properties</h3>
+          <table  id="table1">
+            <tbody>
+              <tr>
+                <th>Property Name</th>
+                <th>Domain</th>
+                <th>Range</th>
+              </tr>
+              <tr>
+                <td>before</td>
+                <td>TemporalEntity</td>
+                <td>TemporalEntity</td>
+              </tr>
+              <tr>
+                <td>after</td>
+                <td>TemporalEntity</td>
+                <td>TemporalEntity</td>
+              </tr>
+              <tr>
+                <td>hasBeginning</td>
+                <td>TemporalEntity</td>
+                <td>Instant </td>
+              </tr>
+              <tr>
+                <td>hasEnd</td>
+                <td>TemporalEntity</td>
+                <td>Instant</td>
+              </tr>
+              <tr>
+                <td>hasDuration</td>
+                <td>TemporalEntity</td>
+                <td>Duration</td>
+              </tr>
+              <tr>
+                <td>hasDurationDescription</td>
+                <td>TemporalEntity</td>
+                <td>GenDurationDescription</td>
+              </tr>
+              <tr>
+                <td>hasMember</td>
+                <td><br>
+                </td>
+                <td>TemporalEntity</td>
+              </tr>
+              <tr>
+                <td>inside</td>
+                <td>Interval</td>
+                <td>Instant</td>
+              </tr>
+              <tr>
+                <td>intervalEquals</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalBefore</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalMeets</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalOverlaps</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalStarts</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalDuring</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalFinishes</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalAfter</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalMetBy</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalOverlappedBy</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalStartedBy</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalContains</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>intervalFinishedBy</td>
+                <td>ProperInterval</td>
+                <td>ProperInterval</td>
+              </tr>
+              <tr>
+                <td>hasDateTimeDescription</td>
+                <td>DateTimeInterval</td>
+                <td>GenDateTimeDescription</td>
+              </tr>
+              <tr>
+                <td>xsdDateTime</td>
+                <td>DateTimeInterval</td>
+                <td>xsd:dateTime</td>
+              </tr>
+              <tr>
+                <td>inTimePosition</td>
+                <td>Instant</td>
+                <td>TimePosition</td>
+              </tr>
+              <tr>
+                <td>inDateTime</td>
+                <td>Instant</td>
+                <td>GenDateTimeDescription</td>
+              </tr>
+              <tr>
+                <td>inXSDDateTime</td>
+                <td>Instant</td>
+                <td>xsd:dateTime</td>
+              </tr>
+              <tr>
+                <td>hasTRS</td>
+                <td><br>
+                </td>
+                <td>TRS</td>
+              </tr>
+              <tr>
+                <td>numericDuration</td>
+                <td>Duration</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>years</td>
+                <td>GenDurationDescription</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>months</td>
+                <td>GenDurationDescription</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>weeks</td>
+                <td>GenDurationDescription</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>days</td>
+                <td>GenDurationDescription</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>hours</td>
+                <td>GenDurationDescription</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>minutes</td>
+                <td>GenDurationDescription</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>seconds</td>
+                <td>GenDurationDescription</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>numericPosition</td>
+                <td>TimePosition</td>
+                <td>Number</td>
+              </tr>
+              <tr>
+                <td>nominalPosition</td>
+                <td>TimePosition</td>
+                <td>xsd:string</td>
+              </tr>
+              <tr>
+                <td>timeZone</td>
+                <td>GenDateTimeDescription</td>
+                <td>tzont:TimeZone</td>
+              </tr>
+              <tr>
+                <td>unitType</td>
+                <td>GenDateTimeDescription</td>
+                <td>TemporalUnit</td>
+              </tr>
+              <tr>
+                <td>year</td>
+                <td>GenDateTimeDescription</td>
+                <td><br>
+                </td>
+              </tr>
+              <tr>
+                <td>month</td>
+                <td>GenDateTimeDescription</td>
+                <td><br>
+                </td>
+              </tr>
+              <tr>
+                <td>day</td>
+                <td>GenDateTimeDescription</td>
+                <td><br>
+                </td>
+              </tr>
+              <tr>
+                <td>hour</td>
+                <td>GenDateTimeDescription</td>
+                <td>xsd:nonNegativeInteger</td>
+              </tr>
+              <tr>
+                <td>minute</td>
+                <td>GenDateTimeDescription</td>
+                <td>xsd:nonNegativeInteger</td>
+              </tr>
+              <tr>
+                <td>second</td>
+                <td>GenDateTimeDescription</td>
+                <td>xsd:decimal</td>
+              </tr>
+              <tr>
+                <td>week</td>
+                <td>GenDateTimeDescription</td>
+                <td>xsd:nonNegativeInteger</td>
+              </tr>
+              <tr>
+                <td>dayOfYear</td>
+                <td>DateTimeDescription</td>
+                <td>xsd:nonNegativeInteger</td>
+              </tr>
+              <tr>
+                <td>dayOfWeek</td>
+                <td>DateTimeDescription</td>
+                <td>DayOfWeek</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
       </section>
-    </section>
-    <section  id="scheduling">
-      <h2>A Use Case for Scheduling</h2>
-      <p  id="examples0">Suppose someone has a telecon scheduled for 6:00pm EST on November 5, 2006. You would like to
-        make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45 minutes.&nbsp;
-        Will there be an overlap? </p>
-      <p>In this use case we can specify the facts about the telecon and the meeting using our ontology in OWL that will
-        allow a temporal reasoner to determine whether there is a conflict:</p>
-      <pre>:telecon
-      a       :Interval ;
-      :hasBeginning :teleconStart .
-      
-:meeting
-      a       :Interval ;
-      :hasBeginning :meetingStart ;
-      :hasDurationDescription
-              :meetingDuration .
-
-:teleconStart
-      a       :Instant ;
-      :inXSDDateTime
-              2006-11-05T18:00:00-5:00 .
-
-:meetingStart
-      a       :Instant ;
-      :inXSDDateTime
-              2006-11-05T14:00:00-8:00 .
-
-:meetingDuration
-      a       :DurationDescription ;
-      :minutes 45 .
-</pre>
-      <p>The telecon and the meeting are defined as intervals. <code>hasBeginning</code> is used for specifying the
-        start times of the meetings. The datetimes are specified using <code>inXSDDateTime</code>. The duration of the
-        meeting is specified using the duration description class.</p>
-    </section>
-    <hr>
-    <section  class="appendix"  id="summary">
-      <h2>Summary of Classes and Properties in the Time Ontology</h2>
-      <section  id="changes">
-        <h3>Classes (subclass relations)</h3>
-        <ul>
-          <li>TemporalEntity
-            <ul>
-              <li>Instant</li>
-              <li>Interval
-                <ul>
-                  <li>ProperInterval
-                    <ul>
-                      <li>DateTimeInterval</li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li>TRS</li>
-          <li>Duration</li>
-          <li>GenDurationDescription</li>
+      <section  class="appendix"  id="timezone">
+        <h2>Time Zone Resource in OWL</h2>
+        <p  id="timezones-owl">We have developed a time zone resource in OWL for the entire world, including three
+          parts: the time zone ontology file [<a  href="#TZ-ON">TZ-ON</a>], the US time zone instance file [<a  href="#TZ-US">TZ-US</a>],
+          and the world time zone instance file [<a  href="#TZ-WO">TZ-WO</a>]. </p>
+        <p>The time zone ontology links a preliminary geographic ontology with a time ontology. It defines the
+          vocabulary about regions, political regions (countries, states, counties, reservations, and cities), time
+          zones, daylight saving policies, and the relationships between these concepts. Its instances also link to
+          other existing data on the Web, such as FIPS 55 county instances [<a  href="#FIPS">FIPS</a>], and ISO country
+          instances [<a  href="#ISO-C"><span  style="color: rgb(0, 0, 238);"><span  style="text-decoration: underline;">ISO-C</span></span></a>].</p>
+        <p>It can handle all the usual time zone and daylight savings cases. For example, Los Angles uses PST, the time
+          offset from Coordinated Universal Time (UTC) is -8 hours, and it observed daylight savings from April 2 to
+          October 29 in 2006. But it handles unusual cases as well. For example, in Idaho the northern part is in the
+          Pacific zone, the southern part in the Mountain. The city of West Wendover, Nevada is in the Mountain time
+          zone, while the rest of Nevada is in the Pacific. </p>
+        <section  id="examples1">
+          <h3>Use case examples</h3>
+          <p  id="codesyntax0">Suppose someone has a telecon scheduled for 6:00pm EST on November 5, 2006. You would
+            like to make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45
+            minutes. Will there be an overlap? In order to specify the facts about the telecon and the meeting and
+            reason about the relation between them, a time zone ontology would be necessary to help a time ontology
+            (e.g. OWL-Time) to resolve the time difference between EST and PST.</p>
+        </section>
+        <section  id="ontology">
+          <h3>Time Zone Ontology</h3>
+          <p>We take <code>PoliticalRegion</code> to be a subclass of <code>Region</code> with the following
+            properties: </p>
           <ul>
-            <li>DurationDescription</li>
-            <ul>
-              <li>Year</li>
-            </ul>
+            <li><b>name</b>: at most one string. </li>
           </ul>
-          <li>TimePosition</li>
-          <li>GenDateTimeDescription</li>
           <ul>
-            <li>DateTimeDescription</li>
+            <li><b>hasParentRegion</b>: the parent political region. </li>
           </ul>
-          <li>TemporalUnit </li>
-          <li>DayOfWeek</li>
-          <li>Number</li>
-        </ul>
-      </section>
-      <section  id="properties">
-        <h3>Properties</h3>
-        <table  id="table1">
-          <tbody>
-            <tr>
-              <th>Property Name</th>
-              <th>Domain</th>
-              <th>Range</th>
-            </tr>
-            <tr>
-              <td>before</td>
-              <td>TemporalEntity</td>
-              <td>TemporalEntity</td>
-            </tr>
-            <tr>
-              <td>after</td>
-              <td>TemporalEntity</td>
-              <td>TemporalEntity</td>
-            </tr>
-            <tr>
-              <td>hasBeginning</td>
-              <td>TemporalEntity</td>
-              <td>Instant </td>
-            </tr>
-            <tr>
-              <td>hasEnd</td>
-              <td>TemporalEntity</td>
-              <td>Instant</td>
-            </tr>
-            <tr>
-              <td>hasDuration</td>
-              <td>TemporalEntity</td>
-              <td>Duration</td>
-            </tr>
-            <tr>
-              <td>hasDurationDescription</td>
-              <td>TemporalEntity</td>
-              <td>GenDurationDescription</td>
-            </tr>
-            <tr>
-              <td>hasMember</td>
-              <td><br>
-              </td>
-              <td>TemporalEntity</td>
-            </tr>
-            <tr>
-              <td>inside</td>
-              <td>Interval</td>
-              <td>Instant</td>
-            </tr>
-            <tr>
-              <td>intervalEquals</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalBefore</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalMeets</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalOverlaps</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalStarts</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalDuring</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalFinishes</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalAfter</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalMetBy</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalOverlappedBy</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalStartedBy</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalContains</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>intervalFinishedBy</td>
-              <td>ProperInterval</td>
-              <td>ProperInterval</td>
-            </tr>
-            <tr>
-              <td>hasDateTimeDescription</td>
-              <td>DateTimeInterval</td>
-              <td>GenDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>xsdDateTime</td>
-              <td>DateTimeInterval</td>
-              <td>xsd:dateTime</td>
-            </tr>
-            <tr>
-              <td>inTimePosition</td>
-              <td>Instant</td>
-              <td>TimePosition</td>
-            </tr>
-            <tr>
-              <td>inDateTime</td>
-              <td>Instant</td>
-              <td>GenDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>inXSDDateTime</td>
-              <td>Instant</td>
-              <td>xsd:dateTime</td>
-            </tr>
-            <tr>
-              <td>hasTRS</td>
-              <td><br>
-              </td>
-              <td>TRS</td>
-            </tr>
-            <tr>
-              <td>numericDuration</td>
-              <td>Duration</td>
-              <td>Number</td>
-            </tr>
-            <tr>
-              <td>years</td>
-              <td>GenDurationDescription</td>
-              <td>Number</td>
-            </tr>
-            <tr>
-              <td>months</td>
-              <td>GenDurationDescription</td>
-              <td>Number</td>
-            </tr>
-            <tr>
-              <td>weeks</td>
-              <td>GenDurationDescription</td>
-              <td>Number</td>
-            </tr>
-            <tr>
-              <td>days</td>
-              <td>GenDurationDescription</td>
-              <td>Number</td>
-            </tr>
-            <tr>
-              <td>hours</td>
-              <td>GenDurationDescription</td>
-              <td>Number</td>
-            </tr>
-            <tr>
-              <td>minutes</td>
-              <td>GenDurationDescription</td>
-              <td>Number</td>
-            </tr>
-            <tr>
-              <td>seconds</td>
-              <td>GenDurationDescription</td>
-              <td>Number</td>
-            </tr>
-            <tr>
-              <td>numericPosition</td>
-              <td>TimePosition</td>
-              <td>Number</td>
-            </tr>
-            <tr>
-              <td>nominalPosition</td>
-              <td>TimePosition</td>
-              <td>xsd:string</td>
-            </tr>
-            <tr>
-              <td>timeZone</td>
-              <td>GenDateTimeDescription</td>
-              <td>tzont:TimeZone</td>
-            </tr>
-            <tr>
-              <td>unitType</td>
-              <td>GenDateTimeDescription</td>
-              <td>TemporalUnit</td>
-            </tr>
-            <tr>
-              <td>year</td>
-              <td>GenDateTimeDescription</td>
-              <td><br>
-              </td>
-            </tr>
-            <tr>
-              <td>month</td>
-              <td>GenDateTimeDescription</td>
-              <td><br>
-              </td>
-            </tr>
-            <tr>
-              <td>day</td>
-              <td>GenDateTimeDescription</td>
-              <td><br>
-              </td>
-            </tr>
-            <tr>
-              <td>hour</td>
-              <td>GenDateTimeDescription</td>
-              <td>xsd:nonNegativeInteger</td>
-            </tr>
-            <tr>
-              <td>minute</td>
-              <td>GenDateTimeDescription</td>
-              <td>xsd:nonNegativeInteger</td>
-            </tr>
-            <tr>
-              <td>second</td>
-              <td>GenDateTimeDescription</td>
-              <td>xsd:decimal</td>
-            </tr>
-            <tr>
-              <td>week</td>
-              <td>GenDateTimeDescription</td>
-              <td>xsd:nonNegativeInteger</td>
-            </tr>
-            <tr>
-              <td>dayOfYear</td>
-              <td>DateTimeDescription</td>
-              <td>xsd:nonNegativeInteger</td>
-            </tr>
-            <tr>
-              <td>dayOfWeek</td>
-              <td>DateTimeDescription</td>
-              <td>DayOfWeek</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </section>
-    <section  class="appendix"  id="timezone">
-      <h2>Time Zone Resource in OWL</h2>
-      <p  id="timezones-owl">We have developed a time zone resource [<a  href="#ref-15">15</a>] in OWL for not only the
-        US but also the entire world, including three parts: the time zone ontology file [<a  href="#ref-16">16</a>],
-        the US time zone instance file [<a  href="#ref-17">17</a>], and the world time zone instance file [<a  href="#ref-18">18</a>].
-        </p>
-      <p>The time zone ontology links a preliminary geographic ontology with a time ontology. It defines the vocabulary
-        about regions, political regions (countries, states, counties, reservations, and cities), time zones, daylight
-        saving policies, and the relationships between these concepts. Its instances also link to other existing data on
-        the Web, such as FIPS 55 county instances [<a  href="#ref-19">19</a>], and ISO country instances [<a  href="#ref-20">20</a>].</p>
-      <p>It can handle all the usual time zone and daylight savings cases. For example, Los Angles uses PST, the time
-        offset from Coordinated Universal Time (UTC) is -8 hours, and it observed daylight savings from April 2 to
-        October 29 in 2006. But it handles unusual cases as well. For example, in Idaho the northern part is in the
-        Pacific zone, the southern part in the Mountain. The city of West Wendover, Nevada is in the Mountain time zone,
-        while the rest of Nevada is in the Pacific. </p>
-      <section  id="examples1">
-        <h3>Use case examples</h3>
-        <p  id="codesyntax0">Suppose someone has a telecon scheduled for 6:00pm EST on November 5, 2006. You would like
-          to make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45 minutes.
-          Will there be an overlap? In order to specify the facts about the telecon and the meeting and reason about the
-          relation between them, a time zone ontology would be necessary to help a time ontology (e.g. OWL-Time) to
-          resolve the time difference between EST and PST. [<a  href="#ref-anti-use">Anticipated Use</a>] will be
-          described in detail in a later section.</p>
-      </section>
-      <section  id="ontology">
-        <h3>Time Zone Ontology</h3>
-        <p>We take <code>PoliticalRegion</code> to be a subclass of <code>Region</code> with the following properties:
-        </p>
-        <ul>
-          <li><b>name</b>: at most one string. </li>
-        </ul>
-        <ul>
-          <li><b>hasParentRegion</b>: the parent political region. </li>
-        </ul>
-        <ul>
-          <li><b>hasTimeZone</b>: at most three time zones. </li>
-        </ul>
-        <ul>
-          <li><b>observesDaylightSavingsTime</b>: true if the region goes on daylight savings time, false otherwise. </li>
-        </ul>
-        <ul>
-          <li><b>hasDaylightSavingsPolicy</b>: the daylight saving policy that the region uses. </li>
-        </ul>
-        <ul>
-          <li><b>exceptionalRegion</b>: exceptional sub-political-regions that have different time zones and/or daylight
-            saving time policies (e.g. West Wendover, Nevada). </li>
-        </ul>
-        <ul>
-          <li><b>timeZonePart</b>: sub-non-political-regions that have different time zones and/or daylight saving time
-            policies (e.g. two different time zone parts in Idaho County in Idaho State). </li>
-        </ul>
-        <p>This can be defined in OWL as:</p>
-        <pre>:PoliticalRegion
+          <ul>
+            <li><b>hasTimeZone</b>: at most three time zones. </li>
+          </ul>
+          <ul>
+            <li><b>observesDaylightSavingsTime</b>: true if the region goes on daylight savings time, false otherwise. </li>
+          </ul>
+          <ul>
+            <li><b>hasDaylightSavingsPolicy</b>: the daylight saving policy that the region uses. </li>
+          </ul>
+          <ul>
+            <li><b>exceptionalRegion</b>: exceptional sub-political-regions that have different time zones and/or
+              daylight saving time policies (e.g. West Wendover, Nevada). </li>
+          </ul>
+          <ul>
+            <li><b>timeZonePart</b>: sub-non-political-regions that have different time zones and/or daylight saving
+              time policies (e.g. two different time zone parts in Idaho County in Idaho State). </li>
+          </ul>
+          <p>This can be defined in OWL as:</p>
+          <pre>:PoliticalRegion
       a       owl:Class ;
       rdfs:subClassOf :Region ;
       rdfs:subClassOf
@@ -2766,14 +2761,14 @@ ex:meetingStartDescription
                 owl:minCardinality 0 ;
                 owl:onProperty :timeZonePart
               ] .</pre>
-        <p>Countries, states, counties, cities, and reservations are all subclass of political regions with different
-          range types for the <code>hasParentRegion</code> property.<br>
-          <br>
-          For example, <code>Country</code> and <code>State</code> can be defined in OWL as:</p>
-        <pre>:Country
+          <p>Countries, states, counties, cities, and reservations are all subclass of political regions with different
+            range types for the <code>hasParentRegion</code> property.<br>
+            <br>
+            For example, <code>Country</code> and <code>State</code> can be defined in OWL as:</p>
+          <pre>:Country
       a       owl:Class ;
       rdfs:subClassOf :PoliticalRegion .</pre>
-        <pre>:State
+          <pre>:State
       a       owl:Class ;
       rdfs:subClassOf :PoliticalRegion ;
       owl:subClassOf
@@ -2781,15 +2776,15 @@ ex:meetingStartDescription
                owl:onProperty :hasParentRegion ; 
                owl:allValuesFrom :Country                 
               ] .</pre>
-        Time zones have two properties:
-        <ul>
-          <li><b>name</b>: at most one string. </li>
-        </ul>
-        <ul>
-          <li><b>GMToffset</b>: an XML Schema duration between -12 and +14 hours.</li>
-        </ul>
-        <p>This can be defined in OWL as:</p>
-        <pre>:TimeZone
+          Time zones have two properties:
+          <ul>
+            <li><b>name</b>: at most one string. </li>
+          </ul>
+          <ul>
+            <li><b>GMToffset</b>: an XML Schema duration between -12 and +14 hours.</li>
+          </ul>
+          <p>This can be defined in OWL as:</p>
+          <pre>:TimeZone
       a       owl:Class ;
       rdfs:subClassOf
               [ a       owl:Restriction ;
@@ -2801,17 +2796,17 @@ ex:meetingStartDescription
                 owl:maxCardinality 1 ;
                 owl:onProperty :GMToffset
               ] .</pre>
-        <p>We assume default reasoning is used for this ontology. When a political region lacks one of its properties,
-          we will use the one from its parent region. Thus all political sub-regions of the United States get their <code>DaylightSavingsPolicy</code>
-          values from that of the United States, provided their <code>observesDaylightSavingsTime</code> property is
-          true. All counties in California get their <code>hasTimeZone</code> values from California, whereas the <code>hasTimeZone</code>
-          value is specified for each county in Kentucky and not for the state as a whole, since it is split between the
-          Eastern and Central time zones. When most of a region is in one time zone, and only some exceptional
-          sub-regions are in different time zones or have different daylight savings time policies, we use <code>exceptionalRegion</code>
-          to point to each exceptional sub-region, e.g. West Wendover, which is in the Mountain time zone, is an
-          exception in Nevada, which is otherwise in the Pacific time zone. Here is the OWL code of Nevada and West
-          Wendover in the US time zone instance file [<a  href="#ref-17">17</a>]:</p>
-        <pre>:us-states:NV
+          <p>We assume default reasoning is used for this ontology. When a political region lacks one of its properties,
+            we will use the one from its parent region. Thus all political sub-regions of the United States get their <code>DaylightSavingsPolicy</code>
+            values from that of the United States, provided their <code>observesDaylightSavingsTime</code> property is
+            true. All counties in California get their <code>hasTimeZone</code> values from California, whereas the <code>hasTimeZone</code>
+            value is specified for each county in Kentucky and not for the state as a whole, since it is split between
+            the Eastern and Central time zones. When most of a region is in one time zone, and only some exceptional
+            sub-regions are in different time zones or have different daylight savings time policies, we use <code>exceptionalRegion</code>
+            to point to each exceptional sub-region, e.g. West Wendover, which is in the Mountain time zone, is an
+            exception in Nevada, which is otherwise in the Pacific time zone. Here is the OWL code of Nevada and West
+            Wendover in the US time zone instance file [<a  href="#TZ-US">TZ-US</a>]:</p>
+          <pre>:us-states:NV
       a       :State ;
       :hasParentRegion iso:US;
       :hasTimeZone :<b>PST</b> ;
@@ -2825,12 +2820,12 @@ ex:meetingStartDescription
       :hasTimeZone :<b>MST</b> ;
       owl:sameIndividualAs
               &lt;<a  href="http://www.daml.org/2003/02/fips55/NV.owl#p83730">http://www.daml.org/2003/02/fips55/NV.owl#p83730</a>&gt; .</pre>
-        <p>When different parts of the same county are in different time zones, the <code>hasTimeZone</code> is not
-          specified for the county. Instead the <code>hasTimeZone</code> is specified for each part with different time
-          zones, and the <code>timeZonePart</code> property is used to point to the parts from the county instance,
-          e.g. the two different time zone parts in Idaho County, Idaho. Here is the OWL encoding of Idaho County, Idaho
-          in our US time zone instance file [<a  href="#ref-17">17</a>]:</p>
-        <pre>:IDIdaho
+          <p>When different parts of the same county are in different time zones, the <code>hasTimeZone</code> is not
+            specified for the county. Instead the <code>hasTimeZone</code> is specified for each part with different
+            time zones, and the <code>timeZonePart</code> property is used to point to the parts from the county
+            instance, e.g. the two different time zone parts in Idaho County, Idaho. Here is the OWL encoding of Idaho
+            County, Idaho in our US time zone instance file [<a  href="#TZ-US">TZ-US</a>]:</p>
+          <pre>:IDIdaho
       a       :County ;
       :name "Idaho County" ;
       :hasParentRegion
@@ -2839,20 +2834,20 @@ ex:meetingStartDescription
               :<b>IDIdahoPST</b> , :<b>IDIdahoMST</b> ;
       owl:sameIndividualAs
               <http:  www.daml.org=""  2003=""  02=""  fips55=""  id.owl#c049=""> .</http:></pre>
-        <code>DaylightSavingsPolicy</code> has one property:
-        <ul>
-          <li><b>lastUpdated</b>: the time that the daylight savings policy was updated. </li>
-        </ul>
-        <p><code>EnumeratedDaylightSavingsPolicy</code>, a subclass of <code>DaylightSavingsPolicy</code>, has the
-          following properties:</p>
-        <ul>
-          <li><b>DLSstartDate</b>: the date the region goes on daylight savings time. </li>
-        </ul>
-        <ul>
-          <li><b>DLSendDate</b>: the date the region goes off daylight savings time.</li>
-        </ul>
-        <p>This can be defined in OWL as:</p>
-        <pre>:EnumeratedDaylightSavingsPolicy
+          <code>DaylightSavingsPolicy</code> has one property:
+          <ul>
+            <li><b>lastUpdated</b>: the time that the daylight savings policy was updated. </li>
+          </ul>
+          <p><code>EnumeratedDaylightSavingsPolicy</code>, a subclass of <code>DaylightSavingsPolicy</code>, has the
+            following properties:</p>
+          <ul>
+            <li><b>DLSstartDate</b>: the date the region goes on daylight savings time. </li>
+          </ul>
+          <ul>
+            <li><b>DLSendDate</b>: the date the region goes off daylight savings time.</li>
+          </ul>
+          <p>This can be defined in OWL as:</p>
+          <pre>:EnumeratedDaylightSavingsPolicy
       a       owl:Class ;
       rdfs:subClassOf :DaylightSavingsPolicy ;
       rdfs:subClassOf
@@ -2865,21 +2860,22 @@ ex:meetingStartDescription
                 owl:maxCardinality 1 ;
                 owl:onProperty :DLSstartDate
               ] .</pre>
-        <p><code>DLSstartDate</code> and <code>DLSendDate</code> properties have the range of xsd:date. In the current
-          instance files, different daylight saving policies were only defined for year 2006 as instances of <code>EnumeratedDaylightSavingsPolicy</code>,
-          e.g. <code>USA2006DLS</code> for the United States, and <code>EU2006DLS</code> for the European Union.&nbsp;</p>
-        <p>Alternatively, a temporal aggregates ontology in OWL-Time can be used to describe the daylight saving
-          policies. For example, in the US daylight saving starts on "the first Sunday of every April", which can be
-          expressed in OWL as:</p>
-        <pre>:tseq
+          <p><code>DLSstartDate</code> and <code>DLSendDate</code> properties have the range of xsd:date. In the
+            current instance files, different daylight saving policies were only defined for year 2006 as instances of <code>EnumeratedDaylightSavingsPolicy</code>,
+            e.g. <code>USA2006DLS</code> for the United States, and <code>EU2006DLS</code> for the European
+            Union.&nbsp;</p>
+          <p>Alternatively, a temporal aggregates ontology in OWL-Time can be used to describe the daylight saving
+            policies. For example, in the US daylight saving starts on "the first Sunday of every April", which can be
+            expressed in OWL as:</p>
+          <pre>:tseq
       a       :TemporalSeq ;
       :hasTemporalAggregateDescription
               :firstSunEveryApril .</pre>
-        <pre>:tseq-everyApril
+          <pre>:tseq-everyApril
       a       :TemporalSeq ;
       :hasTemporalAggregateDescription
               :everyApril .</pre>
-        <pre>:everyApril
+          <pre>:everyApril
       a       :TemporalAggregateDescription ;
       :hasTemporalUnit
               :unitMonth ;
@@ -2895,116 +2891,120 @@ ex:meetingStartDescription
       :hasTemporalUnit
               :unitDay ;
       :hasPosition 1 .</pre>
-        <p>This defines the desired temporal sequence <code>tseq</code> of class <code>TemporalSeq</code> which has a
-          <code>hasTemporalAggregateDescription</code> property that points to a temporal aggregate description <code>firstSunEveryApril</code>
-          that describes the temporal sequence. In order to describe this two-layered temporal sequence ("the first
-          Sunday" of "every April"), the outside layer ("every April"), i.e. the context temporal sequence (<code>tseq-everyApril</code>),
-          needs to be defined first. This context temporal sequence also has its own <code>hasTemporalAggregateDescription</code>
-          property that points to <code>everyApril</code> which describes that it is the every 4th (<code>hasithTemporalUnit</code>
-          of 4) month (<code>hasTemporalUnit</code> of <code>unitMonth</code>). The desired temporal sequence is then
-          defined as "the first (<code>hasPosition</code> of 1) Sunday (<code>hasithTemporalUnit</code> of 7 and <code>hasTemporalUnit</code>
-          of <code>unitDayOfWeek</code>) of every April (<code>hasContextTemporalSeq</code> of <code>tseq-everyApril</code>
-          and <code>hasContextTemporalUnit</code> of <code>unitMonth</code>)".</p>
-        <p>For details about the temporal aggregates ontology and its use case examples, please see [<a  href="#ref-6">6</a>,<a
-             href="#ref-7">7</a>].</p>
-        <section  id="timezone-ont">
-          <h4>OWL code for the time zone ontology </h4>
-          <p>[<a  href="/2006/timezone">RDF/XML</a>]</p>
+          <p>This defines the desired temporal sequence <code>tseq</code> of class <code>TemporalSeq</code> which has
+            a <code>hasTemporalAggregateDescription</code> property that points to a temporal aggregate description <code>firstSunEveryApril</code>
+            that describes the temporal sequence. In order to describe this two-layered temporal sequence ("the first
+            Sunday" of "every April"), the outside layer ("every April"), i.e. the context temporal sequence (<code>tseq-everyApril</code>),
+            needs to be defined first. This context temporal sequence also has its own <code>hasTemporalAggregateDescription</code>
+            property that points to <code>everyApril</code> which describes that it is the every 4th (<code>hasithTemporalUnit</code>
+            of 4) month (<code>hasTemporalUnit</code> of <code>unitMonth</code>). The desired temporal sequence is then
+            defined as "the first (<code>hasPosition</code> of 1) Sunday (<code>hasithTemporalUnit</code> of 7 and <code>hasTemporalUnit</code>
+            of <code>unitDayOfWeek</code>) of every April (<code>hasContextTemporalSeq</code> of <code>tseq-everyApril</code>
+            and <code>hasContextTemporalUnit</code> of <code>unitMonth</code>)".</p>
+          <p>For details about the temporal aggregates ontology and its use case examples, please see [<a  href="#PA-05">PA-05</a>,
+            <a  href="#PH-04">PH-04</a>].</p>
+          <section  id="timezone-ont">
+            <h4>OWL code for the time zone ontology </h4>
+            <p>[<a  href="/2006/timezone">RDF/XML</a>]</p>
+          </section>
+        </section>
+        <section  id="ref-anti-use">
+          <h3>Anticipated Use</h3>
+          <p>The expected input to the ontology is a location, e.g. a city, and the output will be its current time
+            offset, say -6 hours, from the Greenwich Mean Time (GMT).<br>
+            <br>
+            The ontology would be used as follows: given an input location, we first find in the ontology the
+            lowest-level political region containing this location, say a county, then go up along the political region
+            hierarchy based on the <code>hasParentRegion</code> property to the top of the hierarchy, usually a
+            country. Along the path to the top, we get all the available information from each node (region) in order to
+            calculate the time offset from the GMT. The information includes the time zone this location is in, whether
+            it uses Daylight Savings (DLS) time, and if it does, what the start and end dates are. </p>
+          <p>However, flexible inputs and more efficiency are supported by using the <code>exceptionalRegion</code> and
+            <code>timeZonePart</code> properties, i.e. the location input does not have to be as detailed as the
+            lowest-level political region, especially because usually only the information about what state it is in
+            would be enough to calculate the time offset from the GMT for the input location. </p>
+          <p>If the input only says it's a location of a state without specifying the county or city it is in, then we
+            can first go to its state and see whether we can find all the information we need there, i.e. time zone and
+            daylight savings information. If the state doesn't have any <code>exceptionalRegion</code>’s, then we don't
+            need any more inputs for this location, and can safely go up along the political region hierarchy to the top
+            of the hierarchy, e.g. the country US, and get all the information we need along the way to calculate the
+            time offset from the GMT for this location. If the state does have any <code>exceptionalRegion</code>’s,
+            however, we have to check each exceptional region to see whether this location is in it or not, at this
+            checking phase, more detailed information about this location may be needed, i.e. which
+            county/city/reservation it is in. If it's in an exceptional county that further has <code>timeZonePart</code>’s,
+            then even more detailed information is needed from the input, i.e. which time zone part the location is in
+            within this county. When reaching a sub-region with no <code>exceptionalRegion</code>’s or <code>timeZonePart</code>’s,
+            we know for sure that no more input location information is needed and it's safe to go up along the
+            political region hierarchy to the top, and get all the information we need to calculate the time offset from
+            the GMT for this location. <br>
+            <br>
+            For example, suppose the input location is a location in West Wendover, Nevada, but at first we only know
+            it's in Nevada (please see the OWL code [<a  href="#ref-west-wen">in the previous section</a>]). In the
+            ontology, we first find Nevada state, from which we see one exceptional region pointing to West Wendover
+            City, then we ask for further input location information: which city is this location in? Say we get West
+            Wendover City. Since it matches the exceptional region, we then go to the West Wendover City instance to get
+            its time zone information, which is the Mountain time zone. Since there is no <code>exceptionalRegion</code>’s
+            or <code>timeZonePart</code>’s in the West Wendover City instance, it's now safe for us to go up along the
+            hierarchy to the top, the United States. Along the path, at Nevada State we learn this location uses DLS
+            time, then at its parent region, the US, we learn the DLS policy used is USA2006DLS which specifies the
+            start date of the DLS in 2006 is 04/02/2006 and the end date is 10/29/2006. Based on our current time, e.g.
+            1:50pm on 09/06/2006, we know the current time offset from the GMT at this location is -7 hours. </p>
         </section>
       </section>
-      <section  id="ref-anti-use">
-        <h3>Anticipated Use</h3>
-        <p>The expected input to the ontology is a location, e.g. a city, and the output will be its current time
-          offset, say -6 hours, from the Greenwich Mean Time (GMT).<br>
-          <br>
-          The ontology would be used as follows: given an input location, we first find in the ontology the lowest-level
-          political region containing this location, say a county, then go up along the political region hierarchy based
-          on the <code>hasParentRegion</code> property to the top of the hierarchy, usually a country. Along the path
-          to the top, we get all the available information from each node (region) in order to calculate the time offset
-          from the GMT. The information includes the time zone this location is in, whether it uses Daylight Savings
-          (DLS) time, and if it does, what the start and end dates are. </p>
-        <p>However, flexible inputs and more efficiency are supported by using the <code>exceptionalRegion</code> and <code>timeZonePart</code>
-          properties, i.e. the location input does not have to be as detailed as the lowest-level political region,
-          especially because usually only the information about what state it is in would be enough to calculate the
-          time offset from the GMT for the input location. </p>
-        <p>If the input only says it's a location of a state without specifying the county or city it is in, then we can
-          first go to its state and see whether we can find all the information we need there, i.e. time zone and
-          daylight savings information. If the state doesn't have any <code>exceptionalRegion</code>’s, then we don't
-          need any more inputs for this location, and can safely go up along the political region hierarchy to the top
-          of the hierarchy, e.g. the country US, and get all the information we need along the way to calculate the time
-          offset from the GMT for this location. If the state does have any <code>exceptionalRegion</code>’s, however,
-          we have to check each exceptional region to see whether this location is in it or not, at this checking phase,
-          more detailed information about this location may be needed, i.e. which county/city/reservation it is in. If
-          it's in an exceptional county that further has <code>timeZonePart</code>’s, then even more detailed
-          information is needed from the input, i.e. which time zone part the location is in within this county. When
-          reaching a sub-region with no <code>exceptionalRegion</code>’s or <code>timeZonePart</code>’s, we know for
-          sure that no more input location information is needed and it's safe to go up along the political region
-          hierarchy to the top, and get all the information we need to calculate the time offset from the GMT for this
-          location. <br>
-          <br>
-          For example, suppose the input location is a location in West Wendover, Nevada, but at first we only know it's
-          in Nevada (please see the OWL code [<a  href="#ref-west-wen">in the previous section</a>]). In the ontology,
-          we first find Nevada state, from which we see one exceptional region pointing to West Wendover City, then we
-          ask for further input location information: which city is this location in? Say we get West Wendover City.
-          Since it matches the exceptional region, we then go to the West Wendover City instance to get its time zone
-          information, which is the Mountain time zone. Since there is no <code>exceptionalRegion</code>’s or <code>timeZonePart</code>’s
-          in the West Wendover City instance, it's now safe for us to go up along the hierarchy to the top, the United
-          States. Along the path, at Nevada State we learn this location uses DLS time, then at its parent region, the
-          US, we learn the DLS policy used is USA2006DLS which specifies the start date of the DLS in 2006 is 04/02/2006
-          and the end date is 10/29/2006. Based on our current time, e.g. 1:50pm on 09/06/2006, we know the current time
-          offset from the GMT at this location is -7 hours. </p>
+      <hr>
+      <section  id="references">
+        <h2>References</h2>
+        <p><a  id="AL-84">[AL-84]</a> Allen, J. F. 1984. Towards a general theory of action and time. <i>Artificial
+            Intelligence </i>23, pp. 123-154.</p>
+        <p><a  id="AF-97">[AF-97]</a> Allen, J. F. and Ferguson, G. 1997. Actions and events in interval temporal logic.
+          In <i>Spatial and Temporal Reasoning</i>. O. Stock, ed., Kluwer, Dordrecht, Netherlands, 205-245.</p>
+        <p><a  id="CO-15">[CO-15]</a> Cox, S. J. D. 2015. Time Ontology Extended for Non-Gregorian Calendar
+          Applications. Semantic Web Journal </p>
+        <p><a  id="CR-05">[CR-05]</a> S.J.D. Cox, S.M. Richard, A formal model for the geologic time scale and global
+          stratotype section and point, compatible with geospatial information transfer standards, Geosphere. 1 (2005)
+          119. doi:10.1130/GES00022.1.</p>
+        <p><a  id="CR-14">[CR-14]</a> S.J.D. Cox, S.M. Richard, A geologic timescale ontology and service, Earth Sci.
+          Informatics. 8 (2014) 5–19. doi:10.1007/s12145-014-0166-2.</p>
+        <p><a  id="DS-98">[DS-98]</a> Dawson, F. and Stenerson, D. 1998. Internet Calendaring and Scheduling Core Object
+          Specification (iCalendar), RFC2445. <a  href="http://www.ietf.org/rfc/rfc2445.txt">http://www.ietf.org/rfc/rfc2445.txt</a></p>
+        <p><a  id="FIPS">[FIPS]</a> FIPS 55 County instance file. <a  href="http://www.daml.org/2003/02/fips55/">http://www.daml.org/2003/02/fips55/</a></p>
+        <p><a  id="HP-04">[HP-04]</a> Hobbs, J. R. and Pan, F. 2004. An Ontology of Time for the Semantic Web. <i>ACM
+            Transactions on Asian Language Processing (TALIP): Special issue on Temporal Information Processing</i>,
+          Vol. 3, No. 1, March 2004, pp. 66-85. </p>
+        <p><a  id="ISO-C">[ISO-C]</a> ISO Country instance file. <a  href="http://www.daml.org/2001/09/countries/iso">http://www.daml.org/2001/09/countries/iso</a></p>
+        <strong>7</strong> 201-209 <a  href="http://dx.doi.org/10.3233/SW-150187">doi: 10.3233/SW-150187</a>
+        <p><a  id="MF-13">[MF-13]</a> X. Ma, P. Fox, Recent progress on geologic time ontologies and considerations for
+          future works, Earth Sci. Informatics. 6 (2013) 31–46. doi:10.1007/s12145-013-0110-x.</p>
+        <p><a  id="OE-06">[OE-06]</a> OWL code of the entry sub-ontology of time. <a  href="http://www.w3.org/2006/time-entry">http://www.w3.org/2006/time-entry</a></p>
+        <p><a  id="OT-06">[OT-06]</a> OWL code of the time ontology. <a  href="http://www.w3.org/2006/time">http://www.w3.org/2006/time</a>
+        </p>
+        <p><a  id="OWL-2">[OWL-2]</a> Owl2-quick-reference <a  href="http://www.w3.org/TR/turtle/owl2-quick-reference/#Built-in_Datatypes">https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes</a></p>
+        <p><a  id="OWL-S">[OWL-S]</a> OWL-S homepage. <a  href="http://www.daml.org/services/owl-s/">http://www.daml.org/services/owl-s/</a></p>
+        <p><a  id="OWL-T">[OWL-T]</a> Hobbs, J. R. and Pan, F. 2006. Time Ontology in OWL. W3C Working Draft <a  href="https://www.w3.org/TR/owl-time/">https://www.w3.org/TR/owl-time/</a></p>
+        <p><a  id="PA-05">[PA-05]</a> Pan, F. 2005. A Temporal Aggregates Ontology in OWL for the Semantic Web. In <i>Proceedings
+            of the AAAI Fall Symposium on Agents and the Semantic Web</i>, Arlington, Virginia, pp. 30-37.&nbsp;</p>
+        <p><a  id="PH-04">[PH-04]</a> Pan, F and Hobbs, J. R. 2004. Time in OWL-S. In <i>Proceedings of the AAAI Spring
+            Symposium on Semantic Web Services</i>, Stanford University, CA, pp. 29-36.</p>
+        <p><a  id="PH-05">[PH-05]</a> Pan, F and Hobbs, J. R. 2005. Temporal Aggregates in OWL-Time. In <i> Proceedings
+            of the 18th International Florida Artificial Intelligence Research Society Conference (FLAIRS)</i>,
+          Clearwater Beach, Florida, pp. 560-565, AAAI Press. </p>
+        <p><a  id="PR-OS">[PR-OS]</a> The process file of the OWL-S 0.9 release. <a  href="http://www.daml.org/services/owl-s/0.9/Process.owl">http://www.daml.org/services/owl-s/0.9/Process.owl</a></p>
+        <p><a  id="RC-14">[RC-14]</a> Guidelines to Authors, Radiocarb. Mag. (2014).
+          https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissions#authorGuidelines (accessed September
+          9, 2014)</p>
+        <p><a  id="TTL-14">[TTL-14]</a> Prud'hommeaux, E. and Carothers, G. 2014. RDF 1.1 Turtle - Terse RDF Triple
+          Language. W3C Recommendation. <a  href="http://www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/ </a></p>
+        <p><a  id="TZ-ON">[TZ-ON]</a> The time zone ontology file. <a  href="http://www.w3.org/2006/timezone">http://www.w3.org/2006/timezone</a></p>
+        <p><a  id="TZ-US">[TZ-US]</a> The US time zone instance file. <a  href="http://www.w3.org/2006/timezone-us">http://www.w3.org/2006/timezone-us</a></p>
+        <p><a  id="TZ-WO">[TZ-WO]</a> The world time zone instance file. <a  href="http://www.w3.org/2006/timezone-world">http://www.w3.org/2006/timezone-world</a></p>
+        <p><a  id="XSD-D">[XSD-D]</a> XML Schema Part 2: Datatypes Second Edition. W3C Recommendation 28 October 2004 <a
+             href="https://www.w3.org/TR/xmlschema-2/">https://www.w3.org/TR/xmlschema-2/</a></p>
+        <hr>
+        <section  id="ack">
+          <h2>Acknowledgements</h2>
+          <p>The editors would like to thank ...</p>
+        </section>
       </section>
-    </section>
-    <hr>
-    <section  id="references">
-      <h2>References</h2>
-      <p>[1] Allen, J. F. 1984. Towards a general theory of action and time. <i>Artificial Intelligence </i>23, pp.
-        123-154.</p>
-      <p>[2] Allen, J. F. and Ferguson, G. 1997. Actions and events in interval temporal logic. In <i>Spatial and
-          Temporal Reasoning</i>. O. Stock, ed., Kluwer, Dordrecht, Netherlands, 205-245.</p>
-      <p>[3] Dawson, F. and Stenerson, D. 1998. Internet Calendaring and Scheduling Core Object Specification
-        (iCalendar), RFC2445. <a  href="http://www.ietf.org/rfc/rfc2445.txt">http://www.ietf.org/rfc/rfc2445.txt</a></p>
-      <p>[4] Hobbs, J. R. and Pan, F. 2004. An Ontology of Time for the Semantic Web. <i>ACM Transactions on Asian
-          Language Processing (TALIP): Special issue on Temporal Information Processing</i>, Vol. 3, No. 1, March 2004,
-        pp. 66-85. </p>
-      <p>[5] Pan, F and Hobbs, J. R. 2004. Time in OWL-S. In <i>Proceedings of the AAAI Spring Symposium on Semantic
-          Web Services</i>, Stanford University, CA, pp. 29-36.</p>
-      <p>[6] Pan, F and Hobbs, J. R. 2005. Temporal Aggregates in OWL-Time. In <i> Proceedings of the 18th
-          International Florida Artificial Intelligence Research Society Conference (FLAIRS)</i>, Clearwater Beach,
-        Florida, pp. 560-565, AAAI Press. </p>
-      <p>[7] Pan, F. 2005. A Temporal Aggregates Ontology in OWL for the Semantic Web. In <i>Proceedings of the AAAI
-          Fall Symposium on Agents and the Semantic Web</i>, Arlington, Virginia, pp. 30-37.&nbsp;</p>
-      <p>[8] OWL code of the time ontology. <a  href="http://www.w3.org/2006/time">http://www.w3.org/2006/time</a> </p>
-      <p>[9] OWL code of the entry sub-ontology of time. <a  href="http://www.w3.org/2006/time-entry">http://www.w3.org/2006/time-entry</a></p>
-      <p>[10] OWL-Time Homepage: <a  href="http://www.isi.edu/%7Epan/OWL-Time.html">http://www.isi.edu/~pan/OWL-Time.html</a></p>
-      <p>[11] OWL-S homepage. <a  href="http://www.daml.org/services/owl-s/">http://www.daml.org/services/owl-s/</a></p>
-      <p>[12] OWL-S 0.9 release. <a  href="http://www.daml.org/services/daml-s/0.9/">http://www.daml.org/services/daml-s/0.9/</a></p>
-      <p>[13] OWL-S 1.1 release. <a  href="http://www.daml.org/services/owl-s/1.1/">http://www.daml.org/services/owl-s/1.1/</a></p>
-      <p>[14] The process file of the OWL-S 0.9 release. <a  href="http://www.daml.org/services/owl-s/0.9/Process.owl">http://www.daml.org/services/owl-s/0.9/Process.owl</a></p>
-      <p>[15] The homepage of the time zone resource in OWL. <a  href="http://www.isi.edu/%7Epan/timezonehomepage.html">http://www.isi.edu/~pan/timezonehomepage.html</a></p>
-      <p>[16] The time zone ontology file. <a  href="http://www.w3.org/2006/timezone">http://www.w3.org/2006/timezone</a></p>
-      <p>[17] The US time zone instance file.<b> </b><a  href="http://www.w3.org/2006/timezone-us">http://www.w3.org/2006/timezone-us</a></p>
-      <p>[18] The world time zone instance file. <a  href="http://www.w3.org/2006/timezone-world">http://www.w3.org/2006/timezone-world</a></p>
-      <p>[19] FIPS 55 County instance file. <a  href="http://www.daml.org/2003/02/fips55/">http://www.daml.org/2003/02/fips55/</a></p>
-      <p>[20] ISO Country instance file. <a  href="http://www.daml.org/2001/09/countries/iso">http://www.daml.org/2001/09/countries/iso</a></p>
-      <p>[21] Hobbs, J. R. and Pan, F. 2006. Time Ontology in OWL. W3C Working Draft <a  href="https://www.w3.org/TR/owl-time/">https://www.w3.org/TR/owl-time/</a></p>
-      <p>[22] Cox, S. J. D. 2015. Time Ontology Extended for Non-Gregorian Calendar Applications. Semantic Web Journal <strong>7</strong>
-        201-209 <a  href="http://dx.doi.org/10.3233/SW-150187">doi: 10.3233/SW-150187</a></p>
-      <p>[23] Prud'hommeaux, E. and Carothers, G. 2014. RDF 1.1 Turtle - Terse RDF Triple Language. W3C Recommendation.
-        <a  href="http://www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/ </a></p>
-      <p>[24] Owl2-quick-reference <a  href="http://www.w3.org/TR/turtle/owl2-quick-reference/#Built-in_Datatypes">https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes</a>
-      </p>
-      <p>[24] S.J.D. Cox, S.M. Richard, A formal model for the geologic time scale and global stratotype section and
-        point, compatible with geospatial information transfer standards, Geosphere. 1 (2005) 119.
-        doi:10.1130/GES00022.1.</p>
-      <p>[24] S.J.D. Cox, S.M. Richard, A geologic timescale ontology and service, Earth Sci. Informatics. 8 (2014)
-        5–19. doi:10.1007/s12145-014-0166-2.</p>
-      <p>[24] X. Ma, P. Fox, Recent progress on geologic time ontologies and considerations for future works, Earth Sci.
-        Informatics. 6 (2013) 31–46. doi:10.1007/s12145-013-0110-x.</p>
-      <p>[15]Guidelines to Authors, Radiocarb. Mag. (2014).
-        https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissions#authorGuidelines (accessed September
-        9, 2014)<!--[if gte mso 9]><xml>
-    </section>    <hr>    <section  id="ack">      <h2>Acknowledgements</h2>      <p>The editors would like to thank Deborah McGuinness, Chris Welty, and the reviewers of the earlier versions of the doucment, i.e., Jeremy Carroll, John McClure, Libby Miller, and Guus Schreiber, for their very helpful feedbacks and comments to the document.</p>    </section>      </body></html>--></p>
     </section>
   </body>
 </html>
