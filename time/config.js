@@ -10,17 +10,17 @@ var respecConfig = {
     // crEnd: "3000-01-01",
     editors: [
     {
-      name: "Chris Little",
-      company: "Met Office",
-      companyURL: "http://www.metoffice.gov.uk/"
-    }, {
-			name: "Simon Cox",
-			company: "CSIRO",
-			companyURL: "http://www.csiro.au/"
-		}],
+        name: "Simon Cox",
+        company: "CSIRO",
+        companyURL: "http://www.csiro.au/"
+      },{
+        name: "Chris Little",
+        company: "Met Office",
+        companyURL: "http://www.metoffice.gov.uk/"
+      }],
     otherLinks: [
     {
-      key: "OGC Document Number:",
+      key: "OGC Document Number",
       data: [
       {
         value: "OGC 16-071"
