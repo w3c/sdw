@@ -75,5 +75,5 @@ var respecConfig = {
         date: "10 September 2012"  
        }, 
     },
-    issueBase: "https://github.com/w3c/sdw/issues/"
+    issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
