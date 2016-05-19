@@ -85,14 +85,9 @@ var respecConfig = {
         authors: ["John Herring"],
         date: "28 May 2011"    
        }, 
-       "Veregin":{
-        href:"http://www.geos.ed.ac.uk/~gisteac/gis_book_abridged/files/ch12.pdf",
-        title:"Data quality parameters. In: Geographical Information Systems: Principles, Techniques, Management and Applications",
-        authors:["H. Veregin"]
-       },
        "OandM":{
         href:"http://www.opengeospatial.org/standards/om",
-        title:"Observations and Measurements - XML Implementation",
+        title:"Observations and Measurements",
         authors: ["Simon Cox"],
         date: "22 March 2011"      
        },
@@ -107,18 +102,6 @@ var respecConfig = {
         authors: ["Clemens Portele (editor)"],
         date: "27 August 2007"
        },
-       "beacon":{
-        href:"https://gbv.github.io/beaconspec/beacon.html",
-        title:"BEACON link dump format",
-        authors: ["J. Voß", "M. Schindler"],
-        date: "6 July 2014"
-       },
-       "Strong":{
-        href:"http://www.crcsi.com.au/assets/Resources/Stakeholder-Requirements-for-Modernising-Australias-Geocentric-Datum.pdf",
-        title:"Stakeholder Requirements for Modernising Australia’s Geocentric Datum",
-        authors:["Scott Strong (on behalf of the Cooperative Research Centre for Spatial Information and the Intergovernmental Committee on Surveying and Mapping"],
-        date: "July 2015"
-       }
     },
-    issueBase: "https://github.com/w3c/sdw/issues/"
+    issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
