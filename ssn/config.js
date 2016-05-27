@@ -74,6 +74,23 @@ var respecConfig = {
         authors: ["Matthew Perry", "John Herring"],
         date: "10 September 2012"  
        }, 
+       "SWE":{
+        href:"http://www.opengeospatial.org/ogc/markets-technologies/swe",
+        title:"Sensor Web Enablement (SWE)",
+        publisher: "Open Geospatial Consortium"
+       }, 
+       "SSNO": {
+         authors: ["Michael Compton", "Payam Barnaghi", "Luis Bermudez", "Raúl García-Castro", "Oscar Corcho", "Simon Cox", "John Graybeal", "Manfred Hauswirth", "Cory Henson", "Arthur Herzog", "Vincent Huang", "Krzysztof Janowicz", "W. David Kelsey", "Danh Le Phuoc", "Laurent Lefort", "Myriam Leggieri", "Holger Neuhaus", "Andriy Nikolov", "Kevin Page", "Alexandre Passant", "Amit Sheth", "Kerry Taylor"],
+         title:"The SSN ontology of the W3C semantic sensor network incubator group",
+         href:"http://www.sciencedirect.com/science/article/pii/S1570826812000571",
+         publisher:"Web Semantics: Science, Services and Agents on the World Wide Web, 17:25-32 ",
+         date:"December 2012"
+      },
+      "DUL":{
+         href:"http://ontologydesignpatterns.org/wiki/Ontology:DOLCE+DnS_Ultralite",
+         authors: ["Aldo Gangemi"],
+         title: "DOLCE+DnS Ultralite (DUL)"
+      }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
