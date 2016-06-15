@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE owl [
+     <!ENTITY tzont  "http://www.w3.org/2006/timezone#" >
+     <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
+     <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
+     <!ENTITY iso "http://www.daml.org/2001/09/countries/iso#" >
+     <!ENTITY us-states "http://www.daml.ri.cmu.edu/ont/USRegionState.daml#" >
+     <!ENTITY iso-3166-ont "http://www.daml.org/2001/09/countries/iso-3166-ont#" >
+   ]>
+
+<rdf:RDF
+  xmlns     = "http://www.w3.org/2006/timezone#"
+  xmlns:tzont = "http://www.w3.org/2006/timezone#"
+  xml:base = "http://www.w3.org/2006/timezone"
+  xmlns:owl = "http://www.w3.org/2002/07/owl#"
+  xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs = "http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:iso = "http://www.daml.org/2001/09/countries/iso#"
+  xmlns:us-states = "http://www.daml.ri.cmu.edu/ont/USRegionState.daml#"
+  xmlns:iso-3166-ont = "http://www.daml.org/2001/09/countries/iso-3166-ont#"
+  xmlns:xsd = "http://www.w3.org/2001/XMLSchema#">
+
+  <owl:Ontology rdf:about="">
+    <rdfs:comment>
+      A time zone ontology.
+    </rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/TR/owl-time" />
+    <owl:imports rdf:resource="http://www.daml.org/2001/09/countries/iso-3166-ont" />
+    <owl:imports rdf:resource="http://www.daml.ri.cmu.edu/ont/USRegionState.daml" />
+  </owl:Ontology>
+  
+  <owl:Class rdf:ID="Region">
+  </owl:Class>
+
+  <owl:Class rdf:ID="PoliticalRegion">
+    <rdfs:subClassOf rdf:resource="#Region"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#name" />
+     	  <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasParentRegion" />
+     	  <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasTimeZone" />
+  	  <!-- this cardinality of 3 is not supported in OWL Lite -->
+     	  <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">3</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#observesDaylightSavingsTime" />
+     	  <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasDaylightSavingsPolicy" />
+     	  <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <!-- exceptional sub-regions that have different time zones and/or daylight saving times -->
+	  <!-- e.g. West Wendover City in Nevada State --> 
+        <owl:onProperty rdf:resource="#exceptionalRegion" />
+     	  <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <!-- roughly equal sub-regions that have different time zones and/or daylight saving times -->
+	  <!-- e.g. two different time zone parts in Idaho County in Idaho State --> 
+     	  <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minCardinality>
+        <owl:onProperty rdf:resource="#timeZonePart" />
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="Country">
+    <rdfs:subClassOf rdf:resource="#PoliticalRegion"/>
+  </owl:Class>
+
+  <owl:Class rdf:ID="State"> 
+    <rdfs:subClassOf rdf:resource="#PoliticalRegion"/>
+    <owl:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasParentRegion"/>
+        <owl:allValuesFrom rdf:resource="#Country"/>
+      </owl:Restriction>
+    </owl:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="County"> 
+    <rdfs:subClassOf rdf:resource="#PoliticalRegion"/>
+    <owl:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasParentRegion"/>
+        <owl:allValuesFrom rdf:resource="#State"/>
+      </owl:Restriction>
+    </owl:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="Reservation"> 
+    <rdfs:subClassOf rdf:resource="#PoliticalRegion"/>
+    <owl:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasParentRegion"/>
+        <owl:allValuesFrom rdf:resource="#Country"/>
+      </owl:Restriction>
+    </owl:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="City"> 
+    <rdfs:subClassOf rdf:resource="#PoliticalRegion"/>
+  </owl:Class>
+
+  <owl:Class rdf:ID="TimeZone">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#name" />
+     	  <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#GMToffset" />
+     	  <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="DaylightSavingsPolicy">
+  </owl:Class>
+
+  <owl:Class rdf:ID="EnumeratedDaylightSavingsPolicy">
+    <rdfs:subClassOf rdf:resource="#DaylightSavingsPolicy" />
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#DLSstartDate" />
+     	  <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#DLSendDate" />
+     	  <owl:maxCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+
+  <owl:ObjectProperty rdf:ID="hasAncestorRegion">
+    <rdf:type rdf:resource="&owl;TransitiveProperty" />
+    <rdfs:domain rdf:resource="#Region" />
+    <rdfs:range  rdf:resource="#Region" />
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasParentRegion">
+    <rdfs:subPropertyOf rdf:resource="#hasAncestorRegion" />
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasTimeZone">
+    <rdfs:domain rdf:resource="#Region" />
+    <rdfs:range  rdf:resource="#TimeZone" />
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="exceptionalRegion">
+    <rdfs:domain rdf:resource="#Region" />
+    <rdfs:range  rdf:resource="#Region" />
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="timeZonePart">
+    <rdfs:domain rdf:resource="#Region" />
+    <rdfs:range  rdf:resource="#Region" />
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="countryOf">
+    <rdfs:subPropertyOf rdf:resource="#hasParentRegion" />
+    <rdfs:range  rdf:resource="#Country" />
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="stateOf">
+    <rdfs:subPropertyOf rdf:resource="#hasParentRegion" />
+    <rdfs:range  rdf:resource="#State" />
+  </owl:ObjectProperty>
+
+
+  <owl:DatatypeProperty rdf:ID="name">
+    <owl:equivalentProperty rdf:resource="&iso-3166-ont;name" />
+  </owl:DatatypeProperty>
+
+  <owl:ObjectProperty rdf:ID="hasDaylightSavingsPolicy">
+    <rdfs:domain rdf:resource="#Region" />
+    <rdfs:range  rdf:resource="#DaylightSavingsPolicy" />
+  </owl:ObjectProperty>
+
+  <owl:DatatypeProperty rdf:ID="observesDaylightSavingsTime">
+    <rdfs:domain rdf:resource="#Region" />
+    <rdfs:range  rdf:resource="&xsd;boolean" />
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="DLSstartDate">
+    <rdfs:range  rdf:resource="&xsd;date" />
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="DLSendDate">
+    <rdfs:range  rdf:resource="&xsd;date" />
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="GMToffset">
+    <rdfs:domain  rdf:resource="#TimeZone" />
+    <rdfs:range  rdf:resource="&xsd;duration" />
+  </owl:DatatypeProperty>
+
+
+</rdf:RDF>
