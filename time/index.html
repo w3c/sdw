@@ -199,7 +199,7 @@ DIV.test H4 {
       </table>
     </section>
     <section id="overview">
-      <h2>Vocabulary overview</h2>
+      <h2>Principles and vocabulary overview</h2>
       <section id="topology">
         <h3>Topological Temporal Relations</h3>
         <p>The basic structure of the ontology is based on an algebra of binary relations on intervals (e.g., meets,
@@ -230,6 +230,72 @@ DIV.test H4 {
           on the beginning and end points. The standard interval calculus assumes all intervals are proper, whose
           beginning and end are different. </p>
       </section>
+      <section id="trs-clock-calendar">
+        <h3>Temporal reference systems, clocks, calendars</h3>
+        The position of an Instant may be given using the datatype <code>xsd:dateTime</code><span style="font-family: monospace;">
+        </span>which is built in to OWL 2&nbsp;<code></code>[<a href="#OWL-2">OWL-2</a>], and uses the conventional
+        Gregorian calendar and 24-hour clock. While this satisfies most web applications, many other calendars and
+        temporal reference systems are used in particular cultural and scholarly contexts. For example, the Julian
+        calendar was used throughout Europe until the 16<sup>th</sup> century, and is still used for computing key dates
+        in some orthodox Christian communities. Lunisolar (e.g. Hebrew) and lunar (e.g. Islamic) calendars are currently
+        in use, and many similar have been used historically. In scientific and technical applications, Julian date
+        counts the number of days since the beginning of 4713 BCE, and Loran-C, Unix and GPS time are based on seconds
+        counted from a specified origin in 1958, 1970 and 1980, respectively. Archaeological and geological applications
+        use chronometric scales based on years counted backwards from ‘the present’ (defined as 1950 for radiocarbon
+        dating [<a href="#RC-14">RC-14</a>]), or using named periods associated with specified correlation markers [<a href="#CR-05">CR-05</a>,
+        <a href="#CR-14">CR-14</a>, <a href="#MF-13">MF-13</a>]. Dynastic calendars (counting years within eras defined
+        by the reign of a monarch or dynasty) were used earlier in many cultures. In order to support these more general
+        applications, the representation of temporal position and duration must be flexible, and annotated with the <em>temporal
+          reference system </em>in use. <br>
+        <p>A set of ordered intervals (e.g. named dynasties, geological periods, geomagnetic reversals, tree rings) can
+          make a simple form of temporal reference system that supports logical reasoning, known as an <em>ordinal
+            temporal reference system </em>[<a href="#ISO-19108">ISO-19108</a>]. &nbsp; </p>
+        <p>Measurement of duration needs a <em>clock</em>. In its most general form a clock is just a regularly
+          repeating physical event ('tick') and a counting mechanism for the 'ticks'. These counts may be used to
+          logically relate two events and to calculate a duration between the events.</p>
+        <p>A <em>calendar </em>is a set of algorithms that enables clock counts to be converted into practical
+          everyday dates and times related to the movement of astronomical bodies (day, month, year). </p>
+        <p>For many purposes it is convenient to make temporal calculations in terms of clock durations that exceed
+          everyday units such as days, weeks, months and years, using a representation of temporal position in a <em>temporal
+            coordinate system</em>, i.e. on a number line with a specified origin, such as Julian date, or Unix time.
+          This may be converted to calendar units when necessary for human consumption. </p>
+        <p>Nevertheless, in practice much temporal information is not well-defined, in that there may be no clear
+          statement about the assumed underlying calendar and clock. </p>
+      </section>
+      <section id="time-position-units">
+        <h3>Time position and time units</h3>
+        OWL 2 has two built-in datatypes relating to time: <code>xsd:dateTime </code>and <code>xsd:dataTimeStamp </code>[<a
+          href="#OWL-2">OWL-2</a>]. Other XSD types such as <code>xsd:date</code>, <code>xsd:gYear</code>, <code>xsd:gMonth
+          </code>and <code>xsd:gMonth</code> [<a href="#XSD-D">XSD-D</a>] are also commonly used in OWL applications.
+        These provide for a compact representation of time positions using the conventional Gregorian calendar and
+        24-hour clock, with timezone offset from UTC if required. <br>
+        <br>
+        Three classes in the ontology support a more explicit description of temporal position<code></code>. All have a
+        property <code>hasTRS </code>to indicate the temporal reference system <code>TRS.&nbsp;</code><code>TimePosition
+          </code>has properties to alternatively describe the position using a number (i.e. a temporal coordinate), or a
+        nominal value (e.g. geologic time period, dynastic name, archeological era). <code>GeneralDateTimeDescription </code>has
+        a set of properties to specify a date-time using calendar and clock elements. Its subclass <code>DateTimeDescription
+          </code>fixes the temporal reference system to the Gregorian calendar, so the <code>hasTRS </code>property
+        may be omitted on individuals from this class.
+        <p class="note"><code>DateTimeDescription </code>covers the case that was defined in the original note, and
+          retains the original class name.&nbsp; </p>
+        <div style="text-align: center;"><img title="DataTimePosition" alt="UML-style diagram of classes for temporal position"
+            src="./images/DateTimeDescription.png">
+          <p>Fig. 3 Classes for temporal position.</p>
+        </div>
+        <p> Following the theoretical basis laid out by Allen and Ferguson, a time position has a finite extent,
+          corresponding to the precision or <em>temporal unit </em>used. Thus,a <code>GeneralDateTimeDescription</code>
+          or <code>DateTimeDescription</code> is strictly always a description of an interval (<code>DateTimeInterval</code>),
+          not an instant, with a duration corresponding to the value of its<span style="font-family: monospace;"> </span><code>unitType</code>.
+        </p>
+        <p>We use two different sets of properties for <code>GeneralDateTimeDescription</code> or <code>DateTimeDescription</code>
+          and <code>GeneralDurationDescription</code> or <code>DurationDescription</code>, because their ranges are
+          different. For example, <code>year</code> (in <code>DateTimeDescription</code>) has a range of <code>xsd:gYear</code>,
+          while <code>years</code> (in <code>GeneralDurationDescription</code>) has a range of <code>xsd:decimal</code>
+          so that you can say duration of 2.5 years.</p>
+        <p class="note">These classes address the 'date' and 'time' requirement from <a href="http://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7
+            Date, time and duration</a></p>
+      </section>
       <section id="duration">
         <h3>Duration </h3>
         <p>The duration of an interval (or temporal sequence) can have many different descriptions. An interval can be 1
@@ -252,51 +318,6 @@ DIV.test H4 {
           <p>Fig. 2 Classes for temporal duration.</p>
         </div>
         <p class="note">These classes address the 'duration' requirement from <a href="http://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7
-            Date, time and duration</a></p>
-      </section>
-      <section id="position">
-        <h3>Time position and time units</h3>
-        <p>OWL 2 has two built-in datatypes relating to time: <code>xsd:dateTime </code>and <code>xsd:dataTimeStamp </code>[<a
-            href="#OWL-2">OWL-2</a>]. Other XSD types such as <code>xsd:date</code>, <code>xsd:gYear</code>, <code>xsd:gMonth
-            </code>and <code>xsd:gMonth</code> [<a href="#XSD-D">XSD-D</a>] are also commonly used in OWL applications.
-          These provide for a compact representation of time durations and positions using the conventional Gregorian
-          calendar and 24-hour clock, with timezone offset from UTC if required.</p>
-        <p>While this satisfies many web applications, many other calendars and temporal reference systems are used in
-          particular cultural and scholarly contexts. For example, the Julian calendar was used throughout Europe until
-          the 16<sup>th</sup> century, and is still used for computing key dates in some orthodox Christian communities.
-          Lunisolar (e.g. Hebrew) and lunar (e.g. Islamic) calendars are currently used, and many similar have been used
-          historically. Dynastic calendars (counting years within eras defined by the reign of a monarch or dynasty)
-          were used earlier in many cultures. In more contemporary applications, Julian dates count the number of days
-          since the beginning of 4713 BCE, and Loran-C, Unix and GPS time are based on seconds counted from a specified
-          origin in 1958, 1970 and 1980, respectively. Archaeological and geological applications use chronometric
-          scales based on years counted backwards from ‘the present’ (defined as 1950 for radiocarbon dating [<a href="#RC-14">RC-14</a>]),
-          or named periods associated with specified correlation markers [<a href="#CR-05">CR-05</a>, <a href="#CR-14">CR-14</a>,
-          <a href="#MF-13">MF-13</a>]. In order to support these more general applications, the representation of
-          temporal position and duration must be flexible, and annotated with the 'temporal reference system' in use. </p>
-        <p>Three classes in the ontology support the description of temporal position<code></code>. All have a property
-          <code>hasTRS </code>to indicate the temporal reference system <code>TRS.&nbsp;</code><code>TimePosition </code>has
-          properties to alternatively describe the position using a number (i.e. a temporal coordinate), or a nominal
-          value (e.g. geologic time period, dynastic name, archeological era). <code>GeneralDateTimeDescription </code>has
-          a set of properties to specify a date-time using calendar and clock elements. Its subclass <code>DateTimeDescription
-            </code>fixes the temporal reference system to the Gregorian calendar, so the <code>hasTRS </code>property
-          may be omitted on individuals from this class. </p>
-        <p class="note"><code>DateTimeDescription </code>covers the case that was defined in the original note, and
-          retains the original class name.&nbsp; </p>
-        <div style="text-align: center;"><img title="DataTimePosition" alt="UML-style diagram of classes for temporal position"
-            src="./images/DateTimeDescription.png">
-          <p>Fig. 3 Classes for temporal position.</p>
-        </div>
-        <p> Following the theoretical basis laid out by Allen and Ferguson, a time position has a finite extent,
-          corresponding to the precision or temporal unit used. Thus,a <code>GeneralDateTimeDescription</code> or <code>DateTimeDescription</code>
-          is strictly always a description of an interval (<code>DateTimeInterval</code>), not an instant, with a
-          duration corresponding to the value of its<span style="font-family: monospace;"> </span><code>unitType</code>.
-        </p>
-        <p>We use two different sets of properties for <code>GeneralDateTimeDescription</code> or <code>DateTimeDescription</code>
-          and <code>GeneralDurationDescription</code> or <code>DurationDescription</code>, because their ranges are
-          different. For example, <code>year</code> (in <code>DateTimeDescription</code>) has a range of <code>xsd:gYear</code>,
-          while <code>years</code> (in <code>GeneralDurationDescription</code>) has a range of <code>xsd:decimal</code>
-          so that you can say duration of 2.5 years.</p>
-        <p class="note">These classes address the 'date' and 'time' requirement from <a href="http://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7
             Date, time and duration</a></p>
       </section>
     </section>
@@ -1006,7 +1027,9 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p class="note">Verify that this satisfies the SDWWG requirement <a href="http://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.53
+        <p class="issue">This property uses xsd:dateTime which was available in OWL v1. The datatype xsd:dataTimeStamp,
+          which makes the timezone element mandatory instead of optional, was added in OWL2. Should anything be added to
+          OWL-Time to allow for this? Need to balance backward compatibility concerns. See SDWWG requirement <a href="http://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.53
             Update datatypes in OWL Time</a></p>
         <p>&nbsp;</p>
       </section>
@@ -1177,6 +1200,524 @@ DIV.test H4 {
         <p>&nbsp;</p>
         <p><br>
         </p>
+      </section>
+      <section id="TimePosition">
+        <h3 id="time:TimePosition">Class: TimePosition</h3>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Class:</th>
+              <th><a href="#time:TimePosition">time:TimePosition</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>A temporal position described using either a (nominal) value from an ordinal reference system, or a
+                (numeric) value in a temporal coordinate system. </td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:Class</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:hasTRS exactly 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>(time:numericPosition exactly 1)&nbsp; or (time:nominalPosition exactly 1)</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Two properties <code>nominalPosition </code>and <code>numericPosition </code>support the alternative
+          descriptions of position or extent. One of these is expected to be present. </p>
+        <h4 id="time:nominalPosition">Property: nominalPosition</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:nominalPosition">time:nominalPosition</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>The (nominal) value indicating temporal position in an ordinal reference system </td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:TimePosition</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>xsd:string</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The temporal ordinal reference system should be provided as the value of the <code>hasTRS </code>property</p>
+        <h4 id="time:numericPosition">Property: numericPosition</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:numericPosition">time:numericPosition</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>The (numeric) value indicating position within a temporal coordinate system </td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:TimePosition</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>time:Number</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The temporal coordinate system should be provided as the value of the <code>hasTRS </code>property</p>
+      </section>
+      <section id="GenDateTimeDescription">
+        <h3 id="time:GenDateTimeDescription">Class: GeneralDateTimeDescription</h3>
+        <table class="definition" style="border-collapse: collapse; width: 812px; ">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDFS Class:</th>
+              <th><a href="#time:GenDateTimeDescription">time:GeneralDateTimeDescription</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>Description of date and time structured with separate values for the various elements of a
+                calendar-clock system</td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:Class</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:hasTRS exactly 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:timeZone max 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:unitType exactly 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:year max 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:month max 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:week max 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:day max 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:hour max 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:minute max 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:second exactly 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:dayOfYear max 1</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:dayOfWeek max 1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Three properties <code>hasTRS</code>, <code>timeZone</code>, and <code>unitType </code>provide for
+          reference information concerning the reference system and precision of temporal position values. </p>
+        <h4 id="time:timeZone">Property timeZone</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:timeZone">time:timeZone</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>The time zone for clock elements in the temporal position</td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:ObjectProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>tzont:TimeZone</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>An ontology for time zone descriptions is provided <a href="#timezone">below</a>.</p>
+        <p class="issue">The time zone ontology provided in the Annex is immature and incomplete. Use of a <code>tzont:TimeZone
+            </code>from that ontology as the range of an ObjectProperty in OWL-Time creates an implied dependency which
+          is not ideal. We propose adding a stub class <code>time:TimeZone </code>into the the main namespace (i.e. no
+          properties) which can then be a super-class or equivalent class to any time zone formalization.(Compare with <code>
+            time:TRS </code>which is handled this way.) </p>
+        <h4 id="time:unitType">Property unitType</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:unitType">time:unitType</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>The temporal unit which provides the precision of a date-time value or scale of a temporal extent</td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:ObjectProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription or time:Duration</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>time:TemporalUnit</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Six datatype properties <code>year</code>, <code>month</code>,&nbsp;<code>day</code>, <code>hour</code>, <code>minute</code>,
+          <code>second</code>, together with <code>timeZone</code> (defined above) support the description of
+          components of a temporal position in a calendar-clock system.&nbsp; These correspond with the 'seven property
+          model' described in ISO 8601 [<a href="#ISO-8601">ISO-8601</a>] and XML Schema Definition Language Part 2:
+          Datatypes [<a href="#XSD-D">XSD-D</a>], except that the calendar is not specified in advance, but is provided
+          through the value of the <code>hasTRS </code>property (defined above). </p>
+        <h4 id="time:year">Property year</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:year">time:year</a></th>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <h4 id="time:month">Property month</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:month">time:month</a></th>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <h4 id="time:day">Property day</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:day">time:day</a></th>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <h4 id="time:hour">Property hour</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:hour">time:hour</a></th>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>xsd:nonNegativeInteger</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <h4 id="time:minute">Property minute</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:minute">time:minute</a></th>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>xsd:nonNegativeInteger</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <h4 id="time:second">Property second</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:second">time:second</a></th>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>xsd:decimal</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Two additional properties <code>week</code> and <code>dayOfYear</code> allow for the the numeric value of
+          the week or day relative to the year.&nbsp; </p>
+        <h4 id="time:week">Property week</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:week">time:week</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>The number of the week within the year</td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>xsd:nonNegativeInteger</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <h4 id="time:dayOfYear">Property dayOfYear</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:dayOfYear">time:dayOfYear</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>The number of the day within the year</td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:DatatypeProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>xsd:nonNegativeInteger</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The property <code>dayOfWeek</code> provides the name of the day. </p>
+        <h4 id="time:dayOfWeek">Property dayOfWeek</h4>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDF Property:</th>
+              <th><a href="#time:dayOfWeek">time:dayOfWeek</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>The day of week, whose value is a member of the class time:DayOfWeek</td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:ObjectProperty</td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td>time:DayOfWeek</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+      </section>
+      <section id="DayOfWeek">
+        <h3 id="time:DayOfWeek">Class: DayOfWeek</h3>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDFS Class:</th>
+              <th><a href="#time:DayOfWeek">time:DayOfWeek</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>The day of week<br>
+              </td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:Class</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Seven individual members of <code>DayOfWeek </code>are included in the ontology, corresponding to the seven
+          days used in the Gregorian calendar, and using the English names <code>Sunday</code>, <code>Monday</code>, <code>Tuesday</code>,
+          <code>Wednesday</code>, <code>Thursday</code>, <code>Friday</code>, <code>Saturday</code>.</p>
+        <p class="note">In this version of the ontology, membership of the class DayofWeek is open, to allow for
+          alternative week lengths and different day names. </p>
+      </section>
+      <section id="DateTimeDescription">
+        <h3 id="time:DateTimeDescription">Class: DateTimeDescription</h3>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDFS Class:</th>
+              <th><a href="#time:DateTimeDescription">time:DateTimeDescription</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>Description of date and time structured with separate values for the various elements of a
+                calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of
+                year, month, day properties restricted to corresponding XML Schema types xsd:gYear, xsd:gMonth and
+                xsd:gDay, respectively. </td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:GeneralDateTimeDescription</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:hasTRS value &lt;http://dbpedia.org/resource/Gregorian_calendar&gt;</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:year only xsd:gYear</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:month only xsd:gMonth</td>
+            </tr>
+            <tr>
+              <td>Subclass of:</td>
+              <td>time:day only xsd:gDay</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Other datetime concepts can be straightforwardly defined. For example, "January" can be defined as a a
+          subclass of <code>DateTimeDescription</code> with the restrictions that the <code>unitType</code> property
+          has <code>allValuesFrom</code> unitMonth and property <code>month</code> <code>hasValue</code> of 1: </p>
+        <pre>ex:January
+      a       owl:Class ;
+      rdfs:subClassOf :DateTimeDescription ;
+      rdfs:subClassOf
+              [ a       owl:Restriction ;
+                owl:onProperty :unitType
+                owl:hasValue :unitMonth
+              ] ;
+     rdfs:subClassOf
+              [ a       owl:Restriction ;
+                owl:onProperty :month
+                owl:hasValue --01 ;
+              ] .
+</pre>
+        <p>&nbsp;</p>
+      </section>
+      <section id="TemporalUnit">
+        <h3 id="time:TemporalUnit">Class: TemporalUnit</h3>
+        <table class="definition" style="width: 812px;">
+          <tbody>
+            <tr>
+              <th style="width: 120px;">RDFS Class:</th>
+              <th><a href="#time:TemporalEntity">time:TemporalUnit</a></th>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>A temporal unit of measure, which provides a scale factor for a time quantity. </td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td>owl:Class</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Seven individual members of <code>TemporalUnit </code>are included in the ontology, corresponding to the
+          elements of the standard calendar-clock: <code>unitYear</code>, <code>unitMonth</code>, <code>unitWeek</code>,
+          <code>unitDay</code>, <code>unitHour</code>, <code>unitMinute </code>and <code>unitSecond</code>. </p>
+        <p class="note">In this version of the ontology, membership of the class TemporalUnit is open, to allow for
+          additional temporal units used in some technical applications (e.g. millions of years, Baha'i month). </p>
       </section>
       <section id="Duration">
         <h3 id="time:Duration">Class: Duration</h3>
@@ -1531,524 +2072,6 @@ DIV.test H4 {
         <p>Note that there is a distinction between a year as a duration and a calendar year. The year from December 22,
           2006 to December 21, 2007 is the former but not the latter.</p>
       </section>
-      <section id="TimePosition">
-        <h3 id="time:TimePosition">Class: TimePosition</h3>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Class:</th>
-              <th><a href="#time:TimePosition">time:TimePosition</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>A temporal position described using either a (nominal) value from an ordinal reference system, or a
-                (numeric) value in a temporal coordinate system. </td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:Class</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:hasTRS exactly 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>(time:numericPosition exactly 1)&nbsp; or (time:nominalPosition exactly 1)</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Two properties <code>nominalPosition </code>and <code>numericPosition </code>support the alternative
-          descriptions of position or extent. One of these is expected to be present. </p>
-        <h4 id="time:nominalPosition">Property: nominalPosition</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:nominalPosition">time:nominalPosition</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>The (nominal) value indicating temporal position in an ordinal reference system </td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:TimePosition</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>xsd:string</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>The temporal ordinal reference system should be provided as the value of the <code>hasTRS </code>property</p>
-        <h4 id="time:numericPosition">Property: numericPosition</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:numericPosition">time:numericPosition</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>The (numeric) value indicating position within a temporal coordinate system </td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:TimePosition</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>time:Number</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>The temporal coordinate system should be provided as the value of the <code>hasTRS </code>property</p>
-      </section>
-      <section id="GenDateTimeDescription">
-        <h3 id="time:GenDateTimeDescription">Class: GeneralDateTimeDescription</h3>
-        <table class="definition" style="border-collapse: collapse; width: 812px; ">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDFS Class:</th>
-              <th><a href="#time:GenDateTimeDescription">time:GeneralDateTimeDescription</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>Description of date and time structured with separate values for the various elements of a
-                calendar-clock system</td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:Class</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:hasTRS exactly 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:timeZone max 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:unitType exactly 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:year max 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:month max 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:week max 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:day max 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:hour max 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:minute max 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:second exactly 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:dayOfYear max 1</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:dayOfWeek max 1</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Three properties <code>hasTRS</code>, <code>timeZone</code>, and <code>unitType </code>provide for
-          reference information concerning the reference system and precision of temporal position values. </p>
-        <h4 id="time:timeZone">Property timeZone</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:timeZone">time:timeZone</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>The time zone for clock elements in the temporal position</td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:ObjectProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>tzont:TimeZone</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>An ontology for time zone descriptions is provided <a href="#timezone">below</a>.</p>
-        <p class="issue">The time zone ontology provided in the Annex is immature and incomplete. Use of a <code>tzont:TimeZone
-            </code>from that ontology as the range of an ObjectProperty in OWL-Time creates an implied dependency which
-          is not ideal. We propose adding a stub class <code>time:TimeZone </code>into the the main namespace (i.e. no
-          properties) which can then be a super-class or equivalent class to any time zone formalization.(Compare with
-          <code> time:TRS </code>which is handled this way.) </p>
-        <h4 id="time:unitType">Property unitType</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:unitType">time:unitType</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>The temporal unit which provides the precision of a date-time value or scale of a temporal extent</td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:ObjectProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription or time:Duration</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>time:TemporalUnit</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Six datatype properties <code>year</code>, <code>month</code>,&nbsp;<code>day</code>, <code>hour</code>, <code>minute</code>,
-          <code>second</code>, together with <code>timeZone</code> (defined above) support the description of
-          components of a temporal position in a calendar-clock system.&nbsp; These correspond with the 'seven property
-          model' described in ISO 8601 [<a href="#ISO-8601">ISO-8601</a>] and XML Schema Definition Language Part 2:
-          Datatypes [<a href="#XSD-D">XSD-D</a>], except that the calendar is not specified in advance, but is provided
-          through the value of the <code>hasTRS </code>property (defined above). </p>
-        <h4 id="time:year">Property year</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:year">time:year</a></th>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>&nbsp;</p>
-        <h4 id="time:month">Property month</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:month">time:month</a></th>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>&nbsp;</p>
-        <h4 id="time:day">Property day</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:day">time:day</a></th>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>&nbsp;</p>
-        <h4 id="time:hour">Property hour</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:hour">time:hour</a></th>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>xsd:nonNegativeInteger</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>&nbsp;</p>
-        <h4 id="time:minute">Property minute</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:minute">time:minute</a></th>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>xsd:nonNegativeInteger</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>&nbsp;</p>
-        <h4 id="time:second">Property second</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:second">time:second</a></th>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>xsd:decimal</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Two additional properties <code>week</code> and <code>dayOfYear</code> allow for the the numeric value of
-          the week or day relative to the year.&nbsp; </p>
-        <h4 id="time:week">Property week</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:week">time:week</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>The number of the week within the year</td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>xsd:nonNegativeInteger</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>&nbsp;</p>
-        <h4 id="time:dayOfYear">Property dayOfYear</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:dayOfYear">time:dayOfYear</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>The number of the day within the year</td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:DatatypeProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>xsd:nonNegativeInteger</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>The property <code>dayOfWeek</code> provides the name of the day. </p>
-        <h4 id="time:dayOfWeek">Property dayOfWeek</h4>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDF Property:</th>
-              <th><a href="#time:dayOfWeek">time:dayOfWeek</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>The day of week, whose value is a member of the class time:DayOfWeek</td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:ObjectProperty</td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td>time:DayOfWeek</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>&nbsp;</p>
-      </section>
-      <section id="DayOfWeek">
-        <h3 id="time:DayOfWeek">Class: DayOfWeek</h3>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDFS Class:</th>
-              <th><a href="#time:DayOfWeek">time:DayOfWeek</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>The day of week<br>
-              </td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:Class</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Seven individual members of <code>DayOfWeek </code>are included in the ontology, corresponding to the seven
-          days used in the Gregorian calendar, and using the English names <code>Sunday</code>, <code>Monday</code>, <code>Tuesday</code>,
-          <code>Wednesday</code>, <code>Thursday</code>, <code>Friday</code>, <code>Saturday</code>.</p>
-        <p class="note">In this version of the ontology, membership of the class DayofWeek is open, to allow for
-          alternative week lengths and different day names. </p>
-      </section>
-      <section id="DateTimeDescription">
-        <h3 id="time:DateTimeDescription">Class: DateTimeDescription</h3>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDFS Class:</th>
-              <th><a href="#time:DateTimeDescription">time:DateTimeDescription</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>Description of date and time structured with separate values for the various elements of a
-                calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of
-                year, month, day properties restricted to corresponding XML Schema types xsd:gYear, xsd:gMonth and
-                xsd:gDay, respectively. </td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:GeneralDateTimeDescription</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:hasTRS value &lt;http://dbpedia.org/resource/Gregorian_calendar&gt;</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:year only xsd:gYear</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:month only xsd:gMonth</td>
-            </tr>
-            <tr>
-              <td>Subclass of:</td>
-              <td>time:day only xsd:gDay</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Other datetime concepts can be straightforwardly defined. For example, "January" can be defined as a a
-          subclass of <code>DateTimeDescription</code> with the restrictions that the <code>unitType</code> property
-          has <code>allValuesFrom</code> unitMonth and property <code>month</code> <code>hasValue</code> of 1: </p>
-        <pre>ex:January
-      a       owl:Class ;
-      rdfs:subClassOf :DateTimeDescription ;
-      rdfs:subClassOf
-              [ a       owl:Restriction ;
-                owl:onProperty :unitType
-                owl:hasValue :unitMonth
-              ] ;
-     rdfs:subClassOf
-              [ a       owl:Restriction ;
-                owl:onProperty :month
-                owl:hasValue --01 ;
-              ] .
-</pre>
-        <p>&nbsp;</p>
-      </section>
-      <section id="TemporalUnit">
-        <h3 id="time:TemporalUnit">Class: TemporalUnit</h3>
-        <table class="definition" style="width: 812px;">
-          <tbody>
-            <tr>
-              <th style="width: 120px;">RDFS Class:</th>
-              <th><a href="#time:TemporalEntity">time:TemporalUnit</a></th>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>A temporal unit of measure, which provides a scale factor for a time quantity. </td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td>owl:Class</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Seven individual members of <code>TemporalUnit </code>are included in the ontology, corresponding to the
-          elements of the standard calendar-clock: <code>unitYear</code>, <code>unitMonth</code>, <code>unitWeek</code>,
-          <code>unitDay</code>, <code>unitHour</code>, <code>unitMinute </code>and <code>unitSecond</code>. </p>
-        <p class="note">In this version of the ontology, membership of the class TemporalUnit is open, to allow for
-          additional temporal units used in some technical applications (e.g. millions of years, Baha'i month). </p>
-      </section>
       <section id="Number">
         <h3 id="time:Number">Datatype: Number</h3>
         <table class="definition" style="width: 812px;">
@@ -2240,7 +2263,7 @@ DIV.test H4 {
         <h3>DateTimeDescription vs dateTime</h3>
         <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p>
         <p>The following example illustrates the difference between using <code>DateTimeDescription </code>and using
-          the XML datatype <code>dateTime</code>. An instant that represents the start of a meeing, called <code>meetingStart</code>,
+          the XML datatype <code>dateTime</code>. An instant that represents the start of a meeting, called <code>meetingStart</code>,
           happens at 10:30am EST on 01/01/2006 can be expressed using both <code>inXSDDateTime</code> and <code>inDateTime</code>
           in OWL as:</p>
         <pre>ex:meetingStart
@@ -2266,8 +2289,8 @@ ex:meetingStartDescription
             </code>more information can be expressed<code></code>, such as "week", "day of week" and "day of year", so
           in the example, we can also know that 01/01/2006 is Sunday, on the first day of the year, and in the first
           week of the year. </p>
-        <p>The namespace “tz-us” points to our US time zone data [<a href="#TZ-US">TZ-US</a>]. Moreover, each field of <code>DateTimeDescription
-            </code>is separate so that it's easier to extract the value of some fields for the later use and easier to
+        <p>The namespace “tz-us” points to US time zone data [<a href="#TZ-US">TZ-US</a>]. Moreover, each field of <code>DateTimeDescription
+            </code>is separate so that it is easier to extract the value of some fields for the later use and easier to
           reason about.</p>
       </section>
       <section id="temporal-precision">
