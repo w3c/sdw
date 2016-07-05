@@ -4,16 +4,14 @@
 
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix my: <http://example.org/my/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix sosa-core: <https://www.w3.org/ns/sosa#> .
 @prefix sosa-om: <https://www.w3.org/ns/sosa-om#> .
 @prefix time: <http://www.w3.org/2006/time#> .
-@prefix vann: <http://purl.org/vocab/vann/> .
-@prefix voaf: <http://purl.org/vocommons/voaf#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 sosa-core:Observation
@@ -127,8 +125,6 @@ CSIRO"""^^xsd:string ;
   dct:created "2016-07-04"^^xsd:date ;
   dct:creator <http://orcid.org/0000-0002-3884-3420> ;
   dct:license <http://creativecommons.org/licenses/by/4.0/> ;
-  vann:preferredNamespacePrefix "sosa-om:"^^xsd:string ;
-  vann:preferredNamespaceUri sosa-om: ;
   rdfs:comment """An OWL representation of the Observation Schema described in clauses 7-8 of ISO 19156:2011 Geographic Information - Observations and Measurements.  
 
 This version is based on the horizontal/vertical modulization proposed by Jano for the W3C/OGC Spatial Data on the Web Working Group
@@ -362,19 +358,13 @@ sosa-om:amount
 sosa-om:context
   rdf:type owl:ObjectProperty ;
   dct:description "link to related observation"^^xsd:string ;
+  schema:domainIncludes sosa-core:Observation ;
+  schema:domainIncludes sosa-om:ObservationCollection ;
   rdfs:comment """link to related observation
-
-The first half of the property named 'relatedObservation' in the UML model. (The rule for implementing association classes needs clarification.)"""^^xsd:string ;
+"""^^xsd:string ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "observation context"@en ;
   rdfs:range sosa-om:ObservationContext ;
-  schema:domainIncludes [
-      rdf:type owl:Class ;
-      owl:unionOf (
-          sosa-core:Observation
-          sosa-om:ObservationCollection
-        ) ;
-    ] ;
 .
 sosa-om:count
   rdf:type owl:DatatypeProperty ;
@@ -384,6 +374,7 @@ sosa-om:count
 .
 sosa-om:member
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-om:ObservationCollection ;
   rdfs:comment "links from a collection to a member collection or observation"^^xsd:string ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "has member"^^xsd:string ;
@@ -394,7 +385,6 @@ sosa-om:member
           sosa-om:ObservationCollection
         ) ;
     ] ;
-  schema:domainIncludes sosa-om:ObservationCollection ;
 .
 sosa-om:memberOf
   rdf:type owl:ObjectProperty ;
@@ -411,15 +401,17 @@ sosa-om:relatedObservation
 .
 sosa-om:role
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-om:ObservationContext ;
   rdfs:comment "role of related observation with respect to the observation of interest" ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "role"@en ;
   rdfs:range skos:Concept ;
-  schema:domainIncludes sosa-om:ObservationContext ;
 .
 sosa-om:samplingStrategy
   rdf:type owl:ObjectProperty ;
-  rdfs:comment """Links to a feature intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. 
+  schema:domainIncludes sosa-core:Observation ;
+  schema:domainIncludes sosa-om:ObservationCollection ;
+  rdfs:comment """Links to a feature or procedure intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. 
 
 N.B. this formulation varies from the UML model in ISO 19156, in which a sampling-feature is substitutable for the feature-of-interest. In this more explicit formulation, the (mandatory) feature-of-interest always refers to the ultimate feature of interest, whose type can carry the observed property, and the (optional) sampling strategy allows the sampling feature to be made explicit as an additional relationship. This overcomes some semantic sleight-of-hand in ISO 19156, in which the constraint the the observed property was commensurate with the feature-of-interest was allowed to be 'transitive' via the sampledFeature property."""^^xsd:string ;
   rdfs:comment "description of the sampling strategy used in an observation (usually a sampling-feature). "^^xsd:string ;
@@ -433,13 +425,6 @@ N.B. this formulation varies from the UML model in ISO 19156, in which a samplin
         ) ;
     ] ;
   skos:definition "Links to a feature intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. "^^xsd:string ;
-  schema:domainIncludes [
-      rdf:type owl:Class ;
-      owl:unionOf (
-          sosa-core:Observation
-          sosa-om:ObservationCollection
-        ) ;
-    ] ;
 .
 sosa-om:truth
   rdf:type owl:DatatypeProperty ;
@@ -449,8 +434,8 @@ sosa-om:truth
 .
 sosa-om:uom
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-om:ObservationCollection ;
+  schema:domainIncludes sosa-om:SimpleMeasure ;
   rdfs:comment "Unit of measure or scale"^^xsd:string ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
-  schema:domainIncludes """sosa-om:SimpleMeasure
- or sosa-om:ObservationCollection"""^^xsd:string ;
 .

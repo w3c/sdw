@@ -4,17 +4,14 @@
 
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix my: <http://example.org/my/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix sosa-core: <https://www.w3.org/ns/sosa#> .
 @prefix sosa-sam: <https://www.w3.org/ns/sosa-sam#> .
 @prefix time: <http://www.w3.org/2006/time#> .
-@prefix vann: <http://purl.org/vocab/vann/> .
-@prefix voaf: <http://purl.org/vocommons/voaf#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 dct:audience
@@ -50,8 +47,6 @@ CSIRO"""^^rdf:PlainLiteral ;
   dct:created "2016-07-04"^^xsd:date ;
   dct:creator <http://orcid.org/0000-0002-3884-3420> ;
   dct:license <http://creativecommons.org/licenses/by/4.0/> ;
-  vann:preferredNamespacePrefix "sosa-sam:"^^xsd:string ;
-  vann:preferredNamespaceUri sosa-sam: ;
   rdfs:comment """An OWL representation of the Sampling Features Schema described in clauses 9-11 of ISO 19156:2011 Geographic Information - Observations and Measurements. 
 
 This version is based on the horizontal/vertical modulization proposed by Jano for the W3C/OGC Spatial Data on the Web Working Group"""^^xsd:string ;
@@ -305,13 +300,14 @@ sosa-sam:Surface
 .
 sosa-sam:complex
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-core:SamplingFeature ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
   rdfs:label "sampling feature complex" ;
   rdfs:range sosa-sam:SamplingFeatureComplex ;
-  schema:domainIncludes "sosa-core:SamplingFeature"^^xsd:string ;
 .
 sosa-sam:currentLocation
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:Specimen ;
   rdfs:comment """If present, the attribute currentLocation:Location shall describe the location of a physical specimen. This may be a storage location, such as a shelf in a warehouse or a drawer in a museum.
 
 NOTE If a specimen no longer exists, for example, it was destroyed in connection with an observation act, then the currentLocation should be omitted or carry a suitable null indicator."""^^xsd:string ;
@@ -321,7 +317,6 @@ NOTE If a specimen no longer exists, for example, it was destroyed in connection
   skos:definition """If present, the attribute currentLocation:Location shall describe the location of a physical specimen. This may be a storage location, such as a shelf in a warehouse or a drawer in a museum.
 
 NOTE If a specimen no longer exists, for example, it was destroyed in connection with an observation act, then the currentLocation should be omitted or carry a suitable null indicator."""^^xsd:string ;
-  schema:domainIncludes "sosa-sam:Specimen"^^xsd:string ;
 .
 sosa-sam:elevation
   rdf:type owl:DatatypeProperty ;
@@ -337,24 +332,25 @@ sosa-sam:elevation
 .
 sosa-sam:hostedProcedure
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:SpatialSamplingFeature ;
   rdfs:comment "A common role for a spatial sampling feature is to host instruments or procedures deployed repetitively or permanently. If present, the association Platform shall link the SF_SpatialSamplingFeature to an OM_Process deployed at it. The OM_Process has the role hostedProcedure with respect to the sampling feature."^^xsd:string ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
   rdfs:label "hosted procedure or instrument" ;
   rdfs:range sosa-core:Procedure ;
   skos:definition "A common role for a spatial sampling feature is to host instruments or procedures deployed repetitively or permanently. If present, the association Platform shall link the SF_SpatialSamplingFeature to an OM_Process deployed at it. The OM_Process has the role hostedProcedure with respect to the sampling feature."^^xsd:string ;
-  schema:domainIncludes "sosa-sam:SpatialSamplingFeature"^^xsd:string ;
 .
 sosa-sam:materialClass
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:Specimen ;
   rdfs:comment """Value should be taken from a vocabulary of material classes. 
 
 e.g. aqueous liquid, non-aqueous liquid, soil, rock, tissue, vegetation (broad case) or finer classifications if available"""^^xsd:string ;
   rdfs:label "class of material"^^xsd:string ;
   rdfs:range skos:Concept ;
-  schema:domainIncludes "sosa-sam:Specimen"^^xsd:string ;
 .
 sosa-sam:member
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:SamplingCollection ;
   rdfs:label "has member"^^xsd:string ;
   rdfs:range [
       rdf:type owl:Class ;
@@ -363,7 +359,6 @@ sosa-sam:member
           sosa-sam:SamplingCollection
         ) ;
     ] ;
-  schema:domainIncludes "sosa-sam:SamplingCollection"^^xsd:string ;
 .
 sosa-sam:relatedSamplingFeature
   rdf:type owl:ObjectProperty ;
@@ -373,13 +368,14 @@ sosa-sam:relatedSamplingFeature
 .
 sosa-sam:role
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:SamplingFeatureComplex ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
   rdfs:label "role" ;
   rdfs:range skos:Concept ;
-  schema:domainIncludes "sosa-sam:SamplingFeatureComplex"^^xsd:string ;
 .
 sosa-sam:samplingElevation
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:Specimen ;
   rdfs:comment """If present, the attribute samplingElevation shall describe the elevation from where the specimen was obtained, relative to the sampling location.
 
 NOTE Where a specimen has a relatedSamplingFeature whose location provides an unambiguous elevation then this attribute is not required. However, if the specific elevationat the location, then this attribute supports its description."""^^xsd:string ;
@@ -389,10 +385,10 @@ NOTE Where a specimen has a relatedSamplingFeature whose location provides an un
   skos:definition """If present, the attribute samplingElevation shall describe the elevation from where the specimen was obtained, relative to the sampling location.
 
 NOTE Where a specimen has a relatedSamplingFeature whose location provides an unambiguous elevation then this attribute is not required. However, if the specific elevationat the location, then this attribute supports its description."""^^xsd:string ;
-  schema:domainIncludes "sosa-sam:Specimen"^^xsd:string ;
 .
 sosa-sam:samplingLocation
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:Specimen ;
   rdfs:comment """If present, the attribute samplingLocation:GM_Object shall describe the location from where the specimen was obtained.
 
 NOTE Where a specimen has a relatedSamplingFeature whose location provides an unambiguous location then this attribute is not required. However, if the specific sampling location within the sampledFeature is important, then this attribute supports its description."""^^xsd:string ;
@@ -402,42 +398,41 @@ NOTE Where a specimen has a relatedSamplingFeature whose location provides an un
   skos:definition """If present, the attribute samplingLocation:GM_Object shall describe the location from where the specimen was obtained.
 
 NOTE Where a specimen has a relatedSamplingFeature whose location provides an unambiguous location then this attribute is not required. However, if the specific sampling location within the sampledFeature is important, then this attribute supports its description."""^^xsd:string ;
-  schema:domainIncludes "sosa-sam:Specimen"^^xsd:string ;
 .
 sosa-sam:samplingMethod
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:Specimen ;
   rdfs:comment "Process used to obtain the Specimen from its sampledFeature"^^xsd:string ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
   rdfs:label "sampling method" ;
   rdfs:range sosa-core:SamplingProcedure ;
-  schema:domainIncludes "sosa-sam:Specimen"^^xsd:string ;
 .
 sosa-sam:samplingTime
   rdf:type owl:FunctionalProperty ;
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:Specimen ;
   rdfs:comment "samplingTime records when the specimen was retrieved from the sampled feature."^^xsd:string ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
   rdfs:label "sampling time" ;
   rdfs:range time:TemporalEntity ;
   skos:definition "samplingTime records when the specimen was retrieved from the sampled feature."^^xsd:string ;
-  schema:domainIncludes "sosa-sam:Specimen"^^xsd:string ;
 .
 sosa-sam:shape
   rdf:type owl:FunctionalProperty ;
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:SpatialSamplingFeature ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
   rdfs:label "spatial sampling feature shape" ;
   rdfs:range sosa-sam:GeometryObject ;
   skos:definition "The association Geometry shall link an SF_SpatialSamplingFeature to a GM_Object that describes its shape."^^xsd:string ;
-  schema:domainIncludes "sosa-sam:SpatialSamplingFeature"^^xsd:string ;
 .
 sosa-sam:size
   rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-sam:Specimen ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
   rdfs:label "specimen size" ;
   rdfs:range sosa-sam:Measure ;
   skos:definition "the attribute size:Measure shall describe a physical extent of the specimen. This may be length, mass, volume, etc., as appropriate for the specimen instance and its material class."^^xsd:string ;
-  schema:domainIncludes "sosa-sam:Specimen"^^xsd:string ;
 .
 sosa-sam:verticalDatum
   rdf:type owl:ObjectProperty ;
