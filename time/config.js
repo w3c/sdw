@@ -54,19 +54,6 @@
 
 
     localBiblio: {
-       "OandM":{
-        href:"http://www.opengeospatial.org/standards/om",
-        title:"Observations and Measurements",
-        publisher: "Opengeospatial Consortium",
-        authors: ["Simon Cox"],
-        date: "22 March 2011"      
-       },
-       "gml":{
-        href:"http://www.opengeospatial.org/standards/gml",
-        title:"Geography Markup Language",
-        authors: ["Clemens Portele (editor)"],
-        date: "27 August 2007"
-       },
        "AF-97": {
 	authors: ["Allen, J. F.", "Ferguson, G."],
         date: "1997",
