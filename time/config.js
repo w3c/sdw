@@ -84,7 +84,7 @@
         },
         "CR-14": {
         authors: ["S.J.D. Cox", "S.M. Richard"],
-        href: "http://dx.doi.org/10.1007/s12145-014-0166-2",
+        href: "http://dx.doi.org/10.1007/s12145-014-0170-6",
         title: "A geologic timescale ontology and service",
         publisher: "Earth Sci. Informatics 8 (2014) 5–19.",
         date: "2014"
