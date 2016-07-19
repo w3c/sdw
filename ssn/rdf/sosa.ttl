@@ -62,65 +62,131 @@ owl:topObjectProperty
 .
 <https://www.w3.org/ns/sosa>
   rdf:type owl:Ontology ;
-  rdfs:comment "Sensing, Observation, Sampling and Actuating (SOSA) Core Ontology "^^xsd:string ;
+  rdfs:comment "Sensing, Observing, Sampling and Actuating (SOSA) Core Ontology "^^xsd:string ;
   rdfs:comment "This ontology is based on the SSN Ontology by the W3C Semantic Sensor Networks Incubator Group (SSN-XG), together with considerations from the W3C/OGC Spatial Data on the Web Working Group."^^xsd:string ;
   rdfs:comment "This version is based on the horizontal/vertical modulization proposed by Jano for the W3C/OGC Spatial Data on the Web Working Group: https://www.w3.org/2015/spatial/wiki/SOSA_Ontology and https://www.w3.org/2015/spatial/wiki/SSN_core_modules"^^xsd:string ;
-  rdfs:label "Sensing, Observation, Sampling and Actuating"^^xsd:string ;
+  rdfs:label "Sensing, Observing, Sampling and Actuating"^^xsd:string ;
   owl:imports <http://schema.org> ;
+.
+sosa-core:Activity
+  rdf:type rdfs:Class ;
+  rdfs:comment "An action or event during which a Procedure is used"@en ;
+  rdfs:label "Activity"@en ;
+  rdfs:subClassOf owl:Thing ;
+.
+sosa-core:ActuatingProcedure
+  rdf:type owl:Class ;
+  rdfs:comment "When used, an ActuationProcedure can cause a change in the state of the world"@en ;
+  rdfs:label "Actuating Procedure"@en ;
+  rdfs:subClassOf sosa-core:Procedure ;
+.
+sosa-core:Actuation
+  rdf:type rdfs:Class ;
+  rdfs:comment "An Activity that uses an ActuatingProcedure to cause a change in the state of the world, for example by moving something, heating it up, turning it on"@en ;
+  rdfs:label "Actuation"@en ;
+  rdfs:subClassOf sosa-core:Activity ;
 .
 sosa-core:Actuator
   rdf:type owl:Class ;
-  rdfs:label "Actuating Procedure" ;
-  rdfs:label "Actuator" ;
-  rdfs:subClassOf sosa-core:Procedure ;
+  rdfs:comment "A Device that is used by, or implements, an Actuating Procedure"@en ;
+  rdfs:label "Actuator"@en ;
+  rdfs:subClassOf sosa-core:Device ;
+.
+sosa-core:Device
+  rdf:type owl:Class ;
+  rdfs:comment "A physical object involved in a Procedure that observes, samples, or changes the state of the world."@en ;
+  rdfs:label "Device"@en ;
+  rdfs:subClassOf owl:Thing ;
 .
 sosa-core:ObservableProperty
   rdf:type owl:Class ;
-  rdfs:comment "An observable Quality of a thing"^^xsd:string ;
-  rdfs:label "Observable Property" ;
+  rdfs:comment "An observable Quality of a thing"@en ;
+  rdfs:label "Observable Property"@en ;
 .
 sosa-core:Observation
   rdf:type owl:Class ;
-  rdfs:comment "An Observation is a Situation in which a Sensing method has been used to estimate or calculate a value of a Property of a FeatureOfInterest. Links to a Sensor to describe what made the Observation and how; links to FeatureOfInterest detail what was sensed; the result is the output of a Sensor." ;
+  rdfs:comment "An Observation is a Situation or Activity in which a Sensing method or ObservationProcedure has been used to estimate or calculate a value of a Property of a FeatureOfInterest. Links to an Observer or Sensor to describe what made the Observation and how; links to FeatureOfInterest detail what was observed; the Result is the output."@en ;
   rdfs:label "Observation"@en ;
+  rdfs:subClassOf sosa-core:Activity ;
+.
+sosa-core:Observer
+  rdf:type owl:Class ;
+  rdfs:comment "Device or agent involved in, or implementing, an ObservingProcedure"@en ;
+  rdfs:label "Observer"@en ;
+  rdfs:subClassOf sosa-core:Device ;
+.
+sosa-core:ObservingProcedure
+  rdf:type owl:Class ;
+  rdfs:comment "Procedure used to make an estimate of the value of a quality of a feature. Input may be a sensor stimulus, or the output from one or more previous activities."@en ;
+  rdfs:label "Observing procedure"@en ;
+  rdfs:subClassOf sosa-core:Procedure ;
+.
+sosa-core:Platform
+  rdf:type owl:Class ;
+  rdfs:comment "A Device or agent on which other Devices are mounted or hosted. Maybe stationary, moving, or portable. Examples include: station, buoy, ship, aeroplane, satellite, balloon, cell-phone, table, tractor, automobile."@en ;
+  rdfs:label "Platform"@en ;
+  rdfs:subClassOf sosa-core:Device ;
 .
 sosa-core:Procedure
   rdf:type owl:Class ;
-  rdfs:comment "Agent, device, sensor, software, protocol, computational method, algorithm or plan responsible for generating an observation result. Input may be a sensor stimulus, or the output from a previous process. A Procedure is re-usable, and might be involved in many observations."^^xsd:string ;
+  rdfs:comment "Software, protocol, computational method, algorithm or plan responsible for generating an observation result, or taking a sample, or making a change to the state of the world. A Procedure is re-usable, and might be involved in many observations, samplings, or actuations."@en ;
   rdfs:label "Procedure"@en ;
+.
+sosa-core:Sampling
+  rdf:type rdfs:Class ;
+  rdfs:comment "An Activity that uses a SamplingProcedure to obtain or define a SamplingFeature (sample), such as a subset, specimen, cross-section, transect etc."@en ;
+  rdfs:label "Sampling"@en ;
+  rdfs:subClassOf sosa-core:Activity ;
+.
+sosa-core:SamplingDevice
+  rdf:type owl:Class ;
+  rdfs:comment "Device used to obtain a sample"@en ;
+  rdfs:label "Sampling device"@en ;
+  rdfs:subClassOf sosa-core:Device ;
 .
 sosa-core:SamplingFeature
   rdf:type owl:Class ;
-  rdfs:comment "Feature on which observations may be made, which is intended to be representative of a feature that is not fully accessible."^^xsd:string ;
+  rdfs:comment "Feature on which observations may be made, which is intended to be representative of a feature that is not fully accessible."@en ;
   rdfs:comment """Sampling features are artefacts of an observational strategy, and have no significant function outside of their role in the observation process. The physical characteristics of the features themselves are of little interest, except perhaps to the manager of a sampling campaign.
 
 EXAMPLE A “station” is essentially an identifiable locality where a sensor system or procedure may be deployed and an observation made. In the context of the observation model, it connotes the “world in the vicinity of the station”, so the observed properties relate to the physical medium at the station, and not to any physical artefact such as a mooring, buoy, benchmark, monument, well, etc.
 
 NOTE A transient sampling feature, such as a ships-track or flight-line, might be identified and described, but is unlikely to be revisited exactly.
 
-A sampling feature is intended to sample some feature-of-interest in an application domain, so there is an expectation of at least one sampledFeature property. However, in some cases the identity, and even the exact type, of the sampled feature may not be known when observations are made using the sampling features."""^^xsd:string ;
+A sampling feature is intended to sample some feature-of-interest in an application domain, so there is an expectation of at least one sampledFeature property. However, in some cases the identity, and even the exact type, of the sampled feature may not be known when observations are made using the sampling features."""@en ;
+  rdfs:label "Sample"@en ;
   rdfs:label "Sampling Feature"@en ;
 .
 sosa-core:SamplingProcedure
   rdf:type owl:Class ;
-  rdfs:comment "A procedure of sampling, i.e. a description of the sampling process a sampling device can execute."^^xsd:string ;
-  rdfs:label "Sampling Procedure"^^xsd:string ;
+  rdfs:comment "A Procedure of sampling, i.e. a description of the sampling process a sampling device can execute."@en ;
+  rdfs:label "Sampling Procedure"@en ;
   rdfs:subClassOf sosa-core:Procedure ;
+.
+sosa-core:Sensing
+  rdf:type owl:Class ;
+  rdfs:comment "Sensing is a Situation or Activity in which a SensingProcedure has been used to estimate or calculate a value of a Property of a FeatureOfInterest. Links to a or Sensor to describe what performed the Sensing and how; links to FeatureOfInterest detail what was observed; the Result is the output."@en ;
+  rdfs:label "Sensing"@en ;
+  rdfs:subClassOf sosa-core:Observation ;
+.
+sosa-core:SensingProcedure
+  rdf:type owl:Class ;
+  rdfs:comment "A Procedure of sensing, i.e. a description of a procedure that uses or is implemented by a SensingDevice."@en ;
+  rdfs:label "Sensing Procedure"@en ;
+  rdfs:subClassOf sosa-core:ObservingProcedure ;
 .
 sosa-core:Sensor
   rdf:type owl:Class ;
-  rdfs:comment "A procedure of sensing, i.e. a description of the sensing process a sensing device can observe." ;
-  rdfs:label "Sensing Procedure" ;
-  rdfs:label "Sensing" ;
-  rdfs:subClassOf sosa-core:Procedure ;
+  rdfs:comment "Device or agent involved in, or implementing, a SensingProcedure. Responds to a stimulus and generates a result."@en ;
+  rdfs:label "Sensor"@en ;
+  rdfs:subClassOf sosa-core:Observer ;
 .
 sosa-core:featureOfInterest
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa-core:Observation ;
   schema:rangeIncludes owl:Thing ;
-  rdfs:comment "A relation between an observation and the entity whose quality was observed. For example, in an observation of the weight of a person, the feature of interest is the person and the quality is weight"^^xsd:string ;
+  rdfs:comment "A relation between an Observation and the entity whose quality was observed. For example, in an Observation of the weight of a person, the feature of interest is the person and the quality is weight"^^xsd:string ;
   rdfs:label "feature of interest"@en ;
-  rdfs:subPropertyOf owl:topObjectProperty ;
 .
 sosa-core:hasResult
   rdf:type owl:ObjectProperty ;
@@ -128,15 +194,27 @@ sosa-core:hasResult
   schema:domainIncludes sosa-core:Procedure ;
   rdfs:comment "Relation linking an Observation and a Sensor or Actuator and a Result, which contains a value representing the value associated with the observed Property."^^xsd:string ;
   rdfs:label "result"@en ;
-  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+sosa-core:hostedBy
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-core:Device ;
+  schema:rangeIncludes sosa-core:Platform ;
+  rdfs:comment "Relation between a Device and the Platform that it is mounted on or hosted by"^^xsd:string ;
+  rdfs:label "hosted by"^^xsd:string ;
+.
+sosa-core:hosts
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa-core:Platform ;
+  schema:rangeIncludes sosa-core:Device ;
+  rdfs:comment "Relation between a Platform and a Device hosted or mounted on it."^^xsd:string ;
+  rdfs:label "hosts"^^xsd:string ;
 .
 sosa-core:madeObservation
   rdf:type owl:ObjectProperty ;
-  schema:domainIncludes sosa-core:Sensor ;
+  schema:domainIncludes sosa-core:SensingProcedure ;
   schema:rangeIncludes sosa-core:Observation ;
-  rdfs:comment "Relation between a Sensor and Observations it has made." ;
+  rdfs:comment "Relation between a Sensor and an Observations it has made."^^xsd:string ;
   rdfs:label "made observation" ;
-  rdfs:subPropertyOf owl:topObjectProperty ;
 .
 sosa-core:observedProperty
   rdf:type owl:ObjectProperty ;
@@ -144,24 +222,24 @@ sosa-core:observedProperty
   schema:rangeIncludes sosa-core:ObservableProperty ;
   rdfs:comment "Relation linking an Observation to the Property that was observed.  The observedProperty should be a Property (hasProperty) of the FeatureOfInterest (linked by featureOfInterest) of this observation." ;
   rdfs:label "observed property"@en ;
-  rdfs:subPropertyOf owl:topObjectProperty ;
 .
 sosa-core:observes
   rdf:type owl:ObjectProperty ;
-  schema:domainIncludes sosa-core:Sensor ;
+  schema:domainIncludes sosa-core:SensingProcedure ;
   schema:rangeIncludes sosa-core:ObservableProperty ;
-  rdfs:subPropertyOf owl:topObjectProperty ;
+  rdfs:comment "Relation between a SensingProcedure and an ObservableProperty."^^xsd:string ;
+  rdfs:label "observes"^^xsd:string ;
 .
 sosa-core:phenomenonTime
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa-core:Observation ;
-  rdfs:comment "The time that the result of an observation applies to the feature of interest - not necessarily the same as the result-time" ;
+  rdfs:comment "The time that the Result of an Observation applies to the FeatureOfInterest - not necessarily the same as the result-time"^^xsd:string ;
   rdfs:label "phenomenon time" ;
 .
 sosa-core:resultTime
   rdf:type owl:DatatypeProperty ;
   schema:domainIncludes sosa-core:Observation ;
-  rdfs:comment "The result time is the time when the procedure associated with the observation act was completed." ;
+  rdfs:comment "The result time is the time when the Procedure associated with the Observation act was completed."^^xsd:string ;
   rdfs:range xsd:dateTime ;
 .
 sosa-core:sampledFeature
@@ -171,19 +249,18 @@ sosa-core:sampledFeature
   rdfs:comment "Relation from a SamplingFeature to the Feature that it is intended to be representative of." ;
   rdfs:label "sampled feature" ;
 .
-sosa-core:samplingProtocol
+sosa-core:samplingStrategy
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa-core:Observation ;
   schema:rangeIncludes sosa-core:SamplingFeature ;
   schema:rangeIncludes sosa-core:SamplingProcedure ;
-  rdfs:comment "Relation to a sampling feature or protocol" ;
-  rdfs:label "sampling protocol" ;
+  rdfs:comment "Relation from an Observation or Sensing activity to a SamplingFeature or SamplingProcedure"@en ;
+  rdfs:label "sampling strategy"@en ;
 .
 sosa-core:usedProcedure
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa-core:Observation ;
   schema:rangeIncludes sosa-core:Procedure ;
-  rdfs:comment "Link to a re-usable procedure used in making observation. Typically a sensor or sensor-system, algorithm, computational procedure."^^xsd:string ;
+  rdfs:comment "Link to a re-usable Procedure used in making Observation. Typically a sensor or sensor-system, algorithm, computational procedure."^^xsd:string ;
   rdfs:label "observation procedure"@en ;
-  rdfs:subPropertyOf owl:topObjectProperty ;
 .
