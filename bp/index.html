@@ -535,35 +535,31 @@
         <div class="practice">
           <p><span id="ref-crs" class="practicelab">Specify Coordinate Reference System for
               high-precision applications</span></p>
-          <p class="practicedesc">A coordinate referencing system should be specified for
+          <p class="practicedesc">A coordinate referencing system (CRS) should be specified for
             high-precision applications to locate geospatial entities.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
             <p>The <a>CRS</a> is a special metadata attribute of spatial data that must be known for
-              users to judge if the data is usable to them. Also, users might want to find spatial
+              users to judge if the data is usable to them. Clients or users must always be able to
+              determine what CRS is used. Sometimes this is determined by the specification of the
+              data format that is used, but specifying the CRS as part of the metadata allows
+              clients and users to judge if the data is usable, and allows users to find spatial
               data with a specific CRS. </p>
             <p>The choice of CRS is sensitive to the intended domain of application for the
               geospatial data. For the majority of applications a common global CRS (WGS84) is fine,
               but high precision applications (such as precision agriculture and defence) require
-              spatial referencing to be accurate to a few meters or even centimeters. For that reason, specific CRS
-              exist to provide a coordinate system for a specific region of the world (often a
-              specific country). Spatial data from France is never going to use the Dutch coordinate
-              system and vice versa.</p>
-            <p>One aspect is the confusion of precision and accuracy. Seven decimal places of a
-              latitude degree corresponds to about one centimeter. Whatever the precision of the
-              specified coordinates, the accuracy of positioning on the actual earth's surface using
-              WGS84 will only approach about a metre horizontally and may have apparent errors of up
-              to 100 metres vertically, because of assumptions about reference systems, tectonic
-              plate movements and which definition of the earth's 'surface' is used.</p>
-            <p class="issue" data-number="128">Add explanation of why there are so many CRSs.</p>
-            <p>Many <a>CRS</a> are used because the positions on the surface of the earth relative
-              to each other are constantly changing. For example, North America and Europe are
-              receding from each other by a couple of centimeters per year, whereas Australia is
+              spatial referencing to be accurate to a few meters or even centimeters. Specific,
+              highly accurate CRS exist to provide a coordinate system for a specific region of the
+              world (often a specific country). Spatial data from France is never going to use the
+              Dutch coordinate system and vice versa.</p>
+            <p>Different <a>CRS</a> exist mainly because the positions on the surface of the earth
+              relative to each other are constantly changing. For example, North America and Europe
+              are receding from each other by a couple of centimeters per year, whereas Australia is
               moving several centimeters per year north-eastwards. So, for better than one meter
               accuracy in Europe, the European Terrestrial Reference System 1989 (ETRS89) was
-              devised and it is fixed with respect to the European tectonic plate. Consequently,
-              coordinates in the ETRS89 system will change by a couple of centimetres per year with
-              respect to WGS84.</p>
+              devised and it is frequently revised to take account of the drifting European tectonic
+              plate. Consequently, coordinates in the ETRS89 system will change by a couple of
+              centimetres per year with respect to WGS84.</p>
             <p class="issue" data-number="204">Need to clarify when and why people use different
               CRS's</p>
             <p>Even if a <a>CRS</a>, tied to a tectonic plate, is used, local coordinates in some
@@ -572,6 +568,9 @@
               location errors of tens of metres, or more, may exist when compared to the same
               location derived from a different technology, and these errors may vary in size across
               the extent of a single map.</p>
+            <p>Another reason why different CRS exist has nothing to do with tectonic drift, but
+              with projecting the 3D globe on a flat, 2D map: Cartesian projections. These are useful e.g. for
+              calculating areas. </p>
             <p class="note">The misuse of spatial data, because of confusion about the CRS, can
               result in catastrophic results; e.g. both the bombing of the Chinese Embassy in
               Belgrade during the Balkan conflict and fatal incidents along the East Timor border
@@ -586,28 +585,20 @@
             <p class="subhead">Possible Approach to Implementation</p>
             <p>Recommendations about CRS referencing should consider:</p>
             <ul>
-              <li>When a default Coordinate Reference System is sufficient.</li>
-              <li>The choice of CRS should be sensitive to the intended domain of application for
-                the geospatial data.</li>
-              <li><a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a> is a
-                common choice of CRS - although this in itself is ambiguous: we need to assert
-                whether data relates to the ellipsoid (datum surface) or the geoid (gravitational
-                equipotential surface; <a href="https://en.wikipedia.org/wiki/EGM96"
-                >EGM96</a>).</li>
-              <li>WGS84 is a reasonable choice for many human-scale activities (e.g. navigation).
-                However, given that the earth's surface is constantly moving (e.g. Australia sits on
-                a tectonic plate that is moving 7cm per year relative to the African plate), <a
-                  href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a> is not
-                appropriate for precision applications. For example, the defense community uses 12
-                separate Mercator projections to maintain accuracy around the globe whilst the
-                Australian national mapping authority is considering use of a dynamic datum
-                [[Strong]].</li>
-              <li>For convenience, the CRS is often designated within the data format or vocabulary
-                specification (e.g. <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo
-                  Positioning vocabulary</a>) and, therefore, does not appear in the data itself.
-                This is often considered as a default CRS. Data publishers and consumers should make
-                sure they are aware of the specified CRS and any limitations that this may pose
-                regarding the use of the data.</li>
+              <li>If your goal is to make data available to mass-market web users, make it available
+                in <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a>. This CRS
+                is suitable for many applications, but be aware (and perhaps publish) the
+                limitations of doing so.</li>
+              <li>If your goal is high accuracy, choose the best local CRS for your data.</li>
+              <li>Publishing data in multiple CRSs is fine, and may help users to combine your data
+                with other sources, as well as serving multiple types of user.</li>
+              <li>It is preferable to explicitly state which CRS(s) you are using. For convenience,
+                the CRS is often designated within the data format or vocabulary specification (e.g.
+                  <a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Geo Positioning
+                  vocabulary</a>) and, therefore, does not appear in the data itself. This is often
+                considered as a default CRS. Data publishers and consumers should make sure they are
+                aware of the specified CRS and any limitations that this may pose regarding the use
+                of the data.</li>
               <li>Where a specific CRS is required, the data publisher should choose a vocabulary
                 where the CRS can be defined explicitly within the data.</li>
             </ul>
@@ -747,6 +738,13 @@
               can vary. No measurement system is infinitely precise and in some cases the spatial
               data can be intentionally generalized (e.g. merging entities, reducing the details,
               and aggregation of the data) [[Veregin]].</p>
+            <p>It is important to understand the difference between precision and accuracy. Seven
+              decimal places of a latitude degree corresponds to about one centimeter. Whatever the
+              precision of the specified coordinates, the accuracy of positioning on the actual
+              earth's surface using WGS84 will only approach about a metre horizontally and may have
+              apparent errors of up to 100 metres vertically, because of assumptions about reference
+              systems, tectonic plate movements and which definition of the earth's 'surface' is
+              used.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
