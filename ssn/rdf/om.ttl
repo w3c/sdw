@@ -61,11 +61,6 @@ The values for the properties 'procedure', 'featureOfInterest', 'observedPropert
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
       owl:onProperty sosa-core:usedProcedure ;
     ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-      owl:onProperty sosa-om:samplingStrategy ;
-    ] ;
   owl:disjointWith sosa-core:ObservableProperty ;
   owl:disjointWith sosa-core:Procedure ;
 .
@@ -111,6 +106,22 @@ sosa-core:resultTime
   rdf:type owl:FunctionalProperty ;
   rdfs:comment "time at which the result became available, after all processing steps were completed"^^xsd:string ;
 .
+sosa-core:samplingStrategy
+  schema:domainIncludes sosa-om:ObservationCollection ;
+  rdfs:comment """Links to a feature or procedure intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. 
+
+N.B. this formulation varies from the UML model in ISO 19156, in which a sampling-feature is substitutable for the feature-of-interest. In this more explicit formulation, the (mandatory) feature-of-interest always refers to the ultimate feature of interest, whose type can carry the observed property, and the (optional) sampling strategy allows the sampling feature to be made explicit as an additional relationship. This overcomes some semantic sleight-of-hand in ISO 19156, in which the constraint the the observed property was commensurate with the feature-of-interest was allowed to be 'transitive' via the sampledFeature property."""^^xsd:string ;
+  rdfs:comment "description of the sampling strategy used in an observation (usually a sampling-feature). "^^xsd:string ;
+  rdfs:label "sampling strategy"@en ;
+  rdfs:range [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa-core:SamplingFeature
+          sosa-core:SamplingProcedure
+        ) ;
+    ] ;
+  skos:definition "Links to a feature intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. "^^xsd:string ;
+.
 sosa-core:usedProcedure
   rdfs:range sosa-core:Procedure ;
 .
@@ -137,7 +148,6 @@ This version is based on the horizontal/vertical modulization proposed by Jano f
 sosa-om:CountObject
   rdf:type owl:Class ;
   rdfs:comment "Object to wrap a count value"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Count object"^^xsd:string ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
@@ -149,7 +159,6 @@ sosa-om:CountObservation
   rdf:type owl:Class ;
   dct:description "Observation whose result is an integer"^^xsd:string ;
   rdfs:comment "Observation whose result is an integer"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Count Observation"@en ;
   rdfs:subClassOf sosa-core:Observation ;
   rdfs:subClassOf [
@@ -161,8 +170,7 @@ sosa-om:CountObservation
 sosa-om:GeometryObject
   rdf:type owl:Class ;
   dct:description "Geometry object has properties relating to geometry, incuding positional and topological attributes, reference system, accuracy and precision. Might be geolocated. "^^xsd:string ;
-  rdfs:comment "This stub is included in the om: ontology to support references to geometry as the result of a GeometryObservation.  An existing OWL class that represents the notion of a geometry may be asserted to be a sub-class of this stub, without requiring use of a specific representation of Geometry in the context of observations instance."^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
+  rdfs:comment "This stub is included in the om: ontology to support references to geometry as the result of a GeometryObservation.  An existing OWL class that represents the notion of a geometry may be asserted to be a sub-class of this stub, thus no specific representation of Geometry is prescribed."^^xsd:string ;
   rdfs:label "Geometry object"^^xsd:string ;
   rdfs:subClassOf owl:Thing ;
 .
@@ -170,7 +178,6 @@ sosa-om:GeometryObservation
   rdf:type owl:Class ;
   dct:description "Observation whose result is a geometry object, such as a point, curve, surface or solid"^^xsd:string ;
   rdfs:comment "Observation whose result is a geometry object, such as a point, curve, surface or solid"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Geometry Observation"@en ;
   rdfs:subClassOf sosa-core:Observation ;
   rdfs:subClassOf [
@@ -191,14 +198,12 @@ qudt:QuantityValue <http://qudt.org/schema/qudt#QuantityValue>
 DUL:Region <http://www.loa-cnr.it/ontologies/DUL.owl#Region> 
 
 are candidates. """^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Measure"^^xsd:string ;
 .
 sosa-om:Measurement
   rdf:type owl:Class ;
   dct:description "Observation whose result is a scaled number"^^xsd:string ;
   rdfs:comment "Observation whose result is a scaled number"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Measurement"@en ;
   rdfs:label "Mesure"@fr ;
   rdfs:subClassOf sosa-core:Observation ;
@@ -216,7 +221,6 @@ The collection may be homogeneous any of the feature-of-interest, observed-prope
   rdfs:comment """A collection of observations  or collections. 
 
 The collection may be homogeneous in any of the feature-of-interest, observed-property, procedure, phenomenon-time or result-time. If only one value for any of these properties is provided on the collection, then it may be inferred to be a common (default) value for all the member observations or collections, unless locally overridden."""^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Collection of observations"@en ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
@@ -255,11 +259,6 @@ The collection may be homogeneous in any of the feature-of-interest, observed-pr
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
-      owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-      owl:onProperty sosa-om:samplingStrategy ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
       owl:onProperty sosa-om:member ;
     ] ;
@@ -271,7 +270,6 @@ sosa-om:ObservationContext
 
 EXAMPLES	Some examples include the conditions associated with experimental replicates (e.g., experimental plots and treatments used), biotic factors (e.g., ecological community), interactions among features (e.g., predator-prey), or other temporary relationships occurring at the time of observation that are are not inherent to the observed features themselves (i.e., they change over time), or the related observation may provide input to a process that generates a new result.
 This association complements the Intention association which describes relationships between a sampling feature and domain features."""^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Observation context"@en ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
@@ -288,7 +286,6 @@ sosa-om:SimpleMeasure
   rdf:type owl:Class ;
   dct:description "Simple implementation of a scaled number as an (amount, unit) pair"^^xsd:string ;
   rdfs:comment "Simple implementation of a scaled number as an (amount, unit) pair"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Simple measure (quantity)"^^xsd:string ;
   rdfs:subClassOf sosa-om:MeasureObject ;
   rdfs:subClassOf [
@@ -308,14 +305,12 @@ sosa-om:TemporalObject
   rdfs:comment """Temporal geometry or topology, collection or complex. 
 
 Temporal object has properties relating to time only."""^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Temporal object"^^xsd:string ;
 .
 sosa-om:TemporalObservation
   rdf:type owl:Class ;
   dct:description "Observation whose result is a temporal object, such as a time instant or period"^^xsd:string ;
   rdfs:comment "Observation whose result is a temporal object, such as a time instant or period"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Temporal Observation"@en ;
   rdfs:subClassOf sosa-core:Observation ;
   rdfs:subClassOf [
@@ -327,7 +322,6 @@ sosa-om:TemporalObservation
 sosa-om:TruthObject
   rdf:type owl:Class ;
   rdfs:comment "Object to wrap a truth value"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Truth object"^^xsd:string ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
@@ -339,7 +333,6 @@ sosa-om:TruthObservation
   rdf:type owl:Class ;
   dct:description "Observation whose result is either true or false"^^xsd:string ;
   rdfs:comment "Observation whose result is either true or false"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Truth Observation"@en ;
   rdfs:subClassOf sosa-core:Observation ;
   rdfs:subClassOf [
@@ -351,7 +344,6 @@ sosa-om:TruthObservation
 sosa-om:amount
   rdf:type owl:DatatypeProperty ;
   rdfs:domain sosa-om:SimpleMeasure ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "numeric amount value"^^xsd:string ;
   rdfs:range xsd:double ;
 .
@@ -362,13 +354,11 @@ sosa-om:context
   schema:domainIncludes sosa-om:ObservationCollection ;
   rdfs:comment """link to related observation
 """^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "observation context"@en ;
   rdfs:range sosa-om:ObservationContext ;
 .
 sosa-om:count
   rdf:type owl:DatatypeProperty ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Count value"^^xsd:string ;
   rdfs:range xsd:integer ;
 .
@@ -376,7 +366,6 @@ sosa-om:member
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa-om:ObservationCollection ;
   rdfs:comment "links from a collection to a member collection or observation"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "has member"^^xsd:string ;
   rdfs:range [
       rdf:type owl:Class ;
@@ -388,14 +377,12 @@ sosa-om:member
 .
 sosa-om:memberOf
   rdf:type owl:ObjectProperty ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "is member of"^^xsd:string ;
   owl:inverseOf sosa-om:member ;
 .
 sosa-om:relatedObservation
   rdf:type owl:ObjectProperty ;
   rdfs:comment "related observation" ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "related observation"@en ;
   rdfs:range sosa-core:Observation ;
 .
@@ -403,32 +390,11 @@ sosa-om:role
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa-om:ObservationContext ;
   rdfs:comment "role of related observation with respect to the observation of interest" ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "role"@en ;
   rdfs:range skos:Concept ;
 .
-sosa-om:samplingStrategy
-  rdf:type owl:ObjectProperty ;
-  schema:domainIncludes sosa-core:Observation ;
-  schema:domainIncludes sosa-om:ObservationCollection ;
-  rdfs:comment """Links to a feature or procedure intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. 
-
-N.B. this formulation varies from the UML model in ISO 19156, in which a sampling-feature is substitutable for the feature-of-interest. In this more explicit formulation, the (mandatory) feature-of-interest always refers to the ultimate feature of interest, whose type can carry the observed property, and the (optional) sampling strategy allows the sampling feature to be made explicit as an additional relationship. This overcomes some semantic sleight-of-hand in ISO 19156, in which the constraint the the observed property was commensurate with the feature-of-interest was allowed to be 'transitive' via the sampledFeature property."""^^xsd:string ;
-  rdfs:comment "description of the sampling strategy used in an observation (usually a sampling-feature). "^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
-  rdfs:label "sampling strategy"@en ;
-  rdfs:range [
-      rdf:type owl:Class ;
-      owl:unionOf (
-          sosa-core:SamplingFeature
-          sosa-core:SamplingProcedure
-        ) ;
-    ] ;
-  skos:definition "Links to a feature intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. "^^xsd:string ;
-.
 sosa-om:truth
   rdf:type owl:DatatypeProperty ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
   rdfs:label "Truth value"^^xsd:string ;
   rdfs:range xsd:boolean ;
 .
@@ -437,5 +403,4 @@ sosa-om:uom
   schema:domainIncludes sosa-om:ObservationCollection ;
   schema:domainIncludes sosa-om:SimpleMeasure ;
   rdfs:comment "Unit of measure or scale"^^xsd:string ;
-  rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
 .
