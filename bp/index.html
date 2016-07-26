@@ -433,9 +433,9 @@
       <section id="bp-metadata">
         <h3>Spatial Metadata</h3>
         <p>[[DWBP]] provides best practices discussing the provision of metadata to support
-          discovery and reuse of data at the <em>dataset</em> level (see [[DWBP]] <a
-            href="http://www.w3.org/TR/dwbp/#metadata">Metadata</a> for more details).
-          This mode of discovery is well aligned with the practices used in <a>Spatial Data
+          discovery and reuse of data (see [[DWBP]] <a href="http://www.w3.org/TR/dwbp/#metadata"
+            >Metadata</a> for more details). Providing metadata at the <em>dataset</em> level
+          supports a mode of discovery well aligned with the practices used in <a>Spatial Data
             Infrastructure</a> (SDI) where a user begins their search for spatial data by submitting
           a query to a catalog. Once the appropriate dataset has been located, the information
           provided by the catalog enables the user to find a service end-point from which to access
@@ -443,44 +443,25 @@
           dataset for local usage or may provide a rich API enabling the users to request only the
           required parts for their needs. The dataset-level metadata is used by the catalog to match
           the appropriate dataset(s) with the user's query.</p>
-        <p>This section includes a best practice for including spatial information in the dataset
-          metadata, for example, the spatial extent of the dataset.</p>
-        <p>However, one of the criteria for exposing data <em>on the Web</em> is that it can be
-          discovered directly using search engines such as <a href="https://www.google.com/"
-            >Google</a>, <a href="https://www.bing.com/">Bing</a> and <a
-            href="https://www.yandex.com/">Yandex</a>. Current <a>SDI</a> approaches treat spatial
-          data much like books in a library where you must first use the librarian's card catalog
-          index to find the book on the shelf. As for other types of data on the Web, we want to be
-          able to find spatial resources directly; we want to move beyond the two-step discovery
-          approach of contemporary <a>SDIs</a> and find the words, sentences and chapters in a book
-          without needing to check the card catalog first. Not only will this make spatial data far
-          more accessible, it mitigates the problems caused when catalogs have only stale dataset
-          metadata and removes the need for data users to be proficient with the query protocol of
-          the dataset's service end-point in order to acquire the data they need.</p>
-        <p>In the wider Web, it is links that enable this direct discovery: from user-agents
-          following a hyperlink to find related information to search engines using links to
-          prioritise and refine search results. Whereas <a href="#bp-linking" class="sectionRef"
-          ></a> discusses the <em>creation</em> of links, this section is largely concerned with the
-            <em>use</em> of those links to support discovery of the <a>SpatialThings</a> described
-          in spatial datasets.</p>
+        <p>This section includes best practices for including the spatial extent and the CRS of the
+          dataset in the metadata. These are the extra metadata items needed to make spatial
+          datasets discoverable and reusable. A third best practice in this section helps you go a
+          step further: exposing spatial data on the web in such a way that the individual entities
+          within the dataset are discoverable. </p>
         <div class="practice">
-          <p><span id="spatial-info-dataset-metadata" class="practicelab">Include spatial
-              information in dataset metadata</span></p>
+          <p><span id="spatial-info-dataset-metadata" class="practicelab">Include spatial metadata
+              in dataset metadata</span></p>
           <p class="practicedesc">The description of datasets that have spatial features should
-            include explicit metadata about the spatial information</p>
+            include explicit metadata about the spatial coverage</p>
+          <p class="note">This best pratice extends [[DWBP]] best practice <a
+              href="http://www.w3.org/TR/dwbp/#DescriptiveMetadata">Descriptive Metadata</a>.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>It is often useful to provide metadata at the dataset-level. The dataset is the unit
-              of governance for information, which means that details like <em>license</em>,
-                <em>ownership</em> and <em>maintenance regime</em> etc. need only be stated once,
-              rather than for every resource description it contains. Data that is not directly
-              accessible due to commercial or privacy arrangements can also be publicized using
-              summary metadata provided for the dataset. [[DWBP]] <a
-                href="http://www.w3.org/TR/dwbp/#metadata">section 9.2 Metadata</a> provides more
-              details.</p>
             <p>For spatial data, it is often necessary to describe the spatial details of the
-              dataset - such as extent and resolution. This information is used by <a>SDI</a>
-              catalog services that offer spatial querying to find data.</p>
+              dataset - such as spatial coverage or extent of the dataset or, put in simpler terms,
+              which area of the world the data is about. This information is used, for example, by
+                <a>SDI</a> catalog services that offer spatial querying to find data - but also by
+              users to understand the nature of the dataset.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
@@ -491,21 +472,36 @@
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>To include spatial information in datasets one can:</p>
+            <p>Provide as much spatial metadata as necessary, but at least the spatial coverage.
+              Other examples of spatial metadata are: </p>
             <ul>
-              <li>Provide information about the spatial attributes of the dataset; such as the
-                spatial extent of the features described by the dataset.</li>
-              <li>Use common vocabularies for geospatial semantics (e.g. <a
-                  href="http://www.geonames.org/ontology/documentation.html">GeoNames</a>) and
-                geospatial ontologies (see W3C Geospatial Incubator Group (GeoXG)'s <a
+              <li>number of dimensions (1D, 2D, 3D)</li>
+              <li>data type (raster or vector)</li>
+              <li>Coordinate Reference System(s)</li>
+              <li>spatial resolution</li>
+              <li>positioning system used for acquiring location</li>
+            </ul>
+            <p>To provide information about the spatial attributes of the dataset one can: </p>
+            <ul>
+              <li>As shown in [[DWBP]] best practice <a
+                  href="http://www.w3.org/TR/dwbp/#DescriptiveMetadata">Descriptive Metadata</a>:
+                Include the spatial coverage of the features described by the dataset using
+                [[vocab-dcat]] and a reference to a named place in a common vocabulary for
+                geospatial semantics (e.g. <a
+                  href="http://www.geonames.org/ontology/documentation.html">GeoNames</a>), </li>
+              <li>Again, use [[vocab-dcat]], but instead of a reference to a named place, use a set
+                of coordinates to specify the boundaries of the area either as a bounding box (add
+                glossary ref) or a polygon.</li>
+              <li>Use the spatial extension of [[vocab-dcat]], <a
+                  href="https://joinup.ec.europa.eu/node/139283/">GeoDCAT AP</a>, to specify spatial
+                attributes that are not available in [[vocab-dcat]].</li>
+              <li>Use geospatial ontologies (see W3C Geospatial Incubator Group (GeoXG)'s <a
                   href="http://www.w3.org/2005/Incubator/geo/XGR-geo-ont-20071023/">report</a>) to
                 describe the spatial information for the datasets.</li>
-              <li>Provide explicit metadata regarding mobility and/or APIs that can provide
-                information about the spatial features (e.g. location) of a dataset or its data
-                items.</li>
             </ul>
             <aside class="example">
-              <p>example(s) to be added; including ...</p>
+              <h4></h4>
+              <p>more example(s) to be added; including ...</p>
               <ul>
                 <li><a href="https://joinup.ec.europa.eu/node/139283/">GeoDCAT AP</a> (extending
                   [[vocab-dcat]])</li>
@@ -514,7 +510,10 @@
           </section>
           <section class="test">
             <p class="subhead">How to Test</p>
-            <p>...</p>
+            <p>Check if the spatial metadata for the dataset itself includes the overall features of
+              the dataset in a human-readable format.</p>
+            <p>Check if the descriptive spatial metadata is available in a valid machine-readable
+              format.</p>
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
@@ -535,15 +534,21 @@
         </div>
         <div class="practice">
           <p><span id="ref-crs" class="practicelab">Specify Coordinate Reference System for
-            high-precision applications</span></p>
+              high-precision applications</span></p>
           <p class="practicedesc">A coordinate referencing system should be specified for
             high-precision applications to locate geospatial entities.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>The choice of <a>CRS</a> is sensitive to the intended domain of application for the
+            <p>The <a>CRS</a> is a special metadata attribute of spatial data that must be known for
+              users to judge if the data is usable to them. Also, users might want to find spatial
+              data with a specific CRS. </p>
+            <p>The choice of CRS is sensitive to the intended domain of application for the
               geospatial data. For the majority of applications a common global CRS (WGS84) is fine,
               but high precision applications (such as precision agriculture and defence) require
-              spatial referencing to be accurate to a few meters or even centimeters.</p>
+              spatial referencing to be accurate to a few meters or even centimeters. For that reason, specific CRS
+              exist to provide a coordinate system for a specific region of the world (often a
+              specific country). Spatial data from France is never going to use the Dutch coordinate
+              system and vice versa.</p>
             <p>One aspect is the confusion of precision and accuracy. Seven decimal places of a
               latitude degree corresponds to about one centimeter. Whatever the precision of the
               specified coordinates, the accuracy of positioning on the actual earth's surface using
@@ -588,7 +593,7 @@
                 common choice of CRS - although this in itself is ambiguous: we need to assert
                 whether data relates to the ellipsoid (datum surface) or the geoid (gravitational
                 equipotential surface; <a href="https://en.wikipedia.org/wiki/EGM96"
-                  >EGM96</a>).</li>
+                >EGM96</a>).</li>
               <li>WGS84 is a reasonable choice for many human-scale activities (e.g. navigation).
                 However, given that the earth's surface is constantly moving (e.g. Australia sits on
                 a tectonic plate that is moving 7cm per year relative to the African plate), <a
@@ -617,10 +622,9 @@
           <section class="ucr">
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: <a
-              href="http://www.w3.org/TR/sdw-ucr/#DefaultCRS">R-DefaultCRS</a></p>
+                href="http://www.w3.org/TR/sdw-ucr/#DefaultCRS">R-DefaultCRS</a></p>
           </section>
         </div>
-        
         <div class="practice">
           <p><span id="indexable-by-search-engines" class="practicelab">Make your entity-level data
               indexable by search engines</span></p>
@@ -629,7 +633,19 @@
           <section class="axioms">
             <p class="subhead">Why</p>
             <p>Current <a>SDI</a> approaches require a 2-step approach for discovery, beginning with
-              a catalog query and then accessing the appropriate data service end-point.</p>
+              a catalog query and then accessing the appropriate data service end-point. However,
+              one of the criteria for exposing data <em>on the Web</em> is that it can be discovered
+              directly using search engines such as <a href="https://www.google.com/">Google</a>, <a
+                href="https://www.bing.com/">Bing</a> and <a href="https://www.yandex.com/"
+                >Yandex</a>. Current <a>SDI</a> approaches treat spatial data much like books in a
+              library where you must first use the librarian's card catalog index to find the book
+              on the shelf. As for other types of data on the Web, we want to be able to find
+              spatial resources directly; we want to move beyond the two-step discovery approach of
+              contemporary <a>SDIs</a> and find the words, sentences and chapters in a book without
+              needing to check the card catalog first. Not only will this make spatial data far more
+              accessible, it mitigates the problems caused when catalogs have only stale dataset
+              metadata and removes the need for data users to be proficient with the query protocol
+              of the dataset's service end-point in order to acquire the data they need.</p>
             <p>Exposing data <em>on the Web</em> means that it can be discovered directly using
               search engines. This provides a number of benefits:</p>
             <ul>
@@ -710,7 +726,6 @@
             <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
         </div>
-        
       </section>
       <section id="bp-dataquality">
         <h3>Spatial Data Quality</h3>
@@ -2042,7 +2057,12 @@
         </div>
       </section>
       <section id="bp-linking">
-        <h3>Linking spatial data</h3>
+        <h3>Linking Spatial Data</h3>
+        <p>In the wider Web, it is links that enable the discovery of web pages: from user-agents
+          following a hyperlink to find related information to search engines using links to
+          prioritise and refine search results. This section is concerned with the creation and use
+          of those links to support discovery of the <a>SpatialThings</a> described in spatial
+          datasets.</p>
         <p>For data to be <em>on the web</em> the resources it describes need to be connected, or
             <em>linked</em>, to other resources. The <em>connectedness</em> of data is one of the
           fundamentals of the Linked Data approach that these best practices build upon. The <a
