@@ -122,6 +122,12 @@ var respecConfig = {
         title:"Stakeholder Requirements for Modernising Australia’s Geocentric Datum",
         authors:["Scott Strong (on behalf of the Cooperative Research Centre for Spatial Information and the Intergovernmental Committee on Surveying and Mapping"],
         date: "July 2015"
+       }, 
+       "DQV":{
+        href:"https://www.w3.org/TR/vocab-dqv/",
+        title:"Data on the Web Best Practices: Data Quality Vocabulary",
+        authors:["Riccardo Albertoni", "Antoine Isaac"],
+        date: "May 2016"
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
