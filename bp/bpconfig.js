@@ -24,7 +24,7 @@ var respecConfig = {
 		}],
     otherLinks: [
     {
-      key: "OGC Document Number:",
+      key: "OGC Document Number",
       data: [
       {
         value: "OGC 15-107"
