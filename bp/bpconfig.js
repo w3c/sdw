@@ -128,6 +128,16 @@ var respecConfig = {
         title:"Data on the Web Best Practices: Data Quality Vocabulary",
         authors:["Riccardo Albertoni", "Antoine Isaac"],
         date: "May 2016"
+       },
+       "GeoDCAT-AP":{
+        href:"https://joinup.ec.europa.eu/node/139283/",
+        title:"GeoDCAT-AP: A geospatial extension for the DCAT application profile for data portals in Europe",
+        date: "23 December 2015"
+       },
+       "ISO19115":{
+        href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
+        title:"Geographic information -- Metadata",
+        date: "2003"
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
