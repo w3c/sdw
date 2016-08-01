@@ -945,10 +945,7 @@ a:Dataset a dcat:Dataset ;
             <p>Describe the accuracy of spatial data in a way that is understandable for humans. </p>
             <p>In addition, describe the accuracy of spatial data in a machine-readable format.
               [[DQV]] is such a format. It is a vocabulary for describing data quality, including
-              the details of quality metrics and measurements. [[DQV]] <a
-                href="https://www.w3.org/TR/vocab-dqv#h-expressdatasetaccuracyprecision">Express
-                dataset precision and accuracy</a> gives examples of expressing spatial data
-              accuracy. </p>
+              the details of quality metrics and measurements. </p>
             <p class="issue" data-number="125">We need some explanations for the approaches to
               describe positional (in)accuracy.</p>
             <aside class="example">
@@ -962,7 +959,7 @@ a:Dataset a dcat:Dataset ;
                 <li>describe spatial data quality with [[DQV]] and GeoDCAT-AP.</li>
               </ul>
             </aside>
-            <pre class="example turtle" id="ex-geodcat-ap-dataset-conformance-with-specification" title="GeoDCAT-AP specification of a dataset conformance with the INSPIRE Regulation on spatial data and services interoperability">a:Dataset a dcat:Dataset ;
+            <pre class="example highlight" id="ex-geodcat-ap-dataset-conformance-with-specification" title="GeoDCAT-AP specification of a dataset conformance with the INSPIRE Regulation on spatial data and services interoperability">a:Dataset a dcat:Dataset ;
   dct:conformsTo &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; .
   
 &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; a dct:Standard , foaf:Document ;
@@ -971,7 +968,26 @@ a:Dataset a dcat:Dataset ;
              and of the Council as regards interoperability of spatial 
              data sets and services"@en ;
   dct:issued "2010-12-08"^^xsd:date .</pre>
-            <pre class="example highlight" id="ex-dqv-dataset-quality" title="DQV specification of data quality">TBD</pre>
+            <p>The following example shows how DQV can express the precision of a spatial dataset: </p>
+            <pre class="example highlight" id="ex-dqv-dataset-quality" title="DQV specification of data quality">
+:myDataset a dcat:Dataset ;
+   dqv:hasQualityMeasurement :myDatasetPrecision, :myDatasetAccuracy .
+
+:myDatasetPrecision a dqv:QualityMeasurement ;
+   dqv:isMeasurementOf :spatialResolutionAsDistance ;
+   dqv:value "1000"^^xsd:decimal ;
+   sdmx-attribute:unitMeasure  &lt;http://www.wurvoc.org/vocabularies/om-1.8/metre> 
+   . 
+   
+:spatialResolutionAsDistance  a  dqv:Metric;
+    skos:definition "Spatial resolution of a dataset expressed as distance"@en ;
+    dqv:expectedDataType xsd:decimal ;
+    dqv:inDimension dqv:precision 
+    .
+            </pre>
+            <p>This example was taken from [[DQV]]. For more examples of expressing spatial data precision and accuracy see DQV, <a
+              href="https://www.w3.org/TR/vocab-dqv#h-expressdatasetaccuracyprecision">Express
+              dataset precision and accuracy</a>. </p>
           </section>
           <section class="test">
             <p class="subhead">How to Test</p>
