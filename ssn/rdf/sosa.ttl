@@ -2,18 +2,24 @@
 # imports: http://schema.org
 
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix meta: <http://meta.schema.org/> .
 @prefix ns: <http://creativecommons.org/ns#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <http://schema.org/> .
-@prefix meta: <http://meta.schema.org> .
 @prefix sosa-core: <https://www.w3.org/ns/sosa#> .
 @prefix terms: <http://purl.org/dc/terms/> .
 @prefix xhtm: <http://www.w3.org/1999/xhtml> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 ns:license
+  rdf:type owl:AnnotationProperty ;
+.
+meta:domainIncludes
+  rdf:type owl:AnnotationProperty ;
+.
+meta:rangeIncludes
   rdf:type owl:AnnotationProperty ;
 .
 dc:creator
@@ -40,12 +46,6 @@ terms:created
 terms:modified
   rdf:type owl:AnnotationProperty ;
 .
-meta:domainIncludes
-  rdf:type owl:AnnotationProperty ;
-.
-meta:rangeIncludes
-  rdf:type owl:AnnotationProperty ;
-.
 rdfs:comment
   rdf:type owl:AnnotationProperty ;
 .
@@ -69,15 +69,25 @@ owl:topObjectProperty
   rdfs:label "Sensing, Observing, Sampling, and Actuating"^^xsd:string ;
   owl:imports <http://schema.org> ;
 .
+sosa-core:Actuation
+  rdf:type owl:Class ;
+  rdfs:comment "An Actuation carries out an (actuation) Procedure to change the state of the world via an Actuator."@en ;
+  rdfs:label "Actuation"@en ;
+.
 sosa-core:Actuator
   rdf:type owl:Class ;
   rdfs:comment "A device that is used by, or implements, an (actuating) Procedure."@en ;
   rdfs:label "Actuator"@en ;
 .
-sosa-core:Result
+sosa-core:FeatureOfInterest
   rdf:type owl:Class ;
-  rdfs:comment "The result of an observation or actuation, e.g., the value for on observed property of some feature of interest such as 20m for the height of a tree."@en ;
-  rdfs:label "Result"@en ;
+  rdfs:comment "The feature whose ObservableProperty is being observed by a Sensor to arrive at a Result. For example, when measuring the height of a tree, said height is the ObservedProperty, 20m may be the Result of the Observation, and the tree is the FeatureOfInterest. "@en ;
+  rdfs:label "Feature Of Interest"@en ;
+.
+sosa-core:Host
+  rdf:type owl:Class ;
+  rdfs:comment "A device, system, platform, or agent (including humans). a host carries at least one Sensor or Actuator (or Sampling-Device) to produce observations or actuations or samples, by following a Procedure."@en ;
+  rdfs:label "Host"@en ;
 .
 sosa-core:ObservableProperty
   rdf:type owl:Class ;
@@ -86,28 +96,18 @@ sosa-core:ObservableProperty
 .
 sosa-core:Observation
   rdf:type owl:Class ;
-  rdfs:comment "An Observation carries out an (observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to an Observer or Sensor to describe what made the Observation and how; links to FeatureOfInterest detail what was observed; the Result is the output."@en ;
+  rdfs:comment "An Observation carries out an (observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to an Host or Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with; the Result is the output."@en ;
   rdfs:label "Observation"@en ;
-.
-sosa-core:Actuation
-  rdf:type owl:Class ;
-  rdfs:comment "An Actuation carries out an (actuation) Procedure to change the state of the world via an Actuator."@en ;
-  rdfs:label "Actuation"@en ;
-.
-sosa-core:Host
-  rdf:type owl:Class ;
-  rdfs:comment "A device, system, platform, or agent (including humans). a host carries at least one Sensor or Actuator to produce observations or actuations by following a Procedure."@en ;
-  rdfs:label "Host"@en ;
 .
 sosa-core:Procedure
   rdf:type owl:Class ;
   rdfs:comment "A workflow, protocol, plan, algorithm, or computational method specifying how to set up an Observation, take a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many observations, samplings, or actuations. It explains the steps to be carried out to arrive at reproducible results. Put differently, millions of observations may be created via the same Procedure the same way as millions of tables are assembled using the same instructions (as information objects, not their concrete realization). "@en ;
   rdfs:label "Procedure"@en ;
 .
-sosa-core:FeatureOfInterest
+sosa-core:Result
   rdf:type owl:Class ;
-  rdfs:comment "The feature whose ObservableProperty is being observed by a Sensor to arrive at a Result. For example, when measuring the height of a tree, said height is the ObservedProperty, 20m may be the Result of the Observation, and the tree is the FeatureOfInterest. "@en ;
-  rdfs:label "Feature Of Interest"@en ;
+  rdfs:comment "The result of an observation or actuation, e.g., the value for on observed property of some feature of interest such as 20m for the height of a tree."@en ;
+  rdfs:label "Result"@en ;
 .
 sosa-core:Sample
   rdf:type owl:Class ;
@@ -124,6 +124,8 @@ A sample is intended to sample some feature-of-interest in an application domain
 sosa-core:Sensor
   rdf:type owl:Class ;
   rdfs:comment "Device or agent involved in, or implementing, a (sensing) Procedure. Sensors responds to a stimulus, e.g., a change in the environment, and generates a result. Sensors can be mounted on observers, e.g., a modern smart phone hosts multiple sensors."@en ;
+  rdfs:comment "Does this also include (something) that implements an interpretation procedures?"^^xsd:string ;
+  rdfs:comment "Does this also include software used to implement a simulation or forecasting procedures?"^^xsd:string ;
   rdfs:label "Sensor"@en ;
 .
 sosa-core:featureOfInterest
@@ -142,8 +144,8 @@ sosa-core:hasResult
 .
 sosa-core:hostedBy
   rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Sensor ;
   meta:domainIncludes sosa-core:Actuator ;
+  meta:domainIncludes sosa-core:Sensor ;
   meta:rangeIncludes sosa-core:Host ;
   rdfs:comment "Relation between a Sensor or Actuator and the Host that it is mounted on or hosted by."^^xsd:string ;
   rdfs:label "hosted by"^^xsd:string ;
@@ -151,9 +153,9 @@ sosa-core:hostedBy
 sosa-core:hosts
   rdf:type owl:ObjectProperty ;
   meta:domainIncludes sosa-core:Host ;
+  meta:rangeIncludes sosa-core:Actuator ;
   meta:rangeIncludes sosa-core:Sensor ;
-    meta:rangeIncludes sosa-core:Actuator ;
-  rdfs:comment "Relation between a Host and a Sensor or Actuator hosted or mounted on it."^^xsd:string ;
+  rdfs:comment "Relation between a Host and a Sensor or Actuator (or SamplingDevice) hosted or mounted on it."^^xsd:string ;
   rdfs:label "hosts"^^xsd:string ;
 .
 sosa-core:madeObservation
@@ -179,15 +181,15 @@ sosa-core:observes
 .
 sosa-core:phenomenonTime
   rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Observation ;
   meta:domainIncludes sosa-core:Actuation ;
+  meta:domainIncludes sosa-core:Observation ;
   rdfs:comment "The time that the Result of an Observation/Actuation applies to the FeatureOfInterest - not necessarily the same as the result-time."^^xsd:string ;
   rdfs:label "phenomenon time" ;
 .
 sosa-core:resultTime
   rdf:type owl:DatatypeProperty ;
-  meta:domainIncludes sosa-core:Observation ;
   meta:domainIncludes sosa-core:Actuation ;
+  meta:domainIncludes sosa-core:Observation ;
   rdfs:comment "The result time is the time when the Observation/Actuation act was completed."^^xsd:string ;
   rdfs:range xsd:dateTime ;
 .
@@ -199,8 +201,8 @@ sosa-core:sampledFeature
 .
 sosa-core:usedProcedure
   rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Observation ;
   meta:domainIncludes sosa-core:Actuation ;
+  meta:domainIncludes sosa-core:Observation ;
   meta:rangeIncludes sosa-core:Procedure ;
   rdfs:comment "Link to a re-usable Procedure used in making Observation or Actuation. Typically a sensor or sensor-system, algorithm, computational procedure."^^xsd:string ;
   rdfs:label "observation procedure"@en ;
