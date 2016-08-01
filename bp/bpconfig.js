@@ -138,6 +138,17 @@ var respecConfig = {
         href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
         title:"Geographic information -- Metadata",
         date: "2003"
+       },
+       "CSW":{
+        href:"http://www.opengeospatial.org/standards/cat",
+        title:"Catalogue Services 3.0 - General Model",
+        authors:["Douglas Nebert", "Uwe Voges", "Lorenzo Bigagli"],
+        date: "10 June 2016"
+       },
+       "INSPIRE-MD":{
+        href:"http://inspire.jrc.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
+        title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
+        date: "29 October 2013"
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
