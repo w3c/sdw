@@ -76,12 +76,12 @@ owl:topObjectProperty
 
 sosa-core:Sensor
   rdf:type owl:Class ;
-  rdfs:comment "Device, agent (including humans), or software (simulation) involved in, or implementing, a (sensing) Procedure. Sensors responds to a stimulus, e.g., a change in the environment, and generates a Result. Sensors can be mounted on hosts, e.g., a modern smart phone hosts multiple sensors."@en ;
+  rdfs:comment "Device, agent (including humans), or software (simulation) involved in, or implementing, a (sensing) Procedure. Sensors responds to a stimulus, e.g., a change in the environment, and generates a Result. Sensors can be mounted on platforms, e.g., a modern smart phone hosts multiple sensors."@en ;
   rdfs:label "Sensor"@en ;
 .
 sosa-core:Observation
   rdf:type owl:Class ;
-  rdfs:comment "An Observation carries out an (observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to an Host or Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with; the Result is the output."@en ;
+  rdfs:comment "An Observation carries out an (observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to a Platform or Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with; the Result is the output."@en ;
   rdfs:label "Observation"@en ;
 .
 sosa-core:ObservableProperty
@@ -121,10 +121,10 @@ sosa-core:FeatureOfInterest
   rdfs:comment "The feature whose ObservableProperty is being observed by a Sensor to arrive at a Result. For example, when measuring the height of a tree, said height is the ObservedProperty, 20m may be the Result of the Observation, and the tree is the FeatureOfInterest. "@en ;
   rdfs:label "Feature Of Interest"@en ;
 .
-sosa-core:Host
+sosa-core:Platform
   rdf:type owl:Class ;
-  rdfs:comment "A device, (computational) system, platform, or agent (including humans). A host carries at least one Sensor, Actuator, or sampling device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a host can be a computing system which hosts software implementations, e.g., simulations."@en ;
-  rdfs:label "Host"@en ;
+  rdfs:comment "A device, (computational) system, or agent (including humans). A platform carries at least one Sensor, Actuator, or sampling device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."@en ;
+  rdfs:label "Platform"@en ;
 .
 sosa-core:Result
   rdf:type owl:Class ;
@@ -149,21 +149,30 @@ sosa-core:hasResult
   rdfs:comment "Relation linking an Observation and a Sensor or Actuator and a Result, which contains a value representing the value associated with the observed Property."^^xsd:string ;
   rdfs:label "result"@en ;
 .
+sosa-core:isResultOf
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:Result ;
+  meta:domainIncludes sosa-core:Observation ;
+  rdfs:comment "Relation linking a Result to the Observation that created it."^^xsd:string ;
+  rdfs:label "is result of"@en ;
+  owl:inverseOf sosa-core:hasResult;
+.
+sosa-core:hosts
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:Platform ;
+  meta:rangeIncludes sosa-core:Actuator ;
+  meta:rangeIncludes sosa-core:Sensor ;
+  rdfs:comment "Relation between a Platform and a Sensor or Actuator (or SamplingDevice) hosted or mounted on it."^^xsd:string ;
+  rdfs:label "hosts"^^xsd:string ;
+.
 sosa-core:hostedBy
   rdf:type owl:ObjectProperty ;
   meta:domainIncludes sosa-core:Actuator ;
   meta:domainIncludes sosa-core:Sensor ;
-  meta:rangeIncludes sosa-core:Host ;
-  rdfs:comment "Relation between a Sensor or Actuator and the Host that it is mounted on or hosted by."^^xsd:string ;
+  meta:rangeIncludes sosa-core:Platform ;
+  rdfs:comment "Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."^^xsd:string ;
   rdfs:label "hosted by"^^xsd:string ;
-.
-sosa-core:hosts
-  rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Host ;
-  meta:rangeIncludes sosa-core:Actuator ;
-  meta:rangeIncludes sosa-core:Sensor ;
-  rdfs:comment "Relation between a Host and a Sensor or Actuator (or SamplingDevice) hosted or mounted on it."^^xsd:string ;
-  rdfs:label "hosts"^^xsd:string ;
+  owl:inverseOf sosa-core:hosts;
 .
 sosa-core:madeObservation
   rdf:type owl:ObjectProperty ;
@@ -186,6 +195,14 @@ sosa-core:observes
   rdfs:comment "Relation between a Sensor and an ObservableProperty."^^xsd:string ;
   rdfs:label "observes"^^xsd:string ;
 .
+sosa-core:isObservedBy
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:ObservableProperty ;
+  meta:rangeIncludes sosa-core:Sensor ;
+  rdfs:comment "Relation between an ObservableProperty and the Sensor able to observe it."^^xsd:string ;
+  rdfs:label "is observed by"^^xsd:string ;
+  owl:inverseOf sosa-core:observes;
+.
 sosa-core:phenomenonTime
   rdf:type owl:ObjectProperty ;
   meta:domainIncludes sosa-core:Actuation ;
@@ -203,6 +220,7 @@ sosa-core:resultTime
 sosa-core:sampledFeature
   rdf:type owl:ObjectProperty ;
   meta:domainIncludes sosa-core:Sample ;
+  meta:rangeIncludes sosa-core:FeatureOfInterest ;
   rdfs:comment "Relation from a Sample to the FeatureOfInterest that it is intended to be representative of." ;
   rdfs:label "sampled feature" ;
 .
