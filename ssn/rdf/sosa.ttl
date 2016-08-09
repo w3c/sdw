@@ -1,5 +1,4 @@
 # baseURI: https://www.w3.org/ns/sosa
-# imports: http://schema.org
 
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix meta: <http://meta.schema.org/> .
@@ -12,9 +11,6 @@
 @prefix terms: <http://purl.org/dc/terms/> .
 @prefix xhtm: <http://www.w3.org/1999/xhtml> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-
-# Meta Properties
 
 ns:license
   rdf:type owl:AnnotationProperty ;
@@ -75,9 +71,6 @@ owl:topObjectProperty
   rdfs:comment "This version is based on the horizontal/vertical modularization proposed by Jano for the W3C/OGC Spatial Data on the Web Working Group: https://www.w3.org/2015/spatial/wiki/SOSA_Ontology and https://www.w3.org/2015/spatial/wiki/SSN_core_modules"^^xsd:string ;
   rdfs:label "Sensor Observation, Sample, and Actuator (SOSA) Core Ontology"^^xsd:string ;
 .
-
-# SOSA-CORE Classes
-
 sosa-core:Actuation
   rdf:type owl:Class ;
   rdfs:comment "An Actuation carries out an (actuation) Procedure to change the state of the world via an Actuator."@en ;
@@ -100,6 +93,7 @@ sosa-core:ObservableProperty
 .
 sosa-core:Observation
   rdf:type owl:Class ;
+  rdfs:comment "Activity of carrying out an (observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to a Platform or Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with; the Result is the output."@en ;
   rdfs:comment "An Observation carries out an (observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to a Platform or Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with; the Result is the output."@en ;
   rdfs:label "Observation"@en ;
 .
@@ -135,10 +129,22 @@ sosa-core:Sensor
   rdfs:comment "Device, agent (including humans), or software (simulation) involved in, or implementing, a (sensing) Procedure. Sensors responds to a stimulus, e.g., a change in the environment, and generates a Result. Sensors can be mounted on platforms, e.g., a modern smart phone hosts multiple sensors."@en ;
   rdfs:label "Sensor"@en ;
 .
-
-# SOSA-CORE Properties
-
-
+sosa-core:featureOfInterest
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:Observation ;
+  meta:rangeIncludes sosa-core:FeatureOfInterest ;
+  rdfs:comment "\"has feature of interest\""^^xsd:string ;
+  rdfs:comment "A relation between an Observation and the entity whose quality was observed. For example, in an Observation of the weight of a person, the feature of interest is the person and the quality is weight."^^xsd:string ;
+  rdfs:label "feature of interest"@en ;
+  owl:inverseOf sosa-core:isFeatureOfInterestOf ;
+.
+sosa-core:hasResult
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:Observation ;
+  meta:domainIncludes sosa-core:Result ;
+  rdfs:comment "Relation linking an Observation and a Sensor or Actuator and a Result, which contains a value representing the value associated with the observed Property."^^xsd:string ;
+  rdfs:label "result"@en ;
+.
 sosa-core:hostedBy
   rdf:type owl:ObjectProperty ;
   meta:domainIncludes sosa-core:Actuator ;
@@ -156,49 +162,13 @@ sosa-core:hosts
   rdfs:comment "Relation between a Platform and a Sensor or Actuator (or SamplingDevice) hosted or mounted on it."^^xsd:string ;
   rdfs:label "hosts"^^xsd:string ;
 .
-sosa-core:isResultOf
-  rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Observation ;
-  meta:domainIncludes sosa-core:Result ;
-  rdfs:comment "Relation linking a Result to the Observation that created it."^^xsd:string ;
-  rdfs:label "is result of"@en ;
-  owl:inverseOf sosa-core:hasResult ;
-.
-sosa-core:hasResult
-  rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Observation ;
-  meta:domainIncludes sosa-core:Result ;
-  rdfs:comment "Relation linking an Observation and a Sensor or Actuator and a Result, which contains a value representing the value associated with the observed Property."^^xsd:string ;
-  rdfs:label "result"@en ;
-.
-sosa-core:sample
-  rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Sample ;
-  meta:rangeIncludes sosa-core:FeatureOfInterest ;
-  rdfs:comment "Relation from a Sample to the FeatureOfInterest that it is intended to be representative of." ;
-  rdfs:label "sample" ;
-.
-sosa-core:sampledBy
+sosa-core:isFeatureOfInterestOf
   rdf:type owl:ObjectProperty ;
   meta:domainIncludes sosa-core:FeatureOfInterest ;
-  meta:rangeIncludes sosa-core:Sample ;
-  rdfs:comment "Relation between a FeatureOfInterest and the Sample used to represent it." ;
-    owl:inverseOf sosa-core:sample ;
-  rdfs:label "sampled by" ;
-.
-sosa-core:madeObservation
-  rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Sensor ;
   meta:rangeIncludes sosa-core:Observation ;
-  rdfs:comment "Relation between a Sensor and an Observations it has made."^^xsd:string ;
-  rdfs:label "made observation" ;
-.
-sosa-core:observes
-  rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Sensor ;
-  meta:rangeIncludes sosa-core:ObservableProperty ;
-  rdfs:comment "Relation between a Sensor and an ObservableProperty."^^xsd:string ;
-  rdfs:label "observes"^^xsd:string ;
+  rdfs:comment "A relation between a FeatureOfInterest and an  Observation about it."^^xsd:string ;
+  rdfs:label "is feature of interest of"^^xsd:string ;
+  owl:inverseOf sosa-core:featureOfInterest ;
 .
 sosa-core:isObservedBy
   rdf:type owl:ObjectProperty ;
@@ -208,6 +178,21 @@ sosa-core:isObservedBy
   rdfs:label "is observed by"^^xsd:string ;
   owl:inverseOf sosa-core:observes ;
 .
+sosa-core:isResultOf
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:Observation ;
+  meta:domainIncludes sosa-core:Result ;
+  rdfs:comment "Relation linking a Result to the Observation that created it."^^xsd:string ;
+  rdfs:label "is result of"@en ;
+  owl:inverseOf sosa-core:hasResult ;
+.
+sosa-core:madeObservation
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:Sensor ;
+  meta:rangeIncludes sosa-core:Observation ;
+  rdfs:comment "Relation between a Sensor and an Observations it has made."^^xsd:string ;
+  rdfs:label "made observation" ;
+.
 sosa-core:observedProperty
   rdf:type owl:ObjectProperty ;
   meta:domainIncludes sosa-core:Observation ;
@@ -215,21 +200,12 @@ sosa-core:observedProperty
   rdfs:comment "Relation linking an Observation to the Property that was observed.  The observedProperty should be a Property (hasProperty) of the FeatureOfInterest (linked by featureOfInterest) of this observation." ;
   rdfs:label "observed property"@en ;
 .
-sosa-core:featureOfInterest
+sosa-core:observes
   rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:Observation ;
-  meta:rangeIncludes sosa-core:FeatureOfInterest ;
-  rdfs:comment "A relation between an Observation and the entity whose quality was observed. For example, in an Observation of the weight of a person, the feature of interest is the person and the quality is weight."^^xsd:string ;
-  rdfs:label "feature of interest"@en ;
-  owl:inverseOf sosa-core:isFeatureOfInterestOf ;
-.
-sosa-core:isFeatureOfInterestOf
-  rdf:type owl:ObjectProperty ;
-  meta:domainIncludes sosa-core:FeatureOfInterest ;
-  meta:rangeIncludes sosa-core:Observation ;
-  rdfs:comment "A relation between a FeatureOfInterest and an  Observation about it."^^xsd:string ;
-  rdfs:label "is feature of interest of"^^xsd:string ;
-  owl:inverseOf sosa-core:featureOfInterest ;
+  meta:domainIncludes sosa-core:Sensor ;
+  meta:rangeIncludes sosa-core:ObservableProperty ;
+  rdfs:comment "Relation between a Sensor and an ObservableProperty."^^xsd:string ;
+  rdfs:label "observes"^^xsd:string ;
 .
 sosa-core:phenomenonTime
   rdf:type owl:ObjectProperty ;
@@ -244,6 +220,23 @@ sosa-core:resultTime
   meta:domainIncludes sosa-core:Observation ;
   rdfs:comment "The result time is the time when the Observation/Actuation act was completed."^^xsd:string ;
   rdfs:range xsd:dateTime ;
+.
+sosa-core:sample
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:Sample ;
+  meta:rangeIncludes sosa-core:FeatureOfInterest ;
+  rdfs:comment "Is \"sample of\" a better name?"^^xsd:string ;
+  rdfs:comment "Relation from a Sample to the FeatureOfInterest that it is intended to be representative of." ;
+  rdfs:label "sample" ;
+.
+sosa-core:sampledBy
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:FeatureOfInterest ;
+  meta:rangeIncludes sosa-core:Sample ;
+  rdfs:comment "\"has sample\""^^xsd:string ;
+  rdfs:comment "Relation between a FeatureOfInterest and the Sample used to represent it." ;
+  rdfs:label "sampled by" ;
+  owl:inverseOf sosa-core:sample ;
 .
 sosa-core:usedProcedure
   rdf:type owl:ObjectProperty ;
