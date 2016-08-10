@@ -4,6 +4,7 @@
 
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix meta: <http://meta.schema.org/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -17,6 +18,16 @@
 dct:audience
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
 .
+sosa-core:FeatureOfInterest
+  rdfs:comment "Feature being sampled to generate a Sample."^^xsd:string ;
+.
+sosa-core:Sample
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa-core:FeatureOfInterest ;
+      owl:onProperty sosa-core:isSampleOf ;
+    ] ;
+.
 sosa-core:SamplingFeature
   rdfs:comment "The value for the property 'sampledFeature' may be inherited from a container resource."^^xsd:string ;
   rdfs:subClassOf [
@@ -29,6 +40,23 @@ sosa-core:SamplingFeature
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
       owl:onProperty sosa-core:sampledFeature ;
     ] ;
+.
+sosa-core:hasResult
+  meta:domainIncludes sosa-sam:SamplingActivity ;
+  meta:rangeIncludes sosa-core:Sample ;
+  rdfs:comment "Relation linking a SamplingActivity and the resulting Sample - not sure if this is reaching too far - maybe there should be a different property for results of SamplingActivity and Actuation? "^^xsd:string ;
+.
+sosa-core:hostedBy
+  meta:domainIncludes sosa-sam:SamplingDevice ;
+  rdfs:comment "Relation between a SamplingDevice and the Platform that it is mounted on or hosted by."^^xsd:string ;
+.
+sosa-core:hosts
+  meta:rangeIncludes sosa-sam:SamplingDevice ;
+.
+sosa-core:isResultOf
+  meta:domainIncludes sosa-core:Sample ;
+  meta:rangeIncludes sosa-sam:SamplingActivity ;
+  rdfs:comment "Relation linking a Sample to the SamplingActivity that created it."^^xsd:string ;
 .
 sosa-core:sampledFeature
   rdfs:comment """A sampling feature is established in order to make observations concerning some domain feature. The association Intention shall link the SF_SamplingFeature to the feature which the sampling feature was designed to sample. The target of this association has the role sampledFeature with respect to the sampling feature, and shall not be a sampling feature or observation. It is usually a real-world feature from an application domain (Figures 5 and 10).
@@ -122,6 +150,39 @@ This stub is included in the sam: ontology to support constraints on the sam:sha
   rdfs:label "Spatial point"^^xsd:string ;
   rdfs:subClassOf sosa-sam:GeometryObject ;
 .
+sosa-sam:SamplingActivity
+  rdf:type owl:Class ;
+  rdfs:comment """Activity that makes use of a SamplingProcedure to generate a Sample of a FeatureOfInterest at a specified samplingLocation and samplingTime
+
+Parallel to Actuation and Observation. 
+
+Not sure if sosa-core:hasResult should be used here - different domain and range compared with Observation. """^^xsd:string ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom time:TemporalEntity ;
+      owl:onProperty sosa-sam:samplingTime ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa-core:FeatureOfInterest ;
+      owl:onProperty sosa-core:hasFeatureOfInterest ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa-core:Sample ;
+      owl:onProperty sosa-core:hasResult ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa-sam:Location ;
+      owl:onProperty sosa-sam:samplingLocation ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa-sam:SamplingProcedure ;
+      owl:onProperty sosa-core:usedProcedure ;
+    ] ;
+.
 sosa-sam:SamplingCollection
   rdf:type owl:Class ;
   dct:description "Collection of features on which observations may be made, which are intended to be representative of one or more features that are not fully accessible for some reason. "^^xsd:string ;
@@ -129,8 +190,8 @@ sosa-sam:SamplingCollection
   rdfs:label "Collection of sampling features"@en ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
-      owl:allValuesFrom owl:Thing ;
-      owl:onProperty sosa-core:sampledFeature ;
+      owl:allValuesFrom sosa-core:FeatureOfInterest ;
+      owl:onProperty sosa-core:isSampleOf ;
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
@@ -152,6 +213,12 @@ Transect, traverse, flightline, cruise, trajectory, borehole, etc"""^^xsd:string
       owl:allValuesFrom sosa-sam:Curve ;
       owl:onProperty sosa-sam:shape ;
     ] ;
+.
+sosa-sam:SamplingDevice
+  rdf:type owl:Class ;
+  rdfs:comment """Device used in the implementation of a SamplingProcedure
+
+May be hosted by a Platform"""^^xsd:string ;
 .
 sosa-sam:SamplingFeatureComplex
   rdf:type owl:Class ;
@@ -186,6 +253,10 @@ Often referred to as a 'station', 'pixel', 'probe-spot' etc."""^^xsd:string ;
       owl:allValuesFrom sosa-sam:Point ;
       owl:onProperty sosa-sam:shape ;
     ] ;
+.
+sosa-sam:SamplingProcedure
+  rdf:type owl:Class ;
+  rdfs:subClassOf sosa-core:Procedure ;
 .
 sosa-sam:SamplingSolid
   rdf:type owl:Class ;
@@ -235,7 +306,7 @@ When observations are made to estimate properties of a geospatial feature, in pa
 This classification follows common practice in focussing on conventional spatial dimensions. Properties observed on sampling features may be time-dependent, but the temporal axis does not generally contribute to the classification of sampling feature classes. Sampling feature identity is usually less time-dependent than the property value."""^^xsd:string ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
   rdfs:label "Spatial sampling feature"@en ;
-  rdfs:subClassOf sosa-core:SamplingFeature ;
+  rdfs:subClassOf sosa-core:Sample ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:allValuesFrom sosa-core:Procedure ;
@@ -253,7 +324,7 @@ sosa-sam:Specimen
   rdfs:comment "A Specimen is a physical sample, obtained for observation(s) normally carried out ex-situ, sometimes in a laboratory."^^xsd:string ;
   rdfs:isDefinedBy <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
   rdfs:label "Specimen"@en ;
-  rdfs:subClassOf sosa-core:SamplingFeature ;
+  rdfs:subClassOf sosa-core:Sample ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:allValuesFrom sosa-core:SamplingProcedure ;
