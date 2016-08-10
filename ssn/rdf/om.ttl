@@ -4,6 +4,7 @@
 
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix meta: <http://meta.schema.org/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -26,6 +27,11 @@ Observation details are important for data discovery and for data quality estima
 The observation could be considered to carry metadata about an instance of a property (of the feature of interest). This property-value metadata complements the dataset and feature metadata that have been conventionally considered (e.g. ISO 19115).
 
 The values for the properties 'procedure', 'featureOfInterest', 'observedProperty', 'phenomenonTime', 'resultTime' may be inherited from a container resource."""^^xsd:string ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa-core:Sample ;
+      owl:onProperty sosa-om:usingSample ;
+    ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:allValuesFrom sosa-om:ObservationContext ;
@@ -81,7 +87,6 @@ sosa-core:hasFeatureOfInterest
   rdfs:comment """feature of interest of an observation
 
 Links the Observation to the Feature that is the ultimate subject of the observation and carries the observed property. This feature is the real-world object whose properties are under observation. An observation instance serves as a propertyValueProvider for its feature-of-interest."""^^xsd:string ;
-  rdfs:range owl:Thing ;
 .
 sosa-core:hasResult
   rdf:type owl:FunctionalProperty ;
@@ -403,4 +408,12 @@ sosa-om:uom
   schema:domainIncludes sosa-om:ObservationCollection ;
   schema:domainIncludes sosa-om:SimpleMeasure ;
   rdfs:comment "Unit of measure or scale"^^xsd:string ;
+.
+sosa-om:usingSample
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa-core:Observation ;
+  meta:rangeIncludes sosa-core:Sample ;
+  rdfs:comment "Links to a feature intended to sample the real-world object which is the ultimate feature-of-interest. "^^xsd:string ;
+  rdfs:label "using this sample to access the feature of interest"@en ;
+  owl:inverseOf sosa-core:isFeatureOfInterestOf ;
 .
