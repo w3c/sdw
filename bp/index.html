@@ -1102,74 +1102,66 @@ a:Dataset a dcat:Dataset ;
       </section>
       <section id="bp-identifiers">
         <h3>Spatial Data Identifiers</h3>
-        <p>In the geospatial community, the entities within datasets are usually information
-          resources, representing areas on a map, which in turn represent real world things. These
-          information resources are usually called 'features'. A feature is a representation of a
-          real world thing and there could be, and often are, more than one feature representing the
-          same real world thing. A feature often has, as a property, a geometry which describes the
-          location of the feature.</p>
-        <p>For example, a lighthouse standing somewhere on the coast is a real world thing. In some
-          dataset, an information record about this lighthouse exists: a 'feature'. In current
-          practice, this feature will often have properties that are about the real thing (e.g. the
-          height of the lighthouse) and properties about the information record (e.g. when it was
-          last modified). There could be several features, in different datasets, that refer to the
-          same lighthouse; one dataset has its location and date it was built, another has data
+        <p>As explained in <a href="#spatial-things-features-and-geometry">Section 4</a>, spatial things and geometries are different things, the geometries being properties of spatial things. There could be several information resources, in different datasets, that refer to the
+          same spatial thing; for example, one dataset has its location and date a lighthouse was built, another has data
           about its ownership or about shipwrecks near the same lighthouse.</p>
-        <p>Mostly, people looking for information are interested in real world things, not in
-          information resources. This means the real world things should get global identifiers so
-          they can be found and referenced. The features and their map representations - geometries
-          and topologies - should have global identifiers too so they can be referenced as well; and
-          must have them if they are managed elsewhere.</p>
+        <p>The distinction between spatial things and the information resources about them is often confusing and unhelpful. Mostly, people looking for information are interested in spatial things, not in
+          information resources. Therefore the spatial things should get global identifiers so
+          they can be found and referenced. The geometries should have global identifiers too so they can be referenced and reused; and
+          must have them if they are managed elsewhere. The information resources could be given identifiers of their own when there's a specific reason to identify them separately.</p>
+        <p>[[DWBP]] provides best practices discussing globally unique identifiers and the use of HTTP (or  HTTPS) URIs for these identifers in order to support data discovery, usage and citation on the Web (see [[DWBP]] <a href="http://www.w3.org/TR/dwbp/#DataIdentifiers"
+          >Data Identifiers</a> for more details). This section includes a best practice on how to come up with good identifiers to use for spatial data.</p>
         <div class="issue" data-number="208">
-          <p>Discussion on Features, information resources and real-world Things is unclear and
-            needs redrafting.</p>
-          <p>Also, we need to be consistent on terminology throughout the document; currently we
-            have a mixture of terms: right now I see at least "spatial data", "spatial information",
+          <p>Discussion on Features, information resources and real-world Things has been shortened and redrafted. Needs review.</p>
+          <p>'real world thing' has been replaced by 'spatial thing' in this section. Rest of the document needs consistency check on terminology ; currently we have a mixture of terms: right now I see at least "spatial data", "spatial information",
             "geospatial data", "geographic information" and "geospatial information" etc.</p>
         </div>
         <div class="practice">
           <p><span id="globally-unique-ids" class="practicelab">Use globally unique HTTP identifiers
-              for entity-level resources</span></p>
-          <p class="practicedesc">Entities within datasets SHOULD have unique, persistent HTTP or
+              for spatial things</span></p>
+          <p class="practicedesc">Spatial things within datasets SHOULD have unique, persistent HTTP or
             HTTP(S) URIs as identifiers.</p>
-          <p class="issue" data-number="191">The term "entity-level resources" is confusing and
-            needs to be clarified or replaced.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
             <p>A lot of spatial data is available 'via the Web' - but not really 'on the web': you
               can download datasets, or view, query and download data via web services, but it is
-              usually not possible to reference an entity within a dataset, like you would a web
+              usually not possible to reference a spatial thing within a dataset, like you would a web
               page. If this were possible, spatial data would be much easier to reuse and to
               integrate with other data on the Web.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>Entities (<a>SpatialThings</a>) described in a dataset will each be identified using
+            <p>Spatial things described in a dataset will each be identified using
               a globally unique HTTP URI so that a given entity can be unambiguously identified in
               statements that refer to that entity.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>Good identifiers for data on the Web should be dereferenceable/resolvable, which
-              makes it a good idea to use HTTP URIs as identifiers. There is no top down authority
-              that you have to go to in order to create such identifiers for spatial objects. So
-              just make them up yourself if you need them and they don't exist. <a href="#reuse-ids"
-                >Best Practice 2: Reuse existing (authoritative) identifiers when available</a>
-              explains how to find already existing identifiers you can reuse.</p>
-            <p>Read [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#identifiersWithinDatasets"
-                >Best Practice 11: Use persistent URIs as identifiers within datasets</a> for
-              general discussion on why persistent URIs should be used as identifiers for data
-              entities. Using URIs means the data can be referenced using standard Web mechanisms;
-              making them persistent means the links won't get broken. Note that ideally the URIs
-              should resolve, however, they have value as globally scoped variables whether they
-              resolve or not.</p>
-            <p>For guidance about persistent URIs, read [[DWBP]] <a
+              makes it a good idea to use HTTP URIs as identifiers. As explained in [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets"
+                >Best Practice 11: Use persistent URIs as identifiers within datasets</a>, reuse existing (authoritative) identifiers when available, and else create your own. </p>
+            <p>For spatial data, a good approach for identifiers is to reuse the URIs used by organizations such as <a href="http://dbpedia.org/">DBpedia</a> and
+                <a href="http://www.geonames.org/">GeoNames</a> to identify <a>SpatialThings</a>. These are
+              commonly used across many different applications and datasets. Another good source of resource collections is often found in public government data, such as national registers of addresses, buildings, and so on. Mapping and cadastral
+              authorities maintain datasets that provide geospatial reference data. See also Appendix <a href="#auth-id-sources">B. Authoritative sources of geographic identifiers</a> for a list of good sources of geographic identifiers. In general, re-using
+                well-known identifiers such as these is good practice because it makes it easy to
+                recognise that data from different sources has the same subject. These identifiers are like
+                'Web-scale foreign keys', allowing information from different sources to be stitched
+                together.</p>
+            <p>Additionally, when these authoritative identifiers are resolved, a considerable
+              amount of useful information about the <a>SpatialThing</a> is often provided that can
+              be used to supplement that which is provided by your own application. Examples include
+              place names in multiple languages and geographic boundaries.</p>
+            <p class="note">Where you are not able to re-use an existing URI, you should link the
+              your URI to those well-known URIs published by third parties, thus enabling your data
+              to be discovered by browsing between related resources. See <a
+                href="#link-to-auth-identifiers">Best Practice 22: Link to resources with well-known
+                or authoritative identifiers</a> for more information.</p>
+            <p>For guidance about persistent URIs when creating your own URIs, read [[DWBP]] <a
                 href="http://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 10: Use persistent
                 URIs as identifiers</a>. Keep in mind not to use service endpoint URLs, as these are
               usually dependent on technology, implementation, and/or API version and will probably
               change when the implementation changes.</p>
-            <p class="issue" data-number="56">update reference to DWBP BP 11
-              #identifiersWithinDatasets</p>
             <aside class="example">
               <p>example(s) to be added; including</p>
               <ul>
@@ -1180,95 +1172,27 @@ a:Dataset a dcat:Dataset ;
                     href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference
                     Framework</a>)</li>
               </ul>
-            </aside>
-            <p class="issue" data-number="86">Complete this section and How to Test section</p>
-          </section>
-          <section class="test">
-            <p class="subhead">How to Test</p>
-            <p>...</p>
-          </section>
-          <section class="ucr">
-            <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: <a
-                href="http://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>.</p>
-          </section>
-          <section class="benefits">
-            <h4 class="subhead">Benefits</h4>
-            <ul class="benefitsList">
-              <li>...</li>
-            </ul>
-          </section>
-        </div>
-        <div class="practice">
-          <p><span id="reuse-ids" class="practicelab">Reuse existing (authoritative) identifiers
-              when available</span></p>
-          <p class="practicedesc">Avoiding the creation of lots of identifiers for the same
-            resource</p>
-          <section class="axioms">
-            <p class="subhead">Why</p>
-            <p>The URIs used by organizations such as <a href="http://dbpedia.org/">DBpedia</a> and
-                <a href="http://www.geonames.org/">GeoNames</a> to identify <a>SpatialThings</a> are
-              commonly used across many different applications and datasets. In general, re-using
-              well-known identifiers such as these is good practice because it makes it easy to
-              recognise that data from different sources is has the same subject.</p>
-            <p>Where possible, we want to avoid proliferation of identifiers for the same resource
-              because this makes it difficult to link data. After all, these identifiers are like
-              'Web-scale foreign keys', allowing information from different sources to be stitched
-              together.</p>
-            <p>Additionally, when these authoritative identifiers are resolved, a considerable
-              amount of useful information about the <a>SpatialThing</a> is often provided that can
-              be used to supplement that which is provided by your own application. Examples include
-              place names in multiple languages and geographic boundaries.</p>
-            <p class="note">Where you are not able to re-use an existing URI, you should link the
-              your URI to those well-known URIs published by third parties, thus enabling your data
-              to be discovered by browsing between related resources. See <a
-                href="#link-to-auth-identifiers">Best Practice 22: Link to resources with well-known
-                or authoritative identifiers</a> for more information.</p>
-            <p class="issue" data-number="100">Some content of this BP may be moved to BP
-              link-to-auth-identifiers.</p>
-          </section>
-          <section class="outcome">
-            <p class="subhead">Intended Outcome</p>
-            <p>Existing identifiers for spatial resources are reused instead of new ones being
-              created.</p>
-          </section>
-          <section class="how">
-            <p class="subhead">Possible Approach to Implementation</p>
-            <p>If you've got feature data and want to publish that as linked data, the first step is
-              to see if there's an authoritative URI already available that you can reuse. If so, do
-              that; else refer to <a href="#globally-unique-ids">Best Practice 1: Use globally
-                unique identifiers for entity-level resources</a>.</p>
-            <p><a href="http://dbpedia.org/">DBpedia</a> and <a href="http://www.geonames.org/"
-                >GeoNames</a> are examples of popular, community-driven resource collections.
-              Another good source of resource collections is often found in public government data,
-              such as national registers of addresses, buildings, and so on. Mapping and cadastral
-              authorities maintain datasets that provide geospatial reference data.</p>
-            <p>See Appendix <a href="#auth-id-sources">B. Authoritative sources of geographic
-                identifiers</a> for a list of good sources of geographic identifiers.</p>
-            <p>Identifiers for resources should remain stable over time - even if the information
-              about the identified resource changes. See <a href="#ids-for-changing-things">Best
-                Practice 4: Provide stable identifiers for Things (resources) that change over
-                time</a> for further information.</p>
-            <aside class="example">
-              <p>Example(s) to be added</p>
               <p><code>http://dbpedia.org/resource/Utrecht</code> refers to the city of Utrecht in
                 the Nederlands - not the similarly named town in South Africa.</p>
               <p><code>http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam</code> is a
                 resource linking to both <a href="http://dbpedia.org/">DBpedia</a> and <a
                   href="http://www.geonames.org/">GeoNames</a> resources for Amsterdam.</p>
             </aside>
+            <p class="issue" data-number="86">Complete this section and How to Test section</p>
           </section>
           <section class="test">
             <p class="subhead">How to Test</p>
             <p>An automatic check is possible to determine if any of the good sources of geographic
               identifiers are referenced.</p>
+            <p>...</p>
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: <a
+              href="http://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>, <a
                 href="http://www.w3.org/TR/sdw-ucr/#GeoreferencedData">R-GeoReferencedData</a>, <a
-                href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems"
-                >R-IndependenceOnReferenceSystems</a>.</p>
+                  href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems"
+                  >R-IndependenceOnReferenceSystems</a>.</p>
           </section>
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
@@ -1277,6 +1201,7 @@ a:Dataset a dcat:Dataset ;
             </ul>
           </section>
         </div>
+        <!-- this one needs to be merged with the previous -->
         <div class="practice">
           <p><span id="lacking-ids" class="practicelab">Convert or map dataset-scoped identifiers to
               URIs</span></p>
