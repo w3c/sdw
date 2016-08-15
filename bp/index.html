@@ -1110,9 +1110,9 @@ a:Dataset a dcat:Dataset ;
           they can be found and referenced. The geometries should have global identifiers too so they can be referenced and reused; and
           must have them if they are managed elsewhere. The information resources could be given identifiers of their own when there's a specific reason to identify them separately.</p>
         <p>[[DWBP]] provides best practices discussing globally unique identifiers and the use of HTTP (or  HTTPS) URIs for these identifers in order to support data discovery, usage and citation on the Web (see [[DWBP]] <a href="http://www.w3.org/TR/dwbp/#DataIdentifiers"
-          >Data Identifiers</a> for more details). This section includes a best practice on how to come up with good identifiers to use for spatial data.</p>
+          >Data Identifiers</a> for more details). This section includes a best practice on how to come up with good identifiers for spatial data.</p>
         <div class="issue" data-number="208">
-          <p>Discussion on Features, information resources and real-world Things has been shortened and redrafted. Needs review.</p>
+          <p>Discussion on Features, information resources and real-world Things (now: spatial things, geometries and information resources) has been shortened and redrafted.  Needs review.</p>
           <p>'real world thing' has been replaced by 'spatial thing' in this section. Rest of the document needs consistency check on terminology ; currently we have a mixture of terms: right now I see at least "spatial data", "spatial information",
             "geospatial data", "geographic information" and "geospatial information" etc.</p>
         </div>
@@ -1132,8 +1132,8 @@ a:Dataset a dcat:Dataset ;
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
             <p>Spatial things described in a dataset will each be identified using
-              a globally unique HTTP URI so that a given entity can be unambiguously identified in
-              statements that refer to that entity.</p>
+              a globally unique HTTP URI so that a given spatial thing can be unambiguously identified in
+              statements that refer to that spatial thing.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
@@ -1156,23 +1156,22 @@ a:Dataset a dcat:Dataset ;
             <p class="note">Where you are not able to re-use an existing URI, you should link the
               your URI to those well-known URIs published by third parties, thus enabling your data
               to be discovered by browsing between related resources. See <a
-                href="#link-to-auth-identifiers">Best Practice 22: Link to resources with well-known
+                href="#link-to-auth-identifiers">Best Practice 20: Link to resources with well-known
                 or authoritative identifiers</a> for more information.</p>
-            <p>2. Else create your own identifiers </p>
+            <p>2. When there are no reusable identifiers, create your own</p>
             <p>For guidance about persistent URIs when creating your own URIs, read [[DWBP]] <a
                 href="http://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 10: Use persistent
-                URIs as identifiers</a>. Keep in mind not to use service endpoint URLs, as these are
+                URIs as identifiers of datasets</a>. While that best practice is about datasets, many of the points are valid for identifiers of spatial things as well. Keep in mind not to use service endpoint URLs as a basis for your persistent URIs, as these are
               usually dependent on technology, implementation, and/or API version and will probably
               change when the implementation changes.</p>
-            <p>Often, dataset-scoped (local) identifiers are present in datasets and these can be converted or mapped to URIs for spatial things. For example, use row numbers from tabular data or Feature identifiers from geo-databases.</p>
+            <p>Often, dataset-scoped (local) identifiers are present in datasets and these can be converted or mapped to URIs for spatial things. For example, use row numbers from tabular data or record identifiers from geo-databases.</p>
             <p>3. Provide stable identifiers for spatial things that change over time</p>
             <p>Spatial things can change over time, but their
-              identifiers should be persistent so that links to it don't get broken. </p>
+              identifiers should be persistent so that links to them don't get broken. </p>
             <p class="issue" data-number="194">Should we reference the <a
               href="https://en.wikipedia.org/wiki/Ship_of_Theseus">paradox of the Ship of
               Theseus</a> to highlight there is no rigorous notion of persistent identity?</p>
-            <p>[[DWBP]] <a href="http://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 8: Provide
-              versioning information</a> explains how to provide versioning info for datasets. It
+            <p>[[DWBP]] <a href="http://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 8: Provide a version indicator</a> explains how to provide versioning information for datasets. It
               doesn't provide information about versioning individual things. </p>
             <p>Spatial things can change in different ways, and sometimes the change is such that
               it's debatable if it's still the same thing. Think carefully about the life cycle of
@@ -1182,8 +1181,8 @@ a:Dataset a dcat:Dataset ;
               specific version of its geometry.</p>
             <p>Include information in your dataset that indicates when the statements made about the
               <a>SpatialThing</a> are valid.</p>
-            <p>If your resources are versioned, a good solution is to provide a canonical,
-              versionless URI for your resource, as well as date-stamped versions. You should also
+            <p>If your spatial things are versioned, a good solution is to provide a canonical,
+              versionless URI for them, as well as date-stamped versions. You should also
               include information on the update frequency in the dataset metadata (see [[DWBP]] <a
                 href="https://www.w3.org/TR/dwbp/#DescriptiveMetadata">Best Practice 2: Provide descriptive metadata</a>).</p>
             <p class="note">See also <a href="#desc-changing-properties">Best Practice 5: How to
@@ -1203,6 +1202,7 @@ a:Dataset a dcat:Dataset ;
               <p><code>http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam</code> is a
                 resource linking to both <a href="http://dbpedia.org/">DBpedia</a> and <a
                   href="http://www.geonames.org/">GeoNames</a> resources for Amsterdam.</p>
+              <p><code>https://brk.basisregistraties.overheid.nl/id/perceel/370200894</code> is a cadastral parcel as provided by the <a href="http://www.kadaster.nl">Kadaster</a>. The number at the end was originally the local identifier of the parcel in the dataset.</p>
             </aside>
             <p class="issue" data-number="86">Complete this section and How to Test section</p>
           </section>
@@ -3157,10 +3157,8 @@ a:Dataset a dcat:Dataset ;
       </div>
       <!-- The next one was removed from the Identifiers best practices; a little of its content was used in the new merged BP on identifiers. Of the rest parts can be used in the overlapping BP mentioned in the issue. -->
       <div class="practice">
-        <p><span id="lacking-ids" class="practicelab">Convert or map dataset-scoped identifiers to
-          URIs</span></p>
-        <p class="practicedesc">Find (or create) URIs for resources in spatial datasets that have
-          locally-scoped identifiers.</p>
+        <p><span id="lacking-ids" class="practicelab"></span></p>
+        <p class="practicedesc">something about mapping spatial things from different datasets</p>
         <section class="axioms">
           <p class="subhead">Why</p>
           <p>There are many mechanisms to reconcile (i.e. find related, map or link) objects from
