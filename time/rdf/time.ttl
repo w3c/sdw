@@ -1,0 +1,790 @@
+# baseURI: http://www.w3.org/2006/time
+# imports: http://purl.org/dc/elements/1.1/
+
+@prefix : <http://www.w3.org/2006/time#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix tzont: <http://www.w3.org/2006/timezone#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.w3.org/2006/time>
+  rdf:type owl:Ontology ;
+  dct:contributor <http://orcid.org/0000-0002-3884-3420> ;
+  dct:contributor <mailto:simon.cox@csiro.au> ;
+  dct:created "2006-09-27"^^xsd:date ;
+  dct:creator <https://en.wikipedia.org/wiki/Jerry_Hobbs> ;
+  dct:creator <mailto:panfeng66@gmail.com> ;
+  dct:isVersionOf <http://www.w3.org/TR/owl-time> ;
+  dct:license <https://creativecommons.org/licenses/by/3.0/au/> ;
+  dct:modified "2016-06-15"^^xsd:date ;
+  dct:rights "Copyright © 2006-2016 W3C All Rights Reserved. W3C liability, trademark and document use rules apply."@en ;
+  rdfs:comment "Update of OWL-Time ontology, extended to support general temporal reference systems"@en ;
+  rdfs:label "OWL-Time"@en ;
+  rdfs:seeAlso <http://dx.doi.org/10.3233/SW-150187> ;
+  rdfs:seeAlso <http://www.semantic-web-journal.net/content/time-ontology-extended-non-gregorian-calendar-applications> ;
+  rdfs:seeAlso <http://www.w3.org/TR/owl-time> ;
+  owl:imports <http://purl.org/dc/elements/1.1/> ;
+  owl:priorVersion <http://www.w3.org/2006/time#2006> ;
+  owl:versionIRI <http://www.w3.org/2006/time#2016> ;
+.
+:DateTimeDescription
+  rdf:type owl:Class ;
+  rdfs:comment "Description of date and time structured with separate values for the various elements of a calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of year, month, day properties restricted to corresponding XML Schema types xsd:gYear, xsd:gMonth and xsd:gDay, respectively."@en ;
+  rdfs:label "Date-Time description"@en ;
+  rdfs:subClassOf :GeneralDateTimeDescription ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:gDay ;
+      owl:onProperty :day ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:gMonth ;
+      owl:onProperty :month ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:gYear ;
+      owl:onProperty :year ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue <http://www.opengis.net/def/uom/ISO-8601/0/Gregorian> ;
+      owl:onProperty :hasTRS ;
+    ] ;
+.
+:DateTimeInterval
+  rdf:type owl:Class ;
+  rdfs:comment "DateTimeInterval is a subclass of ProperInterval, defined using the multi-element DateTimeDescription."@en ;
+  rdfs:label "Date-Time interval"@en ;
+  rdfs:subClassOf :ProperInterval ;
+.
+:DayOfWeek
+  rdf:type owl:Class ;
+  rdfs:comment "The day of week"@en ;
+  rdfs:label "Day of week"@en ;
+  rdfs:subClassOf owl:Thing ;
+  skos:changeNote """Remove enumeration from definition, in order to allow other days to be used when required in other calendars. 
+NOTE: existing days are still present as members of the class, but the class membership is now open. 
+
+In the original OWL-Time the following constraint appeared: 
+  owl:oneOf (
+      time:Monday
+      time:Tuesday
+      time:Wednesday
+      time:Thursday
+      time:Friday
+      time:Saturday
+      time:Sunday
+    ) ;"""@en ;
+.
+:Duration
+  rdf:type owl:Class ;
+  rdfs:comment "Alternative to time:DurationDescription to support description of a temporal duration other than using a calendar/clock system."@en ;
+  rdfs:comment "Duration of a temporal extent expressed as a number scaled by a temporal unit"@en ;
+  rdfs:label "Temporal duration"@en ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :numericDuration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :unitType ;
+    ] ;
+.
+:DurationDescription
+  rdf:type owl:Class ;
+  rdfs:comment "Description of temporal extent structured with separate values for the various elements of a calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of each of the numeric properties is restricted to xsd:decimal"@en ;
+  rdfs:label "Duration description"@en ;
+  rdfs:subClassOf :GeneralDurationDescription ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:decimal ;
+      owl:onProperty :days ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:decimal ;
+      owl:onProperty :hours ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:decimal ;
+      owl:onProperty :minutes ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:decimal ;
+      owl:onProperty :months ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:decimal ;
+      owl:onProperty :seconds ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:decimal ;
+      owl:onProperty :weeks ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:decimal ;
+      owl:onProperty :years ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue <http://www.opengis.net/def/uom/ISO-8601/0/Gregorian> ;
+      owl:onProperty :hasTRS ;
+    ] ;
+.
+:Friday
+  rdf:type :DayOfWeek ;
+  rdfs:label "Friday"@en ;
+.
+:GeneralDateTimeDescription
+  rdf:type owl:Class ;
+  rdfs:comment "Description of date and time structured with separate values for the various elements of a calendar-clock system"@en ;
+  rdfs:label "Generalized Date Time Description"@en ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :hasTRS ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :unitType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :day ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :dayOfWeek ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :dayOfYear ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :hour ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :minute ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :month ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :second ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :timeZone ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :week ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :year ;
+    ] ;
+.
+:GeneralDurationDescription
+  rdf:type owl:Class ;
+  rdfs:comment "Description of temporal extent structured with separate values for the various elements of a calendar-clock system."@en ;
+  rdfs:label "Generalized duration description"@en ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :hasTRS ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :days ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :hours ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :minutes ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :months ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :seconds ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :weeks ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :years ;
+    ] ;
+.
+:Instant
+  rdf:type owl:Class ;
+  rdfs:comment "A temporal entity with zero extent or duration"@en ;
+  rdfs:label "Time instant"@en ;
+  rdfs:subClassOf :TemporalEntity ;
+.
+:Interval
+  rdf:type owl:Class ;
+  rdfs:comment "A temporal entity with an extent or duration"@en ;
+  rdfs:label "Time interval"@en ;
+  rdfs:subClassOf :TemporalEntity ;
+.
+:Monday
+  rdf:type :DayOfWeek ;
+  rdfs:label "Monday"@en ;
+.
+:Number
+  rdf:type rdfs:Datatype ;
+  rdfs:comment "Generalized number"@en ;
+  rdfs:comment "Note: integer is a specialization of decimal"@en ;
+  rdfs:label "Number"@en ;
+  owl:equivalentClass [
+      rdf:type rdfs:Datatype ;
+      owl:unionOf (
+          xsd:double
+          xsd:float
+          xsd:decimal
+        ) ;
+    ] ;
+.
+:ProperInterval
+  rdf:type owl:Class ;
+  rdfs:comment "A temporal entity with non-zero extent or duration, i.e. for which the value of the beginning and end are different"@en ;
+  rdfs:label "Proper interval"@en ;
+  rdfs:subClassOf :Interval ;
+  owl:disjointWith :Instant ;
+.
+:Saturday
+  rdf:type :DayOfWeek ;
+  rdfs:label "Saturday"@en ;
+.
+:Sunday
+  rdf:type :DayOfWeek ;
+  rdfs:label "Sunday"@en ;
+.
+:TRS
+  rdf:type owl:Class ;
+  rdfs:comment """A temporal reference system, such as a temporal coordinate system (with an origin, direction, and scale), a calendar-clock combination, or a (possibly hierarchical) ordinal system. 
+
+This is a stub class, representing the set of all temporal reference systems."""@en ;
+  rdfs:label "Temporal Reference System"@en ;
+.
+:TemporalEntity
+  rdf:type owl:Class ;
+  rdfs:comment "A temporal interval or instant."@en ;
+  rdfs:label "Temporal entity"@en ;
+  rdfs:subClassOf owl:Thing ;
+  owl:unionOf (
+      :Instant
+      :Interval
+    ) ;
+.
+:TemporalUnit
+  rdf:type owl:Class ;
+  rdfs:comment "A temporal unit of measure, which provides a scale factor for a time quantity."@en ;
+  rdfs:label "Temporal unit"@en ;
+  rdfs:subClassOf owl:Thing ;
+  skos:changeNote """Remove enumeration from definition, in order to allow other units to be used when required in other coordinate systems. 
+NOTE: existing units are still present as members of the class, but the class membership is now open. 
+
+In the original OWL-Time the following constraint appeared: 
+  owl:oneOf (
+      time:unitSecond
+      time:unitMinute
+      time:unitHour
+      time:unitDay
+      time:unitWeek
+      time:unitMonth
+      time:unitYear
+    ) ;"""@en ;
+.
+:Thursday
+  rdf:type :DayOfWeek ;
+  rdfs:label "Thursday"@en ;
+.
+:TimePosition
+  rdf:type owl:Class ;
+  rdfs:comment "A temporal position described using either a (nominal) value from an ordinal reference system, or a (numeric) value in a temporal coordinate system. "@en ;
+  rdfs:label "Temporal position"@en ;
+  rdfs:subClassOf [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          [
+            rdf:type owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty :numericPosition ;
+          ]
+          [
+            rdf:type owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty :nominalPosition ;
+          ]
+        ) ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :hasTRS ;
+    ] ;
+.
+:Tuesday
+  rdf:type :DayOfWeek ;
+  rdfs:label "Tuesday"@en ;
+.
+:Wednesday
+  rdf:type :DayOfWeek ;
+  rdfs:label "Wednesday"@en ;
+.
+:after
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Gives directionality to time. If a temporal entity T1 is after another temporal entity T2, then the beginning of T1 is after the end of T2."@en ;
+  rdfs:domain :TemporalEntity ;
+  rdfs:label "after"@en ;
+  rdfs:range [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          :TemporalEntity
+          owl:Thing
+        ) ;
+    ] ;
+  owl:inverseOf :before ;
+.
+:before
+  rdf:type owl:ObjectProperty ;
+  rdf:type owl:TransitiveProperty ;
+  rdfs:comment "Gives directionality to time. If a temporal entity T1 is before another temporal entity T2, then the end of T1 is before the beginning of T2. Thus, before can be considered to be basic to instants and derived for intervals."@en ;
+  rdfs:domain :TemporalEntity ;
+  rdfs:label "before"@en ;
+  rdfs:range :TemporalEntity ;
+.
+:day
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment """Day position in a calendar-clock system.
+
+The range of this property is not specified, so can be replaced by any specific representation of a calendar day from any calendar. """@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "day"@en ;
+.
+:dayOfWeek
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "The day of week, whose value is a member of the class time:DayOfWeek"@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "day of week"@en ;
+  rdfs:range :DayOfWeek ;
+.
+:dayOfYear
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "The number of the day within the year"@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "day of year"@en ;
+  rdfs:range xsd:nonNegativeInteger ;
+.
+:days
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "length of a temporal extent expressed in days"@en ;
+  rdfs:domain :GeneralDurationDescription ;
+  rdfs:label "days"@en ;
+  rdfs:range :Number ;
+.
+:generalDay
+  rdf:type rdfs:Datatype ;
+  rdfs:comment "Day of month - generalization of xsd:gDay, formulated as a text string with a pattern constraint to reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type. "@en ;
+  rdfs:label "Generalized day"@en ;
+  owl:onDatatype xsd:string ;
+  owl:withRestrictions (
+      [
+        xsd:pattern "---(0[1-9]|[1-9][0-9])(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"^^xsd:string ;
+      ]
+    ) ;
+.
+:generalMonth
+  rdf:type rdfs:Datatype ;
+  rdfs:comment "Month of year - generalization of xsd:gMonth, formulated as a text string with a pattern constraint to reproduce the same lexical form as gMonth, except that values up to 20 are permitted, in order to support calendars with more than 12 months in the year. Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en ;
+  rdfs:label "Generalized month"@en ;
+  owl:onDatatype xsd:string ;
+  owl:withRestrictions (
+      [
+        xsd:pattern "--(0[1-9]|1[0-9]|20)(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"^^xsd:string ;
+      ]
+    ) ;
+.
+:generalYear
+  rdf:type rdfs:Datatype ;
+  rdfs:comment "Year number - generalization of xsd:gYear, formulated as a text string with a pattern constraint to reproduce the same lexical form as gYear. Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en ;
+  rdfs:label "Generalized year"@en ;
+  rdfs:subClassOf rdfs:Resource ;
+  owl:onDatatype xsd:string ;
+  owl:withRestrictions (
+      [
+        xsd:pattern "-?([1-9][0-9]{3,}|0[0-9]{3})(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"^^xsd:string ;
+      ]
+    ) ;
+.
+:hasBeginning
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Beginning of a temporal entity."@en ;
+  rdfs:domain :TemporalEntity ;
+  rdfs:label "has beginning"@en ;
+  rdfs:range :Instant ;
+.
+:hasDateTimeDescription
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Value of DateTimeInterval expressed as a structured value."@en ;
+  rdfs:domain :DateTimeInterval ;
+  rdfs:label "has Date-Time description"@en ;
+  rdfs:range :GeneralDateTimeDescription ;
+.
+:hasDuration
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Duration of a temporal entity, expressed as a scaled value or nominal value"@en ;
+  rdfs:domain :TemporalEntity ;
+  rdfs:label "has duration"@en ;
+  rdfs:range :Duration ;
+.
+:hasDurationDescription
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Duration of a temporal entity, expressed using a structured description"@en ;
+  rdfs:domain :TemporalEntity ;
+  rdfs:label "has duration description"@en ;
+  rdfs:range :GeneralDurationDescription ;
+.
+:hasEnd
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "End of a temporal entity."@en ;
+  rdfs:domain :TemporalEntity ;
+  rdfs:label "has end"@en ;
+  rdfs:range :Instant ;
+.
+:hasMember
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Supports the inclusion of temporal entities in other resources, such as temporal reference systems."@en ;
+  rdfs:label "member entity"@en ;
+  rdfs:range :TemporalEntity ;
+.
+:hasTRS
+  rdf:type owl:FunctionalProperty ;
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "The temporal reference system used by a temporal position or extent description. "@en ;
+  rdfs:label "Temporal reference system used"@en ;
+  rdfs:range :TRS ;
+.
+:hour
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Hour position in a calendar-clock system."@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "hour"@en ;
+  rdfs:range xsd:nonNegativeInteger ;
+.
+:hours
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "length of a temporal extent expressed in hours"@en ;
+  rdfs:domain :GeneralDurationDescription ;
+  rdfs:label "hours"@en ;
+  rdfs:range :Number ;
+.
+:inDateTime
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Position of an instant, expressed using a structured description"@en ;
+  rdfs:domain :Instant ;
+  rdfs:label "in Date-Time description"@en ;
+  rdfs:range :GeneralDateTimeDescription ;
+.
+:inTimePosition
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Position of a time instant expressed as a TimePosition"@en ;
+  rdfs:domain :Instant ;
+  rdfs:label "Temporal position"@en ;
+  rdfs:range :TimePosition ;
+.
+:inXSDDateTime
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Position of an instant, expressed using xsd:DateTime"@en ;
+  rdfs:domain :Instant ;
+  rdfs:label "in XSD Date-Time"@en ;
+  rdfs:range xsd:dateTime ;
+.
+:inside
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "An instant that falls inside the interval. It is not intended to include beginnings and ends of intervals."@en ;
+  rdfs:domain :Interval ;
+  rdfs:label "has instant inside"@en ;
+  rdfs:range :Instant ;
+.
+:intervalAfter
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalAfter another proper interval T2, then the beginning of T1 is after the end of T2."@en ;
+  rdfs:label "interval after"@en ;
+  owl:inverseOf :intervalBefore ;
+.
+:intervalBefore
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalBefore another proper interval T2, then the end of T1 is before the beginning of T2."@en ;
+  rdfs:domain :ProperInterval ;
+  rdfs:label "interval before"@en ;
+  rdfs:range :ProperInterval ;
+  rdfs:subPropertyOf :before ;
+.
+:intervalContains
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalContains another proper interval T2, then the beginning of T1 is before the beginning of T2, and the end of T1 is after the end of T2."@en ;
+  rdfs:label "interval contains"@en ;
+  owl:inverseOf :intervalDuring ;
+.
+:intervalDuring
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalDuring another proper interval T2, then the beginning of T1 is after the beginning of T2, and the end of T1 is before the end of T2."@en ;
+  rdfs:domain :ProperInterval ;
+  rdfs:label "interval during"@en ;
+  rdfs:range :ProperInterval ;
+.
+:intervalEquals
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalEquals another proper interval T2, then the beginning of T1 is the beginning of T2, and the end of T1 is the end of T2."@en ;
+  rdfs:domain :ProperInterval ;
+  rdfs:label "interval equals"@en ;
+  rdfs:range :ProperInterval ;
+.
+:intervalFinishedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalFinishedBy another proper interval T2, then the beginning of T1 is before the beginning of T2, and the end of T1 is the end of T2."@en ;
+  rdfs:label "interval finished by"@en ;
+  owl:inverseOf :intervalFinishes ;
+.
+:intervalFinishes
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalFinishes another proper interval T2, then the beginning of T1 is after the beginning of T2, and the end of T1 is the end of T2."@en ;
+  rdfs:domain :ProperInterval ;
+  rdfs:label "interval finishes"@en ;
+  rdfs:range :ProperInterval ;
+.
+:intervalMeets
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalMeets another proper interval T2, then the end of T1 is the beginning of T2."@en ;
+  rdfs:domain :ProperInterval ;
+  rdfs:label "interval meets"@en ;
+  rdfs:range :ProperInterval ;
+.
+:intervalMetBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalMetBy another proper interval T2, then the beginning of T1 is the end of T2."@en ;
+  rdfs:label "interval met by"@en ;
+  owl:inverseOf :intervalMeets ;
+.
+:intervalOverlappedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalOverlappedBy another proper interval T2, then the beginning of T1 is after the beginning of T2, the beginning of T1 is before the end of T2, and the end of T1 is after the end of T2."@en ;
+  rdfs:label "interval overlapped by"@en ;
+  owl:inverseOf :intervalOverlaps ;
+.
+:intervalOverlaps
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalOverlaps another proper interval T2, then the beginning of T1 is before the beginning of T2, the end of T1 is after the beginning of T2, and the end of T1 is before the end of T2."@en ;
+  rdfs:domain :ProperInterval ;
+  rdfs:label "interval overlaps"@en ;
+  rdfs:range :ProperInterval ;
+.
+:intervalStartedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalStarted another proper interval T2, then the beginning of T1 is the beginning of T2, and the end of T1 is after the end of T2."@en ;
+  rdfs:label "interval started by"@en ;
+  owl:inverseOf :intervalStarts ;
+.
+:intervalStarts
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "If a proper interval T1 is intervalStarts another proper interval T2, then the beginning of T1 is the beginning of T2, and the end of T1 is before the end of T2."@en ;
+  rdfs:domain :ProperInterval ;
+  rdfs:label "interval starts"@en ;
+  rdfs:range :ProperInterval ;
+.
+:minute
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Minute position in a calendar-clock system."@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "minute"@en ;
+  rdfs:range xsd:nonNegativeInteger ;
+.
+:minutes
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "length of a temporal extent expressed in minutes"@en ;
+  rdfs:domain :GeneralDurationDescription ;
+  rdfs:label "minutes"@en ;
+  rdfs:range :Number ;
+.
+:month
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment """Month position in a calendar-clock system.
+
+The range of this property is not specified, so can be replaced by any specific representation of a calendar month from any calendar. """@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "month"@en ;
+.
+:months
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "length of a temporal extent expressed in months"@en ;
+  rdfs:domain :GeneralDurationDescription ;
+  rdfs:label "months"@en ;
+  rdfs:range :Number ;
+.
+:nominalPosition
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "The (nominal) value indicating temporal position in an ordinal reference system "@en ;
+  rdfs:domain :TimePosition ;
+  rdfs:label "Name of temporal position"@en ;
+  rdfs:range xsd:string ;
+.
+:numericDuration
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Value of a temporal extent expressed as a number scaled by a temporal unit"@en ;
+  rdfs:domain :Duration ;
+  rdfs:label "Numeric value of temporal duration"@en ;
+  rdfs:range :Number ;
+.
+:numericPosition
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "The (numeric) value indicating position within a temporal coordinate system "@en ;
+  rdfs:domain :TimePosition ;
+  rdfs:label "Numeric value of temporal position"@en ;
+  rdfs:range :Number ;
+.
+:second
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Second position in a calendar-clock system."@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "second"@en ;
+  rdfs:range xsd:decimal ;
+.
+:seconds
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "length of a temporal extent expressed in seconds"@en ;
+  rdfs:domain :GeneralDurationDescription ;
+  rdfs:label "seconds"@en ;
+  rdfs:range :Number ;
+  rdfs:seeAlso <http://www.bipm.org/en/publications/si-brochure/second.html> ;
+.
+:timeZone
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "The time zone for clock elements in the temporal position"@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "in time zone"@en ;
+  rdfs:range tzont:TimeZone ;
+.
+:unitDay
+  rdf:type :TemporalUnit ;
+  rdfs:label "Day (unit of temporal duration)"@en ;
+.
+:unitHour
+  rdf:type :TemporalUnit ;
+  rdfs:label "Hour (unit of temporal duration)"@en ;
+.
+:unitMinute
+  rdf:type :TemporalUnit ;
+  rdfs:label "Minute (unit of temporal duration)"@en ;
+.
+:unitMonth
+  rdf:type :TemporalUnit ;
+  rdfs:label "Month (unit of temporal duration)"@en ;
+.
+:unitSecond
+  rdf:type :TemporalUnit ;
+  rdfs:label "Second (unit of temporal duration)"@en ;
+.
+:unitType
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "The temporal unit which provides the precision of a date-time value or scale of a temporal extent"@en ;
+  rdfs:domain [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          :GeneralDateTimeDescription
+          :Duration
+        ) ;
+    ] ;
+  rdfs:label "temporal unit type"@en ;
+  rdfs:range :TemporalUnit ;
+.
+:unitWeek
+  rdf:type :TemporalUnit ;
+  rdfs:label "Week (unit of temporal duration)"@en ;
+.
+:unitYear
+  rdf:type :TemporalUnit ;
+  rdfs:label "Year (unit of temporal duration)"@en ;
+.
+:week
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "The number of the week within the year"@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "week"@en ;
+  rdfs:range xsd:nonNegativeInteger ;
+.
+:weeks
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "length of a temporal extent expressed in weeks"@en ;
+  rdfs:domain :GeneralDurationDescription ;
+  rdfs:label "weeks"@en ;
+  rdfs:range :Number ;
+.
+:xsdDateTime
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Value of DateTimeInterval expressed as a compact value."@en ;
+  rdfs:domain :DateTimeInterval ;
+  rdfs:label "has XSD Date-Time"@en ;
+  rdfs:range xsd:dateTime ;
+.
+:year
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment """Year position in a calendar-clock system.
+
+The range of this property is not specified, so can be replaced by any specific representation of a calendar year from any calendar. """@en ;
+  rdfs:domain :GeneralDateTimeDescription ;
+  rdfs:label "year"@en ;
+.
+:years
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "length of a temporal extent expressed in years"@en ;
+  rdfs:domain :GeneralDurationDescription ;
+  rdfs:label "years"@en ;
+  rdfs:range :Number ;
+.
+tzont:TimeZone
+  rdf:type owl:Class ;
+.

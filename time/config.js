@@ -1,38 +1,34 @@
 var respecConfig = {
     specStatus: "ED",
-    shortName: "sdw-bp",
-    //publishDate:  "2015-05-18",
-    //previousPublishDate: "2014-03-27",
-    //previousMaturity: "FPWD",
-    //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-    edDraftURI: "http://w3c.github.io/sdw/bp/",
+    shortName: "owl-time",
+    //publishDate:  "2016-05-18",
+    previousPublishDate: "2006-09-27",
+    previousMaturity: "FPWD",
+    previousURI: "http://www.w3.org/TR/2006/WD-owl-time-20060927/",
+    edDraftURI: "http://w3c.github.io/sdw/time/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
     {
-      name: "Jeremy Tandy",
-      company: "Met Office",
-      companyURL: "http://www.metoffice.gov.uk/"
-    }, {
-			name: "Payam Barnaghi",
-			company: "University of Surrey",
-			companyURL: "http://www.surrey.ac.uk/"
-		}, {
-			name: "Linda van den Brink",
-			company: "Geonovum",
-			companyURL: "http://www.geonovum.nl/"
-		}],
+        name: "Simon Cox",
+        company: "CSIRO",
+        companyURL: "http://www.csiro.au/"
+      },{
+        name: "Chris Little",
+        company: "Met Office",
+        companyURL: "http://www.metoffice.gov.uk/"
+      }],
     otherLinks: [
     {
       key: "OGC Document Number",
       data: [
       {
-        value: "OGC 15-107"
+        value: "OGC 16-071"
       }]
       }],
     wg: "Spatial Data on the Web Working Group",
     wgURI: "http://www.w3.org/2015/spatial/",
-    wgPublicList: "public-sdw-wg",
+    wgPublicList: "public-sdw-comments",
     wgPatentURI: "http://www.w3.org/2004/01/pp-impl/75471/status",
     inlineCSS: true,
     noIDLIn: true,
@@ -53,7 +49,7 @@ var respecConfig = {
         url: "http://www.opengeospatial.org/"
       }
       ],
-    noRecTrack: true,
+    noRecTrack: false,
     overrideCopyright: "<p class='copyright'><a href='http://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2015 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='http://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='http://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
 
 
@@ -89,14 +85,9 @@ var respecConfig = {
         authors: ["John Herring"],
         date: "28 May 2011"    
        }, 
-       "Veregin":{
-        href:"http://www.geos.ed.ac.uk/~gisteac/gis_book_abridged/files/ch12.pdf",
-        title:"Data quality parameters. In: Geographical Information Systems: Principles, Techniques, Management and Applications",
-        authors:["H. Veregin"]
-       },
        "OandM":{
         href:"http://www.opengeospatial.org/standards/om",
-        title:"Observations and Measurements - XML Implementation",
+        title:"Observations and Measurements",
         authors: ["Simon Cox"],
         date: "22 March 2011"      
        },
@@ -111,45 +102,6 @@ var respecConfig = {
         authors: ["Clemens Portele (editor)"],
         date: "27 August 2007"
        },
-       "beacon":{
-        href:"https://gbv.github.io/beaconspec/beacon.html",
-        title:"BEACON link dump format",
-        authors: ["J. Voß", "M. Schindler"],
-        date: "6 July 2014"
-       },
-       "Strong":{
-        href:"http://www.crcsi.com.au/assets/Resources/Stakeholder-Requirements-for-Modernising-Australias-Geocentric-Datum.pdf",
-        title:"Stakeholder Requirements for Modernising Australia’s Geocentric Datum",
-        authors:["Scott Strong (on behalf of the Cooperative Research Centre for Spatial Information and the Intergovernmental Committee on Surveying and Mapping"],
-        date: "July 2015"
-       }, 
-       "DQV":{
-        href:"https://www.w3.org/TR/vocab-dqv/",
-        title:"Data on the Web Best Practices: Data Quality Vocabulary",
-        authors:["Riccardo Albertoni", "Antoine Isaac"],
-        date: "May 2016"
-       },
-       "GeoDCAT-AP":{
-        href:"https://joinup.ec.europa.eu/node/139283/",
-        title:"GeoDCAT-AP: A geospatial extension for the DCAT application profile for data portals in Europe",
-        date: "23 December 2015"
-       },
-       "ISO19115":{
-        href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
-        title:"Geographic information -- Metadata",
-        date: "2003"
-       },
-       "CSW":{
-        href:"http://www.opengeospatial.org/standards/cat",
-        title:"Catalogue Services 3.0 - General Model",
-        authors:["Douglas Nebert", "Uwe Voges", "Lorenzo Bigagli"],
-        date: "10 June 2016"
-       },
-       "INSPIRE-MD":{
-        href:"http://inspire.jrc.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
-        title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
-        date: "29 October 2013"
-       }
     },
-    issueBase: "https://github.com/w3c/sdw/issues/"
+    issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
