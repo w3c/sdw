@@ -682,57 +682,53 @@ a:Dataset a dcat:Dataset ;
             </ul>
           </section>
         </div>
-        <p class="note">
-            <b>Coordinate Reference System (CRS)</b> <br/><br/>
+        <div class="note">
+          <h4>Coordinate Reference System (CRS)</h4>
+          <p>A Coordinate Reference System (CRS) defines a local, regional or global coordinate system that can be used to locate spatial entities. CRS can provide a map projection and also define the transformations between different spatial reference systems. CRS’s can be referred to by using a SRID integer, including EPSG codes defined by the International Association of Oil and Gas Producers.  Most of the spatial vendors create their own SRID implementation or refer to an authority such as the European Petroleum Survey Group (EPSG) (<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">more information</a>).</p> 
             
-            A Coordinate Reference System (CRS) defines a local, regional or global coordinate system that can be used to locate spatial entities. CRS can provide a map projection and also define the transformations between different spatial reference systems. CRS’s can be referred to by using a SRID integer, including EPSG codes defined by the International Association of Oil and Gas Producers.  Most of the spatial vendors create their own SRID implementation or refer to an authority such as the European Petroleum Survey Group (EPSG) (<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">more information</a>). </br><br/>
+           <p> A list of CRS’s maintained by IGN-France (in RDF format) can be also found <a href="http://yasgui.org/short/rJIItc2d">here</a>. The list is published according to the vocab at: <a href="http://data.ign.fr/def/ignf/20160628.ttl">http://data.ign.fr/def/ignf/20160628.ttl</a>.</p>
             
-            A list of CRS’s maintained by IGN-France (in RDF format) can be also found <a href="http://yasgui.org/short/rJIItc2d">here</a>. The list is published according to the vocab at: <a href="http://data.ign.fr/def/ignf/20160628.ttl">http://data.ign.fr/def/ignf/20160628.ttl</a>.</br><br/>
+            <p>The spatial data is usually shared and communicated through the use of common standards between different communities. Since there are several standards and different ways to represent spatial data, each community structures the spatial data according to their standards and their own domain of interest. This heterogeneity and variety of standards and reference systems as well as different data formats and structures can hinder sharing and exchanging the spatial data. This requires defining best practices to represent information regarding the coordinate systems and also providing APIs that can make the transformation between different systems and standards. For example Apache SIS® provides a common programming interface (API) to ensure the interoperability of data across different coordinate systems [<a href="http://sis.staging.apache.org/book/en/developer-guide.html">Ref</a>]. </p>
             
-            The spatial data is usually shared and communicated through the use of common standards between different communities. Since there are several standards and different ways to represent spatial data, each community structures the spatial data according to their standards and their own domain of interest. This heterogeneity and variety of standards and reference systems as well as different data formats and structures can hinder sharing and exchanging the spatial data. This requires defining best practices to represent information regarding the coordinate systems and also providing APIs that can make the transformation between different systems and standards. For example Apache SIS® provides a common programming interface (API) to ensure the interoperability of data across different coordinate systems [<a href="http://sis.staging.apache.org/book/en/developer-guide.html">Ref</a>]. </br><br/>
-            
-            Many applications usually provide/use latitude and longitude, but often forget about the third dimension (ellipsoidal height). When converting between CRSs that use different datums, the third dimension is also needed. EPSG guidelines say that, if the height is missing, reasonable assumptions are: </br><br/>
+           <p> Many applications usually provide/use latitude and longitude, but often forget about the third dimension (ellipsoidal height). When converting between CRSs that use different datums, the third dimension is also needed. EPSG guidelines say that, if the height is missing, reasonable assumptions are: </p>
+<ol>
+  <li>Height = 0 (i.e. we are standing on the surface of the ellipsoid)</li>
+  <li>The height is given by a digital elevation model (i.e. we are standing on the surface of the planet)</li>
+</ol>
 
-1.	Height = 0 (i.e. we are standing on the surface of the ellipsoid) <br/>
-2.	The height is given by a digital elevation model (i.e. we are standing on the surface of the planet) </br><br/>
-
-           These two assumptions will lead to different answers for *all three* coordinates in a “new” system (and both assumptions might be wrong). This could be important on the Web, because we frequently give latitude and longitude, but no information about ellipsoidal height is often provided. This means that if we convert these coordinates into a new system, we will get an uncertain position (and even the horizontal positions in the new system are uncertain, not just the height) [For more information refere to the discussion <a href="https://lists.w3.org/Archives/Public/public-sdw-wg/2016Aug/0051.html">here</a>]. </br><br/>
+           <p>These two assumptions will lead to different answers for *all three* coordinates in a “new” system (and both assumptions might be wrong). This could be important on the Web, because we frequently give latitude and longitude, but no information about ellipsoidal height is often provided. This means that if we convert these coordinates into a new system, we will get an uncertain position (and even the horizontal positions in the new system are uncertain, not just the height) [For more information refere to the discussion <a href="https://lists.w3.org/Archives/Public/public-sdw-wg/2016Aug/0051.html">here</a>]. </p>
         
-The process of converting coordinates between CRSs that use different datums can be also very involved.</br><br/>
+<p>The process of converting coordinates between CRSs that use different datums can be also very involved.</p>
 
-<b>Choosing a CRS</b> (By: Byron Cochrane- <a href="https://lists.w3.org/Archives/Public/public-sdw-wg/2016Aug/0022.html">link)</a> </br>
+<h4>Choosing a CRS (By: Byron Cochrane- <a href="https://lists.w3.org/Archives/Public/public-sdw-wg/2016Aug/0022.html">link)</a> </h4>
 
-By default, most vector data should be shared in un-projected geographic coordinates <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS 84</a>– <a href="http://spatialreference.org/ref/epsg/wgs-84/">SRID 4326</a>. Raster data, which is already projected by the nature of the format, should be shared by default in web Mercator-SRID 3857. </br><br/>
-
-
-<b>Considering the audience</b> </br>
-
-As a Publisher one can make decisions on behalf of the users.  Who are the primary and secondary users?  Target those whose requirements match the data.
-Is the primary audience is known and work within a limited well defined spatial extent, of say an urban region?  Then it is likely that there is a local projected CRS by which data is commonly shared in that region.  Share the data in this projection.  Consider sharing the data in more than one projection.<br/>
-
-Listen to the customers:  Metadata should provide contacts to publishers.  Encourage feedback particularly for new secondary users. This feedback may give insight to projections you should support.</br><br/>
-[Web accessibility guidelines - ??] </br><br/>
+<p>By default, most vector data should be shared in un-projected geographic coordinates <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS 84</a>– <a href="http://spatialreference.org/ref/epsg/wgs-84/">SRID 4326</a>. Raster data, which is already projected by the nature of the format, should be shared by default in web Mercator-SRID 3857. </p>
 
 
-<b>Consider the Data</b> </br>
+<h5>Considering the audience</h5> 
+
+<p>As a Publisher one can make decisions on behalf of the users.  Who are the primary and secondary users?  Target those whose requirements match the data.
+Is the primary audience is known and work within a limited well defined spatial extent, of say an urban region?  Then it is likely that there is a local projected CRS by which data is commonly shared in that region.  Share the data in this projection.  Consider sharing the data in more than one projection.</p>
+
+<p>Listen to the customers:  Metadata should provide contacts to publishers.  Encourage feedback particularly for new secondary users. This feedback may give insight to projections you should support.</p>
+<p>[Web accessibility guidelines - ??] </p>
 
 
-Vector data is quite easy for web mapping tools to project from geographic coordinates.  Raster data requires much more intensive computation for this task.  Raster is commonly published in a projected CRS instead of geographic coordinates.  Raster data should be published in the CRS in which it was produced and if possible and useful, also in web Mercator. </br><br/>
+<h5>Consider the Data</h5> 
+
+<p>Vector data is quite easy for web mapping tools to project from geographic coordinates.  Raster data requires much more intensive computation for this task.  Raster is commonly published in a projected CRS instead of geographic coordinates.  Raster data should be published in the CRS in which it was produced and if possible and useful, also in web Mercator.</p> 
+
+<h5> Consider the Use </h5> 
+
+<p>The seemingly multitude of CRS’s exist because of different requirements.  Some projections are better for measuring area, some are better for measure distance, some are better for measuring angles, some simply look better when displayed and make for a better user interface. </p>
+
+          <p>Are the aesthetic and readability issues associated with the data?  What projections display the data to best convey the most information you wish to share? Which way is north is effected by the projection chosen.  Spatial data often are used to provide user interface via a map.  Some map projections may support this use better than others.While it is likely true that the majority of users may be satisfied with WGS 84 and Web Mercator, the most value may be gained by those users requiring other projections.</p>
 
 
-<b> Consider the Use </b> </br>
+<h5>Consider how the data is distributed </h5>
 
-The seemingly multitude of CRS’s exist because of different requirements.  Some projections are better for measuring area, some are better for measure distance, some are better for measuring angles, some simply look better when displayed and make for a better user interface. <br/>
-
-Are the aesthetic and readability issues associated with the data?  What projections display the data to best convey the most information you wish to share? Which way is north is effected by the projection chosen.  Spatial data often are used to provide user interface via a map.  Some map projections may support this use better than others.
-
-While it is likely true that the majority of users may be satisfied with WGS 84 and Web Mercator, the most value may be gained by those users requiring other projections.
-</br><br/>
-
-<b>Consider how the data is distributed </b> </br>
-
-Different requirements may occur if the data is downloaded as a whole dataset or accessed via a web service [needs more clarification...] </br><br/>
-          </p>
+<p>Different requirements may occur if the data is downloaded as a whole dataset or accessed via a web service [needs more clarification...] </p>
+          </div>
         <div class="practice">
           <p><span id="ref-crs" class="practicelab">Specify Coordinate Reference System for
               high-precision applications</span></p>
@@ -3243,7 +3239,7 @@ Different requirements may occur if the data is downloaded as a whole dataset or
         <figcaption>“Multi-layer safety” for Flood Risk Management (source: §2.3 <a href="http://unitedkingdom.nlembassy.org/binaries/content/assets/postenweb/v/verenigd_koninkrijk_van_groot_brittannie_en_noord_ierland/nederlandse-ambassade-in-londen/import/key-topics/flood-risk-and-water-management-in-the-netherlands-a-2012-update1.pdf">Flood Risk and Water Management in the Netherlands</a>)</figcaption>
       </figure>
       <p>Flood risk management can be separated into three layers: </p>
-      <ol reversed>
+      <ol >
         <li>Flood alerts, evacuation, response and recovery (civil protection issues); both
           organisational and physical measures (e.g. identifying, checking, repairing and signalling
           evacuation routes).</li>
