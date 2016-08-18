@@ -1277,28 +1277,23 @@ Different requirements may occur if the data is downloaded as a whole dataset or
       <section id="bp-expressing-spatial">
         <h3>Spatial Data Vocabularies</h3>
         <p>In this document we don't have a section on formats for publishing spatial data on the web. The formats are basically the same as for publishing any other data on the web: XML, JSON, CSV, etc. Refer to [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataFormats">Data Formats</a> for more information and best practices. </p>
-        <p>That being said, it is important to publish your spatial data with clear semantics. The primary use case
+        <p>That being said, it is important to publish your spatial data with clear semantics, i.e. to provide information about the contents of your data. The primary use case
           for this is you have information about a collection of SpatialThings and you want to
           publish precise information about their attributes and how they are inter-related. Another
           use case is the publication on the Web of a dataset that has a spatial component in a form
           that search engines will understand. </p>
-        <p>The attributes of a spatial thing can be described using existing vocabularies, where
-          each term has a published definition. If you want to describe an aspect of the thing that
-          matches that definition then it is good practice to use a term from an established widely
-          used vocabulary. If you can't find a suitable existing vocabulary term, you should create
-          your own, and publish a clear definition for the new term. If you need extra semantics not
-          available in an existing vocabulary, you should create your own. </p>
-        <p>How to publish your vocabulary, which describes the meaning of your data, is explained in
-          [[LD-BP]]. We recommend that you link your own vocabulary to commonly used existing ones
-          because this increases its usefulness. How to do this is out of scope for this document;
-          however, we give some examples of mapping relations you can use from OWL, SKOS, RDFS. We
-          also do the mapping between some commonly used spatial vocabularies. </p>
+        <p>Depending on the format you use, the semantics may already be described in some form. For example, in GeoJSON this description is present in the [[GeoJSON]] specification. When using JSON it is possible to add semantics using a JSON-LD @context. For providing semantics to search engines, using schema.org is the way to go, as explained in <a href="#indexable-by-search-engines">BP 3: Make your data indexable by search engines</a>. </p>
+        <p>In a linked data setting, the attributes of a spatial thing can be described using existing vocabularies, where
+          each term has a published definition. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ReuseVocabularies">BP15: Reuse vocabularies, preferably standardized ones</a> recommends using terms from an established widely used vocabulary. If you can't find a suitable existing vocabulary term, you should create
+          your own, and publish a clear definition for the new term (see [[LD-BP]]. We recommend that you link your own vocabulary to commonly used existing ones
+          because this increases its usefulness. We provide the mapping between some commonly used spatial vocabularies. </p>
         <div class="issue" data-number="225">
           <p>We must avoid being overly focused on RDF.</p>
           <p>The [[LD-BP]] reference makes this section very RDF dependent. Is there a need /
             justification for this? Are we saying that RDF is the only recommended way to publish
             data and models on the Web? Web developers may not care about RDF vocabularies and maybe
             they prefer a Swagger document (just to pick an example)?</p>
+          <p>To reduce the RDF focus, some text was added. </p>
         </div>
         <div class="note">
           <p>The current list of RDF vocabularies / OWL ontologies for spatial data being considered
@@ -1307,6 +1302,10 @@ Different requirements may occur if the data is downloaded as a whole dataset or
             (if any are evident), and recommendations avoiding their use as these may lead to
             confusion, will be published in a complementary <strong>NOTE: Comparison of geospatial
               vocabularies</strong>.</p>
+          <p>The NOTE will be concerned with helping data publishers choose the right
+            spatial data format or vocabulary. It provides a methodology for
+            making that choice. We do this rather than recommending one vocabulary because this
+            recommendation would not be durable as vocabularies are released or amended. </p>
           <p>Vocabularies can discovered from <a href="http://lov.okfn.org/dataset/lov/">Linked Open
               Vocabularies (LOV)</a>; using search terms like 'location' or Tags <a
               href="http://lov.okfn.org/dataset/lov/terms?q=place">place</a>, <a
@@ -1317,6 +1316,7 @@ Different requirements may occur if the data is downloaded as a whole dataset or
             <li><a href="http://www.w3.org/2003/01/geo/wgs84_pos">W3C WGS84 Position</a></li>
             <li><a href="http://schema.org">schema.org</a></li>
             <li><a href="http://www.opengis.net/ont/geosparql">OGC GeoSPARQL</a></li>
+            <li><a href="http://geosemweb.org/sdwgeo">GeoSPARQL spatial ontology update proposal</a></li>
             <li><a href="http://geovocab.org/spatial.html">neogeo</a></li>
             <li><a href="http://dbpedia.org/ontology/">DBpedia</a> (including <a
                 href="http://dbpedia.org/ontology/Place">dbpedia:Place</a>)</li>
@@ -1369,119 +1369,118 @@ Different requirements may occur if the data is downloaded as a whole dataset or
           spatial vocabularies. However, experience suggests that such a <em>minimal common
             core</em> is not very useful as one quickly need to employ specific semantics to meet
           one's application needs.</p>
-        <section id="bp-expr-geo">
-          <h4>Describing spatial resources</h4>
-          <p>This entire subsection is concerned with helping data publishers choose the right
-            spatial data format or vocabulary. Collectively this section provides a methodology for
-            making that choice. We do this rather than recommending one vocabulary because this
-            recommendation would not be durable as vocabularies are released or amended. </p>
-          <p class="issue" data-number="37">Do we need a subclass of <a>SpatialThing</a> for
+        <p class="issue" data-number="37">Do we need a subclass of <a>SpatialThing</a> for
             entities that do not have a clearly defined spatial extent; or a property that expresses
             the fuzzyness the extent?</p>
-          <div class="practice">
-            <p><span id="describe-geometry" class="practicelab">How to describe geometry</span></p>
-            <p class="practicedesc">Geometry data should be expressed in a way that allows its
-              publication and use on the Web.</p>
-            <section class="axioms">
-              <p class="subhead">Why</p>
-              <p>This best practice helps with choosing the right format for describing geometry
-                based on aspects like performance and tool support. It also helps when deciding on
-                whether or not using literals for geometric representations is a good idea.</p>
-            </section>
-            <section class="outcome">
-              <p class="subhead">Intended Outcome</p>
-              <p>The format chosen to express geometry data should:</p>
+        <section id="bp-expr-geo">
+          <h4>Describing location</h4>
+          <p>There are different ways of describing the location of spatial things. You can use and/or refer to the name of a wellknown named place (refer to BP18-19) but also by providing the location's coordinates as a geometry or by describing it in relation to another location. These last two options are described in this section.</p>
+        <div class="practice">
+          <p><span id="describe-geometry" class="practicelab">Provide geometries on the Web in a usable way</span></p>
+          <p class="practicedesc">Geometry data should be expressed in a way that allows its
+            publication and use on the Web.</p>
+          <section class="axioms">
+            <p class="subhead">Why</p>
+            <p>This best practice helps with choosing the right format for describing geometry
+              based on aspects like performance and tool support. It also helps when deciding on
+              whether or not using literals for geometric representations is a good idea.</p>
+          </section>
+          <section class="outcome">
+            <p class="subhead">Intended Outcome</p>
+            <p>The format chosen to express geometry data should:</p>
+            <ul>
+              <li>Support the dimensionality of the geometry;</li>
+              <li>Be supported by the software tools used within data user community;</li>
+              <li>Keep geometry descriptions to a size that is convenient for Web
+                applications;</li>
+              <li>Support the CRS you need.</li>
+            </ul>
+          </section>
+          <section class="how">
+            <p class="subhead">Possible Approach to Implementation</p>
+            <p>Steps to follow: </p>
+            <ul>
+              <li>Decide on the geometric data representations based on performance; often the
+                geometry data is a large proportion of the total size of a dataset.</li>
+              <li>Determine the dimensionality of geometry data (0d 'point' to 3d 'volume').</li>
+              <li>Determine in which coordinate reference system(s) (CRS) the data should be published (ref to section about CRS). Not all formats and vocabularies support the use of other CRS besides the most common one on the Web, WGS84.</li>
+              <li>Determine which format(s) are supported by software tools that you anticipate
+                your user community to employ; where multiple formats are in required, consider
+                offering as many representations as you can - balancing the benefit of ease of use
+                against the cost of the additional storage or additional processing if converting
+                on-the-fly. See [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#Conneg">Best
+                  Practice 22: Serving data and resources with different formats</a> for more
+                information.</li>
+              <li>Choose the right format and decide when to use geometry literals. For geometry
+                literals, several solutions are available, like Well-Known Text (<a>WKT</a>)
+                representations, <a href="https://en.wikipedia.org/wiki/Geohash">GeoHash</a> and
+                other geocoding representations. The alternative is to use structured geometry
+                objects as is possible, for example, in [[GeoSPARQL]].</li>
+              <li>There are also several suitable binary data formats (e.g. <a
+                  href="https://developers.google.com/protocol-buffers/">Google's protocol
+                  buffers</a> for vector tiling); however, some binary formats do not
+                (effectively) work on the Web as there are no software tools for working with
+                those formats from within a typical Web application; to work with data in such
+                formats, you must first download the data and then work with it locally. </li>
+              <li>There are widespread practices for representing geometric data as linked data,
+                such as using W3C <a href="http://www.w3.org/2003/01/geo/wgs84_pos#">WGS84 Geo
+                  Positioning vocabulary</a> (geo) <code>geo:lat</code> and <code>geo:long</code>
+                that are used extensively for describing <code>geo:Point</code> objects.</li>
+              <li>Concrete geometry types are available, such as those defined in the OpenGIS
+                [[Simple-Features]] Specification, namely 0-dimensional Point and MultiPoint;
+                1-dimensional curve LineString and MultiLineString; 2-dimensional surface Polygon
+                and MultiPolygon; and the heterogeneous GeometryCollection. </li>
+            </ul>
+            <aside class="example">
+              <p>Example(s) to be added; including:</p>
               <ul>
-                <li>Support the dimensionality of the geometry;</li>
-                <li>Be supported by the software tools used within data user community;</li>
-                <li>Keep geometry descriptions to a size that is convenient for Web
-                  applications.</li>
+                <li>bounding box, centroid (ref: <a
+                    href="http://www.w3.org/TR/sdw-ucr/#BoundingBoxCentroid"
+                    >R-BoundingBoxCentroid</a>)</li>
+                <li>show <a>Coordinate Reference System</a> (CRS) definition (ref: <a
+                    href="http://www.w3.org/TR/sdw-ucr/#DefaultCRS">R-DefaultCRS</a>)</li>
+                <li>vector geometry (ref: <a
+                    href="http://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry"
+                    >R-EncodingForVectorGeometry</a>)</li>
+                <li>non-geospatial example e.g. microscopy (ref: <a
+                    href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems"
+                    >R-IndependenceOnReferenceSystems</a>)</li>
+                <li>encoding information in different ways; e.g. height … above mean sea level, or
+                  floor 5 of <a href="http://dbpedia.org/resource/The_Shard">The Shard</a></li>
+                <li>provision of multiple geometries for a single feature; e.g. a single reference
+                  point (for "pin on map"), a bounding box (for search), a simple geometry (for
+                  coarse spatial analysis), a detailed geometry (for resolving cadastral boundary
+                  disputes) etc.</li>
               </ul>
-            </section>
-            <section class="how">
-              <p class="subhead">Possible Approach to Implementation</p>
-              <p>Steps to follow: </p>
-              <ul>
-                <li>Decide on the geometric data representations based on performance; often the
-                  geometry data is a large proportion of the total size of a dataset.</li>
-                <li>Determine the dimensionality of geometry data (0d 'point' to 3d 'volume').</li>
-                <li>Determine which format(s) are supported by software tools that you anticipate
-                  your user community to employ; where multiple formats are in required, consider
-                  offering as many representations as you can - balancing the benefit of ease of use
-                  against the cost of the additional storage or additional processing if converting
-                  on-the-fly. See [[DWBP]] <a href="http://w3c.github.io/dwbp/bp.html#Conneg">Best
-                    Practice 22: Serving data and resources with different formats</a> for more
-                  information.</li>
-                <li>Choose the right format and decide when to use geometry literals. For geometry
-                  literals, several solutions are available, like Well-Known Text (<a>WKT</a>)
-                  representations, <a href="https://en.wikipedia.org/wiki/Geohash">GeoHash</a> and
-                  other geocoding representations. The alternative is to use structured geometry
-                  objects as is possible, for example, in [[GeoSPARQL]].</li>
-                <li>There are also several suitable binary data formats (e.g. <a
-                    href="https://developers.google.com/protocol-buffers/">Google's protocol
-                    buffers</a> for vector tiling); however, some binary formats do not
-                  (effectively) work on the Web as there are no software tools for working with
-                  those formats from within a typical Web application; to work with data in such
-                  formats, you must first download the data and then work with it locally. </li>
-                <li>There are widespread practices for representing geometric data as linked data,
-                  such as using W3C <a href="http://www.w3.org/2003/01/geo/wgs84_pos#">WGS84 Geo
-                    Positioning vocabulary</a> (geo) <code>geo:lat</code> and <code>geo:long</code>
-                  that are used extensively for describing <code>geo:Point</code> objects.</li>
-                <li>Concrete geometry types are available, such as those defined in the OpenGIS
-                  [[Simple-Features]] Specification, namely 0-dimensional Point and MultiPoint;
-                  1-dimensional curve LineString and MultiLineString; 2-dimensional surface Polygon
-                  and MultiPolygon; and the heterogeneous GeometryCollection. </li>
-              </ul>
-              <aside class="example">
-                <p>Example(s) to be added; including:</p>
-                <ul>
-                  <li>bounding box, centroid (ref: <a
-                      href="http://www.w3.org/TR/sdw-ucr/#BoundingBoxCentroid"
-                      >R-BoundingBoxCentroid</a>)</li>
-                  <li>show <a>Coordinate Reference System</a> (CRS) definition (ref: <a
-                      href="http://www.w3.org/TR/sdw-ucr/#DefaultCRS">R-DefaultCRS</a>)</li>
-                  <li>vector geometry (ref: <a
-                      href="http://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry"
-                      >R-EncodingForVectorGeometry</a>)</li>
-                  <li>non-geospatial example e.g. microscopy (ref: <a
-                      href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems"
-                      >R-IndependenceOnReferenceSystems</a>)</li>
-                  <li>encoding information in different ways; e.g. height … above mean sea level, or
-                    floor 5 of <a href="http://dbpedia.org/resource/The_Shard">The Shard</a></li>
-                  <li>provision of multiple geometries for a single feature; e.g. a single reference
-                    point (for "pin on map"), a bounding box (for search), a simple geometry (for
-                    coarse spatial analysis), a detailed geometry (for resolving cadastral boundary
-                    disputes) etc.</li>
-                </ul>
-              </aside>
-            </section>
-            <section class="test">
-              <p class="subhead">How to Test</p>
-              <p>...</p>
-            </section>
-            <section class="ucr">
-              <p class="subhead">Evidence</p>
-              <p><span>Relevant requirements</span>: <a
-                  href="http://www.w3.org/TR/sdw-ucr/#BoundingBoxCentroid"
-                >R-BoundingBoxCentroid</a>, <a href="http://www.w3.org/TR/sdw-ucr/#Compressible"
-                  >R-Compressible</a>, <a href="http://www.w3.org/TR/sdw-ucr/#CRSDefinition"
-                  >R-CRSDefinition</a>, <a
-                  href="http://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry"
-                  >R-EncodingForVectorGeometry</a>, <a
-                  href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems"
-                  >R-IndependenceOnReferenceSystems</a>, <a
-                  href="http://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, <a
-                  href="http://www.w3.org/TR/sdw-ucr/#SpatialMetadata">R-SpatialMetadata</a>, <a
-                  href="http://www.w3.org/TR/sdw-ucr/#3DSupport">R-3DSupport</a>, <a
-                  href="http://www.w3.org/TR/sdw-ucr/#TimeDependentCRS">R-TimeDependentCRS</a>, <a
-                  href="http://www.w3.org/TR/sdw-ucr/#TilingSupport">R-TilingSupport</a>.</p>
-            </section>
-            <section class="benefits">
-              <h4 class="subhead">Benefits</h4>
-              <ul class="benefitsList">
-                <li>...</li>
-              </ul>
-            </section>
+            </aside>
+          </section>
+          <section class="test">
+            <p class="subhead">How to Test</p>
+            <p>...</p>
+          </section>
+          <section class="ucr">
+            <p class="subhead">Evidence</p>
+            <p><span>Relevant requirements</span>: <a
+                href="http://www.w3.org/TR/sdw-ucr/#BoundingBoxCentroid"
+              >R-BoundingBoxCentroid</a>, <a href="http://www.w3.org/TR/sdw-ucr/#Compressible"
+                >R-Compressible</a>, <a href="http://www.w3.org/TR/sdw-ucr/#CRSDefinition"
+                >R-CRSDefinition</a>, <a
+                href="http://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry"
+                >R-EncodingForVectorGeometry</a>, <a
+                href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems"
+                >R-IndependenceOnReferenceSystems</a>, <a
+                href="http://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, <a
+                href="http://www.w3.org/TR/sdw-ucr/#SpatialMetadata">R-SpatialMetadata</a>, <a
+                href="http://www.w3.org/TR/sdw-ucr/#3DSupport">R-3DSupport</a>, <a
+                href="http://www.w3.org/TR/sdw-ucr/#TimeDependentCRS">R-TimeDependentCRS</a>, <a
+                href="http://www.w3.org/TR/sdw-ucr/#TilingSupport">R-TilingSupport</a>.</p>
+          </section>
+          <section class="benefits">
+            <h4 class="subhead">Benefits</h4>
+            <ul class="benefitsList">
+              <li>...</li>
+            </ul>
+          </section>
           </div>
           <div class="practice">
             <p><span id="relative-position" class="practicelab">How to describe relative
@@ -1534,6 +1533,7 @@ Different requirements may occur if the data is downloaded as a whole dataset or
             </section>
           </div>
         </section>
+      
         <section id="bp-geo-voc">
           <h4>Publishing data with clear semantics</h4>
           <p>In most cases, the effective use of information resources requires understanding
