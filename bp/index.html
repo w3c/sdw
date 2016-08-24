@@ -1937,7 +1937,8 @@ Is the primary audience is known and work within a limited well defined spatial 
       </section>
       <section id="bp-linking">
         <h3>Linking Spatial Data</h3>
-        <p>In the wider Web, it is links that enable the discovery of web pages: from user-agents
+        <p>Earlier in this document, the <a href="#linked-data">Linked Data</a> section explained that we  believe that Linked Data requires only that the formats used to publish data support Web linking. In other words, linking spatial data does not automatically mean the use of RDF; links can also be created, for example, using GML, HTML or JSON-LD.</p>
+        <p>Links, in whatever machine-readable form, are important. In the wider Web, it is links that enable the discovery of web pages: from user-agents
           following a hyperlink to find related information to search engines using links to
           prioritise and refine search results. This section is concerned with the creation and use
           of those links to support discovery of the <a>SpatialThings</a> described in spatial
@@ -1958,15 +1959,14 @@ Is the primary audience is known and work within a limited well defined spatial 
             consumers.</li>
         </ul>
         <p>Just like any type of data, spatial data benefits massively from linking when publishing
-          on the web.</p>
-        <p class="note">The widespread use of links within data is regarded as one of the most
-          significant departures from contemporary practices used within SDIs.</p>
-        <p>Crucially, the use of links is predicated on the ability to identify the origin and
+          on the web. The widespread use of links within data is regarded as one of the most
+          significant departures from contemporary practices used within SDIs. That's why this topic is included in this Best Practice.</p>
+       <p>Crucially, the use of links is predicated on the ability to identify the origin and
           target, or <em>beginning</em> and <em>end</em>, of the link. <a
-            href="#globally-unique-ids">Best Practice 1: Use globally unique identifiers for
-            entity-level resources</a> is a prerequisite.</p>
-        <p>This section extends [[DWBP]] by providing best practices that are concerned with
-            <em>creating</em> links between the resources described inside datasets. Best practices
+            href="#globally-unique-ids">Best Practice 6: Use globally unique HTTP identifiers for
+            spatial things</a> is a prerequisite.</p>
+        <p>This section extends [[DWBP]] by providing a best practice about
+            <em>creating</em> links between the resources described inside datasets. <!-- revise -->Best practices
           detailing the use of links to support discovery are provided in <a href="#bp-discovery"
             class="sectionRef"></a>.</p>
         <div class="note">
@@ -1981,35 +1981,36 @@ Is the primary audience is known and work within a limited well defined spatial 
             provided about how to create the links that the use those persistent URIs.</p>
         </div>
         <div class="practice">
-          <p><span id="entity-level-links" class="practicelab">Make your entity-level links visible
-              on the web</span></p>
-          <p class="practicedesc">The data should be published with explicit links to other
-            resources.</p>
+          <p><span id="entity-level-links" class="practicelab">Publish links to related resources</span></p>
+          <p class="practicedesc">The data should be published with explicit links, including spatial links, to spatial things or other
+            resources,  both in the same dataset and in other datasets. </p>
           <section class="axioms">
             <p class="subhead">Why</p>
             <p>Exposing entity-level links to web applications, user-agents and web crawlers allows
               the relationships between resources to be found without the data user needing to
-              download the entire dataset for local analysis. Entity-level links provide explicit
+              download the entire dataset for local analysis. Entity-level links, preferably meaningful links, provide explicit
               description of the relationships between resources and enable users to find related
               data and determine whether the related data is worth accessing. Entity-level links can
               be used to combine information from different sources; for example, to determine
-              correlations in statistical data relating to the same location.</p>
+              correlations in statistical data relating to the same location. </p>
+            <p>Spatial relationships between Things should not be left implicit but be specified in forms of geographical, topological and hierarchical links. It is often more efficient to rely on relationships asserted between SpatialThings rather than rely on solutions such as analysis of geometries to find out that two Things are, for example, at the same place, near each other, or one is inside the other. </p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
             <ul>
-              <li>It should be possible for humans to understand and follow the the entity-level
-                links between resources.</li>
+              <li>It should be possible for humans and for machine agents to understand or interpret and to follow the  entity-level links between resources. Preferably, the definition of the meaning of a given link is precise and explicit.</li>
               <li>It should be possible for machine agents to interpret and explore the the
                 entity-level links between resources.</li>
               <li>It should be possible for machine agents to automatically determine (and find)
                 relationships between entities by exploring the links between them.</li>
               <li>It should be possible for a third party, who owns neither subject or object
                 resources, to publish a set of links between resources.</li>
+              <li>It should be possible for humans and machine agents to find spatial relationships between Things without performing post geometric processing.</li>
             </ul>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
+            <p>1. General guidance</p>
             <p>Choose one of the following methods to provide explicit entity-level links:</p>
             <ul>
               <li>Publish the data with links (to uniquely identified objects) embedded in the
@@ -2021,6 +2022,10 @@ Is the primary audience is known and work within a limited well defined spatial 
             <p class="issue" data-number="36">The use of Linksets needs further discussion as
               evidence indicates that it is not yet a widely adopted best practice. It may be
               appropriate to publish such details in a Note co-authoried with the DWBP WG.</p>
+            <p>To let user agents know what is at the end of a link, it's a good idea to use explicitly defined relationship types to link between resources. [[DWBP]] <a
+              href="https://www.w3.org/TR/dwbp/bp.html#dataVocabularies">Section 8.9 Data
+              Vocabularies</a> provides information on general relationship types described in well-defined vocabularies (see [[DWBP]] <a
+                href="https://www.w3.org/TR/dwbp/bp.html#ReuseVocabularies">Best Practice 15: Reuse vocabularies</a>). Spatial relationship types are described in the next section.</p>
             <aside class="example">
               <p>example(s) to be added; including ...</p>
               <ul>
@@ -2044,6 +2049,17 @@ Is the primary audience is known and work within a limited well defined spatial 
                 </li>
                 <li>Third-party provision of links: <a href="http://sameas.org">sameas.org</a>
                   provides a (collection of) Link-set(s).</li>
+              <li>Meaningful predicates in RDF statements defined in a resolvable RDF vocabulary /
+                  ontology.</li>
+                <li>Use of SKOS to define hierarchical relationships between resources (see
+                  [[skos-primer]).</li>
+                <li>Formally defined XML elements defined in a resolvable XML schema.</li>
+                <li>Use formally registered IANA <a
+                  href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link
+                  relations</a> within HTTP link headers.</li>
+                <li>Use a 'profile' link relation type, as specificed in [[RFC6906]], to refer to
+                  online documentation that describes the links and properties used within the
+                  referring resource.</li>
               </ul>
             </aside>
             <p class="note">[[gml]] adopted the [[xlink11]] standard to represent links between
@@ -2067,76 +2083,31 @@ Is the primary audience is known and work within a limited well defined spatial 
               wild cards / regex in URLs (e.g. URI Template as defined in [[RFC6570]]?</p>
             <p class="issue" data-number="164">The examples contain only outline information;
               further details must be added.</p>
-          </section>
-          <section class="test">
-            <p class="subhead">How to Test</p>
-            <p>...</p>
-          </section>
-          <section class="ucr">
-            <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
-          </section>
-          <section class="benefits">
-            <h4 class="subhead">Benefits</h4>
-            <ul class="benefitsList">
-              <li>...</li>
-            </ul>
-          </section>
-        </div>
-        <div class="practice">
-          <p><span id="meaningful-links" class="practicelab">Provide meaningful links</span></p>
-          <p class="practicedesc">When providing a link, a data publisher should opt for a level of
-            formal and meaningful semantics that helps data consumers to decide if the target
-            resource is relevant to them.</p>
-          <section class="axioms">
-            <p class="subhead">Why</p>
-            <p>Specifying the meaning of a link enables a data user to evaluate whether or not the
-              target resource is relevant to them. Describing the <em>affordances</em> of the target
-              resource (e.g. what that resource can do or be used for) helps the data user to
-              determine whether it is worth following the link.</p>
-          </section>
-          <section class="outcome">
-            <p class="subhead">Intended Outcome</p>
-            <p>The links provided for the data should allow different data consumers and
-              applications to determine the relevance of a target resource to them. The definition
-              of the meaning of a given link should be precise and explicit.</p>
             <div class="issue" data-number="166">
               <p>How do we know what is at the end of a link - and what can I do with it / can it do
                 for me (e.g. the 'affordances' of the target resource).</p>
               <p>How to describe the 'affordances' of the target resource?</p>
             </div>
-          </section>
-          <section class="how">
-            <p class="subhead">Possible Approach to Implementation</p>
-            <p>Ensure that the type of relationship used to link between resources is explicitly
-              identified. Provide resolvable definitions of those relationship types.</p>
-            <p class="note">Please refer to <a href="http://w3c.github.io/sdw/bp/#semantic-rels"
-                >Best Practice 13: Assert known relationships</a> for details of relationship types
-              that may be used to describe spatial links (e.g. geographical, hierarchical,
-              topological etc.). [[DWBP]] <a
-                href="https://www.w3.org/TR/dwbp/bp.html#dataVocabularies">Section 9.9 Data
-                Vocabularies</a> provides futher information on use of relationship types described
-              in well-defined vocabularies (see [[DWBP]] <a
-                href="https://www.w3.org/TR/dwbp/bp.html#MetadataStandardized">Best Practice 16: Use
-                standardized terms</a> and <a
-                href="https://www.w3.org/TR/dwbp/bp.html#ReuseVocabularies">Best Practice 17: Reuse
-                vocabularies</a>).</p>
+            
+            <p>2. Mapping spatial relationships</p>
+            <p>When two spatial datasets contain geometries, you can use spatial functions to find out which objects overlap, touch, etc. Based on this spatial correlation you might determine that two datasets are talking about the same places. But for reasons of efficiency or simply for being able to use these spatial correlations in a context where spatial functions are not available, or explicit geometry is not available, it is a good idea to express these spatial relationships explicitly in your data. There is also danger in relying on spatial correlation alone, particularly if this is only handled in 2D and ignores any (explicit or undeclared) height and time component; you might conclude that two resources represent the same thing when in reality they represent, for example, a shop at ground level and living apartment above it.</p>
+            <p>If you want to link two spatial datasets, find out if they have corresponding geometries using spatial functions and then express these correspondences as explicit relationships. If the spatial datasets you want to reconcile are managed in a Geographic Information System (GIS) or a spatial database, you can use the GIS spatial functions to find related spatial things. If your spatial things are expressed as Linked Data, you can use [GeoSPARQL], which has a set of spatial query functions available.</p>
+            
+            <p>3. Expressing spatial relationships</p>
+            <p>Describing the spatial relationships between SpatialThings can be based on
+              relationships such as topological, geographical and hierarchical (e.g. partOf) links.</p>  
+            <p>How to use spatial functions to find out if spatial things have corresponding geometries is described in <a href="#lacking-ids">Best Practice 3: Working with data that lacks globally unique identifiers for entity-level resources</a>. This best practice describes how to express these discovered relationships between resources about physical and conceptual spatial things.</p>
+            <p>The asserted spatial semantics can include relationship such as nearby, contains, etc. This best practice requires specifying geometric, topological and social spatial relationships. It is also important to determine which relationships are appropriate for a given case (This is beyond the scope of this BP). This best practice requires:</p>
+            <ul>
+              <li>The geographical, topological and social hierarchy (part of) should be described with clear semantics and registered with IANA <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link relations</a>.</li>
+              <li>Hierarchical relationships (i.e. part of, for example between administrative regions, have a specific need for defining <em>Mutually Exclusive Collectively Exhaustive</em> (MECE) set.</li>
+              <li>Topological relationships that are described for an entity should have references to concepts such as over, under etc.</li>
+              <li>Spatial relationships can use concepts such as <a href="https://en.wikipedia.org/wiki/Region_connection_calculus">Region Connection Calculus</a> (RCC8) that contains, overlaps, touches, intersects, adjacent to, or "<a href="https://en.wikipedia.org/wiki/DE-9IM#Spatial_predicates">spatial predicates</a>" or also other similar concepts from <a href="https://en.wikipedia.org/wiki/Allen%27s_interval_algebra">Allen Calculus</a>.</li>
+            </ul>
+            <p>Social relationships can be defined based on perception; e.g. "samePlaceAs", nearby, south of. These relationships can also be defined based on temporal concepts such as: after, around, etc. In current practice, there is no such property as <code>samePlaceAs</code> to express the social notion of <em>place</em>; enabling communities to unambiguously indicate that they are referring to the same place but without getting hung up on the semantic complexities inherent in the use of <code>owl:sameAs</code> or similar.</p>
+            <p class="issue" data-number="215">Include details of which spatial relationships are published as IANA Link relations.</p>
             <aside class="example">
-              <p>example(s) ... <span style="background-color:yellow">[further details to be
-                  added]</span></p>
-              <ul>
-                <li>Meaningful predicates in RDF statements defined in a resolvable RDF vocabulary /
-                  ontology.</li>
-                <li>Use of SKOS to define hierarchical relationships between resources (see
-                  [[skos-primer]).</li>
-                <li>Formally defined XML elements defined in a resolvable XML schema.</li>
-                <li>Use formally registered IANA <a
-                    href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link
-                    relations</a> within HTTP link headers.</li>
-                <li>Use a 'profile' link relation type, as specificed in [[RFC6906]], to refer to
-                  online documentation that describes the links and properties used within the
-                  referring resource.</li>
-              </ul>
+              <p>example(s) to be added</p>
             </aside>
           </section>
           <section class="test">
@@ -2146,7 +2117,7 @@ Is the primary audience is known and work within a limited well defined spatial 
           <section class="ucr">
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: <a
-                href="http://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a></p>
+              href="http://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a></p>
           </section>
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
@@ -2942,83 +2913,6 @@ Is the primary audience is known and work within a limited well defined spatial 
               href="http://www.w3.org/TR/sdw-ucr/#TemporalReferenceSystem"
               >R-TemporalReferenceSystem</a>, <a href="http://www.w3.org/TR/sdw-ucr/#TimeSeries"
               >R-TimeSeries</a>.</p>
-        </section>
-      </div>
-      <!-- The next one was removed from the Identifiers best practices; a little of its content was used in the new merged BP on identifiers. Of the rest parts can be used in the overlapping BP mentioned in the issue. -->
-      <div class="practice">
-        <p><span id="lacking-ids" class="practicelab"></span></p>
-        <p class="practicedesc">something about mapping spatial things from different datasets</p>
-        <section class="axioms">
-          <p class="subhead">Why</p>
-          <p>There are many mechanisms to reconcile (i.e. find related, map or link) objects from
-            different datasets. When two spatial datasets contain geometries, you can use spatial
-            functions to find out which objects overlap, touch, etc. Based on this spatial
-            correlation you might determine that two datasets are talking about the same places,
-            but this is often not enough. For reasons of efficiency or simply for being able to
-            use these spatial correlations in a context where spatial functions are not available,
-            or explicit geometry is not available, it is a good idea to express these spatial
-            relationships explicitly in your data. There is also danger in relying on spatial
-            correlation alone, particularly if this is only handled in 2D and ignores any
-            (explicit or undeclared) height and time component; you might conclude that two
-            resources represent the same thing when in reality they represent, for example, a shop
-            at ground level and living apartment above it.</p>
-        </section>
-        <section class="outcome">
-          <p class="subhead">Intended Outcome</p>
-          <p>Links between resources in datasets created from spatial correspondences.</p>
-        </section>
-        <section class="how">
-          <p class="subhead">Possible Approach to Implementation</p>
-          <p>If you want to link two spatial datasets, find out if they have corresponding
-            geometries using spatial functions and then express these correspondences as explicit
-            relationships.</p>
-          <p>In this best practice we only give guidance on spatial reconciliation (e.g. two
-            mentions of Paris are talking about the same place). We do not address thematic
-            reconciliation.</p>
-          <p>If the spatial datasets you want to reconcile are managed in a Geographic Information
-            System (<a>GIS</a>) or a <a>spatial database</a>, you can use the GIS spatial
-            functions to find related spatial things. If your spatial things are expressed as
-            Linked Data, you can use [[GeoSPARQL]], which has a set of spatial query functions
-            available. </p>
-          <p>How to express discovered relationships is discussed in <a href="#semantic-rels">Best
-            Practice 13: Assert known relationships</a>. </p>
-          <div class="issue" data-number="102">
-            <p>The scope of this Best Practice isn't quite correct. The intent is that it helps
-              practitioners decide what to do when their data doesn't already have URIs, but at
-              present it's more about reconciliation and linking with other resources (which
-              overlaps with <a href="#link-to-related-resources">Best Practice 23: Link to related
-                resources</a>). The previous title ("<em>Working with data that lacks globally
-                  unique identifiers for entity-level resources</em>") and description ("<em>Create
-                    Spatial reconciliation across datasets</em>") have been changed to reflect
-              this.</p>
-            <p>So far we have discussed the short comings of using names as identifiers (and the
-              subsequent need for reconciliation). We also need to discuss assigning URIs based on
-              local identifiers; for example, row numbers from tabular data or Feature identifiers
-              from geo-databases.</p>
-            <p>Small parts of this BP were merged with <a href="#globally-unique-ids">Best Practice 1: Use globally unique HTTP
-                identifiers for spatial things</a> as it is really all about using
-              globally unique identifiers.</p>
-            <p>The rest can be used in <a href="#link-to-related-resources">Best Practice 23: Link to related
-              resources</a>.</p>
-          </div>
-          <aside class="example">
-            <p>example(s) to be added</p>
-          </aside>
-        </section>
-        <section class="test">
-          <p class="subhead">How to Test</p>
-          <p>...</p>
-        </section>
-        <section class="ucr">
-          <p class="subhead">Evidence</p>
-          <p><span>Relevant requirements</span>: <a
-            href="http://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>.</p>
-        </section>
-        <section class="benefits">
-          <h4 class="subhead">Benefits</h4>
-          <ul class="benefitsList">
-            <li>...</li>
-          </ul>
         </section>
       </div>
     </section>
