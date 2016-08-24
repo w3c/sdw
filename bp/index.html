@@ -1561,8 +1561,7 @@ Is the primary audience is known and work within a limited well defined spatial 
                 >Vocabularies</a>.</p>
           </div>
           <div class="practice">
-            <p><span id="semantic-thing" class="practicelab">Use spatial semantics for Spatial
-                Things</span></p>
+            <p><span id="semantic-thing" class="practicelab">Use spatial semantics for Spatial Things</span></p>
             <p class="practicedesc">The best vocabulary should be chosen to describe the available
                 <a>SpatialThings</a>.</p>
             <section class="axioms">
@@ -1993,27 +1992,21 @@ Is the primary audience is known and work within a limited well defined spatial 
               data and determine whether the related data is worth accessing. Entity-level links can
               be used to combine information from different sources; for example, to determine
               correlations in statistical data relating to the same location. </p>
-            <p>Relationships between resources with with spatial extent (i.e. size, shape, or position; SpatialThings) can often be inferred from their spatial properties. For example, two resources might occur at the same location suggesting that they may be the same resource, or one resource might exist entirely within the bounds of another resource suggesting some kind of hierarchical containment relationship. However, reconciliation of such resources is complex: it requires some degree of understanding about the semantics of the two, potentially related, resources in order to determine how they are related, if at all.</p>
-        <p>Rather than expecting that data consumers will have sufficient context to relate resources, it is better for data publishers to assert the relationships that they know about. Not only does this provide data users with clear information about how resources are related, it removes the need for complex spatial processing (e.g. region connection calculus) to determine potential relationships between resources with spatial extent because those relations are already made explicit. </p>
-            <p>By linking your spatial resources to those in common usage it will be easier to discover your resources. For example, a data user interested in air quality data about the place they live might begin by searching for that place in popular data repositories such as GeoNames, Wikidata or DBpedia. Once the user finds the resource that describes the correct place, they can search for data that refers to the identified resource that, in this case, relates to air quality. Furthermore, by referring to resources in common usage, it becomes even easier to find those resources as search engines will prioritize resources that are linked to more often.</p>
+            <p>Data publishers should assert the relationships that they know about. Relationships between resources with with spatial extent (i.e. size, shape, or position; SpatialThings) can often be inferred from their spatial properties,but this is a complex task. It requires both complex spatial processing (e.g. region connection calculus)  and some degree of understanding about the semantics of the two, potentially related, resources in order to determine how they are related, if at all. This should not be left to the data user.</p>
+            <p>When your spatial resources are linked to those in common usage it will be easier to discover them. For example, a data user interested in air quality data about the place they live might begin by searching for that place in popular data repositories such as GeoNames, Wikidata or DBpedia. Once the user finds the resource that describes the correct place, they can search for data that refers to the identified resource that, in this case, relates to air quality. Furthermore, by referring to resources in common usage, it becomes even easier to find those resources as search engines will prioritize resources that are linked to more often.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
             <ul>
-              <li>It should be possible for humans and for machine agents to understand or interpret and to follow the  entity-level links between resources. Preferably, the definition of the meaning of a given link is precise and explicit.</li>
-              <li>It should be possible for machine agents to interpret and explore the the
-                entity-level links between resources.</li>
-              <li>It should be possible for machine agents to automatically determine (and find)
-                relationships between entities by exploring the links between them.</li>
-              <li>It should be possible for a third party, who owns neither subject or object
-                resources, to publish a set of links between resources.</li>
+              <li>It should be possible for humans and for machine agents to understand, interpret and follow the entity-level links between resources. Preferably, the definition of the meaning of a given link is precise and explicit.</li>
               <li>It should be possible for humans and machine agents to find spatial relationships between Things without performing post geometric processing.</li>
+              <li>Spatial things should be related to commonly used resources.</li>
             </ul>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
             <p>Steps:</p>
-            <p>1. Choose one of the following methods to provide explicit entity-level links:</p>
+            <p>1. Choose one of the following general methods to provide explicit entity-level links:</p>
             <ul>
               <li>Publish the data with links (to uniquely identified objects) embedded in the
                 data.</li>
@@ -2024,10 +2017,6 @@ Is the primary audience is known and work within a limited well defined spatial 
             <p class="issue" data-number="36">The use of Linksets needs further discussion as
               evidence indicates that it is not yet a widely adopted best practice. It may be
               appropriate to publish such details in a Note co-authoried with the DWBP WG.</p>
-            <p>To let user agents know what is at the end of a link, it's a good idea to use explicitly defined relationship types to link between resources. [[DWBP]] <a
-              href="https://www.w3.org/TR/dwbp/bp.html#dataVocabularies">Section 8.9 Data
-              Vocabularies</a> provides information on general relationship types described in well-defined vocabularies (see [[DWBP]] <a
-                href="https://www.w3.org/TR/dwbp/bp.html#ReuseVocabularies">Best Practice 15: Reuse vocabularies</a>). Spatial relationship types are described in the next section.</p>
             <aside class="example">
               <p>example(s) to be added; including ...</p>
               <ul>
@@ -2092,15 +2081,15 @@ Is the primary audience is known and work within a limited well defined spatial 
             </div>
             
             <p>2. Make spatial relationships explicit</p>
-            <p>When two spatial datasets contain geometries, you can use spatial functions to find out which objects overlap, touch, etc. Based on this spatial correlation you might determine that two datasets are talking about the same places. But for reasons of efficiency or simply for being able to use these spatial correlations in a context where spatial functions are not available, or explicit geometry is not available, it is a good idea to express these spatial relationships explicitly in your data. There is also danger in relying on spatial correlation alone, particularly if this is only handled in 2D and ignores any (explicit or undeclared) height and time component; you might conclude that two resources represent the same thing when in reality they represent, for example, a shop at ground level and living apartment above it.</p>
-            <p>If you want to link two spatial datasets, find out if they have corresponding geometries using spatial functions and then express these correspondences as explicit relationships. If the spatial datasets you want to reconcile are managed in a Geographic Information System (GIS) or a spatial database, you can use the GIS spatial functions to find related spatial things. If your spatial things are expressed as Linked Data, you can use [GeoSPARQL], which has a set of spatial query functions available.</p>
+            
+            <p>It is a good idea to express spatial relationships between things explicitly in your data. A possible approach for this is to find out if they have corresponding geometries using spatial functions, and then express these correspondences as explicit relationships. If the spatial datasets you want to reconcile are managed in a Geographic Information System (GIS) or a spatial database, you can use the GIS spatial functions to find related spatial things. If your spatial things are expressed as Linked Data, you can use [GeoSPARQL], which has a set of spatial query functions available.</p>
             <div class="note">
               <p>The mechanics of how to decide when two resources are related, if they don't have geometric or topological properties that allow you to determine this, are beyond the scope of this best practice. Tools (e.g. <a href="http://openrefine.org">OpenRefine</a>
                 and <a href="http://silk-framework.com">Silk Linked Data Integration Framework</a>)
                 are available to assist with reconciliation based on e.g. geographical names or addresses present in the data and may provide further insight.</p>
             </div>
             <div class="note">
-              <p>Where possible, existing identifiers should be reused when referring to resources (see <a href="http://w3c.github.io/sdw/bp/#reuse-ids">Best Practice 2: Reuse existing (authoritative) identifiers when available</a>). However, the use of multiple identifiers for the same resource is commonplace, for example, where data publishers from different jurisdictions refer to the same <a>SpatialThing</a>. In this special case, properties such as <code>owl:sameAs</code> can be used to declare that multiple identifiers refer to the same resource. It is often the case that data published from different sources about the same physical or conceptual resource may provide different view points. Note that you shouldn't use <code>owl:sameAs</code> to indicate that two spatial things are similar.</p>
+              <p>Where possible, existing identifiers should be reused when referring to resources (see <a href="http://w3c.github.io/sdw/bp/#reuse-ids">Best Practice 2: Reuse existing (authoritative) identifiers when available</a>). However, the use of multiple identifiers for the same resource is commonplace, for example, where data publishers from different jurisdictions refer to the same <a>SpatialThing</a>. In this special case, properties such as <code>owl:sameAs</code> can be used to declare that multiple identifiers refer to the same resource. It is often the case that data published from different sources about the same physical or conceptual resource may provide different view points. Note that you shouldn't use <code>owl:sameAs</code> to indicate that two spatial things are only similar, while not exactly the same.</p>
               <p class="issue" data-number="224">Maintaining links to *all* related resources doesn't
                 scale. Redraft required.</p>
               <aside class="example">
@@ -2112,9 +2101,14 @@ Is the primary audience is known and work within a limited well defined spatial 
               </aside>
             </div>
             <p>3. Decide which spatial relationships to use</p>
+            <p>To let user agents know what is at the end of a link, it's a good idea to use explicitly defined relationship types to link between resources. [[DWBP]] <a
+              href="https://www.w3.org/TR/dwbp/bp.html#dataVocabularies">Section 8.9 Data
+              Vocabularies</a> provides information on general relationship types described in well-defined vocabularies (see [[DWBP]] <a
+                href="https://www.w3.org/TR/dwbp/bp.html#ReuseVocabularies">Best Practice 15: Reuse vocabularies</a>). </p>
             <p>Describing the spatial relationships between SpatialThings can be based on
               relationships such as topological (e.g. contains), geographical (e.g. nearby) and hierarchical (e.g. part of) links.</p>
             <ul>
+              <li>A good place to find spatial relationships to use is in spatial vocabularies. See <a href="#semantic-thing" class="sectionRef">Best Practice 9: Use spatial semantics for Spatial Things</a>.</li>
               <li>The geographical, topological and social hierarchy should be described with clear semantics and registered with IANA <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link relations</a>.</li>
               <li>Hierarchical relationships (i.e. part of, for example between administrative regions, have a specific need for defining <em>Mutually Exclusive Collectively Exhaustive</em> (MECE) set.</li>
               <li>Topological relationships that are described for an entity should have references to concepts such as over, under etc.</li>
@@ -2128,14 +2122,14 @@ Is the primary audience is known and work within a limited well defined spatial 
               <p>example(s) to be added</p>
             </aside>
             <p>4. Determine the things to link to</p>
-            <p>When describing the relationships between related spatial resources, the links should connect spatial things rather than information resource(s) that describe them (in cases where an explicit difference is made between the two). Objects that describe SpatialThings (e.g. the geometry of a hydrological catchment) are prone to change as the information is updated. Typically, it is the SpatialThings that are given durable identifiers whereas the information resources that describe them (e.g. geometry objects) may be replaced by new versions.</p>
-            <p>Data publishers should relate their data to commonly used spatial resources such as GeoNames using links. </p>
+            <p>The links should connect spatial things rather than information resource(s) that describe them. In many cases, different identifiers are used to describe the <a>SpatialThing</a> and the information resource that describes that <a>SpatialThing</a>. For example, within <a href="http://dbpedia.org/">DBpedia</a>, the city of Sapporo, Japan, is identified as <code>http://dbpedia.org/<u>resource</u>/Sapporo</code>, while the information resource that describes this resource is identified as <code>http://dbpedia.org/<u>page</u>/Sapporo</code>. Care should be taken to select the identifier for the <a>SpatialThing</a> rather than the information resource that describes it; in the example above, this is <code>http://dbpedia.org/<u>resource</u>/Sapporo</code>.</p>
+            <p>Besides making the links to things within the same dataset explicit, data publishers should also relate their data to commonly used spatial resources such as GeoNames using links. </p>
             <p>A list of sources of commonly used spatial resources is provided in
               <a href="#auth-id-sources" class="sectionRef"></a>. </p>
             <div class="note">
               <p>This best practice is concerned with the connections <em>between</em>
                 <a>SpatialThings</a>. When describing an individual <a>SpatialThing</a> itself, it is often desirable to decompose the information into several uniquely identified objects. For example, the geometry of an administrative area may be managed as a separate resource due to the large number of geometric points required to describe the boundary.</p>
-              <p>Also note that in many cases, different identifiers are used to describe the <a>SpatialThing</a> and the information resource that describes that <a>SpatialThing</a>. For example, within <a href="http://dbpedia.org/">DBpedia</a>, the city of Sapporo, Japan, is identified as <code>http://dbpedia.org/<u>resource</u>/Sapporo</code>, while the information resource that describes this resource is identified as <code>http://dbpedia.org/<u>page</u>/Sapporo</code>. Care should be taken to select the identifier for the <a>SpatialThing</a> rather than the information resource that describes it; in the example above, this is <code>http://dbpedia.org/<u>resource</u>/Sapporo</code>.</p>
+              <p></p>
             </div>
             <aside class="example">
               <p>example(s) to be added; including ...</p>
