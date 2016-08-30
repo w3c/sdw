@@ -687,6 +687,7 @@ a:Dataset a dcat:Dataset ;
             data values</span></p>
           <p class="practicedesc">Data values should be linked to spatial, temporal and thematic
             information that describes them.</p>
+          <p class="issue">This BP is under review by the WG to see if it is sufficiently covered in DWBP. (see <a href="http://www.w3.org/2016/08/24-sdwbp-minutes.html#action01">action</a>)</p>
           <section class="axioms">
             <p class="subhead">Why</p>
             <p>For users of spatial or temporal data it should always be possible to look up spatial, temporal or thematic metadata about a given value. This allows them to determine, for example, which reference system (CRS or TRS) and unit of meaure (UoM) is used for a numeric value, the accuracy of the data value, and so on. Such metadata
@@ -784,9 +785,8 @@ Is the primary audience is known and work within a limited well defined spatial 
             <p class="subhead">Why</p>
             <p>The <a>CRS</a> is a special metadata attribute of spatial data that must be known for
               users to judge if the data is usable to them. Clients or users must always be able to
-              determine what CRS is used. Sometimes this is determined by the specification of the
-              data format that is used, but specifying the CRS as part of the metadata allows
-              clients and users to judge if the data is usable, and allows users to find spatial
+              determine what CRS is used. Sometimes the CRS is left implicit: it is then determined by the specification of the data format that is used. Preferably, the CRS is specified at least as part of the metadata so that
+              clients and users can judge if the data is usable, and can find spatial
               data with a specific CRS. </p>
             <p>The choice of CRS is sensitive to the intended domain of application for the
               spatial data. For the majority of applications a common global CRS (WGS84) is fine,
@@ -821,8 +821,7 @@ Is the primary audience is known and work within a limited well defined spatial 
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>A Coordinate Reference System (CRS) sensitive to the intended domain of application
-              (e.g. high precision applications) for the spatial data should be chosen.</p>
+            <p>Clients or users can determine which CRS is used. Also, a Coordinate Reference System (CRS) sensitive to the intended domain of application (e.g. high precision applications) for the spatial data should be chosen.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
@@ -1191,11 +1190,8 @@ Is the primary audience is known and work within a limited well defined spatial 
       </section>
       <section id="bp-identifiers">
         <h3>Spatial Data Identifiers</h3>
-        <p>As explained in <a href="#spatial-things-features-and-geometry" class="sectionRef">Section 4</a>, spatial things and geometries are different things, the geometries being properties of spatial things. There could be several information resources, in different datasets, that describe or refer to the
-          same spatial thing; for example, one dataset has its location and date a lighthouse was built, another has data
-          about its ownership or about shipwrecks near the same lighthouse.</p>
-        <p>The distinction between spatial things and the information resources that describe them is often confusing and unhelpful. Mostly, people looking for information are interested in spatial things, not in
-          information resources. Therefore the spatial things should get global identifiers so
+        <p>As explained in <a href="#spatial-things-features-and-geometry" class="sectionRef">Section 4</a>, spatial things and geometries are different things, the geometries being properties of spatial things. One spatial thing could have several geometries, each giving a different representation of the thing. In general, there could be several information resources, in different datasets, that describe or refer to the same spatial thing; for example, one dataset has its location (as a point geometry) and date a lighthouse was built, another has data about its ownership or about shipwrecks near the same lighthouse. A third has a 3D representation of the lighthouse.</p>
+        <p>The distinction between spatial things and the information resources that describe them is often confusing and unhelpful. Mostly, people looking for information are interested in spatial things, not in information resources. Therefore the spatial things should get global identifiers so
           they can be found and referenced. The geometries should have global identifiers too so they can be referenced and reused; and
           must have them if they are managed elsewhere. The information resources could be given identifiers of their own when there's a specific reason to identify them separately.</p>
         <p>[[DWBP]] provides best practices discussing globally unique identifiers and the use of HTTP (or  HTTPS) URIs for these identifers in order to support data discovery, usage and citation on the Web (see [[DWBP]] <a href="http://www.w3.org/TR/dwbp/#DataIdentifiers"
@@ -1317,13 +1313,13 @@ Is the primary audience is known and work within a limited well defined spatial 
       </section>
       <section id="bp-expressing-spatial">
         <h3>Spatial Data Vocabularies</h3>
-        <p>In this document we don't have a section on formats for publishing spatial data on the web. The formats are basically the same as for publishing any other data on the web: XML, JSON, CSV, etc. Refer to [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataFormats">Data Formats</a> for more information and best practices. </p>
+        <p>In this document there is no section on formats for publishing spatial data on the web. The formats are basically the same as for publishing any other data on the web: XML, JSON, CSV, RDF, etc. Refer to [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataFormats">Data Formats</a> for more information and best practices. </p>
         <p>That being said, it is important to publish your spatial data with clear semantics, i.e. to provide information about the contents of your data. The primary use case
           for this is you have information about a collection of SpatialThings and you want to
           publish precise information about their attributes and how they are inter-related. Another
           use case is the publication on the Web of a dataset that has a spatial component in a form
           that search engines will understand. </p>
-        <p>Depending on the format you use, the semantics may already be described in some form. For example, in GeoJSON this description is present in the [[GeoJSON]] specification. When using JSON it is possible to add semantics using a JSON-LD @context. For providing semantics to search engines, using schema.org is the way to go, as explained in <a href="#indexable-by-search-engines" class="sectionRef">BP 3: Make your data indexable by search engines</a>. </p>
+        <p>Depending on the format you use, the semantics may already be described in some form. For example, in GeoJSON this description is present in the [[GeoJSON]] specification. When using JSON it is possible to add semantics using a JSON-LD @context. For providing semantics to search engines, using schema.org is a good option, as explained in <a href="#indexable-by-search-engines" class="sectionRef">BP 3: Make your data indexable by search engines</a>. </p>
         <p>In a linked data setting, the attributes of a spatial thing can be described using existing vocabularies, where
           each term has a published definition. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ReuseVocabularies">BP15: Reuse vocabularies, preferably standardized ones</a> recommends using terms from an established widely used vocabulary. If you can't find a suitable existing vocabulary term, you should create
           your own, and publish a clear definition for the new term (see [[LD-BP]]. We recommend that you link your own vocabulary to commonly used existing ones
