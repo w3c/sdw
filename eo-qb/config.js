@@ -10,10 +10,25 @@ var respecConfig = {
     // crEnd: "3000-01-01",
     editors: [
     {
-      name: "Name",
+      name: "Dmitry Brizhinev",
       company: "Australian National University",
       companyURL: "https://cecs.anu.edu.au/"
-    }],
+    },
+    {
+      name: "Sam Toyer",
+      company: "Australian National University",
+      companyURL: "https://cecs.anu.edu.au/"
+    },
+    {
+      name: "Zhiduo Zhang",
+      company: "Australian National University",
+      companyURL: "https://cecs.anu.edu.au/"
+    },
+    {
+      name: "Kerry Taylor",
+      company: "Australian National University",
+      companyURL: "https://cecs.anu.edu.au/"
+    },],
     otherLinks: [
     {
       key: "OGC Document Number",
