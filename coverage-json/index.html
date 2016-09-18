@@ -54,9 +54,11 @@
  </style>
   </head>
   <body>
+
     <section  id="abstract">
       <p>@@@</p>
     </section>
+
     <section  id="sotd">
       <p>@@@ Something here @@@</p>
       <p><strong>For OGC</strong> This is a Public Draft of a document prepared
@@ -65,9 +67,10 @@
         The document is prepared following W3C conventions. The document is
         released at this time to solicit public comment.</p>
     </section>
+
     <section  id="intro"  class="informative">
       <h2>Introduction</h2>
-      <p>Background and motivation...</p>
+      <p>Background and motivation. Make it clear that we are not looking to reproduce the full spec here but provide an informative overview.</p>
       <h2>Objectives</h2>
       <p>Our objective in this work was to develop a well-structured, consistent and easy-to-use JSON format for coverage data that fulfils the following criteria:</p>
       <ul>
@@ -80,13 +83,16 @@
         <li>Use a minimal set of encoding rules, to avoid complicating the development of client code.</li>
       </ul>
     </section>
+
     <section  id="coverage" class="informative">
       <h2>What is a Coverage?</h2>
       <p>Stuff from Jon's blog post, or reference document Jeremy is preparing</p>
     </section>
+
     <section  id="overview">
       <h2>Overview of CoverageJSON</h2>
       <p>The full specification for CoverageJSON is published on <a href="https://covjson.org/spec/">GitHub</a>, which also records all discussions that led to the design decisions in the format.</p>
+
       <h3>High-level structure</h3>
       <p>In CovJSON, a Coverage consists of the following objects:</p>
       <ul>
@@ -95,27 +101,83 @@
         <li>A set of Parameter objects (one per scalar quantity), describing the data values.</li>
         <li>An optional set of ParameterGroup objects, which describe any semantic associations between Parameters.</li>
       </ul>
-      <p>TODO: insert skeleton JSON document here for illustration.</p>
+      <p>A sample skeleton document encoding a three-dimensional gridded Coverage with two Parameters (sea surface temperature and sea ice area fraction) is shown here:</p>
+      <pre>
+{
+  "type" : "Coverage",
+  "domain" : {
+    "domainType" : "Grid",
+    "axes" : {
+      "x" : { /* Coordinate values */ },
+      "y" : {                         },
+      "t" : {                         }
+    },
+    "referencing" : [
+      /* Coordinate referencing information */
+    ]
+  },
+  "parameters" : {
+    "SST"     : { /* Description of temperature values */ },
+    "sea_ice" : { ... }
+  },
+  "ranges" : {
+    "SST"     : { /* Encoding of temperature values, or link(s) */ },
+    "sea_ice" : { ... }
+  }
+}
+      </pre>
+
       <h3>CovJSON documents</h3>
       <p>TODO: talk about different kinds of documents and how they link together.</p>
       <h3>Metadata model</h3>
-      <p>TODO: talk about scope of metadata, particularly describing Parameters.</p>
+      <p>TODO: talk about scope of metadata, particularly describing Parameters. The sample JSON document below shows a Parameter object describing the sea surface temperature variable from the above skeleton JSON (TODO: insert link to section above somehow).</p>
+      <pre>
+"SST" : {
+  "type" : "Parameter",
+  "observedProperty" : {
+    "id" : "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
+    "label" : {
+      "en": "Sea Surface Temperature",
+      "de": "Meeresoberflächentemperatur"
+    },
+    "description" : {
+      "en": "The temperature of sea water near the surface",
+      "de": "Die Temperatur des Meerwassers nahe der Oberfläche"
+    }
+  },
+  "unit" : {
+    "label" : {
+      "en": "Degree Celsius",
+      "de": "Grad Celsius"
+    },
+    "symbol": {
+      "value": "Cel",
+      "type": "http://www.opengis.net/def/uom/UCUM/"
+    }
+  }
+}
+</pre>
+      <p>Note that the main features of the metadata are: (i) a URI link to the definition of the parameter in question, (ii) a strongly-typed unit string, using UCUM encoding rules, (iii) internationalisation of human-readable strings (labels).<p>
       <h3>Linked Data / Semantic Web support</h3>
       <p>Use of URIs, limited JSON-LD support</p>
       <h3>Extension points</h3>
       <p>Main features of the format, scope of issues it addresses. Reference the spec for full details. Note that there is the core spec, plus the domain types.</p>
     </section>
+
     <section  id="tools">
       <h2>Tools and libraries</h2>
       <p>TODO: describe them and link to the <a href="https://covjson.org/tools/">website</a>.</p>
     </section>
+
     <section  id="otherDataModels">
       <h2>Relationship with other data models</h2>
     </section>
+
     <section  id="mappingToBP">
       <h2>Mapping to UCR/BP</h2>
       <p>(Bill to complete)</p>
     </section>
+
     <section  id="spec"  class="normative">
       <h2>Appendix: CoverageJSON specification</h2>
       <p>Maybe copy the current spec in here as a snapshot so the document is self-contained.</p>
