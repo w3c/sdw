@@ -10,7 +10,7 @@ var respecConfig = {
     // crEnd: "3000-01-01",
     editors: [
     {
-      name: "Maik Reichert",
+      name: "Maik Riechert",
       company: "University of Reading",
       companyURL: "http://www.reading.ac.uk"
     }],
