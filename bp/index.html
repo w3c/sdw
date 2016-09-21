@@ -8,6 +8,73 @@
     <title>Spatial Data on the Web Best Practices</title>
     <script class="remove" src="http://www.w3.org/Tools/respec/respec-w3c-common"></script>
     <script class="remove" src="bpconfig.js"></script>
+    <script>
+    window.onload=init;
+
+    function bpObject(t, id, reqs) {
+      this.title = t;
+      this.id = id;
+      reqsList = new Array();
+      for (var i = 0; i < reqs.length; i++) {
+        reqsList.push(reqs[i].hash.substring(1));
+      }
+      this.requirements = reqsList;
+    }
+
+    function createRequirementsTable(BPlist) {
+      var reqs = new Array();
+      var requirmentsTable = document.getElementById('x-ref_ucrVbp');
+      var tbody = requirmentsTable.getElementsByTagName('tbody')[0];
+      BPlist.forEach(function(bp){
+        bp.requirements.forEach(function(req){
+          if (reqs[req] !== undefined) {
+            reqs[req].push(bp);
+          }
+          else {
+            reqs.push(req);
+            reqs[req] = new Array();
+            reqs[req].push(bp);
+          }
+
+        });
+      });
+      reqs.forEach(function(req){
+        var row = tbody.insertRow(tbody.rows.length); // new row for the table
+        var cellReq = row.insertCell(0);              // cell for requirement
+        var cellBps = row.insertCell(1);              // cell for BPs
+        var reqLink = document.createElement('a');
+        reqLink.setAttribute('href', 'https://www.w3.org/TR/sdw-ucr/#'+req);
+        reqLink.appendChild(document.createTextNode(req));
+        cellReq.appendChild(reqLink);
+
+        reqs[req].forEach(function(bp){
+          var p = document.createElement('p');
+          var bpLink = document.createElement('a');
+          bpLink.setAttribute('href', '#'+bp.id);
+          bpLink.appendChild(document.createTextNode(bp.title));
+          p.appendChild(bpLink);
+          cellBps.appendChild(p);
+        });
+      });
+    }
+
+
+    function init() {
+      var BPlist = new Array (); // This will be our array of BPs from the document
+      var BPdivs = new Array ();
+      BPdivs = document.getElementsByClassName('practice'); // This is the info we have effectively scraped from the page
+      for (var i = 0; i < BPdivs.length; i++) {
+        var t; var id; var b; var reqs;
+        var BPtop = BPdivs[i].getElementsByClassName('practicelab');
+        t = BPtop[0].textContent; // There should only be values in BPtop[0]
+        id = BPtop[0].id;
+        reqs = BPdivs[i].getElementsByClassName('ucr')[0].getElementsByTagName('a');
+        BPlist.push(new bpObject(t, id, reqs));
+      }
+      createRequirementsTable(BPlist); // Call function to create Requirements Table
+    }
+
+    </script>
     <style type="text/css">
       #bp-summary ul{
           list-style-type: none;
@@ -15,7 +82,7 @@
           line-height: 1.6em;
           background-color: #FCFAEE;
       }
-      
+
       @media screen and (min-width : 600px){
           #bp-summary ul{
               column-count: 2;
@@ -24,21 +91,21 @@
               column-gap: 1em;
           }
       }
-      
+
       .practice,
       #tempPractice{
           padding-left: 1em;
           background-color: #FCFAEE;
           border: thin solid black;
       }
-      
+
       #tempPractice .tempPracticelab{
           background-color: #dfffff;
           position: relative;
           top: -1.5em;
           font-weight: bold;
       }
-      
+
       .practice p.practicedesc,
       #tempPractice p.tempPracticedesc{
           font-style: italic;
@@ -48,36 +115,36 @@
           margin: 0 2em -1em 1em;
           ;
       }
-      
+
       .subhead{
           font-weight: bold;
       }
-      
+
       .practice dl dt #tempPractice dl dt{
           font-weight: normal;
       }
-      
+
       figure{
           text-align: center;
       }
-      
+
       figure#contextDiagram{
           width: 60%;
           margin: 0 auto;
       }
-      
+
       figure figcaption{
           text-align: center;
           font-style: italic;
       }
-      
+
       table#x-ref_ucrVbp,
       table#x-ref_formatVbp,
       table#detailed-format-matrix{
           border-collapse: collapse;
           caption-side: bottom;
       }
-      
+
       table#x-ref_ucrVbp th,
       table#x-ref_ucrVbp td,
       table#x-ref_formatVbp th,
@@ -87,18 +154,18 @@
           border: 1px solid black;
           padding: 0.3em;
       }
-      
+
       table#x-ref_ucrVbp caption,
       table#x-ref_formatVbp caption,
       table#detailed-format-matrix caption{
           margin: 0.5em;
           font-style: italic;
       }
-      
+
       .stmt
       {
           padding: 3pt}
-      
+
       .stmt1
       {
           column-count: 2;
@@ -107,7 +174,7 @@
           column-gap: 1em;
           background-color: #FCFAEE;
       }
-      
+
       .expand{
           display: block;
           cursor: pointer;
@@ -378,11 +445,11 @@
       <p>Looking more closely, it is important to note that geometry is a property of a <a>spatial
           thing</a>.</p>
       <pre class="example highlight" id="ex-eddystone-geometry" title="Eddystone Lighthouse geometry (encoded as GeoJSON)">
-{ 
-  “geometry”: { 
-    “type”: “Point”, 
-    “coordinates”: [50.184, -4.268] 
-  } 
+{
+  “geometry”: {
+    “type”: “Point”,
+    “coordinates”: [50.184, -4.268]
+  }
 }
       </pre>
       <p>In actual fact, this is only one geometry that may be used to describe Eddystone
@@ -400,7 +467,7 @@
           thing</a>, Eddystone Lighthouse (<code><a href="http://d-nb.info/gnd/1067162240"
             >http://d-nb.info/gnd/1067162240</a></code>), is the “real world phenomenon” about which
         we want to state facts (such as it has a focal height is at 41 metres above sea level) and link to
-        other real world phenomena (for example, that it is located at Eddystone Rocks, Cornwall; another <a>spatial thing</a> identfied as 
+        other real world phenomena (for example, that it is located at Eddystone Rocks, Cornwall; another <a>spatial thing</a> identfied as
             <code><a href="http://sws.geonames.org/2650253/">http://sws.geonames.org/2650253/</a></code> by <a href="http://geonames.org">GeoNames</a>).</p>
     </section>
 
@@ -547,8 +614,8 @@
           <li>a data repository; e.g. PostGIS (a spatially enabled relational database), Elasticsearch (a document-oriented noSQL repository based on Apache Lucene), Apache Jena’s TDB (an RDF triple store)</li>
           <li>exposed via an existing API; including OGC-compliant web services such as WFS and WCS</li>
         </ol>
-        <p>If your spatial data is managed within a software system it is likely that you will be able to access that data through one or more of the methods identified above; as structured data from a bulk extract (e.g. a “data dump”), via direct access to the underpinning data repository or through a bespoke or standards-compliant API provided by the system.</p> 
-        <p>As working with specific spatial data management systems is beyond the scope of this best practice document we will assume that one of the four methods identified above is your starting point.</p> 
+        <p>If your spatial data is managed within a software system it is likely that you will be able to access that data through one or more of the methods identified above; as structured data from a bulk extract (e.g. a “data dump”), via direct access to the underpinning data repository or through a bespoke or standards-compliant API provided by the system.</p>
+        <p>As working with specific spatial data management systems is beyond the scope of this best practice document we will assume that one of the four methods identified above is your starting point.</p>
         <p>Each of these starting points have their own challenges, but working with plain text documents can be particularly tricky as you will need to parse the natural language to identify the spatial things and their properties before you can proceed any further. Natural Language Processing (NLP) is also beyond the scope of this best practice document - so we will assume that you’ve already completed this step and have parsed any plain documents into structured data records of some kind.</p>
       </section>
       <section id="what-r-u-talking-about">
@@ -805,7 +872,7 @@ a:Dataset a dcat:Dataset ;
             </div>
             <aside class="example">
               <p>Information related to the resource that provide the data and properties of, for example, a measuring
-                resource/device; e.g. quality of measurement can help to interpret 
+                resource/device; e.g. quality of measurement can help to interpret
                 observation data more effectively. For more information refer to <a
                   href="http://www.w3.org/2005/Incubator/ssn/XGR-ssn-20110628/">SSN
                   Ontology</a></p>
@@ -823,12 +890,12 @@ a:Dataset a dcat:Dataset ;
         </div>
         <div class="note">
           <h4>Coordinate Reference System (CRS)</h4>
-          <p>A Coordinate Reference System (CRS) defines a local, regional or global coordinate system that can be used to locate spatial entities. CRS can provide a map projection and also define the transformations between different spatial reference systems. CRS’s can be referred to by using a SRID integer, including EPSG codes defined by the International Association of Oil and Gas Producers.  Most of the spatial vendors create their own SRID implementation or refer to an authority such as the European Petroleum Survey Group (EPSG) (<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">more information</a>).</p> 
-            
+          <p>A Coordinate Reference System (CRS) defines a local, regional or global coordinate system that can be used to locate spatial entities. CRS can provide a map projection and also define the transformations between different spatial reference systems. CRS’s can be referred to by using a SRID integer, including EPSG codes defined by the International Association of Oil and Gas Producers.  Most of the spatial vendors create their own SRID implementation or refer to an authority such as the European Petroleum Survey Group (EPSG) (<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">more information</a>).</p>
+
            <p> A list of CRS’s maintained by IGN-France (in RDF format) can be also found <a href="http://yasgui.org/short/rJIItc2d">here</a>. The list is published according to the vocab at: <a href="http://data.ign.fr/def/ignf/20160628.ttl">http://data.ign.fr/def/ignf/20160628.ttl</a>.</p>
-            
+
             <p>The spatial data is usually shared and communicated through the use of common standards between different communities. Since there are several standards and different ways to represent spatial data, each community structures the spatial data according to their standards and their own domain of interest. This heterogeneity and variety of standards and reference systems as well as different data formats and structures can hinder sharing and exchanging the spatial data. This requires defining best practices to represent information regarding the coordinate systems and also providing APIs that can make the transformation between different systems and standards. For example Apache SIS® provides a common programming interface (API) to ensure the interoperability of data across different coordinate systems [<a href="http://sis.staging.apache.org/book/en/developer-guide.html">Ref</a>]. </p>
-            
+
            <p> Many applications usually provide/use latitude and longitude, but often forget about the third dimension (ellipsoidal height). When converting between CRSs that use different datums, the third dimension is also needed. EPSG guidelines say that, if the height is missing, reasonable assumptions are: </p>
 <ol>
   <li>Height = 0 (i.e. we are standing on the surface of the ellipsoid)</li>
@@ -836,7 +903,7 @@ a:Dataset a dcat:Dataset ;
 </ol>
 
            <p>These two assumptions will lead to different answers for *all three* coordinates in a “new” system (and both assumptions might be wrong). This could be important on the Web, because we frequently give latitude and longitude, but no information about ellipsoidal height is often provided. This means that if we convert these coordinates into a new system, we will get an uncertain position (and even the horizontal positions in the new system are uncertain, not just the height) [For more information refere to the discussion <a href="https://lists.w3.org/Archives/Public/public-sdw-wg/2016Aug/0051.html">here</a>]. </p>
-        
+
 <p>The process of converting coordinates between CRSs that use different datums can be also very involved.</p>
 
 <h4>Choosing a CRS (By: Byron Cochrane- <a href="https://lists.w3.org/Archives/Public/public-sdw-wg/2016Aug/0022.html">link)</a> </h4>
@@ -844,7 +911,7 @@ a:Dataset a dcat:Dataset ;
 <p>By default, most vector data should be shared in un-projected geographic coordinates <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS 84</a>– <a href="http://spatialreference.org/ref/epsg/wgs-84/">SRID 4326</a>. Raster data, which is already projected by the nature of the format, should be shared by default in web Mercator-SRID 3857. </p>
 
 
-<h5>Considering the audience</h5> 
+<h5>Considering the audience</h5>
 
 <p>As a Publisher one can make decisions on behalf of the users.  Who are the primary and secondary users?  Target those whose requirements match the data.
 Is the primary audience is known and work within a limited well defined spatial extent, of say an urban region?  Then it is likely that there is a local projected CRS by which data is commonly shared in that region.  Share the data in this projection.  Consider sharing the data in more than one projection.</p>
@@ -853,11 +920,11 @@ Is the primary audience is known and work within a limited well defined spatial 
 <p>[Web accessibility guidelines - ??] </p>
 
 
-<h5>Consider the Data</h5> 
+<h5>Consider the Data</h5>
 
-<p>Vector data is quite easy for web mapping tools to project from geographic coordinates.  Raster data requires much more intensive computation for this task.  Raster is commonly published in a projected CRS instead of geographic coordinates.  Raster data should be published in the CRS in which it was produced and if possible and useful, also in web Mercator.</p> 
+<p>Vector data is quite easy for web mapping tools to project from geographic coordinates.  Raster data requires much more intensive computation for this task.  Raster is commonly published in a projected CRS instead of geographic coordinates.  Raster data should be published in the CRS in which it was produced and if possible and useful, also in web Mercator.</p>
 
-<h5> Consider the Use </h5> 
+<h5> Consider the Use </h5>
 
 <p>The seemingly multitude of CRS’s exist because of different requirements.  Some projections are better for measuring area, some are better for measure distance, some are better for measuring angles, some simply look better when displayed and make for a better user interface. </p>
 
@@ -942,7 +1009,7 @@ Is the primary audience is known and work within a limited well defined spatial 
                 [[DQV]].</p>
               <pre class="example highlight" id="ex-geodcat-ap-dataset-crs" title="GeoDCAT-AP specification of a dataset using coordinate reference system &quot;WGS 84 / UTM zone 30N&quot;">a:Dataset a dcat:Dataset ;
   dct:conformsTo &lt;http://www.opengis.net/def/crs/EPSG/0/32630&gt; .
-  
+
 &lt;http://www.opengis.net/def/crs/EPSG/0/32630&gt; a dct:Standard, skos:Concept ;
   dct:type &lt;http://inspire.ec.europa.eu/glossary/SpatialReferenceSystem&gt; ;
   dct:identifier "http://www.opengis.net/def/crs/EPSG/0/32630"^^xsd:anyURI ;
@@ -1082,7 +1149,7 @@ Is the primary audience is known and work within a limited well defined spatial 
             </ul>
           </section>
         </div>
-        
+
       </section>
       <section id="bp-dataquality">
         <h3>Spatial Data Quality</h3>
@@ -1142,11 +1209,11 @@ Is the primary audience is known and work within a limited well defined spatial 
             </aside>
             <pre class="example highlight" id="ex-geodcat-ap-dataset-conformance-with-specification" title="GeoDCAT-AP specification of a dataset conformance with the INSPIRE Regulation on spatial data and services interoperability">a:Dataset a dcat:Dataset ;
   dct:conformsTo &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; .
-  
+
 &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; a dct:Standard , foaf:Document ;
-  dct:title "COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010 
-             implementing Directive 2007/2/EC of the European Parliament 
-             and of the Council as regards interoperability of spatial 
+  dct:title "COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010
+             implementing Directive 2007/2/EC of the European Parliament
+             and of the Council as regards interoperability of spatial
              data sets and services"@en ;
   dct:issued "2010-12-08"^^xsd:date .</pre>
             <p>The following example shows how DQV can express the precision of a spatial dataset: </p>
@@ -1157,13 +1224,13 @@ Is the primary audience is known and work within a limited well defined spatial 
 :myDatasetPrecision a dqv:QualityMeasurement ;
    dqv:isMeasurementOf :spatialResolutionAsDistance ;
    dqv:value "1000"^^xsd:decimal ;
-   sdmx-attribute:unitMeasure  &lt;http://www.wurvoc.org/vocabularies/om-1.8/metre> 
-   . 
-   
+   sdmx-attribute:unitMeasure  &lt;http://www.wurvoc.org/vocabularies/om-1.8/metre>
+   .
+
 :spatialResolutionAsDistance  a  dqv:Metric;
     skos:definition "Spatial resolution of a dataset expressed as distance"@en ;
     dqv:expectedDataType xsd:decimal ;
-    dqv:inDimension dqv:precision 
+    dqv:inDimension dqv:precision
     .
             </pre>
             <p>This example was taken from [[DQV]]. For more examples of expressing spatial data
@@ -1662,7 +1729,7 @@ Is the primary audience is known and work within a limited well defined spatial 
             </section>
           </div>
         </section>
-      
+
         <section id="bp-geo-voc">
           <h4>Publishing data with clear semantics</h4>
           <p>In most cases, the effective use of information resources requires understanding
@@ -1718,7 +1785,7 @@ Is the primary audience is known and work within a limited well defined spatial 
               <p class="subhead">Possible Approach to Implementation</p>
               <p>There are various vocabularies that provide common information (semantics) about
                 spatial things, such as <a href="http://www.w3.org/2003/01/geo/"> Basic Geo
-                  vocabulary</a>, [[GeoSPARQL]] or <a href="http://schema.org">schema.org</a>. </p> 
+                  vocabulary</a>, [[GeoSPARQL]] or <a href="http://schema.org">schema.org</a>. </p>
               <p class="note">Work is underway on an <a href="http://geosemweb.org/sdwgeo">update for the GeoSPARQL spatial ontology</a>. This will provide an agreed spatial ontology conformant to the ISO 19107 abstract model and will be based on existing available ontologies such as GeoSPARQL, the W3C basic geo vocabulary, NeoGeo and the ISA Core Location vocabulary. This best practice will recommend the use of this spatial ontology. </p>
                 <p>This best practice provides a method for selecting the right vocabulary (or vocabularies)
                 for your intended goal. The semantic description of entities and their properties
@@ -1800,7 +1867,7 @@ Is the primary audience is known and work within a limited well defined spatial 
         <p>[[DWBP]] provides best practices discussing access to data using Web infrastructure (see [[DWBP]] <a
             href="https://www.w3.org/TR/dwbp/bp.html#dataAccess">section 8.10 Data Access</a>). This
           section provides additional insight for publishers of spatial data. </p>
-    
+
         <p>Making data available on the Web requires data publishers to provide some form of
           access to the data. There are numerous mechanisms available, each providing varying
           levels of utility and incurring differing levels of effort and cost to implement and
@@ -2212,9 +2279,9 @@ Is the primary audience is known and work within a limited well defined spatial 
                 for me (e.g. the 'affordances' of the target resource).</p>
               <p>How to describe the 'affordances' of the target resource?</p>
             </div>
-            
+
             <p>2. Make spatial relationships explicit</p>
-            
+
             <p>It is a good idea to express spatial relationships between things explicitly in your data. A possible approach for this is to find out if they have corresponding geometries using spatial functions, and then express these correspondences as explicit relationships. If the spatial datasets you want to reconcile are managed in a Geographic Information System (GIS) or a spatial database, you can use the GIS spatial functions to find related spatial things. If your spatial things are expressed as Linked Data, you can use [GeoSPARQL], which has a set of spatial query functions available.</p>
             <div class="note">
               <p>The mechanics of how to decide when two resources are related, if they don't have geometric or topological properties that allow you to determine this, are beyond the scope of this best practice. Tools (e.g. <a href="http://openrefine.org">OpenRefine</a>
@@ -2472,9 +2539,9 @@ Is the primary audience is known and work within a limited well defined spatial 
       <p>See also <a href="http://www.w3.org/TR/generic-sensor/">W3C Generic Sensor API</a> and <a
           href="http://ogc-iot.github.io/ogc-iot-api/index.html">OGC Sensor Things API</a>. These
         are more about interacting with sensor devices.</p>
-      
-      
-      
+
+
+
       <div class="practice">
         <p><span id="crowd-obs" class="practicelab">How to work with crowd-sourced
             observations</span></p>
@@ -2535,7 +2602,7 @@ Is the primary audience is known and work within a limited well defined spatial 
               href="http://www.w3.org/TR/sdw-ucr/#HumansAsSensors">R-HumansAsSensors</a>.</p>
         </section>
       </div>
-      
+
     </section>
     <section id="narrative">
       <h2>Narrative - the Nieuwhaven flooding</h2>
@@ -3372,353 +3439,13 @@ Is the primary audience is known and work within a limited well defined spatial 
         following review of UCR doc.</p>
       <table id="x-ref_ucrVbp">
         <caption>Cross reference of requirements against best practices</caption>
-        <tbody>
+        <thead>
           <tr>
             <th>UC Requirements</th>
             <th>Best Practice</th>
           </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#BoundingBoxCentroid"
-                >R-BoundingBoxCentroid</a></td>
-            <td>Best Practice 7: How to describe geometry</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#Compatibility">R-Compatibility</a></td>
-            <td>Best Practice 28: Expose entity-level data through 'convenience APIs'</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#Compressible">R-Compressible</a></td>
-            <td>Best Practice 7: How to describe geometry</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#CoverageTemporalExtent"
-                >R-CoverageTemporalExtent</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#Crawlability">R-Crawlability</a></td>
-            <td>Best Practice 25: Make your entity-level data indexable by search engines</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#CRSDefinition">R-CRSDefinition</a></td>
-            <td>Best Practice 7: How to describe geometry</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#DateTimeDuration">R-DateTimeDuration</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#DefaultCRS">R-DefaultCRS</a></td>
-            <td>Best Practice 8: Specify Coordinate Reference System for high-precision
-              applications</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#DifferentTimeModels"
-                >R-DifferentTimeModels</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#Discoverability">R-Discoverability</a></td>
-            <td>
-              <p>Best Practice 24: Use links to find related data</p>
-              <p>Best Practice 25: Make your entity-level data indexable by search engines</p>
-              <p>Best Practice 26: Include spatial information in dataset metadata</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#DynamicSensorData"
-              >R-DynamicSensorData</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry"
-                >R-EncodingForVectorGeometry</a></td>
-            <td>Best Practice 7: How to describe geometry</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#ExSituSampling">R-ExSituSampling</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#Georectification">R-Georectification</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#GeoreferencedData"
-              >R-GeoreferencedData</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#HumansAsSensors">R-HumansAsSensors</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems"
-                >R-IndependenceOnReferenceSystems</a></td>
-            <td>Best Practice 7: How to describe geometry</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#LightweightAPI">R-LightweightAPI</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 28: Expose entity-level data through 'convenience APIs'</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a></td>
-            <td>
-              <p>Best Practice 1: Use globally unique identifiers for entity-level resources</p>
-              <p>Best Practice 19: Make your entity-level links visible on the web</p>
-              <p>Best Practice 20: Provide meaningful links</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a></td>
-            <td>
-              <p>Best Practice 6: Provide a minimum set of information for your intended
-                application</p>
-              <p>Best Practice 7: How to describe geometry</p>
-              <p>Best Practice 9: How to describe relative positions</p>
-              <p>Best Practice 10: How to describe positional (in)accuracy</p>
-              <p>Best Practice 11: How to describe properties that change over time</p>
-              <p>Best Practice 12: Use spatial semantics for spatial Things</p>
-              <p>Best Practice 13: Assert known relationships</p>
-              <p>Best Practice 18: How to publish (and consume) sensor data streams</p>
-              <p>Best Practice 25: Make your entity-level data indexable by search engines</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#MobileSensors">R-MobileSensors</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 12: Use spatial semantics for spatial Things</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#4DModelSpaceTime">R-4DModelSpaceTime</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#ModelReuse">R-ModelReuse</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#MovingFeatures">R-MovingFeatures</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 11: How to describe properties that change over time</p>
-              <p>Best Practice 12: Use spatial semantics for spatial Things</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#MultilingualSupport"
-                >R-MultilingualSupport</a></td>
-            <td>Best Practice 6: Provide a minimum set of information for your intended application
-                <em>(provision of multi-lingual labels)</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#MultipleTypesOfCoverage"
-                >R-MultipleTypesOfCoverage</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#NominalObservations"
-                >R-NominalObservations</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#NominalTemporalReferences"
-                >R-NominalTemporalReferences</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#NonGeographicReferenceSystem"
-                >R-NonGeographicReferenceSystem</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#ObservationAggregations"
-                >R-ObservationAggregations</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 15: How to describe sensor data processing workflows</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage"
-                >R-ObservedPropertyInCoverage</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 14: How to provide context required to interpret observation data
-                values</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#Provenance">R-Provenance</a></td>
-            <td>
-              <p>Best Practice 15: How to describe sensor data processing workflows</p>
-              <p>Best Practice 26: Include spatial information in dataset metadata</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#QualityMetadata">R-QualityMetadata</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 10: How to describe positional (in)accuracy</p>
-              <p>Best Practice 14: How to provide context required to interpret observation data
-                values</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks"
-                >R-ReferenceDataChunks</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 27: Publish spatial data at the level of granularity you can
-                support</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#ReferenceExternalVocabularies"
-                >R-ReferenceExternalVocabularies</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable</em></p>
-              <p>Also see [[DWBP]] <a href="http://www.w3.org/TR/dwbp/#ReuseVocabularies">Best
-                  Practice 16: Re-use vocabularies</a></p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#SamplingTopology">R-SamplingTopology</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 9: How to describe relative positions</p>
-              <p>Best Practice 13: Assert known relationships</p>
-              <p>Best Practice 16: How to relate observation data to the real world</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#SensorMetadata">R-SensorMetadata</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 14: How to provide context required to interpret observation data
-                values</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#SensingProcedure">R-SensingProcedure</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 14: How to provide context required to interpret observation data
-                values</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#SpaceTimeMultiScale"
-                >R-SpaceTimeMultiScale</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#SpatialMetadata">R-SpatialMetadata</a></td>
-            <td>
-              <p>Best Practice 7: How to describe geometry</p>
-              <p>Best Practice 26: Include spatial information in dataset metadata</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#SpatialRelationships"
-                >R-SpatialRelationships</a></td>
-            <td>Best Practice 13: Assert known relationships</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#SpatialOperators">R-SpatialOperators</a></td>
-            <td>Best Practice 13: Assert known relationships</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#SpatialVagueness">R-SpatialVagueness</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 6: Provide a minimum set of information for your intended
-                application</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#SSNLikeRepresentation"
-                >R-SSNLikeRepresentation</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#Streamable">R-Streamable</a></td>
-            <td>
-              <p>Best Practice 11: How to describe properties that change over time</p>
-              <p>Best Practice 18: How to publish (and consume) sensor data streams</p>
-              <p>Best Practice 27: Publish spatial data at the level of granularity you can
-                support</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#3DSupport">R-3DSupport</a></td>
-            <td>Best Practice 7: How to describe geometry</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#TimeDependentCRS">R-TimeDependentCRS</a></td>
-            <td>Best Practice 7: How to describe geometry</td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#TemporalReferenceSystem"
-                >R-TemporalReferenceSystem</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 18: How to publish (and consume) sensor data streams</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#TemporalVagueness"
-              >R-TemporalVagueness</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#TilingSupport">R-TilingSupport</a></td>
-            <td>Best Practice 7: How to describe geometry <em>(performance considerations)</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#TimeSeries">R-TimeSeries</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 18: How to publish (and consume) sensor data streams</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#UncertaintyInObservations"
-                >R-UncertaintyInObservations</a></td>
-            <td>
-              <p><em>Not a Best Practice deliverable, but referenced in -</em></p>
-              <p>Best Practice 14: how to provide context required to interpret observation data
-                values</p>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">R-UpdateDatatypes</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#UseInComputationalModels"
-                >R-UseInComputationalModels</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#Validation">R-Validation</a></td>
-            <td><p style="background-color:yellow">CLARIFICATION required; is this in
-              scope?</p></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#ValidTime">R-ValidTime</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
-          <tr>
-            <td><a href="http://www.w3.org/TR/sdw-ucr/#VirtualObservations"
-                >R-VirtualObservations</a></td>
-            <td><em>Not a Best Practice deliverable</em></td>
-          </tr>
+        </thead>
+        <tbody>
         </tbody>
       </table>
     </section>
