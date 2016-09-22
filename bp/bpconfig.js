@@ -24,7 +24,7 @@ var respecConfig = {
 		}],
     otherLinks: [
     {
-      key: "OGC Document Number:",
+      key: "OGC Document Number",
       data: [
       {
         value: "OGC 15-107"
@@ -128,6 +128,27 @@ var respecConfig = {
         title:"Data on the Web Best Practices: Data Quality Vocabulary",
         authors:["Riccardo Albertoni", "Antoine Isaac"],
         date: "May 2016"
+       },
+       "GeoDCAT-AP":{
+        href:"https://joinup.ec.europa.eu/node/139283/",
+        title:"GeoDCAT-AP: A geospatial extension for the DCAT application profile for data portals in Europe",
+        date: "23 December 2015"
+       },
+       "ISO19115":{
+        href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
+        title:"Geographic information -- Metadata",
+        date: "2003"
+       },
+       "CSW":{
+        href:"http://www.opengeospatial.org/standards/cat",
+        title:"Catalogue Services 3.0 - General Model",
+        authors:["Douglas Nebert", "Uwe Voges", "Lorenzo Bigagli"],
+        date: "10 June 2016"
+       },
+       "INSPIRE-MD":{
+        href:"http://inspire.jrc.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
+        title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
+        date: "29 October 2013"
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
