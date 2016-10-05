@@ -89,7 +89,7 @@ var respecConfig = {
         title:"Data quality parameters. In: Geographical Information Systems: Principles, Techniques, Management and Applications",
         authors:["H. Veregin"]
        },
-       "OandM":{
+       "OM2":{
         href:"http://www.opengeospatial.org/standards/om",
         title:"Observations and Measurements - XML Implementation",
         authors: ["Simon Cox"],
@@ -127,6 +127,12 @@ var respecConfig = {
         href:"http://inspire.jrc.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
         title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
         date: "29 October 2013"
+       },
+       "WKT-CRS":{
+        href:"http://www.opengeospatial.org/standards/wkt-crs",
+        title:"Well-known text representation of coordinate reference systems",
+        authors: ["Roger Lott"],
+        date: "1 May 2015"
        }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
