@@ -52,163 +52,201 @@
  }
 
  </style>
-  </head>
-  <body>
+</head>
+<body>
     <section  id="abstract">
-      <p>This document describes an approach to representing dense spatial data using the existing RDF Data Cube ontology.
+      <p>This document describes how dense spatial data can be represented using the existing RDF Data Cube ontology.
          The Data Cube is not a suitable format for storing voluminous data, such as Landsat imagery, but it can be used to
-         serve the data in a format compatible with the linked data web.</p>
+         serve the data in a format compatible with the linked data web. Alternatively, encoding just the metadata in RDF
+         already provides most of the benefits of using linked data, without the potential size explosion.</p>
     </section>
     <section  id="sotd">
-      <p>@@@ Something here @@@</p>
       <p><strong>For OGC</strong> This is a Public Draft of a document prepared
         by the Spatial Data on the Web Working Group (<a  href="http://www.opengeospatial.org/projects/groups/sdwwg">SDWWG</a>)
         — a joint W3C-OGC project (see <a  href="https://www.w3.org/2015/spatial/charter">charter</a>).
         The document is prepared following W3C conventions. The document is
         released at this time to solicit public comment.</p>
     </section>
-    <section  id="intro"  class="informative">
+    <section  id="Introduction"  class="informative">
       <h2>Introduction</h2>
-    </section>
-    <section  id="example"  class="informative">
-      <h2>Example Approach</h2>
+      <p>Publishing data on the web using <a href="https://www.w3.org/standards/semanticweb/data">linked data</a>
+      technologies makes it more accessible, easier to discover, and machine-readable.
+      This format is appropriate for sparse statistical data, but publishers of denser coverage data
+      (such as Landsat imagery) may be justifiably reluctant to embrace the size explosion that
+      accompanies converting data to RDF. While such a conversion provides maximum machine-readability,
+      most of the benefits of linked data can be be realised with a compromise approach where only the
+      metadata is expressed in RDF, or where the RDF is generated on-the-fly to service requests.</p>
 
-      <p>Rob Atkinson is working on <a href="https://www.w3.org/2015/spatial/wiki/RDF_Datacube_for_Coverages">QB4ST</a>.
-         This is an extension to the RDF Data Cube, defining some common, reusable coverage terms [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Req 5.40</a>].
-         See the source <a href="https://github.com/rob-metalinkage/sdw/blob/gh-pages/coverages/qb4st/qb4st.ttl">here</a>.</p>
-
-      <p>The <a href="https://www.w3.org/2015/spatial/wiki/Notes_from_the_ANU_Team">ANU team</a> editing this note is using these terms for their data.
-         Currently, their example is split into two documents: 
-         <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED.owl">here</a>
-         and <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED-example.owl">here</a>.
-         These may be merged in the future. Thus, QB4ST is a set of generic terms, and ANU-LED is a concrete example of how they can be used,
-         including a great deal of extra information that can be included by the publishers of coverage datasets.</p>
+      <p>This document will refer to a toy example to illustrate the approach. The source file is the
+      <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED-example.ttl">ANU-LED example</a>.</p>
     </section>
-    <section  id="three"  class="informative">
-      <h2>Three possible uses</h2>
-      <p>We can broadly define three applications of RDF for coverages.</p>
-
-      <p>These are: to describe a coverage dataset (its metadata), to serve a coverage, and to store a coverage.
-         Alternatively we can divide this into "description" (the first) and "serialisation" (the last two).</p>
-    </section>
-    <section  id="storing"  class="informative">
-      <h2>Storing a coverage</h2>
-      <p>RDF data is stored natively in a triple store. The Data Cube, and RDF in general, are too verbose to be viable for large coverages.</p>
-    </section>
-    <section  id="serving"  class="informative">
-      <h2>Serving a coverage</h2>
-      <p>This is the approach currently being tested by the ANU team.
-         In this model, coverage data is stored in some more appropriate format (such as HDF5).
-         Specialised middleware receives SPARQL queries from a client and responds by sending a response in dynamically-generated RDF.
-         Such a response is fairly verbose, but the cost is much smaller than actually storing the whole coverage in RDF.
-         The ANU team feels that an important contribution of their approach is using tiles as "observations" in the RDF datacube, rather than individual pixels [<a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Req 5.50</a>].
-         This significantly reduces the blowup that comes from encoding data as RDF [<a href="https://www.w3.org/TR/sdw-ucr/#Compressible">Req 5.3</a>].</p>
-
-      <p>The advantage of serving a coverage in RDF is that the entire coverage, and individual tiles within it, become linkable [<a href="https://www.w3.org/TR/sdw-ucr/#Linkability">Req 5.19</a>];
-         this could be a major contribution to the linked data web. With sufficiently advanced middleware, SPARQL queries over the dataset
-         could be served just as if the data were stored in RDF, but for a fraction of the storage cost.
-         We can thus leverage the full power of linked data. The ANU team is currently optimising their implementation of such a middleware.</p>
-         
-         In the ANU-LED approach, chunks of the data are identified by SPARQL queries that produce that chunk
-         [<a href="https://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks">Req 5.34</a>]
-         (for example, a query returning all tiles of a certain resolution within a certain spatial rectangle).
-         The RDF Data Cube provides a "slice" capability, but all slices must be predefined by the publisher, and the ANU-LED team does not believe
-         that the qb:slice is appropriate or powerful enough for coverages.
-    </section>
-    <section  id="describing"  class="informative">
-      <h2>Describing a coverage</h2>
-      <p>A large portion of the benefits of linked data may be realised by describing only the metadata of a coverage in RDF.
-         Then the dataset can be linked to [<a href="https://www.w3.org/TR/sdw-ucr/#Linkability">Req 5.19</a>], and its essential properties are naturally machine-readable [<a href="https://www.w3.org/TR/sdw-ucr/#Discoverability">Req 5.10</a>, <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Req 5.20</a>].
-         The coverage itself can remain in whatever efficient format the publisher prefers.</p>
-
-      <p>Rob has identified a requirement that, no matter what approach is taken, it should be as easy as possible
-         for the user to grab <strong>just</strong> the metadata, without having to figure out how to write an appropriate query.
-         The definition of a qb:DataSet and the associated qb:DataStructureDefinition can serve this role, but it is still up to the
-         publisher to make it easy for the user to download those definitions. This is also the appropriate place to think
-         about the experience of web crawlers on the publisher's webpage [<a href="https://www.w3.org/TR/sdw-ucr/#Crawlability">Req 5.5</a>, <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Req 5.20</a>].</p>
-         
-      <p>It is also helpful if the user can easily identify the domain of a coverage (the spatial area where measurements are taken) [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Req 5.40</a>].
-         QB4ST does not currently have a term for that, but it may in the future.</p>
-    </section>
-    <section  id="datacube"  class="informative">
+    <section  id="Datacube"  class="informative">
       <h2>The RDF Data Cube</h2>
       <p>The <a href="https://www.w3.org/TR/vocab-data-cube/">RDF Data Cube</a> is an existing standard for representing data as RDF.
          It is typically used for data that is associated with statistical regions (e.g. suburbs).
-         Common practice includes using the SKOS vocabulary to define the concepts being measured [<a href="https://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage">Req 5.31</a>].
+         Common practice includes using the SKOS vocabulary to define the concepts being measured
+         [<a href="https://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage">Observed property in coverage</a>].
          The RDF data model allows the user to define all the relevant components of their data and the concept they measure;
-         including "attribute" components (metadata like sensor, resolution, uncertainty [<a href="https://www.w3.org/TR/sdw-ucr/#QualityMetadata">Req 5.33</a>, <a href="https://www.w3.org/TR/sdw-ucr/#UncertaintyInObservations">Req 5.52</a>] etc.), "measure" components (the data proper)
-         and "dimension" components (the domain of the dataset e.g. the statistical region each datum refers to).
-         We see no reason why these techniques cannot be used for coverages.</p>
+         including "attribute" components (metadata like sensor, resolution, uncertainty
+         [<a href="https://www.w3.org/TR/sdw-ucr/#QualityMetadata">Quality metadata</a>, <a href="https://www.w3.org/TR/sdw-ucr/#UncertaintyInObservations">Uncertainty in observations</a>] etc.),
+         "measure" components (the data proper) and "dimension" components
+         (the domain of the dataset e.g. the time and statistical region each datum refers to).
+         These techniques can easily be adapted to coverages, as the data model is flexible enough to define the appropriate attributes.</p>
 
-      <p>The value of each component can be attached to each individual observation or to the dataset as a whole.
-         It can also be attached to pre-defined "slices" of the data.
-         It is not practical to serve landsat imagery with RDF metadata attached to each pixel.
-         However, it is reasonable to attach such metadata to tiles of a certain size.
-         Thus, the RDF data model can be used, as long as RDF Data Cube observations are whole tiles rather than individual pixels [<a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Req 5.50</a>].
-         The data model is flexible enough to define the appropriate attributes.
-         (<a href="https://www.w3.org/2015/spatial/wiki/RDF_Datacube_for_Coverages">QB4ST</a>) extends the datacube for extra power when describing gridded data,
-         by defining terms for spatial dimensions (and, in the future, temporal dimensions) [<a href="https://www.w3.org/TR/sdw-ucr/#GeoreferencedData">Req 5.15</a>].
-         Any number of such spatial dimensions can be defined, allowing for 1D, 2D, 3D or 4D coverages [<a href="https://www.w3.org/TR/sdw-ucr/#3DSupport">Req 5.46</a>, <a href="https://www.w3.org/TR/sdw-ucr/#TimeSeries">Req 5.51</a>].</p>
+      <p>The ontology <a href="https://www.w3.org/2015/spatial/wiki/RDF_Datacube_for_Coverages">QB4ST</a> extends the Data Cube for extra power when describing gridded data,
+         by defining terms for spatial dimensions (and, in the future, temporal dimensions) [<a href="https://www.w3.org/TR/sdw-ucr/#GeoreferencedData">Georeferenced spatial data</a>].
+         Any number of such spatial dimensions can be defined, allowing for 1D, 2D, 3D or 4D coverages [<a href="https://www.w3.org/TR/sdw-ucr/#3DSupport">Support for 3D</a>, <a href="https://www.w3.org/TR/sdw-ucr/#TimeSeries">Time series</a>, <a href="http://w3c.github.io/sdw/UseCases/SDWUseCasesAndRequirements.html#4DModelSpaceTime">4D model of space-time</a>].</p>
 
-      <p>The ANU-LED work consists of two documents, <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED.owl">here</a>
-         and <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED-example.owl">here</a>, that
-         show how the properties of a coverage can be defined using QB4ST and the RDF Data Cube model.
-         This approach can be used only for dataset-wide properties (in which case it becomes a description of the metadata) [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Req 5.40</a>],
-         or for individual tiles as well [<a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Req 5.50</a>].</p>
+      <section  id="Metadata">
+        <h3>Metadata and data</h3>
+        <p>There is traditionally a distinction between data (the observations proper e.g. Landsat pixels) and metadata
+           (which adds context to the observations e.g. resolution). In the linked data world, this distinction is not strict.
+           However, it is still possible to separate the two in a typical Data Cube.</p>
+            
+        <p>The value of an RDF Data Cube component can be attached to each individual observation or to the dataset as a whole.
+           Dataset-wide metadata can therefore be distinguished from the rest of the dataset, because it is attached to the dataset object.
+           This also makes it easy to fetch the metadata alone with a SPARQL query. This dataset-wide description alone is already a useful
+           (and web-of-data friendly) approach to publishing spatial data
+           [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].</p>
+           
+        <p>Using the RDF Data Cube also opens up the possibility of more detailed metadata, such as individually tracing
+           the provenance of each observation. It is not practical to serve Landsat imagery with RDF metadata attached
+           to each pixel. However, it is reasonable to attach such metadata to tiles of a certain size.
+           Thus, the RDF data model can be used, as long as RDF Data Cube observations are whole tiles rather than individual pixels [<a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Support for tiling</a>].
+      </section>
+      
     </section>
-    <section  id="ontologies"  class="informative">
+    <section  id="Spectrum"  class="informative">
+      <h2>A spectrum of linkiness</h2>
+      <p>In the ideal web of data, every single observation has a unique URI, can be queried using SPARQL, and have metadata attached to it.
+         Upon hearing this, anyone familiar with Landsat data would be forgiven for rejecting the whole enterprise as entirely impractical.
+         But all is not lost! Most of the benefits of linked data (namely, linkability, enhanced discoverability, machine-readability) can
+         be realised by just publishing the dataset-wide metadata in this format. More linkiness provides diminishing returns along with with increasing costs.
+         It is up to the publisher to decide where along this spectrum is the compromise position appropriate for them.</p>
+
+      <p>To charactise the spectrum, we can broadly define three applications of RDF for coverages.
+         From most to least costly, these are: to store a coverage dataset, to serve a coverage ("serialisation"), and to describe the metadata of a coverage ("description").</p>
+
+      <section  id="Storing">
+            <h3>Storing a coverage</h3>
+            <p>RDF data is stored natively in a triple store. The Data Cube, and RDF in general, are too verbose to be viable for large coverages.</p>
+      </section>
+
+      <section  id="Serving">
+          <h3>Serving a coverage</h3>
+          <p>In this model, coverage data is stored in some more appropriate format (such as HDF5).
+             Specialised middleware receives SPARQL queries from a client and responds by sending a response in dynamically-generated RDF.
+             Such a response is fairly verbose, but the cost is much smaller than actually storing the whole coverage in RDF.
+             Further optimisation is still necessary for this to be viable. It is possible to use tiles as the "observations" in the RDF datacube,
+             rather than individual pixels [<a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Support for tiling</a>].
+             This significantly reduces the blowup that comes from encoding data as RDF [<a href="https://www.w3.org/TR/sdw-ucr/#Compressible">Compressible</a>].</p>
+
+          <p>The advantage of serving a coverage in RDF is that the entire coverage, and individual tiles within it, become linkable
+             [<a href="https://www.w3.org/TR/sdw-ucr/#Linkability">Linkability</a>];
+             this could be a major contribution to the linked data web. With sufficiently advanced middleware, SPARQL queries over the dataset
+             could be served just as if the data were stored in RDF, but for a fraction of the storage cost.
+             The publisher can thus leverage the full power of linked data.</p>
+
+          <p>It is common to want only a chunk of the data available. For example, all observations near (within 10km of) Canberra, in the past year.
+             The RDF Data Cube provides only for "slices" &mdash; predefined chunks that hold one or more dimensions constant. Unfortunately, this is an area where the Data Cube is
+             insufficiently powerful for coverages. When data is stored and served in some other format, it is up to the publisher to provide the consumer ways to
+             acquire only certain chunks of the data. If serving coverage data using RDF, a possible approach is to use SPARQL queries to define the appropriate chunks
+             [<a href="https://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks">Reference data chunks</a>]
+             (for example, a query returning all tiles of a certain resolution within a certain spatial rectangle).
+             Even if using this method, publishers should still make it easy for a user to select chunks without the use of SPARQL,
+             e.g. by providing an interface to generate the appropriate query using a few predefined operators.</p>
+      </section>
+
+      <section  id="Describing">
+          <h3>Describing a coverage</h3>
+          <p>A large portion of the benefits of linked data may be realised by describing only the metadata of a coverage in RDF.
+             Then the dataset can be linked to [<a href="https://www.w3.org/TR/sdw-ucr/#Linkability">Linkability</a>], and its essential properties are naturally machine-readable [<a href="https://www.w3.org/TR/sdw-ucr/#Discoverability">Discoverability</a>, <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Machine to machine</a>].
+             The coverage itself can remain in whatever efficient format the publisher prefers.</p>
+
+          <p>No matter what approach is taken, it should be as easy as possible
+             for the user to grab <strong>just</strong> the metadata, without having to figure out how to write an appropriate query.
+             The definition of a qb:DataSet and the associated qb:DataStructureDefinition can serve this role, but it is still up to the
+             publisher to make it easy for the user to download those definitions. This is also the appropriate place to think
+             about the experience of web crawlers on the publisher's webpage [<a href="https://www.w3.org/TR/sdw-ucr/#Crawlability">Crawlability</a>, <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Machine to machine</a>].</p>
+
+          <p>It is also helpful if the user can easily identify the domain of a coverage (the spatial and temporal area where measurements are taken)
+             [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].
+             QB4ST does not currently have a term for that, but it may in the future.</p>
+      </section>
+    </section>
+
+    <section  id="Ontologies"  class="informative">
       <h2>Use of existing ontologies</h2>
-      
-      <p>RDF makes it easy to re-use terms defined in external ontologies [<a href="https://www.w3.org/TR/sdw-ucr/#ReferenceExternalVocabularies">Req 5.35</a>].
-         The ANU-LED example uses many such external terms. Some of the most widely applicable are explained here.</p>
-      
-      <p>Several ontologies are being looked at by the working group.
+
+      <p>RDF makes it easy to re-use terms defined in external ontologies
+         [<a href="https://www.w3.org/TR/sdw-ucr/#ReferenceExternalVocabularies">Reference external vocabularies</a>].
+         Some of the most widely applicable are explained here. See the
+         <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED-example.ttl">ANU-LED example</a>
+         for some specific examples of these.</p>
+
+      <p>Several ontologies are being looked at by the Spatial Data on the Web working group.
          The final best practice for using these ontologies will depend on the outputs of the group.</p>
 
-      <h3>SSN</h3>
-      <p>The semantic sensor network ontology defines terms for describing the sensors used to collect the data [<a href="https://www.w3.org/TR/sdw-ucr/#SensorMetadata">Req 5.37</a>].
-         See our <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED-example.owl">example</a>
-         for a minimal description of landsat 8 OLI observations using SSN [<a href="https://www.w3.org/TR/sdw-ucr/#SSNLikeRepresentation">Req 5.44</a>].
-         Much more detailed descriptions are possible.</p>
+      <section  id="SSN">
+          <h3>SSN</h3>
+          <p>The semantic sensor network ontology defines terms for describing the sensors used to collect the data
+             [<a href="https://www.w3.org/TR/sdw-ucr/#SensorMetadata">Sensor metadata</a>].
+             The <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED-example.ttl">ANU-LED example</a>
+             illustrates a minimal description of landsat 8 OLI observations using SSN
+             [<a href="https://www.w3.org/TR/sdw-ucr/#SSNLikeRepresentation">SSN-like representation</a>].
+             Much more detailed descriptions are possible. In particular, SSN description can be attached to individual tiles
+             [<a href="http://w3c.github.io/sdw/UseCases/SDWUseCasesAndRequirements.html#QualityPerSample">Quality per sample</a>].</p>
+      </section>
 
-      <h3>PROV-O</h3>
-      <p>The PROV-O ontology allows the provenance of data to be traced [<a href="https://www.w3.org/TR/sdw-ucr/#Provenance">Req 5.32</a>].
-         It provides terms for describing what entities the data is based on,
-         what processes were used to convert those entities into each other and into the final data,
-         and what individuals and organisations were responsible for these processes.
-         PROV-O descriptions can be attached at the dataset level, or even at the individual
-         observation/tile level to indicate precisely which source material each observation is derived from.
-         See our <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED-example.owl">example</a>.</p>
+      <section  id="PROV-O">
+          <h3>PROV-O</h3>
+          <p>The PROV-O ontology allows the provenance of data to be traced
+             [<a href="https://www.w3.org/TR/sdw-ucr/#Provenance">Provenance</a>].
+             It provides terms for describing what entities the data is based on,
+             what processes were used to convert those entities into each other and into the final data,
+             and what individuals and organisations were responsible for these processes.
+             PROV-O descriptions can be attached at the dataset level, or even at the individual
+             observation/tile level to indicate precisely which source material each observation is derived from.</p>
+      </section>
 
-      <h3>Latitude and longitude</h3>
-      <p>The working group wishes to discourage unqualified uses of "latitude" and "longitude".
-         Most commonly, these terms refer to the WGS-84 CRS (coordinate reference system),
-         but published data should always make its CRS explicit [<a href="https://www.w3.org/TR/sdw-ucr/#Georectification">Req 5.14</a>].
-         In RDF, the <a href="https://www.w3.org/2003/01/geo/">WGS-84 geo vocabulary</a> is often used,
-         with its provided geo:lat and geo:long properties.
-         The working group intends to standardise better properties, which allow the use of other CRSs.
-         Once these exist, they should always be used in place of the geo properties.
-         QB4ST defines the qb4st:crs property which will inherit from those, and which the ANU-LED example uses
-         [<a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">Req 5.6</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Req 5.40</a>].</p>
-         
-      <h3>GeoSPARQL</h3>
-      <p>The GeoSPARQL ontology defines some terms and predicates for reasoning about objects and shapes in space [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">Req 5.42</a>].
-         It allows for the use of several encodings, including WKT, to describe polygons [<a href="https://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry">Req 5.12</a>].
-         The ANU-LED example uses these terms to define the area covered by individual tiles in the coverage, and the entire domain.</p>
+      <section  id="LatLong">
+          <h3>Latitude and longitude</h3>
+          <p>The working group wishes to discourage unqualified uses of "latitude" and "longitude".
+             Most commonly, these terms refer to the WGS-84 CRS (coordinate reference system),
+             but published data should always make its CRS explicit [<a href="https://www.w3.org/TR/sdw-ucr/#Georectification">Georectification</a>].
+             In RDF, the <a href="https://www.w3.org/2003/01/geo/">WGS-84 geo vocabulary</a> is often used,
+             with its provided geo:lat and geo:long properties.
+             The working group intends to standardise better properties, which allow the use of other CRSs.
+             Once these exist, they should always be used in place of the geo properties.
+             QB4ST defines the qb4st:crs property which will inherit from those
+             [<a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">CRS definition</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].</p>
+      </section>
 
-      <h3>SKOS concepts</h3>
-      <p>The Data Cube is commonly used in conjunction with a SKOS concept scheme
-         (such as <a href="http://purl.org/linked-data/sdmx">SDMX-RDF</a> and its <a href="http://purl.org/linked-data/sdmx/2009/concept">concept scheme</a>)
-         to define the meanings of the components [<a href="https://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage">Req 5.31</a>].
-         It is appropriate to use this for coverages also
-         (see our <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED-example.owl">example</a>),
-         but appropriate SKOS concepts do not always exist.
-         They may need to be published along with the data proper.</p>
-         
-      <h3>OWL Time</h3>
-      <p>Coverages should be annotated appropriately with the times observations were taken [<a href="https://www.w3.org/TR/sdw-ucr/#CoverageTemporalExtent">Req 5.4</a>].
-         QB4ST does not currently define temporal terms, but is likely to in the future.
-         The ontology being developed by the working group should be used.</p>
+      <section  id="GeoSPARQL">
+          <h3>GeoSPARQL</h3>
+          <p>The GeoSPARQL ontology defines some terms and predicates for reasoning about objects and shapes in space
+             [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">Spatial operators</a>].
+             It allows for the use of several encodings, including WKT, to describe polygons
+             [<a href="https://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry">Encoding for vector geometry</a>].
+             The ANU-LED example uses these terms to define the area covered by individual tiles in the coverage, and the entire spatial domain.</p>
+      </section>
+
+      <section  id="SKOS">
+          <h3>SKOS concepts</h3>
+          <p>The Data Cube is commonly used in conjunction with a SKOS concept scheme
+             (such as <a href="http://purl.org/linked-data/sdmx">SDMX-RDF</a> and its <a href="http://purl.org/linked-data/sdmx/2009/concept">concept scheme</a>)
+             to define the meanings of the components [<a href="https://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage">Observed property in coverage</a>].
+             It is appropriate to use this for coverages also, but appropriate SKOS concepts do not always exist.
+             They may need to be published along with the data proper.</p>
+      </section>
+
+      <section  id="OWL-Time">
+          <h3>OWL Time</h3>
+          <p>Coverages should be annotated appropriately with the times observations were taken
+             [<a href="https://www.w3.org/TR/sdw-ucr/#CoverageTemporalExtent">Coverage temporal extent</a>].
+             QB4ST does not currently define temporal terms, but is likely to in the future.
+             The ontology being developed by the working group should be used.</p>
+      </section>
     </section>
    </body>
 </html>
