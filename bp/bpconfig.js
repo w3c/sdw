@@ -72,11 +72,6 @@ var respecConfig = {
         authors: ["Howard Butler", "Martin Daly", "Allan Doyle", "Sean Gillies", "Tim Schaub", "Christopher Schmidt"],
         date: "16 June 2008"
        },
-       "SDW-UCR":{
-        href:"http://www.w3.org/TR/sdw-ucr/",
-        title:"Spatial Data on the Web Use Cases & Requirements",
-        authors: ["Frans Knibbe", "Alejandro Llaves"]
-       },
        "GeoSPARQL":{
         href:"http://www.opengeospatial.org/standards/geosparql",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
@@ -100,18 +95,7 @@ var respecConfig = {
         authors: ["Simon Cox"],
         date: "22 March 2011"      
        },
-       "SSN":{
-        href:"http://purl.oclc.org/NET/ssnx/ssn",
-        title:"Semantic Sensor Network Ontology",
-        authors: ["W3C Semantic Sensor Network Incubator Group"]
-       },
-       "gml":{
-        href:"http://www.opengeospatial.org/standards/gml",
-        title:"Geography Markup Language",
-        authors: ["Clemens Portele (editor)"],
-        date: "27 August 2007"
-       },
-       "beacon":{
+       "BEACON":{
         href:"https://gbv.github.io/beaconspec/beacon.html",
         title:"BEACON link dump format",
         authors: ["J. Voß", "M. Schindler"],
@@ -122,12 +106,6 @@ var respecConfig = {
         title:"Stakeholder Requirements for Modernising Australia’s Geocentric Datum",
         authors:["Scott Strong (on behalf of the Cooperative Research Centre for Spatial Information and the Intergovernmental Committee on Surveying and Mapping"],
         date: "July 2015"
-       }, 
-       "DQV":{
-        href:"https://www.w3.org/TR/vocab-dqv/",
-        title:"Data on the Web Best Practices: Data Quality Vocabulary",
-        authors:["Riccardo Albertoni", "Antoine Isaac"],
-        date: "May 2016"
        },
        "GeoDCAT-AP":{
         href:"https://joinup.ec.europa.eu/node/139283/",
