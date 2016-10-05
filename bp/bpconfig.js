@@ -58,10 +58,6 @@ var respecConfig = {
 
 
     localBiblio: {
-      "RDA" : {
-        title: "Research Data Alliance",
-        href: "http://rd-alliance.org"
-      },
       "SCHEMA-ORG":{
         "href":"http://schema.org/",
         "title":"Schema.org"
@@ -76,24 +72,24 @@ var respecConfig = {
         href:"http://www.opengeospatial.org/standards/geosparql",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
         authors: ["Matthew Perry", "John Herring"],
-        date: "10 September 2012"  
-       }, 
+        date: "10 September 2012"
+       },
        "Simple-Features":{
         href:"http://www.opengeospatial.org/standards/sfa",
         title:"Simple Feature Access - Part 1: Common Architecture",
         authors: ["John Herring"],
-        date: "28 May 2011"    
-       }, 
+        date: "28 May 2011"
+       },
        "Veregin":{
         href:"http://www.geos.ed.ac.uk/~gisteac/gis_book_abridged/files/ch12.pdf",
         title:"Data quality parameters. In: Geographical Information Systems: Principles, Techniques, Management and Applications",
         authors:["H. Veregin"]
        },
-       "OM2":{
+       "OandM":{
         href:"http://www.opengeospatial.org/standards/om",
         title:"Observations and Measurements - XML Implementation",
         authors: ["Simon Cox"],
-        date: "22 March 2011"      
+        date: "22 March 2011"
        },
        "BEACON":{
         href:"https://gbv.github.io/beaconspec/beacon.html",
@@ -115,6 +111,8 @@ var respecConfig = {
        "ISO19115":{
         href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
         title:"Geographic information -- Metadata",
+        authors:["ISO/TC 211"],
+        publisher:"ISO",
         date: "2003"
        },
        "CSW":{
@@ -128,6 +126,89 @@ var respecConfig = {
         title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
         date: "29 October 2013"
        },
+       "ISO-19101": {
+         href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=59164",
+         title:"ISO 19101-1:2014 Geographic information -- Reference model -- Part 1: Fundamentals",
+         date: "15 November 2014",
+         authors:["ISO/TC 211"],
+         publisher:"ISO"
+       },
+       "W3C-BASIC-GEO": {
+         href:"https://www.w3.org/2003/01/geo/",
+         title:"Basic Geo (WGS84 lat/long) Vocabulary",
+         authors:["Dan Brickley"],
+         publisher:"W3C Semantic Web Interest Group",
+         date:"1 February 2006"
+        },
+        "NeoGeo": {
+          href:"http://geovocab.org/doc/neogeo/",
+          title:"NeoGeo Vocabulary Specification",
+          date: "5 February 2012 (Madrid Edition)",
+          authors:["Barry Norton", "Luis M. Vilches", "Alexander De León", "John Goodwin", "Claus Stadler", "Suchith Anand", "Dominic Harries", "Boris Villazón-Terrazas", "Ghislain A. Atemezing"]
+        },
+        "ISO-19123": {
+         href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=40121",
+         title:"ISO 19123:2005 Geographic information -- Schema for coverage geometry and functions",
+         authors:["ISO/TC 211"],
+         publisher:"ISO",
+         date:"15 August 2005"
+        },
+        "5STAR-LOD": {
+         href:"https://www.w3.org/DesignIssues/LinkedData#fivestar",
+         title:"Is your Linked Open Data 5 Star?",
+         authors:["Tim Berners-Lee"]
+        },
+        "PROTO3":{
+          href:"https://developers.google.com/protocol-buffers/docs/reference/proto3-spec",
+          title:"Protocol Buffers",
+          date:"23 August 2016",
+          publisher:"Google"
+        },
+        "GeoTIFF":{
+          href:"http://web.archive.org/web/20160403164508/http://www.remotesensing.org/geotiff/spec/geotiffhome.html",
+          title:"GeoTIFF Format Specification",
+          date:"28 December 2000",
+          authors:["Niles Ritter", "Mike Ruth"]
+        },
+        "ISO-19109": {
+         href:"http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=59193",
+         title:"ISO 19109:2015 Geographic information -- Rules for application schema",
+         authors:["ISO/TC 211"],
+         publisher:"ISO",
+         date:"15 December 2015"
+        },
+        "WCS":{
+          href:"http://www.opengis.net/doc/IS/wcs-core-2.0.1",
+          publisher:"OGC",
+          authors:["Peter Baumann"],
+          date:"12 July 2012",
+          title:"WCS 2.0 Interface Standard- Core",
+          status:"OGC Interface Standard"
+        },
+        "WFS":{
+          href:"http://www.opengis.net/doc/IS/wfs/2.0.2",
+          publisher:"OGC",
+          authors:["Panagiotis (Peter) A. Vretanos"],
+          date:"10 July 2014",
+          title:"Web Feature Service 2.0 Interface Standard",
+          status:"OGC Interface Standard"
+        },
+        "WMS":{
+          href:"http://portal.opengeospatial.org/files/?artifact_id=14416",
+          publisher:"OGC",
+          authors:["Jeff de la Beaujardiere"],
+          date:"15 March 2006",
+          title:"Web Map Server Implementation Specification",
+          status:"OpenGIS Implementation Standard"
+        },
+        "WPS":{
+          href:"http://docs.opengeospatial.org/is/14-065/14-065.html",
+          publisher:"OGC",
+          authors:["Matthias Mueller", "Benjamin Pross"],
+          date:"5 October 2015",
+          title:"Web Processing Service 2.0 Interface Standard",
+          status:"OGC Implementation Standard"
+        },
        "WKT-CRS":{
         href:"http://www.opengeospatial.org/standards/wkt-crs",
         title:"Well-known text representation of coordinate reference systems",
