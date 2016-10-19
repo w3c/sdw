@@ -7,7 +7,6 @@
 # a canonical time concept ontology (update to SDW output )
 @prefix time: <http://resources.opengeospatial.org/def/ontology/time/> .
 
-@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 
 @prefix rdf:            <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:           <http://www.w3.org/2000/01/rdf-schema#> .
@@ -22,6 +21,14 @@
 # Data structure definitions allow metadata about a data set to be declared, and reasoned over to discover, for example, overlapping spatial ranges 
 #
 #########################
+
+<http://resources.opengeospatial.org/def/ontology/qb4st> a owl:Ontology;
+	dcterms:creator "Rob Atkinson";
+	rdfs:label "QB4ST: Spatial Temporal Datacube Extensions"@en;
+	rdfs:comment "QB4ST defines a minimal set of definitions for spatio-temporal properties of RDF Datacube elements and base abstract classes to allow disocvery of spatio-temporal aspects of a dataset described using RDF datacube"@en;
+	
+.
+
 qb4st:SpatialDSD a rdfs:Class, owl:Class;
 	rdfs:subClassOf qb:DataStructureDefinition ;
 	rdfs:label "Spatial Data Structure Definition"@en ;
@@ -33,6 +40,17 @@ qb4st:SpatialDSD a rdfs:Class, owl:Class;
      ]  ;
 .
 
+qb4st:SpatioTemporalDSD a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb4st:SpatialDSD ;
+	rdfs:label "Spatial Data Structure Definition"@en ;
+	rdfs:comment "Specifies a data set includes one or more spatial properties, either in its organising dimension or its observed values"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:component ;
+        owl:someValuesFrom qb4st:TemporalComponentSpecification ;
+     ]  ;
+.
+
 qb4st:SpatialComponentSpecification a rdfs:Class, owl:Class;
 	rdfs:subClassOf qb:ComponentSpecification ;
 	rdfs:label "Spatial Component"@en ;
@@ -41,6 +59,17 @@ qb4st:SpatialComponentSpecification a rdfs:Class, owl:Class;
         a owl:Restriction ;
         owl:onProperty qb:componentProperty;
         owl:someValuesFrom qb4st:SpatialProperty ;
+     ]  ;
+.
+
+qb4st:TemporalComponentSpecification a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb:ComponentSpecification ;
+	rdfs:label "Spatial Component"@en ;
+	rdfs:comment "A generalised spatial property - allows properties like CRS, bounds, accuracy and precision to be define for a spatial dimension or measure"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:componentProperty;
+        owl:someValuesFrom qb4st:TemporalProperty ;
      ]  ;
 .
 
@@ -72,21 +101,43 @@ qb4st:SpatialMeasureComponentSpecification a rdfs:Class, owl:Class;
 # attributes of spatial components
 #
 ######################
-qb4st:crs a rdfs:Property;
+qb4st:refsystem a rdfs:Property;
 	# meta:rangeIncludes qb4st:SpatialProperty, qb4st:SpatialComponentSpecification; 
+	rdfs:label "Reference system specification for a QB component"@en;
+	rdfs:comment ""@en
+	.
+
+
+qb4st:srs a rdfs:Property, owl:ObjectProperty;
+	# meta:rangeIncludes qb4st:SpatialProperty, qb4st:SpatialComponentSpecification;
+	rdfs:subPropertyOf qb4st:srs ;	
+	rdfs:label "Spatial Reference System declaration"@en;
+	rdfs:comment ""@en
+	.
+	
+qb4st:crs a rdfs:Property, owl:ObjectProperty;
+	# meta:rangeIncludes qb4st:SpatialProperty, qb4st:SpatialComponentSpecification;
+	rdfs:subPropertyOf qb4st:srs ;	
 	rdfs:range so:CRS;
 	rdfs:label "CRS binding for a component specification or a property"@en;
 	rdfs:comment "Allows declaration of a CRS for any spatial propert -- do we want to leave domain open? Leaves it to a general spatial ontology to handle if CRS is a canonical URI set , or dereferences to anything specific)"@en
 	.
 
+qb4st:crsaxis a rdfs:Property;
+	# meta:rangeIncludes qb4st:SpatialProperty, qb4st:SpatialComponentSpecification;
+	rdfs:subPropertyOf qb4st:srs ;	
+	rdfs:label "CRS axis element name"@en;
+	rdfs:comment "Names a specific axis of the CRS"@en
+	.
+
 
 qb4st:coordGranularity a rdfs:Property;
 	rdfs:domain qb4st:coordDimension ;
-	rdfs:range  [ a owl:Class; owl:unionOf ( xsd:integer xsd:float) ] ;
+	rdfs:range qb4st:AnyNumber ;
 	rdfs:label "Dimensions are indexes, a coordDimension specifies the granular partitioning of the coordinate space represented."@en
 	.
 
-qb4st:AnyNumber
+qb4st:AnyNumber a rdfs:Class, owl:Class ;
       rdfs:label "Any number"^^xsd:string ;      
       rdfs:comment "A datatype that is the union of numeric xsd data types. equivalent to the xsd specification that uses an xsd:union of memberTypes='xsd:decimal xsd:double xsd:float xsd:integer'."@en ;
       owl:equivalentClass [ 
@@ -110,88 +161,40 @@ qb4st:SpatialProperty a rdfs:Class, owl:Class;
         owl:someValuesFrom so:SpatialThing ;
      ]  ;
 	 . 
-	
+
+qb4st:TemporalProperty a rdfs:Class, owl:Class;
+	rdfs:subClassOf rdfs:Property, qb:ComponentProperty ;
+	rdfs:label "Abstract Spatial Property"@en ;
+	rdfs:comment "A generalised spatial property - defines how properties like CRS, accuracy and precision can be applied to any spatial value in a dimension of measure"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:concept ;
+        owl:someValuesFrom so:SpatialThing ;
+     ]  ;
+	 . 
+	 
 qb4st:SpatialDimension a rdfs:Class, owl:Class; 
 	rdfs:label "Spatial Dimension"@en ;
-	rdfs:subClassOf qb:DimensionProperty, qb4st:SpatialProperty;
+	rdfs:subPropertyOf qb:DimensionProperty, qb4st:SpatialProperty;
 	rdfs:comment "A generalised spatial dimension - defines common usage of a concept for a spatial dimension, and hence potential transformability between instances."@en
 	. 
 	
 
 qb4st:CoordDimension a rdfs:Class, owl:Class;
-	rdfs:subClassOf qb4st:SpatialDimension;
+	rdfs:subPropertyOf qb4st:SpatialDimension;
 	rdfs:label "Abstract Numerical Coordinate Dimension"@en ;
 	rdfs:comment "A numeric coordinate dimension. NB - this is a dimension - an index with spatial semantics whose value represents . If an actual location is being measured, use a coordMeasure"@en;
 	rdfs:range  qb4st:AnyNumber 
 
 .
 
-
-qb4st:xDim a rdfs:Class, owl:Class;
-	rdfs:subClassOf qb4st:CoordDimension;
-	rdfs:label "X/Easting/Longitude Dimension"@en;
-	rdfs:comment "A easting/longitude coordinate constrained to granularity - as an indexed dimension"@en;
-	qb4st:coordOrder 1 . 
-
-.
-qb4st:longitudeDim a rdfs:Class, owl:Class;
-	rdfs:subClassOf qb4st:xDim;
-	rdfs:label "Longitude Dimension"@en;
-	rdfs:comment "Longitude Dimension - need to restrict the crs to WGS84 - what mechanism to use here. use of this as a name, like use of geo:lat, carries this requirement, but we want to make it explicit to support coordinate transformation"@en;
-.
-
-qb4st:yDim a rdfs:Class, owl:Class;
-	rdfs:subClassOf qb4st:CoordDimension;
-	rdfs:label "Y/Northing/Latitude Dimension"@en;
-	rdfs:comment "A northing/latitude coordinate constrained to granularity - as an indexed dimension"@en;
-	qb4st:coordOrder 2
-	. 
-
-qb4st:zDim a rdfs:Class, owl:Class;
-	rdfs:subClassOf qb4st:CoordDimension;
-	rdfs:label "Altitude Dimension"@en;
-	rdfs:comment "A height/elevation coordinate constrained to granularity - as an indexed dimension"@en;
-	qb4st:coordOrder 3
-	. 
-
-
 qb4st:SpatialMeasure a  rdfs:Class, owl:Class;
-	rdfs:subClassOf qb:MeasureProperty;
+	rdfs:subPropertyOf qb:MeasureProperty;
 	rdfs:label "abstract measure of spatial location"@en
 	.
 
-qb4st:positionMeasure a qb:SpatialMeasure;
+qb4st:PositionMeasure a  rdfs:Class, owl:Class ;
+	rdfs:subPropertyOf qb:SpatialMeasure ;
 	rdfs:range  so:Point ;
 	rdfs:label "a measure of location as a Point (i.e. a complex spatial data type)"
-	.
-	
-# can we make this statement here - its assumed to be true within all uses within the community?
-geo:Point rdfs:subClassOf so:Point .
-	
-qb4st:CoordMeasure a qb:MeasureProperty, qb4st:SpatialProperty, qb4st:spatialMeasure;
-	rdfs:range  [ a owl:Class; owl:unionOf ( xsd:integer xsd:float) ] ;
-	.
-
-qb4st:latMeasure a qb:MeasureProperty;
-	rdfs:subPropertyOf qb4st:coordMeasure;
-	rdfs:label "A specialised measure of latitude".  
-	
-qb4st:longMeasure a qb:MeasureProperty;
-	rdfs:subPropertyOf qb4st:coordMeasure;
-	rdfs:label "A specialised measure of longitude"@en ;
-	rdfs:comment "Abstract class allows for specific Datums etc to be specified"@en;
-	.
-	
-# bindings to properties in well-known vocabularies
-	
-geo:lat a qb:MeasureProperty;
-	rdfs:subPropertyOf qb4st:latMeasure;
-	qb4st:crs <http://www.opengis.net/def/crs/EPSG/0/4326> ;
-	qb4st:crslabel "wgs84","WGS84";
-	.
-	
-geo:long a qb:MeasureProperty;
-	rdfs:subPropertyOf qb4st:longMeasure;
-	qb4st:crs <http://www.opengis.net/def/crs/EPSG/0/4326> ;
-	qb4st:crslabel "wgs84","WGS84";
 	.
