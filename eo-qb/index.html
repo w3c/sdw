@@ -143,7 +143,8 @@
     :instrument :OLI ;
     :satellite :landsat-8 ;
     :band "4" ;
-    :coverageDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    :coverageTemporalDomain :timeDomain ;
     prov:wasGeneratedBy :ANU-led-resampling ;
     prov:wasDerivedFrom :AGDC .
     
@@ -245,14 +246,16 @@
     :instrument :OLI ;
     :satellite :landsat-8 ;
     :band "4" ;
-    :coverageDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    :coverageTemporalDomain :timeDomain ;
     prov:wasGeneratedBy :ANU-led-resampling ;
     prov:wasDerivedFrom :AGDC .
     
     
 
-:exampleStructure a qb:DataStructureDefinition, qb4st:SpatialDSD ;
-    qb:component :domainComponent ,
+:exampleStructure a qb4st:SpatialDSD ;
+    qb:component :spatialDomainComponent ,
+                 :temporalDomainComponent ,
                  :latitudeComponent ,
                  :longitudeComponent ,
                  :timeComponent ,
@@ -266,8 +269,11 @@
                  :resolutionComponent ,
                  :boundsComponent .
 
-:domainComponent a qb4st:SpatialComponentSpecification ;
-    qb:attribute :coverageDomain .
+:spatialDomainComponent a qb4st:SpatialComponentSpecification ;
+    qb:attribute :coverageSpatialDomain .
+    
+:temporalDomainComponent a qb:ComponentSpecification ;
+    qb:attribute :coverageTemporalDomain .
 
 :latitudeComponent a qb4st:SpatialComponentSpecification ;
     qb:dimension :lat .
@@ -307,8 +313,12 @@
     
     
     
-:coverageDomain a qb:AttributeProperty, qb4st:SpatialProperty ;
+:coverageSpatialDomain a qb:AttributeProperty, qb4st:SpatialProperty ;
     rdfs:subPropertyOf :bounds .
+    
+:coverageTemporalDomain a qb:AttributeProperty ;
+    rdfs:range time:DateTimeInterval ;
+    qb:concept sdmx-concept:timePeriod .
 
 :lat a qb4st:latitudeDim ;
     rdfs:subPropertyOf geo:lat ;
@@ -374,7 +384,7 @@
 
       <section  id="SSN">
           <h3>SSN</h3>
-          <p>The semantic sensor network ontology defines terms for describing the sensors used to collect the data
+          <p>The <a href="https://www.w3.org/TR/vocab-ssn/">semantic sensor network</a> ontology defines terms for describing the sensors used to collect the data
              [<a href="https://www.w3.org/TR/sdw-ucr/#SensorMetadata">Sensor metadata</a>].
              The <a href="https://github.com/ANU-Linked-Earth-Data/ontology/blob/master/ANU-LED-example.ttl">ANU-LED example</a>
              illustrates a minimal description of landsat 8 OLI observations using SSN
@@ -386,7 +396,7 @@
     qb:structure :exampleStructure ;
     :instrument :OLI ;
     :satellite :landsat-8 ;
-    :coverageDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .
     
 :landsat-8 a ssn:Platform ;
     owl:sameAs cci-platform:plat_landsat_8 .
@@ -407,7 +417,7 @@
 
       <section  id="PROV-O">
           <h3>PROV-O</h3>
-          <p>The PROV-O ontology allows the provenance of data to be traced
+          <p>The <a href="https://www.w3.org/TR/prov-o/">PROV-O</a> ontology allows the provenance of data to be traced
              [<a href="https://www.w3.org/TR/sdw-ucr/#Provenance">Provenance</a>].
              It provides terms for describing what entities the data is based on,
              what processes were used to convert those entities into each other and into the final data,
@@ -474,7 +484,7 @@
 
       <section  id="GeoSPARQL">
           <h3>GeoSPARQL</h3>
-          <p>The GeoSPARQL ontology defines some terms and predicates for reasoning about objects and shapes in space
+          <p>The <a href="http://www.opengeospatial.org/standards/geosparql">GeoSPARQL</a> ontology defines some terms and predicates for reasoning about objects and shapes in space
              [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">Spatial operators</a>].
              It allows for the use of several encodings, including WKT, to describe polygons
              [<a href="https://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry">Encoding for vector geometry</a>].
@@ -482,7 +492,7 @@
              
           <pre class="example">:exampleDataset a qb:DataSet, prov:Entity ;
     qb:structure :exampleStructure ;
-    :coverageDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .
 
 :bounds a qb:AttributeProperty, qb4st:SpatialProperty ;
     rdfs:subPropertyOf ogc:asWKT ;
@@ -500,7 +510,7 @@
 
       <section  id="SKOS">
           <h3>SKOS concepts</h3>
-          <p>The Data Cube is commonly used in conjunction with a SKOS concept scheme
+          <p>The Data Cube is commonly used in conjunction with a <a href="https://www.w3.org/TR/skos-reference/">SKOS</a> concept scheme
              (such as <a href="http://purl.org/linked-data/sdmx">SDMX-RDF</a> and its <a href="http://purl.org/linked-data/sdmx/2009/concept">concept scheme</a>)
              to define the meanings of the components [<a href="https://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage">Observed property in coverage</a>].
              It is appropriate to use this for coverages also, but appropriate SKOS concepts do not always exist.
@@ -534,11 +544,33 @@
       </section>
 
       <section  id="OWL-Time">
-          <h3>OWL Time</h3>
+          <h3>OWL-Time</h3>
           <p>Coverages should be annotated appropriately with the times observations were taken
              [<a href="https://www.w3.org/TR/sdw-ucr/#CoverageTemporalExtent">Coverage temporal extent</a>].
              QB4ST does not currently define temporal terms, but is likely to in the future.
-             The ontology being developed by the working group should be used.</p>
+             <a href="https://www.w3.org/TR/owl-time/">OWL-Time</a> defines terms for time intervals that are useful for expressing the temporal domain of the dataset.
+             It also allows temporal reference systems other than the Gregorian calendar.
+             However, for Gregorian time instants, a datatype property using the built-in xsd:dateTime datatype is sufficient.
+             </p>
+             
+          <pre class="example">:exampleDataset a qb:DataSet, prov:Entity ;
+    qb:structure :exampleStructure ;
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    :coverageTemporalDomain :timeDomain .
+
+:timeDomain a time:Interval ;
+    time:hasBeginning :timeBeginning ;
+    time:hasEnd :timeEnd .
+    
+:timeBeginning a time:Instant ;
+    time:inXSDDateTime "2001-10-26T21:32:52"^^xsd:dateTime .
+
+:timeEnd a time:Instant ;
+    time:inXSDDateTime "2001-10-26T21:32:52"^^xsd:dateTime .
+
+:s1 a :GridSquare ;
+    qb:dataSet :exampleDataset ;
+    :time "2001-10-26T21:32:52"^^xsd:dateTime .</pre>
       </section>
     </section>
    </body>
