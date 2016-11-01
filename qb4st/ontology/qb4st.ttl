@@ -1,0 +1,266 @@
+# prefix for for a "spatio-temporal Datacube" extension to qb
+@prefix qb4st: <http://resources.opengeospatial.org/def/qbcomponents/qb4st/> .
+
+# a canonical spatial concept ontology (update to SDW output )
+# we cannot have this as a dependency until accepted as a Note or Rec - so we declare equivalence 
+# @prefix so: <http://geosemweb.net/sdwgeo#> .
+
+# a canonical time concept ontology (update to SDW output )
+@prefix time: <http://www.w3.org/2006/time#> .
+
+
+@prefix : <http://resources.opengeospatial.org/def/qbcomponents/qb4st> .
+
+@prefix rdf:            <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:           <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:            <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:            <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:           <http://www.w3.org/2004/02/skos/core#> .
+@prefix qb:             <http://purl.org/linked-data/cube#> .
+@prefix dct:        	<http://purl.org/dc/terms/> .
+@prefix foaf: 			<http://xmlns.com/foaf/0.1/>.
+#########################
+
+#
+# Ontology definitions - mainly to provide Linked Data resources 
+#
+#########################
+
+<http://resources.opengeospatial.org/def/qbcomponents/qb4st> a owl:Ontology;
+   dct:creator [ foaf:mbox  <mailto:rob@metalinkage.com.au>; foaf:name "Rob Atkinson"; ];
+
+	dct:created "2016-10-25"^^xsd:date ;
+	dct:license <https://creativecommons.org/licenses/by/4.0/> ;
+	rdfs:label "QB4ST: Spatial Temporal Datacube Extensions"@en;
+	dct:rights "Copyright © 2016 W3C All Rights Reserved. W3C liability, trademark and document use rules apply."@en ;
+	rdfs:comment "QB4ST defines a minimal set of definitions for spatio-temporal properties of RDF Datacube elements and base abstract classes to allow disocvery of spatio-temporal aspects of a dataset described using RDF datacube"@en;
+	# owl:imports 
+	owl:versionIRI <http://www.w3.org/2006/time#2016> 
+.
+
+#########################
+#
+# Abstract concept definitions - provides a hook for alignment with future standards for defining general spatial concepts 
+#
+#########################
+
+
+
+qb4st:SpatialThing a rdfs:Class, owl:Class ;
+	rdfs:label "Spatial Thing"@en ;
+	rdfs:comment "This is defined here pending availability of a canonical definition of spatial concepts - at which point an equivalence will be declared"@en ;
+.
+
+qb4st:Point  a rdfs:Class, owl:Class ;
+	rdfs:label "Geometric Point"@en ;
+	rdfs:comment "This is defined here pending availability of a canonical definition of spatial concepts - at which point an equivalence will be declared"@en ;
+.
+
+
+qb4st:CRS a rdfs:Class, owl:Class ;
+	rdfs:label "Coordinate Reference System"@en ;
+	rdfs:comment "This is defined here pending availability of a canonical definition of spatial concepts - at which point an equivalence will be declared"@en ;
+.
+
+
+qb4st:AnyNumber a rdfs:Class, owl:Class ;
+      rdfs:label "Any number"@en ;      
+      rdfs:comment "A datatype that is the union of numeric xsd data types. equivalent to the xsd specification that uses an xsd:union of memberTypes='xsd:decimal xsd:double xsd:float xsd:integer'."@en ;
+      owl:equivalentClass [ 
+		rdf:type  rdfs:Datatype;
+		owl:unionOf (xsd:float xsd:decimal xsd:integer xsd:double) 
+      ]
+.
+
+##################
+#
+# qb:ComponentProperty specialisations 
+#
+# These extend the RDF-QB model through the presence of one or more spatio-temporal attributes bound to the specific component 
+# (as opposed to qb:AttributeMeasure properties which belong to the whole DataSet, Slice or Observation (subclasses of qb:Attachable)
+#
+##################
+
+qb4st:SpatialProperty a rdfs:Class, owl:Class;
+	rdfs:subClassOf rdfs:Property, qb:ComponentProperty ;
+	rdfs:label "Abstract Spatial Property"@en ;
+	rdfs:comment "A generalised spatial property - defines how properties like CRS, accuracy and precision can be applied to any spatial value in a dimension of measure"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:concept ;
+        owl:someValuesFrom qb4st:SpatialThing ;
+     ]  ;
+	 . 
+
+qb4st:TemporalProperty a rdfs:Class, owl:Class;
+	rdfs:subClassOf rdfs:Property, qb:ComponentProperty ;
+	rdfs:label "Abstract Spatial Property"@en ;
+	rdfs:comment "A generalised spatial property - defines how properties like CRS, accuracy and precision can be applied to any spatial value in a dimension of measure"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:concept ;
+        owl:someValuesFrom time:Interval ;
+     ]  ;
+	 . 
+	 
+qb4st:SpatialDimension a rdfs:Class, owl:Class; 
+	rdfs:label "Spatial Dimension"@en ;
+	rdfs:subPropertyOf qb:DimensionProperty, qb4st:SpatialProperty;
+	rdfs:comment "A generalised spatial dimension - defines common usage of a concept for a spatial dimension, and hence potential transformability between instances."@en
+	. 
+	
+
+qb4st:CoordDimension a rdfs:Class, owl:Class;
+	rdfs:subPropertyOf qb4st:SpatialDimension;
+	rdfs:label "Abstract Numerical Coordinate Dimension"@en ;
+	rdfs:comment "A numeric coordinate dimension. NB - this is a dimension - an index with spatial semantics whose value represents . If an actual location is being measured, use a coordMeasure"@en;
+	rdfs:range  qb4st:AnyNumber 
+
+.
+
+qb4st:RefArea a  rdfs:Class, owl:Class ;
+	rdfs:subPropertyOf qb:SpatialDimension, qb:CodedProperty ;
+	rdfs:range  qb4st:Feature ;
+	rdfs:label "Location by spatial Feature"@en ;
+	rdfs:comment "Spatial context identified by a Spatial Feature. As a dimension, it is used as an index, and may not be missing or multi-valued. Such a property is both a spatial property and a CodedProperty"@en ;
+	.
+
+qb4st:SpatialMeasure a  rdfs:Class, owl:Class;
+	rdfs:subPropertyOf qb:MeasureProperty;
+	rdfs:label "abstract measure of spatial location"@en
+	.
+
+qb4st:PositionMeasure a  rdfs:Class, owl:Class ;
+	rdfs:subPropertyOf qb:SpatialMeasure ;
+	rdfs:label "Location by Point Coordinates"@en ;
+	rdfs:range  qb4st:Point ;
+	rdfs:comment "a measure of location as a Point (i.e. a complex spatial data type)"@en
+	.
+
+qb4st:CoordMeasure a  rdfs:Class, owl:Class ;
+	rdfs:subPropertyOf qb:SpatialMeasure ;
+	rdfs:label "Location partially recorded by a single Coordinate"@en ;
+	rdfs:range  qb4st:AnyNumber ;
+	rdfs:comment "Abstract class for partial measure of location as a single Coordinate - such as latitude"@en;
+	.
+
+qb4st:RefAreaMeasure a  rdfs:Class, owl:Class ;
+	rdfs:subPropertyOf qb:SpatialMeasure, qb:CodedProperty ;
+	rdfs:range  qb4st:Feature ;
+	rdfs:label "Location by spatial Feature"@en ;
+	rdfs:comment "a measure of location as being with the bounds of an identified Spatial Feature. As a measure, it is not used as an index, and may be missing or multi-valued. Such a property is both a spatial property and a CodedProperty"@en ;
+	.
+
+########################
+#
+# attributes of spatio-temporal components
+#
+# note the domain and range are not narrowly defined in general, allowing these properties to be re-used anywhere. For the same reason these are not defined
+# as sub-properties of qb:ComponentProperty (specifically qb:AttributeProperty) in order to avoid inappropriate RDFS inferences
+#
+####################### 
+
+
+qb4st:srs a rdfs:Property, owl:ObjectProperty;
+	# meta:rangeIncludes qb4st:SpatialProperty, qb4st:SpatialComponentSpecification;
+	rdfs:label "Spatial Reference System"@en;
+	rdfs:comment "Generalised Spatial Reference System - specific types may be coordinate, grid or feature based "@en
+	.
+	
+qb4st:crs a rdfs:Property, owl:ObjectProperty;
+	# meta:rangeIncludes qb4st:SpatialProperty, qb4st:SpatialComponentSpecification;
+	rdfs:subPropertyOf qb4st:srs ;	
+	rdfs:label "CRS binding for a component specification or a property"@en;
+	rdfs:comment "Allows declaration of a CRS for any spatial propert -- do we want to leave domain open? Leaves it to a general spatial ontology to handle if CRS is a canonical URI set , or dereferences to anything specific)"@en
+	.
+
+qb4st:crsaxis a rdfs:Property;
+	# meta:rangeIncludes qb4st:SpatialProperty, qb4st:SpatialComponentSpecification;
+	rdfs:label "CRS axis element name"@en;
+	rdfs:comment "Names a specific axis of the CRS"@en
+	.
+
+
+qb4st:coordGranularity a rdfs:Property;
+	# meta:domainIncludes qb4st:CoordDimension , qb4st:SpatialComponentSpecification ;
+	rdfs:range qb4st:AnyNumber ;
+	rdfs:label "Resolution (Granularity)" ;
+	rdfs:comment "Dimensions are indexes, a coordDimension specifies the granular partitioning of the coordinate space represented."@en
+	.
+
+	
+
+
+#########################
+#
+# Data Structure - defines classes to allow inferencing and/or assertion that a dataset is in fact a spatio-temporal dataset 
+#
+#########################
+
+qb4st:SpatialDSD a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb:DataStructureDefinition ;
+	rdfs:label "Spatial Data Structure Definition"@en ;
+	rdfs:comment "Specifies a data set includes one or more spatial properties, either in its organising dimension or its observed values"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:component ;
+        owl:someValuesFrom qb4st:SpatialComponentSpecification ;
+     ]  ;
+.
+
+qb4st:SpatioTemporalDSD a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb4st:SpatialDSD ;
+	rdfs:label "Spatial Data Structure Definition"@en ;
+	rdfs:comment "Specifies a data set includes one or more spatial properties, either in its organising dimension or its observed values"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:component ;
+        owl:someValuesFrom qb4st:TemporalComponentSpecification ;
+     ]  ;
+.
+
+qb4st:SpatialComponentSpecification a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb:ComponentSpecification ;
+	rdfs:label "Spatial Component"@en ;
+	rdfs:comment "A generalised spatial property - allows properties like CRS, bounds, accuracy and precision to be define for a spatial dimension or measure"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:componentProperty;
+        owl:someValuesFrom qb4st:SpatialProperty ;
+     ]  ;
+.
+
+qb4st:TemporalComponentSpecification a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb:ComponentSpecification ;
+	rdfs:label "Spatial Component"@en ;
+	rdfs:comment "A generalised spatial property - allows properties like CRS, bounds, accuracy and precision to be define for a spatial dimension or measure"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:componentProperty;
+        owl:someValuesFrom qb4st:TemporalProperty ;
+     ]  ;
+.
+
+# many not need these - unless we want to ask if a dataset has a spatial dimension vs a measure?
+qb4st:SpatialDimensionComponentSpecification a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb:ComponentSpecification ;
+	rdfs:label "Spatial Dimension Component"@en ;
+	rdfs:comment "Allows identification of datasets organised using discrete spatial dimensions"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:dimension;
+        owl:someValuesFrom qb4st:SpatialDimension ;
+     ]  ;
+.
+
+qb4st:SpatialMeasureComponentSpecification a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb:ComponentSpecification ;
+	rdfs:label "Spatial Measure Component"@en ;
+	rdfs:comment "Allows identification of datasets containing spatial location measures"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty qb:measure;
+        owl:someValuesFrom qb4st:SpatialMeasure ;
+     ]  ;
+.
+
