@@ -95,60 +95,80 @@ qb4st:SpatialProperty a rdfs:Class, owl:Class;
 qb4st:TemporalProperty a rdfs:Class, owl:Class;
 	rdfs:subClassOf rdfs:Property, qb:ComponentProperty ;
 	rdfs:label "Abstract Spatial Property"@en ;
-	rdfs:comment "A generalised spatial property - defines how properties like CRS, accuracy and precision can be applied to any spatial value in a dimension of measure"@en ;
+	rdfs:comment "A generalised temporal property, requires rdfs:range of the property to be a time:Interval"@en ;
 	rdfs:subClassOf [
         a owl:Restriction ;
-        owl:onProperty qb:concept ;
+        owl:onProperty rdfs:range ;
         owl:someValuesFrom time:Interval ;
      ]  ;
 	 . 
 	 
 qb4st:SpatialDimension a rdfs:Class, owl:Class; 
 	rdfs:label "Spatial Dimension"@en ;
-	rdfs:subPropertyOf qb:DimensionProperty, qb4st:SpatialProperty;
+	rdfs:subClassOf qb:DimensionProperty, qb4st:SpatialProperty;
 	rdfs:comment "A generalised spatial dimension - defines common usage of a concept for a spatial dimension, and hence potential transformability between instances."@en
 	. 
 	
 
 qb4st:CoordDimension a rdfs:Class, owl:Class;
-	rdfs:subPropertyOf qb4st:SpatialDimension;
+	rdfs:subClassOf qb4st:SpatialDimension;
 	rdfs:label "Abstract Numerical Coordinate Dimension"@en ;
 	rdfs:comment "A numeric coordinate dimension. NB - this is a dimension - an index with spatial semantics whose value represents . If an actual location is being measured, use a coordMeasure"@en;
-	rdfs:range  qb4st:AnyNumber 
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty rdfs:range  ;
+        owl:someValuesFrom qb4st:AnyNumber  ;
+     ]  ;
+	 . 	 
 
-.
 
 qb4st:RefArea a  rdfs:Class, owl:Class ;
-	rdfs:subPropertyOf qb:SpatialDimension, qb:CodedProperty ;
-	rdfs:range  qb4st:Feature ;
+	rdfs:subClassOf qb:SpatialDimension, qb:CodedProperty ;
 	rdfs:label "Location by spatial Feature"@en ;
-	rdfs:comment "Spatial context identified by a Spatial Feature. As a dimension, it is used as an index, and may not be missing or multi-valued. Such a property is both a spatial property and a CodedProperty"@en ;
+	rdfs:comment "Spatial context identified by a Spatial Feature. As a dimension, it is used as an index, and may not be missing or multi-valued. Such a property is both a spatial property and a CodedProperty. Note this must also have a codelist defined, and thus each Feature is regarded as a skos:Concept"@en ;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty rdfs:range  ;
+        owl:someValuesFrom qb4st:Feature  ;
+     ]  ;
 	.
 
 qb4st:SpatialMeasure a  rdfs:Class, owl:Class;
-	rdfs:subPropertyOf qb:MeasureProperty;
+	rdfs:subClassOf qb:MeasureProperty;
 	rdfs:label "abstract measure of spatial location"@en
 	.
 
 qb4st:PositionMeasure a  rdfs:Class, owl:Class ;
 	rdfs:subPropertyOf qb:SpatialMeasure ;
 	rdfs:label "Location by Point Coordinates"@en ;
-	rdfs:range  qb4st:Point ;
-	rdfs:comment "a measure of location as a Point (i.e. a complex spatial data type)"@en
+	rdfs:comment "a measure of location as a Point (i.e. a complex spatial data type)"@en ;
+		rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty rdfs:range  ;
+        owl:someValuesFrom qb4st:Point  ;
+     ]  ;
 	.
 
 qb4st:CoordMeasure a  rdfs:Class, owl:Class ;
 	rdfs:subPropertyOf qb:SpatialMeasure ;
 	rdfs:label "Location partially recorded by a single Coordinate"@en ;
-	rdfs:range  qb4st:AnyNumber ;
 	rdfs:comment "Abstract class for partial measure of location as a single Coordinate - such as latitude"@en;
+	rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty rdfs:range  ;
+        owl:someValuesFrom qb4st:AnyNumber  ;
+     ]  ;
 	.
 
 qb4st:RefAreaMeasure a  rdfs:Class, owl:Class ;
 	rdfs:subPropertyOf qb:SpatialMeasure, qb:CodedProperty ;
-	rdfs:range  qb4st:Feature ;
 	rdfs:label "Location by spatial Feature"@en ;
 	rdfs:comment "a measure of location as being with the bounds of an identified Spatial Feature. As a measure, it is not used as an index, and may be missing or multi-valued. Such a property is both a spatial property and a CodedProperty"@en ;
+		rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty rdfs:range  ;
+        owl:someValuesFrom qb4st:Feature  ;
+     ]  ;
 	.
 
 ########################
@@ -181,7 +201,7 @@ qb4st:crsaxis a rdfs:Property;
 	.
 
 
-qb4st:coordGranularity a rdfs:Property;
+qb4st:resolution a rdfs:Property;
 	# meta:domainIncludes qb4st:CoordDimension , qb4st:SpatialComponentSpecification ;
 	rdfs:range qb4st:AnyNumber ;
 	rdfs:label "Resolution (Granularity)" ;
@@ -208,15 +228,22 @@ qb4st:SpatialDSD a rdfs:Class, owl:Class;
      ]  ;
 .
 
-qb4st:SpatioTemporalDSD a rdfs:Class, owl:Class;
-	rdfs:subClassOf qb4st:SpatialDSD ;
+qb4st:TemporalDSD a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb:DataStructureDefinition ;
 	rdfs:label "Spatial Data Structure Definition"@en ;
-	rdfs:comment "Specifies a data set includes one or more spatial properties, either in its organising dimension or its observed values"@en ;
+	rdfs:comment "Specifies a data set includes one or more temporal properties, either in its organising dimension or its observed values"@en ;
 	rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty qb:component ;
         owl:someValuesFrom qb4st:TemporalComponentSpecification ;
      ]  ;
+.
+
+qb4st:SpatioTemporalDSD a rdfs:Class, owl:Class;
+	rdfs:subClassOf qb4st:SpatialDSD ,Temporal;
+	rdfs:label "Spatial-Temporal Data Structure Definition"@en ;
+	rdfs:comment "Specifies a data set includes both spatial and temporal properties, either in its organising dimensions or its observed values"@en ;
+
 .
 
 qb4st:SpatialComponentSpecification a rdfs:Class, owl:Class;
