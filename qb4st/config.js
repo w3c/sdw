@@ -56,12 +56,27 @@ var respecConfig = {
         authors: ["Simon Cox", "Chris Little"],
         date: "1 October 2016"
        },
-       "RDF-QB":{
-        href:"http://www.w3.org/TR/vocab-data-cube/",
-        title:"The RDF Data Cube Vocabulary",
-        authors: ["Richard Cyganiak, ", "Dave Reynolds"],
-        date: "16 January 2014"  
-       }, 
+
+	    "W3C-BASIC-GEO": {
+         href:"https://www.w3.org/2003/01/geo/",
+         title:"Basic Geo (WGS84 lat/long) Vocabulary",
+         authors:["Dan Brickley"],
+         publisher:"W3C Semantic Web Interest Group",
+         date:"1 February 2006"
+        },
+        "NeoGeo": {
+          href:"http://geovocab.org/doc/neogeo/",
+          title:"NeoGeo Vocabulary Specification",
+          date: "5 February 2012 (Madrid Edition)",
+          authors:["Barry Norton", "Luis M. Vilches", "Alexander De León", "John Goodwin", "Claus Stadler", "Suchith Anand", "Dominic Harries", "Boris Villazón-Terrazas", "Ghislain A. Atemezing"]
+        },
+        "ISO-19123": {
+         href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=40121",
+         title:"ISO 19123:2005 Geographic information -- Schema for coverage geometry and functions",
+         authors:["ISO/TC 211"],
+         publisher:"ISO",
+         date:"15 August 2005"
+        },
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
