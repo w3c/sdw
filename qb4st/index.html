@@ -104,7 +104,7 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
     <tr><td>owl</td><td><a href="http://www.w3.org/2002/07/owl">http://www.w3.org/2002/07/owl#</a></td><td>[<cite><a href="#bib-OWL2-PRIMER" class="bibref">OWL2-PRIMER</a></cite>]</td></tr>
     <tr><td>rdf</td><td><a href="http://www.w3.org/1999/02/22-rdf-syntax-ns">http://www.w3.org/1999/02/22-rdf-syntax-ns#</a></td><td>[<cite><a href="#bib-RDF-CONCEPTS" class="bibref">RDF-CONCEPTS</a></cite>]</td></tr>
     <tr><td>rdfs</td><td><a href="http://www.w3.org/2000/01/rdf-schema">http://www.w3.org/2000/01/rdf-schema#</a></td><td>[<cite><a href="#bib-RDF-SCHEMA" class="bibref">RDF-SCHEMA</a></cite>]</td></tr>
-	<tr><td>geo</td><td><a href="http://example.org/ns#">http://example.org/ns#</a></td><td><em>(Non-normative, used for examples only)</em></td></tr>
+	<tr><td>geo</td><td><a href="http://www.w3.org/2003/01/geo/wgs84_pos#">http://www.w3.org/2003/01/geo/wgs84_pos#</a></td><td><cite><a href="#bib-W3C-BASIC-GEO" class="bibref">RDF-SCHEMA</a></cite>]<em>(Non-normative, used for examples only)</em></td></tr>
     <tr><td>eg</td><td><a href="http://example.org/ns#">http://example.org/ns#</a></td><td><em>(Non-normative, used for examples only)</em></td></tr>
   </tbody>
 </table>
@@ -187,8 +187,45 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		</section>
 </section>
 <section id="QB4ST">
+	<h1>Vocabulary Reference</h1>
+	<section id="SpatialConcepts">
+	<h2>Spatial Concepts</h2>
+	<p>QB4ST defines a number of basic concepts that could be defined by standard vocabularies with broader scope, but which are not currently available. These can be expected to be aligned (e.g. using owl:equivalentClass) with future standards.<p>
+	 	<div class="example"><div class="example-title">Spatial Concepts</div>
+	 <pre>
+	
+
+	qb4st:SpatialThing a rdfs:Class, owl:Class ;
+		rdfs:label "Spatial Thing"@en ;
+		rdfs:comment "This is defined here pending availability of a canonical definition of spatial concepts - at which point an equivalence will be declared"@en ;
+	.
+
+	qb4st:Point  a rdfs:Class, owl:Class ;
+		rdfs:label "Geometric Point"@en ;
+		rdfs:comment "This is defined here pending availability of a canonical definition of spatial concepts - at which point an equivalence will be declared"@en ;
+	.
+
+
+	qb4st:CRS a rdfs:Class, owl:Class ;
+		rdfs:label "Coordinate Reference System"@en ;
+		rdfs:comment "This is defined here pending availability of a canonical definition of spatial concepts - at which point an equivalence will be declared"@en ;
+	.
+
+
+	qb4st:AnyNumber a rdfs:Class, owl:Class ;
+		  rdfs:label "Any number"@en ;      
+		  rdfs:comment "A datatype that is the union of numeric xsd data types. equivalent to the xsd specification that uses an xsd:union of memberTypes='xsd:decimal xsd:double xsd:float xsd:integer'."@en ;
+		  owl:equivalentClass [ 
+			rdf:type  rdfs:Datatype;
+			owl:unionOf (xsd:float xsd:decimal xsd:integer xsd:double) 
+		  ]
+	. 
+	 </pre>
+	 </div>
+	</section>
 	<section id="DefiningProperties">
-	 <h2>Defining Spatio-Temporal Properties</h2>
+	 <h2>Spatio-Temporal attributes of dataset properties</h2>
+	 <p>When a property of an object is defined, this can be either as an rdf:Property, defining a predicate that can be used to link a value to the object - but it can also be more abstract reference to a named element in an arbitrary data structure. (i.e. we can use QB4ST to describe data structures that are not necessarily encoded in RDF, although it does define an RDF encoding should this be required.</p>
 	 <p>
 	 The most common case is for spatial or temporal properties to be measures associated with another property measured at this time and location. In some cases however, a single observation is taken at a predetermined location or time, in which case these properties are "dimensions". In either case, common properties relating to their spatio-temporal nature are needed, and defined by QB4ST:</p>
 	 	<div class="example"><div class="example-title">Spatial attributes of RDF properties defined in QB4ST</div>
@@ -222,20 +259,34 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		.
 
 	</pre></div>
-	
-	 <p>Let us look at a well known example of a geo-spatial location recorded as part of an observation. The <em>Basic Geo (WGS84 lat/long) Vocabulary</em> [https://www.w3.org/2003/01/geo/] allows either individual values for latitude and longitude, or a complex point object to be used. (note that only a single latitude and longitude value may be present, but possibly multiple Point objects may be recorded.)
+	</section>
+	 <section id="GeoMeasureExample">
+	 <h3>Example: W3C Basic Geo described using QB4ST</h3>
+	 <p>Let us look at a well known example of a geo-spatial location recorded as part of an observation. The <em>Basic Geo (WGS84 lat/long) Vocabulary</em> [[W3C-BASIC-GEO]] allows either individual values for latitude and longitude, or a complex point object to be used. (note that only a single latitude and longitude value may be present, but possibly multiple Point objects may be recorded.)
 	 </p>
 	 	<div class="example"><div class="example-title">geo: vocab examples expressed using QB4ST</div>
 	 <pre>
+	    @prefix crs-ogc: &lt;http://www.opengis.net/def/crs/OGC/1.3/&gt; .
+		@prefix crs-epsg: &lt;http://www.opengis.net/def/crs/EPSG/0/&gt; .
+		
+
 		geo:lat a qb4st:CoordMeasure;
-			qb4st:crs <http://www.opengis.net/def/crs/OGC/1.3/CRS84> ;
+			qb4st:crs  crs-ogc:CRS84, crs-epsg:4326 ;
 			qb4st:crsaxis "latitude" ;
-		.
-		
-		geo:Point a qb4st:PositionMeasure ;
-			qb4st:crs <http://www.opengis.net/def/crs/OGC/1.3/CRS84> ;
-		.
-		
+			qb4st:crslabel "WGS84";
+			.
+			
+		geo:long a qb4st:CoordMeasure;
+			qb4st:crs  crs-ogc:CRS84, crs-epsg:4326 ;
+			qb4st:crsaxis "longitude" ;
+			qb4st:crslabel "WGS84";
+			.
+			
+		geo:Point a qb4st:PositionMeasure;
+			qb4st:crslabel "WGS84";
+			qb4st:crs  crs-ogc:CRS84, crs-epsg:4326 ;
+			.
+				
 		eg:exampleDSD a qb:DataStructureDefinition ;
 			qb:component eg:exampleSpatialMeasure ;
 		.
@@ -245,7 +296,29 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		.
 	</pre></div>
 		
-	<p>In this case we have made assertions about externally defined rdfs:Property  (geo:lat, geo:Point) as spatial components within the QB4ST RDFS class heirarchy. This makes it possible for an application to readily determine which properties of an object descibed using QB4ST are spatial, and hence what types of actions make sense with this data.<p>
+	<p>In this case we have made assertions about externally defined rdfs:Property  (geo:lat, geo:Point) as spatial components within the QB4ST RDFS class heirarchy. This makes it possible for an application to readily determine which properties of an object descibed using QB4ST are spatial, and hence what types of actions make sense with this data.</p>
+	</section>
+	<section id="GridCoverageExample">
+	 <h3>Example: Gridded coverage described using QB4ST</h3>
+	<p class="issue">TBD</p>
+	 	<div class="example"><div class="example-title">Gridded spatial data expressed using QB4ST</div>
+	 <pre>
+
+	</pre></div>
+		
+	</section>
+		<section id="NestedFeaturesExample">
+	 <h3>Example: Nested Spatial Reference Features using QB4ST</h3>
+	 <p>SDMX refArea... etc</p>
+	<p class="issue">TDB</p>
+	 	<div class="example"><div class="example-title">Gridded spatial data expressed using QB4ST</div>
+	 <pre>
+
+	</pre></div>
+		
+	</section>
+	<section>
+		<h2>QB4ST specialisations of RDF Data Cube Properties</h2>
 	 	<div class="example"><div class="example-title">Classification of spatial properties in QB4ST</div>
 	 <pre>
 	qb4st:SpatialProperty a rdfs:Class, owl:Class;
@@ -271,7 +344,7 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		rdfs:subClassOf [
 			a owl:Restriction ;
 			owl:onProperty rdfs:range  ;
-			owl:someValuesFrom qb4st:AnyNumber  ;
+			owl:someValuesFrom qb4st:Point  ;
 		 ]  ; 
 		.
 
@@ -286,7 +359,8 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		 ]  ;
 		. 	
 	</pre>
-	</div>	
+	</div>
+    </section>	
 	<section id="DefiningDSD">
 	 <h2>Classification of datasets as spatial, temporal or spatio-temporal.</h2>
 	<p>By using the QB4ST specialisations of qb:ComponentProperty, a qb:DataStructureDefinition can use instances of these classes to define their spatio-temporal charactieristics (e.g. CRS), and dataset containing such components can be understood to be a "spatial dataset" using RDFS and OWL reasoning:</p>
@@ -356,7 +430,7 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 	 	<div class="example"><div class="example-title">Refinement of semantics of a well-known component</div>
 			 <pre>
 		geo:Point a qb4st:PositionMeasure ;
-			qb4st:crs <http://www.opengis.net/def/crs/OGC/1.3/CRS84> ; 
+			qb4st:crs &lt;http://www.opengis.net/def/crs/OGC/1.3/CRS84&gt; ; 
 		.
 
 		eg:propertyCentroid a qb4st:PositionMeasure ;
@@ -369,19 +443,19 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		<div class="example"><div class="example-title">Refinement of codelists in a deep hierarchy</div>
 			 <pre>
 		eg:GBIF a qb:CodedProperty ;
-			qb:codelist <uri of GBIF taxon keys> ;
+			qb:codelist &lt;uri of GBIF taxon keys&gt; ;
 			rdfs:range eg:AnyTaxon ;
 		.
 
 		eg:GBIFspecies a qb:CodedProperty ;
 			skos:broader eg:GBIF;
-			qb:codelist <uri of GBIF taxon keys> ; # inferrable from skos:broader relationship using specific entailment rules
+			qb:codelist &lt;uri of GBIF taxon keys&gt; ; # inferrable from skos:broader relationship using specific entailment rules
 			rdfs:range eg:SpeciesTaxon ; # must be subtype of GBIFSpecies
 		.
 		
 		eg:InvasiveSpecies a qb:CodedProperty ;
 			skos:broader eg:GBIFspecies;
-			qb:codelist <uri of InvasiveSpecies list> ; # all members must also be members of the GBIF concept scheme
+			qb:codelist &lt;uri of InvasiveSpecies list&gt; ; # all members must also be members of the GBIF concept scheme
 			rdfs:range eg:SpeciesTaxon ; # must be subtype of GBIFSpecies
 		.
 		
@@ -401,8 +475,7 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		<p class="issue">Can we assume the logic around SKOS concept scheme membership, collections etc or spell it out?</p>
 		</section>
 		<p class="issue">Add a section on DGGS or other grid based SRS - or can this be done as a separate QB4ST application note?</p>
-		<p class="issue">Add a section on nested feature hierarchies</p>
-		<p class="issue">Add a vocabulary reference - can this be automated?</p>
+
 </section>
 
 
