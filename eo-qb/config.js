@@ -15,28 +15,24 @@ var respecConfig = {
       companyURL: "https://cecs.anu.edu.au/"
     },
     {
-      name: "Sam Toyer",
-      company: "Australian National University",
-      companyURL: "https://cecs.anu.edu.au/"
-    },
-    {
-      name: "Zhiduo Zhang",
-      company: "Australian National University",
-      companyURL: "https://cecs.anu.edu.au/"
-    },
-    {
       name: "Kerry Taylor",
       company: "Australian National University",
       companyURL: "https://cecs.anu.edu.au/"
-    },],
+    }],
     otherLinks: [
     {
-      key: "OGC Document Number",
-      data: [
-      {
-        value: "OGC 16-125"
-      }]
-      }],
+        key: "Contributors",
+        data: [
+        {value: "Zhiduo Zhang, Australian National University"},
+        {value: "Sam Toyer, Australian National University"}
+        ]
+    },
+    {
+        key: "OGC Document Number",
+        data: [
+        {value: "OGC 16-125"}
+        ]
+    }],
     wg: "Spatial Data on the Web Working Group",
     wgURI: "http://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
