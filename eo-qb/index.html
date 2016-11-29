@@ -81,6 +81,8 @@
 
       <p>This document will refer to extracts of a small example to illustrate the approach. The complete source file is the
       <a href="https://github.com/w3c/sdw/raw/gh-pages/eo-qb/ANU-LED-example.ttl">ANU-LED example</a>.</p>
+      
+      <div  class="issue"  data-number="99 "> Add references throughout </div>
     </section>
     <section  id="Datacube"  class="informative">
       <h2>The RDF Data Cube</h2>
@@ -220,21 +222,6 @@
              this could be a major contribution to the linked data web. With sufficiently advanced middleware, SPARQL queries over the dataset
              could be served just as if the data were stored in RDF, but for a fraction of the storage cost.
              The publisher can thus leverage the full power of linked data.</p>
-			 
-			 <div  class="issue"  data-number="95"> Should this describe in more detail how the query rewriting is done? 
-			</div>
-			 
-			 <div  class="issue"  data-number="96"> The role of the DGGS (and the rhealpix API?) needs to be included.
-			</div>
-			
-			<div  class="issue"  data-number="97"> Could describe some implementation of the query processing with some performance figures to offer comfort to the readers.
-			</div>
-			
-			<div  class="issue"  data-number="98"> Could also point to the client implementation --with a screen dump and pointer to github code? The running implementation itself may be too long-term unstable to reference. 
-			</div>
-			
-			 <div  class="issue"  data-number="99 "> Add references throughout 
-			</div>
 
           <p>It is common to want only a chunk of the data available. For example, all observations near (within 10km of) Canberra, in the past year.
              The RDF Data Cube provides only for "slices" &mdash; predefined chunks that hold one or more dimensions constant. Unfortunately, this is an area where the Data Cube is
@@ -390,6 +377,44 @@
     qb:concept sdmx-concept:refArea .</pre>
       </section>
     </section>
+    
+    <section  id="DGGS"  class="informative">
+      <h2>Discrete Global Grid Systems</h2>
+      
+      <p>
+      Discrete global grid systems are a family of spatial reference systems that subdivide the Earth's surface into a hierarchy of cells.
+      Larger cells are subdivided into smaller cells deeper in the hierarchy.
+      Instead of a latitude and longitude, a location is specified by a cell id. Smaller cells are more precise, 
+      so choosing a cell forces the publisher to include a measure of uncertainty for any spatial measure.
+      Cells are also appropriate units of tiling for gridded coverages. Each pixel in a tile covering a larger cell can represent a measurement made on a smaller cell.
+      The OGC is currently in the process of <a href="http://www.opengeospatial.org/projects/groups/dggsswg">standardising</a> a method of representing DGGS's.
+      </p>
+      
+      <p>
+      The example in this document by no means depends on the use of a DGGS, but the DGGS has some nice properties that make it particularly suitable for a linked data representation.
+      First, each DGGS cell has a unique identifier, so it is easy to generate natural URI's for each piece of data.
+      Second, the DGGS we use (<a href="http://raichev.net/files/rhealpix_dggs_preprint.pdf">rHEALPix</a>) defines cell geometries so that cells at the same level of the hierarchy have equal area.
+      This makes hHEALPix a suitable format for storing multiple datasets at different resolutions, or several different resolution views of the same dataset.
+      The equal-area constraint means different resolution pixels are directly comparable, and no resampling is required [<a href="https://www.w3.org/TR/sdw-ucr/#AvoidCoordinateTransformations">Avoid coordinate transformations</a>].
+      Third, the hierarchical nature of the DGGS makes it natural to implement spatial optimisations when responding to queries, by pruning the tree early to eliminate whole regions of unpromising cells that fall outside the desired area.
+      </p>
+      
+      <section  id="Implementation">
+        <h3>Implementation</h3>
+        
+        <p>The ontology described in this document, and a SPARQL query system to retrieve satellite imagery based on latitude/longitude or DGGS cell ids has been implemented
+           as a proof of concept. The code is available on <a href="https://github.com/ANU-Linked-Earth-Data">github</a></p>
+      </section>
+      
+      		<div  class="issue"  data-number="98"> Could also point to the client implementation --with a screen dump and pointer to github code? The running implementation itself may be too long-term unstable to reference.
+			</div>
+            
+            <div  class="issue"  data-number="95"> Should this describe in more detail how the query rewriting is done? 
+			</div>
+			
+			<div  class="issue"  data-number="97"> Could describe some implementation of the query processing with some performance figures to offer comfort to the readers.
+			</div>
+    </section>
 
     <section  id="Ontologies"  class="informative">
       <h2>Use of existing ontologies</h2>
@@ -402,6 +427,9 @@
 
       <p>Several ontologies are being looked at by the Spatial Data on the Web working group.
          The final best practice for using these ontologies will depend on the outputs of the group.</p>
+         
+      <div  class="issue"  data-number="100"> References to SNN, Latitude/Longitude, QB4ST, OWL-Time, and GeoSPARQL should be updated to reflect the outputs of the working group.
+      </div>
 
       <section  id="SSN">
           <h3>SSN</h3>
@@ -486,7 +514,8 @@
              The working group intends to standardise better properties, which allow the use of other CRSs.
              Once these exist, they should always be used in place of the geo properties.
              QB4ST defines the qb4st:crs property which will inherit from those
-             [<a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">CRS definition</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].</p>
+             [<a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">CRS definition</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].
+             THe RDF Data Cube and QB4ST make is easy to define several CRS's and use them simultaneously, providing clients with several views of the data [<a href="https://www.w3.org/TR/sdw-ucr/#MultipleCRS">Multiple CRSs</a>]. In the example below, a grid square can be identified by latitude and longitude of its centroid, by its boundary, or by its rHEALPix cell.</p>
              
           <pre class="example">:lat a qb4st:SpatialDimension ;
     rdfs:subPropertyOf geo:lat ;
@@ -496,11 +525,31 @@
     rdfs:subPropertyOf geo:long ;
     qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; .
     
+:dggsCell a qb4st:SpatialDimension ;
+    qb4st:crs "rHEALPix WGS84 Ellipsoid" ;
+    rdfs:range xsd:string .
+    
+:bounds a qb:AttributeProperty, qb4st:SpatialProperty ;
+    rdfs:subPropertyOf ogc:asWKT ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; .
+    
 :latitudeComponent a qb4st:SpatialComponentSpecification ;
     qb:dimension :lat .
 
 :longitudeComponent a qb4st:SpatialComponentSpecification ;
-    qb:dimension :long .</pre>
+    qb:dimension :long .
+    
+:dggsCellComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :dggsCell .
+    
+:boundsComponent a qb4st:SpatialComponentSpecification ;
+    qb:attribute :bounds .
+    
+:s1 a :GridSquare ;
+    :lat "91.6667";
+    :long "40.0270";
+    :dggsCell "R000" ;
+    :bounds  "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .</pre>
       </section>
 
       <section  id="GeoSPARQL">
@@ -604,9 +653,12 @@
       </section>
     </section>
 	
- <section class=appendix id="acknowledgements>
-  <h2>Acknowledgements<h2>
-  <p>This spec would not be possible without the Techlauncher program of the Australian National University and its ardent convenor,  Dr Shayne Flint.  We also thank ...
+ <section class="appendix" id="acknowledgements">
+  <h2>Acknowledgements</h2>
+  <p>This spec would not be possible without the Techlauncher program of the Australian National University and its ardent convenor, Shayne Flint.
+     We also thank Matthew Purss of Geoscience Australia for participating in the program and supporting this project.
+     Finally, Ed Parsons of Google, Robert Woodcock of CSIRO, and Robert Atkinson of the OGC provided valuable discussions and feedback.
+  </p>
 </section>
 
  
