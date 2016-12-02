@@ -398,22 +398,178 @@
       The equal-area constraint means different resolution pixels are directly comparable, and no resampling is required [<a href="https://www.w3.org/TR/sdw-ucr/#AvoidCoordinateTransformations">Avoid coordinate transformations</a>].
       Third, the hierarchical nature of the DGGS makes it natural to implement spatial optimisations when responding to queries, by pruning the tree early to eliminate whole regions of unpromising cells that fall outside the desired area.
       </p>
-      
+
       <section  id="Implementation">
         <h3>Implementation</h3>
-        
-        <p>The ontology described in this document, and a SPARQL query system to retrieve satellite imagery based on latitude/longitude or DGGS cell IDs has been implemented
-           as a proof of concept. The code is available on <a href="https://github.com/ANU-Linked-Earth-Data">GitHub</a></p>
+
+        <p>
+            The ontology described in this document, and a SPARQL query system to
+            retrieve satellite imagery based on latitude/longitude or DGGS cell
+            IDs has been implemented as a proof of concept. This section briefly
+            describes some of the strategies employed to make the implementation
+            efficient. All code referenced here is available on <a
+            href="https://github.com/ANU-Linked-Earth-Data">GitHub</a>
+        </p>
+
+        <p>
+            As alluded to previously, scalable implementations of a data cube
+            for Earth observations must grapple with the verbosity of RDF
+            representations, relative to specialised formats like GeoTIFF. This
+            precludes materialising the entire dataset as RDF, storing it on
+            disk, and serving it using an off-the-shelf triple store. Instead,
+            implementations must employ a &ldquo;virtual graph&rdquo;, which can
+            be used to service SPARQL queries without materialising all triples
+            at once.
+        </p>
+
+        <p>
+            For the purpose of illustrating how triple stores service SPARQL
+            queries&mdash;regardless of whether they are backed by virtual or
+            materialsed graphs&mdash;consider the query below.
+        </p>
+
+        <pre class="example">SELECT ?s ?v WHERE {
+    ?s a :egType ;
+        rdfs:label "Example" ;
+        :value ?v .
+    FILTER (?v < 15)
+}</pre>
+
+        <p>
+            The heart of the query above is a Basic Graph Pattern (BGP) which
+            specifies the form which examined triples should take. In this case,
+            the BGP contains three patterns. Written explicitly, they are:
+        </p>
+
+        <pre class="example">?s a :egType .
+?s rdfs:label "Example" .
+?s :value ?v .</pre>
+
+        <p>
+            A typical triple store will begin servicing the query above by
+            iterating through each triple pattern in turn. First, a set of
+            bindings for <code>?s</code> will be generated which are consistent
+            with <code>?s a :egType</code>. That set of bindings will then be
+            filtered by matching them against the pattern <code>?s rdfs:label
+            "Example"</code>. The final <code>?s :value ?v</code> will further
+            filter the bindings for <code>?s</code> by considering only subjects
+            <code>?s</code> with a <code>:value</code> property; it will also
+            introduce a corresponding set of bindings for <code>?v</code>.
+            Having generated all bindings relevant to the BGP, a typical triple
+            store will then apply the <code>FILTER</code> condition to each. This
+            general approach works for both traditaional storage backends (like
+            on-disk RDF databases) and non-traditional ones (like virtual
+            graphs).
+        </p>
+
+        <p>
+            There are a number of ways in which this naive, pattern-by-pattern
+            approach can be improved. We have implemented two simple extensions:
+        </p>
+
+        <ol>
+            <li>
+                User-supplied triple patterns often generate useful constraints
+                on the data returned by a SPARQL query. For example, the pattern
+                <code>?s :dggsLevelSquare 5 .</code> might allow a virtual graph
+                implementation to ignore all observations not corresponding to cells
+                at the fifth level of the DGGS hierarchy. In a naive
+                implementation, only one such constraint can be considered at a
+                time; this makes heuristics like query ordering essential. In
+                contrast, a virtual graph implementation can simultaneously
+                consider <em>all</em> supplied constraints in conjunction. For
+                instance, if the user specifies <code>?s :dggsLevelSquare 5;
+                :etmBand 3</code>, then the virtual graph implementation can
+                safely narrow its search to observations at level 5 of the DGGS
+                hierarchy which correspond to Landsat's third ETM band.
+            </li>
+            <li>
+                Consumers of spatial datasets typically want only a small
+                spatial slice of the available data. In SPARQL, such a slice can
+                be identified by a <code>FILTER</code> statement restricting the
+                appropriate location properties. By inspecting the contents of
+                <code>FILTER</code> statements, virtual graph implementations
+                can preemptively narrow the set of bindings they generate to
+                include only bindings which are spatially relevant. In general,
+                this approach can yield excellent gains when the spatial extent
+                of queries is small relative to the spatial extent of the
+                overall dataset.
+            </li>
+        </ol>
+
+        <p>
+            These simple optimisations can improve query time substantially.
+            Consider the following SPARQL query, which fetches the intensity
+            (<code>?val</code>) and URI (<code>?s</code>) associated with each
+            single-pixel observation in a satellite imagery database.
+        </p>
+
+        <pre class="example">SELECT DISTINCT ?s ?val WHERE {
+    ?s a led:Pixel
+        ; led:etmBand "1"^^xsd:int
+        ; led:dggsLevelSquare "5"^^xsd:int
+        ; led:latMin ?latMin
+        ; led:longMax ?longMax
+        ; led:value ?val.
+    # Everything north-west of Parliament House
+    FILTER (?latMin > -35.3082
+        && ?longMax < 149.1244)
+}</pre>
+
+        <p>
+            The above query was executed on a 500MB HDF5 dataset containing over
+            4000 distinct observations. Repeating the query a thousand times
+            with ten concurrent clients on a desktop machine yielded the
+            following mean running times. The &ldquo;naive&rdquo; implementation
+            simply iterates through the BGP specified above on a
+            pattern-by-pattern basis, subsequently passing results to
+            the SPARQL engine for evaluation against the filter constraint.
+            &ldquo;Multiple pattern-matching&rdquo; corresponds to the first
+            optimisation identified above, and &ldquo;additional spatial
+            optimisations&rdquo; refers to a combination of the first and second
+            optimisations.
+        </p>
+
+        <table>
+            <tr>
+                <th>Implementation</th>
+                <th>Mean runtime (± standard deviation)</th>
+            <tr>
+                <td>Naive</th>
+                <td>378ms (±65.5ms)</td>
+            </tr>
+            <tr>
+                <td>
+                    …with multiple-pattern matching
+                </td>
+                <td>
+                    35ms (±22.2ms)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    …with additional spatial optimisations
+                </td>
+                <td class="right">
+                    17ms (±11.8ms)
+                </td>
+            </tr>
+        </table>
+
+        <p>
+            &ldquo;Multiple-pattern matching&rdquo; is a relatively simple
+            optimisation, yet is still sufficient to imrpove query performance
+            tenfold. Accounting for the bounding box constraint specified in the
+            query improves performance by a another factor of two. It is likely
+            that further performance gains could be found with more
+            sophisticated optimisations; in particular, servicing queries with
+            spatial restrictions could be further imrpoved by employing an
+            R-tree, or some other specialised spatial data structure.
+        </p>
+
       </section>
-      
-      		<div  class="issue"  data-number="98"> Could also point to the client implementation --with a screen dump and pointer to github code? The running implementation itself may be too long-term unstable to reference.
-			</div>
-            
-            <div  class="issue"  data-number="95"> Should this describe in more detail how the query rewriting is done? 
-			</div>
-			
-			<div  class="issue"  data-number="97"> Could describe some implementation of the query processing with some performance figures to offer comfort to the readers.
-			</div>
+
+    <div  class="issue"  data-number="98"> Could also point to the client implementation --with a screen dump and pointer to github code? The running implementation itself may be too long-term unstable to reference.</div>
     </section>
 
     <section  id="Ontologies"  class="informative">
