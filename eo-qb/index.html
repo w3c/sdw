@@ -55,7 +55,7 @@
 </head>
 <body>
     <section  id="abstract">
-      <p>This document describes how dense geospatial raster data can be represented using the W3C RDF Data Cube (QB)  ontology [vocab-data-cube] in concert with other popular ontologies including the W3C/OGC  Semantic Sensor Network ontology (SSN) [[vocab-ssn-20160531]], the W3C/OGC Time ontology (Time) [[owl-time]], the W3C Simple Knowledge Organisation System (SKOS) [[skos-reference]], PROV-O [[prov-o]] and the W3C/OGC QB4ST. It offers general methods supported by worked examples that focus on earth observation imagery.
+      <p>This document describes how dense geospatial raster data can be represented using the W3C RDF Data Cube (QB)  ontology [[vocab-data-cube]] in concert with other popular ontologies including the W3C/OGC  Semantic Sensor Network ontology (SSN) [[vocab-ssn-20160531]], the W3C/OGC Time ontology (Time) [[owl-time]], the W3C Simple Knowledge Organisation System (SKOS) [[skos-reference]], W3C PROV-O [[prov-o]] and the W3C/OGC QB4ST. It offers general methods supported by worked examples that focus on earth observation imagery.
 	  
       Current triple stores, as the default database architecture for RDF, are not suitable  for storing voluminous data like imagery derived from Landsat satellite sensors. We show how SPARQL queries can be served through an OGC Discrete Global Grid System for observations, coupled with a triple store for observational metadata. 
 	  
@@ -82,7 +82,7 @@
       <p>This document will refer to extracts of a small example to illustrate the approach. The complete source file is the
       <a href="https://github.com/w3c/sdw/raw/gh-pages/eo-qb/ANU-LED-example.ttl">ANU-LED example</a>.</p>
       
-      <div  class="issue"  data-number="99 "> Add references throughout </div>
+      <div  class="issue"  data-number="99 "> Add references throughout, including to other published linked-data-ish approaches to coverages.</div>
     </section>
     <section  id="Datacube"  class="informative">
       <h2>The RDF Data Cube</h2>
@@ -391,30 +391,32 @@
       </p>
       
       <p>
-      The example in this document does not depend on the use of a DGGS.  However, the DGGS has some convenient properties that make it particularly suitable for a linked data representation.
+      The  <a href="https://github.com/w3c/sdw/raw/gh-pages/eo-qb/ANU-LED-example.ttl">ANU-LED example</a> in this document does not depend on the use of a DGGS.  However, the DGGS has some convenient properties that make it particularly suitable for a linked data representation.
       First, each DGGS cell has a unique identifier, so it is easy to generate natural URIs for each piece of data.
       Second, the DGGS we use (<a href="http://raichev.net/files/rhealpix_dggs_preprint.pdf">rHEALPix</a>) defines cell geometries so that cells at the same level of the hierarchy have equal areas.
       This makes rHEALPix a suitable format for storing multiple datasets at different resolutions, or several different resolution views of the same dataset.
       The equal-area constraint means different resolution pixels are directly comparable, and no resampling is required [<a href="https://www.w3.org/TR/sdw-ucr/#AvoidCoordinateTransformations">Avoid coordinate transformations</a>].
       Third, the hierarchical nature of the DGGS makes it natural to implement spatial optimisations when responding to queries, by pruning the tree early to eliminate whole regions of unpromising cells that fall outside the desired area.
+	  
+	  Data structures other than DGGS, such as n-dimensional gridded data, whether geospatial or not, and hierarchies of data such as tile sets, octree or quadtree structures, are also amenable to these approaches.
       </p>
 
       <section  id="Implementation">
         <h3>Implementation</h3>
 
         <p>
-            The ontology described in this document, and a SPARQL query system to
-            retrieve satellite imagery based on latitude/longitude or DGGS cell
-            IDs has been implemented as a proof of concept. This section briefly
+            A proof of concept demonstrating the <a href="https://github.com/w3c/sdw/raw/gh-pages/eo-qb/ANU-LED-example.ttl">ANU-LED example</a> with a SPARQL query system to
+            retrieve satellite imagery has been implemented. 
+			<!--based on latitude/longitude or DGGS cell IDs has been implemented as a proof of concept--> This section briefly
             describes some of the strategies employed to make the implementation
             efficient. All code referenced here is available on <a
-            href="https://github.com/ANU-Linked-Earth-Data">GitHub</a>
+            href="https://github.com/ANU-Linked-Earth-Data">GitHub.</a>
         </p>
 
         <p>
-            As alluded to previously, scalable implementations of a data cube
+            As discussed previously, scalable implementations of a data cube
             for Earth observations must grapple with the verbosity of RDF
-            representations, relative to specialised formats like GeoTIFF. This
+            representations relative to specialised coverage formats like GeoTIFF. This
             precludes materialising the entire dataset as RDF, storing it on
             disk, and serving it using an off-the-shelf triple store. Instead,
             implementations must employ a &ldquo;virtual graph&rdquo;, which can
@@ -425,7 +427,7 @@
         <p>
             For the purpose of illustrating how triple stores service SPARQL
             queries&mdash;regardless of whether they are backed by virtual or
-            materialsed graphs&mdash;consider the query below.
+            materialised graphs&mdash;consider the query below.
         </p>
 
         <pre class="example">SELECT ?s ?v WHERE {
@@ -437,7 +439,7 @@
 
         <p>
             The heart of the query above is a Basic Graph Pattern (BGP) which
-            specifies the form which examined triples should take. In this case,
+            specifies the triples to be accessed. In this case,
             the BGP contains three patterns. Written explicitly, they are:
         </p>
 
@@ -457,7 +459,7 @@
             introduce a corresponding set of bindings for <code>?v</code>.
             Having generated all bindings relevant to the BGP, a typical triple
             store will then apply the <code>FILTER</code> condition to each. This
-            general approach works for both traditaional storage backends (like
+            general approach works for both traditional storage backends (like
             on-disk RDF databases) and non-traditional ones (like virtual
             graphs).
         </p>
@@ -520,7 +522,7 @@
             The above query was executed on a 500MB HDF5 dataset containing over
             4000 distinct observations. Repeating the query a thousand times
             with ten concurrent clients on a desktop machine yielded the
-            following mean running times. The &ldquo;naive&rdquo; implementation
+            following mean running times. In the following, the &ldquo;naive&rdquo; implementation
             simply iterates through the BGP specified above on a
             pattern-by-pattern basis, subsequently passing results to
             the SPARQL engine for evaluation against the filter constraint.
@@ -558,13 +560,13 @@
 
         <p>
             &ldquo;Multiple-pattern matching&rdquo; is a relatively simple
-            optimisation, yet is still sufficient to imrpove query performance
+            optimisation, yet is sufficient to improve query performance
             tenfold. Accounting for the bounding box constraint specified in the
-            query improves performance by a another factor of two. It is likely
+            query improves performance by another factor of two. It is likely
             that further performance gains could be found with more
-            sophisticated optimisations; in particular, servicing queries with
-            spatial restrictions could be further imrpoved by employing an
-            R-tree, or some other specialised spatial data structure.
+            sophisticated optimisations. In particular, servicing queries with
+            spatial restrictions could be further improved by employing an
+            R-tree or some other specialised spatial data structure.
         </p>
 
       </section>
