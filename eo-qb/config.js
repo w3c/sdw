@@ -14,6 +14,11 @@ var respecConfig = {
       company: "Australian National University",
       companyURL: "https://cecs.anu.edu.au/"
     },
+	{
+      name: "Sam Toyer",
+      company: "Australian National University",
+      companyURL: "https://cecs.anu.edu.au/"
+    },
     {
       name: "Kerry Taylor",
       company: "Australian National University",
@@ -24,7 +29,6 @@ var respecConfig = {
         key: "Contributors",
         data: [
         {value: "Zhiduo Zhang, Australian National University"},
-        {value: "Sam Toyer, Australian National University"}
         ]
     },
     {
