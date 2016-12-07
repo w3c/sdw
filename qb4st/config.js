@@ -4,14 +4,14 @@ var respecConfig = {
     //publishDate:  "2015-05-18",
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
-    //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
+    //previousURI: "",
     edDraftURI: "http://w3c.github.io/sdw/qb4st/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
     {
       name: "Rob Atkinson",
-      company: "Metalinkage, Opengeospatial Consortium",
+      company: "Metalinkage, Open Geospatial Consortium",
       companyURL: "http://opengeospatial.org/"
     }],
     otherLinks: [
@@ -19,7 +19,7 @@ var respecConfig = {
       key: "OGC Document Number",
       data: [
       {
-        value: "OGC 16-125"
+        value: "OGC 16-142"
       }]
       }],
     wg: "Spatial Data on the Web Working Group",
