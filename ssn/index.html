@@ -1988,8 +1988,8 @@ Note that, given the DUL modelling of Qualities, a sensor defined with 'observes
 	
 	
 	<section  id="SSN Alignment"  class="normative">
-	<h2>Alignment to SSN of the SSN-XG</h2>
-	<p  class="issue"  data-number="103">How should the alignment be formally defined here?</p>
+	<h2>Alignment to SSN of the SSN-XG, ssn-bc</h2>
+	<p  class="issue"  data-number="103">How should the alignment be formally defined here? This presentation is experimental and rough at present.</p>
 	
 	This section formally relates the SSN to the previous version of SSN that was published by the SSN-XG ("old SSN"). This may be useful for backward-compatibility and transition purposes. While the namespaces for SSN and DUL have changed since the SSN-XG first published old SSN, every class and property term of SSN here is equivalent to the corresponding class and property term of old SSN with the only exceptions noted here.
 	
@@ -1997,16 +1997,44 @@ Note that, given the DUL modelling of Qualities, a sensor defined with 'observes
            style="font-family: courier;">http://www.w3.org/ns/ssn/</span>
       </p>
       <p  style="text-align: center;">There are no terms defined in the alignment, so no prefix is recommended.</p>
-      <p  style="text-align: center;">The SSN alignment, known as ssn-bc is available<a
-           href="http://www.w3.org/ns/ssn-bc">here.</a></p>
+      <p  style="text-align: center;">The SSN alignment, known as "ssn-bc" is available<a
+           href="http://www.w3.org/ns/ssn-bc"> here.</a></p>
 	
-	Therefore, the following ontology pattern applies.
+
+	The class ssn:Sensor has been redefined from the old SSN, so the assertion below holds in approximately RDF/XML syntax.
 	
+	<pre class=""> <code>
+	&old = "http://purl.oclc.org/NET/ssnx/ssn#"
+	&ssn = "http://www.w3.org/ns/ssn/"
+		&ltowl:Class rdf:about="&old;Sensor"&gt
+        &ltrdfs:subClassOf rdf:resource="&ssn;Sensor"/&gt
+		&lt/owl:Class&gt
+	</code>
+	</pre>
 	
-	Every SSN class and property is declared to be equivalent. 
+	All other  SSN class and properties are declared to be equivalent. 
+	Therefore, the following pattern applies in approximately RDF/XML syntax.
+	<pre class=""> <code>
+	&old = "http://purl.oclc.org/NET/ssnx/ssn#"
+	&ssn = "http://www.w3.org/ns/ssn/"
+	For every owl:ObjectProperty <i>O</i> in SSN but not in {Sensor}, 
+		assert the fragment:
+			&ltowl:ObjectProperty rdf:about="&old;<i>O</i>"&gt
+				&ltowl:equivalentProperty rdf:resource="&ssn;<i>O</i>"&gt
+			&lt/owl:ObjectProperty&gt
+	Endfor		
+	For every owl:Class <i>C</i> in SSN but not in {Sensor}, 
+		assert the fragment:
+			&lt owl:Class rdf:about="&old;<i>C</i>"&gt
+				&lt owl:equivalenClass rdf:resource="&ssn;<i>C</i>"&gt
+			&lt /owl:Class&gt
+	Endfor
+	</code>
+	</pre>
+	
 	</section> 
 	
-	<section  id="DULAlignment"  class="normative">
+	<section  id="DUL Alignment"  class="normative">
 	<h2>Alignment to DOLCE+DNS Ultralite upper ontology (DUL)</h2>
 	<p>This section introduces the alignment of SSN to DUL. This serves to axiomatically clarify the intended meaning of SSN terms and will assist SSN users wishing to interoperate with other DUL-aligned ontologies.</p>
 	</section> 
