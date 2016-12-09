@@ -97,7 +97,7 @@ specterm.h3 {
            href="http://www.w3.org/ns/ssn">here.</a></p>
     </section>
     <section  id="sotd">
-      <p>This is the first published version of the SSN since its original
+      <p>This is the second published draft of the SSN since its original
         publication by the SSN-XG, the Semantic Sensor Network Incubator Group
         of the W3C. This is a very incomplete draft to indicate the scope and
         style of changes proposed to be made to the original SSN. This document
@@ -116,26 +116,35 @@ specterm.h3 {
         Yet, publishing, searching, reusing, and integrating this data requires
         more than just the observation values. Of equal importance is
         information about the studied feature of interest, such as a river, the
-        observed property, such as flow velocity,and the sampling strategy. The
+        observed property, such as flow velocity, and the sampling strategy. The
         sampling location, instrumentation, and information about the deployment
         of the instruments on a sensor platform may also be required for proper
-        interpretation. OGC's Sensor Web Enablement standards provide a means to
+        interpretation. OGC's Sensor Web Enablement standards also provide a means to
         annotate sensors and their observations. However, these standards are
-        not yet integrated and aligned with paradigms such as Linked Data and
-        W3C Semantic Web technologies more generally, that are believed to be a
-        key driver for creating and maintaining a global and densely
+        not yet integrated and aligned with W3C Semantic Web technologies and Linked Data in particular,
+        that are a key driver for creating and maintaining a global and densely
         interconnected graph of data. The W3C Semantic Sensor Network Incubator
         Group (SSN) addressed these issues by developing an ontology that spans
-        over multiple OGC standards and other specifications to support the
-        semantic lifting of observations together with data about the sensors
-        and their capabilities, deployment information, and so forth. Based on
-        this initial work, the following document specifies a revised,
-        modularized, and extended version of the SSN.</p>
+        multiple OGC standards and other specifications. </p>
+		<p>
+		Unlike its predecessors, the SSN is designed to offer four identifiable and coherent perspectives or use cases for  sensing, each of which may be used either independently or in concert with the other three. These perspectives are
+		<dl>
+		<dt>Sensors</dt> <dd>with a focus on what senses, how it senses, and what is sensed;</dd>
+		<dt>Data</dt> <dd>with a focus on observations and metadata;</dd>
+		<dt>Systems</dt> <dd>with a focus on systems of sensors; and</dd>
+		<dt>Features</dt> <dd>with a  focus on physical features, properties of them,  what can  sense them, and  what observations of them are made.</dd>
+		</dl>
+		
+		
+		<p>Based on this initial work, the following document specifies a revised, modularized, and extended version of the SSN.</p>
     </section>
     <section  id="Developments"  class="informative">
       <h2>Developments since the initial 2009 publication of SSN</h2>
       <p  class="issue"  data-number="44"> Justify why we are changing SSN at
         all</p>
+		
+		Drawing on considerable implementation experience with SSN since it was first published, it is modified to solve some known problems and to reflect  developments in the Linked Data environment. An important one of these developments is the growth of interest in Internet of Things, where SSN has been experimented with but has been observed to be too big, too dependent on OWL reasoning, and missing some key concepts such as Actuation.
+		
       Specifically,
       <ol>
         <li> The namespace has changed to a permanent W3C address. </li>
@@ -145,27 +154,36 @@ specterm.h3 {
             redesigned into two separate ontology modules so that SSN can be
             used quite independently of DUL if desired. Those parts of SSN that
             use DUL terms have been separated into the <a  href="http://www.w3.org/ns/ssn/dul">SSN
-              Alignment with DUL ontology.</a></p>
+              Alignment with DUL ontology.</a> </p>
+			    <!--
           <p  class="issue"  data-number="45">This DUL alignment does not yet
             reflect the recent change to the namespace of DUL itself.</p>
-          <p>Please see section for more information. </p>
+          <p>Please see section for more information. </p> -->
         </li>
         <li> Class Sensor has been moved up to become a direct subclass of
           dul:Object instead of dul:PhysicalObject. This is not expected to
           affect existing uses of SSN due to dul:Object being a direct parent of
-          DUL:PhysicalObject. This is to clarify a popular misunderstanding of
-          the intended scope of ssn:Sensor which is correctly documented in the
-          unaltered rdfs:comment property.
-          <p  class="issue"  data-number="46">The movement of Sensor to become a
+          dul:PhysicalObject. This is to correct the dul alignment to match the intended scope of ssn:Sensor as it was (and still is) described in the rdfs:comment property.
+          <!-- <p  class="issue"  data-number="46">The movement of Sensor to become a
             direct subclass of dul:Object has been discussed but postponed by
-            the Working Group</p>
+            the Working Group</p> -->
+			
         </li>
         <li> Many rdfs:comment annotation properties have changed slightly to
           improve explanation or to correct minor errors.
-          <p  class="issue"  data-number="47">A thorough check on annotation
+          <p  class="issue"  data-number="47">A thorough check and rewrite where necessary on annotation
             properties is yet to be made.</p>
+          <p  class="issue"  data-number="86"> A new annotation property is to be used to separate out embedded examples from other rdfs:comment elements</p>
         </li>
+		<li>
+        
+		For the purpose of modularization, a new ontology derived from SSN has been developed. See section <a href="#Modularisation">Modularisation</a>  for a detailed description on how the parts relate.
+		<p  class="issue"  data-number="102"> What is the new core ontology module to be called?</p>
+		</li>
       </ol>
+	  The reader is referred to the <a href="#changes">appendix</a> for a complete change-log. 
+	  
+	  
     </section>
     <section  id="Modularisation"  class="informative">
       <h2>Modularisation</h2>
@@ -210,10 +228,9 @@ specterm.h3 {
         concepts. Another solution is to change the domain and range of an
         object property. Our modularisation approach uses two different methods
         depending on the directionality of the segmentation.</p>
-      <img  alt="Ontology Modules"  src="images/modular_ontology.png">
+      <p><img  alt="Ontology Modules"  src="images/modular_ontology.png"></p>
       <p>Figure 1 gives an overview of the modules of the SSN ontology. The
-        layering of the rings represents a vertical segmentation, as follows:<br>
-      </p>
+        layering of the rings represents a vertical segmentation, as follows:</p>
       <h3> Vertical Segmentation</h3>
       <p>Vertical modules are build upon each other, i.e. they directionally <code>owl:import</code>
         lower level modules. If a higher level module is used without importing
@@ -2159,7 +2176,7 @@ Note that, given the DUL modelling of Qualities, a sensor defined with 'observes
       Semantic Sensor Networks Incubator Group. </section>
     <section  class="appendix"  id="changes">
       <h2>Change history</h2>
-	  Changes since Changes since the original (linked here) include... (this is
+	  Changes since the original (linked here) include... (this is
       placeholder).
       <ol>
 		<li> The Dolce Ultra Lite ontology, that was imported in to ssn, is no longer imported and all axioms using terms from DUL have been removed from SSN and collected in the DUL-SSN alignment ontology.
@@ -2183,6 +2200,9 @@ Note that, given the DUL modelling of Qualities, a sensor defined with 'observes
     <section  class="appendix"  id="references">
       <h2>References</h2>
       <dl>
+		<dt id="bib-SSN-ontology1"> [SSN short]</dt>
+		<dd>Kerry Taylor, Michael Compton, Laurent Lefort, <a href="https://eresearchau.files.wordpress.com/2012/06/74-semantically-enabling-the-web-of-things-the-w3c-semantic-sensor-network-ontology.pdf"><cite>Semantically-Enabling the Web of Things: The W3C Semantic Sensor Network Ontology</cite> 5th Australasian eResearch Conference, Melbourne, 6-10 November 2011.</a> 
+		</dd>
         <dt  id="bib-SSN-ontology">[SSN Ontology]</dt>
         <dd> Michael Compton, Payam Barnaghi, Luis Bermudez, Raúl García-Castro,
           Oscar Corcho, Simon Cox, John Graybeal, Manfred Hauswirth, Cory
