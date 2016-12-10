@@ -56,11 +56,11 @@
   <body>
 
     <section  id="abstract">
-      <p>@@@</p>
+      <p>This Note describes the CoverageJSON, a data format for describing "coverage" data in JavaScript Object Notation (JSON). The primary intended purpose of the format is to enable data transfer between servers and web browsers, to support the development of interactive, data-driven web applications. "Coverage" data is a term that encompasses many kinds of data whose properties vary with space, time and other dimensions, including (but not limited to) satellite imagery, weather forecasts and river gauge measurements. We describe the motivation and objectives of the format, and provide a high-level overview of its structure and semantics. We compare CoverageJSON with other "coverage" formats and data models and provide links to tools and libraries that can help users to produce and consume data in this format. This Note does not attempt to describe the full CoverageJSON specification in detail: this is available at <a href="https://covjson.org/">the project website</a>.</p>
     </section>
 
     <section  id="sotd">
-      <p>@@@ Something here @@@</p>
+      <p>@@@ <strong>TODO: What goes here?</strong> @@@</p>
       <p><strong>For OGC</strong> This is a Public Draft of a document prepared
         by the Spatial Data on the Web Working Group (<a  href="http://www.opengeospatial.org/projects/groups/sdwwg">SDWWG</a>)
         — a joint W3C-OGC project (see <a  href="https://www.w3.org/2015/spatial/charter">charter</a>).
@@ -68,25 +68,43 @@
         released at this time to solicit public comment.</p>
     </section>
 
+      <h2>Known issues with this document</h2>
+      <ul>
+        <li>References need to be added</li>
+        <li>Some sections are still in "note form"</li>
+        <li>Need to add more illustrations</li>
+        <li>Add section referring back to objectives?</li>
+      </ul>
+
     <section  id="intro" >
       <h2>Introduction</h2>
-      <p>Background and motivation. Make it clear that we are not looking to reproduce the full spec here but provide an informative overview.</p>
-      <h2>Objectives</h2>
-      <p>Our objective in this work was to develop a well-structured, consistent and easy-to-use JSON format for coverage data that fulfils the following criteria:</p>
-      <ul>
-        <li>Able to encode many different kinds of coverage, including multidimensional grids, timeseries, vertical profiles, polygon-based coverages, point clouds and more.</li>
-        <li>Able to encode both continuous-valued data (e.g. temperature) and categorical data (e.g. land cover classification).</li>
-        <li>Able to encode geospatial data using a variety of coordinate reference systems.</li>
-        <li>Able to encode both scalar data (e.g. temperature) and vector data (e.g. velocities).</li>
-        <li>Able to encode data with quality information, e.g. numerical uncertainties and quality flags.</li>
-        <li>Clear and readable, using idiomatic JSON concepts.</li>
-        <li>Use a minimal set of encoding rules, to avoid complicating the development of client code.</li>
-      </ul>
-    </section>
+      <section  id="coverage">
+        <h3>What is a Coverage?</h3>
+        <p><strong>TODO: insert ISO definition and distinguish the coverage function from the supporting values</strong><p>
+        <p>A coverage maps points in space and time to data values. For example, an aerial photograph can be thought of as a coverage that maps positions on the ground to colours. A river gauge maps points in time to flow values. A weather forecast maps points in space and time to values of temperature, wind speed, humidity and so forth. One way to think of a coverage is as a mathematical function, where data values are a function of coordinates in space and time.</p>
+        <p class="note">Sometimes we see the word “coverage” used synonymously with “gridded data” or “raster data” but this isn’t really accurate. One can see from the above paragraph that non-gridded data (like a river gauge measurement) can also be modelled as coverages. Nevertheless, we often observe a bias toward gridded data in discussions (and software) that concern coverages.)</p>
+      </section>
 
-    <section  id="coverage">
-      <h2>What is a Coverage?</h2>
-      <p>Stuff from Jon's blog post, or reference document Jeremy is preparing</p>
+      <section id="existingmodels">
+        <h3>Existing Coverage representations</h3>
+        <p>The ISO19123 specification defines an <em>abstract</em> data model for representing the data and metadata needed to encode coverage data. This abstract model can be instantiated in many different concrete formats. The CIS specification describes a <em>concrete</em>, directly instantiable data model and XML serialisation based on the Geography Markup Language (GML). Other serialisations have been defined, sometimes by retrospectively mapping existing binary data formats to the ISO19123 abstract data model (e.g. NetCDF, REF Nativi et al).</p>
+      <p><strong>TODO: Talk about recent CIS serialisation in JSON</strong></p>
+      </section>
+
+      <section id="motivation">
+        <h3>Motivation and objectives</h3>
+        <p>Serialisations (i.e. data formats) based upon community-specific binary formats and complex XML schemas provide usability challenges for the development of web applications. Javascript libraries do not always exist for these formats, and the formats are complex, requiring specialist knowledge on the part of the web developer. Our overall aim is to <strong>make it easier for web developers to consume coverage data in their applications</strong>, minimising the need for prior knowledge about community-specific data formats.</p>
+        <p>Therefore our objective in this work was to develop a well-structured, consistent and easy-to-use JSON format for coverage data that fulfils the following criteria:</p>
+        <ul>
+          <li>Able to encode many different kinds of coverage, including multidimensional grids, timeseries, vertical profiles, polygon-based coverages, point clouds and more.</li>
+          <li>Able to encode both continuous-valued data (e.g. temperature) and categorical data (e.g. land cover classification).</li>
+          <li>Able to encode geospatial data using a variety of coordinate reference systems.</li>
+          <li>Able to encode both scalar data (e.g. temperature) and vector data (e.g. velocities).</li>
+          <li>Able to encode data with quality information, e.g. numerical uncertainties and quality flags.</li>
+          <li>Clear and readable, using idiomatic JSON concepts.</li>
+          <li>Use a minimal set of encoding rules, to avoid complicating the development of client code.</li>
+        </ul>
+      </section>
     </section>
 
     <section  id="overview">
@@ -96,8 +114,9 @@
          The specification is split up into two documents:
          the core part, and a set of optional <a href="https://covjson.org/domain-types/">domain types</a> that ease interoperability.</p>
 
+      <section id="structure">
       <h3 id="highLevelStructure">High-level structure</h3>
-      <p>In CovJSON, a Coverage consists of the following objects:</p>
+      <p>In CoverageJSON, a Coverage consists of the following objects:</p>
       <ul>
         <li>A <dfn>Domain</dfn> (exactly one), which encodes the set of points in space and time for which we have data values.</li>
         <li>A set of <dfn>Range</dfn> objects (one per scalar quantity), holding actual data values.</li>
@@ -130,16 +149,20 @@
   }
 }
       </pre>
+    </section>
 
+    <section id="domain">
       <h3>Encoding the Domain</h3>
-      <p>A Domain is a collection of named orthogonal axes, plus referencing info.
+      <p><strong>TODO: needs expanding and improving </strong></p>
+      <p>A Domain is a collection of named orthogonal axes, plus information about how to reference these axes to a real-world coordinate reference system..
          An axis can contain primitive values like latitudes or longitudes but can also contain complex values
          like tuples or polygons.</p>
-      <p>CovJSON knows the concept of a <dfn>domain type</dfn> which allows clients to easily identify a certain domain structure.
+      <p>CoverageJSON knows the concept of a <dfn>domain type</dfn> which allows clients to easily identify a certain domain structure.
          Typically, a domain type constrains the axes (e.g. value type, names, length)
          and allowed reference systems.
-         CovJSON defines a number of common <a href="https://covjson.org/domain-types/">domain types</a> where custom ones
+         CoverageJSON defines a number of common <a href="https://covjson.org/domain-types/">domain types</a> where custom ones
          can be used with the extension mechanism.</p>
+      <p><strong>TODO: improve explanation of domain type</strong></p>
       <p>The following is a complete example of a grid domain with longitude, latitude, and time axes:</p>
       <pre>
 {
@@ -165,15 +188,17 @@
   }]
 }
       </pre>
+    </section>
 
+    <section id="datavalues">
       <h3>Encoding of data values</h3>
-      <p>Data in CovJSON is held in Range objects which represent multi-dimensional arrays.
+      <p>Data in CoverageJSON is held in Range objects which represent multi-dimensional arrays.
          There are two subtypes of Range objects:</p>
       <ul>
         <li>An <dfn>NdArray</dfn> object encodes a multi-dimensional array in its entirety.</li>
         <li>A <dfn>TiledNdArray</dfn> object splits up a multi-dimensional array into several parts and links to
          those parts via URI templates (RFC 6570) where each part is an NdArray object.
-         A single TiledNdArray may define several split-ups, called tilesets, to cater for different access scenarios.</li>
+         A single TiledNdArray may define several ways of splitting up the array (each way is a <em>tileset</em>), to cater for different access scenarios.</li>
       </ul>
       <p>The following illustrates how a coverage may be split up into a particular tileset:</p>
       <img src="covjson-tiling.png" width="500"/>
@@ -185,7 +210,7 @@
   "shape": [3, 180, 360],
   "tileSets": [{
     "tileShape": [1, 90, 90],
-    "urlTemplate": "http://example.com/{t}/{y}/{x}.covjson"
+    "urlTemplate": "http://example.com/{t}/{y}/{x}.CoverageJSON"
   }]
 }
       </pre>
@@ -203,27 +228,15 @@
   ]
 }
       </pre>
+    </section>
 
-      <h3>CovJSON documents</h3>
-      <p>A single CoverageJSON document can contain one of the following types of object:</p>
-      <ul>
-        <li>A single Coverage</li>
-        <li>A collection of Coverages. (TODO describe this more?)</li>
-        <li>A standalone Domain</li>
-        <li>An NdArray or TiledNdArray</li>
-      </ul>
-      <p>The top-level object within a document contains a “type” property that identifies the type of the object that it contains. Documents may be linked to other documents; in this way data providers can ensure that each individual document is of a "manageable" size, with large datasets being partitioned among a number of linked documents.</p>
-
-      <h3>CovJSON, JSON-LD and RDF</h3>
-      <p>To a limited extent, a CovJSON document can be converted into RDF through the use of a JSON-LD context header. The extent to which this is possible is discussed in section REF below, and in (TODO: insert link to Montreal paper).</p>
-      <p>We did not consider that coversion to RDF should be a primary goal: we focused mainly on simplicity and readability of the format, under the assumption that few of the target users (web developers) would require a pure RDF representation of the data. Enabling a full conversion to RDF would require complicating the format (mainly for technical reasons including limitations of JSON-LD). Also, RDF is an unsuitable format for large arrays of data and so the Domain and Range would not convert efficiently.</p>
-      <p>Nevertheless, CoverageJSON makes frequent use of URIs to denote key concepts, such as units, observed properties, coordinate reference systems, domain types and links to other CoverageJSON documents. Clients can make use of these to detect these concepts unambiguously, whether or not they perform a translation to RDF.</p>
-
-      <h3>Metadata model</h3>
-      <p>Metadata in CovJSON revolves around describing the semantics of domain points and data values.
+    <section id="parameters">
+      <h3>Encoding of Parameter metadata</h3>
+      <p>Metadata in CoverageJSON revolves around describing the semantics of domain points and data values.
          Reference systems are used to provide metadata for domain points,
          whereas Parameter objects provide semantics for data values.
-         Other metadata, like provenance information, can be recorded via the extension mechanism.</p>
+         Other metadata, like provenance information, can be recorded via the extension mechanism (REF below).</p>
+         <p><strong>TODO:</strong> rework the above paragraph, perhaps as a mapping to a more well-known metadata model.</p>
       <p>The sample JSON document below shows a Parameter object describing the sea surface temperature variable
          from the above <a href="#highLevelStructure">skeleton JSON</a>.</p>
       <pre>
@@ -258,8 +271,30 @@
         <li>a strongly-typed unit string, using UCUM encoding rules,</li>
         <li>internationalisation of human-readable strings (labels).</li>
       </ul>
-      <p>By using the <a href="https://covjson.org/context.jsonld">canonical CovJSON JSON-LD context</a>,
-         it is possible to convert the above Parameter directly into RDF triples:</p>
+
+    </section>
+
+    <section id="documents">
+      <h3>CoverageJSON documents</h3>
+      <p>A single CoverageJSON document can contain one of the following types of object:</p>
+      <ul>
+        <li>A single Coverage</li>
+        <li>A collection of Coverages. (TODO describe this more?)</li>
+        <li>A standalone Domain</li>
+        <li>An NdArray or TiledNdArray</li>
+      </ul>
+      <p>The top-level object within a document contains a “type” property that identifies the type of the object that it contains. Documents may be linked to other documents; in this way data providers can ensure that each individual document is of a "manageable" size, with large datasets being partitioned among a number of linked documents.</p>
+      <p><strong>TODO: expand this to talk more about how large datasets can be made more "web friendly" in this way.</strong></p>
+    </section>
+
+    <section id="rdf">
+      <h3>CoverageJSON, JSON-LD and RDF</h3>
+      <p>To a limited extent, a CoverageJSON document can be converted into RDF through the use of a JSON-LD context header. The extent to which this is possible is discussed in REF (<strong>TODO:</strong> insert link to Montreal paper).</p>
+      <p>We did not consider that coversion to RDF should be a primary goal: we focused mainly on simplicity and readability of the format, under the assumption that few of the target users (web developers) would require a pure RDF representation of the data. Enabling a full conversion to RDF would require complicating the format (mainly for technical reasons including limitations of JSON-LD). Also, RDF is an unsuitable format for large arrays of data and so the Domain and Range would not convert efficiently.</p>
+      <p>Nevertheless, CoverageJSON makes frequent use of URIs to denote key concepts, such as units, observed properties, coordinate reference systems, domain types and links to other CoverageJSON documents. Clients can make use of these to detect these concepts unambiguously, whether or not they perform a translation to RDF.</p>
+
+      <p>By using the <a href="https://covjson.org/context.jsonld">canonical CoverageJSON JSON-LD context</a>,
+         it is possible to convert the <a href="#parameters">above Parameter</a> directly into RDF triples:</p>
 <pre>
 _:SST &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;https://covjson.org/def/core#Parameter&gt; .
 _:SST &lt;http://qudt.org/schema/qudt#unit&gt; _:SST_UNIT .
@@ -272,7 +307,9 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
 &lt;http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/&gt; &lt;http://www.w3.org/2004/02/skos/core#prefLabel&gt; &quot;Meeresoberfl&auml;chentemperatur&quot;@de .
 &lt;http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/&gt; &lt;http://www.w3.org/2004/02/skos/core#prefLabel&gt; &quot;Sea Surface Temperature&quot;@en .
 </pre>
+  </section>
 
+  <section id="extensions">
       <h3>Extension points</h3>
       <p>We allow data providers to extend the format in a controlled manner. The possible extensions that can be defined by users include:</p>
       <ul>
@@ -286,17 +323,35 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
       <p>In each case we recommend that URIs be used to denote these extensions (and to point to definitions), to avoid the possibility of clashes between extensions.</p>
     </section>
 
+  </section>
+
+  <section id="examples">
+    <h2>Examples</h2>
+    <p><strong>TODO:</strong> insert links to complete, realistic examples of CoverageJSON documents, perhaps visualised in a web app like the Playground.</p>
+  </section>
+
     <section  id="tools">
       <h2>Tools and libraries</h2>
-      <p>TODO: outline them and link to the <a href="https://covjson.org/tools/">website</a>.</p>
+      <p>We have developed a number of tools and libraries to help users produce, use and debug CoverageJSON documents. These are all published on the <a href="https://covjson.org/tools">project website</a>) and include: <strong>TODO: check this is up to date.</strong></p>
+      <ul>
+        <li>A JavaScript API for reading CoverageJSON documents, intended for use by developers of web applications.</li>
+        <li>A Plugin for the Leaflet web mapping library (REF).</li>
+        <li>A “Playground” web application, in which users can paste and edit CoverageJSON documents, and view a live visualization (Figure XX). <strong>TODO insert figure</strong></li>
+        <li>Online “Cookbook” documentation, with live examples linked to this playground. (We recommend that new users start here.)</li>
+        <li>A module for the EDAL libraries (REF); this is Java code to convert data in a number of file formats (including NetCDF and GRIB) to CoverageJSON.</li>
+      </ul>
     </section>
 
     <section  id="otherDataModels">
       <h2>Relationship with other data models</h2>
+      <p><strong>TODO: expand this section</strong></p>
+      <section id="netcdf">
       <h3>NetCDF and CF-NetCDF</h3>
       <p class="note">NetCDF (REF) is a binary, platform-independent data format for multidimensional data, which is independent of any community of practice. Essentially, a NetCDF file is a collection of multidimensional arrays, plus metadata provided as key-value pairs. Metadata conventions are required to specialise NetCDF for particular communities. The Climate and Forecast (REF) conventions are the pre-eminent conventions for geospatial data. NetCDF files that conform to these conventions are known as "CF-NetCDF files".)</p>
       <p>The overall structure of CoverageJSON is quite close to that of NetCDF (REF), consisting essentially of a set of orthogonal domain axes that can be combined in different ways. One major difference is that in CoverageJSON, there is an explicit Domain object, whereas in NetCDF the domain is specified implicitly by linking data variables with coordinate variables. One consequence of this is that NetCDF files can contain several domains and hence several Coverages. A NetCDF file could therefore be converted to a single Coverage or a Coverage Collection in CoverageJSON.</p>
+    </section>
 
+      <section id="cis">
       <h3>OGC Coverage Implementation Schema (CIS)</h3>
       <p>The overall concepts of CoverageJSON are close to those of the ISO19123 standard (REF) and the OGC standard Coverage Implementation Schema (CIS, REF), which specialises ISO19123. The main points of difference are:</p>
       <ul>
@@ -304,9 +359,12 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
         <li>CIS allows each Coverage to have exactly one CRS, whereas CoverageJSON allows different CRSs to be applied to different sets of coordinates in the domain (e.g. one CRS for x and y, and another CRS for z).</li>
         <li>The most recent version of CIS defines a JSON encoding that uses a near-literal translation of GML structures into JSON. CoverageJSON does not use GML as its starting point.</li>
       </ul>
+    </section>
 
+    <section>
       <h3>Other data models</h3>
       <div  class="issue"  data-number="101">Describe relationship to other data models, such as TimeseriesML.</div>
+    </section>
     </section>
 
     <section  id="mappingToBP">
@@ -316,7 +374,7 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
 
     <section  id="spec"  class="normative">
       <h2>Appendix: CoverageJSON specification</h2>
-      <p>Maybe copy the current spec in here as a snapshot so the document is self-contained.</p>
+      <p>Maybe copy the current spec in here as a snapshot so the document is self-contained. <strong>TODO:</strong> Need to establish if this then becomes the "canonical" place for the spec. We need to decide whether this document, or covjson.org is the best place for it.</p>
     </section>
    </body>
 </html>
