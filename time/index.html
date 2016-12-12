@@ -2205,18 +2205,76 @@ DIV.test H4 {
       <h2> Examples</h2>
       <section id="iCal">
         <h3>iCalendar</h3>
-        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p>
-        iCalendar [<a href="#DS-98">DS-98</a>] is a widely supported standard for personal data interchange. It provides
+        <p class="note">This example replaces the one from [<a href="#OWL-T">OWL-T</a>]. </p>
+        <p>iCalendar [<a href="#DE-09">DE-09</a>] is a widely supported standard for personal data interchange. It provides
         the definition of a common format for openly exchanging calendaring and scheduling information across the
         Internet. The representation of temporal concepts in this time ontology can be straightforwardly mapped to
         iCalendar. For example, duration of 15 days, 5 hours and 20 seconds is represented in iCalendar as P15DT5H0M20S,
-        which can be represented in the time ontology as:
+        which can be represented in the time ontology as:</p>
         <pre>:hasDurationDescription
       a       :DurationDescription ;
       :seconds 20 ;
       :hours 5 ;
       :days 15 .
-</pre> </section>
+</pre> 
+        <p>The iCalendar homepage features the example of Abraham Lincoln's birthday as celebrated in 2008. 
+        This may be represented in multiple ways using OWL-Time, including the following.</p>
+        <p>1. As a <code>:DateTimeInterval</code> using the <code>:DateTimeDescription</code> form:</p>
+        <pre>_:DTI-1
+  rdf:type :DateTimeInterval ;
+  dc:coverage """LOCATION:Hodgenville, Kentucky
+GEO:37.5739497;-85.7399606""" ;
+  dc:date "2015-04-21T14:14:03.00"^^xsd:dateTime ;
+  dc:description """Born February 12\\, 1809\\nSixteenth President (1861-1865)
+
+http://AmericanHistoryCalendar.com""" ;
+  dc:subject "Civil War People" ;
+  dc:subject "U.S. Presidents" ;
+  rdfs:label "Abraham Lincoln" ;
+  skos:closeMatch &lt;2008-04-28-04-15-56-62-@americanhistorycalendar.com&gt; ;
+  :hasDateTimeDescription [
+      rdf:type :DateTimeDescription ;
+      :day "---12"^^xsd:gDay ;
+      :hasTRS &lt;http://www.opengis.net/def/uom/ISO-8601/0/Gregorian&gt; ;
+      :month "--02"^^xsd:gMonth ;
+      :unitType :unitDay ;
+      :year "2008"^^xsd:gYear ;
+    ] ;
+.</pre>
+        <p>2. As a <code>:TemporalEntity</code> using the <code>:TimePosition</code> to define the beginning and end:</p>
+        <pre>_:TE-2
+  rdf:type :TemporalEntity ;
+  rdfs:label "Abraham Lincoln" ;
+  :hasBeginning [
+      rdf:type :Instant ;
+      :inTimePosition [
+          rdf:type :TimePosition ;
+          :hasTRS &lt;http://dbpedia.org/resource/Unix_time&gt; ;
+          :numericPosition "1202752800"^^:Number ;
+        ] ;
+    ] ;
+  :hasDuration [
+      rdf:type :Duration ;
+      :numericDuration "1"^^:Number ;
+      :unitType :unitDay ;
+    ] ;
+  :hasEnd [
+      rdf:type :Instant ;
+      :inTimePosition [
+          rdf:type :TimePosition ;
+          :hasTRS &lt;http://dbpedia.org/resource/Unix_time&gt; ;
+          :numericPosition "1202839200"^^:Number ;
+        ] ;
+    ] ;
+.</pre>
+        <p>3. As a <code>:Instant</code> using the <code>:inXSDDateTime</code>:</p>
+        <pre>al:TI-3
+  rdf:type :Instant ;
+  rdfs:label "Abraham Lincoln" ;
+  :inXSDDateTime "2008-02-12T00:00:00.00-05:00"^^xsd:dateTime ;
+.</pre>
+<p>Several other formulations are possible, some of which are shown in the RDF representation is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/abraham-lincoln.ttl">here</a>
+</section>
       <section id="geologictimescale">
         <h3>Geologic timescale described as a graph of ProperInterval individuals</h3>
         <p>The geologic timescale is defined as a set of named intervals arranged in a hierarchy, such that there is
@@ -3206,9 +3264,9 @@ ex:meetingStartDescription
         <dt id="CR-14">[CR-14]</dt>
         <dd>S.J.D. Cox, S.M. Richard, <a href="http://dx.doi.org/10.1007/s12145-014-0166-2"><cite>A geologic timescale
               ontology and service</cite></a>, <em>Earth Sci. Informatics</em>. <strong>8</strong> (2014) 5–19. <a href="http://dx.doi.org/10.1007/s12145-014-0166-2">doi:10.1007/s12145-014-0166-2.</a></dd>
-        <dt id="DS-98">[DS-98]</dt>
-        <dd>Dawson, F. and Stenerson, D. 1998. <a href="http://www.ietf.org/rfc/rfc2445.txt"><cite>Internet Calendaring
-              and Scheduling Core Object Specification (iCalendar), RFC2445</cite></a>. <a href="http://www.ietf.org/rfc/rfc2445.txt">http://www.ietf.org/rfc/rfc2445.txt</a></dd>
+        <dt id="DE-09">[DE-09]</dt>
+        <dd>Desruisseaux, B. 2009. <a href="http://www.ietf.org/rfc/rfc5545.txt"><cite>Internet Calendaring
+              and Scheduling Core Object Specification (iCalendar), RFC5545</cite></a>. <a href="http://www.ietf.org/rfc/rfc5545.txt">http://www.ietf.org/rfc/rfc5545.txt</a></dd>
         <dt id="FIPS">[FIPS]</dt>
         <dd><a href="http://www.daml.org/2003/02/fips55/"><cite>FIPS 55 County instance file</cite></a>. <a href="http://www.daml.org/2003/02/fips55/">http://www.daml.org/2003/02/fips55/</a></dd>
         <dt id="HP-04">[HP-04]</dt>

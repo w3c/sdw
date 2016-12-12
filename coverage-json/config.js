@@ -10,16 +10,24 @@ var respecConfig = {
     // crEnd: "3000-01-01",
     editors: [
     {
+      name: "Jon Blower",
+      company: "University of Reading",
+      companyURL: "http://www.reading.ac.uk"
+    },{
       name: "Maik Riechert",
       company: "University of Reading",
       companyURL: "http://www.reading.ac.uk"
+    },{
+      name: "Bill Roberts",
+      company: "Swirrl",
+      companyURL: "http://www.swirrl.com"
     }],
     otherLinks: [
     {
       key: "OGC Document Number",
       data: [
       {
-        value: "OGC 16-xxx"
+        value: "OGC 16-145"
       }]
       }],
     wg: "Spatial Data on the Web Working Group",
@@ -60,27 +68,27 @@ var respecConfig = {
         href:"http://www.opengeospatial.org/standards/geosparql",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
         authors: ["Matthew Perry", "John Herring"],
-        date: "10 September 2012"  
-       }, 
+        date: "10 September 2012"
+       },
        "OM":{
         href:"http://www.opengeospatial.org/standards/om",
         title:"Observations and Measurements (O&M)",
         authors: ["Simon Cox"],
-        publisher: "Open Geospatial Consortium", 
+        publisher: "Open Geospatial Consortium",
         date: "2011"
-       }, 
+       },
        "SML":{
         href:"http://www.opengeospatial.org/standards/sensorml",
         title:"Sensor Model Language",
         authors: ["Mike Botts", "Alexandre Robin"],
-        publisher: "Open Geospatial Consortium", 
+        publisher: "Open Geospatial Consortium",
         date: "2010"
-       }, 
+       },
        "SWE":{
         href:"http://www.opengeospatial.org/ogc/markets-technologies/swe",
         title:"Sensor Web Enablement (SWE)",
         publisher: "Open Geospatial Consortium"
-       }, 
+       },
        "SSNO": {
          authors: ["Michael Compton", "Payam Barnaghi", "Luis Bermudez", "Raúl García-Castro", "Oscar Corcho", "Simon Cox", "John Graybeal", "Manfred Hauswirth", "Cory Henson", "Arthur Herzog", "Vincent Huang", "Krzysztof Janowicz", "W. David Kelsey", "Danh Le Phuoc", "Laurent Lefort", "Myriam Leggieri", "Holger Neuhaus", "Andriy Nikolov", "Kevin Page", "Alexandre Passant", "Amit Sheth", "Kerry Taylor"],
          title:"The SSN ontology of the W3C semantic sensor network incubator group",
