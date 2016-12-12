@@ -72,6 +72,13 @@
 		<p>QB4ST is designed to support the publication of consisently described re-usable and comparable definitions of spatial and temporal data elements by appropriate communities of practice. One obvious such case is the use of GPS coordinates described as decimal latitude and longitude measures. Another example is the intended publication of a register of Discrete Global Grid Systems (DGGS) by the OGC DGGS Working Group. QB4ST is intended to support publication of descriptions of such data using a common set of attributes that can be attached to a property description (extending the available RDF-QB mechanisms for attributes of observations)</p>
 
         <p>This document will refer to a set of instances of [[VOCAB-DATA-CUBE]] components defined using the QB4ST extensions. These examples are informative, although publication of a separate specification for common spatial and temportal dimensions and measure is an expected outcome.</p>
+		
+	<h2>Motivation</h2>
+	<p>The motivation for QB4ST arises from identification of Use Case Requirements [[SDW-UCR]] and Best Practices [[SDW-BP]] by the Spatial Data on the Web Working Group.  The Data on the Web Best Practices  indicate re-use of common vocabularies: [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ReuseVocabularies">BP15: Reuse vocabularies, preferably standardized ones</a>.  As fas as could be ascertained no such vocabularies existed to support key UCRs identified that require explicit metadata about spatio-temporal aspects of data: <a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">R-CRSDefinition</a>, <a
+                href="http://www.w3.org/TR/sdw-ucr/#DefaultCRS">R-DefaultCRS</a>, <a href="https://www.w3.org/TR/sdw-ucr/#QualityMetadata">R-QualityMetadata</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">R-SpatialMetadata</a>, <a
+                href="http://www.w3.org/TR/sdw-ucr/#GeoreferencedData">R-GeoReferencedData</a> and <a
+                href="http://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>. 
+				Two sets of vocabularies are required for each case - one to describe the aspect of the data being expressed, and another for the relationships (predicates) by which such descriptions may be attached to data objects. QB4ST is primarily aimed at providing canonical predicates to include in metadata about data elements with spatial and/or temporal characteristics. 
     </section>
 	
 <section id="namespaces">
@@ -148,17 +155,23 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 <section id="Background" >
     <section  id="Datacube"  >
       <h2>The RDF Data Cube</h2>
-      <p>The <a href="https://www.w3.org/TR/vocab-data-cube/">RDF Data Cube</a> is an existing standard for representing data as RDF.</p>
-         It is derived from the traditions of statistical data exchange, and is typically used for data that is associated with statistical regions (e.g. government jurisdictions).  
+      <p>The RDF Data Cube [[VOCAB-DATA-CUBE]] is an existing standard for representing data as RDF.</p>
+         <p>It is derived from the traditions of Statistical Data Metadata Exchange [[SDMX2]], and is typically used for data that is associated with statistical regions (e.g. government jurisdictions).  
          It provides a canonical mechanism for metadata binding the components of a datacube to a range defined by a set of coded values, using the the SKOS vocabulary. It also provides for a generalised "AttributeProperty" which can contain additional information about an "Attachable" - i.e. a Dataset, a subset (slice) or an observations.  Individual components (such as measures and dimensions) are not included in this notion, so it is not directly possible to define the reference system for each component individually, and there is no canonical representation of reference systems other than "codelists".
 	</section>
+	<section id="SDMX">
+		<h2>SDMX Dimensions<h2>
+		<p>Some spatio-temporal concepts have been defined as extensions to RDF Data Cube for use in SDMX applications (see Appendix). These however are not general enough definitions for use outside the SDMX context, even though they do highlight the need for such specialisations in practices.</p>
+		</section>
 	<section  id="OWL-Time" >
           <h2>OWL Time</h2>
           <p>OWL-Time provides basic concepts for Time as well as canonical terms for commonly used specialisations. QB4ST extends [[VOCAB-DATA-CUBE]] by specifying use of OWL-Time as the appropriate ontology for temporal reference systems.</p>
       </section>
 	<section  id="Spatial" >
           <h2>Spatial Concepts</h2>
-          <p>There is no equivalent to OWL-Time for spatial concepts, although the GeoSPARQL specification includes some concepts within the larger scope of defining functions to extend the SPARQL language. QB4ST will thus provide placeholders for necessary concepts that can be declared equivalent to the spatial concepts in use within an implementation.</p>
+          <p>There is currently no foundation ontology equivalent to OWL-Time for spatial concepts.  Although the GeoSPARQL specification includes some concepts within the larger scope of defining functions to extend the SPARQL language. QB4ST will thus provide placeholders for necessary concepts that can be declared equivalent to the spatial concepts in use within an implementation.</p>
+		  <p class="issue">Insert appropriate form of reference to SDW work to potentially fill this gap</p>
+	
     </section>
 </section>
 <section id="Requirements" >
@@ -166,7 +179,7 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		<h1>Requirements</h1>
 		<section id="ReuseQB">
 			<h2>Reuse of stable ontologies</h2>
-			<p>The scope of the Spatial Data on the Web Working Group does no include updating RDF Data Cube. Thus the requirement is that QB4ST re-uses and respects the declared semantics of RDF-Datacube, OWL-Time and other relevant W3C standards such as RDFS, OWL, SKOS etc  implicit in using these specifications.</p>
+			<p>The scope of the Spatial Data on the Web Working Group does not include updating RDF Data Cube. Thus a requirement is that QB4ST re-uses and respects the declared semantics of RDF-Datacube, OWL-Time and other relevant W3C standards, such as RDFS, OWL, SKOS.</p>
 		</section>
 		<section id="ExtendQB">
 			<h2>Attaching attributes to specific components</h2>
@@ -177,10 +190,12 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 			<h2>Refining the range of CodedProperties</h2>
 			<p>Many applications of CodedProperties may require very large codelists. Spatial feature references are such a case, where we may for example have a national scope database of land parcels, but also a subset for a given local administration. It is theoretically possible for each reference used to be interrogated to see if is a member of the national codelist, but where such codelists are spatial data sets this is not feasible due to both the potentially large number of features and the amount of data that may be included describing feature geometry. The same issue applies to non-spatial codelists, for example, the list of biota taxon keys managed by the Global Biodiversity Information Facility, a very large and dynamic set of codes. A database of <em>invasive species</em> may use these codes, but be restricted to using those codes that appear in a a locally managed list of invasive species. qb:codeList has a declared rdfs:domain of a qb:CodedProperty. This if dimension D1 defines the use of GBIF taxon keys, there is currently no obvious mechanism to define D2 to be equivalent to D1, but using a refined range such as the UK list of declared weeds.</p>
 			<p>One option would be to relax the rdfs domain of qb:codeList - however this changes the [[VOCAB-DATA-CUBE]] model. Another option is to allow for instances of qb:ComponentProperty to have an inheritance hierarchy, with the semantics that the qb:codeList of a child refers to a valid subset of the codelist of its parent. </p>
-			<h2>Hierarchies of qb:ComponentProperty instances</h2>
-			<p>As seen by the issues regarding refinement of codelists there is a need to be able to define restricted versions of ComponentProperty, and to be able to traverse this hierarchy in order of refinement. This is the same requirement met by SKOS using "narrower", "broader", "narrowerTransitive", "broaderTransitive". Reusing these terms implies that qb:ComponentProperty instances are also SKOS:Concepts, which is not unreasonable. </p>
+			<h2>Specialization Hierarchies of qb:ComponentProperty instances</h2>
+			<p>As seen by the issues regarding refinement of codelists there is a need to be able to define restricted versions of ComponentProperty, and to be able to traverse this hierarchy in order of refinement. This is the same requirement met by SKOS using "narrower", "broader", "narrowerTransitive", "broaderTransitive". Reusing these terms, for which the rdfs:domain is specified to be a skos:Concept implies that qb:ComponentProperty instances are also skos:Concepts, which is not unreasonable. </p>
 			<h2>Defining the bounding envelopes of spatial and temporal properties</h2>
-			<p>A common requirement when describing a spatial or temporal aspect of a dataset is to define the range of its spatial and temporal properties. This is usually a dataset specific qualification, and thus is typically required to be an attribute of a ComponentSpecification. Canonical </p>	
+			<p>A common requirement when describing a spatial or temporal aspect of a dataset is to define the range of its spatial and temporal properties. This is usually a dataset specific qualification, and thus is typically required to be an attribute of a ComponentSpecification. Canonical </p>
+			<h2>Identification of nested spatial elements<h2>
+			<p>In much the same way as skos:Concepts may have defined narrower terms, spatial references may be nested, for example a country may be divided into a series of administrative units, or a grid may be broken into a finer grid. Determining the nature of such relationships may be possible by analysing the declared types designated by the rdfs:range of qb:ComponentProperty elements - however this requires both dereferencing these and the ability to interpret how such nesting relationships are described, if in fact such information is available. There is thus a requirement to provide a simple declaration of sub-division relationships between the ranges of related spatial components.
 		</section>
 </section>
 <section id="QB4ST">
@@ -255,6 +270,13 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		rdfs:comment "Dimensions are indexes, a coordDimension specifies the granular partitioning of the coordinate space represented."@en
 		.
 
+	qb4st:subdivides a rdfs:Property;
+		rdfs:label "Subdivides reference unit"@en;
+		rdfs:comment "Identifies that the range of the subject is a smaller division of the range of the identified object - either a qb:ComponentProperty or indirectly via a qb:ComponentSpecification"@en;
+		# meta:domainIncludes qb4st:CoordDimension , qb4st:SpatialComponentSpecification ;
+		# meta:rangeIncludes qb4st:CoordDimension , qb4st:SpatialComponentSpecification ;
+		;
+	
 	</pre></div>
 	</section>
 	 <section id="GeoMeasureExample">
@@ -306,12 +328,43 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 	</section>
 		<section id="NestedFeaturesExample">
 	 <h3>Example: Nested Spatial Reference Features using QB4ST</h3>
-	 <p>SDMX refArea... etc</p>
-	<p class="issue">TDB</p>
+	 <p>QB4ST defines a "reference Area" in a more generalised way that [[SDMX-DIMENSION]], simply requiring that referenced areas a identifiable as spatial Features (qb4st:Feature) which implies stable URI identification.</p>
+	 <p>The additional predicate qb4st:subdivides provides a declarative means to express the relationship between two different feature sets representing nested topology (for example countries containing administrative units). This means that applications do not need to inspect data sets bound to each dimension, or be able to identify this relationship from other forms of metadata or information model, and hence publishers do not need to provide standardised formalisms of information models for each data set (notwithstanding the desirability of such models).</p>
+	
 	 	<div class="example"><div class="example-title">Nested Spatial Features as Reference Areas</div>
 	 <pre>
 
-	</pre></div>
+	qb4st:RefArea a  rdfs:Class, owl:Class ;
+		rdfs:subClassOf qb:SpatialDimension, qb:CodedProperty ;
+		rdfs:label "Location by spatial Feature"@en ;
+		rdfs:comment "Spatial context identified by a Spatial Feature. As a dimension, it is used as an index, and may not be missing or multi-valued. Such a property is both a spatial property and a CodedProperty. Note this must also have a codelist defined, and thus each Feature is regarded as a skos:Concept"@en ;
+		rdfs:subClassOf [
+			a owl:Restriction ;
+			owl:onProperty rdfs:range  ;
+			owl:someValuesFrom qb4st:Feature  ;
+		 ]  ;
+		.
+	
+	qb4st:subdivides a rdfs:Property;
+		rdfs:range qb4st:SpatialDimension ;
+		rdfs:domain qb4st:SpatialDimension ;
+		rdfs:label "Sub-divides Spatial Reference Area" ;
+		rdfs:comment "Indicates that the subject  dimension property is bound to feature identifiers that are sub-divisions of the features used by the object dimension property. This menas applications do not need to download either information models or feature sets to determine this critical relationship, nor rely on complex spatial operations."@en
+		.	
+	</pre>
+	</div>
+	 	<div class="example"><div class="example-title">Example: Countries and Administrative units </div>
+	 <pre>		
+	eg:country a qb4st:RefArea;
+		qb:codeList eg:Countries;
+	.
+	
+	eg:admin1 a qb4st:RefArea;
+		qb:dimension qb4st:refArea;
+		qb:codeList eg:Admin1;
+		qb4st:subdivides eg:country;
+	.	
+		</pre></div>
 		
 	</section>
 	<section>
@@ -330,12 +383,12 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		 . 
 		
 	qb4st:SpatialMeasure a  rdfs:Class, owl:Class;
-		rdfs:subClassOf qb:MeasureProperty;
+		rdfs:subClassOf qb:MeasureProperty, qb4st:SpatialProperty;
 		rdfs:label "abstract measure of spatial location"@en
 		.
 
 	qb4st:PositionMeasure a  rdfs:Class, owl:Class ;
-		rdfs:subClassOf qb:SpatialMeasure ;
+		rdfs:subClassOf qb4st:SpatialMeasure ;
 		rdfs:label "Location by Point Coordinates"@en ;
 		rdfs:comment "a measure of location as a Point (i.e. a complex spatial data type)"@en;
 		rdfs:subClassOf [
@@ -346,7 +399,7 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		.
 
 	qb4st:CoordMeasure a  rdfs:Class, owl:Class ;
-		rdfs:subClassOf qb:SpatialMeasure ;
+		rdfs:subClassOf qb4st:SpatialMeasure ;
 		rdfs:label "Location partially recorded by a single Coordinate"@en ;
 		rdfs:comment "Abstract class for partial measure of location as a single Coordinate - such as latitude"@en;
 		rdfs:subClassOf [
@@ -468,13 +521,51 @@ identifies a <i>namespace URI</i>. The namespace identified by the prefix is
 		
 			
 		</pre></div>
-		<p class="issue">Do we need to define all the entailment rules in the spec - and if so using what formalism - basically entail missing properties from broader definitions?</p>
+		<p class="issue">Do we need to define all the entailment rules in the spec as per [[VOCAB-DATA-CUBE]] - and if so using what formalism - basically entail missing properties from broader definitions?</p>
 		<p class="issue">Can we assume knowledge of the logic around SKOS concept scheme membership, collections etc or spell it out inline ?</p>
 		</section>
 		<p class="issue">Add a section on DGGS or other grid based SRS - or can this be done as a separate QB4ST application note?</p>
 
 </section>
 
+ <section class="appendix">
+ <section id="SDMX">
+ <h1>SDMX extensions to QB</h1>
+ 	 	<div class="example"><div class="example-title">Refinement of semantics of a well-known component</div>
+			 <pre>
+# REF_AREA
+sdmx-dimension:refArea a qb:DimensionProperty, rdf:Property ;
+    rdfs:range rdfs:Resource;
+    qb:concept sdmx-concept:refArea ;
+    rdfs:label "Reference Area"@en ;
+    rdfs:comment """The country or geographic area to which the measured statistical phenomenon relates."""@en ;
+    rdfs:isDefinedBy <https://sdmx.org/wp-content/uploads/01_sdmx_cog_annex_1_cdc_2009.pdf> .
+
+# REF_PERIOD
+sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
+    rdfs:range rdfs:Resource;
+    qb:concept sdmx-concept:refPeriod ;
+    rdfs:label "Reference Period"@en ;
+    rdfs:comment """The period of time or point in time to which the measured observation is intended to refer."""@en ;
+    rdfs:isDefinedBy <https://sdmx.org/wp-content/uploads/01_sdmx_cog_annex_1_cdc_2009.pdf> .
+
+# SEX
+sdmx-dimension:sex a qb:DimensionProperty, rdf:Property ;
+    rdfs:range rdfs:Resource;
+    qb:concept sdmx-concept:sex ;
+    rdfs:label "Sex"@en ;
+    rdfs:comment """The state of being male or female."""@en ;
+    rdfs:isDefinedBy <https://sdmx.org/wp-content/uploads/01_sdmx_cog_annex_1_cdc_2009.pdf> .
+
+# TIME_PERIOD
+sdmx-dimension:timePeriod a qb:DimensionProperty, rdf:Property ;
+    rdfs:range rdfs:Resource;
+    qb:concept sdmx-concept:timePeriod ;
+    rdfs:label "Time Period"@en ;
+    rdfs:comment """The period of time or point in time to which the measured observation refers."""@en ;
+    rdfs:isDefinedBy <https://sdmx.org/wp-content/uploads/01_sdmx_cog_annex_1_cdc_2009.pdf> .
+	</pre>
+	</div>
 
    </body>
 </html>
