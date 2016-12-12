@@ -3,7 +3,7 @@
   <head>
     <meta  content="text/html; charset=utf-8"  http-equiv="content-type">
     <meta  content="width=device-width,initial-scale=1"  name="viewport">
-    <title>CoverageJSON</title>
+    <title>The CoverageJSON Format Specification</title>
     <script  class="remove"  src="http://www.w3.org/Tools/respec/respec-w3c-common"></script>
     <script  class="remove"  src="config.js"></script>
     <style  type="text/css">
@@ -56,7 +56,7 @@
   <body>
 
     <section  id="abstract">
-      <p>This Note describes the CoverageJSON, a data format for describing "coverage" data in JavaScript Object Notation (JSON). The primary intended purpose of the format is to enable data transfer between servers and web browsers, to support the development of interactive, data-driven web applications. "Coverage" data is a term that encompasses many kinds of data whose properties vary with space, time and other dimensions, including (but not limited to) satellite imagery, weather forecasts and river gauge measurements. We describe the motivation and objectives of the format, and provide a high-level overview of its structure and semantics. We compare CoverageJSON with other "coverage" formats and data models and provide links to tools and libraries that can help users to produce and consume data in this format. This Note does not attempt to describe the full CoverageJSON specification in detail: this is available at <a href="https://covjson.org/">the project website</a>.</p>
+      <p>This Note describes CoverageJSON, a data format for describing "coverage" data in JavaScript Object Notation (JSON). The primary intended purpose of the format is to enable data transfer between servers and web browsers, to support the development of interactive, data-driven web applications. "Coverage" data is a term that encompasses many kinds of data whose properties vary with space, time and other dimensions, including (but not limited to) satellite imagery, weather forecasts and river gauge measurements. We describe the motivation and objectives of the format, and provide a high-level overview of its structure and semantics. We compare CoverageJSON with other "coverage" formats and data models and provide links to tools and libraries that can help users to produce and consume data in this format. This Note does not attempt to describe the full CoverageJSON specification in detail: this is available at <a href="https://covjson.org/">the project website</a>.</p>
     </section>
 
     <section  id="sotd">
@@ -367,9 +367,97 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
     </section>
     </section>
 
-    <section  id="mappingToBP">
-      <h2>Mapping to UCR/BP</h2>
-      <p>(Bill to complete)</p>
+    <section  id="mappingToUCR">
+      <h2>Mapping to Use Cases and Requirements Document</h2>
+      The Spatial Data on the Web Working Group has created a <a href="https://www.w3.org/TR/sdw-ucr/">Use Cases and Requirements Document</a>. A subset of the requirements are relevant to Coverage data. This section describes how CoverageJSON addresses relevant requirements.
+      <table id="table_covjson_ucr_xref">
+	     <caption>How CoverageJSON relates to the Spatial Data on the Web Use Cases and Requirements Document</caption>
+	     <thead>
+	     	<th>Requirement</th><th>CoverageJSON approach</th>
+	     </thead>
+	     <tbody>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#4DModelSpaceTime">4D model of space-time</td><td>CoverageJSON has a <a href="https://covjson.org/domain-types/#trajectory">'trajectory'</a> option in the way it specifies the type of a domain.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Compatibility">Compatibility with existing practices</td><td>CoverageJSON incorporates the same concepts of domain, range, parameters as other coverage formats such as the OGC <a href="http://www.opengeospatial.org/standards/wcs">Web Coverage Service</a> standard.  It <a href="https://covjson.org/spec/#differences-to-ogc-coverage-implementation-schema-cis">differs in some respects</a> from the OGC Coverage Implementation Schema.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Compressible">Compressibility</a></td><td>CoverageJSON consists of JSON objects, which can be compressed using standard approaches, for example by enabling gzip and the corresponding Content-Encoding in a web server.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#CoverageTemporalExtent">Coverage temporal extent</a></td><td>CoverageJSON has a means to add <a href="https://covjson.org/spec/#temporal-reference-systems">temporal references</a>.  This is defined to make the common case easy, (using the Gregorian calendar) but also allows alternative temporal reference systems.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Crawlability">Crawlability</a></td><td>Like any other 'file' on the web, CoverageJSON objects can have a URL and so can be found by crawlers.  To what extent an agent is able to interpret the contents of a CoverageJSON file is another question.  Also important for crawling and hence discovery might be metadata associated with CoverageJSON data. </td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">CRS definition</a></td><td>CoverageJSON <a href="https://covjson.org/spec/#spatial-reference-systems">approach to defining CRS</a>.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#DeterminableCRS">Determinable CRS</a></td><td>CoverageJSON requires that a CRS is always <a href="https://covjson.org/spec/#domain-objects">specified</a>.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#DifferentTimeModels">Different time models</a></td><td>CoverageJSON can support a range of <a href="https://covjson.org/spec/#temporal-reference-systems">temporal reference systems</a>, defaulting to the Gregorian calendar.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/Discoverability">Discoverability</a></td><td>CoverageJSON  does not include specific mechanisms for incorporating discovery metadata at the whole-document or whole-dataset level. However a CoverageJSON file or object can be assigned a URL like any other web document and so could be described by DCAT and similar metadata using standard mechanisms. See <a href="https://github.com/covjson/specification/issues/71">discussion</a>.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Georectification">Georectification</a></td><td>Coverage JSON has a flexible and extensible <a href="https://covjson.org/spec/#spatial-reference-systems">approach to specifying spatial reference systems</a></td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#GeoreferencedData">Georeferenced spatial data</a></td><td>See the Georectification requirement above.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Linkability">Linkability</a></td><td>TODO: describe use of incoming and outgoing links in CoverageJSON</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Machine to machine</a></td><td>CoverageJSON is well suited in general to machine processing.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#MultilingualSupport">Multilingual support</a></td><td>CoverageJSON supports <a href="https://covjson.org/spec/#i18n-objects">multi-language labels</a></td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage">Observed property in coverage</a></td><td></td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Provenance">Provenance</a></td><td>CoverageJSON does not specify particular ways to describe provenance, but as with other metadata, should be compatible with established approaches of describing provenance. </td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#QualityPerSample">Quality per sample</a></td><td>Quality information can be incorporated as an additional range of a coverage, using a categorical parameter.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks">Reference data chunks</a></td><td>There are several approaches in CovJSON to dividing a large coverage into chunks.
+			<ul>
+               <li><a href="https://covjson.org/spec/#tiledndarray-objects">Tiled n-dimensional array</a></li>
+			   <li><a href="https://github.com/covjson/specification/issues/66">Fragment identifiers</a> (still in discussion)</li>
+			   <li><a href="https://covjson.org/spec/#coverage-collection-objects">Coverage collections</a></li>
+			</ul>
+            </td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#SensingProcedure">Sensing procedure</a></td><td></td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#SpatialVagueness">Spatial vagueness</a></td><td>Coverage data in general may not be suitable for representing data at vague locations.  An external connection could be made between a vaguely expressed location and a precisely defined region that might approximate it, for example a bounding box.  The coverage format should then be able to deliver data relating to that region of interest.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#SSNLikeRepresentation">SSN-like representation</a></td><td>TO DO.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#3DSupport">Support for 3D</a></td><td>CoverageJSON's <a href="https://covjson.org/spec/#domain-objects">approach to specifying spatial domains</a> supports 3D.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Support for tiling</td><td></td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#UseInComputationalModels">Use in computational models</a></td><td>Different computational models will have their own requirements for input and output data and any single format for coverage data will not match all models.  However, a reasonable requirement for a coverage data format would be to deliver data in an easy to process format, and to have flexible options for delivering extracts of the data in different dimensions.  CoverageJSON satisfies those general requirements.</td>
+		  </tr>
+		
+		 </tbody>
+	
+	  </table>
     </section>
 
     <section  id="spec"  class="normative">
