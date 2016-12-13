@@ -1215,74 +1215,62 @@ a:Dataset a dcat:Dataset ;
       </section>
       <section id="bp-dataversioning">
         <h3>Spatial Data Versioning</h3>
-        <p>Spatial dataset, like most datasets, can change over time. When this happens a new
-          version may be published on the Web. The best practices for dataset versioning described
-          in the [[DWBP]] section on <a href="https://www.w3.org/TR/dwbp/#dataVersioning">Data
-            Versioning</a> apply to spatial datasets as well.</p>
-        <p>Entities and their properties within datasets can change over time and this change can be
-          related to spatial properties, for example when a spatial thing moves from one location to
-          another location, or when it becomes bigger or smaller. </p>
-        <p class="note">This section is based on the Data Versioning section from [[DWBP]] and adds
-          a Best Practice specific for spatial data. This is about versioning on the property level,
-          while the DWBP is concerned with the dataset level. </p>
+        <p><a>Spatial things</a> and their attributes can change over time. For example, a lake may grow or shrink due to changes in climate, water extraction or any number of reasons. For many applications, it is important that information about spatial things is kept up to date. When new information is available, the data publisher may make this available on the Web according to their update schedule and policies. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVersioning">section 8.6 Data Versioning</a> provides directly applicable guidance.</p>
 
+        <p>When dealing with change to a spatial thing, you should consider its lifecycle. For example, the extent of Derwent Water in the UK’s Lake District (<a href="http://data.os.uk/id/50kGazetteer/72167"><code>http://data.os.uk/id/50kGazetteer/72167</code></a>) may have varied as it is surveyed over the years, but it is still the same lake.</p>
+
+        <p>In contrast, Monmouthshire, UK, (<a href="http://data.os.uk/id/7000000000025489"><code>http://data.os.uk/id/7000000000025489</code></a>) provides a counter example. Although the historic county of Monmouthshire (<a href="http://dbpedia.org/resource/Monmouthshire_(historic)"><code>http://dbpedia.org/resource/Monmouthshire_(historic)</code></a>) was formed back in 1535, what we currently refer to as Monmouthshire is a unitary authority that was created in 1996 by combining the districts of Monmouth and Llanelly. While there is a long-term historical precedent for a place of that name, the historic county and unitary authority on Monmouthshire and the district of Monmouth are all different spatial things. This is most obvious from looking at terms used to describe each of them: historic county, unitary authority and district. Each of these spatial things should have its own HTTP URI and even though the historic county is no longer used, it is important that we can still refer to it.</p>
+
+        <p>Essentially, the decision to assign a new identifier in response to change is often a data modelling choice. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVocabularies">section 8.9 Data Vocabularies</a> and <a href="#bp-expressing-spatial" class="sectionRef"></a> provide further guidance on the topic of data modelling; determining which concepts and relationships should be used to describe your area of interest.</p>
+
+        If you consider that the change affects the fundamental nature of the spatial thing, then you should assign a new identifier. See <a href="#bp-identifiers" class="sectionRef"></a> for more details. Otherwise, read on for guidance on how to describe properties that change over time.
 
         <p class="issue" data-number="194">Should we reference the <a href="https://en.wikipedia.org/wiki/Ship_of_Theseus">paradox of the Ship of Theseus</a> to highlight there is no rigorous notion of persistent identity? - or is it just that there is no <em>single</em> notion. </p>
 
         <div class="practice">
-          <p><span id="desc-changing-properties" class="practicelab">How to describe properties that
-              change over time</span></p>
-          <p class="practicedesc">Entities and their data should have versioning with time/location
-            references</p>
+          <p><span id="desc-changing-properties" class="practicelab">How to describe properties that change over time</span></p>
+          <p class="practicedesc">Spatial data should include metadata that allows a user to determine when it is valid for.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>For some use cases you need to be able to explicitly refer to a particular version of
-              information that describes a <a>SpatialThing</a>, or to infer which geometry is
-              appropriate at a specific time, based on the versioning. To make this possible, the
-              properties that are described for an entity should have references to the time and
-              location that the information describing a <a>SpatialThing</a> was captured and should
-              retain a version history. This allows you to reference the most recent data as well as
-              previous versions and to also follow the changes of the properties. </p>
+            <p><a>Spatial things</a> and their attributes change over time. Mostly, users are interested in current information. They need to be able to determine whether the published description of a spatial thing meets their needs. For example, is the published geographic extent of the City of Amsterdam relevant for a land-usage study of the nineteenth century? (<a href="http://gemeentegeschiedenis.nl">Gemeentegeschiedenis.nl</a>, "Parish History", illustrates how the extent of Amsterdam has changed during the past 200-years, in <a href="http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam">html</a> and <a href="http://www.gemeentegeschiedenis.nl/gemeentenaam/json/Amsterdam">geojson</a>). Where the information is available, a user may want to browse older versions of the published information to understand the nature of any changes or to find historical information.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>By default, data users are provided with the most recent version of information about
-              an identified resource.</p>
-            <p>Data users are able to refer to the information about an identified resource as
-              it was at a given time.</p>
-            <p>Data users can browse through versions of the information about an identified
-              resource that reflect how the resource changed over time.</p>
+            <p>Users are provided with the most recent version of information about a spatial things and its attributes by default.</p>
+            <p>Users are able to determine the time period for which data is applicable.</p>
+            <p>Users are able to browse through a set of changes to see how a spatial thing and its attributes have changed over time.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p class="issue" data-number="196">Need to include guidance on when a lightweight
-              approach (ignoring the change aspects) is appropriate</p>
-            <p>When entities and their properties can change over time, or are valid only at a given
-              time, and this needs to be captured, it is important to specify a clear relationship
-              between property data and its versioning information. How properties are versioned
-              should be explained in the specification or schema that defines those properties.
-              Temporal and/or spatial metadata should be provided to indicate when and where the
-              information about the <a>SpatialThing</a> was captured. </p>
-            <p>For an example of how to version information about entities and their properties and
-              retaining a version history, see <code>version:VersionedThing</code> and
-                <code>version:Version</code> at <a
-                href="https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types"
-                >https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types</a>.</p>
-            <p>It is also useful to incorporate information on how often the information might
-              change, i.e. the frequency of update.</p>
-            <p>Data publishers must decide how much change is acceptable before a
-                <a>SpatialThing</a> cannot be considered equivalent. At this point, a new identifier
-              should be used as the subject for all properties about the changed
-              <a>SpatialThing</a>. Also see <a href="#ids-for-changing-things" class="sectionRef">Best Practice 9:
-                Provide stable identifiers for Things (resources) that change over time</a>.</p>
-            <p class="issue" data-number="356">Should time series be another possible approach?</p>
+
+            <p class="note">This Best Practice focuses on describing change to spatial things and their attributes. However, readers should note that dataset metadata plays an important part in helping users determine whether a dataset is fit for their use. Of relevance to this topic would be statements about the (most recent) publication date, the frequency of update and the time period for which the dataset is relevant (i.e. temporal extent). Please refer to [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#DescriptiveMetadata">section 8.2 Metadata</a> for more details about dataset metadata.</p>
+
+            <p>When publishing information about a spatial thing that is subject to change there are two main approaches to consider:</p>
+            <ol>
+              <li>providing a series of immutable snapshots that describe the spatial thing at various points in its lifecycle; and</li>
+              <li>capturing a time-series of data values within an attribute of the spatial thing.</li>
+            </ol>
+
+            <p class="issue" data-number="196">Need to include guidance on when a lightweight approach (ignoring the change aspects) is appropriate</p>
+
+            <p>Before deciding which approach to use, data publishers must decide how much change is acceptable before a spatial thing can no longer considered as the same resource. Consider Eddystone Lighthouse for example: the “Eddystone Light” has existed in (more or less) the same place on Eddystone Rocks since 1698. A single HTTP URI (<a href="http://dbpedia.org/resource/Eddystone_Lighthouse"><code>http://dbpedia.org/resource/Eddystone_Lighthouse</code></a>) is used to identify “the lighthouse on Eddystone rocks” for all that period. The lighthouse's characteristics have changed over that period and could be captured as snapshots. However, each of the four structures that have stood on that site, from Winstanley's Eddystone Lighthouse (the first incarnation) to Douglass' Eddystone Lighthouse (the 4th and current incarnation) are different spatial things. Incremental change for these structures during the entire period from 1698 is not appropriate; one structure replaces another and so each structure should be assigned a unique identifier.</p>
+
+            <p>The choice of approach is somewhat arbitrary, although the snapshot approach is more applicable for complex or infrequent change, while the time-series approach should be used for frequent change where time is the independent variable, such as updating the GPS position of a fishing vessel, and is particularly useful when working with data streamed from sensors.</p>
+
+            <p>If providing a series of snapshots, then the <em>base</em> URI for the resource should resolve to provide the current information.</p>
+
+            <p>First, each snapshot must be uniquely identified. A common approach is to append a date/time stamp to the base URI. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a>. Secondly, each snapshot should contain metadata about its predecessor(s), metadata describing its publication date and/or period of validity, and provide a link to the corresponding persistent resource. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a> provides relevant guidance.</p>
+
+            <p>How spatial things and their attributes are versioned should be explained in the specification or schema for the dataset.</p>
+
+            <p class="issue" data-number="356">Elaboration of the time-series approach is still required; perhaps linking to CoverageJSON (examples) for how to do this? Also note that the OGC Moving Features specification (OGC #14-083) follows this pattern, albeit with specific terminology such as “foliation”, uses a “trajectory” element to describe the position plus the ability to add varying attributes (such as orientation or rotation) alongside the tuples in the trajectory. OGC also offer a CSV-format “compact encoding” (OGC #14-084). Moving Features appears to convey the same information as would be achieved by embedding a time-series coverage as a property of a feature, it just makes some different encoding choices.</p>
+
             <aside class="example">
               <p>Example(s) to be added; including e.g.:</p>
               <ul>
-                <li>Linking crime data to a identified region; these regions change over time so we
-                  need to know which version of the region the data is applicable to.</li>
-                <li>Australian hydrological catchment geometries (that vary as a result of a
-                  resurvey).</li>
+                <li>Linking crime data to a identified region; these regions change over time so we need to know which version of the region the data is applicable to.</li>
+                <li>Australian hydrological catchment geometries (that vary as a result of a resurvey).</li>
+                <li>GPS position of a fishing vessel.</li>
               </ul>
             </aside>
           </section>
@@ -1380,23 +1368,7 @@ a:Dataset a dcat:Dataset ;
 
             <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10</a> notes that URIs can be long. You may need to define identifiers that are locally unique within your spatial dataset and provide a mechanism to programmatically convert each local identifier to a URI. For example, the Metadata Vocabulary for Tabular Data [[TABULAR-METADATA]] achieves this using URI Templates as described in [[RFC6570]].</p>
 
-            <p>It is also good practice to use a redirection service to hide complex service end-point URLs, such as for a <a>Web Feature Service</a> behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API in order to request information about a particular spatial thing. For example, the URI <code>http://data.example.org/aan/id/perceel/aan.2528</code> could be used as proxy for the WFS GetFeature request <a href="http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&SERVICE=WFS&REQUEST=GetFeature&featureID=aan.2528"><code>http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;featureID=aan.2528</code></a>.</p> 
-
-            <p>When identifying a spatial thing, you need to consider the lifecycle of that phenomenon. A lake that grows or shrinks due to changes in climate would generally be considered to be the same lake. For example, Derwent Water in the UK’s Lake District, identified as <a href="http://data.os.uk/id/50kGazetteer/72167"><code>http://data.os.uk/id/50kGazetteer/72167</code></a>, is long-lasting phenomenon even though its surveyed geometry may have changed over the years.</p>
-
-            <p>Monmouthshire in the UK provides a counter example. Although the historic county of Monmouthshire was formed back in 1535, what we currently refer to as Monmouthshire is a unitary authority that was created in 1996 by combining the districts of Monmouth and Llanelly. While there is a long-term historical precedent for a place of that name, the historic county and unitary authority on Monmouthshire and the district of Monmouth are all different spatial things. This is most obvious from looking at terms used to describe each of them: historic county, unitary authority and district. Each of these spatial things should have its own HTTP URI. The current unitary authority is identified as <a href="http://data.os.uk/id/7000000000025489"><code>http://data.os.uk/id/7000000000025489</code></a> while the historic county is identified as <a href="http://dbpedia.org/resource/Monmouthshire_(historic)"><code>http://dbpedia.org/resource/Monmouthshire_(historic)</code></a>. Even though the historic county is no longer used, it is important that we can still refer to it.</p> 
-
-            <div class="note">
-              <p>If it is relevant within your application you may want to create appropriately typed links between these resources, for example, when describing a timeline of Wales, e.g. </p>
-              <p><code>&lt;</code><a href="http://dbpedia.org/resource/Monmouthshire_(historic)"><code>http://dbpedia.org/resource/Monmouthshire_(historic)</code></a><code>&gt; time:before &lt;</code><a href="http://data.os.uk/id/7000000000025489"><code>http://data.os.uk/id/7000000000025489</code></a><code>&gt;</code></p> 
-              <p>(expressed in using the topological temporal relation <code>before</code> defined in [[OWL-TIME]])</p>
-            </div>
-
-            <p class="issue">Check that this is the proper use of time:before e.g. can the historic county and the unitary authority be considered as type <code>time:TemporalEntity</code>?</p>
-
-            <p>Essentially, the decision to assign a new identifier in response to change is often a data modelling choice. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVocabularies">section 8.9 Data Vocabularies</a> and <a href="#bp-expressing-spatial" class="sectionRef"></a> provide further guidance on the topic of data modelling; determining which concepts and relationships should be used to describe your area of interest.</p>
-
-            <p class="note">For guidance on publishing updated information about spatial things that change over time, please refer to <a href="#desc-changing-properties" class="sectionRef">Best Practice 6: How to describe properties that change over time</a>.</p>
+            <p>It is also good practice to use a redirection service to hide complex service end-point URLs, such as for a <a>Web Feature Service</a> behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API in order to request information about a particular spatial thing. For example, the URI <code>http://data.example.org/aan/id/perceel/aan.2528</code> could be used as proxy for the WFS GetFeature request <a href="http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&SERVICE=WFS&REQUEST=GetFeature&featureID=aan.2528"><code>http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;featureID=aan.2528</code></a>.</p>
 
           </section>
           <section class="test">
