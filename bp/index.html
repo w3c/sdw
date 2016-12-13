@@ -985,109 +985,48 @@ a:Dataset a dcat:Dataset ;
           </section>
         </div>
         <div class="practice">
-          <p><span id="indexable-by-search-engines" class="practicelab">Make your spatial data indexable by
-              search engines</span></p>
-          <p class="practicedesc">Search engines should receive a metadata response to a HTTP GET
-            when dereferencing the link target URI.</p>
-          <p class="issue" data-number="357">There is a proposal for shortening this BP.</p>
+          <p><span id="indexable-by-search-engines" class="practicelab">Make your spatial data indexable by search engines</span></p>
+          <p class="practicedesc">Search engines should be able to crawl spatial data on the Web and index spatial things for direct discovery by users.</p>
+          <p class="issue" data-number="446">Can we consider the publishing <em>spatial</em> data in way that search engines can crawl as a <em>best</em> practice? We’re confident that this is the correct thing to do, but where is the evidence of adoption?</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>This best practice goes one step beyond providing metadata as an way to make datasets
-              discoverable. Current <a>SDI</a> approaches require a 2-step approach for discovery,
-              beginning with a catalog query and then accessing the appropriate data service
-              end-point. However, one of the criteria for exposing data <em>on the Web</em> is that
-              it can be discovered directly using search engines such as <a
-                href="https://www.google.com/">Google</a>, <a href="https://www.bing.com/">Bing</a>
-              and <a href="https://www.yandex.com/">Yandex</a>, or other services such as
-              ‘sameAs.org’ (which harvests links) and HyperCat. Current <a>SDI</a> approaches treat
-              spatial data much like books in a library where you must first use the librarian's
-              card catalog index to find the book on the shelf. As for other types of data on the
-              Web, we want to be able to find spatial resources directly; we want to move beyond the
-              two-step discovery approach of contemporary <a>SDIs</a> and find the words, sentences
-              and chapters in a book without needing to check the card catalog first. Not only will
-              this make spatial data far more accessible, it mitigates the problems caused when
-              catalogs have only stale dataset metadata and removes the need for data users to be
-              proficient with the query protocol of the dataset's service end-point in order to
-              acquire the data they need.</p>
-            <p>Exposing data <em>on the Web</em> means that it can be discovered directly using
-              search engines. This doesn't mean metadata is no longer necessary; it is still needed
-              for clients and users to judge the usability of the data for their purposes. Both
-              metadata and data should be exposed in a discoverable way on the web. This provides a
-              number of benefits:</p>
-            <ul>
-              <li>Spatial data will become far more discoverable because a user does not need any
-                special knowledge to find the <a>SDIs</a> catalog service.</li>
-              <li>Users can discover what data is <em>actually</em> available, rather than relying
-                on the metadata that is infrequently published to the catalog and may have become
-                stale.</li>
-              <li>Users do not need to be proficient with the query protocol of the dataset's
-                service end-point in order to acquire the data they need.</li>
-            </ul>
-            <p>Search engines should be able to use links and URIs to discover indexable spatial
-              data and to prioritize those spatial data collections within a search result.</p>
-            <p>Search engines use links to discover content to index and to prioritize that content
-              within a search result.</p>
+
+            <p>In <a>SDIs</a> information about spatial datasets is published as authoritative metadata records and collated in Web-based catalogues. This approach causes a number of problems:</p>
+            <ol>
+              <li>the catalogues are often designed to primarily support expert users - people may not even be aware of their existence;</li>
+              <li>once you have discovered a dataset that meets your needs and identified where it is available from, a second step is required to access the data itself - often requiring the use of unfamiliar protocols or complex API requests; and</li>
+              <li>the data itself is not indexed - discovery relies on the metadata records that are often sparsely populated or out of date.</li>
+            </ol>
+
+            <p>Search engines are the common starting point for people looking for content on the Web that is widely understood. By publishing spatial data in a way that enables their crawlers to index <a>spatial things</a>, the fidelity of search results should improve. Users will be able to directly search for specific entities rather than having to look for a dataset and then parse through it; e.g. to search for "Anne Frank’s House" (<a href="https://g.co/kg/m/02s5hd"><code>https://g.co/kg/m/02s5hd</code></a>) rather than looking for a dataset about "Cultural Heritage in Amsterdam" and hoping that it contains a reference to what you’re interested in.</p>
+
+            <p class="note">At present, spatial information is not widely exploited by search engines. However, by increasing the volume of spatial information presented to search engines, and the consistency with which it is provided, we expect search engines to begin offering spatial search functions. We already see evidence of this in the form of contextual search, such as prioritization of search results from nearby entities.</p>
+
+            <p class="issue" data-number="181">More discussion is required on how to structure meaningful (spatial) queries with search engines (e.g. based on identifier, location, time etc.).</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>Spatial metadata and data should be discoverable directly using a search engine
-              query.</p>
-            <p>Spatial metadata and data is indexable by search engines; a search engine Web crawler
-              should be able to obtain descriptive and machine interpretable metadata response to a
-              HTTP GET when dereferencing the URL of a <a>SpatialThing</a> and to determine links to
-              related data for the Web crawler to follow.</p>
-            <p class="note">We make the assertion that (meta)data is not really 'on the web' until
-              it's crawlable.</p>
-          </section>
+            <p>Information about spatial things is indexed by search engines.</p>
+
+            <p>Users can find spatial things using common search engines.</p>
+          </section>  
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>To make your metadata and your entity-level data indexable by search engines:</p>
-            <ul>
-              <li>Generate one HTML page per resource - one page for the metadata record and one
-                page for each entity in the dataset. Include structured markup (see <a
-                  href="http://schema.org/">schema.org</a>) that the search engines can use to make
-                more detailed assumptions about your resource(s) and drive better search
-                performance. Either create pages beforehand or generate them at query time via an
-                API.</li>
-              <li>Provide a path for search engines to find your pages - either crawling to each
-                entity from a 'collection' object (which provides the entry point for the web
-                crawler) or being directed by <a href="http://www.sitemaps.org/">sitemaps</a>.</li>
-              <li>Search engines may be used to search spatial data based on identifier, location,
-                time, etc (some examples are provided in [<a
-                  href="http://personal.ee.surrey.ac.uk/Personal/P.Barnaghi/doc/semantic_stream_iThings2013_167.pdf"
-                  >Section III.A, Barnaghi et al.</a>]. The search for spatial data can be similar
-                to the typical search query, but the search and use of results in many cases will be
-                done by software agents and other services like <a
-                  href="https://www.google.co.uk/landing/now/">Google Now</a> that interpret
-                information.</li>
-              <li>Map your source data of your SDI dynamically to crawlable resources on the web with the [[R2RML]] 
-                standard. With this process you'll generate crawlable data from features in your spatial
-                data at query time. By using the R2RML it is possible to expose more detailed information and
-                references then with standard WFS
-              </li>
-            </ul>
-            <p class="issue" data-number="181">More discussion is required on how to structure
-              meaningful (spatial) queries with search engines (e.g. based on identifier, location,
-              time etc.).</p>
-            <p class="note">As more spatial datasets are published that provide structured markup to
-              search engine Web crawlers enabling the content of those datasets to be indexed, the
-              more likely that search engines will provide richer and more sophisticated search
-              mechanisms to exploit that markup which will further improve the ability of users to
-              find spatial data.</p>
+
+            <p>First, publish a HTML Web-page for each spatial thing. Second, make sure that those pages can be crawled.</p>
+
+            <p>Indexing can be further enhanced by incorporating a description of the spatial thing as structured markup (such as [[MICRODATA]] and [[SCHEMA-ORG]]) as this enables the search engines to make more detailed assumptions about your resource. Each Web-page can likely be generated programmatically from the data you hold about corresponding spatial thing. These Web-pages should also provide a mechanism to download data in the formats you decide to support. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#MultipleFormats">Best Practice 14: Provide data in multiple formats</a> provides guidance on how you might publish HTML content alongside the data.</p>
+
+            <p>You also need to provide an entry point for the search engines to crawl your data. Create a “landing page” for the dataset, itself incorporating structured markup, from which the Web-crawler can follow links to the page for each spatial thing. Where you have a large collection of spatial things, you may need to allow the Web-crawler to page through the collection. You should also consider using <a href=“https://www.sitemaps.org/index.html”>Sitemaps</a> to direct the Web-crawler.</p>
+
             <aside class="example">
               <p>example(s) to be added; including ...</p>
               <ul>
-                <li><a href="http://www.hypercat.io/standard.html">HyperCat</a> is an example of how
-                  referring to URIs for the resources can return meaningful and machine
-                  interpretable information.</li>
-                <li><a href="http://maps.nanaimo.ca/data/property/">City of Nanaimo, Canada</a> …
-                  one page per resource; generated at request time; uses [[MICRODATA]] and
-                  [[SCHEMA-ORG]]</li>
+                <li><a href="http://maps.nanaimo.ca/data/property/">City of Nanaimo, Canada</a> … one page per resource; generated at request time; uses [[MICRODATA]] and [[SCHEMA-ORG]]</li>
               </ul>
-              <p class="issue" data-number="179">Example required for search engine indexing of
-                dataset / data-stream.</p>
-              <p class="issue" data-number="180">Example required for search engine directly
-                indexing structured spatial data (e.g. GeoJSON or KML).</p>
+              <p class="issue" data-number="179">Example required for search engine indexing of dataset / data-stream.</p>
+              <p class="issue" data-number="180">Example required for search engine directly indexing structured spatial data (e.g. GeoJSON or KML).</p>
+              <p class="issue" data-number="447">Detailed examples are required for HTML pages and the structured markup. It’s early days for using [[SCHEMA-ORG]] to describe spatial attributes - can we write some useful statements and badge them as “emerging practice” to drive the right behaviours?</p>
             </aside>
           </section>
           <section class="test">
@@ -1215,7 +1154,7 @@ a:Dataset a dcat:Dataset ;
       </section>
       <section id="bp-dataversioning">
         <h3>Spatial Data Versioning</h3>
-        <p><a>Spatial things</a> and their attributes can change over time. For example, a lake may grow or shrink due to changes in climate, water extraction or any number of reasons. For many applications, it is important that information about spatial things is kept up to date. When new information is available, the data publisher may make this available on the Web according to their update schedule and policies. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVersioning">section 8.6 Data Versioning</a> provides directly applicable guidance.</p>
+        <p><a>Spatial things</a> and their attributes can change over time. For example, a lake may grow or shrink due to changes in climate, water extraction or any number of reasons. For many applications, it is important that information about spatial things is kept up to date. When new information is available, the data publisher may make this available on the Web according to their update schedule and policies. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVersioning">section 8.6 Data Versioning</a> and <a href="https://www.w3.org/TR/dwbp/#AccessUptoDate">Best Practice 21: Provide data up to date</a> provide directly applicable guidance.</p>
 
         <p>When dealing with change to a spatial thing, you should consider its lifecycle. For example, the extent of Derwent Water in the UK’s Lake District (<a href="http://data.os.uk/id/50kGazetteer/72167"><code>http://data.os.uk/id/50kGazetteer/72167</code></a>) may have varied as it is surveyed over the years, but it is still the same lake.</p>
 
