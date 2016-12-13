@@ -112,7 +112,7 @@ released at this time to solicit public comment.</p>
 </section>
 <section  id="intro"  class="informative">
 <h2>Introduction</h2>
-<p> Sensor observations are a major source of data published on the Web. Nonetheless, publishing, searching, reusing, and integrating this data requires more than just the observation values. Of equal importance is information about the studied feature of interest, such as a river, the observed property, such as flow velocity, and the sampling strategy, such as the specific locations at which the velocity was measured. The sampling location, instrumentation, and information about the deployment of the sensors on a platform may also be required for proper interpretation. OGC's Sensor Web Enablement standards provide a means to annotate sensors and their observations. However, these standards are not yet integrated and aligned with W3C Semantic Web technologies and Linked Data in particular, that are a key driver for creating and maintaining a global and densely interconnected graph of data. The W3C Semantic Sensor Network Incubator Group (SSN) addressed these issues by developing an ontology that spans multiple OGC standards and other specifications. </p>
+<p> Sensor observations are a major source of data published on the Web. Nonetheless, publishing, searching, reusing, and integrating this data requires more than just the observation values. Of equal importance is information about the studied feature of interest, such as a river, the observed property, such as flow velocity, and the sampling strategy, such as the specific locations at which the velocity was measured. The sampling location, instrumentation, and information about the deployment of the sensors on a platform may also be required for proper interpretation. OGC's Sensor Web Enablement standards [<a href="#bib-OM">O&amp;M</a>, <a href="#bib-SensorML">SensorML</a>] provide a means to annotate sensors and their observations. However, these standards are not yet integrated and aligned with W3C Semantic Web technologies and Linked Data in particular, that are a key driver for creating and maintaining a global and densely interconnected graph of data. The W3C Semantic Sensor Network Incubator Group (SSN) addressed these issues by developing an ontology that spans multiple OGC standards and other specifications. </p>
 <p>
 Unlike its predecessors, the SSN is designed to offer four identifiable and coherent perspectives or use cases for sensing, each of which may be used either independently or in concert with the others. These perspectives are
 <dl>
@@ -121,6 +121,7 @@ Unlike its predecessors, the SSN is designed to offer four identifiable and cohe
 <dt>Systems</dt> <dd>with a focus on systems of sensors; and</dd>
 <dt>Features</dt> <dd>with a  focus on physical features, properties of them,  what can  sense them, and  what observations of them are made.</dd>
 </dl>
+<p  class="issue"  data-number="999">In fact the OGC SWE standards provided separate provider (sensor) and consumer (observation, data) viewpoints, starting in 2002. </p>
 
 
 <p>Based on this initial work, the following document specifies a revised, modularized, and extended version of the SSN.</p>
@@ -135,11 +136,14 @@ Drawing on considerable implementation experience with SSN since it was first pu
 Specifically,
 <ol>
 <li> The namespace has changed to a permanent W3C address. </li>
+<li> For the purpose of modularization, a new ontology derived from SSN has been developed. See section <a href="#Modularisation">Modularisation</a>  for a detailed description on how the parts relate.
+<p  class="issue"  data-number="102"> What is the new core ontology module to be called?</p>
+</li>
 <li>
-<p>The The DOLCE ultralite ontology (DUL) was previously imported into
-SSN and many SSN terms inherited from DUL terms. This has been
-redesigned into two separate ontology modules so that SSN can be
-used quite independently of DUL if desired. Those parts of SSN that
+<p>The SSN previously imported the DOLCE ultralite ontology (DUL) and many SSN terms inherited from DUL terms. 
+This has been redesigned into two separate ontology modules so that SSN can be
+used quite independently of DUL if desired. Some of the alignments have been reconsidered. 
+Those parts of SSN that
 use DUL terms have been separated into the <a  href="http://www.w3.org/ns/ssn/dul">SSN
 Alignment with DUL ontology.</a> </p>
 <!--
@@ -147,25 +151,20 @@ Alignment with DUL ontology.</a> </p>
 reflect the recent change to the namespace of DUL itself.</p>
 <p>Please see section for more information. </p> -->
 </li>
-<li> Class Sensor has been moved up to become a direct subclass of
+<!-- <li> Class Sensor has been moved up to become a direct subclass of
 dul:Object instead of dul:PhysicalObject. This is not expected to
 affect existing uses of SSN due to dul:Object being a direct parent of
 dul:PhysicalObject. This is to correct the dul alignment to match the intended scope of ssn:Sensor as it was (and still is) described in the rdfs:comment property.
-<!-- <p  class="issue"  data-number="46">The movement of Sensor to become a
+<p  class="issue"  data-number="46">The movement of Sensor to become a
 direct subclass of dul:Object has been discussed but postponed by
-the Working Group</p> -->
+the Working Group</p>
 
-</li>
+</li> -->
 <li> Many rdfs:comment annotation properties have changed slightly to
 improve explanation or to correct minor errors.
 <p  class="issue"  data-number="47">A thorough check and rewrite where necessary on annotation
 properties is yet to be made.</p>
 <p  class="issue"  data-number="86"> A new annotation property is to be used to separate out embedded examples from other rdfs:comment elements</p>
-</li>
-<li>
-
-For the purpose of modularization, a new ontology derived from SSN has been developed. See section <a href="#Modularisation">Modularisation</a>  for a detailed description on how the parts relate.
-<p  class="issue"  data-number="102"> What is the new core ontology module to be called?</p>
 </li>
 </ol>
 The reader is referred to the <a href="#changes">appendix</a> for a complete change-log. 
@@ -177,9 +176,9 @@ The reader is referred to the <a href="#changes">appendix</a> for a complete cha
 <p> </p>
 <p>One of the major issue <span  data-dobid="hdw">practitioners</span> using the Semantic Sensor Network Ontology as defined in the XG is
 its complexity, partly due to the layering underneath the DOLCE
-UltraLite Upperlevel ontology. In response to this, the new Semantic Sensor Network ontology offers several ontology subsets that are mainly distinguished through their ontological commitment. This section explains the rationale and
+UltraLite upper level ontology. In response to this, the new Semantic Sensor Network ontology offers several ontology subsets that are distinguished mainly through their ontological commitment. This section explains the rationale and
 method for modularising SSN, i.e. offering several ontology files that are similar in their domain of discourse, but with different ontological commitments, suitable to several use cases.</p>
-<p>Ontology modularisation is a common method investigated in ontology
+<p>Ontology modularisation is a common method used in ontology
 engineering to segment an ontology into smaller parts. In general,
 ontology modularisation aims at providing users of ontologies with the
 knowledge they require, reducing the scope as much as possible to what
@@ -197,17 +196,17 @@ any of the semantics of the importing ontology.</p>
 <p>The second category comprises of mapping approaches that aim to
 partition and extract parts of ontologies as modules. These mapping
 approaches are not necessarily directional, but most approaches of
-ontology extraction rely on directionality of the imported modules. In
-fact in [Cuenca Grau et al 2009] it has been proven that in OWL DL,
-which is a syntactical variant of the Description Logic SHOIN, checking
-whether an ontology is in fact a module of an ontology given a
-vocabulary is an undecidable problem. However, the main feature of an
+ontology extraction rely on directionality of the imported modules. The main feature of an
 ontology module under the second category is that it is self-contained,
 i.e., the module captures the meaning of the imported terms used by
 including all axioms relevant to the meaning of these terms. This means,
 that the result of certain reasoning tasks such as subsumption or query
 answering within a single module should be possible and result in the
 same answers without the need to access other modules of the ontology.</p>
+<p>In fact in [Cuenca Grau et al 2009] it has been proven that in OWL DL,
+which is a syntactical variant of the Description Logic SHOIN [reference?], checking
+whether an ontology is in fact a module of an ontology given a
+vocabulary is an undecidable problem. </p>
 <p> In order to ensure this property, a solution has to be found for
 concepts in the ontology module that inherit object properties from
 concepts that are not in the module. One solution proposed by [Cuenca
@@ -218,6 +217,7 @@ depending on the directionality of the segmentation.</p>
 <p><img  alt="Ontology Modules"  src="images/modular_ontology.png"></p>
 <p>Figure 1 gives an overview of the modules of the SSN ontology. The
 layering of the rings represents a vertical segmentation, as follows:</p>
+<p  class="issue"  data-number="999">Need to explain rdfs:isDefinedBy arrows.</p>
 <h3> Vertical Segmentation</h3>
 <p>Vertical modules are build upon each other, i.e. they directionally <code>owl:import</code>
 lower level modules. If a higher level module is used without importing
@@ -226,8 +226,8 @@ to different answers when reasoning over the module compared to
 reasoning over its complete stack of vertical ontology modules. However,
 lower level modules are independent of their higher level modules and
 logically consistent.</p>
-<p>For example, the Dolce-UltraLite Alignment ontology imports the SOSA ontology and the Semantic Sensor Network ontology. However, in
-reverse, neither SOASA nor SSN import the Dolce-UltraLite Alignment ontology. This
+<p>For example, the Dolce UltraLite Alignment ontology imports the SOSA ontology and the Semantic Sensor Network ontology. However, in
+reverse, neither SOSA nor SSN import the Dolce-UltraLite Alignment ontology. This
 makes SOSA, with its lightweight semantics, truly independent of vertical modules that add more
 expressivity and further ontological commitments.</p>
 <p>Note that higher level here is not to be confused with upper level
@@ -1510,6 +1510,8 @@ AFTER "<td>  <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn"></a
 
 <section id="TheSOSAontology"  class="informative">
 <h2>The SOSA ontology</h2>
+<p  class="issue"  data-number="999">Why is the SOSA documentation 'non-normative'?</p>
+
 <section>
 <h2>Introduction</h2>
 	The Sensor, Observation, Sample, and Actuator (SOSA) ontology is one of the modules provided by the Semantic Sensor Network. It acts as the core building block of SSN around which all other classes and relationships evolve. SOSA is designed in a way that supports standalone usage of the ontology, particularly for applications that merely require light-weight specifications such as many Linked Datasets, the Internet Of Things, citizen science, Schema.org-style semantic enrichment of data repositories, and so forth. At the same time, it acts as minimal interoperability fallback level between these applications and their resulting data and those that make use of the full SSN, i.e., SOSA defines those classes and properties for which data that can be safely exchanged across all uses of the SSN. 
@@ -1518,7 +1520,7 @@ AFTER "<td>  <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn"></a
 <h2>Background</h2>
 <p>The initial <em>W3C Semantic Sensor Network Incubator Group </em>ontology (SSN) was built around an ontology design pattern called the <em>Stimulus Sensor Observation</em> (SSO) pattern [SSO Pattern]. The SSO was developed as a minimal and common ground for heavy-weight ontologies for the use on the Semantic Sensor Web as well as to explicitly address the need for light-weight semantics requested by the Linked Data community. The SSO was also aligned to the <em>DOLCE+DNS Ultralite </em>upper ontology (DUL). </p>
 
-<p>The new SSN described in this document is based on a revised and expanded version of this pattern, namely the <em>Sensor, Observation, Sample, and Actuator</em> (SOSA) ontology. Similar to the original SSO, SOSA acts as a central building block for the SSN but puts more emphasis on light-weight use and the ability to be used standalone. The axiomatization also changed to provide a more Schema.org related experience. Notable differences include the usage of the Schema.org domainIncludes and rangeIncludes annotation properties that provide an informal semantics compared to the inferential semantics of their OWL-2 counterparts. In line with the changes implemented for the new SSN, SOSA also drops the direct DUL alignment although an optional alignment can be achieved via the SSN-DUL alignment provided in Section 7. SOSA is also more explicit in its support for virtual sensors and human senses than SSO. Finally, and most notably, SOSA extends SSO's original scope beyond sensors and their observations by including classes and properties for actuators and sampling. SOSA also distinguishes between phenomenonTime and resultTime.</p>
+<p>The new SSN described in this document is based on a revised and expanded version of this pattern, namely the <em>Sensor, Observation, Sample, and Actuator</em> (SOSA) ontology. Similar to the original SSO, SOSA acts as a central building block for the SSN but puts more emphasis on light-weight use and the ability to be used standalone. The axiomatization also changed to provide an experience more related to Schema.org. Notable differences include the usage of the Schema.org domainIncludes and rangeIncludes annotation properties that provide an informal semantics compared to the inferential semantics of their OWL-2 counterparts. In line with the changes implemented for the new SSN, SOSA also drops the direct DUL alignment although an optional alignment can be achieved via the SSN-DUL alignment provided in Section 7. SOSA is also more explicit in its support for virtual sensors and human senses than SSO. Finally, and most notably, SOSA extends SSO's original scope beyond sensors and their observations by including classes and properties for actuators and sampling. SOSA also distinguishes between phenomenonTime and resultTime.</p>
 </section>
 
 <section>
@@ -2270,7 +2272,7 @@ under discussion</p>
 <p  class="issue"  data-number="89">Is the sosa:Process class needed in the core and how is it different to ssn:Process?</p> 
 <p  class="issue"  data-number="90">What are the implication of the new sosa:Result class, should that be changed in SSN too, i.e. collapse ssn:SensorOutput and ssn:ObservationValue into one class?</p> 
 <p  class="issue"  data-number="91">Design for Actuation in sosa needs to be revisited and justified with best practices.</p> 
-<p  class="issue"  data-number="92">Do we need Sampling in SOSA?</p> 
+<p  class="issue"  data-number="92">Do we need Sampling in SOSA? It is needed by the working group UCR, but is in a separate modeul in O&amp;M. Sampling is a key aspect of most observational strategies. </p> 
 <p  class="issue"  data-number="93">What is the alignment between Sensor in SOSA and SSN?</p> </li> 
 
 <li> Disentangling SSN from DUL may require adding things to SSN that
@@ -2292,8 +2294,8 @@ advise how to do this in general? </p>
 and events, ssn:Observation is not the same concept as om:Observation.
 This arises also in alignment with PROV-O</p>
 <p  class="issue"  data-number="53"> Align SSN with PROV-O </p>
-<p>Two such alignments have already been published in the literature. One
-proposal functions mostly rather like the alignment to DUL as described
+<p>Two such alignments have already been published in the literature [<a href="#bib-SSN-PROV">SSN-PROV</a> and <a href="#bib-OM-lite">om-lite</a>]. 
+One proposal functions mostly rather like the alignment to DUL as described
 above in form, but some rather useful SWRL is also used.</p>
 <p  class="issue"  data-number="54">Is it ok to use SWRL, too, for this?
 Or would it be better to make some bigger changes to SSN to align with
@@ -2417,6 +2419,15 @@ Correction to include some ssn terms that were unintentionally dropped from the 
 <section  class="appendix"  id="references">
 <h2>References</h2>
 <dl>
+<dt  id="bib-OM">[O&amp;M]</dt>
+<dd> Simon Cox<a  href="http://portal.opengeospatial.org/files/41579"><cite>Observations and Measurements 2.0</cite></a>
+Open Geospatial Consortium, Abstract specification - Topic 20, OGC 10-004r3, 2013. </dd>
+<dt  id="bib-OM-lite">[om-lite]</dt>
+<dd> Simon Cox<a  href="http://dx.doi.org/10.3233/SW-160214"><cite>Ontology for observations and sampling features, with alignments to existing models</cite></a>
+Semantic Web, 8, 3, 453-470, 2017. </dd>
+<dt  id="bib-SensorML">[SensorML]</dt>
+<dd> Mike Botts, Alex Robin<a  href="http://portal.opengeospatial.org/files/55939"><cite>OGC SensorML: Model and XML Encoding Standard 2.0</cite></a>
+Open Geospatial Consortium, Encoding Standard, OGC 12-000, 2014. </dd>
 <dt id="bib-SSN-ontology1"> [SSN short]</dt>
 <dd>Kerry Taylor, Michael Compton, Laurent Lefort, <a href="https://eresearchau.files.wordpress.com/2012/06/74-semantically-enabling-the-web-of-things-the-w3c-semantic-sensor-network-ontology.pdf"><cite>Semantically-Enabling the Web of Things: The W3C Semantic Sensor Network Ontology</cite> 5th Australasian eResearch Conference, Melbourne, 6-10 November 2011.</a> 
 </dd>
@@ -2434,6 +2445,9 @@ Web Semantics: Science, Services and Agents on the World Wide Web,
 <dd> Janowicz, Krzysztof, and Michael Compton. <a  href="http://dl.acm.org/citation.cfm?id=2878794"><cite>The stimulus-sensor-observation ontology
 design pattern and its integration into the semantic sensor network ontology.</cite></a> In
 Proceedings of the 3rd International Conference on Semantic Sensor Networks. Volume 668, pp. 64-78. CEUR-WS. org, 2010.</dd>
+<dt  id="bib-SSN-PROV">[SSN PROV]</dt>
+<dd> Michael Compton, David Corsar, Kerry Taylor. <a  href="http://ceur-ws.org/Vol-1401/paper-05.pdf"><cite>Sensor Data Provenance: SSNO and PROV-O Together at Last</cite></a> In
+Proceedings of the 7th International Conference on Semantic Sensor Networks. Volume 1401, CEUR-WS.org, 2014.</dd>
 </dl>
 </section>
 </body>
