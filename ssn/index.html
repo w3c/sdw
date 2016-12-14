@@ -2258,8 +2258,96 @@ rdfs:subPropertyOf &lthttp://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasR
 
 <p>This section introduces the alignment of SOSA/SSN to <a href="#bib-PROV">W3C PROV Ontology</a> ("PROV-O"). </p>
 
-<p  class="issue"  data-number="999">Complete SOSA/SSN &rarr; PROV-O allignment and mapping table</p>
+<p  class="issue"  data-number="999">Complete SOSA/SSN &rarr; PROV-O alignment and mapping table</p>
 
+<pre class=""> <code>
+### http://www.w3.org/ns/sosa#Actuation
+sosa:Actuation
+  rdfs:subClassOf prov:Activity ;
+.
+
+### http://www.w3.org/ns/sosa#Actuator
+sosa:Actuator
+  rdfs:subClassOf prov:Agent ;
+.
+
+### http://www.w3.org/ns/sosa#FeatureOfInterest
+sosa:FeatureOfInterest
+  rdfs:subClassOf prov:Entity ;
+.
+
+### http://www.w3.org/ns/sosa#ObservableProperty
+sosa:ObservableProperty
+  rdfs:subClassOf prov:Entity ;
+.
+
+### http://www.w3.org/ns/sosa#Observation
+sosa:Observation
+  rdfs:subClassOf prov:Activity ;
+.
+
+### http://www.w3.org/ns/sosa#Platform
+sosa:Platform
+  rdfs:subClassOf prov:Entity ;
+.
+
+### http://www.w3.org/ns/sosa#Procedure
+sosa:Procedure
+  rdfs:subClassOf prov:Plan ;
+.
+
+### http://www.w3.org/ns/sosa#Result
+sosa:Result
+  rdfs:subClassOf prov:Entity ;
+.
+
+### http://www.w3.org/ns/sosa#Sample
+sosa:Sample
+  rdfs:subClassOf prov:Entity ;
+.
+
+### http://www.w3.org/ns/sosa#Sensor
+sosa:Sensor
+  rdfs:subClassOf prov:Agent ;
+.
+
+### http://www.w3.org/ns/sosa#hasFeatureOfInterest
+sosa:hasFeatureOfInterest
+  rdfs:subPropertyOf prov:used ;
+.
+
+### http://www.w3.org/ns/sosa#hasResult
+sosa:hasResult
+  rdfs:subPropertyOf prov:generated ;
+.
+
+### http://www.w3.org/ns/sosa#invokedBy
+sosa:invokedBy
+  rdfs:subPropertyOf prov:wasAssociatedWith ;
+.
+
+### http://www.w3.org/ns/sosa#isResultOf
+sosa:isResultOf
+  rdfs:subPropertyOf prov:wasGeneratedBy ;
+.
+
+### http://www.w3.org/ns/sosa#isSampleOf
+sosa:isSampleOf
+  rdfs:subPropertyOf prov:wasDerivedFrom ;
+.
+
+### http://www.w3.org/ns/sosa#resultTime
+sosa:resultTime
+  rdfs:subPropertyOf prov:endedAtTime ;
+.
+
+### http://www.w3.org/ns/sosa#usedProcess 
+###   really need a union of these properties
+sosa:usedProcess
+  rdfs:subPropertyOf prov:used ;
+  rdfs:subPropertyOf prov:wasAssociatedWith ;
+.
+</code>
 </section>
 
 
@@ -2276,6 +2364,113 @@ This means that the classes represent concepts from the application domain, so c
 <p>In the tabulation below, we provide a direct mapping from SOSA/SSN to O&amp;M using the URIs from the rule-based conversion, and also an axiomatization of the aligment of SOSA/SSN with the om-lite ontology. </p>
 
 <p  class="issue"  data-number="999">Complete SOSA/SSN &rarr; O&amp;M mapping table</p>
+
+<pre class=""> <code>
+
+&lt;http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#GFI_DomainFeature&gt;
+  owl:equivalentClass sosa:FeatureOfInterest ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Observation#OM_Observation&gt;
+  owl:equivalentClass sosa:Observation ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.featureOfInterest&gt;
+  owl:equivalentProperty sosa:hasFeatureOfInterest ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty&gt;
+  owl:equivalentProperty sosa:observedProperty ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.phenomenonTime&gt;
+  rdfs:subPropertyOf sosa:phenomenonTime ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.procedure&gt;
+  owl:equivalentProperty sosa:usedProcess ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.result&gt;
+  rdfs:subPropertyOf sosa:hasResult ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.resultTime&gt;
+  rdfs:subPropertyOf sosa:resultTime ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Observation#OM_Process&gt;
+  rdfs:subClassOf [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Procedure
+          sosa:Sensor
+        ) ;
+    ] ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeature&gt;
+  owl:equivalentClass sosa:Sample ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeature.sampledFeature&gt;
+  owl:equivalentProperty sosa:isSampleOf ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Specimen#SF_Process&gt;
+  rdfs:subClassOf [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Procedure
+          sosa-om:SamplingDevice
+        ) ;
+    ] ;
+.
+&lt;http://def.isotc211.org/iso19156/2011/Specimen#SF_Specimen.samplingTime&gt;
+  rdfs:subPropertyOf sosa:resultTime ;
+.
+
+</code></pre>
+
+<pre class=""> <code>
+&lt;http://def.seegrid.csiro.au/ontology/om/om-lite#Observation&gt;
+  owl:equivalentClass sosa:Observation ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/om-lite#Process&gt;
+  rdfs:subClassOf [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Procedure
+          sosa:Sensor
+        ) ;
+    ] ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/om-lite#featureOfInterest&gt;
+  owl:equivalentProperty sosa:hasFeatureOfInterest ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/om-lite#observedProperty&gt;
+  owl:equivalentProperty sosa:observedProperty ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/om-lite#phenomenonTime&gt;
+  owl:equivalentProperty sosa:phenomenonTime ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/om-lite#procedure&gt;
+  rdfs:subPropertyOf sosa:usedProcess ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/om-lite#result&gt;
+  rdfs:subPropertyOf sosa:hasResult ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/om-lite#resultTime&gt;
+  rdfs:subPropertyOf sosa:resultTime ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/sam-lite#Process&gt;
+  rdfs:subClassOf [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Procedure
+          &lt;http://www.w3.org/ns/sosa-oml#SamplingDevice&gt;
+        ) ;
+    ] ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/sam-lite#SamplingFeature&gt;
+  owl:equivalentClass sosa:Sample ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/sam-lite#sampledFeature&gt;
+  owl:equivalentProperty sosa:isSampleOf ;
+.
+&lt;http://def.seegrid.csiro.au/ontology/om/sam-lite#samplingTime&gt;
+  rdfs:subPropertyOf sosa:resultTime ;
+.
+</code></pre>
 
 </section>
 
