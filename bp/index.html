@@ -600,7 +600,7 @@
       <p>When your starting point is a <a>spatial data infrastructure</a>, you should at least read the following Best Practices. These provide the most important extra steps that should be taken in order to bring spatial data from <a>spatial data infrastructures</a> to the Web: </p>
       <ul>
         <li><a href="#indexable-by-search-engines">Best Practice 4: Make your data indexable by search engines</a></li>
-        <li><a href="#globally-unique-ids">Best Practice 7: Use globally unique HTTP identifiers for spatial things</a></li>
+        <li><a href="#globally-unique-ids">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a></li>
         <li><a href="#convenience-apis">Best Practice 11: Expose spatial data through 'convenience APIs'</a></li>
       </ul>
       <p>The rest of the Best Practices provide more detail on specific aspects of publishing spatial data on the Web, such as metadata, geometries, CRS information, versioned data, and so on.</p>
@@ -638,7 +638,7 @@
 
         <p>We also need to look inside the datasets at the resources described within your data. If you want these resources to be visible within the Web’s information space, by which we mean that others can refer to or talk about those resources, then they must also be assigned URIs (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: “Use persistent URIs as identifiers within datasets”</a>). These URIs are like 'Web-scale foreign keys' that enable information from different sources to be stitched together.</p>
 
-        <p>In spatial data, our primary concern is always the spatial things; these are the things with spatial extent (i.e. size, shape, or position) that we talk about in our data - anything from physical things like people, places and post boxes to abstractions such as administrative areas. Spatial things should always be assigned URIs (see <a href="#globally-unique-ids">Best Practice 7: “Use globally unique HTTP identifiers for spatial things”</a>) - potentially reusing existing URIs that are already in common usage. A common pattern used when assigning URIs to spatial things is append the locally-scoped identifiers used within the dataset to a URI path within an internet DNS domain where one has administrative rights to publish content.</p>
+        <p>In spatial data, our primary concern is always the spatial things; these are the things with spatial extent (i.e. size, shape, or position) that we talk about in our data - anything from physical things like people, places and post boxes to abstractions such as administrative areas. Spatial things should always be assigned URIs (see <a href="#globally-unique-ids">Best Practice 7: “Use globally unique persistent HTTP URIs for spatial things”</a>) - potentially reusing existing URIs that are already in common usage. A common pattern used when assigning URIs to spatial things is append the locally-scoped identifiers used within the dataset to a URI path within an internet DNS domain where one has administrative rights to publish content.</p>
 
         <p>Depending on how you organize your data, it may also be helpful to give your geometry objects URIs. For example, you may want to reuse a line string when describing the boundaries of adjacent administrative areas, or you may need to serve geometry data from an alternate URL because property data and geometry data are managed in different systems. Essentially, if you want to refer to a resource on the Web, you need to assign a URI to it.</p>
       </section>
@@ -985,104 +985,48 @@ a:Dataset a dcat:Dataset ;
           </section>
         </div>
         <div class="practice">
-          <p><span id="indexable-by-search-engines" class="practicelab">Make your spatial data indexable by
-              search engines</span></p>
-          <p class="practicedesc">Search engines should receive a metadata response to a HTTP GET
-            when dereferencing the link target URI.</p>
-          <p class="issue" data-number="357">There is a proposal for shortening this BP.</p>
+          <p><span id="indexable-by-search-engines" class="practicelab">Make your spatial data indexable by search engines</span></p>
+          <p class="practicedesc">Search engines should be able to crawl spatial data on the Web and index spatial things for direct discovery by users.</p>
+          <p class="issue" data-number="446">Can we consider the publishing <em>spatial</em> data in way that search engines can crawl as a <em>best</em> practice? We’re confident that this is the correct thing to do, but where is the evidence of adoption?</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>This best practice goes one step beyond providing metadata as an way to make datasets
-              discoverable. Current <a>SDI</a> approaches require a 2-step approach for discovery,
-              beginning with a catalog query and then accessing the appropriate data service
-              end-point. However, one of the criteria for exposing data <em>on the Web</em> is that
-              it can be discovered directly using search engines such as <a
-                href="https://www.google.com/">Google</a>, <a href="https://www.bing.com/">Bing</a>
-              and <a href="https://www.yandex.com/">Yandex</a>, or other services such as
-              ‘sameAs.org’ (which harvests links) and HyperCat. Current <a>SDI</a> approaches treat
-              spatial data much like books in a library where you must first use the librarian's
-              card catalog index to find the book on the shelf. As for other types of data on the
-              Web, we want to be able to find spatial resources directly; we want to move beyond the
-              two-step discovery approach of contemporary <a>SDIs</a> and find the words, sentences
-              and chapters in a book without needing to check the card catalog first. Not only will
-              this make spatial data far more accessible, it mitigates the problems caused when
-              catalogs have only stale dataset metadata and removes the need for data users to be
-              proficient with the query protocol of the dataset's service end-point in order to
-              acquire the data they need.</p>
-            <p>Exposing data <em>on the Web</em> means that it can be discovered directly using
-              search engines. This doesn't mean metadata is no longer necessary; it is still needed
-              for clients and users to judge the usability of the data for their purposes. Both
-              metadata and data should be exposed in a discoverable way on the web. This provides a
-              number of benefits:</p>
-            <ul>
-              <li>Spatial data will become far more discoverable because a user does not need any
-                special knowledge to find the <a>SDIs</a> catalog service.</li>
-              <li>Users can discover what data is <em>actually</em> available, rather than relying
-                on the metadata that is infrequently published to the catalog and may have become
-                stale.</li>
-              <li>Users do not need to be proficient with the query protocol of the dataset's
-                service end-point in order to acquire the data they need.</li>
-            </ul>
-            <p>Search engines should be able to use links and URIs to discover indexable spatial
-              data and to prioritize those spatial data collections within a search result.</p>
-            <p>Search engines use links to discover content to index and to prioritize that content
-              within a search result.</p>
+
+            <p>In <a>SDIs</a> information about spatial datasets is published as authoritative metadata records and collated in Web-based catalogues. This approach causes a number of problems:</p>
+            <ol>
+              <li>the catalogues are often designed to primarily support expert users - people may not even be aware of their existence;</li>
+              <li>once you have discovered a dataset that meets your needs and identified where it is available from, a second step is required to access the data itself - often requiring the use of unfamiliar protocols or complex API requests; and</li>
+              <li>the data itself is not indexed - discovery relies on the metadata records that are often sparsely populated or out of date.</li>
+            </ol>
+
+            <p>Search engines are the common starting point for people looking for content on the Web that is widely understood. By publishing spatial data in a way that enables their crawlers to index <a>spatial things</a>, the fidelity of search results should improve. Users will be able to directly search for specific entities rather than having to look for a dataset and then parse through it; e.g. to search for "Anne Frank’s House" (<a href="https://g.co/kg/m/02s5hd"><code>https://g.co/kg/m/02s5hd</code></a>) rather than looking for a dataset about "Cultural Heritage in Amsterdam" and hoping that it contains a reference to what you’re interested in.</p>
+
+            <p class="note">At present, spatial information is not widely exploited by search engines. However, by increasing the volume of spatial information presented to search engines, and the consistency with which it is provided, we expect search engines to begin offering spatial search functions. We already see evidence of this in the form of contextual search, such as prioritization of search results from nearby entities.</p>
+
+            <p class="issue" data-number="181">More discussion is required on how to structure meaningful (spatial) queries with search engines (e.g. based on identifier, location, time etc.).</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>Spatial metadata and data should be discoverable directly using a search engine
-              query.</p>
-            <p>Spatial metadata and data is indexable by search engines; a search engine Web crawler
-              should be able to obtain descriptive and machine interpretable metadata response to a
-              HTTP GET when dereferencing the URL of a <a>SpatialThing</a> and to determine links to
-              related data for the Web crawler to follow.</p>
-            <p class="note">We make the assertion that (meta)data is not really 'on the web' until
-              it's crawlable.</p>
-          </section>
+            <p>Information about spatial things is indexed by search engines.</p>
+
+            <p>Users can find spatial things using common search engines.</p>
+          </section>  
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>To make your metadata and your entity-level data indexable by search engines:</p>
-            <ul>
-              <li>Generate one HTML page per resource - one page for the metadata record and one
-                page for each entity in the dataset. Include structured markup (see <a
-                  href="http://schema.org/">schema.org</a>) that the search engines can use to make
-                more detailed assumptions about your resource(s) and drive better search
-                performance. Either create pages beforehand or generate them at query time via an
-                API.</li>
-              <li>Provide a path for search engines to find your pages - either crawling to each
-                entity from a 'collection' object (which provides the entry point for the web
-                crawler) or being directed by <a href="http://www.sitemaps.org/">sitemaps</a>.</li>
-              <li>Search engines may be used to search spatial data based on identifier, location,
-                time, etc (some examples are provided in [<a
-                  href="http://personal.ee.surrey.ac.uk/Personal/P.Barnaghi/doc/semantic_stream_iThings2013_167.pdf"
-                  >Section III.A, Barnaghi et al.</a>]. The search for spatial data can be similar
-                to the typical search query, but the search and use of results in many cases will be
-                done by software agents and other services like <a
-                  href="https://www.google.co.uk/landing/now/">Google Now</a> that interpret
-                information.</li>
-            </ul>
-            <p class="issue" data-number="181">More discussion is required on how to structure
-              meaningful (spatial) queries with search engines (e.g. based on identifier, location,
-              time etc.).</p>
-            <p class="note">As more spatial datasets are published that provide structured markup to
-              search engine Web crawlers enabling the content of those datasets to be indexed, the
-              more likely that search engines will provide richer and more sophisticated search
-              mechanisms to exploit that markup which will further improve the ability of users to
-              find spatial data.</p>
+
+            <p>First, publish a HTML Web-page for each spatial thing. Second, make sure that those pages can be crawled.</p>
+
+            <p>Indexing can be further enhanced by incorporating a description of the spatial thing as structured markup (such as [[MICRODATA]] and [[SCHEMA-ORG]]) as this enables the search engines to make more detailed assumptions about your resource. Each Web-page can likely be generated programmatically from the data you hold about corresponding spatial thing. These Web-pages should also provide a mechanism to download data in the formats you decide to support. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#MultipleFormats">Best Practice 14: Provide data in multiple formats</a> provides guidance on how you might publish HTML content alongside the data.</p>
+
+            <p>You also need to provide an entry point for the search engines to crawl your data. Create a “landing page” for the dataset, itself incorporating structured markup, from which the Web-crawler can follow links to the page for each spatial thing. Where you have a large collection of spatial things, you may need to allow the Web-crawler to page through the collection. You should also consider using <a href=“https://www.sitemaps.org/index.html”>Sitemaps</a> to direct the Web-crawler.</p>
+
             <aside class="example">
               <p>example(s) to be added; including ...</p>
               <ul>
-                <li><a href="http://www.hypercat.io/standard.html">HyperCat</a> is an example of how
-                  referring to URIs for the resources can return meaningful and machine
-                  interpretable information.</li>
-                <li><a href="http://maps.nanaimo.ca/data/property/">City of Nanaimo, Canada</a> …
-                  one page per resource; generated at request time; uses [[MICRODATA]] and
-                  [[SCHEMA-ORG]]</li>
+                <li><a href="http://maps.nanaimo.ca/data/property/">City of Nanaimo, Canada</a> … one page per resource; generated at request time; uses [[MICRODATA]] and [[SCHEMA-ORG]]</li>
               </ul>
-              <p class="issue" data-number="179">Example required for search engine indexing of
-                dataset / data-stream.</p>
-              <p class="issue" data-number="180">Example required for search engine directly
-                indexing structured spatial data (e.g. GeoJSON or KML).</p>
+              <p class="issue" data-number="179">Example required for search engine indexing of dataset / data-stream.</p>
+              <p class="issue" data-number="180">Example required for search engine directly indexing structured spatial data (e.g. GeoJSON or KML).</p>
+              <p class="issue" data-number="447">Detailed examples are required for HTML pages and the structured markup. It’s early days for using [[SCHEMA-ORG]] to describe spatial attributes - can we write some useful statements and badge them as “emerging practice” to drive the right behaviours?</p>
             </aside>
           </section>
           <section class="test">
@@ -1210,70 +1154,62 @@ a:Dataset a dcat:Dataset ;
       </section>
       <section id="bp-dataversioning">
         <h3>Spatial Data Versioning</h3>
-        <p>Spatial dataset, like most datasets, can change over time. When this happens a new
-          version may be published on the Web. The best practices for dataset versioning described
-          in the [[DWBP]] section on <a href="https://www.w3.org/TR/dwbp/#dataVersioning">Data
-            Versioning</a> apply to spatial datasets as well.</p>
-        <p>Entities and their properties within datasets can change over time and this change can be
-          related to spatial properties, for example when a spatial thing moves from one location to
-          another location, or when it becomes bigger or smaller. </p>
-        <p class="note">This section is based on the Data Versioning section from [[DWBP]] and adds
-          a Best Practice specific for spatial data. This is about versioning on the property level,
-          while the DWBP is concerned with the dataset level. </p>
+        <p><a>Spatial things</a> and their attributes can change over time. For example, a lake may grow or shrink due to changes in climate, water extraction or any number of reasons. For many applications, it is important that information about spatial things is kept up to date. When new information is available, the data publisher may make this available on the Web according to their update schedule and policies. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVersioning">section 8.6 Data Versioning</a> and <a href="https://www.w3.org/TR/dwbp/#AccessUptoDate">Best Practice 21: Provide data up to date</a> provide directly applicable guidance.</p>
+
+        <p>When dealing with change to a spatial thing, you should consider its lifecycle. For example, the extent of Derwent Water in the UK’s Lake District (<a href="http://data.os.uk/id/50kGazetteer/72167"><code>http://data.os.uk/id/50kGazetteer/72167</code></a>) may have varied as it is surveyed over the years, but it is still the same lake.</p>
+
+        <p>In contrast, Monmouthshire, UK, (<a href="http://data.os.uk/id/7000000000025489"><code>http://data.os.uk/id/7000000000025489</code></a>) provides a counter example. Although the historic county of Monmouthshire (<a href="http://dbpedia.org/resource/Monmouthshire_(historic)"><code>http://dbpedia.org/resource/Monmouthshire_(historic)</code></a>) was formed back in 1535, what we currently refer to as Monmouthshire is a unitary authority that was created in 1996 by combining the districts of Monmouth and Llanelly. While there is a long-term historical precedent for a place of that name, the historic county and unitary authority on Monmouthshire and the district of Monmouth are all different spatial things. This is most obvious from looking at terms used to describe each of them: historic county, unitary authority and district. Each of these spatial things should have its own HTTP URI and even though the historic county is no longer used, it is important that we can still refer to it.</p>
+
+        <p>Essentially, the decision to assign a new identifier in response to change is often a data modelling choice. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVocabularies">section 8.9 Data Vocabularies</a> and <a href="#bp-expressing-spatial" class="sectionRef"></a> provide further guidance on the topic of data modelling; determining which concepts and relationships should be used to describe your area of interest.</p>
+
+        If you consider that the change affects the fundamental nature of the spatial thing, then you should assign a new identifier. See <a href="#bp-identifiers" class="sectionRef"></a> for more details. Otherwise, read on for guidance on how to describe properties that change over time.
+
+        <p class="issue" data-number="194">Should we reference the <a href="https://en.wikipedia.org/wiki/Ship_of_Theseus">paradox of the Ship of Theseus</a> to highlight there is no rigorous notion of persistent identity? - or is it just that there is no <em>single</em> notion. </p>
+
         <div class="practice">
-          <p><span id="desc-changing-properties" class="practicelab">How to describe properties that
-              change over time</span></p>
-          <p class="practicedesc">Entities and their data should have versioning with time/location
-            references</p>
+          <p><span id="desc-changing-properties" class="practicelab">How to describe properties that change over time</span></p>
+          <p class="practicedesc">Spatial data should include metadata that allows a user to determine when it is valid for.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>For some use cases you need to be able to explicitly refer to a particular version of
-              information that describes a <a>SpatialThing</a>, or to infer which geometry is
-              appropriate at a specific time, based on the versioning. To make this possible, the
-              properties that are described for an entity should have references to the time and
-              location that the information describing a <a>SpatialThing</a> was captured and should
-              retain a version history. This allows you to reference the most recent data as well as
-              previous versions and to also follow the changes of the properties. </p>
+            <p><a>Spatial things</a> and their attributes change over time. Mostly, users are interested in current information. They need to be able to determine whether the published description of a spatial thing meets their needs. For example, is the published geographic extent of the City of Amsterdam relevant for a land-usage study of the nineteenth century? (<a href="http://gemeentegeschiedenis.nl">Gemeentegeschiedenis.nl</a>, "Parish History", illustrates how the extent of Amsterdam has changed during the past 200-years, in <a href="http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam">html</a> and <a href="http://www.gemeentegeschiedenis.nl/gemeentenaam/json/Amsterdam">geojson</a>). Where the information is available, a user may want to browse older versions of the published information to understand the nature of any changes or to find historical information.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>By default, data users are provided with the most recent version of information about
-              an identified resource.</p>
-            <p>Data users are able to refer to the information about an identified resource as
-              it was at a given time.</p>
-            <p>Data users can browse through versions of the information about an identified
-              resource that reflect how the resource changed over time.</p>
+            <p>Users are provided with the most recent version of information about a spatial things and its attributes by default.</p>
+            <p>Users are able to determine the time period for which data is applicable.</p>
+            <p>Users are able to browse through a set of changes to see how a spatial thing and its attributes have changed over time.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p class="issue" data-number="196">Need to include guidance on when a lightweight
-              approach (ignoring the change aspects) is appropriate</p>
-            <p>When entities and their properties can change over time, or are valid only at a given
-              time, and this needs to be captured, it is important to specify a clear relationship
-              between property data and its versioning information. How properties are versioned
-              should be explained in the specification or schema that defines those properties.
-              Temporal and/or spatial metadata should be provided to indicate when and where the
-              information about the <a>SpatialThing</a> was captured. </p>
-            <p>For an example of how to version information about entities and their properties and
-              retaining a version history, see <code>version:VersionedThing</code> and
-                <code>version:Version</code> at <a
-                href="https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types"
-                >https://github.com/UKGovLD/registry-core/wiki/Principles-and-concepts#versioned-types</a>.</p>
-            <p>It is also useful to incorporate information on how often the information might
-              change, i.e. the frequency of update.</p>
-            <p>Data publishers must decide how much change is acceptable before a
-                <a>SpatialThing</a> cannot be considered equivalent. At this point, a new identifier
-              should be used as the subject for all properties about the changed
-              <a>SpatialThing</a>. Also see <a href="#ids-for-changing-things" class="sectionRef">Best Practice 9:
-                Provide stable identifiers for Things (resources) that change over time</a>.</p>
-            <p class="issue" data-number="356">Should time series be another possible approach?</p>
+
+            <p class="note">This Best Practice focuses on describing change to spatial things and their attributes. However, readers should note that dataset metadata plays an important part in helping users determine whether a dataset is fit for their use. Of relevance to this topic would be statements about the (most recent) publication date, the frequency of update and the time period for which the dataset is relevant (i.e. temporal extent). Please refer to [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#DescriptiveMetadata">section 8.2 Metadata</a> for more details about dataset metadata.</p>
+
+            <p>When publishing information about a spatial thing that is subject to change there are two main approaches to consider:</p>
+            <ol>
+              <li>providing a series of immutable snapshots that describe the spatial thing at various points in its lifecycle; and</li>
+              <li>capturing a time-series of data values within an attribute of the spatial thing.</li>
+            </ol>
+
+            <p class="issue" data-number="196">Need to include guidance on when a lightweight approach (ignoring the change aspects) is appropriate</p>
+
+            <p>Before deciding which approach to use, data publishers must decide how much change is acceptable before a spatial thing can no longer considered as the same resource. Consider Eddystone Lighthouse for example: the “Eddystone Light” has existed in (more or less) the same place on Eddystone Rocks since 1698. A single HTTP URI (<a href="http://dbpedia.org/resource/Eddystone_Lighthouse"><code>http://dbpedia.org/resource/Eddystone_Lighthouse</code></a>) is used to identify “the lighthouse on Eddystone rocks” for all that period. The lighthouse's characteristics have changed over that period and could be captured as snapshots. However, each of the four structures that have stood on that site, from Winstanley's Eddystone Lighthouse (the first incarnation) to Douglass' Eddystone Lighthouse (the 4th and current incarnation) are different spatial things. Incremental change for these structures during the entire period from 1698 is not appropriate; one structure replaces another and so each structure should be assigned a unique identifier.</p>
+
+            <p>The choice of approach is somewhat arbitrary, although the snapshot approach is more applicable for complex or infrequent change, while the time-series approach should be used for frequent change where time is the independent variable, such as updating the GPS position of a fishing vessel, and is particularly useful when working with data streamed from sensors.</p>
+
+            <p>If providing a series of snapshots, then the <em>base</em> URI for the resource should resolve to provide the current information.</p>
+
+            <p>First, each snapshot must be uniquely identified. A common approach is to append a date/time stamp to the base URI. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a>. Secondly, each snapshot should contain metadata about its predecessor(s), metadata describing its publication date and/or period of validity, and provide a link to the corresponding persistent resource. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a> provides relevant guidance.</p>
+
+            <p>How spatial things and their attributes are versioned should be explained in the specification or schema for the dataset.</p>
+
+            <p class="issue" data-number="356">Elaboration of the time-series approach is still required; perhaps linking to CoverageJSON (examples) for how to do this? Also note that the OGC Moving Features specification (OGC #14-083) follows this pattern, albeit with specific terminology such as “foliation”, uses a “trajectory” element to describe the position plus the ability to add varying attributes (such as orientation or rotation) alongside the tuples in the trajectory. OGC also offer a CSV-format “compact encoding” (OGC #14-084). Moving Features appears to convey the same information as would be achieved by embedding a time-series coverage as a property of a feature, it just makes some different encoding choices.</p>
+
             <aside class="example">
               <p>Example(s) to be added; including e.g.:</p>
               <ul>
-                <li>Linking crime data to a identified region; these regions change over time so we
-                  need to know which version of the region the data is applicable to.</li>
-                <li>Australian hydrological catchment geometries (that vary as a result of a
-                  resurvey).</li>
+                <li>Linking crime data to a identified region; these regions change over time so we need to know which version of the region the data is applicable to.</li>
+                <li>Australian hydrological catchment geometries (that vary as a result of a resurvey).</li>
+                <li>GPS position of a fishing vessel.</li>
               </ul>
             </aside>
           </section>
@@ -1300,118 +1236,90 @@ a:Dataset a dcat:Dataset ;
       </section>
       <section id="bp-identifiers">
         <h3>Spatial Data Identifiers</h3>
-        <p>As explained in <a href="#spatial-things-features-and-geometry" class="sectionRef">Section 4</a>, spatial things and geometries are different things, the geometries being properties of spatial things. One spatial thing could have several geometries, each giving a different representation of the thing. In general, there could be several information resources, in different datasets, that describe or refer to the same spatial thing; for example, one dataset has its location (as a point geometry) and date a lighthouse was built, another has data about its ownership or about shipwrecks near the same lighthouse. A third has a 3D representation of the lighthouse.</p>
-        <p>The distinction between spatial things and the information resources that describe them is often confusing and unhelpful. Mostly, people looking for information are interested in spatial things, not in information resources. Therefore the spatial things should get global identifiers so
-          they can be found and referenced. The geometries should have global identifiers too so they can be referenced and reused; and
-          must have them if they are managed elsewhere. The information resources could be given identifiers of their own when there's a specific reason to identify them separately.</p>
-        <p>[[DWBP]] provides best practices discussing globally unique identifiers and the use of HTTP (or  HTTPS) URIs for these identifiers in order to support data discovery, usage and citation on the Web (see [[DWBP]] <a href="http://www.w3.org/TR/dwbp/#DataIdentifiers"
-          >Data Identifiers</a> for more details). This section includes a best practice on how to come up with good identifiers for spatial data.</p>
-        <div class="issue" data-number="208">
-          <p>There's still an open issue about identifier assignment. Do we recommend to assign different identifiers to spatial things and to information resources about those things? We seem to be close to consensus: use of the same identifier for both i.e. using the information resource identifier as indirect identifier for the spatial thing, is ok. Metadata about the information resource goes in the metadata.</p>
-        </div>
+        <p>The primary topics of any spatial dataset are <a>spatial things</a>, each described by a set of attributes and usually at least one geometry. How your spatial data is structured will depend on the vocabulary or data model you use (see <a href="#bp-expressing-spatial" class="sectionRef"></a> for further details on vocabulary choice). This will determine the types of entities that, along with the spatial things themselves, are important enough to be given identifiers so that statements can be made about them. Geometry objects are an example of an entity that is often assigned a unique identifier so that they can be referenced or reused.</p>
+
+        <p>To publish spatial data on the Web, we need to stitch the spatial things and their corresponding entities into the Web’s information space. First: [[WEBARCH]] <a href="https://www.w3.org/TR/webarch/#p38">Good Practice: Identify with URIs</a> states that "agents should provide URIs as identifiers for resources". Second: the <a href="http://5stardata.info">5 Star Data scheme</a> states: "&#9733;&#9733;&#9733;&#9733; use URIs to denote things, so that people can point at your stuff".</p>
+
+        <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a> provides directly applicable guidance. When assigning identifiers to resources, it advises:</p>
+        <ol>
+          <li>Seek and reuse existing URIs, ensuring that the URIs are persistent and they are published by a trusted group or organisation; or</li>
+          <li>Create your own persistent URIs.</li>
+        </ol>
+
+        <p>Furthermore, given ubiquitous use of the Hyper Text Transfer Protocol (HTTP) on the Web, we SHOULD use HTTP URIs to identify resources in spatial data.</p>
+
+        <p class="note">We consider identifiers in the Web’s information space to be unaffected by the choice to serve HTTP content securely or not. For example, <code>http://example.org/country/suriname</code> and <code>https://example.org/country/suriname</code> both identify the same spatial thing - in this case the South American country of Suriname.</p>
+
+        <p>Resources that that identified with HTTP URIs can be specified as the target of links within the Web’s global information space, enabling information from different sources to be related and combined. This is the fundamental basis of 5&#9733; Linked Data: "&#9733;&#9733;&#9733;&#9733;&#9733; link your data to other data to provide context".</p>
+
+        <p>Further guidance on assigning identifiers to spatial things is provided below.</p>
+
         <div class="practice">
-          <p><span id="globally-unique-ids" class="practicelab">Use globally unique HTTP identifiers
-              for spatial things</span></p>
-          <p class="practicedesc">Spatial things referred to within datasets SHOULD have unique, persistent HTTP or
-            HTTP(S) URIs as identifiers.</p>
+          <p><span id="globally-unique-ids" class="practicelab">Use globally unique persistent HTTP URIs for spatial things</span></p>
+          <p class="practicedesc">Use stable HTTP URIs to identify spatial things, re-using commonly used URIs where they exist and it is appropriate to do so.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>A lot of spatial data is available 'via the Web' - but not really 'on the web': you
-              can download datasets, or view, query and download data via web services, but it has not been so easy to reference a spatial thing within a dataset, like you would a web
-              page, because the spatial things themselves don't have URIs. If they did, spatial data would be much easier to reuse and to
-              integrate with other data on the Web.</p>
+            <p>We want to expose spatial data on the Web at a granular level so that we can work directly with spatial things; to relate them to other resources or make statements about them. To do this, spatial things need to be addressable resources in the Web’s global information space which means they must be identified using HTTP URIs.</p>
+
+            <p>This is a fundamentally different data publication approach to that used in <a>SDIs</a> where the dataset is (often) globally identified, but individual spatial things, or "<a>features</a>" in SDI parlance, are not.</p>
+
+            <p>The HTTP URIs used to identify spatial things need to be stable or persistent so that relationships that link them to other resources don’t break.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>Spatial things described or mentioned in a dataset will each be identified using
-              a globally unique HTTP URI so that a given spatial thing can be unambiguously identified in
-              statements that refer to that spatial thing.</p>
+            <p>Spatial things become part of the Web’s global information space enabling them be linked with other spatial things and other resources and for those links to be durable. In other words, spatial data become part of the Web of Data.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>Good identifiers for data on the Web should be dereferenceable/resolvable, which
-              makes it a good idea to use HTTP URIs as identifiers. As explained in [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets"
-                >Best Practice 11: Use persistent URIs as identifiers within datasets</a>, it is best to reuse existing (authoritative) identifiers when available, or else create your own. </p>
-            <p>1. Reuse identifiers when you can</p>
-            <p>For spatial data, a good approach for identifiers is to reuse the URIs used by organizations such as <a href="http://dbpedia.org/">DBpedia</a> and
-                <a href="http://www.geonames.org/">GeoNames</a> to identify <a>SpatialThings</a>. These are
-              commonly used across many different applications and datasets. Public government data, such as national registers of addresses, buildings, and so on, are another good source of resource collections. Mapping and cadastral
-              authorities maintain datasets that provide geospatial reference data. See also Appendix <a href="#auth-id-sources" class="sectionRef">B. Authoritative sources of geographic identifiers</a> for a list of good sources of geographic identifiers. In general, re-using
-                well-known identifiers such as these is good practice because it makes it easy to
-                recognize that data from different sources has the same subject. These identifiers are like
-                'Web-scale foreign keys', allowing information from different sources to be stitched
-                together.</p>
-            <p>Additionally, when these authoritative identifiers are resolved, a considerable
-              amount of useful information about the <a>SpatialThing</a> is often provided that can
-              be used to supplement that which is provided by your own application. Examples include
-              place names in multiple languages and geographic boundaries.</p>
-            <p class="note">Where you are not able to re-use an existing URI, you should link the
-              your URI to those well-known URIs published by third parties, thus enabling your data
-              to be discovered by browsing between related resources. See <a
-                href="#link-to-auth-identifiers">Best Practice 20: Link to resources with well-known
-                or authoritative identifiers</a> for more information.</p>
-            <p>2. When there are no reusable identifiers, create your own</p>
-            <p>For guidance about persistent URIs when creating your own URIs, read [[DWBP]] <a
-                href="http://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 10: Use persistent
-                URIs as identifiers of datasets</a>. While that best practice is about datasets, many of the points are valid for identifiers of spatial things as well. Keep in mind not to use service endpoint URLs as a basis for your persistent URIs, as these are
-              usually dependent on technology, implementation, and/or API version and will probably
-              change when the implementation changes.</p>
-            <p>Often, dataset-scoped (local) identifiers are present in datasets and these can be converted or mapped to URIs for spatial things. For example, use row numbers from tabular data or record identifiers from geo-databases.</p>
+            <p>Organizations such as <a href="http://dbpedia.org">DBPedia</a>, <a href="http://www.geonames.org">Geonames</a> and national registers of addresses, buildings, etc. provided by government mapping and cadastral authorities are good sources of stable, authoritative URIs that could be assigned to your spatial things. Refer to Appendix <a href="#auth-id-sources" class="sectionRef">B. Authoritative sources of geographic identifiers</a> for further details.</p> 
+
+            <p>When reusing authoritative URIs, you must be sure that it identifies the same phenomenon as your subject of interest. For example, it may seem sensible for the Amsterdam Fire Department to reuse the Geonames identifier <a href="http://sws.geonames.org/6618987"><code>http://sws.geonames.org/6618987</code></a> or Freebase identifier <a href="https://g.co/kg/m/02s5hd"><code>https://g.co/kg/m/02s5hd</code></a> (now part of Google’s Knowledge Graph) to identify a fire at Anne Frank’s House. However, there is a mismatch between the type of spatial thing being identified: one is a museum or place of cultural heritage, the other is a fire incident. If in doubt, you should create, or <em>mint</em>, your own identifier. Additionally, if you think the authoritative URI adds useful context you should link to it using a relationship with appropriate semantics; e.g. to state that the fire incident is ‘near’ Anne Frank’s House. Please refer to <a href="#bp-linking" class="sectionRef"></a> for more details.</p>
+
+            <p>You also need to determine whether it is feasible to map your spatial things to authoritative URIs. It would be reasonably simple to look up identifiers for the 50 or so museums in Amsterdam and map these to your spatial things, but it would be a huge task for, say, a topographic mapping agency to cross-reference tens of thousands of spatial things with third-party URIs. Clearly in the latter case, it would make sense for the agency to mint their own identifiers. And, in the spirit of crowd-sourcing, they might find that someone else takes on the mapping task and publishes the relationships to the Web as a complementary resource!</p>
+
+            <p>Finally, you might simply want to use a URI that resolves to a domain where you control the information that is served or that reinforces authority based on the domain name. For example, the <a href="http://cultureelerfgoed.nl/">Cultural Heritage Agency of the Netherlands</a> identifies Anne Frank’s House as <a href="https://monumentenregister.cultureelerfgoed.nl/monuments?MonumentId=4296"><code>https://monumentenregister.cultureelerfgoed.nl/monuments?MonumentId=4296</code></a> within its Register of Monuments.</p>
+
+            <p class="issue" data-number="440">Do we want to talk about mechanisms that can be used to locally publish information about a spatial thing identified using an authoritative URI from a third-party domain; e.g. a query pattern URL such as <code>http://example.org/museums?q=http://sws.geonames.org/6618987</code>?</p>
+
+            <p>If you decide to mint your own URIs, [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a> cites the advice from GS1's SmartSearch Implementation Guideline [[GS1]] which suggests that your URIs should include the type of resource that is being identified to help human readability. For example: <a href="http://environment.data.gov.uk/catchment-planning/so/OperationalCatchment/3245"><code>http://environment.data.gov.uk/catchment-planning/so/OperationalCatchment/3245</code></a> identifies an <em>operational catchment</em> for management of water in London draining to the Thames. Also, given the need for the HTTP URIs for spatial things to be used throughout the their lifetime (and perhaps beyond) you should give some thought to designing a URI that is persistent. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 9: Use persistent URIs as identifiers of datasets</a> cites the European Commission's Study on Persistent URIs [[PURI]] as a good source from which to gain insights about designing persistent URIs.</p> 
+
             <p class="issue" data-number="358">Should we describe a practice of identifiers being structured minimally at least for purposes of authority and uniqueness? And when to consider taxonomic meaning for primary or secondary identifiers.</p>
-            <p>3. Provide stable identifiers for spatial things that change over time</p>
-            <p>Spatial things can change over time, but their
-              identifiers should be persistent so that links to them don't get broken. </p>
-            <p class="issue" data-number="194">Should we reference the <a
-              href="https://en.wikipedia.org/wiki/Ship_of_Theseus">paradox of the Ship of
-              Theseus</a> to highlight there is no rigorous notion of persistent identity? - or is it just that there is no <em>single</em> notion. </p>
-            <p>[[DWBP]] <a href="http://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 8: Provide a version indicator</a> explains how to provide versioning information for datasets. It
-              doesn't provide information about versioning individual things. </p>
-            <p>Spatial things can change in different ways, and sometimes the change is such that
-              it's debatable if it's still the same thing. Think carefully about the life cycle of
-              the spatial things in your care, whether the changes matter for the application, and be reluctant to assign new identifiers. A lake
-              that becomes smaller or bigger is generally still the same lake, but some links (e.g.
-              from statistical datasets, or related to the boundary of the lake) need to target a
-              specific version of its geometry.</p>
-            <p>Include information in your dataset that indicates when the statements made about the
-              <a>SpatialThing</a> are valid.</p>
-            <p>If your spatial things are versioned, a good solution is to provide a canonical,
-              versionless URI for them, as well as date-stamped versions. You should also
-              include information on the update frequency in the dataset metadata (see [[DWBP]] <a
-                href="https://www.w3.org/TR/dwbp/#DescriptiveMetadata">Best Practice 2: Provide descriptive metadata</a>).</p>
-            <p class="note">See also <a href="#desc-changing-properties" class="sectionRef">Best Practice 5: How to
-              describe properties that change over time</a>.</p>
-            <aside class="example">
-              <p>example(s) to be added; including</p>
-              <ul>
-                <li>(named) events and epochs in time etc. (not just spatial)</li>
-                <li>Identifiers for hydrologic features such as catchments; <a
-                    href="http://sirf.csiro.au/LdaIdService/resource?uri=http://environment.data.gov.au/water/id/catchment/100862&amp;_format=html"
-                    >contracted catchment 100862</a> (ref. CSIRO's <a
-                    href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference
-                    Framework</a>)</li>
-              </ul>
-              <p><code>http://dbpedia.org/resource/Utrecht</code> refers to the city of Utrecht in
-                the Nederlands - not the similarly named town in South Africa.</p>
-              <p><code>http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam</code> is a
-                resource linking to both <a href="http://dbpedia.org/">DBpedia</a> and <a
-                  href="http://www.geonames.org/">GeoNames</a> resources for Amsterdam.</p>
-              <p><code>https://brk.basisregistraties.overheid.nl/id/perceel/370200894</code> is a cadastral parcel as provided by the <a href="http://www.kadaster.nl">Kadaster</a>. The number at the end was originally the local identifier of the parcel in the dataset.</p>
-            </aside>
-            <p class="issue" data-number="86">Complete this section and How to Test section</p>
+
+            <p>When an HTTP URI is resolved, the server will respond with a sequence of bytes: by its nature, HTTP can only serve <em>information resources</em> such as Web pages or JSON documents. Yet a spatial thing is actually a real or conceptual phenomenon - a lake is made from water not information! Using a single URI to refer to <em>both</em> the spatial thing and the page/document that describes the spatial thing introduces a URI collision. This can impose a cost in communication due to the effort required to resolve ambiguities. [[URLs-in-data]] has more to say on this subject, including recommending URI design patterns that enable differentiation between the spatial thing and the page/document that describes it.</p> 
+
+            <p>However, in most cases using a single URI for both spatial thing and the page/document is simpler to implement and meets the expectations of most end-users. As stated in [[WEBARCH]] <a href="https://www.w3.org/TR/2004/REC-webarch-20041215/#indirect-identification">section 2.2.3 Indirect Identification</a>, identifiers are commonly used in this way. There is no obligation to distinguish between the spatial thing and the page/document unless your application requires this.</p> 
+
+            <p class="note">While there is a cost to this conflation, problems can be mitigated by avoiding making statements that confuse spatial thing and the page/document, such as “Uluru is available in KML format”; e.g. <code>&lt;</code><a href="http://sws.geonames.org/7645281"><code>http://sws.geonames.org/7645281</code></a><code>&gt; dc:hasFormat ex:kml .</code></p>
+
+            <div class="issue" data-number="208">
+              <p>There is a level of discomfort in the wider community (based on discussion with Platform Linked Data Nederland folks amongst others) about whether this Best Practice should recommend "indirect identifiers" (where spatial thing and page/document both share the same URI) while the <a href="https://lists.w3.org/Archives/Public/www-tag/2005Jun/0039.html">TAG Guidance</a> (albeit from 2005) states that a <code>HTTP 303 (see other)</code> response should be provided by servers resolving the URI of a non-information resource (such as a spatial thing), referring the user agent to the corresponding information resource. (i.e. the <code>/id</code> and <code>/doc</code> pattern that is in widespread use but often seems to confuse users and even some experts).</p>
+
+              <p>We pretty much agreed that use of indirect identifiers was OK during our <a href="https://www.w3.org/2016/09/19-sdw-minutes.html#item04">discussion at TPAC-2016</a>. That said, we didn't record a resolution.</p>
+
+              <p>If we want to stick with the TAC guidance, suggest that we remove the paragraph beginning</p>
+              <blockquote>However, in most cases using a single URI for both spatial thing and the page/document [...]</blockquote>
+              <p>and the following note, and replace with:</p>
+              <blockquote>Dereferencing URIs for spatial things should result in a <code>HTTP 303 (see other)</code> response that redirects the user agent to the corresponding page/document. This means that the spatial thing and the page/resource MUST have different URIs. It is common to use <code>/id</code> as part of the URI for non-information resources, and <code>/doc</code> for the corresponding page/document.</blockquote>
+              <p>That said, [[URLs-in-data]] provides other alternatives such as using a <code>#id</code> fragment.</p>
+            </div>
+
+            <p>HTTP URIs for spatial things should not include any indication of the data format used to encode the page/document as this may change as your systems evolve. That said, you may wish to provide a set of complementary resources that specify particular format as part of your content negotiation strategy. For example, the URI <a href="http://sws.geonames.org/7645281/about.rdf"><code>http://sws.geonames.org/7645281/about.rdf</code></a> resolves to provide an RDF/XML encoding of the information about Uluru in the Northern Territory of Australia (<a href="http://sws.geonames.org/7645281"><code>http://sws.geonames.org/7645281</code></a>).</p>
+
+            <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10</a> notes that URIs can be long. You may need to define identifiers that are locally unique within your spatial dataset and provide a mechanism to programmatically convert each local identifier to a URI. For example, the Metadata Vocabulary for Tabular Data [[TABULAR-METADATA]] achieves this using URI Templates as described in [[RFC6570]].</p>
+
+            <p>It is also good practice to use a redirection service to hide complex service end-point URLs, such as for a <a>Web Feature Service</a> behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API in order to request information about a particular spatial thing. For example, the URI <code>http://data.example.org/aan/id/perceel/aan.2528</code> could be used as proxy for the WFS GetFeature request <a href="http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&SERVICE=WFS&REQUEST=GetFeature&featureID=aan.2528"><code>http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;featureID=aan.2528</code></a>.</p>
+
           </section>
           <section class="test">
             <p class="subhead">How to Test</p>
-            <p>An automatic check is possible to determine if any of the good sources of geographic
-              identifiers are referenced.</p>
-            <p>...</p>
+            <p>Check that within the data spatial things, such as countries, regions and people, are referred to by HTTP URIs or by short identifiers that can be converted to HTTP URIs. Ideally the URIs should resolve, however, they have value as globally scoped variables whether they resolve or not.</p>
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: <a
-              href="http://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>, <a
-                href="http://www.w3.org/TR/sdw-ucr/#GeoreferencedData">R-GeoReferencedData</a>, <a
-                  href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems"
-                  >R-IndependenceOnReferenceSystems</a>.</p>
+            <p><span>Relevant requirements</span>: 
+              <a href="http://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>, 
+              <a href="http://www.w3.org/TR/sdw-ucr/#GeoreferencedData">R-GeoReferencedData</a>, 
+              <a href="http://www.w3.org/TR/sdw-ucr/#IndependenceOnReferenceSystems">R-IndependenceOnReferenceSystems</a>.</p>
           </section>
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
@@ -1880,6 +1788,9 @@ a:Dataset a dcat:Dataset ;
               endpoint e.g. expose the underpinning postGIS database via SPARQL endpoint (using
               something like <a href="http://www.melodiesproject.eu/content/ontop-spatial"
                 >ontop-spatial</a>) and Linked Data API.</p>
+            <p>3. Provide a default link to web friendly data, use 'rdf_seealso' as spatial feature attribute
+              to point to the web friendly representation of the feature accessd through the SDI
+            </p>
             <figure>
               <img src="images/bp28-example.PNG"
                 alt="Example of providing an alternative access path to WFS GML source data" />
@@ -2112,8 +2023,7 @@ a:Dataset a dcat:Dataset ;
           significant departures from contemporary practices used within SDIs. That's why this topic is included in this Best Practice.</p>
        <p>Crucially, the use of links is predicated on the ability to identify the origin and
           target, or <em>beginning</em> and <em>end</em>, of the link. <a
-            href="#globally-unique-ids">Best Practice 6: Use globally unique HTTP identifiers for
-            spatial things</a> is a prerequisite.</p>
+            href="#globally-unique-ids">Best Practice 6: Use globally unique persistent HTTP URIs for spatial things</a> is a prerequisite.</p>
         <p>This section extends [[DWBP]] by providing a best practice about
             <em>creating</em> links between the resources described inside datasets. <!-- revise -->Best practices
           detailing the use of links to support discovery are provided in <a href="#bp-discovery"
@@ -3347,7 +3257,7 @@ a:Dataset a dcat:Dataset ;
       <p><dfn data-lt="ellipsoid|ellipsoids">Ellipsoid</dfn>: An ellipsoid is a closed quadric surface that is a three-dimensional analogue of an ellipse. In <em>geodesy</em> a <strong>reference ellipsoid</strong> is a mathematically defined surface that approximates the <a>geoid</a>.</p>
       <p><dfn>Extent</dfn>: The area covered by something. Within this document we always imply
         spatial extent; e.g. size or shape that may be expresses using coordinates. </p>
-      <p><dfn>Feature</dfn>: Abstraction of real world phenomena. <span
+      <p><dfn data-lt="feature|features">Feature</dfn>: Abstraction of real world phenomena. <span
           style="background-color:yellow">Compare with the <a
             href="http://registry.it.csiro.au/sandbox/iso-tc211/terms/168">ISO
           definition</a>.</span>

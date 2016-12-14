@@ -1,0 +1,312 @@
+@prefix : <https://github.com/w3c/sdw/raw/gh-pages/eo-qb/ANU-LED-example.ttl#> .
+@prefix qb4st: <http://www.w3.org/ns/qb4st/> .
+@prefix ogc: <http://www.opengis.net/ont/geosparql#> .
+@prefix qb: <http://purl.org/linked-data/cube#> .
+@prefix ssn: <http://purl.oclc.org/NET/ssnx/ssn#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sweet: <http://sweet.jpl.nasa.gov/2.3/prop.owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sdmx-concept:  <http://purl.org/linked-data/sdmx/2009/concept#> .
+@prefix cci-platform: <http://vocab-test.ceda.ac.uk/collection/cci/platform/> .
+@prefix cci-sensor: <http://vocab-test.ceda.ac.uk/collection/cci/sensor/> .
+@prefix cci-dataType: <http://vocab-test.ceda.ac.uk/collection/cci/dataType/> .
+
+<http://www.example.org/ANU-LED-example> a owl:Ontology ;
+    owl:imports <http://purl.org/linked-data/cube> .
+
+###################################################################
+# #
+# #       Dataset
+# #
+###################################################################
+
+:exampleDataset a qb:DataSet, prov:Entity ;
+    qb:structure :exampleStructure ;
+    :instrument :OLI ;
+    :satellite :landsat-8 ;
+    :band "4" ;
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    :coverageTemporalDomain :timeDomain ;
+    prov:wasGeneratedBy :ANU-led-resampling ;
+    prov:wasDerivedFrom :AGDC .
+
+###################################################################
+# #
+# #       OWL-Time description
+# #
+###################################################################
+
+:timeDomain a time:Interval ;
+    time:hasBeginning :timeBeginning ;
+    time:hasEnd :timeEnd .
+    
+:timeBeginning a time:Instant ;
+    time:inXSDDateTime "2001-10-26T21:32:52"^^xsd:dateTime .
+
+:timeEnd a time:Instant ;
+	time:inXSDDateTime "2001-10-26T21:32:52"^^xsd:dateTime .
+
+###################################################################
+# #
+# #       SSN description
+# #
+###################################################################
+
+:landsat-8 a ssn:Platform ;
+    owl:sameAs cci-platform:plat_landsat_8 .
+
+:OLI a ssn:Sensor ;
+    ssn:onPlatform :landsat-8 ;
+    ssn:hasMeasurementCapability :oli-capability ;
+    ssn:observes :reflectance ;
+    owl:sameAs cci-sensor:sens_oli .
+
+:oli-capability a ssn:MeasurementCapability ;
+    ssn:forProperty :reflectance .
+
+:reflectance a ssn:Property, skos:Concept ;
+    owl:sameAs sweet:Reflectance ;
+    owl:sameAs cci-dataType:dtype_sr .
+
+###################################################################
+# #
+#        PROV-O description
+# #
+# #################################################################
+
+:ANU-led-resampling a prov:Activity ;
+    prov:wasAssociatedWith :DmitryBrizhinev ;
+    prov:used :AGDC .
+
+:DmitryBrizhinev a prov:Agent, prov:Person ;
+    foaf:givenName "Dmitry"^^xsd:string ;
+    foaf:mbox      <mailto:dmitry.brizhinev@anu.edu.au> .
+
+:AGDC a prov:Collection ;
+    prov:wasAssociatedWith :GeoscienceAustralia ;
+    prov:hadMember :example-tile .
+
+:example-tile a prov:Entity ;
+    prov:alternateOf <http://dapds00.nci.org.au/thredds/catalog/rs0/tiles/EPSG4326_1deg_0.00025pixel/LS8_OLI_TIRS/148_-035/2016/catalog.html?dataset=rs0/tiles/EPSG4326_1deg_0.00025pixel/LS8_OLI_TIRS/148_-035/2016/LS8_OLI_TIRS_FC_148_-035_2016-01-12T23-55-57.tif> .
+
+:GeoscienceAustralia a prov:Agent, prov:Organization .
+
+###################################################################
+# #
+#        Dimensions and attributes
+# #
+# #################################################################
+
+:exampleStructure a qb4st:SpatioTemporalDSD ;
+    qb:component :spatialDomainComponent ,
+                 :temporalDomainComponent ,
+                 :latitudeComponent ,
+                 :longitudeComponent ,
+                 :timeComponent ,
+                 :satelliteComponent ,
+                 :instrumentComponent ,
+                 :bandComponent ,
+                 :dataComponent ,
+                 :dggsCellComponent ,
+                 :dggsLevelSquareComponent ,
+                 :dggsLevelPixelComponent ,
+                 :resolutionComponent ,
+                 :boundsComponent .
+
+:spatialDomainComponent a qb4st:SpatialComponentSpecification ;
+    qb:attribute :coverageSpatialDomain .
+    
+:temporalDomainComponent a qb4st:TemporalComponentSpecification ;
+    qb:attribute :coverageTemporalDomain .
+
+:latitudeComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :lat .
+
+:longitudeComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :long .
+
+:timeComponent a qb4st:TemporalComponentSpecification ;
+    qb:dimension :time .
+
+:satelliteComponent a qb:ComponentSpecification ;
+    qb:attribute :satellite .
+
+:instrumentComponent a qb:ComponentSpecification ;
+    qb:attribute :instrument .
+
+:bandComponent a qb:ComponentSpecification ;
+    qb:attribute :band .
+
+:dataComponent a qb:ComponentSpecification ;
+    qb:measure :dataValue .
+
+:dggsCellComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :dggsCell .
+
+:dggsLevelSquareComponent a qb:ComponentSpecification ;
+    qb:dimension :dggsLevelSquare .
+
+:dggsLevelPixelComponent a qb:ComponentSpecification ;
+    qb:dimension :dggsLevelPixel .
+
+:resolutionComponent a qb:ComponentSpecification ;
+    qb:attribute :resolution .
+
+:boundsComponent a qb4st:SpatialComponentSpecification ;
+    qb:attribute :bounds .
+
+###################################################################
+# #
+#        New properties for the attributes
+# #
+# #################################################################
+
+:coverageSpatialDomain a qb:AttributeProperty, qb4st:SpatialProperty ;
+    rdfs:subPropertyOf :bounds .
+    
+:coverageTemporalDomain a qb:AttributeProperty, qb4st:TemporalProperty ;
+    rdfs:range time:DateTimeInterval ;
+    qb:concept sdmx-concept:timePeriod .
+
+:lat a qb4st:SpatialDimension ;
+    rdfs:subPropertyOf geo:lat ;
+    qb4st:crs <http://www.opengis.net/def/crs/EPSG/0/4326> .
+
+:long a qb4st:SpatialDimension ;
+    rdfs:subPropertyOf geo:long ;
+    qb4st:crs <http://www.opengis.net/def/crs/EPSG/0/4326> .
+
+:time a qb:DimensionProperty, qb4st:TemporalProperty ;
+    rdfs:range xsd:dateTime ;
+    qb:concept sdmx-concept:timePeriod .
+
+:satellite a qb:AttributeProperty ;
+    rdfs:range ssn:Platform ;
+    qb:concept sdmx-concept:collMethod .
+
+:instrument a qb:AttributeProperty ;
+    rdfs:range ssn:Sensor ;
+    qb:concept sdmx-concept:collMethod .
+
+:band a qb:AttributeProperty ;
+    rdfs:range xsd:integer .
+
+:dataValue a qb:MeasureProperty ;
+    rdfs:range [owl:unionOf(xsd:anyURI xsd:integer)] ;
+    qb:concept :reflectance ;
+    qb:concept sdmx-concept:obsValue .
+
+:dggsCell a qb4st:SpatialDimension ;
+    qb4st:crs "rHEALPix WGS84 Ellipsoid" ;
+    rdfs:range xsd:string ;
+    qb:concept sdmx-concept:refArea .
+
+:dggsLevelSquare a qb:DimensionProperty ;
+    rdfs:range xsd:integer .
+
+:dggsLevelPixel a qb:DimensionProperty ;
+    rdfs:range xsd:integer .
+
+:resolution a qb:AttributeProperty ;
+    rdfs:range :pixelsPerDegree .
+
+:bounds a qb:AttributeProperty, qb4st:SpatialProperty ;
+    rdfs:subPropertyOf ogc:asWKT ;
+    rdfs:domain :GridSquare ;
+    qb4st:crs <http://www.opengis.net/def/crs/EPSG/0/4326> ;
+    qb:concept sdmx-concept:refArea .
+
+# #################################################################
+# #
+# #    Custom datatype definition
+# #
+# #################################################################
+
+:pixelsPerDegree rdf:type rdfs:Datatype ;
+    owl:equivalentClass xsd:double .
+
+# #################################################################
+# #
+# #    Custom class definition
+# #
+# #################################################################
+
+:GridSquare a owl:Class ;
+    rdfs:subClassOf qb:Observation , foaf:Image , ogc:Geometry .
+
+:Pixel a owl:Class ;
+    rdfs:subClassOf :GridSquare .
+
+# #################################################################
+# #
+# #    Extra properties not part of Data Cube model
+# #
+# #################################################################
+
+:containedInSquare a owl:ObjectProperty ;
+    rdfs:subPropertyOf ogc:sfWithin ;
+    owl:inverseOf :containsSquare ;
+    rdfs:domain :GridSquare ;
+    rdfs:range :GridSquare .
+
+:containsSquare a owl:ObjectProperty ;
+    rdfs:subPropertyOf ogc:sfContains ;
+    rdfs:domain :GridSquare ;
+    rdfs:range :GridSquare .
+
+###################################################################
+# #
+#        Observations
+# #
+# #################################################################
+
+:s1 a :GridSquare ;
+    qb:dataSet :exampleDataset ;
+    :lat "91.6667";
+    :long "40.0270";
+    :time "2001-10-26T21:32:52"^^xsd:dateTime ;
+    :dataValue "http://www.example.org/led-example-image-R000" ;
+    :resolution "0.9"^^:pixelsPerDegree ;
+    :dggsCell "R000" ;
+    :dggsLevelSquare "3" ;
+    :dggsLevelPixel "4" ;
+    :bounds  "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    prov:wasDerivedFrom :example-tile .
+
+:s2 a :GridSquare ;
+    qb:dataSet :exampleDataset ;
+    :lat "90.5556";
+    :long "41.2471";
+    :time "2001-10-26T21:32:52"^^xsd:dateTime ;
+    :dataValue "http://www.example.org/led-example-image-R0000" ;
+    :resolution "2.7"^^:pixelsPerDegree ;
+    :dggsCell "R0000" ;
+    :dggsLevelSquare "4" ;
+    :dggsLevelPixel "5" ;
+    :bounds  "POLYGON((90 41.87, 91.11 41.87, 91.11 40.62, 90 40.62, 90 41.87))"^^ogc:wktLiteral ;
+    prov:wasDerivedFrom :example-tile ;
+    :containedInSquare :s1 .
+
+:p1 a :Pixel ;
+    qb:dataSet :exampleDataset ;
+    :lat "90.5556";
+    :long "41.2444";
+    :time "2001-10-26T21:32:52"^^xsd:dateTime ;
+    :dataValue "15"^^xsd:integer ;
+    :resolution "2.7"^^:pixelsPerDegree ;
+    :dggsCell "R00004" ;
+    :dggsLevelSquare "5" ;
+    :dggsLevelPixel "5" ;
+    :bounds  "POLYGON((90.37 41.45, 90.74 41.45, 90.74 41.04, 90.37 41.04, 90.37 41.45))"^^ogc:wktLiteral ;
+    prov:wasDerivedFrom :example-tile ;
+    :containedInSquare :s1 ;
+    :containedInSquare :s2 .
+
