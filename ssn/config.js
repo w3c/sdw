@@ -19,8 +19,8 @@ var respecConfig = {
 			companyURL: "http://geog.ucsb.edu/"
 		}, {
 			name: "Danh Le Phuoc",
-			company: “Technical University of Berlin”,
-			companyURL: "http://tu-berlin.de/“
+			company: "Insight Centre for Data Analytics",
+			companyURL: "http://www.insight-centre.org/"
 		}, {
 			name: "Armin Haller",
       company: "Australian National University",
