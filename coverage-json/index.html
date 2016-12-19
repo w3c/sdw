@@ -192,14 +192,35 @@
 
     <section id="datavalues">
       <h3>Encoding of data values</h3>
-      <p>Data in CoverageJSON is held in Range objects which represent multi-dimensional arrays.
+      <p>Data in CoverageJSON is held in Range objects, which represent multi-dimensional arrays.
          There are two subtypes of Range objects:</p>
       <ul>
-        <li>An <dfn>NdArray</dfn> object encodes a multi-dimensional array in its entirety.</li>
+        <li>An <dfn>NdArray</dfn> object encodes a multi-dimensional array in its entirety. In fact, the data values are encoded in a
+          <em>one-dimensional</em> array, with a <code>shape</code> property that defines how to "unwrap" the one-dimensional array into
+          a multi-dimensional one.</li>
         <li>A <dfn>TiledNdArray</dfn> object splits up a multi-dimensional array into several parts and links to
          those parts via URI templates (RFC 6570) where each part is an NdArray object.
          A single TiledNdArray may define several ways of splitting up the array (each way is a <em>tileset</em>), to cater for different access scenarios.</li>
       </ul>
+      <p class="note">Readers may wonder why multi-dimensional arrays are not encoded as nested arrays in CoverageJSON. Nested arrays
+        (i.e. "arrays of arrays") are harder to manipulate and reason over, since there is no guarantee that the inner arrays are of a consistent length.
+        With a one-dimensional array it is easy to verify that <code>array.length</code> matches the required number of elements, defined by the shape of
+        the domain and the numbers in the <code>shape</code> property.
+        In addition, Javascript engines can treat one-dimensional arrays more efficiently than nested arrays. APIs can be provided to extract slices in any
+        dimension as if the array were truly multi-dimensional. This mirrors the approach taken by libraries such as <a href="http://www.numpy.org">numpy</a>.</p>
+      <p>Here is an example of an NdArray, containing all data values inline:</p><pre>
+{
+  "type" : "NdArray",
+  "dataType": "float",
+  "axisNames": ["t", "y", "x"],
+  "shape": [1, 90, 90],
+  "values": [
+    12.2, 12.0, 13.3, ...
+    /* 8100 numbers (1*90*90) in row-major order */
+  ]
+}
+      </pre>
+
       <p>The following illustrates how a coverage may be split up into a particular tileset:</p>
       <img src="covjson-tiling.png" width="500"/>
       <pre>
@@ -215,19 +236,8 @@
 }
       </pre>
 
-      <p>A single tile has the following structure:</p>
-      <pre>
-{
-  "type" : "NdArray",
-  "dataType": "float",
-  "axisNames": ["t", "y", "x"],
-  "shape": [1, 90, 90],
-  "values": [
-    12.2, 12.0, 13.3, ...
-    /* 8100 numbers (1*90*90) in row-major order */
-  ]
-}
-      </pre>
+      <p>Each tile is an NdArray, encoded as above.</p>
+
     </section>
 
     <section id="parameters">
