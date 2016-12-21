@@ -76,9 +76,9 @@ DIV.test H4 {
         whenever you place an online order, the order date is always part of your order. When you reserve a car at a car
         rental site, you have to specify the dates you need it. In response to this need, a temporal ontology, OWL-Time,
         has been developed for describing the temporal content of Web pages, or the temporal properties of any resource
-        denoted using a web identifier (URI), including real-world things if desired.&nbsp;</p>
+        denoted using a web identifier (URI), including real-world things if desired.</p>
       <p>This document presents the OWL encodings of the ontology. For a first-order logic axiomatization of the
-        ontology, see [<a href="#HP-04"><span style="text-decoration: underline;">HP-04</span></a>].&nbsp;<em> </em></p>
+        ontology, see [<a href="#HP-04"><span style="text-decoration: underline;">HP-04</span></a>].</p>
     </section>
     <section id="changes">
       <h2>Changes from previous versions</h2>
@@ -87,13 +87,13 @@ DIV.test H4 {
         with modifications proposed by Cox, [<a href="#CO-15">CO-15</a>] to support more general temporal positions.
         Specifically: </p>
       <ul>
-        <li><code>GeneralDateTimeDescription </code>and <code>GeneralDurationDescription </code>generalize the
+        <li><code>GeneralDateTimeDescription</code> and <code>GeneralDurationDescription</code> generalize the
           corresponding classes from the draft, for cases which the temporal reference system is not fixed to the
           Gregorian Calendar in advance</li>
-        <li><code>TimePosition </code>and <code>Duration </code>enable position or duration to be described using a
+        <li><code>TimePosition</code> and <code>Duration</code> enable position or duration to be described using a
           number or nominal value <br>
         </li>
-        <li>the property <code>hasTRS </code>enables time values to be associated with a temporal reference system,
+        <li>the property <code>hasTRS</code> enables time values to be associated with a temporal reference system,
           represented by the 'stub' class <code>TRS</code></li>
       </ul>
       <p>A number of requirements relating to Time were identified in the <a href="http://www.w3.org/TR/sdw-ucr/#arTimeOntologyInOWL">Spatial
@@ -125,8 +125,8 @@ DIV.test H4 {
         predicates that concern temporal behaviour and properties will usually be part of an application or associated
         with a community of practice. Nevertheless, there may be some generic predicates that could be conveniently
         provided as part of the generic time ontology. Some may already exist in the ontology (<code>before</code>, <code>after</code>,
-        <code>hasEnd</code>, <code>hasBeginning</code>) but their <code>rdfs:domain</code> is <code>:TemporalEntity</code>,
-        so this would need to be generalized to avoid inappropriate entailments. Else predicates with similar names
+        <code>hasEnd</code>, <code>hasBeginning</code>, <code>intervalEquals</code> ) but their <code>rdfs:domain</code> is <code>:TemporalEntity</code> or <code>:ProperInterval</code>,
+        so this may need to be generalized to avoid inappropriate entailments. Else predicates with similar names
         could be provided for linking to other entities. </p>
       <p class="note">The SDWWG requirement <a href="http://www.w3.org/TR/sdw-ucr/#ValidTime">5.56 Valid time</a>
         relates to <a href="https://www.w3.org/2015/spatial/track/issues/65">ISSUE-65</a>.
@@ -137,9 +137,9 @@ DIV.test H4 {
         concerns, by extending the <code>xsd:dateTime</code> syntax . The editors consider that would be the wrong
         direction since it would make the encoding inconsistent with all XSD-based processors. On the other hand,
         specific RDF properties matching the ones proposed in EDTF could be used to make it amenable to RDF reasoning.
-        However, we should consider doing this in a separate namespace. Note that some of the concerns in EDTF are
+        However, it could be done in a separate namespace. Note that some of the concerns in EDTF are
         already accommodated in OWL-Time (e.g. 'unspecified' appears to only require the timeUnit to be chosen
-        appropriately).&nbsp; </p>
+        appropriately). </p>
       <p class="note">The SDWWG requirement <a href="http://www.w3.org/TR/sdw-ucr/#TemporalVagueness">5.49 Temporal
           vagueness</a> relates to <a href="https://www.w3.org/2015/spatial/track/issues/26">ISSUE-26</a>.
       </p>
@@ -186,14 +186,14 @@ DIV.test H4 {
             <td><code>http://www.w3.org/2000/01/rdf-schema#</code></td>
           </tr>
           <tr>
-            <td><code>time </code>or <br>
+            <td><code>time</code> or <br>
               <em><code>no prefix</code></em></td>
             <td><code>http://www.w3.org/2006/time#</code></td>
           </tr>
-          <tr>
+<!--          <tr>
             <td><code>tzont</code></td>
             <td> <code>http://www.w3.org/2006/timezone#</code> </td>
-          </tr>
+          </tr> -->
           <tr>
             <td><code>xsd</code></td>
             <td><code>http://www.w3.org/2001/XMLSchema#</code></td>
@@ -209,23 +209,23 @@ DIV.test H4 {
           overlaps) developed by Allen and Ferguson [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>] for
           representing qualitative temporal information, and to address the problem of reasoning about such information.
         </p>
-        <p>This is implemented in the ontology starting with a class <code>TemporalEntity </code>which has properties
-          that link to the temporal instants that define its beginning and end. There are two subclasses<code></code>: <code>Interval</code>
+        <p>This is implemented in the ontology starting with a class <code>TemporalEntity</code> which has properties
+          that link to the temporal instants that define its beginning and end. There are two subclasses: <code>Interval</code>
           and <code>Instant</code>, and they are the only two subclasses of <code>TemporalEntity</code>. Intervals
           are, intuitively, things with extent and instants are, intuitively, point-like in that they have no interior
           points, but it is generally safe to think of an instant as an interval with zero length, where the beginning
           and end are the same. The class <code>Interval</code> has one subclass <code>ProperInterval</code>, which
           corresponds with the common understanding of intervals, in that the beginning and end are distinct, and whose
-          membership is therefore disjoint from <code>Instant</code>. The class <code>ProperInterval </code>has one
+          membership is therefore disjoint from <code>Instant</code>. The class <code>ProperInterval</code> has one
           subclass, <code>DateTimeInterval</code>, whose position and extent may be expressed using a single <code>GeneralDateTimeDescription
-            </code>or <code>xsd:dateTime</code>. </p>
+           </code> or <code>xsd:dateTime</code>. </p>
         <figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes" src="./images/TemporalEntity.png">
           <figcaption>Core model model of temporal entities.</figcaption> </figure>
 <!-- hasaDuration used consistently
         <p class="issue"  data-number="999">(Was local Issue 5) <code>:durationOf</code> was mentioned in the original draft, but not in the published
           ontology. It appears to have been replaced by <code>:hasDuration</code>. </p>
           -->
-        <code></code>
+        
         <p>Allen and Ferguson [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>] have developed a calculus of
           binary relations on intervals (e.g., meets, overlaps) for representing qualitative temporal information and
           address the problem of reasoning about such information. The relations between intervals defined in their
@@ -235,8 +235,7 @@ DIV.test H4 {
       </section>
       <section id="trs-clock-calendar">
         <h3>Temporal reference systems, clocks, calendars</h3>
-        The position of an Instant may be given using the datatype <code>xsd:dateTime</code><span style="font-family: monospace;">
-        </span>which is built in to OWL 2&nbsp;<code></code>[<a href="#OWL-2">OWL-2</a>], and uses the conventional
+        The position of an Instant may be given using the datatype <code>xsd:dateTime</code>which is built in to OWL 2[<a href="#OWL-2">OWL-2</a>], and uses the conventional
         Gregorian calendar and 24-hour clock. While this satisfies most web applications, many other calendars and
         temporal reference systems are used in particular cultural and scholarly contexts. For example, the Julian
         calendar was used throughout Europe until the 16<sup>th</sup> century, and is still used for computing key dates
@@ -252,7 +251,7 @@ DIV.test H4 {
         and duration must be flexible, and annotated with the <em>temporal reference system </em>in use. <br>
         <p>A set of ordered intervals (e.g. named dynasties, geological periods, geomagnetic reversals, tree rings) can
           make a simple form of temporal reference system that supports logical reasoning, known as an <em>ordinal
-            temporal reference system </em>[<a href="#ISO-19108">ISO-19108</a>]. &nbsp; </p>
+            temporal reference system </em>[<a href="#ISO-19108">ISO-19108</a>]. </p>
         <p>Measurement of duration needs a <em>clock</em>. In its most general form a clock is just a regularly
           repeating physical event ('tick') and a counting mechanism for the 'ticks'. These counts may be used to
           logically relate two events and to calculate a duration between the events.</p>
@@ -268,28 +267,26 @@ DIV.test H4 {
       </section>
       <section id="time-position-units">
         <h3>Time position and time units</h3>
-        OWL 2 has two built-in datatypes relating to time: <code>xsd:dateTime </code>and <code>xsd:dateTimeStamp </code>[<a
+        <p>OWL 2 has two built-in datatypes relating to time: <code>xsd:dateTime</code> and <code>xsd:dateTimeStamp </code>[<a
 
           href="#OWL-2">OWL-2</a>]. Other XSD types such as <code>xsd:date</code>, <code>xsd:gYear</code>, <code>xsd:gMonth
-          </code>and <code>xsd:gMonth</code> [<a href="#XSD-D">XSD-D</a>] are also commonly used in OWL applications.
+         </code> and <code>xsd:gMonth</code> [<a href="#XSD-D">XSD-D</a>] are also commonly used in OWL applications.
         These provide for a compact representation of time positions using the conventional Gregorian calendar and
-        24-hour clock, with timezone offset from UTC if required. <br>
-        <br>
-        Three classes in the ontology support a more explicit description of temporal position<code></code>. All have a
-        property <code>hasTRS </code>to indicate the temporal reference system <code>TRS.&nbsp;</code><code>TimePosition
-          </code>has properties to alternatively describe the position using a number (i.e. a temporal coordinate), or a
-        nominal value (e.g. geologic time period, dynastic name, archeological era). <code>GeneralDateTimeDescription </code>has
+        24-hour clock, with timezone offset from UTC if required.</p>
+        <p>Three classes in the ontology support a more explicit description of temporal position. All have a
+        property <code>hasTRS</code> to indicate the temporal reference system <code>TRS</code>. <code>TimePosition</code> has properties to alternatively describe the position using a number (i.e. a temporal coordinate), or a
+        nominal value (e.g. geologic time period, dynastic name, archeological era). <code>GeneralDateTimeDescription</code> has
         a set of properties to specify a date-time using calendar and clock elements. Its subclass <code>DateTimeDescription
-          </code>fixes the temporal reference system to the Gregorian calendar, so the <code>hasTRS </code>property
-        may be omitted on individuals from this class.
-        <p class="note"><code>DateTimeDescription </code>covers the case that was defined in the original note, and
-          retains the original class name.&nbsp; </p>
+         </code> fixes the temporal reference system to the Gregorian calendar, so the <code>hasTRS</code> property
+        may be omitted on individuals from this class.</p>
+        <p class="note"><code>DateTimeDescription</code> covers the case that was defined in the original note, and
+          retains the original class name. </p>
         <figure> <img title="DataTimePosition" alt="UML-style diagram of classes for temporal position" src="./images/DateTimeDescription.png">
           <figcaption>Classes for temporal position.</figcaption> </figure>
         <p> Following the theoretical basis laid out by Allen and Ferguson, a time position has a finite extent,
           corresponding to the precision or <em>temporal unit </em>used. Thus,a <code>GeneralDateTimeDescription</code>
           or <code>DateTimeDescription</code> is strictly always a description of an interval (<code>DateTimeInterval</code>),
-          not an instant, with a duration corresponding to the value of its<span style="font-family: monospace;"> </span><code>unitType</code>.
+          not an instant, with a duration corresponding to the value of its<code>unitType</code>.
         </p>
         <p>We use two different sets of properties for <code>GeneralDateTimeDescription</code> or <code>DateTimeDescription</code>
           and <code>GeneralDurationDescription</code> or <code>DurationDescription</code>, because their ranges are
@@ -305,16 +302,18 @@ DIV.test H4 {
           day 2 hours, or 26 hours, or 1560 minutes, and so on. It is useful to be able to talk about these descriptions
           in a convenient way as independent objects, and to talk about their equivalences. An interval can have
           multiple duration descriptions (e.g., 2 days, 48 hours), but can only have one duration. </p>
-        <p>Three classes support the description of the duration of an entity.&nbsp;<code>Duration </code>has
+        <p>Three classes support the description of the duration of an entity. <code>Duration</code> has
           properties to describe the duration using a scaled number (i.e. a temporal quantity). <code>GeneralDurationDescription
-            </code>has a set of properties to specify a duration using calendar and clock elements, the definitions of
-          which are given in the associated TRS description. Its subclass <code>DurationDescription </code>fixes the
-          temporal reference system to the Gregorian calendar, so the <code>hasTRS </code>property may be omitted on
+           </code> has a set of properties to specify a duration using calendar and clock elements, the definitions of
+          which are given in the associated TRS description. Its subclass <code>DurationDescription</code> fixes the
+          temporal reference system to the Gregorian calendar, so the <code>hasTRS</code> property may be omitted on
           individuals from this class.</p>
+        <!-- closed - use the OGC URI 
         <p class="issue"  data-number="63">(Was local Issue 6)
           What is the best URI for the Gregorian calendar/clock system? <code>&lt;http://dbpedia.org/resource/Gregorian_calendar&gt;</code>
           or <code>&lt;http://www.opengis.net/def/uom/ISO-8601/0/Gregorian&gt;</code> . </p>
-        <p class="note"><code>DurationDescription </code>covers the case that was in the original note, and retains the
+          -->
+        <p class="note"><code>DurationDescription</code> covers the case that was in the original note, and retains the
           original class name. </p>
         <figure> <img title="Duration description" alt="UML representation of Duration Description and associated classes"
 
@@ -351,8 +350,12 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>Two properties, <code>before</code>,<code> after</code>, support ordering relationships between two <code>TemporalEntity</code>s.
-          </p>
+        <p>Two properties, <code>before</code>,<code> after</code>, support ordering relationships between two <code>TemporalEntity</code>s.</p>
+        <p>Two properties, <code>hasBeginning</code>, <code>hasEnd</code>, support the describing the bounds of a <code>TemporalEntity</code>.</p>
+        <p>Two properties, <code>hasDuration</code>, <code>hasDurationDescription</code>, provide alternative ways to describe the extent of a <code>TemporalEntity</code>.</p>
+        <p>One property <code>hasMember</code> supports the inclusion of temporal entities in other resources. </p>
+          describe the extent of a <code>TemporalEntity</code>. </p>
+
         <h4 id="time:before">Property: before</h4>
         <table class="definition" style="width: 812px;">
           <thead>
@@ -382,7 +385,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:after">Property: after</h4>
         <table class="definition" style="width: 812px;">
           <thead>
@@ -407,8 +410,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>Two properties, <code>hasBeginning</code>, <code>hasEnd</code>, support the describing the bounds of a <code>TemporalEntity</code>.
-        </p>
+
         <h4 id="time:hasBeginning">Property: hasBeginning</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -434,7 +436,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:hasEnd">Property: hasEnd</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -460,8 +462,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>Two properties, <code>hasDuration</code>, <code>hasDurationDescription</code>, provide alternative ways to
-          describe the extent of a <code>TemporalEntity</code>. </p>
+
         <h4 id="time:hasDuration">Property: hasDuration</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -487,7 +488,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:hasDurationDescription">Property: hasDurationDescription</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -513,7 +514,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>One property <code>hasMember</code> supports the inclusion of temporal entities in other resources. </p>
+
         <h4 id="time:hasMember">Property: hasMember</h4>
         <table class="definition" style="width: 812px;">
           <thead>
@@ -537,8 +538,8 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
       </section>
+
       <section id="Interval">
         <h3 id="time:Interval">Class: Interval</h3>
         <table class="definition" style="width: 812px;">
@@ -557,8 +558,8 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>One property <code>inside </code>links to an <code>Instant </code>that falls inside the <code>Interval</code>.
-        </p>
+        <p>One property <code>inside</code> links to an <code>Instant</code> that falls inside the <code>Interval</code>.</p>
+
         <h4 id="time:inside">Property: inside</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -585,8 +586,8 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
       </section>
+
       <section id="ProperInterval">
         <h3 id="time:ProperInterval">Class: ProperInterval</h3>
         <table class="definition" style="width: 812px;">
@@ -610,12 +611,13 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>Thirteen properties support the set of interval relations defined by Allen and Ferguson [<a href="#AF-97">AF-97</a>].
-          </p>
+
+        <p>Thirteen properties support the set of interval relations defined by Allen and Ferguson [<a href="#AF-97">AF-97</a>].</p>
         <figure> <img style="width: 545px; height: 322px;" title="Allen's Interval Relations" alt="Schematic of Interval Relations"
 
             src="./images/IntervalRelations.png"> <figcaption>The possible relations between time periods
             (equality not shown) [<a href="#AF-97">AF-97</a>]</figcaption> </figure>
+
         <h4 id="time:intervalEquals">Property: intervalEquals</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -627,7 +629,7 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalEquals </em>another proper interval T<sub>2</sub>,
                 then the beginning of T<sub>1</sub> is the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
-                the end of T<sub>2</sub>.&nbsp; </td>
+                the end of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -643,7 +645,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+
         <h4 id="time:intervalBefore">Property: intervalBefore</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -654,7 +656,7 @@ DIV.test H4 {
             <tr>
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalBefore </em>another proper interval T<sub>2</sub>,
-                then the end of T<sub>1</sub> is before the beginning of T<sub>2</sub>.&nbsp; </td>
+                then the end of T<sub>1</sub> is before the beginning of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -674,7 +676,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+
         <h4 id="time:intervalAfter">Property: intervalAfter</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -685,7 +687,7 @@ DIV.test H4 {
             <tr>
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalAfter </em>another proper interval T<sub>2</sub>,
-                then the beginning of T<sub>1</sub> is after the end of T<sub>2</sub>.&nbsp; </td>
+                then the beginning of T<sub>1</sub> is after the end of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -697,7 +699,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+
         <h4 id="time:intervalMeets">Property: intervalMeets</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -708,7 +710,7 @@ DIV.test H4 {
             <tr>
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalMeets </em>another proper interval T<sub>2</sub>,
-                then the end of T<sub>1</sub> is the beginning of T<sub>2</sub>.&nbsp; </td>
+                then the end of T<sub>1</sub> is the beginning of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -724,7 +726,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+
         <h4 id="time:intervalMetBy">Property: intervalMetBy</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -735,7 +737,7 @@ DIV.test H4 {
             <tr>
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalMetBy </em>another proper interval T<sub>2</sub>,
-                then the beginning of T<sub>1</sub> is the end of T<sub>2</sub>.&nbsp; </td>
+                then the beginning of T<sub>1</sub> is the end of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -747,7 +749,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+
         <h4 id="time:intervalOverlaps">Property: intervalOverlaps</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -759,8 +761,8 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalOverlaps </em>another proper interval T<sub>2</sub>,
                 then the beginning of T<sub>1</sub> is before the beginning of T<sub>2</sub>, the end of T<sub>1</sub>
-                is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before the end of T<sub>2</sub>.&nbsp;
-                </td> </tr>
+                is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before the end of T<sub>2</sub>. </td> 
+            </tr>
             <tr>
               <td>Instance of:</td>
               <td>owl:ObjectProperty</td>
@@ -775,7 +777,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+
         <h4 id="time:intervalOverlappedBy">Property: intervalOverlappedBy</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -787,8 +789,8 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalOverlappedBy </em>another proper interval T<sub>2</sub>,
                 then the beginning of T<sub>1</sub> is after the beginning of T<sub>2</sub>, the beginning of T<sub>1</sub>
-                is before the end of T<sub>2</sub>, and the end of T<sub>1</sub> is after the end of T<sub>2</sub>.&nbsp;
-                </td> </tr>
+                is before the end of T<sub>2</sub>, and the end of T<sub>1</sub> is after the end of T<sub>2</sub>.</td> 
+            </tr>
             <tr>
               <td>Instance of:</td>
               <td>owl:ObjectProperty</td>
@@ -799,7 +801,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:intervalStarts">Property: intervalStarts</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -811,7 +813,7 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalStarts </em>another proper interval T<sub>2</sub>,
                 then the beginning of T<sub>1</sub> is the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
-                before the end of T<sub>2</sub>.&nbsp; </td>
+                before the end of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -827,7 +829,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:intervalStartedBy">Property: intervalStartedBy</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -839,7 +841,7 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalStarted </em>another proper interval T<sub>2</sub>,
                 then the beginning of T<sub>1</sub> is the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
-                after the end of T<sub>2</sub>.&nbsp; </td>
+                after the end of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -851,7 +853,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:intervalDuring">Property: intervalDuring</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -863,7 +865,7 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalDuring </em>another proper interval T<sub>2</sub>,
                 then the beginning of T<sub>1</sub> is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub>
-                is before the end of T<sub>2</sub>.&nbsp; </td>
+                is before the end of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -879,7 +881,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:intervalContains">Property: intervalContains</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -891,7 +893,7 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalContains </em>another proper interval T<sub>2</sub>,
                 then the beginning of T<sub>1</sub> is before the beginning of T<sub>2</sub>, and the end of T<sub>1</sub>
-                is after the end of T<sub>2</sub>.&nbsp; </td>
+                is after the end of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -903,7 +905,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:intervalFinishes">Property: intervalFinishes</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -915,7 +917,7 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalFinishes </em>another proper interval T<sub>2</sub>,
                 then the beginning of T<sub>1</sub> is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub>
-                is the end of T<sub>2</sub>.&nbsp; </td>
+                is the end of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -931,7 +933,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:intervalFinishedBy">Property: intervalFinishedBy</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -943,7 +945,7 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>If a proper interval T<sub>1</sub> is <em>intervalFinishedBy </em>another proper interval T<sub>2</sub>,
                 then the beginning of T<sub>1</sub> is before the beginning of T<sub>2</sub>, and the end of T<sub>1</sub>
-                is the end of T<sub>2</sub>.&nbsp; </td>
+                is the end of T<sub>2</sub>. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -955,9 +957,11 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+
       </section>
+
       <section id="DateTimeInterval">
+
         <h3 id="time:DateTimeInterval">Class: DateTimeInterval</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -968,7 +972,7 @@ DIV.test H4 {
             <tr>
               <td>Definition:</td>
               <td><code>DateTimeInterval</code> is a subclass of <code>ProperInterval</code>, defined using the
-                multi-element<code> DateTimeDescription</code>.&nbsp;</td>
+                multi-element<code> DateTimeDescription</code>.</td>
             </tr>
             <tr>
               <td>Subclass of:</td>
@@ -976,9 +980,12 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
+        <p>The class <code>DateTimeInterval</code> is a subclass of <code>ProperInterval</code>, being an interval whose boundaries fall on the limits of a date-time description with truncated precision. 
+        Two properties <code>hasDateTimeDescription</code> and <code>xsdDateTime</code> provide alternative representations of the description of the interval.</p>
         <p>Any <code>TemporalEntity</code> has a duration, but only <code>DateTimeInterval</code> can have <code>DateTimeDescription</code>.
-          For example, May 8 has a <code>DateTimeDescription</code>, but the interval from 1:30pm, May 8, to 1:30pm,
-          May 9, does not. Both have a duration of a day.</p>
+          For example, May 8 can be expressed as a <code>DateTimeDescription</code>, but the interval from 1:30pm, May 8, to 1:30pm,
+          May 9, cannot. Both have a duration of a day.</p>
+
         <h4 id="time:hasDateTimeDescription">Property: hasDateTimeDescription</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -988,7 +995,7 @@ DIV.test H4 {
             </tr>
             <tr>
               <td>Definition:</td>
-              <td>Value of <code>DateTimeInterval </code>expressed as a structured value. </td>
+              <td>Value of <code>DateTimeInterval</code> expressed as a structured value. The beginning and end of the interval coincide with the limits of the shortest element of the description.</td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -1004,8 +1011,11 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:xsdDateTime">Property: xsdDateTime</h4>
+
+        <p class="issue"  data-number="126">How to use <code>:xsdDateTime</code> to describe a <code>:DateTimeInterval</code> is unclear at best, and appears to be untested. Propose deprecating it in the ontology, and removing it from the rec document. </p>
+
         <table class="definition" style="width: 812px;">
           <tbody>
             <tr>
@@ -1014,7 +1024,7 @@ DIV.test H4 {
             </tr>
             <tr>
               <td>Definition:</td>
-              <td>Value of <code>DateTimeInterval </code>expressed as a compact value.&nbsp; </td>
+              <td>Value of <code>DateTimeInterval</code> expressed as a compact value. The beginning and end of the interval coincide with the limits of the smallest non-zero element of the value.</td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -1030,11 +1040,14 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p class="issue"  data-number="998">(Was local Issue 7) Verify that this satisfies the SDWWG requirement <a href="http://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.53
+
+        <p class="issue"  data-number="125">(Was local Issue 7) Verify that this satisfies the SDWWG requirement <a href="https://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.58
             Update datatypes in OWL Time</a></p>
-        <p>&nbsp;</p>
+        
       </section>
+
       <section id="Instant">
+
         <h3 id="time:Instant">Class: Instant</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1079,11 +1092,11 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p class="issue" data-number="997">(Was local Issue 8) This property uses <code>xsd:dateTime</code> which was available in OWL v1. The datatype <code>xsd:dateTimeStamp</code>,
+        <p class="issue" data-number="125">(Was local Issue 8) This property uses <code>xsd:dateTime</code> which was available in OWL v1. The datatype <code>xsd:dateTimeStamp</code>,
           which makes the timezone element mandatory instead of optional, was added in OWL2. Should anything be added to
-          OWL-Time to allow for this? Need to balance backward compatibility concerns. See SDWWG requirement <a href="http://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.53
-            Update datatypes in OWL Time</a></p>
-        <p>&nbsp;</p>
+          OWL-Time to allow for this? Need to balance backward compatibility concerns. See SDWWG requirement 
+          <a href="http://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.58 Update datatypes in OWL Time</a></p>
+        
         <h4 id="time:inTimePosition">Property: inTimePosition</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1093,7 +1106,7 @@ DIV.test H4 {
             </tr>
             <tr>
               <td>Definition:</td>
-              <td>Position of an instant, expressed&nbsp; as a temporal coordinate or nominal value </td>
+              <td>Position of an instant, expressed as a temporal coordinate or nominal value </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -1109,7 +1122,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:inDateTime">Property: inDateTime</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1135,7 +1148,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
       </section>
       <section id="TRS">
         <h3 id="time:TRS">Class: TRS</h3>
@@ -1202,7 +1215,7 @@ DIV.test H4 {
             Different time models</a>, <a href="http://www.w3.org/TR/sdw-ucr/#TemporalReferenceSystem">5.48 Temporal
             reference system</a>, <a href="http://www.w3.org/TR/sdw-ucr/#NominalTemporalReferences">5.28 Nominal
             temporal references</a>.</p>
-        <p>&nbsp;</p>
+        
         <p><br>
         </p>
       </section>
@@ -1229,11 +1242,11 @@ DIV.test H4 {
             </tr>
             <tr>
               <td>Subclass of:</td>
-              <td>(time:numericPosition exactly 1)&nbsp; or (time:nominalPosition exactly 1)</td>
+              <td>(time:numericPosition exactly 1) or (time:nominalPosition exactly 1)</td>
             </tr>
           </tbody>
         </table>
-        <p>Two properties <code>nominalPosition </code>and <code>numericPosition </code>support the alternative
+        <p>Two properties <code>nominalPosition</code> and <code>numericPosition</code> support the alternative
           descriptions of position or extent. One of these is expected to be present. </p>
         <h4 id="time:nominalPosition">Property: nominalPosition</h4>
         <table class="definition" style="width: 812px;">
@@ -1260,7 +1273,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>The temporal ordinal reference system should be provided as the value of the <code>hasTRS </code>property</p>
+        <p>The temporal ordinal reference system should be provided as the value of the <code>hasTRS</code> property</p>
         <h4 id="time:numericPosition">Property: numericPosition</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1286,7 +1299,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>The temporal coordinate system should be provided as the value of the <code>hasTRS </code>property</p>
+        <p>The temporal coordinate system should be provided as the value of the <code>hasTRS</code> property</p>
       </section>
       <section id="GenDateTimeDescription">
         <h3 id="time:GenDateTimeDescription">Class: GeneralDateTimeDescription</h3>
@@ -1355,8 +1368,18 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
+
         <p>Three properties <code>hasTRS</code>, <code>timeZone</code>, and <code>unitType</code> provide for
           reference information concerning the reference system and precision of temporal position values. </p>
+        <p>Six datatype properties <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code>, <code>minute</code>,
+          <code>second</code>, together with <code>timeZone</code> (defined above) support the description of
+          components of a temporal position in a calendar-clock system. These correspond with the 'seven property
+          model' described in ISO 8601 [<a href="#ISO-8601">ISO-8601</a>] and XML Schema Definition Language Part 2:
+          Datatypes [<a href="#XSD-D">XSD-D</a>], except that the calendar is not specified in advance, but is provided
+          through the value of the <code>hasTRS</code> property (defined above). </p>
+        <p>Two additional properties <code>week</code> and <code>dayOfYear</code> allow for the the numeric value of
+          the week or day relative to the year. </p>
+
         <h4 id="time:timeZone">Property timeZone</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1384,11 +1407,12 @@ DIV.test H4 {
         </table>
 <!--        <p>An ontology for time zone descriptions is provided <a href="#timezone">below</a>.</p>
         <p class="issue" data-number="996">(Was local Issue 10) The time zone ontology provided in the Annex is immature and incomplete. Use of a <code>tzont:TimeZone
-            </code>from that ontology as the range of an ObjectProperty in OWL-Time creates an implied dependency which
-          is not ideal. We propose adding a stub class <code>time:TimeZone </code>into the the main namespace (i.e. no
+           </code> from that ontology as the range of an ObjectProperty in OWL-Time creates an implied dependency which
+          is not ideal. We propose adding a stub class <code>time:TimeZone</code> into the the main namespace (i.e. no
           properties) which can then be a super-class or equivalent class to any time zone formalization.(Compare with <code>
-            time:TRS </code>which is handled this way.) </p> -->
+            time:TRS</code> which is handled this way.) </p> -->
         <h4 id="time:unitType">Property unitType</h4>
+        <p>The property time:unitType indicates the precision of a time position, when that is expressed using GeneralDateTimeDescription or DateTimeDescription. Seven individual unitTypes are included in the ontology, corresponding to the conventional clock-calendar units.</p>
         <table class="definition" style="width: 812px;">
           <tbody>
             <tr>
@@ -1413,12 +1437,6 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>Six datatype properties <code>year</code>, <code>month</code>,&nbsp;<code>day</code>, <code>hour</code>, <code>minute</code>,
-          <code>second</code>, together with <code>timeZone</code> (defined above) support the description of
-          components of a temporal position in a calendar-clock system.&nbsp; These correspond with the 'seven property
-          model' described in ISO 8601 [<a href="#ISO-8601">ISO-8601</a>] and XML Schema Definition Language Part 2:
-          Datatypes [<a href="#XSD-D">XSD-D</a>], except that the calendar is not specified in advance, but is provided
-          through the value of the <code>hasTRS </code>property (defined above). </p>
         <h4 id="time:year">Property year</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1436,7 +1454,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:month">Property month</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1454,7 +1472,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:day">Property day</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1472,7 +1490,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:hour">Property hour</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1494,7 +1512,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:minute">Property minute</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1516,7 +1534,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:second">Property second</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1538,8 +1556,6 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>Two additional properties <code>week</code> and <code>dayOfYear</code> allow for the the numeric value of
-          the week or day relative to the year.&nbsp; </p>
         <h4 id="time:week">Property week</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1565,7 +1581,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:dayOfYear">Property dayOfYear</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1617,7 +1633,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
       </section>
       <section id="TimeZone">
         <h3 id="time:TimeZone">Class: TimeZone</h3>
@@ -1629,7 +1645,8 @@ DIV.test H4 {
             </tr>
             <tr>
               <td>Definition:</td>
-              <td>A Time Zone is a geographic region that uses clock with a specified offset from UTC. The region and offset are specified by the locally recognised governing authority. <br>
+              <td>A Time Zone is a geographic region that uses a clock with a specified offset from UTC. 
+              The region and offset are specified by the locally recognised governing authority. <br>
               </td>
             </tr>
             <tr>
@@ -1640,11 +1657,12 @@ DIV.test H4 {
         </table>
         <p>No specific properties are provided for the class <code>TimeZone</code>, the definition of which is beyond the
           scope of this ontology. The class specified here is a stub, effectively the superclass of all time zone classes. </p> 
-        <p class="note">An ontology for time zone descriptions was provided in the <a href="https://www.w3.org/TR/2006/WD-owl-time-20060927/#timezone">2006 Note</a>. 
-        This was incomplete. Furthermore, use of a class from an external ontology as the range of an ObjectProperty in OWL-Time creates an undesirable dependency, so it has been replaced with this 'stub' class in this version of OWL-Time.</p>
+        <p class="note">An ontology for time zone descriptions was described in [<a href="#OWL-T"><span style="text-decoration: underline;">OWL-T</span></a>] and provided as RDF in a separate namespace <code>tzont:</code> [<a href="#TZ-ON"><span style="text-decoration: underline;">TZ-ON</span></a>]. 
+        However, the ontology was incomplete in scope, and the example datasets were selective. Furthermore, the use of a class from an external ontology as the range of an <code>ObjectProperty</code> in OWL-Time creates an undesirable dependency. Therefore, reference to the time zone class has been replaced with the 'stub' class in the normative part of this version of OWL-Time.</p>
 
       </section>
       <section id="DayOfWeek">
+
         <h3 id="time:DayOfWeek">Class: DayOfWeek</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1663,13 +1681,15 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>Seven individual members of <code>DayOfWeek </code>are included in the ontology, corresponding to the seven
+        <p>Seven individual members of <code>DayOfWeek</code> are included in the ontology, corresponding to the seven
           days used in the Gregorian calendar, and using the English names <code>Sunday</code>, <code>Monday</code>, <code>Tuesday</code>,
           <code>Wednesday</code>, <code>Thursday</code>, <code>Friday</code>, <code>Saturday</code>.</p>
-        <p class="note">In this version of the ontology, membership of the class DayofWeek is open, to allow for
-          alternative week lengths and different day names. </p>
+        <p class="note">Membership of the class <code>DayofWeek</code> is open, to allow for alternative week lengths and different day names. </p>
+
       </section>
+
       <section id="DateTimeDescription">
+
         <h3 id="time:DateTimeDescription">Class: DateTimeDescription</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1709,6 +1729,8 @@ DIV.test H4 {
         <p>Other datetime concepts can be straightforwardly defined. For example, "January" can be defined as a a
           subclass of <code>DateTimeDescription</code> with the restrictions that the <code>unitType</code> property
           has <code>allValuesFrom</code> unitMonth and property <code>month</code> <code>hasValue</code> of 1: </p>
+        <p class="issue"  data-number="124"><code>:January</code> was in the original OWL-Time, but was the only specialization of <code>:DateTimeDescription</code>
+          - suggest annotating the definition in the <code>time:</code> namespace 'deprecated'</p>
         <pre>ex:January
       a       owl:Class ;
       rdfs:subClassOf :DateTimeDescription ;
@@ -1723,9 +1745,11 @@ DIV.test H4 {
                 owl:hasValue --01 ;
               ] .
 </pre>
-        <p>&nbsp;</p>
+
       </section>
+
       <section id="TemporalUnit">
+
         <h3 id="time:TemporalUnit">Class: TemporalUnit</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1743,13 +1767,16 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>Seven individual members of <code>TemporalUnit </code>are included in the ontology, corresponding to the
+        <p>Seven individual members of <code>TemporalUnit</code> are included in the ontology, corresponding to the
           elements of the standard calendar-clock: <code>unitYear</code>, <code>unitMonth</code>, <code>unitWeek</code>,
-          <code>unitDay</code>, <code>unitHour</code>, <code>unitMinute </code>and <code>unitSecond</code>. </p>
-        <p class="note">In this version of the ontology, membership of the class TemporalUnit is open, to allow for
-          additional temporal units used in some technical applications (e.g. millions of years, Baha'i month). </p>
+          <code>unitDay</code>, <code>unitHour</code>, <code>unitMinute</code> and <code>unitSecond</code>. </p>
+        <p class="note">Membership of the class TemporalUnit is open, to allow for
+          other temporal units used in some technical applications (e.g. millions of years, Baha'i month). </p>
+
       </section>
+
       <section id="Duration">
+
         <h3 id="time:Duration">Class: Duration</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1775,7 +1802,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:numericDuration">Property numericDuration</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1801,9 +1828,11 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
       </section>
+
       <section id="GenDurationDescription">
+
         <h3 id="time:GenDurationDescription">Class: GeneralDurationDescription</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1854,11 +1883,13 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
+
         <p>Seven datatype properties <code>years</code>, <code>months</code>, <code>weeks</code>, <code>days</code>,
           <code>hours</code>, <code>minute</code>, and <code>seconds</code> support the description of components of a
           temporal extent in a calendar-clock system. These correspond with the 'seven property model' described in ISO
           8601 [<a href="#ISO-8601">ISO-8601</a>] and XML Schema Definition Language Part 2: Datatypes [<a href="#XSD-D">XSD-D</a>],
           except that the calendar is not specified in advance. </p>
+
         <h4 id="time:years">Property years</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1880,7 +1911,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:months">Property months</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1902,7 +1933,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:weeks">Property weeks</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1924,7 +1955,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:days">Property days</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1946,7 +1977,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:hours">Property hours</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1968,7 +1999,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:minutes">Property minutes</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -1990,7 +2021,7 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
         <h4 id="time:seconds">Property seconds</h4>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -2012,9 +2043,11 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
       </section>
+
       <section id="DurationDescription">
+
         <h3 id="time:DurationDescription">Class: DurationDescription</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -2070,9 +2103,8 @@ DIV.test H4 {
           subclass of "DurationDescription" with the restrictions that the "years" property is required (with
           "cardinality" of 1) and all other properties (e.g., "hours", "months") should not be present (with
           "cardinality" of 0):</p>
-        <p class="issue"  data-number="995">(Was local Issue 11) <code>:Year</code> was in the original OWL-Time, but was the only specialization of <code>:DurationDescription</code>
-          - suggest moving it to an 'example' namespace</p>
-        <code></code>
+        <p class="issue"  data-number="124">(Was local Issue 11) <code>:Year</code> was in the original OWL-Time, but was the only specialization of <code>:DurationDescription</code>
+          - suggest annotating the definition in the <code>time:</code> namespace 'deprecated'</p>
         <pre>ex:Year
       a       owl:Class ;
       rdfs:subClassOf :DurationDescription ;
@@ -2101,8 +2133,11 @@ DIV.test H4 {
           "year".</p>
         <p>Note that there is a distinction between a year as a duration and a calendar year. The year from December 22,
           2006 to December 21, 2007 is the former but not the latter.</p>
+
       </section>
+
       <section id="Number">
+
         <h3 id="time:Number">Datatype: Number</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -2126,11 +2161,14 @@ DIV.test H4 {
             </tr>
           </tbody>
         </table>
-        <p>The datatype <code>Number </code>provides for numbers expressed using any of the XSD types <code>decimal </code>(of
-          which <code>xsd:integer </code>is a sub-type), <code>float</code>, or <code>double </code>(which allows
+        <p>The datatype <code>Number</code> provides for numbers expressed using any of the XSD types <code>decimal </code>(of
+          which <code>xsd:integer</code> is a sub-type), <code>float</code>, or <code>double </code>(which allows
           exponential or scientific notation). </p>
+
       </section>
+
       <section id="genYear">
+
         <h3 id="time:genYear">Datatype: generalYear</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -2142,7 +2180,7 @@ DIV.test H4 {
               <td>Definition:</td>
               <td>Year number - generalization of xsd:gYear, formulated as a text string with a pattern constraint to
                 reproduce the same lexical form as gYear. Note that the value-space is not defined, so a generic OWL2
-                processor cannot compute ordering relationships of values of this type.&nbsp; </td>
+                processor cannot compute ordering relationships of values of this type. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -2162,8 +2200,11 @@ DIV.test H4 {
         </table>
         <p class="note">While this pattern achieves the correct lexical form, the value-space is not defined, so a
           generic OWL2 processor cannot compute ordering relationships of values of this type.</p>
+
       </section>
+
       <section id="genMonth">
+
         <h3 id="time:genMonth">Datatype: generalMonth</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -2197,8 +2238,11 @@ DIV.test H4 {
         </table>
         <p class="note">While this pattern achieves the correct lexical form, the value-space is not defined, so a
           generic OWL2 processor cannot compute ordering relationships of values of this type.</p>
+
       </section>
+
       <section id="genDay">
+
         <h3 id="time:genDay">Datatype: generalDay</h3>
         <table class="definition" style="width: 812px;">
           <tbody>
@@ -2211,7 +2255,7 @@ DIV.test H4 {
               <td>Day of month - generalization of xsd:gDay, formulated as a text string with a pattern constraint to
                 reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support
                 calendars with more than 31 days in a month. Note that the value-space is not defined, so a generic OWL2
-                processor cannot compute ordering relationships of values of this type.&nbsp; </td>
+                processor cannot compute ordering relationships of values of this type. </td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -2231,13 +2275,142 @@ DIV.test H4 {
         </table>
         <p class="note">While this pattern achieves the correct lexical form, the value-space is not defined, so a
           generic OWL2 processor cannot compute ordering relationships of values of this type.</p>
+
       </section>
+
     </section>
-    <section id="examples">
+
+    <section id="examples" class="informative">
+
       <h2> Examples</h2>
+
+      <section id="dtd-vs-dt">
+
+        <h3>DateTimeDescription vs dateTime</h3>
+<!--        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p> -->
+        <p>The following example illustrates the difference between using <code>DateTimeDescription</code> and using
+          the XML datatype <code>dateTime</code>. An instant that represents the start of a meeting, called <code>meetingStart</code>,
+          happens at 10:30am EST on 01/01/2006 can be expressed using both <code>inXSDDateTime</code> and <code>inDateTime</code>
+          in OWL as:</p>
+        <pre>ex:meetingStart
+      a       :Instant ;
+      :inDateTime
+              ex:meetingStartDescription ;
+      :inXSDDateTime
+              2006-01-01T10:30:00-5:00 .
+
+ex:meetingStartDescription
+      a       :DateTimeDescription ;
+      :unitType :unitMinute ;
+      :minute 30 ;
+      :hour 10 ;
+      :day 1 ;
+      :dayOfWeek :Sunday ;
+      :dayOfYear 1 ;
+      :week 1 ;
+      :month 1 ;
+      :timeZone &lt;<a href="https://www.timeanddate.com/time/zones/est">https://www.timeanddate.com/time/zones/est</a>&gt; ;
+      :year 2006 .</pre>
+        <p>It is much more concise to use the XML Schema datatype <code>dateTime</code>. 
+        However, using <code>DateTimeDescription</code> more information can be expressed, 
+        such as "week", "day of week" and "day of year", so in the example, we can also know that 01/01/2006 is Sunday, 
+        on the first day of the year, and in the first week of the year. 
+        Since, each field of <code>DateTimeDescription</code> is separate it is easier to extract the value of some fields 
+        for the later use and easier to reason about.</p>
+        <p>The <code>timeZone</code> property points to a definition of US Eastern Standard Time. </p>
+
+      </section>
+
+      <section id="different-TRS">
+
+        <h3>Use of different temporal reference systems</h3>
+        <p>The use of different temporal reference systems for the same absolute time is illustrated in the following
+          examples. Abby's birthday is an <code>Instant</code> whose position may be expressed using the conventional
+          XSD <code>dateTime</code> type as <code>2001-05-23T08:20:00+08:00</code>:</p>
+        <pre>ex:AbbyBirthday
+     a :Instant ;
+     :inDateTime ex:AbbyBirthdayHebrew ;
+     :inTimePosition ex:AbbyBirthdayUnix ;
+     rdfs:label "Abby's birthdate"^^xsd:string ;
+     :inDateTime ex:AbbyBirthdayGregorian ;
+     :inXSDDateTime "2001-05-23T08:20:00+08:00"^^xsd:dateTime ;
+.</pre>
+        <p>Using the <code>DateTimeDescription</code> class, the elements of the date and time using the Gregorian
+          Calendar are split out into separate properties: </p>
+        <pre>ex:AbbyBirthdayGregorian
+     a :DateTimeDescription ;
+     :day "---23"^^xsd:gDay ;
+     :dayOfWeek :Wednesday ;
+     :hour "8"^^xsd:nonNegativeInteger ;
+     :minute "20"^^xsd:nonNegativeInteger ;
+     :month "--05"^^xsd:gMonth ;
+     :timeZone &lt;<a href="https://www.timeanddate.com/time/zones/awst">https://www.timeanddate.com/time/zones/awst</a>&gt; ;
+     :unitType :unitMinute ;
+     :year "2001"^^xsd:gYear ;
+.</pre>
+        <p>The <code>GeneralDateTimeDescription</code> class may be used to express the same date using the Hebrew
+          calendar: </p>
+        <pre>ex:AbbyBirthdayHebrew
+     a :GeneralDateTimeDescription ;
+     :day "---01"^^:generalDay ;
+     :hasTRS &lt;<a href="http://dbpedia.org/resource/Hebrew_calendar">http://dbpedia.org/resource/Hebrew_calendar</a>&gt; ;
+     :month "--03"^^:generalMonth ;
+     :year "5761"^^:generalYear ;
+     :unitType :unitDay ;
+.</pre>
+        <p>The <code>TimePosition</code> class may be used to express the same position on the Unix time scale (i.e.
+          the number of seconds since 1st January 1970): </p>
+        <pre>ex:AbbyBirthdayUnix
+     a :TimePosition ;
+     :hasTRS &lt;<a href="http://dbpedia.org/resource/Unix_time">http://dbpedia.org/resource/Unix_time</a>&gt; ;
+     :numericPosition 990577200 ;
+     rdfs:label "Abby's birthdate in Unix time"^^xsd:string ;
+.         
+</pre>
+
+        <p>Each of these examples refers to either a temporal reference system or time zone described externally, using its URI. RDF representations are available from DBPedia (e.g. <a href="http://dbpedia.org/data/Unix_time.n3">http://dbpedia.org/resource/Unix_time</a>) though these do not have specific time semantics. </p>
+        <p>The RDF representation of this example is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/OWL-Time-examples.ttl">here</a>.</p>
+
+      </section>
+
+      <section id="temporal-precision">
+
+        <h3>Temporal precision using DateTimeDescription vs dateTime vs TimePosition</h3>
+        <p>For the purposes of radiocarbon dating (which is the technique used in geological age determination for
+          materials up to around 60,000 years old) 'the Present' is conventionally fixed at 1950 [<a href="#RC-14">RC-14</a>].
+          This can be described as an individual <code>:Instant</code>, with its position expressed using any of the
+          three alternatives: </p>
+        <pre>geol:Present
+  a :Instant ;
+  :inDateTime [
+      a :DateTimeDescription ;
+      :unitType :unitYear ;
+      :year "1950"^^xsd:gYear ;
+    ] ;
+  :inTimePosition [
+      a :TimePosition ;
+      :hasTRS &lt;<a href="http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime">http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime</a>&gt; ;
+      :numericPosition "0.0"^^:Number ;
+    ] ;
+  :inXSDDateTime "1950-01-01T00:00:00Z"^^xsd:dateTime ;
+  rdfs:label "The present"^^xsd:string ;
+. </pre>
+        <p>Expressed using :<code>DateTimeDescription</code> the :<code>unitType</code> - which determines the
+          precision - is set to:<code>unitYear</code>, and only the :<code>year</code> element is provided in the value.
+          The TRS value is not provided explicitly, as it is fixed in the ontology description to <a href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian">http://www.opengis.net/def/uom/ISO-8601/0/Gregorian</a>.</p>
+        <p>In the :<code>TimePosition</code> variant, the TRS is given as 
+        <a href="http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime">http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime</a>
+          which has units of millions of years, starting from the present, positive backwards.</p> 
+        <p>For the value expressed using <code>xsd:dateTime</code> the
+          position within the year is set arbitrarily to midnight at the beginning of 1st January. 
+          This level of precision is strictly spurious, but is required to satisfy the lexical pattern of the datatype.</p>
+
+      </section>
+
       <section id="iCal">
+
         <h3>iCalendar</h3>
-        <p class="note">This example replaces the one from [<a href="#OWL-T">OWL-T</a>]. </p>
+<!--        <p class="note">This example replaces the one from [<a href="#OWL-T">OWL-T</a>]. </p> -->
         <p>iCalendar [<a href="#DE-09">DE-09</a>] is a widely supported standard for personal data interchange. It provides
         the definition of a common format for openly exchanging calendaring and scheduling information across the
         Internet. The representation of temporal concepts in this time ontology can be straightforwardly mapped to
@@ -2249,9 +2422,9 @@ DIV.test H4 {
       :hours 5 ;
       :days 15 .
 </pre> 
-        <p>The iCalendar homepage features the example of Abraham Lincoln's birthday as celebrated in 2008. 
+        <p>The <a href="https://icalendar.org/">iCalendar homepage</a> features the example of Abraham Lincoln's birthday as celebrated in 2008. 
         This may be represented in multiple ways using OWL-Time, including the following.</p>
-        <p>1. As a <code>:DateTimeInterval</code> using the <code>:DateTimeDescription</code> form:</p>
+        <p>As a <b><code>:DateTimeInterval</code></b> using the <code>:DateTimeDescription</code> form:</p>
         <pre>_:DTI-1
   rdf:type :DateTimeInterval ;
   dc:coverage """LOCATION:Hodgenville, Kentucky
@@ -2273,7 +2446,17 @@ http://AmericanHistoryCalendar.com""" ;
       :year "2008"^^xsd:gYear ;
     ] ;
 .</pre>
-        <p>2. As a <code>:TemporalEntity</code> using the <code>:TimePosition</code> to define the beginning and end:</p>
+<p>The boundaries of the interval are implicitly the beginning and end of the day specified in the <code>DateTimeDescription</code>. 
+
+        <p>As a <b><code>:DateTimeInterval</code></b> using the <code>:xsdDateTime</code> form:</p>
+        <pre>al:DTI-3
+  rdf:type :DateTimeInterval ;
+  rdfs:label "Abraham Lincoln" ;
+  :xsdDateTime "2008-02-12T00:00:00.00-05:00"^^xsd:dateTime ;
+.</pre>
+<p>In this formulation, the length of the entity is implicitly one day, as there is no sub-day value provided in the <code>xsdDateTime</code> property. 
+
+        <p>As a <b><code>:TemporalEntity</code></b> using the <code>:TimePosition</code> to define the beginning and end:</p>
         <pre>_:TE-2
   rdf:type :TemporalEntity ;
   rdfs:label "Abraham Lincoln" ;
@@ -2299,24 +2482,23 @@ http://AmericanHistoryCalendar.com""" ;
         ] ;
     ] ;
 .</pre>
-        <p>3. As a <code>:Instant</code> using the <code>:inXSDDateTime</code>:</p>
-        <pre>al:TI-3
-  rdf:type :Instant ;
-  rdfs:label "Abraham Lincoln" ;
-  :inXSDDateTime "2008-02-12T00:00:00.00-05:00"^^xsd:dateTime ;
-.</pre>
+<p>In this formulation, the length of the entity is explict, as the value of the <code>hasDuration</code> property. 
+
 <p>Several other formulations are possible, some of which are shown in the RDF representation is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/abraham-lincoln.ttl">here</a>
+
 </section>
+
       <section id="geologictimescale">
+
         <h3>Geologic timescale described as a graph of ProperInterval individuals</h3>
         <p>The geologic timescale is defined as a set of named intervals arranged in a hierarchy, such that there is
           only one subdivision of the intervals of each rank (e.g. 'Era') by a set of intervals of the next rank (in
-          this case 'Period') [<a href="#CR-05">CR-05</a>]. Since the relative ordering is well-defined this can
+          this case 'Period') [<a href="#CR-05">CR-05</a>]. Since the relative ordering is well-defined this graph can
           therefore serve as an ordinal temporal reference system. Fig. 5 shows how the geologic timescale can be
-          expressed as a set of :ProperIntervals related to each other using only <code>intervalMetBy</code>, <code>intervalStartedBy</code>,
+          expressed as a set of <code>:ProperIntervals</code> related to each other using only <code>intervalMetBy</code>, <code>intervalStartedBy</code>,
           <code>intervalFinishedBy</code>. Many other interval relationships follow logically from the ones shown (for
-          example 'Neogene Period' :<code>intervalDuring </code>'Cenozoic Era') but these are sufficient to describe
-          the full topology.&nbsp; </p>
+          example 'Neogene Period' :<code>intervalDuring </code>'Cenozoic Era') but the ones shown are sufficient to describe
+          the full topology. </p>
         <figure> <img alt="(Part of) the international chronostratigraphic chart, formalized as a set of proper intervals"
 
             title="(Part of) the international chronostratigraphic chart, formalized as a set of proper intervals" src="images/GeologicTimescale-1.png">
@@ -2343,135 +2525,19 @@ http://AmericanHistoryCalendar.com""" ;
     ] ;
   rdfs:label "Base of Phanerozoic Eon"^^xsd:string ;
 . </pre>
-        <p>Note that the position of this <code>Instant </code>is specified using a <code>TimePosition</code>, which
-          is a numeric value relative to the temporal coordinate system indicated as the value of the <code>hasTRS </code>property.
+        <p>Note that the position of this <code>Instant</code> is specified using a <code>TimePosition</code>, which
+          is a numeric value relative to the temporal coordinate system indicated as the value of the <code>hasTRS</code> property.
           </p>
         <p>The RDF representation of this example is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/geologicTimeScale.ttl">here</a>.
         </p>
       </section>
-      <section id="dtd-vs-dt">
-        <h3>DateTimeDescription vs dateTime</h3>
-        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p>
-        <p>The following example illustrates the difference between using <code>DateTimeDescription </code>and using
-          the XML datatype <code>dateTime</code>. An instant that represents the start of a meeting, called <code>meetingStart</code>,
-          happens at 10:30am EST on 01/01/2006 can be expressed using both <code>inXSDDateTime</code> and <code>inDateTime</code>
-          in OWL as:</p>
-        <pre>ex:meetingStart
-      a       :Instant ;
-      :inDateTime
-              ex:meetingStartDescription ;
-      :inXSDDateTime
-              2006-01-01T10:30:00-5:00 .
 
-ex:meetingStartDescription
-      a       :DateTimeDescription ;
-      :unitType :unitMinute ;
-      :minute 30 ;
-      :hour 10 ;
-      :day 1 ;
-      :dayOfWeek :Sunday ;
-      :dayOfYear 1 ;
-      :week 1 ;
-      :month 1 ;
-      :timeZone tz-us:EST ;
-      :year 2006 .</pre>
-        <p>It is much more concise to use the XML Schema datatype <code>dateTime</code>. Using <code>DateTimeDescription
-            </code>more information can be expressed<code></code>, such as "week", "day of week" and "day of year", so
-          in the example, we can also know that 01/01/2006 is Sunday, on the first day of the year, and in the first
-          week of the year. </p>
-        <p>The namespace “tz-us” points to US time zone data [<a href="#TZ-US">TZ-US</a>]. Moreover, each field of <code>DateTimeDescription
-            </code>is separate so that it is easier to extract the value of some fields for the later use and easier to
-          reason about.</p>
-      </section>
-      <section id="temporal-precision">
-        <h3>Temporal precision using DateTimeDescription vs dateTime vs TimePosition</h3>
-        <p>For the purposes of radiocarbon dating (which is the technique used in geological age determination for
-          materials up to around 60,000 years old) 1950 is conventionally defined as 'the Present' [<a href="#RC-14">RC-14</a>].
-          This can be described as an individual <code>:Instant</code>, with its position expressed using any of the
-          three alternatives: </p>
-        <pre>geol:Present
-  a :Instant ;
-  :inDateTime [
-      a :DateTimeDescription ;
-      :unitType :unitYear ;
-      :year "1950"^^xsd:gYear ;
-    ] ;
-  :inTimePosition [
-      a :TimePosition ;
-      :hasTRS &lt;http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime&gt; ;
-      :numericPosition "0.0"^^:Number ;
-    ] ;
-  :inXSDDateTime "1950-01-01T00:00:00Z"^^xsd:dateTime ;
-  rdfs:label "The present"^^xsd:string ;
-. </pre>
-        <p>Expressed using :<code>DateTimeDescription </code>the :<code>unitType</code> - which determines the
-          precision - is set to:<code>unitYear</code>, and only the :<code>year</code> element is provided in the value.
-          The TRS value is not provided explicitly, as it is fixed in the ontology description to <code>&lt;http://www.opengis.net/def/uom/ISO-8601/0/Gregorian&gt;</code>.
-          In the :<code>TimePosition </code>variant, the TRS is given as <code>&lt;http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime&gt;</code>
-          which has units of millions of years, positive backwards. For the value expressed using <code>xsd:dateTime </code>the
-          position within the year is set arbitrarily to midnight at the beginning of 1st January. This level precision
-          is strictly spurious, but is required to satisfy the lexical pattern of the datatype.</p>
-      </section>
-      <section id="different-TRS">
-        <h3>Use of different temporal reference systems</h3>
-        <p>The use of different temporal reference systems for the same absolute time is illustrated in the following
-          examples. Abby's birthday is an <code>Instant</code> whose position may be expressed using the conventional
-          XSD <code>dateTime </code>type as <code>2001-05-23T08:20:00+08:00</code>:</p>
-        <pre>ex:AbbyBirthday
-     a :Instant ;
-     :inDateTime ex:AbbyBirthdayHebrew ;
-     :inTimePosition ex:AbbyBirthdayUnix ;
-     rdfs:label "Abby's birthdate"^^xsd:string ;
-     :inDateTime ex:AbbyBirthdayGregorian ;
-     :inXSDDateTime "2001-05-23T08:20:00+08:00"^^xsd:dateTime ;
-.</pre>
-        <p>Using the <code>DateTimeDescription </code>class, the elements of the date and time using the Gregorian
-          Calendar are split out into separate properties: </p>
-        <pre>ex:AbbyBirthdayGregorian
-     a :DateTimeDescription ;
-     :day "---23"^^xsd:gDay ;
-     :dayOfWeek :Wednesday ;
-     :hour "8"^^xsd:nonNegativeInteger ;
-     :minute "20"^^xsd:nonNegativeInteger ;
-     :month "--05"^^xsd:gMonth ;
-     :timeZone [
-                     a tzont:TimeZone ;
-                     tzont:GMToffset "+8" ;
-                     tzont:name "AWST" ;
-             ] ;
-     :unitType :unitMinute ;
-     :year "2001"^^xsd:gYear ;
-.</pre>
-        <p>The <code>GeneralDateTimeDescription </code>class may be used to express the same date using the Hebrew
-          calendar: </p>
-        <pre>ex:AbbyBirthdayHebrew
-     a :GeneralDateTimeDescription ;
-     :day "---01"^^:generalDay ;
-     :hasTRS &lt;http://dbpedia.org/resource/Hebrew_calendar&gt; ;
-     :month "--03"^^:generalMonth ;
-     :year "5761"^^:generalYear ;
-     :unitType :unitDay ;
-.</pre>
-        <p>The <code>TimePosition</code> class may be used to express the same position on the Unix time scale (i.e.
-          the number of seconds since 1st January 1970): </p>
-        <pre>ex:AbbyBirthdayUnix
-     a :TimePosition ;
-     :hasTRS &lt;http://dbpedia.org/resource/Unix_time&gt; ;
-     :numericPosition 990577200 ;
-     rdfs:label "Abby's birthdate in Unix time"^^xsd:string ;
-.         
-</pre>
-        <p> </p>
-        <p>The RDF representation of this example is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/OWL-Time-examples.ttl">here</a>.
-          <br>
-        </p>
-        <p> </p>
-      </section>
       <section id="scheduling">
+
         <h3>A Use Case for Scheduling</h3>
-        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p>
+<!--        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p> -->
         <p id="examples0">Suppose someone has a telecon scheduled for 6:00pm EST on November 5, 2006. You would like to
-          make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45 minutes.&nbsp;
+          make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45 minutes.
           Will there be an overlap? </p>
         <p>In this use case we can specify the facts about the telecon and the meeting using our ontology in OWL that
           will allow a temporal reasoner to determine whether there is a conflict:</p>
@@ -2501,15 +2567,18 @@ ex:meetingStartDescription
 </pre>
         <p>The telecon and the meeting are defined as intervals. <code>hasBeginning</code> is used for specifying the
           start times of the meetings. The datetimes are specified using <code>inXSDDateTime</code>. The duration of
-          the meeting is specified using the duration description class.</p>
+          the meeting is specified using the <code>DurationDescription</code> class.</p>
+
       </section>
+
       <section id="commerce">
+
         <h3>Web commerce applications</h3>
-        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p>
+<!--        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p> -->
         <p>Congo.com and Bravo Air are examples from the OWL-S 0.9 draft release [<a href="#OWL-S">OWL-S</a>]. Congo.com
           is a fictitious book-selling service site, and Bravo Air is a fictitious airline-ticketing service site. These
           examples demonstrate how the time ontology can be used to support OWL-S, including use cases for defining
-          input parameters and (conditional) output parameters.&nbsp; </p>
+          input parameters and (conditional) output parameters. </p>
         <h4>Input Parameters</h4>
         <p>In the profile of the Congo.com example (i.e. CongoProfile.owl), for example, our time ontology is currently
           used for describing the input parameter <code>CreditCardExpirationDate</code>:</p>
@@ -2620,11 +2689,11 @@ ex:meetingStartDescription
       rdfs:domain :DeliveryDuration ;
       rdfs:range :Interval .
 </pre>
-        <p>Both <code>minDeliveryDuration</code> and <code>maxDeliveryDuration </code>are defined as properties of <code>DeliveryDuration</code>.
+        <p>Both <code>minDeliveryDuration</code> and <code>maxDeliveryDuration</code> are defined as properties of <code>DeliveryDuration</code>.
           For the same reason discussed for the process time example, both properties use Interval as their ranges. The
           cardinality of 1 for both properties in the definition of <code>DeliveryDuration</code> indicates that an
           instance of <code>DeliveryDuration</code> must have one and only one property value for <code>minDeliveryDuration</code>
-          and <code>maxDeliveryDuration </code>respectively. For example, in order to define delivery duration for
+          and <code>maxDeliveryDuration</code> respectively. For example, in order to define delivery duration for
           FedEx2-3day, we have to first define a condition of FedEx2-3day being selected:</p>
         <pre>:FedEx2-3dayCondition
       a       owl:Class ;
@@ -2691,12 +2760,19 @@ ex:meetingStartDescription
               ] .</pre>
         <p>Properties to output delivery durations when the user selects other delivery types (FedExOneDay, UPS, and
           OrdinaryMail) can be defined similarly.</p>
+
       </section>
+
     </section>
+
     <hr>
+
     <section class="appendix" id="summary">
+
       <h2>Summary of Classes and Properties in the Time Ontology</h2>
+
       <section id="Classes">
+
         <h3>Classes (subclass relations)</h3>
         <ul>
           <li>TemporalEntity
@@ -2726,12 +2802,16 @@ ex:meetingStartDescription
               <li>DateTimeDescription</li>
             </ul>
           </li>
+          <li>TimeZone</li>
           <li>TemporalUnit </li>
           <li>DayOfWeek</li>
           <li>Number</li>
         </ul>
+
       </section>
+
       <section id="properties">
+
         <h3>Properties</h3>
         <table id="table1">
           <tbody>
@@ -2930,7 +3010,7 @@ ex:meetingStartDescription
             <tr>
               <td>timeZone</td>
               <td>GeneralDateTimeDescription</td>
-              <td>tzont:TimeZone</td>
+              <td>TimeZone</td>
             </tr>
             <tr>
               <td>unitType</td>
@@ -2987,15 +3067,17 @@ ex:meetingStartDescription
             </tr>
           </tbody>
         </table>
-        <p>&nbsp;</p>
+        
       </section>
+
     </section>
+
     <hr>
-    <!--
-    <section class="appendix" id="timezone">
+<!--
+    <section class="appendix" id="timezone" class="informative">
       <h2>Time Zone Vocabulary</h2>
       <p class="note">This section unaltered from [<a href="#OWL-T">OWL-T</a>]. </p>
-      <p class="issue"  data-number="994">(Was local Issue 12) The time zone ontology and vocabularies is less mature than the time ontology. It includes a
+      <p class="issue"  data-number="127">(Was local Issue 12) The time zone ontology and vocabularies is less mature than the time ontology. It includes a
         taxonomy of jurisdictions (Region, PoliticalRegion, Country, State, Reservation, County, City) which does not
         cover all international practice. It refers to GMT, rather than UTC. It has fixed dates for daylight savings
         start and end, else uses a time-sequence ontology which is not provided. Appears to need more work. </p>
@@ -3186,7 +3268,7 @@ ex:meetingStartDescription
               ] .</pre>
         <p><code>DLSstartDate</code> and <code>DLSendDate</code> properties have the range of xsd:date. In the current
           instance files, different daylight saving policies were only defined for year 2006 as instances of <code>EnumeratedDaylightSavingsPolicy</code>,
-          e.g. <code>USA2006DLS</code> for the United States, and <code>EU2006DLS</code> for the European Union.&nbsp;</p>
+          e.g. <code>USA2006DLS</code> for the United States, and <code>EU2006DLS</code> for the European Union.</p>
         <p>Alternatively, a temporal aggregates ontology in OWL-Time can be used to describe the daylight saving
           policies. For example, in the US daylight saving starts on "the first Sunday of every April", which can be
           expressed in OWL as:</p>
@@ -3331,8 +3413,8 @@ ex:meetingStartDescription
         <dt id="OWL-S">[OWL-S]</dt>
         <dd><a href="http://www.daml.org/services/owl-s/"><cite>OWL-S homepage</cite></a>. <a href="http://www.daml.org/services/owl-s/">http://www.daml.org/services/owl-s/</a></dd>
         <dt id="OWL-T">[OWL-T]</dt>
-        <dd>Hobbs, J. R. and Pan, F. 2006. <a href="https://www.w3.org/TR/owl-time/"><cite>Time Ontology in OWL</cite></a>.
-          W3C Working Draft <a href="https://www.w3.org/TR/owl-time/">https://www.w3.org/TR/owl-time/</a></dd>
+        <dd>Hobbs, J. R. and Pan, F. 2006. <a href="https://www.w3.org/TR/2006/WD-owl-time-20060927/"><cite>Time Ontology in OWL</cite></a>.
+          W3C Working Draft <a href="https://www.w3.org/TR/2006/WD-owl-time-20060927/">https://www.w3.org/TR/2006/WD-owl-time-20060927/</a></dd>
         <dt id="PA-05">[PA-05]</dt>
         <dd>Pan, F. 2005. <a href="https://www.semanticscholar.org/paper/A-Temporal-Aggregates-Ontology-in-OWL-for-the-Pan/3147d5c652a7e4bf4787fdff781c56259bdb5a33/pdf"><cite>A
               Temporal Aggregates Ontology in OWL for the Semantic Web</cite></a>. In: Proceedings of the AAAI Fall
@@ -3355,21 +3437,27 @@ ex:meetingStartDescription
         <dt id="TTL-14">[TTL-14]</dt>
         <dd>Prud'hommeaux, E. and Carothers, G. 2014. <a href="http://www.w3.org/TR/turtle/"><cite>RDF 1.1 Turtle -
               Terse RDF Triple Language</cite></a>. W3C Recommendation. <a href="http://www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/
-            </a></dd> <dt id="TZ-ON">[TZ-ON]</dt>
+            </a></dd> 
+        <dt id="TZ-ON">[TZ-ON]</dt>
         <dd><a href="http://www.w3.org/2006/timezone"><cite>The time zone ontology file</cite></a>. <a href="http://www.w3.org/2006/timezone">http://www.w3.org/2006/timezone</a></dd>
-        <dt id="TZ-US">[TZ-US]</dt>
+<!--        <dt id="TZ-US">[TZ-US]</dt>
         <dd><a href="http://www.w3.org/2006/timezone-us"><cite>The US time zone instance file</cite></a>. <a href="http://www.w3.org/2006/timezone-us">http://www.w3.org/2006/timezone-us</a></dd>
         <dt id="TZ-WO">[TZ-WO]</dt>
         <dd><a href="http://www.w3.org/2006/timezone-world"><cite>The world time zone instance file</cite></a>. <a href="http://www.w3.org/2006/timezone-world">http://www.w3.org/2006/timezone-world</a></dd>
-        <dt id="XSD-D">[XSD-D]</dt>
+        <dt id="XSD-D">[XSD-D]</dt> -->
         <dd><a href="https://www.w3.org/TR/xmlschema11-2/"><cite>XML Schema Definition Language (XSD) 1.1 Part 2:
               Datatypes</cite></a>. W3C Recommendation 5 April 2012 <a href="https://www.w3.org/TR/xmlschema11-2/">https://www.w3.org/TR/xmlschema11-2/</a></dd>
       </dl>
+
     </section>
+
     <hr>
+
     <section id="ack">
+
       <h2>Acknowledgements</h2>
       <p>The editors would like to thank Jerry Hobbs and Feng Pan for producing the original draft. </p>
+
     </section>
   </body>
 </html>
