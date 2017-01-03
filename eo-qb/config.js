@@ -107,7 +107,15 @@ var respecConfig = {
          href:"http://ontologydesignpatterns.org/wiki/Ontology:DOLCE+DnS_Ultralite",
          authors: ["Aldo Gangemi"],
          title: "DOLCE+DnS Ultralite (DUL)"
-      }
+      },
+        "vocab-qb4st": {
+          href:"https://www.w3.org/TR/vocab-qb4st/",
+          title:"QB4ST: RDF Data Cube extensions for spatio-temporal components",
+          date: "5 January 2017",
+          authors:["Rob Atkinson"],
+          publisher:"W3C/OGC",
+          status:"W3C/OGC Working Draft"
+        }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
