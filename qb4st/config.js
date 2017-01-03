@@ -46,16 +46,10 @@ var respecConfig = {
       }
       ],
     noRecTrack: true,
-    overrideCopyright: "<p class='copyright'><a href='http://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2016 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='http://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='http://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
+    overrideCopyright: "<p class='copyright'><a href='http://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2017 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='http://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='http://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
 
 
     localBiblio: {
-      "Time":{
-        href:"http://www.w3.org/2006/time#2016",
-        title:"OWL-Time",
-        authors: ["Simon Cox", "Chris Little"],
-        date: "1 October 2016"
-       },
 
 	    "W3C-BASIC-GEO": {
          href:"https://www.w3.org/2003/01/geo/",
@@ -70,12 +64,31 @@ var respecConfig = {
           date: "5 February 2012 (Madrid Edition)",
           authors:["Barry Norton", "Luis M. Vilches", "Alexander De León", "John Goodwin", "Claus Stadler", "Suchith Anand", "Dominic Harries", "Boris Villazón-Terrazas", "Ghislain A. Atemezing"]
         },
+      "GeoSPARQL":{
+        href:"http://www.opengeospatial.org/standards/geosparql",
+        title:"GeoSPARQL - A Geographic Query Language for RDF Data",
+        authors: ["Matthew Perry", "John Herring"],
+        date: "10 September 2012"
+      },
+      "SDMX":{
+         title:"Statistical Data and Metadata eXchange",
+         href:"https://sdmx.org/",
+         date: "2013"
+      },
         "ISO-19123": {
          href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=40121",
          title:"ISO 19123:2005 Geographic information -- Schema for coverage geometry and functions",
          authors:["ISO/TC 211"],
          publisher:"ISO",
          date:"15 August 2005"
+        },
+        "vocab-qb4st": {
+          href:"https://www.w3.org/TR/vocab-qb4st/",
+          title:"QB4ST: RDF Data Cube extensions for spatio-temporal components",
+          date: "5 January 2017",
+          authors:["Rob Atkinson"],
+          publisher:"W3C/OGC",
+          status:"W3C/OGC Working Draft"
         },
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
