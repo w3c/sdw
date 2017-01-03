@@ -1,5 +1,5 @@
 var respecConfig = {
-    specStatus: "FPWG-NOTE",
+    specStatus: "NOTE",
     shortName: "eo-qb",
     publishDate:  "2017-01-05",
     //previousPublishDate: "2014-03-27",
