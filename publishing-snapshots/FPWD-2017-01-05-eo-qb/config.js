@@ -1,7 +1,7 @@
 var respecConfig = {
-    specStatus: "ED",
+    specStatus: "FPWG-NOTE",
     shortName: "eo-qb",
-    //publishDate:  "2015-05-18",
+    publishDate:  "2017-01-05",
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
