@@ -64,7 +64,7 @@ var respecConfig = {
           date: "5 February 2012 (Madrid Edition)",
           authors:["Barry Norton", "Luis M. Vilches", "Alexander De León", "John Goodwin", "Claus Stadler", "Suchith Anand", "Dominic Harries", "Boris Villazón-Terrazas", "Ghislain A. Atemezing"]
         },
-      "GeoSPARQL":{
+        "GeoSPARQL":{
         href:"http://www.opengeospatial.org/standards/geosparql",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
         authors: ["Matthew Perry", "John Herring"],
@@ -82,6 +82,10 @@ var respecConfig = {
          publisher:"ISO",
          date:"15 August 2005"
         },
+        "SCOVO": {
+          href: "http://sw.joanneum.at/scovo/schema.html",
+          title:"The Statistical Core Vocabulary",
+        },
         "vocab-qb4st": {
           href:"https://www.w3.org/TR/vocab-qb4st/",
           title:"QB4ST: RDF Data Cube extensions for spatio-temporal components",
@@ -89,6 +93,18 @@ var respecConfig = {
           authors:["Rob Atkinson"],
           publisher:"W3C/OGC",
           status:"W3C/OGC Working Draft"
+        },
+        "FOAF": {
+          authors:["Dan Brickley", "Libby Miller"],
+          url:"http://xmlns.com/foaf/spec/",
+          title:"FOAF Vocabulary Specification, 0.99 Paddington Edition",
+          date:"14 January 2014."
+        },
+         "HAUS09": {
+         authors: ["Michael Hausenblas", "Wolfgang Halb", "Yves Raimond", "Lee Feigenbaum", "Danny Ayers"],
+         url: "http://mhausenblas.info/pubs/eswc09-inuse-scovo.pdf",
+         title: "SCOVO: Using Statistics on the Web of Data",
+         date: "2009"
         },
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
