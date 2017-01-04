@@ -108,8 +108,8 @@ var respecConfig = {
          authors: ["Aldo Gangemi"],
          title: "DOLCE+DnS Ultralite (DUL)"
       },
-        "vocab-qb4st": {
-          href:"https://www.w3.org/TR/vocab-qb4st/",
+        "qb4st": {
+          href:"https://www.w3.org/TR/qb4st/",
           title:"QB4ST: RDF Data Cube extensions for spatio-temporal components",
           date: "5 January 2017",
           authors:["Rob Atkinson"],
