@@ -1,7 +1,7 @@
 var respecConfig = {
     specStatus: "ED",
     shortName: "qb4st",
-    //publishDate:  "2015-05-18",
+    publishDate:  "2017-01-05",
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "",
@@ -64,7 +64,7 @@ var respecConfig = {
           date: "5 February 2012 (Madrid Edition)",
           authors:["Barry Norton", "Luis M. Vilches", "Alexander De León", "John Goodwin", "Claus Stadler", "Suchith Anand", "Dominic Harries", "Boris Villazón-Terrazas", "Ghislain A. Atemezing"]
         },
-      "GeoSPARQL":{
+        "GeoSPARQL":{
         href:"http://www.opengeospatial.org/standards/geosparql",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
         authors: ["Matthew Perry", "John Herring"],
