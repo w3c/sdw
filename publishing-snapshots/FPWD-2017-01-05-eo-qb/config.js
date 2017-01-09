@@ -1,7 +1,7 @@
 var respecConfig = {
     specStatus: "ED",
     shortName: "eo-qb",
-    //publishDate:  "2015-05-18",
+    publishDate:  "2017-01-05",
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
@@ -108,8 +108,8 @@ var respecConfig = {
          authors: ["Aldo Gangemi"],
          title: "DOLCE+DnS Ultralite (DUL)"
       },
-        "qb4st": {
-          href:"https://www.w3.org/TR/qb4st/",
+        "vocab-qb4st": {
+          href:"https://www.w3.org/TR/vocab-qb4st/",
           title:"QB4ST: RDF Data Cube extensions for spatio-temporal components",
           date: "5 January 2017",
           authors:["Rob Atkinson"],
