@@ -13,15 +13,14 @@
 <http://www.w3.org/2006/time>
   rdf:type owl:Ontology ;
   dct:contributor <http://orcid.org/0000-0002-3884-3420> ;
-  dct:contributor <mailto:simon.cox@csiro.au> ;
   dct:created "2006-09-27"^^xsd:date ;
+  dct:creator <http://orcid.org/0000-0002-3884-3420> ;
   dct:creator <https://en.wikipedia.org/wiki/Jerry_Hobbs> ;
   dct:creator <mailto:panfeng66@gmail.com> ;
   dct:isVersionOf <http://www.w3.org/TR/owl-time> ;
-  dct:license <https://creativecommons.org/licenses/by/3.0/au/> ;
-  dct:modified "2016-06-15"^^xsd:date ;
-  dct:rights "Copyright © 2006-2016 W3C All Rights Reserved. W3C liability, trademark and document use rules apply."@en ;
-  rdfs:comment "Update of OWL-Time ontology, extended to support general temporal reference systems"@en ;
+  dct:license <https://creativecommons.org/licenses/by/4.0/> ;
+  dct:modified "2016-12-20"^^xsd:date ;
+  dct:rights "Copyright © 2006-2016 W3C, OGC All Rights Reserved. W3C and OGC liability, trademark and document use rules apply."@en ;
   rdfs:label "OWL-Time"@en ;
   rdfs:seeAlso <http://dx.doi.org/10.3233/SW-150187> ;
   rdfs:seeAlso <http://www.semantic-web-journal.net/content/time-ontology-extended-non-gregorian-calendar-applications> ;
@@ -29,6 +28,12 @@
   owl:imports <http://purl.org/dc/elements/1.1/> ;
   owl:priorVersion <http://www.w3.org/2006/time#2006> ;
   owl:versionIRI <http://www.w3.org/2006/time#2016> ;
+  skos:changeNote "2016-06-15 - initial update of OWL-Time - modified to support arbitrary temporal reference systems. " ;
+  skos:changeNote "2016-12-20 - adjust range of time:timeZone to time:TimeZone, moved up from the tzont ontology.  " ;
+  skos:changeNote "2016-12-20 - restore time:Year and time:January which were present in the 2006 version of the ontology, but now marked \"deprecated\". " ;
+  skos:historyNote """Update of OWL-Time ontology, extended to support general temporal reference systems. 
+
+Ontology engineering by Simon J D Cox"""@en ;
 .
 :DateTimeDescription
   rdf:type owl:Class ;
@@ -269,6 +274,22 @@ In the original OWL-Time the following constraint appeared:
   rdfs:label "Time interval"@en ;
   rdfs:subClassOf :TemporalEntity ;
 .
+:January
+  rdf:type owl:Class ;
+  rdfs:subClassOf :DateTimeDescription ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue :unitMonth ;
+      owl:onProperty :unitType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "--01" ;
+      owl:onProperty :month ;
+    ] ;
+  owl:deprecated "true"^^xsd:boolean ;
+  skos:historyNote "This class was present in the 2006 version of OWL-Time. It was presented as an example of how DateTimeDescription could be specialized, but does not belong in the revised ontology. " ;
+.
 :Monday
   rdf:type :DayOfWeek ;
   rdfs:label "Monday"@en ;
@@ -367,6 +388,20 @@ In the original OWL-Time the following constraint appeared:
       owl:onProperty :hasTRS ;
     ] ;
 .
+:TimeZone
+  rdf:type owl:Class ;
+  rdfs:comment "A Time Zone is a geographic region that uses a clock with a specified offset from UTC. The region and offset are specified by the locally recognised governing authority. " ;
+  rdfs:label "Time Zone"@en ;
+  skos:definition "A Time Zone is a geographic region that uses a clock with a specified offset from UTC. The region and offset are specified by the locally recognised governing authority. " ;
+  skos:historyNote """In the original 2006 version of OWL-Time, the TimeZone class, with several properties corresponding to a specific model of time-zones, was defined in a separate namespace \"http://www.w3.org/2006/timezone#\". 
+
+In the current version a class with same local name is put into the main OWL-Time namespace, removing the dependency on the external namespace. 
+
+An alignment axiom 
+	tzont:TimeZone rdfs:subClassOf time:TimeZone . 
+allows data encoded according to the previous version to be consistent with the updated ontology. """ ;
+  skos:scopeNote "In this implementation TimeZone has no properties defined. It should be thought of as an 'abstract' superclass of all specific timezone implementations." ;
+.
 :Tuesday
   rdf:type :DayOfWeek ;
   rdfs:label "Tuesday"@en ;
@@ -375,18 +410,52 @@ In the original OWL-Time the following constraint appeared:
   rdf:type :DayOfWeek ;
   rdfs:label "Wednesday"@en ;
 .
+:Year
+  rdf:type owl:Class ;
+  rdfs:comment "<!-- Duration year, not a calendar year! -->" ;
+  rdfs:subClassOf :DurationDescription ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality 0 ;
+      owl:onProperty :days ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality 0 ;
+      owl:onProperty :hours ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality 0 ;
+      owl:onProperty :minutes ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality 0 ;
+      owl:onProperty :months ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality 0 ;
+      owl:onProperty :seconds ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality 0 ;
+      owl:onProperty :weeks ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality 1 ;
+      owl:onProperty :years ;
+    ] ;
+  owl:deprecated "true"^^xsd:boolean ;
+  skos:historyNote "This class was present in the 2006 version of OWL-Time. It was presented as an example of how DurationDescription could be specialized, but does not belong in the revised ontology. " ;
+.
 :after
   rdf:type owl:ObjectProperty ;
   rdfs:comment "Gives directionality to time. If a temporal entity T1 is after another temporal entity T2, then the beginning of T1 is after the end of T2."@en ;
-  rdfs:domain :TemporalEntity ;
   rdfs:label "after"@en ;
-  rdfs:range [
-      rdf:type owl:Class ;
-      owl:unionOf (
-          :TemporalEntity
-          owl:Thing
-        ) ;
-    ] ;
   owl:inverseOf :before ;
 .
 :before
@@ -433,7 +502,7 @@ The range of this property is not specified, so can be replaced by any specific 
   owl:onDatatype xsd:string ;
   owl:withRestrictions (
       [
-        xsd:pattern "---(0[1-9]|[1-9][0-9])(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"^^xsd:string ;
+        xsd:pattern "---(0[1-9]|[1-9][0-9])(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?" ;
       ]
     ) ;
 .
@@ -444,7 +513,7 @@ The range of this property is not specified, so can be replaced by any specific 
   owl:onDatatype xsd:string ;
   owl:withRestrictions (
       [
-        xsd:pattern "--(0[1-9]|1[0-9]|20)(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"^^xsd:string ;
+        xsd:pattern "--(0[1-9]|1[0-9]|20)(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?" ;
       ]
     ) ;
 .
@@ -456,7 +525,7 @@ The range of this property is not specified, so can be replaced by any specific 
   owl:onDatatype xsd:string ;
   owl:withRestrictions (
       [
-        xsd:pattern "-?([1-9][0-9]{3,}|0[0-9]{3})(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"^^xsd:string ;
+        xsd:pattern "-?([1-9][0-9]{3,}|0[0-9]{3})(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?" ;
       ]
     ) ;
 .
@@ -505,6 +574,14 @@ The range of this property is not specified, so can be replaced by any specific 
   rdf:type owl:FunctionalProperty ;
   rdf:type owl:ObjectProperty ;
   rdfs:comment "The temporal reference system used by a temporal position or extent description. "@en ;
+  rdfs:domain [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          :GeneralDateTimeDescription
+          :TimePosition
+          :GeneralDurationDescription
+        ) ;
+    ] ;
   rdfs:label "Temporal reference system used"@en ;
   rdfs:range :TRS ;
 .
@@ -538,7 +615,7 @@ The range of this property is not specified, so can be replaced by any specific 
 .
 :inXSDDateTime
   rdf:type owl:DatatypeProperty ;
-  rdfs:comment "Position of an instant, expressed using xsd:DateTime"@en ;
+  rdfs:comment "Position of an instant, expressed using xsd:dateTime"@en ;
   rdfs:domain :Instant ;
   rdfs:label "in XSD Date-Time"@en ;
   rdfs:range xsd:dateTime ;
@@ -706,7 +783,11 @@ The range of this property is not specified, so can be replaced by any specific 
   rdfs:comment "The time zone for clock elements in the temporal position"@en ;
   rdfs:domain :GeneralDateTimeDescription ;
   rdfs:label "in time zone"@en ;
-  rdfs:range tzont:TimeZone ;
+  rdfs:range :TimeZone ;
+  skos:historyNote """In the original 2006 version of OWL-Time, the range of time:timeZone was a TimeZone class in a separate namespace \"http://www.w3.org/2006/timezone#\". 
+An alignment axiom 
+	tzont:TimeZone rdfs:subClassOf time:TimeZone . 
+allows data encoded according to the previous version to be consistent with the updated ontology. """ ;
 .
 :unitDay
   rdf:type :TemporalUnit ;
@@ -784,7 +865,4 @@ The range of this property is not specified, so can be replaced by any specific 
   rdfs:domain :GeneralDurationDescription ;
   rdfs:label "years"@en ;
   rdfs:range :Number ;
-.
-tzont:TimeZone
-  rdf:type owl:Class ;
 .
