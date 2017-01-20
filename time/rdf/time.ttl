@@ -110,13 +110,18 @@ Ontology engineering by Simon J D Cox"""@en ;
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :numericDuration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
       owl:hasValue :unitDay ;
       owl:onProperty :unitType ;
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:hasValue 1 ;
-      owl:onProperty :numericDuration ;
+      owl:onProperty :days ;
     ] ;
   skos:prefLabel "Dag"@nl ;
   skos:prefLabel "Day"@en ;
@@ -387,6 +392,11 @@ In the original OWL-Time the following constraint appeared:
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:hasValue 1 ;
+      owl:onProperty :hours ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue 1 ;
       owl:onProperty :numericDuration ;
     ] ;
   skos:prefLabel "Godzina"@pl ;
@@ -480,6 +490,11 @@ In the original OWL-Time the following constraint appeared:
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:hasValue 1 ;
+      owl:onProperty :minutes ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue 1 ;
       owl:onProperty :numericDuration ;
     ] ;
   skos:prefLabel "Minuta"@pl ;
@@ -560,6 +575,11 @@ In the original OWL-Time the following constraint appeared:
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:hasValue 1 ;
+      owl:onProperty :months ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue 1 ;
       owl:onProperty :numericDuration ;
     ] ;
   skos:prefLabel "Maand"@nl ;
@@ -579,7 +599,42 @@ In the original OWL-Time the following constraint appeared:
   rdf:type owl:Class ;
   rdfs:comment "The month of the year (name)"@en ;
   rdfs:label "Month of year"@en ;
-  rdfs:subClassOf owl:Thing ;
+  rdfs:subClassOf :DateTimeDescription ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :day ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :hour ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :minute ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :second ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :week ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :year ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :month ;
+    ] ;
 .
 :Number
   rdf:type rdfs:Datatype ;
@@ -668,6 +723,11 @@ In the original OWL-Time the following constraint appeared:
       rdf:type owl:Restriction ;
       owl:hasValue 1 ;
       owl:onProperty :numericDuration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue 1 ;
+      owl:onProperty :seconds ;
     ] ;
   skos:prefLabel "Second"@en ;
   skos:prefLabel "Seconde (temps)"@fr ;
@@ -872,6 +932,11 @@ allows data encoded according to the previous version to be consistent with the 
       owl:hasValue 1 ;
       owl:onProperty :numericDuration ;
     ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue 1 ;
+      owl:onProperty :weeks ;
+    ] ;
   skos:prefLabel "Semaine"@fr ;
   skos:prefLabel "Semana"@es ;
   skos:prefLabel "Semana"@pt ;
@@ -887,6 +952,8 @@ allows data encoded according to the previous version to be consistent with the 
 .
 :Year
   rdf:type owl:Class ;
+  rdf:type :Duration ;
+  rdf:type :DurationDescription ;
   rdfs:comment "Duration year, not a calendar year" ;
   rdfs:label "Year"@en ;
   rdfs:subClassOf :Duration ;
@@ -936,7 +1003,13 @@ allows data encoded according to the previous version to be consistent with the 
       owl:hasValue 1 ;
       owl:onProperty :numericDuration ;
     ] ;
-  skos:historyNote """Year was present in the 2006 version of OWL-Time. It was presented as an example of how DurationDescription could be specialized. In the 2017 version it is complemented by equivalent formulations for Month, Week ... Second. 
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue 1 ;
+      owl:onProperty :years ;
+    ] ;
+  skos:historyNote """Year was proposed in the 2006 version of OWL-Time as an example of how DurationDescription could be specialized. 
+In the 2017 version it is complemented by equivalent formulations for the other standard durations Month, Week ... Second. 
 
 Year is also formulated as a specialization of time:Duration. """ ;
   skos:prefLabel "Anno"@it ;
@@ -951,6 +1024,9 @@ Year is also formulated as a specialization of time:Duration. """ ;
   skos:prefLabel "سنة"@ar ;
   skos:prefLabel "年"@ja ;
   skos:prefLabel "年"@zh ;
+  :numericDuration "1"^^:Number ;
+  :unitType :unitYear ;
+  :years "1"^^:Number ;
 .
 :after
   rdf:type owl:ObjectProperty ;
