@@ -22,21 +22,6 @@
 @prefix sosa-om: <http://www.w3.org/ns/sosa-om#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-iso19156_gfi:GFI_DomainFeature
-  owl:equivalentClass sosa:FeatureOfInterest ;
-.
-iso19156-om:OM_Observation
-  owl:equivalentClass sosa:Observation ;
-.
-<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.featureOfInterest>
-  owl:equivalentProperty sosa:hasFeatureOfInterest ;
-.
-<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty>
-  owl:equivalentProperty sosa:observedProperty ;
-.
-<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.phenomenonTime>
-  rdfs:subPropertyOf sosa:phenomenonTime ;
-.
 <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.procedure>
   rdfs:comment "sosa:usedProcedure covers actuation, observation and sampling, so observation procedure is a sub-property" ;
   rdfs:subPropertyOf sosa:usedProcedure ;
@@ -51,21 +36,13 @@ iso19156-om:OM_Observation
 .
 iso19156-om:OM_Process
   rdfs:comment "sosa:Procedure includes procedures for actuation, sampling and observation, so om:Process is the union of a subclass and Sensor" ;
-  rdfs:subClassOf [
+  owl:equivalentClass [
       rdf:type owl:Class ;
       owl:unionOf (
-          [
-            rdfs:subClassOf sosa:Procedure ;
-          ]
           sosa:Sensor
+          sosa-om:ObservationProcedure
         ) ;
     ] ;
-.
-iso19156_sf:SF_SamplingFeature
-  owl:equivalentClass sosa:Sample ;
-.
-<http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeature.sampledFeature>
-  owl:equivalentProperty sosa:isSampleOf ;
 .
 <http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#SF_SpatialSamplingFeature.hostedProcedure>
   rdfs:subPropertyOf sosa:hosts ;
@@ -75,13 +52,11 @@ iso19156_sf:SF_SamplingFeature
 .
 iso19156-sp:SF_Process
   rdfs:comment "sosa:Procedure includes procedures for actuation, sampling and observation, so sam:Process is the union of a subclass and SamplingDevice" ;
-  rdfs:subClassOf [
+  owl:equivalentClass [
       rdf:type owl:Class ;
       owl:unionOf (
-          [
-            rdfs:subClassOf sosa:Procedure ;
-          ]
           sosa-om:SamplingDevice
+          sosa-om:SamplingProcedure
         ) ;
     ] ;
 .
@@ -163,7 +138,6 @@ sosa:Procedure
     ] ;
 .
 sosa:Sample
-  rdfs:subClassOf iso19156_gfi:GFI_Feature ;
   owl:equivalentClass iso19156_sf:SF_SamplingFeature ;
 .
 sosa:Sensor
@@ -177,6 +151,9 @@ sosa:hasResult
 .
 sosa:isResultOf
   meta:rangeIncludes sosa-om:SamplingEvent ;
+.
+sosa:isSampleOf
+  owl:equivalentProperty <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeature.sampledFeature> ;
 .
 sosa:observedProperty
   owl:equivalentProperty <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty> ;

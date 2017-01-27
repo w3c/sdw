@@ -4314,31 +4314,284 @@ rdfs:subPropertyOf &lt;http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#has
 </pre>
       </section>
     </section>
-    <section id="OM_Alignment" class="informativve">
-      <h2>Alignment to OGC Observations and Measurements</h2>
-      <p>This section introduces the alignment of SOSA/SSN to OGC
-          Observations and Measurements [[OandM]]. </p>
-      <p>O&amp;M is specified as a UML model, following the patterns specified
-        in ISO 19109 Geographic Information - Rules
-          for Application Schema [[ISO-19109]]. This means that the classes represent
-        concepts from the application domain, so can be approximately equated
-        with classes in an ontology.</p>
-      <p>Two OWL implementations of O&amp;M have been described: an explicit
-        translation of the UML [[OandM]] following
-        the rules specified in [[ISO-19150-2]]; and
-        a handcrafted version in more idiomatic OWL [[OM-Lite]]. The advantage of the former is that it provides an RDF
-        resource denoted by a URI and therefore a convenient identifier for
-        every UML class, class attribute, and association-role from the original
-        O&amp;M model, but at a cost of including a large set of dependencies on
-        similar OWL translations of several other UML models from the ISO 19100
-        series. </p>
-      <p class="issue" data-number="111">Complete SOSA/SSN to O&amp;M mapping
-        table should be included in the SSN document and an alignment ontology
-        provided.</p>
-      <!--
+
+<section id="OM_Alignment">
+<h2>Alignment to Observations and Measurements</h2>
+<p>This section introduces the alignment of SOSA/SSN to OGC Observations and Measurements [[OandM]] (also known as ISO 19156:2011). </p>
+<p>O&amp;M is specified as a UML model, following the patterns specified in ISO 19109 Geographic Information - Rules for Application Schema [[ISO-19109]]. 
+This means that the classes represent concepts from the application domain, so can be approximately equated with classes in an ontology.</p>
+<p>Two OWL implementations of O&amp;M have been described: 
+<ol>
+  <li>an explicit translation of the UML [[OandM]] following the rules specified in [[ISO-19150-2]] - see [[OM-Heavy]],[[OM-GOM]]; and</li>
+  <li>a handcrafted version in more idiomatic OWL [[OM-Lite]]. </li>
+</ol>
+The former provides an RDF entity for every class, class attribute, and association-role from the original O&amp;M UML model, but at a cost of including a large set of dependencies on similar OWL translations of other UML models from the ISO 19100 series. 
+Nevertheless, the URI for each RDF entity is a convenient identifier to elements of the UML model that can be used in an RDF/OWL alignment. 
+In the mappings below, we use the URIs from the official <a href="https://github.com/ISO-TC211/GOM/tree/master/isotc211_GOM_harmonizedOntology/19156/2011">OWL implementation maintained by the ISO/TC 211 Group on Ontology Management</a>. </p>
+<P>The following sections provide two mappings or alignments between SOSA/SSN and O&amp;M, the first with the official ISO/OGC UML conceptual model, and the second with the lightweight OWL implementation.</p>
+<p class="issue" data-number="111">Complete SOSA/SSN to O&amp;M mapping
+table should be included in the SSN document and an alignment ontology
+provided.</p>
+
+<section id="SOSA-OM_Alignment" class="informative">
+<h3>Alignment to Observations and Measurements UML model</h3>
+
+<p>An RDF file containing a graph corresponding to this alignment <a href="https://github.com/w3c/sdw/blob/simon-ssn-O%26M-alignments/ssn/rdf/sosa-om-mapping.ttl">is available</a>. </p>
+
+<table id="SOSA-OM-namespacesTable">
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Namespace</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sosa:</code></td>
+<td><code>http://www.w3.org/ns/sosa/</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa-om:</code></td>
+<td><code>http://www.w3.org/ns/sosa-om#</code></td>
+<td>Local namespace used to assist the alignment</td>
+</tr>
+<tr>
+<td><code>iso19156-gfi:</code></td>
+<td><code>http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-om:</code></td>
+<td><code>http://def.isotc211.org/iso19156/2011/Observation#</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-sf:</code></td>
+<td><code>http://def.isotc211.org/iso19156/2011/SamplingFeature#</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-sfs:</code></td>
+<td><code>http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-sp:</code></td>
+<td><code>http://def.isotc211.org/iso19156/2011/Specimen#</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h4>Classes</h4>
+
+<p>Five utiity classes are defined to support the formalization of the alignment.</p>
+
+<table id="SOSA-OM-classTable">
+<thead>
+<tr>
+<th>Utility class</th>
+<th>relationship</th>
+<th>related class</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sosa-om:ActuationProcedure</code></td>
+<td>subclass of</td>
+<td><code>sosa:Procedure</code></td>
+<td>Notional class of actuation procedures or recipes</td>
+</tr>
+<tr>
+<td><code>sosa-om:ObservationProcedure</code></td>
+<td>subclass of</td>
+<td><code>iso19156-om:OM_Process 
+            and sosa:Procedure</code></td>
+<td>Notional class of observation procedures or recipes</td>
+</tr>
+<tr>
+<td><code>sosa-om:SamplingProcedure</code></td>
+<td>subclass of</td>
+<td><code>iso19156-sp:SF_Process 
+            and sosa:Procedure</code></td>
+<td>Notional class of sampling or sample preparation or processing procedures or recipes</td>
+</tr>
+<tr>
+<td><code>sosa-om:SamplingDevice</code></td>
+<td>subclass of</td>
+<td><code>iso19156-sp:SF_Process</code></td>
+<td>Notional class of sampling or sample preparation or processing devices</td>
+</tr>
+<tr>
+<td><code>sosa-om:SamplingEvent</code></td>
+<td></td>
+<td></code></td>
+<td>Notional class of sampling or sample preparation or processing events</td>
+</tr>
+</tbody>
+</table>
+
+<p>The following two tables show the mappings from SOSA/SSN classes to O&amp;M classes and properties.</p>
+
+<table id="SOSA-OM-class-mappingTable">
+<thead>
+<tr>
+<th>SOSA/SSN class</th>
+<th>relationship</th>
+<th>related class</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sosa:Actuator</code></td>
+<td>subclass of</td>
+<td><code>iso19156_gfi:GFI_Feature</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:FeatureOfInterest</code></td>
+<td>subclass of</td>
+<td><code>iso19156_gfi:GFI_DomainFeature</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:Observation</code></td>
+<td>equivalent class</td>
+<td><code>iso19156-om:OM_Observation</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:Platform</code></td>
+<td>subclass of</td>
+<td><code>iso19156_gfi:GFI_Feature</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:Procedure</code></td>
+<td>equivalent class</td>
+<td><code>sosa-om:ActuationProcedure
+          or sosa-om:ObservationProcedure
+          or sosa-om:SamplingProcedure</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:Sample</code></td>
+<td>equivalent class</td>
+<td><code>iso19156_sf:SF_SamplingFeature</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:Sensor</code></td>
+<td>subclass of</td>
+<td><code>sosa:Procedure</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:Sensor or sosa-om:ObservationProcedure</code></td>
+<td>equivalent class</td>
+<td><code>iso19156-om:OM_Process</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa-om:SamplingDevice or sosa-om:SamplingProcedure</code></td>
+<td>equivalent class</td>
+<td><code>iso19156-sf:SF_Process</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h4>Properties</h4>
+
+<table id="SOSA-OM-property-mappingTable">
+<thead>
+<tr>
+<th>Property</th>
+<th>relationship</th>
+<th>related property</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iso19156-om:OM_Observation.procedure</code></td>
+<td>sub-property of</td>
+<td><code>sosa:usedProcedure</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-om:OM_Observation.result</code></td>
+<td>sub-property of</td>
+<td><code>sosa:hasResult</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-om:OM_Observation.resultTime</code></td>
+<td>sub-property of</td>
+<td><code>sosa:resultTime</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-sfs:SF_SpatialSamplingFeature.hostedProcedure</code></td>
+<td>sub-property of</td>
+<td><code>sosa:hosts</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-sp:PreparationStep.time</code></td>
+<td>sub-property of</td>
+<td><code>sosa:resultTime</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-sp:SF_Specimen.samplingMethod</code></td>
+<td>sub-property of</td>
+<td><code>sosa:usedProcedure</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>iso19156-sp:SF_Specimen.samplingTime</code></td>
+<td>sub-property of</td>
+<td><code>sosa:resultTime</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:hasFeatureOfInterest</code></td>
+<td>equivalent property</td>
+<td><code>iso19156-om:OM_Observation.featureOfInterest</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:isSampleOf</code></td>
+<td>equivalent property</td>
+<td><code>iso19156-sf:SF_SamplingFeature.sampledFeature</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:observedProperty</code></td>
+<td>equivalent property</td>
+<td><code>iso19156-om:OM_Observation.observedProperty</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sosa:phenomenonTime</code></td>
+<td>equivalent property</td>
+<td><code>iso19156-om:OM_Observation.phenomenonTime</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<!--
 <p class="note">An RDF representation of a preliminary SOSA-O&amp;M alignment is at <a href="https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sosa-om.ttl">https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sosa-om.ttl</a> . URIs from the official ISO/TC 211 OWL implementation are used to identify the UML elements from ISO 19156/OGC O&amp;M. </p>
 <p class="note">An RDF representation of a preliminary SOSA-om-lite alignment is at from <a href="https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sosa-oml.ttl">https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sosa-oml.ttl</a> . </p>/!-->
-    </section>
+</section>
+
     <section id="WorkPlan" class="informative">
       <h2>Work Plan</h2>
       <p>This section identifies work that is planned to be done in the next
