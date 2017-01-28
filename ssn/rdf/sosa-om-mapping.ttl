@@ -22,6 +22,18 @@
 @prefix sosa-om: <http://www.w3.org/ns/sosa-om#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+iso19156-om:OM_Observation
+  owl:equivalentClass sosa:Observation ;
+.
+<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.featureOfInterest>
+  owl:equivalentProperty sosa:hasFeatureOfInterest ;
+.
+<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty>
+  owl:equivalentProperty sosa:observedProperty ;
+.
+<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.phenomenonTime>
+  owl:equivalentProperty sosa:phenomenonTime ;
+.
 <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.procedure>
   rdfs:comment "sosa:usedProcedure covers actuation, observation and sampling, so observation procedure is a sub-property" ;
   rdfs:subPropertyOf sosa:usedProcedure ;
@@ -43,6 +55,12 @@ iso19156-om:OM_Process
           sosa-om:ObservationProcedure
         ) ;
     ] ;
+.
+iso19156_sf:SF_SamplingFeature
+  owl:equivalentClass sosa:Sample ;
+.
+<http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeature.sampledFeature>
+  owl:equivalentProperty sosa:isSampleOf ;
 .
 <http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#SF_SpatialSamplingFeature.hostedProcedure>
   rdfs:subPropertyOf sosa:hosts ;
@@ -88,6 +106,8 @@ sosa-om:ActuationProcedure
   rdfs:comment "(Notional) Actuation procedure or recipe, complementing SamplingProcedure and ObservationProcedure"@en ;
   rdfs:label "Actuation procedure"@en ;
   rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-om:ObservationProcedure ;
+  owl:disjointWith sosa-om:SamplingProcedure ;
 .
 sosa-om:ObservationProcedure
   rdf:type owl:Class ;
@@ -95,6 +115,8 @@ sosa-om:ObservationProcedure
   rdfs:label "Observation procedure"@en ;
   rdfs:subClassOf iso19156-om:OM_Process ;
   rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-om:ActuationProcedure ;
+  owl:disjointWith sosa-om:SamplingProcedure ;
 .
 sosa-om:SamplingDevice
   rdf:type owl:Class ;
@@ -113,15 +135,14 @@ sosa-om:SamplingProcedure
   rdfs:label "Sampling procedure"@en ;
   rdfs:subClassOf iso19156-sp:SF_Process ;
   rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-om:ActuationProcedure ;
+  owl:disjointWith sosa-om:ObservationProcedure ;
 .
 sosa:Actuator
   rdfs:subClassOf iso19156_gfi:GFI_Feature ;
 .
 sosa:FeatureOfInterest
   rdfs:subClassOf iso19156_gfi:GFI_DomainFeature ;
-.
-sosa:Observation
-  owl:equivalentClass iso19156-om:OM_Observation ;
 .
 sosa:Platform
   rdfs:subClassOf iso19156_gfi:GFI_Feature ;
@@ -130,36 +151,18 @@ sosa:Procedure
   rdfs:comment "OM_Process and SF_Process each cover both recipes and implementations, so sosa:Procedure is a union of the subsets" ;
   owl:equivalentClass [
       rdf:type owl:Class ;
-      owl:unionOf (
+      owl:disjointUnionOf (
           sosa-om:ActuationProcedure
           sosa-om:ObservationProcedure
           sosa-om:SamplingProcedure
         ) ;
     ] ;
 .
-sosa:Sample
-  owl:equivalentClass iso19156_sf:SF_SamplingFeature ;
-.
-sosa:Sensor
-  rdfs:subClassOf iso19156-om:OM_Process ;
-.
-sosa:hasFeatureOfInterest
-  owl:equivalentProperty <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.featureOfInterest> ;
-.
 sosa:hasResult
   meta:domainIncludes sosa-om:SamplingEvent ;
 .
 sosa:isResultOf
   meta:rangeIncludes sosa-om:SamplingEvent ;
-.
-sosa:isSampleOf
-  owl:equivalentProperty <http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeature.sampledFeature> ;
-.
-sosa:observedProperty
-  owl:equivalentProperty <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty> ;
-.
-sosa:phenomenonTime
-  owl:equivalentProperty <http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.phenomenonTime> ;
 .
 sosa:usedProcedure
   meta:domainIncludes sosa-om:SamplingEvent ;

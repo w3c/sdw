@@ -70,6 +70,9 @@ samfl:hostedProcedure
 samfl:sampledFeature
   owl:equivalentProperty sosa:isSampleOf ;
 .
+samfl:samplingMethod
+  rdfs:subPropertyOf sosa:usedProcedure ;
+.
 samfl:samplingTime
   rdfs:comment "sub-property of sosa:resultTime which also relates to actuation and observation events" ;
   rdfs:subPropertyOf sosa:resultTime ;
@@ -92,6 +95,8 @@ sosa-oml:ActuationProcedure
   rdfs:comment "(Notional) Actuation procedure or recipe, complementing SamplingProcedure and ObservationProcedure"@en ;
   rdfs:label "Actuation procedure"@en ;
   rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-oml:ObservationProcedure ;
+  owl:disjointWith sosa-oml:SamplingProcedure ;
 .
 sosa-oml:ObservationProcedure
   rdf:type owl:Class ;
@@ -99,6 +104,8 @@ sosa-oml:ObservationProcedure
   rdfs:label "Observation procedure"@en ;
   rdfs:subClassOf oml:Process ;
   rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-oml:ActuationProcedure ;
+  owl:disjointWith sosa-oml:SamplingProcedure ;
 .
 sosa-oml:SamplingDevice
   rdf:type owl:Class ;
@@ -117,28 +124,21 @@ sosa-oml:SamplingProcedure
   rdfs:label "Sampling procedure"@en ;
   rdfs:subClassOf samfl:Process ;
   rdfs:subClassOf sosa:Procedure ;
-.
-sosa:Observation
-  owl:equivalentClass oml:Observation ;
+  owl:disjointWith sosa-oml:ActuationProcedure ;
+  owl:disjointWith sosa-oml:ObservationProcedure ;
 .
 sosa:Procedure
   owl:equivalentClass [
       rdf:type owl:Class ;
-      owl:unionOf (
+      owl:disjointUnionOf (
           sosa-oml:ActuationProcedure
           sosa-oml:ObservationProcedure
           sosa-oml:SamplingProcedure
         ) ;
     ] ;
 .
-sosa:Sample
-  owl:equivalentClass samfl:SamplingFeature ;
-.
 sosa:Sensor
   rdfs:subClassOf oml:Process ;
-.
-sosa:hasFeatureOfInterest
-  owl:equivalentProperty oml:featureOfInterest ;
 .
 sosa:hasResult
   meta:domainIncludes sosa-oml:SamplingEvent ;
@@ -147,15 +147,6 @@ sosa:isResultOf
   meta:rangeIncludes sosa-oml:SamplingEvent ;
   rdfs:comment "... or SamplingEvent" ;
   skos:definition "... or SamplingEvent" ;
-.
-sosa:isSampleOf
-  owl:equivalentProperty samfl:sampledFeature ;
-.
-sosa:observedProperty
-  owl:equivalentProperty oml:observedProperty ;
-.
-sosa:phenomenonTime
-  owl:equivalentProperty oml:phenomenonTime ;
 .
 sosa:usedProcedure
   meta:domainIncludes sosa-oml:SamplingEvent ;
