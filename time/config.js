@@ -42,10 +42,10 @@ var respecConfig = {
         url: "https://www.w3.org/"
       },
       {
-        src: "https://www.w3.org/2015/01/ogc_logo.jpg",
+        src: "https://www.w3.org/2017/01/ogc_logo.png",
         alt: "OGC",
-        height: "48",
-        width: "115",
+        height: "68",
+        width: "147",
         url: "http://www.opengeospatial.org/"
       }
       ],
