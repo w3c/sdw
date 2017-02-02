@@ -1257,38 +1257,43 @@ a:Dataset a dcat:Dataset ;
             <p class="subhead">Intended Outcome</p>
             <p>Users are provided with the most recent version of information about a spatial things and its attributes by default.</p>
             <p>Users are able to determine the time period for which data is applicable.</p>
-            <p>Users are able to browse through a set of changes to see how a spatial thing and its attributes have changed over time.</p>
+            <p>If a version history of changes is available, users are able to browse through a set of changes to see how a spatial thing and its attributes have changed over time.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
 
-            <p class="note">This best practice focuses on describing change to spatial things and their attributes. However, readers should note that dataset metadata plays an important part in helping users determine whether a dataset is fit for their use. Of relevance to this topic would be statements about the (most recent) publication date, the frequency of update and the time period for which the dataset is relevant (i.e. temporal extent). Please refer to [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#DescriptiveMetadata">section 8.2 Metadata</a> for more details about dataset metadata.</p>
-
-            <p>When publishing information about a spatial thing that is subject to change there are two main approaches to consider:</p>
+            <p>When publishing information about a spatial thing that is subject to change there are three main approaches to consider:</p>
             <ol>
+              <li>simply updating the description of the spatial thing in response to a change;</li>
               <li>providing a series of immutable snapshots that describe the spatial thing at various points in its lifecycle; and</li>
               <li>capturing a time-series of data values within an attribute of the spatial thing.</li>
             </ol>
 
-            <p class="issue" data-number="196">Need to include guidance on when a lightweight approach (ignoring the change aspects) is appropriate</p>
+            <p>Whichever approach is chosen, publishers of spatial data should consider how dataset metadata plays an important part in helping users determine whether a dataset is fit for their use. Particularly where the contents of a dataset change with time, statements about the (most recent) publication date, the frequency of update and the time period for which the dataset is relevant (i.e. temporal extent) should be provided. Please refer to [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#DescriptiveMetadata">section 8.2 Metadata</a> for more details about dataset metadata. Also note that a description of how spatial things and there attributes are versioned, if at all, should be provided in either the dataset's metadata, schema or specification.</p>
 
-            <p>Before deciding which approach to use, data publishers must decide how much change is acceptable before a spatial thing can no longer considered as the same resource. Consider Eddystone Lighthouse for example: the “Eddystone Light” has existed in (more or less) the same place on Eddystone Rocks since 1698. A single HTTP URI (<a href="http://dbpedia.org/resource/Eddystone_Lighthouse"><code>http://dbpedia.org/resource/Eddystone_Lighthouse</code></a>) is used to identify “the lighthouse on Eddystone rocks” for all that period. The lighthouse's characteristics have changed over that period and could be captured as snapshots. However, each of the four structures that have stood on that site, from Winstanley's Eddystone Lighthouse (the first incarnation) to Douglass' Eddystone Lighthouse (the 4th and current incarnation) are different spatial things. Incremental change for these structures during the entire period from 1698 is not appropriate; one structure replaces another and so each structure should be assigned a unique identifier.</p>
+            <div class="note">
+              <p>Before deciding which approach to use, data publishers must decide how much change is acceptable before a spatial thing can no longer considered as the same resource. Consider Eddystone Lighthouse for example: the “Eddystone Light” has existed in (more or less) the same place on Eddystone Rocks since 1698. A single HTTP URI (<a href="http://dbpedia.org/resource/Eddystone_Lighthouse"><code>http://dbpedia.org/resource/Eddystone_Lighthouse</code></a>) is used to identify “the lighthouse on Eddystone rocks” for all that period. The lighthouse's characteristics have changed over that period and could be captured as snapshots. However, each of the four structures that have stood on that site, from Winstanley's Eddystone Lighthouse (the first incarnation) to Douglass' Eddystone Lighthouse (the 4th and current incarnation) are different spatial things. Incremental change for these structures during the entire period from 1698 is not appropriate; one structure replaces another and so each structure should be assigned a unique identifier.</p>
+              <p>Whether a change should be considered an update or a new entity depends on one's interest: e.g. a maritime navigation aid (one "Eddystone Light") or historic buildings (four separate structures). It is a data modelling choice.</p>
+            </div>
 
-            <p>The choice of approach is somewhat arbitrary, although the snapshot approach is more applicable for complex or infrequent change, while the time-series approach should be used for frequent change where time is the independent variable, such as updating the GPS position of a fishing vessel, and is particularly useful when working with data streamed from sensors.</p>
+            <p>Approach (1) is lightweight and should only be used where there are no user requirements that require access to older descriptions of the spatial things. Data publishers simply replace the old description of the spatial thing with the amended description and keep users informed about updates by providing the appropriate metadata (e.g. when the data was changed). This may be achieved using dataset metadata (as outlined above) or by including the metadata attributes in the description of each spatial thing.</p>
 
-            <p>If providing a series of snapshots, then the <em>base</em> URI for the resource should resolve to provide the current information.</p>
+            <p>Where users are anticipated to need to understand <em>how</em> a spatial thing has changed over time, approaches (2) and (3) must be considered.</p>
 
-            <p>First, each snapshot must be uniquely identified. A common approach is to append a date/time stamp to the base URI. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a>. Secondly, each snapshot should contain metadata about its predecessor(s), metadata describing its publication date and/or period of validity, and provide a link to the corresponding persistent resource. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a> provides relevant guidance.</p>
+            <p>Approach (2) requires the data publisher to publish immutable resources that describe the spatial thing at specific points in time (i.e. "snapshots") and provide a mechanism for users to browse between those snapshots. Given that each snapshot of the spatial thing is published as a separate resource, this approach is suited to infrequent changes so that the number of snapshots does not become unweildy.</p>
 
-            <p>How spatial things and their attributes are versioned should be explained in the specification or schema for the dataset.</p>
+            <p>The URI for the spatial thing, the <em>base</em> URI, should resolve to provide the current information and a link to its version history of snapshots. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a> describes how a version history may be implemented. Each snapshot resource within the version history must be uniquely identified; a common approach is to append a date/time stamp to the base URI as a version indicator. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a> provides relevant guidance.</p>
 
-            <p class="issue" data-number="356">Elaboration of the time-series approach is still required; perhaps linking to CoverageJSON (examples) for how to do this? Also note that the OGC Moving Features specification (OGC #14-083) follows this pattern, albeit with specific terminology such as “foliation”, uses a “trajectory” element to describe the position plus the ability to add varying attributes (such as orientation or rotation) alongside the tuples in the trajectory. OGC also offer a CSV-format “compact encoding” (OGC #14-084). Moving Features appears to convey the same information as would be achieved by embedding a time-series coverage as a property of a feature, it just makes some different encoding choices.</p>
+            <p>Approach (3) is suitable where a spatial thing has a small number of attributes that are frequently updated. For example, the GPS-position of a fishing vessel or when streaming data from a sensor, such as the water level from a stream guage.</p>
+
+            <p>With this approach, the description of the spatial thing must include a property that contains a sequentially-ordered set of data-points, each of which defines a time-stamp and the values for the time-varying attribute(s). By definition, this property can be considered as a time-series <a>coverage</a>. Standard data encodings are available for time-series data, including: [[TIMESERIESML]] for GML, plus [[COVERAGE-JSON]] and [[SENSORTHINGS]] for JSON.</p>
+
+            <p class="note">The OGC [[MOVING-FEATURES-XML]] and [[MOVING-FEATURES-CSV]] specifications follow the pattern described above. A <code>trajectory</code> element is used to describe the position of a spatial thing, and varying attributes (such as orientation or rotation) can be added alongside the tuples in the trajectory. However, there is limited evidence of adoption outside of Japan.</p>
 
             <aside class="example">
               <p>Example(s) to be added; including e.g.:</p>
               <ul>
-                <li>Linking crime data to a identified region; these regions change over time so we need to know which version of the region the data is applicable to.</li>
-                <li>Australian hydrological catchment geometries (that vary as a result of a resurvey).</li>
+                <li>Changing extent of the City of Amsterdam during the last 200 years.</li>
                 <li>GPS position of a fishing vessel.</li>
               </ul>
             </aside>
