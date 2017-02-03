@@ -1,5 +1,4 @@
 # baseURI: http://www.w3.org/2006/time
-# imports: http://purl.org/dc/elements/1.1/
 
 @prefix : <http://www.w3.org/2006/time#> .
 @prefix dct: <http://purl.org/dc/terms/> .
@@ -7,7 +6,6 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix tzont: <http://www.w3.org/2006/timezone#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <http://www.w3.org/2006/time>
@@ -25,7 +23,6 @@
   rdfs:seeAlso <http://dx.doi.org/10.3233/SW-150187> ;
   rdfs:seeAlso <http://www.semantic-web-journal.net/content/time-ontology-extended-non-gregorian-calendar-applications> ;
   rdfs:seeAlso <http://www.w3.org/TR/owl-time> ;
-  owl:imports <http://purl.org/dc/elements/1.1/> ;
   owl:priorVersion <http://www.w3.org/2006/time#2006> ;
   owl:versionIRI <http://www.w3.org/2006/time#2016> ;
   skos:changeNote "2016-06-15 - initial update of OWL-Time - modified to support arbitrary temporal reference systems. " ;
@@ -455,15 +452,7 @@ allows data encoded according to the previous version to be consistent with the 
 :after
   rdf:type owl:ObjectProperty ;
   rdfs:comment "Gives directionality to time. If a temporal entity T1 is after another temporal entity T2, then the beginning of T1 is after the end of T2."@en ;
-  rdfs:domain :TemporalEntity ;
   rdfs:label "after"@en ;
-  rdfs:range [
-      rdf:type owl:Class ;
-      owl:unionOf (
-          :TemporalEntity
-          owl:Thing
-        ) ;
-    ] ;
   owl:inverseOf :before ;
 .
 :before
@@ -582,6 +571,14 @@ The range of this property is not specified, so can be replaced by any specific 
   rdf:type owl:FunctionalProperty ;
   rdf:type owl:ObjectProperty ;
   rdfs:comment "The temporal reference system used by a temporal position or extent description. "@en ;
+  rdfs:domain [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          :GeneralDateTimeDescription
+          :TimePosition
+          :GeneralDurationDescription
+        ) ;
+    ] ;
   rdfs:label "Temporal reference system used"@en ;
   rdfs:range :TRS ;
 .
@@ -613,12 +610,41 @@ The range of this property is not specified, so can be replaced by any specific 
   rdfs:label "Temporal position"@en ;
   rdfs:range :TimePosition ;
 .
+:inXSDDate
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Position of an instant, expressed using xsd:date"@en ;
+  rdfs:domain :Instant ;
+  rdfs:label "in XSD Date"@en ;
+  rdfs:range xsd:date ;
+.
 :inXSDDateTime
   rdf:type owl:DatatypeProperty ;
-  rdfs:comment "Position of an instant, expressed using xsd:DateTime"@en ;
+  rdfs:comment "Position of an instant, expressed using xsd:dateTime"@en ;
   rdfs:domain :Instant ;
   rdfs:label "in XSD Date-Time"@en ;
   rdfs:range xsd:dateTime ;
+  owl:deprecated "true"^^xsd:boolean ;
+.
+:inXSDDateTimeStamp
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Position of an instant, expressed using xsd:dateTimeStamp"@en ;
+  rdfs:domain :Instant ;
+  rdfs:label "in XSD Date-Time-Stamp"@en ;
+  rdfs:range xsd:dateTimeStamp ;
+.
+:inXSDgYear
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Position of an instant, expressed using xsd:gYear"@en ;
+  rdfs:domain :Instant ;
+  rdfs:label "in XSD g-Year"@en ;
+  rdfs:range xsd:gYear ;
+.
+:inXSDgYearMonth
+  rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Position of an instant, expressed using xsd:gYearMonth"@en ;
+  rdfs:domain :Instant ;
+  rdfs:label "in XSD g-YearMonth"@en ;
+  rdfs:range xsd:gYearMonth ;
 .
 :inside
   rdf:type owl:ObjectProperty ;

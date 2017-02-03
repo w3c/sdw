@@ -226,6 +226,36 @@ var respecConfig = {
         "href": "http://philarcher.org/diary/2013/uripersistence/",
         "title": "Study On Persistent URIs",
         "date": "17 December 2012"
+      },
+      "TIMESERIESML": {
+        "authors":["James Tomkins", "Dominic Lowe"],
+        "href": "http://www.opengeospatial.org/standards/tsml",
+        "title": "TimeseriesML 1.0 – XML Encoding of the Timeseries Profile of Observations and Measurements",
+        "date": "9 September 2016"
+      },
+      "SENSORTHINGS": {
+        "authors":["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
+        "href": "http://www.opengeospatial.org/standards/sensorthings",
+        "title": "OGC \u00AE SensorThings API Part 1: Sensing",
+        "date": "26 July 2016"
+      },
+      "COVERAGE-JSON": {
+        "authors":["Jon Blower", "Maik Riechert", "Bill Roberts"],
+        "href": "http://w3c.github.io/sdw/coverage-json/",
+        "title": "The CoverageJSON Format Specification (Editors Draft)",
+        "date": "2 February 2017"
+      },
+      "MOVING-FEATURES-XML": {
+        "authors": ["Akinori Asahara", "Ryosuke Shibasaki", "Nobuhiro Ishimaru", "David Burggraf"],
+        "href": "http://www.opengeospatial.org/standards/movingfeatures",
+        "title": "OGC \u00AE Moving Features Encoding Part I: XML Core",
+        "date": "17 February 2015"
+      },
+      "MOVING-FEATURES-CSV": {
+        "authors": ["Akinori Asahara", "Ryosuke Shibasaki", "Nobuhiro Ishimaru", "David Burggraf"],
+        "href": "http://www.opengeospatial.org/standards/movingfeatures",
+        "title": "OGC \u00AE Moving Features Encoding Extension: Simple Comma Separated Values (CSV)",
+        "date": "17 February 2015"
       }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
