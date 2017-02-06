@@ -218,7 +218,9 @@
       </ol>
 
       <p>Specifically, we ask reviewers to consider <a href="https://github.com/w3c/sdw/issues/208">ISSUE 208</a> in <a href="#globally-unique-ids" class="sectionRef">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a> regarding the use of “indirect identifiers” (as discussed in [[WEBARCH]] <a href="https://www.w3.org/TR/2004/REC-webarch-20041215/#indirect-identification">section 2.2.3 Indirect Identification</a>.
-
+      
+      <p>Changes made in this and previous releases are recorded in <a href="#changes" class="sectionref">Appendix F - Changes since previous versions</a>.</p>
+        
       <p>The editors would like to thank everyone for their feedback - and to encourage reviewers to continue this critique.</p>
 
       <p><strong>For <abbr title="Open Geospatial Consortium">OGC</abbr>:</strong> This is a Public
@@ -1059,7 +1061,7 @@ a:Dataset a dcat:Dataset ;
 }
 &lt;/script></pre>
 				  <p>This code-snippet illustrates a [[JSON-LD]] annotation using a [[SCHEMA-ORG]] <a href="http://schema.org/Place">Place</a> for the address of the "Anne Frank’s House" in that dataset. It includes the location, the URL of the Web-page, and the structured postal address information.</p>
-              <pre id="ex-schemaorg-dataset" title="">&lt;script type="application/ld+json">
+              <pre id="ex-schemaorg-place" title="">&lt;script type="application/ld+json">
 {
   "@context" : {
     "@vocab" : "http://schema.org/"
@@ -1276,7 +1278,7 @@ a:Dataset a dcat:Dataset ;
 
             <p>The URI for the spatial thing, the <em>base</em> URI, should resolve to provide the current information and a link to its version history of snapshots. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a> describes how a version history may be implemented. Each snapshot resource within the version history must be uniquely identified; a common approach is to append a date/time stamp to the base URI as a version indicator. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a> provides relevant guidance.</p>
 
-            <p>Approach (3) is suitable where a spatial thing has a small number of attributes that are frequently updated. For example, the GPS-position of a fishing vessel or when streaming data from a sensor, such as the water level from a stream guage.</p>
+            <p>Approach (3) is suitable where a spatial thing has a small number of attributes that are frequently updated. For example, the GPS-position of a runner or when streaming data from a sensor, such as the water level from a stream guage.</p>
 
             <p>With this approach, the description of the spatial thing must include a property that contains a sequentially-ordered set of data-points, each of which defines a time-stamp and the values for the time-varying attribute(s). By definition, this property can be considered as a time-series <a>coverage</a>. Standard data encodings are available for time-series data, including: [[TIMESERIESML]] for GML, plus [[COVERAGE-JSON]] and [[SENSORTHINGS]] for JSON.</p>
 
@@ -1286,7 +1288,7 @@ a:Dataset a dcat:Dataset ;
               <p>Example(s) to be added; including e.g.:</p>
               <ul>
                 <li><span style="background-color:yellow">Changing extent of the City of Amsterdam during the last 200 years.</span></li>
-                <li><span style="background-color:yellow">GPS position of a fishing vessel.</span></li>
+                <li><span style="background-color:yellow">GPS position of a runner traversing the Alps.</span></li>
               </ul>
             </aside>
           </section>
@@ -1336,7 +1338,7 @@ a:Dataset a dcat:Dataset ;
             <p class="subhead">Why</p>
             <p>The Web works with resources that are identified using HTTP URIs. We want <a>Spatial things</a> to be first class resources on the Web that we want to make statements about and relate to other resources. To do this, spatial things need to be addressable resources in the Web’s global information space which means they must be identified using HTTP URIs.</p>
             
-            <p>This is a fundamentally different data publication approach to that is typical today where the dataset is (often) globally identified, but individual spatial things, or "<a>features</a>" in SDI parlance, are not - at least not with a persistent identifier.</p>
+            <p>This is a fundamentally different data publication approach to what is typical today where the dataset is (often) globally identified, but individual spatial things, or "<a>features</a>" in SDI parlance, are not - at least not with a persistent identifier.</p>
 
             <p>The HTTP URIs used to identify spatial things need to be stable or persistent so that relationships that link them to other resources don’t break.</p>
           </section>
@@ -1354,7 +1356,7 @@ a:Dataset a dcat:Dataset ;
 
             <p>However, HTTP URIs for <em>subjects</em> (e.g. the resource that we want to make statements about) can be a bit more tricky. If you are working purely with data then you can reuse existing URIs minted by other authorities for your <em>subject</em> URIs. But publishing spatial data on the Web means that the URIs for each spatial thing should resolve to Web pages or data resources that provide useful information (see <a href="#indexable-by-search-engines" class="sectionRef"></a>). An HTTP request will be directed to a host Web server, identified by the internet domain name (or IP address) in the requested URI. If you use a URI with an internet domain name where you have no control over how the Web server behaves, then there is no way for your statements to be included in the Web server's response.</p>
 
-            <p>To take control how information about spatial things is presented, data publishers need to assign their subject spatial things HTTP URIs from an internet domain name where they have authority over how the Web server responds. Typically, this means minting new HTTP URIs. It's all worth considering that the use of a particular internet domain may reinforce the authority of the information served. For example, a URI for Anne Frank's House is: <a href="https://monumentenregister.cultureelerfgoed.nl/monuments?MonumentId=4296"><code>https://monumentenregister.cultureelerfgoed.nl/monuments?MonumentId=4296</code></a>. The use of the internet domain registered to the <a href="http://cultureelerfgoed.nl/">Cultural Heritage Agency of the Netherlands</a> gives the definition authenticity.</p>
+            <p>To take control of how information about spatial things is presented, data publishers need to assign their subject spatial things HTTP URIs from an internet domain name where they have authority over how the Web server responds. Typically, this means minting new HTTP URIs. It's all worth considering that the use of a particular internet domain may reinforce the authority of the information served. For example, a URI for Anne Frank's House is: <a href="https://monumentenregister.cultureelerfgoed.nl/monuments?MonumentId=4296"><code>https://monumentenregister.cultureelerfgoed.nl/monuments?MonumentId=4296</code></a>. The use of the internet domain registered to the <a href="http://cultureelerfgoed.nl/">Cultural Heritage Agency of the Netherlands</a> gives the definition authenticity.</p>
 
             <div class="note">
               <p>The need to control what information is provided about a given spatial thing means that it is not uncommon for a spatial thing to be identified by multiple HTTP URIs. The equality between two URIs that refer to the same resource can be stated using a property such as <code>owl:sameAs</code>. Care must always be taken when using <code>owl:sameAs</code> to determine that the two URIs actually refer to the same resource, rather than two resources that are similar. Warning: don't say if you're not sure it's true!</p>
@@ -2115,7 +2117,7 @@ a:Dataset a dcat:Dataset ;
 
             <div class="note">
               <p>It is not always feasible to link your spatial things to other resources in common usage. For example, if you were maintaining a registry of cultural heritage in Amsterdam, it would be reasonably simple to look up identifiers for the city's 50 or so museums and map these to your spatial things. But it would be a huge task for, say, a topographic mapping agency to cross-reference their entire catalogue of named places containing tens of thousands of spatial things with third-party resources (although in the spirit of crowd-sourcing, if someone else found those links useful, they may take on the task of relating the spatial things and publishing those relationships to the Web as a complementary resource!).</p>
-              <p>In essennce, you should only manage the data that you have the resources to maintain.</p>
+              <p>In essence, you should only manage the data that you have the resources to maintain.</p>
             </div>
 
           </section>
@@ -3414,6 +3416,23 @@ a:Dataset a dcat:Dataset ;
         <p><em>(further updates to these best practices are expected in the next WD release, circa end January 2017)</em></p>
         <p>Plus minor changes that include adding a list of most important best practices for data publishers that start from an existing <a>SDI</a> to <a href="#why-are-traditional-sdi-not-enough" class="sectionRef">section 9</a>, and changing of a few best practice titles to include the word <em>spatial</em>.</p>
 
+      </section>
+      <section id="changes-since-20170105">
+        <h2>Changes since working draft of 5 January 2017</h2>
+        <p>Significant updates to:</p>
+        <ul>
+          <li>Section <a href="#CRS-background">8. Coordinate Reference Systems (CRS)</a></li>
+          <li><a href="#indexable-by-search-engines">Best Practice 4: Make your spatial data indexable by search engines</a></li>
+          <li><a href="#desc-changing-properties">Best Practice 6: How to describe properties that change over time</a></li>
+          <li><a href="#globally-unique-ids">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a></li>
+          <li><a href="#entity-level-links">Best Practice 14: Publish links from spatial things to related resources</a></li>
+        </ul>
+        <p>Also:</p>
+        <ul>
+          <li>The <a href="#bp-summary">BP summary</a> has been moved and is now section 4 of the document;</li>
+          <li>Best Practice 17, "How to work with crowd-sourced observations" was removed; and</li>
+          <li>the Best Practices Template section, explaining the template used to describe Best Practices, was removed.</li>
+        </ul>
       </section>
     </section>
   </body>
