@@ -33,7 +33,7 @@ This folder contains a proposal for the various documents that need to be expose
 2. copy the old SSN document without the DUL alignments, name it `oldssn.ttl`
 3. reorder the terms and group them in sections of no more than 8-10 terms;
 
-For oldssn:
+For ssnx:
 
 1. Copy the prefix declarations, raise and solve issues there.
 2. Copy the ontology declaration and its metadata, raise and solve issues there.
@@ -73,5 +73,3 @@ For ssn:
      2. work on the declaration in `ssn.ttl`
        1. basically copy the declaration and its metadata;
        2. raise issues, add `# TODO: check` at the end of lines where choices have been made.
-
-  
