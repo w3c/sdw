@@ -51,3 +51,28 @@ ssn: a voaf:Vocabulary, owl:Ontology ;
   vann:preferredNamespaceUri "http://www.w3.org/ns/ssn/" ;
   owl:imports sosa: ;
   owl:versionInfo """New modular version of the SSN ontology independent of DUL. Please report any errors to the Semantic Sensor Network Incubator Activity via the public W3C list public-xg-ssn@w3.org"""@en .
+
+
+## Features of interest and Property
+
+sosa:FeatureOfInterest
+  rdfs:comment """A feature of interest is linked to some instance and only instances of sosa:ObservableProperty by property sosa:hasProperty"""@en ;
+  rdfs:subClassOf [ owl:onProperty sosa:hasProperty ; owl:someValuesFrom sosa:ObservableProperty ] ,
+  rdfs:subClassOf [ owl:onProperty sosa:hasProperty ; owl:allValuesFrom sosa:ObservableProperty ]  .
+
+ssn:Property a owl:Class ;
+  rdfs:label "Property"@en ;
+  skos:definition """A Quality of an Event or Object that is observable, actuable, or ...  That is, not a Quality of an abstract entity, but rather an aspect of an entity that is intrinsic to and cannot exist without the entity."""@en ; # TODO: check, this is a proposal.
+  rdfs:subClassOf [ owl:onProperty sosa:isPropertyOf ; owl:someValuesFrom sosa:FeatureOfInterest ] .
+  rdfs:isDefinedBy ssn: .
+
+sosa:ObservableProperty
+  rdfs:comment """An observable property is linked to some sosa:FeatureOfInterest by property sosa:isPropertyOf."""@en ;
+  rdfs:subClassOf ssn:Property . # TODO: check this does solve ISSUE-87
+
+  # sosa:hasProperty is fully described in sosa:Vocabulary
+
+  sosa:isPropertyOf a owl:FunctionalProperty ; # TODO: check, this is a proposal.
+    rdfs:comment """A property belongs to exactly one feature of interest."""@en ;
+    rdfs:domain sosa:ObservableProperty ; # TODO: check, this is a proposal.
+    rdfs:range sosa:FeatureOfInterest . # TODO: check, this is a proposal.
