@@ -1,0 +1,446 @@
+# baseURI: https://www.w3.org/ns/oml-on-sosa
+# imports: http://www.w3.org/2006/time
+# imports: http://www.w3.org/ns/sosa/
+
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix meta: <http://meta.schema.org/> .
+@prefix omls: <https://www.w3.org/ns/oml-on-sosa/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sosa:Observation
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa/hasFeatureOfInterest> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa/hasResult> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa/observedProperty> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa/phenomenonTime> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa/usedProcedure> ;
+    ] ;
+.
+<https://www.w3.org/ns/oml-on-sosa>
+  rdf:type owl:Ontology ;
+  dc:creator """Simon Jonathan David COX
+CSIRO""" ;
+  dc:description "An OWL representation of the Observation Schema described in clauses 7-8 of ISO 19156:2011 Geographic Information - Observations and Measurements / OGC Abstract Specification - Topic 20." ;
+  dc:rights "Copyright © 2014, 2015, 2016 CSIRO" ;
+  dc:source "ISO 19156:2011" ;
+  dc:title "OWL for Observations" ;
+  dct:created "2016-07-04"^^xsd:date ;
+  dct:creator <http://orcid.org/0000-0002-3884-3420> ;
+  dct:license <http://creativecommons.org/licenses/by/4.0/> ;
+  dct:modified "2017-01-25"^^xsd:date ;
+  rdfs:comment """An OWL representation of the Observation Schema described in clauses 7-8 of ISO 19156:2011 Geographic Information - Observations and Measurements.  
+
+This version uses the SOSA ontology as its core, adding specific axioms to achieve semantics matching om-lite. """ ;
+  rdfs:label "OWL for Observations" ;
+  rdfs:seeAlso <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
+  rdfs:seeAlso <http://www.semantic-web-journal.net/content/ontology-observations-and-sampling-features-alignments-existing-models-0> ;
+  owl:imports <http://www.w3.org/2006/time> ;
+  owl:imports sosa: ;
+.
+omls:CountObject
+  rdf:type owl:Class ;
+  rdfs:comment "Object to wrap a count value" ;
+  rdfs:label "Count object" ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty omls:count ;
+    ] ;
+.
+omls:CountObservation
+  rdf:type owl:Class ;
+  dct:description "Observation whose result is an integer" ;
+  rdfs:comment "Observation whose result is an integer" ;
+  rdfs:label "Count Observation"@en ;
+  rdfs:subClassOf sosa:Observation ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom omls:CountObject ;
+      owl:onProperty sosa:hasResult ;
+    ] ;
+.
+omls:GeometryObject
+  rdf:type owl:Class ;
+  dct:description "Geometry object has properties relating to geometry, incuding positional and topological attributes, reference system, accuracy and precision. Might be geolocated. " ;
+  rdfs:comment "This stub is included in the om: ontology to support references to geometry as the result of a GeometryObservation.  An existing OWL class that represents the notion of a geometry may be asserted to be a sub-class of this stub, thus no specific representation of Geometry is prescribed." ;
+  rdfs:label "Geometry object" ;
+  rdfs:subClassOf owl:Thing ;
+.
+omls:GeometryObservation
+  rdf:type owl:Class ;
+  dct:description "Observation whose result is a geometry object, such as a point, curve, surface or solid" ;
+  rdfs:comment "Observation whose result is a geometry object, such as a point, curve, surface or solid" ;
+  rdfs:label "Geometry Observation"@en ;
+  rdfs:subClassOf sosa:Observation ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom omls:GeometryObject ;
+      owl:onProperty sosa:hasResult ;
+    ] ;
+.
+omls:MeasureObject
+  rdf:type owl:Class ;
+  dct:description "Scaled number" ;
+  rdfs:comment """Scaled number
+
+This is an abstract class, which should be substituted by a suitable concrete representation of a measure or quantity at run-tme. 
+
+omls:SimpleMeasure 
+qudt:QuantityValue <http://qudt.org/schema/qudt#QuantityValue> 
+DUL:Region <http://www.loa-cnr.it/ontologies/DUL.owl#Region> 
+
+are candidates. """ ;
+  rdfs:label "Measure" ;
+.
+omls:Measurement
+  rdf:type owl:Class ;
+  dct:description "Observation whose result is a scaled number" ;
+  rdfs:comment "Observation whose result is a scaled number" ;
+  rdfs:label "Measurement"@en ;
+  rdfs:label "Mesure"@fr ;
+  rdfs:subClassOf sosa:Observation ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom omls:MeasureObject ;
+      owl:onProperty sosa:hasResult ;
+    ] ;
+.
+omls:ObservationCollection
+  rdf:type owl:Class ;
+  dct:description """A collection of observations  or collections. 
+
+The collection may be homogeneous any of the feature-of-interest, observed-property, procedure, phenomenon-time or result-time. If only one value for any of these properties is provided on the collection, then it may be inferred to be a common (default) value for all the member observations or collections, unless locally overridden.""" ;
+  rdfs:comment """A collection of observations  or collections. 
+
+The collection may be homogeneous in any of the feature-of-interest, observed-property, procedure, phenomenon-time or result-time. If only one value for any of these properties is provided on the collection, then it may be inferred to be a common (default) value for all the member observations or collections, unless locally overridden.""" ;
+  rdfs:label "Collection of observations"@en ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:dateTime ;
+      owl:onProperty sosa:resultTime ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom owl:Thing ;
+      owl:onProperty omls:uom ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom time:TemporalEntity ;
+      owl:onProperty sosa:phenomenonTime ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa:FeatureOfInterest ;
+      owl:onProperty sosa:hasFeatureOfInterest ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa:ObservableProperty ;
+      owl:onProperty sosa:observedProperty ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom omls:ObservationContext ;
+      owl:onProperty omls:context ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:hasResult ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty omls:member ;
+    ] ;
+.
+omls:ObservationContext
+  rdf:type owl:Class ;
+  dct:description "Context linking two or more observations" ;
+  rdfs:comment """Some observations depend on other observations to provide context which is important, sometimes essential, in understanding the result. These dependencies are stronger than mere spatio-temporal coincidences, requiring explicit representation. If present, the association class class ObservationContext (Figure 2) shall link a OM_Observation to another OM_Observation, with the role name relatedObservation for the target. It shall support one attribute.
+
+EXAMPLES	Some examples include the conditions associated with experimental replicates (e.g., experimental plots and treatments used), biotic factors (e.g., ecological community), interactions among features (e.g., predator-prey), or other temporary relationships occurring at the time of observation that are are not inherent to the observed features themselves (i.e., they change over time), or the related observation may provide input to a process that generates a new result.
+This association complements the Intention association which describes relationships between a sampling feature and domain features.""" ;
+  rdfs:label "Observation context"@en ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty omls:role ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty omls:relatedObservation ;
+    ] ;
+.
+omls:SimpleMeasure
+  rdf:type owl:Class ;
+  dct:description "Simple implementation of a scaled number as an (amount, unit) pair" ;
+  rdfs:comment "Simple implementation of a scaled number as an (amount, unit) pair" ;
+  rdfs:label "Simple measure (quantity)" ;
+  rdfs:subClassOf omls:MeasureObject ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty omls:uom ;
+    ] ;
+  owl:equivalentClass [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty omls:amount ;
+    ] ;
+.
+omls:TemporalObject
+  rdf:type owl:Class ;
+  dct:description "Temporal object has properties relating to time only. " ;
+  rdfs:comment """Temporal geometry or topology, collection or complex. 
+
+Temporal object has properties relating to time only.""" ;
+  rdfs:label "Temporal object" ;
+  owl:equivalentClass time:TemporalEntity ;
+.
+omls:TemporalObservation
+  rdf:type owl:Class ;
+  dct:description "Observation whose result is a temporal object, such as a time instant or period" ;
+  rdfs:comment "Observation whose result is a temporal object, such as a time instant or period" ;
+  rdfs:label "Temporal Observation"@en ;
+  rdfs:subClassOf sosa:Observation ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom omls:TemporalObject ;
+      owl:onProperty sosa:hasResult ;
+    ] ;
+.
+omls:TruthObject
+  rdf:type owl:Class ;
+  rdfs:comment "Object to wrap a truth value" ;
+  rdfs:label "Truth object" ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty omls:truth ;
+    ] ;
+.
+omls:TruthObservation
+  rdf:type owl:Class ;
+  dct:description "Observation whose result is either true or false" ;
+  rdfs:comment "Observation whose result is either true or false" ;
+  rdfs:label "Truth Observation"@en ;
+  rdfs:subClassOf sosa:Observation ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom omls:TruthObject ;
+      owl:onProperty sosa:hasResult ;
+    ] ;
+.
+omls:amount
+  rdf:type owl:DatatypeProperty ;
+  rdfs:domain omls:SimpleMeasure ;
+  rdfs:label "numeric amount value" ;
+  rdfs:range xsd:double ;
+.
+omls:context
+  rdf:type owl:ObjectProperty ;
+  dct:description "link to related observation" ;
+  schema:domainIncludes sosa:Observation ;
+  schema:domainIncludes omls:ObservationCollection ;
+  rdfs:comment "link to related observation" ;
+  rdfs:label "observation context"@en ;
+  rdfs:range omls:ObservationContext ;
+.
+omls:count
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "Count value" ;
+  rdfs:range xsd:integer ;
+.
+omls:member
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes omls:ObservationCollection ;
+  rdfs:comment "links from a collection to a member collection or observation" ;
+  rdfs:label "has member" ;
+  rdfs:range [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Observation
+          omls:ObservationCollection
+        ) ;
+    ] ;
+.
+omls:memberOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is member of" ;
+  owl:inverseOf omls:member ;
+.
+omls:relatedObservation
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "related observation" ;
+  rdfs:label "related observation"@en ;
+  rdfs:range sosa:Observation ;
+.
+omls:role
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes omls:ObservationContext ;
+  rdfs:comment "role of related observation with respect to the observation of interest" ;
+  rdfs:label "role"@en ;
+  rdfs:range skos:Concept ;
+.
+omls:truth
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "Truth value" ;
+  rdfs:range xsd:boolean ;
+.
+omls:uom
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes omls:ObservationCollection ;
+  schema:domainIncludes omls:SimpleMeasure ;
+  rdfs:comment "Unit of measure or scale" ;
+.
+omls:usingSample
+  rdf:type owl:ObjectProperty ;
+  meta:domainIncludes sosa:Observation ;
+  meta:rangeIncludes sosa:Sample ;
+  rdfs:comment "Links to a feature intended to sample the real-world object which is the ultimate feature-of-interest. " ;
+  rdfs:label "using this sample to access the feature of interest"@en ;
+.
+<https://www.w3.org/ns/sosa#Observation>
+  rdfs:comment """An observation is an act associated with a discrete time instant or period through which a number, term or other symbol is assigned to a phenomenon [2]. It involves application of a specified procedure, such as a sensor, instrument, algorithm or process chain. The procedure may be applied in-situ, remotely, or ex-situ with respect to the sampling location. The procedure may take inputs from the environment (as stimuli) or from the results of prior observations or processes. The result of an observation is an estimate of the value of a property of some feature. 
+
+Use of a common model allows observation data using different procedures to be combined unambiguously.
+
+The observation itself is also a feature, since it has properties and identity.
+
+Observation details are important for data discovery and for data quality estimation.
+
+The observation could be considered to carry metadata about an instance of a property (of the feature of interest). This property-value metadata complements the dataset and feature metadata that have been conventionally considered (e.g. ISO 19115).
+
+The values for the properties 'procedure', 'featureOfInterest', 'observedProperty', 'phenomenonTime', 'resultTime' may be inherited from a container resource.""" ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom omls:ObservationContext ;
+      owl:onProperty omls:context ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom <https://www.w3.org/ns/sosa#Sample> ;
+      owl:onProperty omls:usingSample ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa#hasFeatureOfInterest> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa#hasResult> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa#observedProperty> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa#phenomenonTime> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa#resultTime> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty <https://www.w3.org/ns/sosa#usedProcedure> ;
+    ] ;
+  owl:disjointWith <https://www.w3.org/ns/sosa#ObservableProperty> ;
+  owl:disjointWith <https://www.w3.org/ns/sosa#Procedure> ;
+.
+<https://www.w3.org/ns/sosa#Procedure>
+  rdfs:comment "Agent, device, sensor, software, protocol, computational method, algorithm or plan responsible for generating an observation result. Input may be a sensor stimulus, or the output from a previous process. A Procedure is re-usable, and might be involved in many observations." ;
+  rdfs:comment """Original description from ISO 19156 says: 
+
+The class OM_Process (Figure 2) is an instance of the «metaclass» GF_FeatureType (ISO 19109:2005), which therefore represents a feature type. OM_Process is abstract, and has no attributes, operations or associations. It serves as the base class for observation processes. The purpose of an observation process is to generate an observation result. An instance of OM_Process is often an instrument or sensor, but may be a human observer, a simulator, or a process or algorithm applied to more primitive results used as inputs. 
+
+NOTE	ISO 19115-2:2008 provides MI_Instrument, LE_Processing and LE_Algorithm, which could all be modelled as specializations of OM_Process. OGC SensorML [10] provides a model which is suitable for many observation procedures.""" ;
+  rdfs:comment """Original description from OGC SensorML says:
+
+In SensorML, all components are modeled as processes. This includes components normally viewed as hardware, including transducers, actuators, and processors (which are viewed as process components) and sensors and platforms (which are modeled as systems). All components are modeled as processes that take input, and which through the application of an algorithm defined by a method and parameter values, generate output. All such components can therefore participate in process chains. Process chains are themselves processes with inputs, outputs, and parameters.
+
+Hence, SensorML can be viewed as a specialized process description language with an emphasis on application to sensor data. Process descriptions in SensorML are agnostic of the development environment in which they might be executed, or the protocol by which data is transported between process execution modules. SensorML does not try to replace other existing technologies (such as BPEL or MATLAB Simulink). It is also conceived that SensorML-defined processes could be imported and executed within other execution environments, such as BPEL or MATLAB Simulink, as well as within SenosrML-enabled process execution software.""" ;
+.
+<https://www.w3.org/ns/sosa#hasFeatureOfInterest>
+  rdfs:comment """feature of interest of an observation
+
+Links the Observation to the Feature that is the ultimate subject of the observation and carries the observed property. This feature is the real-world object whose properties are under observation. An observation instance serves as a propertyValueProvider for its feature-of-interest.""" ;
+.
+<https://www.w3.org/ns/sosa#hasResult>
+  rdf:type owl:FunctionalProperty ;
+.
+<https://www.w3.org/ns/sosa#observedProperty>
+  rdf:type owl:FunctionalProperty ;
+  rdfs:comment """property whose value is the result of the observation
+
+Link from the Observation to the PropertyType for which the Observation:result provides an estimate of its value. 
+
+The observed property shall be a phenomenon associated with the feature-of-interest.
+
+The target of this shall describe a property that is either assignable or observable such as “temperature”, “height”, “colour”, “material”. A property type may be an operation or function such as a spatiotemporal coverage. Property-type definitions may be organized into a hierarchy or ontology and managed in a register and catalogued to support discovery functions. The observed property supports semantic or thematic classification of observations, which is useful for discovery and data fusion.
+
+NOTE In general, the value of a specific observedProperty can be associated with different feature types in different observations, thus allowing the results of observations made in different projects or campaigns, and even from different disciplines, to be combined when required. A property-type register used in observations is most useful if each property type is not tied to a single feature type, or if equivalence relationships between similar property types from different feature types are provided.""" ;
+  rdfs:range <https://www.w3.org/ns/sosa#ObservableProperty> ;
+.
+<https://www.w3.org/ns/sosa#phenomenonTime>
+  rdfs:range time:TemporalEntity ;
+.
+<https://www.w3.org/ns/sosa#resultTime>
+  rdf:type owl:FunctionalProperty ;
+  rdfs:comment "time at which the result became available, after all processing steps were completed" ;
+.
+<https://www.w3.org/ns/sosa#samplingStrategy>
+  schema:domainIncludes omls:ObservationCollection ;
+  rdfs:comment """Links to a feature or procedure intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. 
+
+N.B. this formulation varies from the UML model in ISO 19156, in which a sampling-feature is substitutable for the feature-of-interest. In this more explicit formulation, the (mandatory) feature-of-interest always refers to the ultimate feature of interest, whose type can carry the observed property, and the (optional) sampling strategy allows the sampling feature to be made explicit as an additional relationship. This overcomes some semantic sleight-of-hand in ISO 19156, in which the constraint the the observed property was commensurate with the feature-of-interest was allowed to be 'transitive' via the sampledFeature property.""" ;
+  rdfs:comment "description of the sampling strategy used in an observation (usually a sampling-feature). " ;
+  rdfs:label "sampling strategy"@en ;
+  rdfs:range [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          <https://www.w3.org/ns/sosa#SamplingFeature>
+          <https://www.w3.org/ns/sosa#SamplingProcedure>
+        ) ;
+    ] ;
+  skos:definition "Links to a feature intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. " ;
+.
+<https://www.w3.org/ns/sosa#usedProcedure>
+  rdfs:range <https://www.w3.org/ns/sosa#Procedure> ;
+.
