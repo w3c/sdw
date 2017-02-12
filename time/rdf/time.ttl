@@ -8,6 +8,11 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+xsd:dateTimeStamp
+  rdf:type rdfs:Datatype ;
+  rdfs:label "dateTimeStamp" ;
+  rdfs:subClassOf rdfs:Literal ;
+.
 <http://www.w3.org/2006/time>
   rdf:type owl:Ontology ;
   dct:contributor <http://orcid.org/0000-0002-3884-3420> ;
@@ -157,6 +162,7 @@ In the original OWL-Time the following constraint appeared:
   rdfs:comment "Alternative to time:DurationDescription to support description of a temporal duration other than using a calendar/clock system."@en ;
   rdfs:comment "Duration of a temporal extent expressed as a number scaled by a temporal unit"@en ;
   rdfs:label "Temporal duration"@en ;
+  rdfs:subClassOf :TemporalDuration ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
@@ -234,11 +240,7 @@ In the original OWL-Time the following constraint appeared:
   rdf:type owl:Class ;
   rdfs:comment "Description of date and time structured with separate values for the various elements of a calendar-clock system"@en ;
   rdfs:label "Generalized Date Time Description"@en ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty :hasTRS ;
-    ] ;
+  rdfs:subClassOf :TemporalPosition ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
@@ -299,6 +301,7 @@ In the original OWL-Time the following constraint appeared:
   rdf:type owl:Class ;
   rdfs:comment "Description of temporal extent structured with separate values for the various elements of a calendar-clock system."@en ;
   rdfs:label "Generalized duration description"@en ;
+  rdfs:subClassOf :TemporalDuration ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
@@ -767,6 +770,11 @@ In the original OWL-Time the following constraint appeared:
 This is a stub class, representing the set of all temporal reference systems."""@en ;
   rdfs:label "Temporal Reference System"@en ;
 .
+:TemporalDuration
+  rdf:type owl:Class ;
+  rdfs:comment "Time extent; duration of a time interval separate from its particular start position"@en ;
+  rdfs:label "Temporal duration"@en ;
+.
 :TemporalEntity
   rdf:type owl:Class ;
   rdfs:comment "A temporal interval or instant."@en ;
@@ -776,6 +784,16 @@ This is a stub class, representing the set of all temporal reference systems."""
       :Instant
       :Interval
     ) ;
+.
+:TemporalPosition
+  rdf:type owl:Class ;
+  rdfs:comment "A position on a time-line"@en ;
+  rdfs:label "Temporal position"@en ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :hasTRS ;
+    ] ;
 .
 :TemporalUnit
   rdf:type owl:Class ;
@@ -815,7 +833,8 @@ In the original OWL-Time the following constraint appeared:
 :TimePosition
   rdf:type owl:Class ;
   rdfs:comment "A temporal position described using either a (nominal) value from an ordinal reference system, or a (numeric) value in a temporal coordinate system. "@en ;
-  rdfs:label "Temporal position"@en ;
+  rdfs:label "Time position"@en ;
+  rdfs:subClassOf :TemporalPosition ;
   rdfs:subClassOf [
       rdf:type owl:Class ;
       owl:unionOf (
@@ -830,11 +849,6 @@ In the original OWL-Time the following constraint appeared:
             owl:onProperty :nominalPosition ;
           ]
         ) ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty :hasTRS ;
     ] ;
 .
 :TimeZone
@@ -1127,6 +1141,7 @@ The range of this property is not specified, so can be replaced by any specific 
   rdfs:domain :TemporalEntity ;
   rdfs:label "has duration"@en ;
   rdfs:range :Duration ;
+  rdfs:subPropertyOf :hasTemporalDuration ;
 .
 :hasDurationDescription
   rdf:type owl:ObjectProperty ;
@@ -1134,6 +1149,7 @@ The range of this property is not specified, so can be replaced by any specific 
   rdfs:domain :TemporalEntity ;
   rdfs:label "has duration description"@en ;
   rdfs:range :GeneralDurationDescription ;
+  rdfs:subPropertyOf :hasTemporalDuration ;
 .
 :hasEnd
   rdf:type owl:ObjectProperty ;
@@ -1155,13 +1171,19 @@ The range of this property is not specified, so can be replaced by any specific 
   rdfs:domain [
       rdf:type owl:Class ;
       owl:unionOf (
-          :GeneralDateTimeDescription
-          :TimePosition
+          :TemporalPosition
           :GeneralDurationDescription
         ) ;
     ] ;
   rdfs:label "Temporal reference system used"@en ;
   rdfs:range :TRS ;
+.
+:hasTemporalDuration
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Duration of a temporal entity"@en ;
+  rdfs:domain :TemporalEntity ;
+  rdfs:label "has temporal duration"@en ;
+  rdfs:range :TemporalDuration ;
 .
 :hour
   rdf:type owl:DatatypeProperty ;
@@ -1183,13 +1205,22 @@ The range of this property is not specified, so can be replaced by any specific 
   rdfs:domain :Instant ;
   rdfs:label "in Date-Time description"@en ;
   rdfs:range :GeneralDateTimeDescription ;
+  rdfs:subPropertyOf :inTemporalPosition ;
+.
+:inTemporalPosition
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Position of a time instant"@en ;
+  rdfs:domain :Instant ;
+  rdfs:label "Temporal position"@en ;
+  rdfs:range :TemporalPosition ;
 .
 :inTimePosition
   rdf:type owl:ObjectProperty ;
   rdfs:comment "Position of a time instant expressed as a TimePosition"@en ;
   rdfs:domain :Instant ;
-  rdfs:label "Temporal position"@en ;
+  rdfs:label "Time position"@en ;
   rdfs:range :TimePosition ;
+  rdfs:subPropertyOf :inTemporalPosition ;
 .
 :inXSDDate
   rdf:type owl:DatatypeProperty ;
