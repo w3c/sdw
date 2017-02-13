@@ -1,0 +1,174 @@
+# baseURI: http://www.w3.org/ns/sosa-om
+# imports: http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature
+# imports: http://def.isotc211.org/iso19156/2011/Specimen
+# imports: http://www.w3.org/ns/sosa/
+# prefix: sosa-om
+
+@prefix base: <http://def.isotc211.org/iso19150-2/2012/base#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix iso19156-gfi: <http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#> .
+@prefix iso19156-om: <http://def.isotc211.org/iso19156/2011/Observation#> .
+@prefix iso19156-sf: <http://def.isotc211.org/iso19156/2011/SamplingFeature#> .
+@prefix iso19156-sfs: <http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#> .
+@prefix iso19156-sp: <http://def.isotc211.org/iso19156/2011/Specimen#> .
+@prefix iso19156_gfi: <http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#> .
+@prefix iso19156_sf: <http://def.isotc211.org/iso19156/2011/SamplingFeature#> .
+@prefix meta: <http://meta.schema.org/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix sosa-om: <http://www.w3.org/ns/sosa-om#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+iso19156-om:OM_Observation
+  owl:equivalentClass sosa:Observation ;
+.
+<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.featureOfInterest>
+  owl:equivalentProperty sosa:hasFeatureOfInterest ;
+.
+<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.observedProperty>
+  owl:equivalentProperty sosa:observedProperty ;
+.
+<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.phenomenonTime>
+  owl:equivalentProperty sosa:phenomenonTime ;
+.
+<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.procedure>
+  rdfs:comment "sosa:usedProcedure covers actuation, observation and sampling, so observation procedure is a sub-property" ;
+  rdfs:subPropertyOf sosa:usedProcedure ;
+.
+<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.result>
+  rdfs:comment "sosa:result covers actuation, observation and sampling, so observation result is a sub-property" ;
+  rdfs:subPropertyOf sosa:hasResult ;
+.
+<http://def.isotc211.org/iso19156/2011/Observation#OM_Observation.resultTime>
+  rdfs:comment "sosa:resultTime covers actuation, observation and sampling, so observation result time is a sub-property" ;
+  rdfs:subPropertyOf sosa:resultTime ;
+.
+iso19156-om:OM_Process
+  rdfs:comment "sosa:Procedure includes procedures for actuation, sampling and observation, so om:Process is the union of a subclass and Sensor" ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Sensor
+          sosa-om:ObservationProcedure
+        ) ;
+    ] ;
+.
+iso19156_sf:SF_SamplingFeature
+  owl:equivalentClass sosa:Sample ;
+.
+<http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeature.sampledFeature>
+  owl:equivalentProperty sosa:isSampleOf ;
+.
+<http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#SF_SpatialSamplingFeature.hostedProcedure>
+  rdfs:subPropertyOf sosa:hosts ;
+.
+<http://def.isotc211.org/iso19156/2011/Specimen#PreparationStep.time>
+  rdfs:subPropertyOf sosa:resultTime ;
+.
+iso19156-sp:SF_Process
+  rdfs:comment "sosa:Procedure includes procedures for actuation, sampling and observation, so sam:Process is the union of a subclass and SamplingDevice" ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa-om:SamplingDevice
+          sosa-om:SamplingProcedure
+        ) ;
+    ] ;
+.
+<http://def.isotc211.org/iso19156/2011/Specimen#SF_Specimen.samplingMethod>
+  rdfs:subPropertyOf sosa:usedProcedure ;
+.
+<http://def.isotc211.org/iso19156/2011/Specimen#SF_Specimen.samplingTime>
+  rdfs:subPropertyOf sosa:resultTime ;
+.
+<http://www.w3.org/ns/sosa-om>
+  rdf:type owl:Ontology ;
+  dc:creator "Simon J D Cox" ;
+  dct:created "2016-12-14"^^xsd:date ;
+  dct:creator <http://orcid.org/0000-0002-3884-3420> ;
+  dct:modified "2017-01-27"^^xsd:date ;
+  rdfs:comment """Alignment of the official OWL implementation of ISO 19156 O&M with the W3C/OGC SOSA Ontology;
+
+The official OWL implementation of ISO 19156 O&M was generated automatically from the UML following the rules described in ISO 19150-2 
+It is available from the official ISO/TC 211 repository at https://github.com/ISO-TC211/GOM/tree/master/isotc211_GOM_harmonizedOntology 
+The ontology itself diverges considerably from idiomatic OWL. 
+However, it does provide a canonical URIs for each class and property from the UML model."""@en ;
+  rdfs:comment "This graph is provisional. It is the work of only one person and is provided to allow evaluation and support discussion of the potential modularization approach." ;
+  rdfs:label "Alignment of ISO 19156 O&M with SOSA"@en ;
+  rdfs:seeAlso <http://www.iso.org/iso/catalogue_detail.htm?csnumber=32574> ;
+  rdfs:seeAlso <http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=57466> ;
+  rdfs:seeAlso <http://www.opengeospatial.org/standards/om> ;
+  rdfs:seeAlso <https://github.com/ISO-TC211/GOM/tree/master/isotc211_GOM_harmonizedOntology> ;
+  owl:imports <http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature> ;
+  owl:imports <http://def.isotc211.org/iso19156/2011/Specimen> ;
+  owl:imports sosa: ;
+.
+sosa-om:ActuationProcedure
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Actuation procedure or recipe, complementing SamplingProcedure and ObservationProcedure"@en ;
+  rdfs:label "Actuation procedure"@en ;
+  rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-om:ObservationProcedure ;
+  owl:disjointWith sosa-om:SamplingProcedure ;
+.
+sosa-om:ObservationProcedure
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Observation or sensing procedure or recipe, complementing SamplingProcedure and ActuationProcedure"@en ;
+  rdfs:label "Observation procedure"@en ;
+  rdfs:subClassOf iso19156-om:OM_Process ;
+  rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-om:ActuationProcedure ;
+  owl:disjointWith sosa-om:SamplingProcedure ;
+.
+sosa-om:SamplingDevice
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Sampling or sample preparation or processing device, complementing sosa:Sensor and sosa:Actuator"@en ;
+  rdfs:label "Sampling device"@en ;
+  rdfs:subClassOf iso19156-sp:SF_Process ;
+.
+sosa-om:SamplingEvent
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Sampling or sample preparation or processing event, complementing sosa:Observation and sosa:Actuation"@en ;
+  rdfs:label "Sampling event"@en ;
+.
+sosa-om:SamplingProcedure
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Sampling or sample preparation or processing procedure or recipe, complementing ObservationProcedure and ActuationProcedure"@en ;
+  rdfs:label "Sampling procedure"@en ;
+  rdfs:subClassOf iso19156-sp:SF_Process ;
+  rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-om:ActuationProcedure ;
+  owl:disjointWith sosa-om:ObservationProcedure ;
+.
+sosa:Actuator
+  rdfs:subClassOf iso19156_gfi:GFI_Feature ;
+.
+sosa:FeatureOfInterest
+  rdfs:subClassOf iso19156_gfi:GFI_DomainFeature ;
+.
+sosa:Platform
+  rdfs:subClassOf iso19156_gfi:GFI_Feature ;
+.
+sosa:Procedure
+  rdfs:comment "OM_Process and SF_Process each cover both recipes and implementations, so sosa:Procedure is a union of the subsets" ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:disjointUnionOf (
+          sosa-om:ActuationProcedure
+          sosa-om:ObservationProcedure
+          sosa-om:SamplingProcedure
+        ) ;
+    ] ;
+.
+sosa:hasResult
+  meta:domainIncludes sosa-om:SamplingEvent ;
+.
+sosa:isResultOf
+  meta:rangeIncludes sosa-om:SamplingEvent ;
+.
+sosa:usedProcedure
+  meta:domainIncludes sosa-om:SamplingEvent ;
+.

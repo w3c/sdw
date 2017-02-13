@@ -119,6 +119,13 @@ var respecConfig = {
          publisher: "CEUR: Proceedings of the 3rd International Workshop on Semantic Sensor Networks (SSN10)",
          date: "2010"
       },
+      "OM-Heavy": {
+        href: "http://ceur-ws.org/Vol-1063/paper1.pdf",
+        title: "An explicit OWL representation of ISO/OGC Observations and Measurements ",
+        publisher: "CEUR: 6th International Conference on Semantic Sensor Networks",
+        date: "2013",
+        authors: ["Simon Cox"]
+      },
       "OM-Lite": {
         href: "http://content.iospress.com/articles/semantic-web/sw214",
         title: "Ontology for observations and sampling features, with alignments to existing models",
@@ -133,10 +140,16 @@ var respecConfig = {
        date: "July 2015"
       },
        "ISO-19109":{
-       href: "http://www.iso.org/iso/home/store/catalogue_ics/catalogue_detail_ics.htm?csnumber=59193",
+       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=59193",
        title: "Geographic information -- Rules for application schema",
        publisher: "ISO",
        date: "December 2015"
+      },
+       "ISO-19156":{
+       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=32574",
+       title: "Geographic information -- Observations and measurements",
+       publisher: "ISO",
+       date: "December 2011"
       },
       "SensorML" :{
         href: "http://portal.opengeospatial.org/files/55939",
