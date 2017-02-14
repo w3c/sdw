@@ -1,4 +1,4 @@
-# baseURI: http://www.w3.org/ns/sosa-om
+# baseURI: http://www.w3.org/ns/sosa/om
 # imports: http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature
 # imports: http://def.isotc211.org/iso19156/2011/Specimen
 # imports: http://www.w3.org/ns/sosa/
@@ -14,12 +14,11 @@
 @prefix iso19156-sp: <http://def.isotc211.org/iso19156/2011/Specimen#> .
 @prefix iso19156_gfi: <http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#> .
 @prefix iso19156_sf: <http://def.isotc211.org/iso19156/2011/SamplingFeature#> .
-@prefix meta: <http://meta.schema.org/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
-@prefix sosa-om: <http://www.w3.org/ns/sosa-om#> .
+@prefix sosa-om: <http://www.w3.org/ns/sosa/om#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 iso19156-om:OM_Observation
@@ -84,7 +83,33 @@ iso19156-sp:SF_Process
 <http://def.isotc211.org/iso19156/2011/Specimen#SF_Specimen.samplingTime>
   rdfs:subPropertyOf sosa:resultTime ;
 .
-<http://www.w3.org/ns/sosa-om>
+sosa:Actuator
+  rdfs:subClassOf iso19156_gfi:GFI_Feature ;
+.
+sosa:FeatureOfInterest
+  rdfs:subClassOf iso19156_gfi:GFI_DomainFeature ;
+.
+sosa:Platform
+  rdfs:subClassOf iso19156_gfi:GFI_Feature ;
+.
+sosa:Procedure
+  rdfs:comment "OM_Process and SF_Process each cover both recipes and implementations, so sosa:Procedure is a union of the subsets" ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:disjointUnionOf (
+          sosa-om:ActuationProcedure
+          sosa-om:ObservationProcedure
+          sosa-om:SamplingProcedure
+        ) ;
+    ] ;
+.
+sosa:hasResult
+  <http://meta.schema.org/domainIncludes> sosa-om:SamplingEvent ;
+.
+sosa:isResultOf
+  <http://meta.schema.org/rangeIncludes> sosa-om:SamplingEvent ;
+.
+sosa:om
   rdf:type owl:Ontology ;
   dc:creator "Simon J D Cox" ;
   dct:created "2016-12-14"^^xsd:date ;
@@ -143,32 +168,6 @@ sosa-om:SamplingProcedure
   owl:disjointWith sosa-om:ActuationProcedure ;
   owl:disjointWith sosa-om:ObservationProcedure ;
 .
-sosa:Actuator
-  rdfs:subClassOf iso19156_gfi:GFI_Feature ;
-.
-sosa:FeatureOfInterest
-  rdfs:subClassOf iso19156_gfi:GFI_DomainFeature ;
-.
-sosa:Platform
-  rdfs:subClassOf iso19156_gfi:GFI_Feature ;
-.
-sosa:Procedure
-  rdfs:comment "OM_Process and SF_Process each cover both recipes and implementations, so sosa:Procedure is a union of the subsets" ;
-  owl:equivalentClass [
-      rdf:type owl:Class ;
-      owl:disjointUnionOf (
-          sosa-om:ActuationProcedure
-          sosa-om:ObservationProcedure
-          sosa-om:SamplingProcedure
-        ) ;
-    ] ;
-.
-sosa:hasResult
-  meta:domainIncludes sosa-om:SamplingEvent ;
-.
-sosa:isResultOf
-  meta:rangeIncludes sosa-om:SamplingEvent ;
-.
 sosa:usedProcedure
-  meta:domainIncludes sosa-om:SamplingEvent ;
+  <http://meta.schema.org/domainIncludes> sosa-om:SamplingEvent ;
 .
