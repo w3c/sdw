@@ -1,0 +1,75 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+
+voaf:Vocabulary a owl:Class .
+dcterms:title a owl:AnnotationProperty .
+dcterms:description a owl:AnnotationProperty .
+dcterms:rights a owl:AnnotationProperty .
+dcterms:issued a owl:AnnotationProperty .
+dcterms:modified a owl:AnnotationProperty .
+dcterms:created a owl:AnnotationProperty .
+dcterms:creator a owl:AnnotationProperty .
+dcterms:contributor a owl:AnnotationProperty .
+dcterms:source a owl:AnnotationProperty .
+dcterms:publisher a owl:AnnotationProperty .
+skos:definition a owl:AnnotationProperty .
+skos:example a owl:AnnotationProperty .
+skos:note a owl:AnnotationProperty .
+cc:licence a owl:AnnotationProperty .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+foaf:Agent a owl:Class .
+foaf:name a owl:DatatypeProperty .
+
+ssn: a voaf:Vocabulary, owl:Ontology ;
+  dcterms:title "Semantic Sensor Network Ontology"@en ;
+  dcterms:description """This ontology describes sensors and observations, and related concepts.  It does not describe domain concepts, time, locations, etc. these are intended to be included from other ontologies via OWL imports."""@en ;
+  dcterms:creator [ a foaf:Agent ; foaf:name "W3C Spatial Data on the Web Working Group"@en ] ;
+  dcterms:created "2009-12-02"^^xsd:date ;
+  dcterms:issued "2017-01-05"^^xsd:date ;
+  dcterms:modified "2017-02-03"^^xsd:date ;
+  rdfs:comment """This ontology is developed by the W3C Semantic Sensor Networks Incubator Group (SSN-XG). The concepts and structure of the ontology were discussed in the group's meetings and on the mailing list. For more information on the group's activities see: http://www.w3.org/2005/Incubator/ssn/"""@en ;
+  dcterms:publisher "W3C Semantic Sensor Network Incubator Group"@en ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/" ;
+  dcterms:rights "Copyright 2009 - 2017 W3C." ;
+  cc:licence <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
+  vann:preferredNamespacePrefix "ssn" ;
+  vann:preferredNamespaceUri "http://www.w3.org/ns/ssn/" ;
+  owl:imports sosa: ;
+  owl:versionInfo """New modular version of the SSN ontology independent of DUL. Please report any errors to the Semantic Sensor Network Incubator Activity via the public W3C list public-xg-ssn@w3.org"""@en .
+
+
+## Features of interest and Property
+
+sosa:FeatureOfInterest
+  rdfs:comment """A feature of interest is linked to some instance and only instances of sosa:ObservableProperty by property sosa:hasProperty"""@en ;
+  rdfs:subClassOf [ owl:onProperty sosa:hasProperty ; owl:someValuesFrom sosa:ObservableProperty ] ,
+  rdfs:subClassOf [ owl:onProperty sosa:hasProperty ; owl:allValuesFrom sosa:ObservableProperty ]  . # TODO: check.
+
+ssn:Property a owl:Class ;
+  rdfs:label "Property"@en ;
+  skos:definition """A Quality of an Event or Object that is observable, actuable, or ...  That is, not a Quality of an abstract entity, but rather an aspect of an entity that is intrinsic to and cannot exist without the entity."""@en ; # TODO: check, this is a proposal.
+  rdfs:subClassOf [ owl:onProperty sosa:isPropertyOf ; owl:someValuesFrom sosa:FeatureOfInterest ] .
+  rdfs:isDefinedBy ssn: .
+
+sosa:ObservableProperty
+  rdfs:comment """An observable property is linked to some sosa:FeatureOfInterest by property sosa:isPropertyOf."""@en ;
+  rdfs:subClassOf ssn:Property . # TODO: check this does solve ISSUE-87
+
+  # sosa:hasProperty is fully described in sosa:Vocabulary
+
+  sosa:isPropertyOf a owl:FunctionalProperty ; # TODO: check, this is a proposal.
+    rdfs:comment """A property belongs to exactly one feature of interest."""@en .

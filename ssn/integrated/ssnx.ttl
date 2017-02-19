@@ -1,0 +1,98 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix oldssn: <http://purl.oclc.org/NET/ssnx/ssn#>.
+
+voaf:Vocabulary a owl:Class .
+dcterms:title a owl:AnnotationProperty .
+dcterms:description a owl:AnnotationProperty .
+dcterms:rights a owl:AnnotationProperty .
+dcterms:issued a owl:AnnotationProperty .
+dcterms:modified a owl:AnnotationProperty .
+dcterms:created a owl:AnnotationProperty .
+dcterms:creator a owl:AnnotationProperty .
+dcterms:contributor a owl:AnnotationProperty .
+dcterms:source a owl:AnnotationProperty .
+skos:definition a owl:AnnotationProperty .
+skos:example a owl:AnnotationProperty .
+skos:note a owl:AnnotationProperty .
+cc:licence a owl:AnnotationProperty .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+foaf:Agent a owl:Class .
+foaf:name a owl:DatatypeProperty .
+
+<http://purl.oclc.org/NET/ssnx/ssn> a voaf:Vocabulary, owl:Ontology ;
+  dcterms:title "Semantic Sensor Network Ontology - Old"@en ;
+  dcterms:created "2009-12-02"^^xsd:date ;
+  dcterms:modified "2011-06-20"^^xsd:date ;
+  dcterms:modified "2017-02-07"^^xsd:date ;
+  dcterms:creator [ a foaf:Agent ; foaf:name "W3C Semantic Sensor Network Incubator Group"@en ] ;
+  dcterms:rights "Copyright 2009 - 2017 W3C." ;
+  cc:licence <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
+  dcterms:description """This ontology describes sensors and observations, and related concepts.  It does not describe domain concepts, time, locations, etc. these are intended to be included from other ontologies via OWL imports."""@en ;
+  skos:note """New modular version of the SSN ontology independent of DUL."""@en, """Please report any errors to the Semantic Sensor Network Incubator Activity via the public W3C list public-xg-ssn@w3.org"""@en ;
+  dcterms:source """This ontology is developed by the W3C Semantic Sensor Networks Incubator Group (SSN-XG). The concepts and structure of the ontology were discussed in the group's meetings and on the mailing list. For more information on the group's activities see: http://www.w3.org/2005/Incubator/ssn/"""@en ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/" .
+
+<http://www.w3.org/ns/ssn/ssnx> a owl:Ontology ;
+  dcterms:title "Alignment between the old SSN and the new SSN."@en ;
+  dcterms:creator [ a foaf:Agent ; foaf:name "W3C Spatial Data on the Web Working Group"@en ] ;
+  dcterms:contributor <http://maxime-lefrancois.info/me#> ;
+  dcterms:created "2017-02-06"^^xsd:date ;
+  skos:definition """This ontology deprecates the old SSN terms and defines alignemnts with the new terms."""@en ;
+  cc:licence <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
+  owl:imports sosa: ;
+  owl:imports ssn: ;
+  owl:imports ssn:DULAlignment . # TODO: check we need this
+
+
+## Features of interest and observable property
+
+oldssn:FeatureOfInterest a owl:Class ;
+  rdfs:label "Feature of Interest"@en ;
+  skos:definition """A feature is an abstraction of real world phenomena (thing, person, event, etc)."""@en ;
+  dcterms:source """skos:exactMatch 'feature' [O&M]
+    http://www.opengeospatial.org/standards/om""" ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
+  owl:deprecated true ;
+  owl:equivalentClass sosa:FeatureOfInterest ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+oldssn:Property a owl:Class ;
+  rdfs:label "Property"@en ;
+  skos:definition """An observable Quality of an Event or Object.  That is, not a Quality of an abstract entity, but rather an aspect of an entity that is intrinsic to and cannot exist without the entity and that is observable by a sensor."""@en ;
+  dcterms:source """skos:exactMatch 'property' [O&M]
+             http://www.opengeospatial.org/standards/om""" ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
+  owl:deprecated true ;
+  owl:equivalentClass sosa:ObservableProperty ; # TODO: check
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:hasProperty a owl:ObjectProperty ;
+    rdfs:label "has property"@en ;
+    skos:definition """Relation between a FeatureOfInterest and a Property of that feature."""@en ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
+    owl:deprecated true ;
+    owl:equivalentProperty sosa:hasProperty ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:isPropertyOf a owl:ObjectProperty ;
+    rdfs:label "is property of"@en ;
+    skos:definition """Relation between a Property (a Quality observable by a sensor) and the FeatureOfInterest it belongs to."""@en ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
+    owl:deprecated true ;
+    owl:equivalentProperty sosa:isPropertyOf ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .

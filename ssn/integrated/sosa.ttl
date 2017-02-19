@@ -1,0 +1,72 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+
+voaf:Vocabulary a owl:Class .
+dcterms:title a owl:AnnotationProperty .
+dcterms:description a owl:AnnotationProperty .
+dcterms:rights a owl:AnnotationProperty .
+dcterms:issued a owl:AnnotationProperty .
+dcterms:modified a owl:AnnotationProperty .
+dcterms:creator a owl:AnnotationProperty .
+dcterms:contributor a owl:AnnotationProperty .
+dcterms:source a owl:AnnotationProperty .
+skos:definition a owl:AnnotationProperty .
+skos:example a owl:AnnotationProperty .
+skos:note a owl:AnnotationProperty .
+cc:licence a owl:AnnotationProperty .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+vs:term_status a owl:AnnotationProperty .
+<http://meta.schema.org/domainIncludes> a owl:AnnotationProperty .
+<http://meta.schema.org/rangeIncludes> a owl:AnnotationProperty .
+foaf:Agent a owl:Class .
+foaf:name a owl:DatatypeProperty .
+time:TemporalEntity a owl:Class .
+
+sosa: a voaf:Vocabulary, owl:Ontology ;
+  dcterms:title "Sensor, Observation, Sample, and Actuator (SOSA) Core Ontology"@en ;
+  dcterms:description """This ontology is based on the SSN Ontology by the W3C Semantic Sensor Networks Incubator Group (SSN-XG), together with considerations from the W3C/OGC Spatial Data on the Web Working Group."""@en ;
+  dcterms:creator [] ;
+  dcterms:issued "2017-01-05"^^xsd:date ;
+  dcterms:modified "2017-02-03"^^xsd:date ;
+  dcterms:rights [] ;
+  cc:licence <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
+  vann:preferredNamespacePrefix "sosa" ;
+  vann:preferredNamespaceUri "http://www.w3.org/ns/sosa/" ;
+  owl:versionInfo """This version is based on the horizontal/vertical modularization proposed in the W3C/OGC Spatial Data on the Web Working Group: http://w3c.github.io/sdw/ssn/#modularisation"""@en .
+
+
+## Features of interest and Property
+
+sosa:FeatureOfInterest a rdfs:Class , owl:Class ;
+  rdfs:label "Feature Of Interest"@en ;
+  skos:definition """The thing whose property is being estimated or calculated in the course of an observation to arrive at a Result."""@en ; # TODO: check. Too restrictive for SOSA to be extended to Actuators ?
+  rdfs:isDefinedBy sosa: .
+
+sosa:ObservableProperty a rdfs:Class , owl:Class ;
+  rdfs:label "Observable Property"@en ;
+  skos:definition """An observable quality of a FeatureOfInterest."""@en ;
+  rdfs:isDefinedBy sosa: .
+
+  sosa:hasProperty a owl:ObjectProperty ;
+    rdfs:label "has property"@en ;
+    skos:definition """Relation between a FeatureOfInterest and an ObservableProperty of that feature."""@en ; # TODO: check ObservableProperty in the definition. Too restrictive ?
+    owl:inverseOf sosa:isPropertyOf ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:isPropertyOf a owl:ObjectProperty ;
+    rdfs:label "is property of"@en ;
+    skos:definition """Relation between an ObservableProperty (a Quality observable by a sensor) and the FeatureOfInterest it belongs to."""@en ; # TODO: check ObservableProperty in the definition. Too restrictive ?
+    rdfs:isDefinedBy sosa: .
