@@ -1,0 +1,157 @@
+# baseURI: http://www.w3.org/ns/sosa/oml
+# imports: http://def.seegrid.csiro.au/ontology/om/om-lite
+# imports: http://def.seegrid.csiro.au/ontology/om/sam-lite
+# imports: http://www.w3.org/ns/sosa/
+# prefix: sosa-oml
+
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix meta: <http://meta.schema.org/> .
+@prefix oml: <http://def.seegrid.csiro.au/ontology/om/om-lite#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix samfl: <http://def.seegrid.csiro.au/ontology/om/sam-lite#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix sosa-oml: <http://www.w3.org/ns/sosa/oml#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oml:Observation
+  owl:equivalentClass sosa:Observation ;
+.
+oml:Process
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Sensor
+          sosa-oml:ObservationProcedure
+        ) ;
+    ] ;
+.
+oml:featureOfInterest
+  owl:equivalentProperty sosa:hasFeatureOfInterest ;
+.
+oml:observedProperty
+  owl:equivalentProperty sosa:observedProperty ;
+.
+oml:phenomenonTime
+  owl:equivalentProperty sosa:phenomenonTime ;
+.
+oml:procedure
+  rdfs:comment "sub-property of sosa:usedPropecedure which also covers procedures for actuation and sampling" ;
+  rdfs:subPropertyOf sosa:usedProcedure ;
+.
+oml:result
+  rdfs:comment "sub-property of sosa:hasResult which also covers actuation and sampling" ;
+  rdfs:subPropertyOf sosa:hasResult ;
+.
+oml:resultTime
+  rdfs:comment "sub-property of sosa:resultTime which also relates to actuation and sampling events" ;
+  rdfs:subPropertyOf sosa:resultTime ;
+.
+samfl:Process
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa-oml:SamplingProcedure
+          sosa-oml:SamplingDevice
+        ) ;
+    ] ;
+.
+samfl:SamplingFeature
+  owl:equivalentClass sosa:Sample ;
+.
+samfl:hostedProcedure
+  rdfs:comment "When a sampling feature hosts a procedure or instrument it is acting as a platform." ;
+  rdfs:comment "sub-property of sosa:hosts which relates a platform to an observation, actuation or sampling procedure" ;
+  rdfs:subPropertyOf sosa:hosts ;
+.
+samfl:sampledFeature
+  owl:equivalentProperty sosa:isSampleOf ;
+.
+samfl:samplingMethod
+  rdfs:subPropertyOf sosa:usedProcedure ;
+.
+samfl:samplingTime
+  rdfs:comment "sub-property of sosa:resultTime which also relates to actuation and observation events" ;
+  rdfs:subPropertyOf sosa:resultTime ;
+.
+sosa:Procedure
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:disjointUnionOf (
+          sosa-oml:ActuationProcedure
+          sosa-oml:ObservationProcedure
+          sosa-oml:SamplingProcedure
+        ) ;
+    ] ;
+.
+sosa:Sensor
+  rdfs:subClassOf oml:Process ;
+.
+sosa:hasResult
+  meta:domainIncludes sosa-oml:SamplingEvent ;
+.
+sosa:isResultOf
+  meta:rangeIncludes sosa-oml:SamplingEvent ;
+  rdfs:comment "... or SamplingEvent" ;
+  skos:definition "... or SamplingEvent" ;
+.
+sosa:oml
+  rdf:type owl:Ontology ;
+  dc:creator "Simon J D Cox" ;
+  dcterms:created "2016-12-14" ;
+  rdfs:comment """Mapping of the om-lite/sam-lite implementations of O&M with the W3C/OGC SOSA ontology. 
+
+N.B. om-lite/sam-lite are idiomatic OWL implementations of the O&M model from ISO 19156:2011, 
+documented in Semantic Web Journal, v8, n3 2017"""@en ;
+  rdfs:comment "This graph is provisional. It is the work of only one person and is provided to allow evaluation and support discussion of the potential modularization approach." ;
+  rdfs:label "Alignment of om-lite + sam-lite with SOSA"@en ;
+  rdfs:seeAlso <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
+  rdfs:seeAlso <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
+  rdfs:seeAlso <http://www.semantic-web-journal.net/content/ontology-observations-and-sampling-features-alignments-existing-models-0> ;
+  owl:imports <http://def.seegrid.csiro.au/ontology/om/om-lite> ;
+  owl:imports <http://def.seegrid.csiro.au/ontology/om/sam-lite> ;
+  owl:imports sosa: ;
+.
+sosa-oml:ActuationProcedure
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Actuation procedure or recipe, complementing SamplingProcedure and ObservationProcedure"@en ;
+  rdfs:label "Actuation procedure"@en ;
+  rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-oml:ObservationProcedure ;
+  owl:disjointWith sosa-oml:SamplingProcedure ;
+.
+sosa-oml:ObservationProcedure
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Observation or sensing procedure or recipe, complementing SamplingProcedure and ActuationProcedure"@en ;
+  rdfs:label "Observation procedure"@en ;
+  rdfs:subClassOf oml:Process ;
+  rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-oml:ActuationProcedure ;
+  owl:disjointWith sosa-oml:SamplingProcedure ;
+.
+sosa-oml:SamplingDevice
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Sampling or sample preparation or processing device, complementing sosa:Sensor and sosa:Actuator"@en ;
+  rdfs:label "Sampling device"@en ;
+  rdfs:subClassOf samfl:Process ;
+.
+sosa-oml:SamplingEvent
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Sampling or sample preparation or processing event, complementing sosa:Observation and sosa:Actuation"@en ;
+  rdfs:label "Sampling event"@en ;
+.
+sosa-oml:SamplingProcedure
+  rdf:type owl:Class ;
+  rdfs:comment "(Notional) Sampling or sample preparation or processing procedure or recipe, complementing ObservationProcedure and ActuationProcedure"@en ;
+  rdfs:label "Sampling procedure"@en ;
+  rdfs:subClassOf samfl:Process ;
+  rdfs:subClassOf sosa:Procedure ;
+  owl:disjointWith sosa-oml:ActuationProcedure ;
+  owl:disjointWith sosa-oml:ObservationProcedure ;
+.
+sosa:usedProcedure
+  meta:domainIncludes sosa-oml:SamplingEvent ;
+.
