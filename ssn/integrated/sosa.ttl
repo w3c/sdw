@@ -1,0 +1,74 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix meta: <http://meta.schema.org/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix schema: <http://schema.org/>.
+
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+
+
+
+voaf:Vocabulary a owl:Class .
+dcterms:title a owl:AnnotationProperty .
+dcterms:description a owl:AnnotationProperty .
+dcterms:rights a owl:AnnotationProperty .
+dcterms:issued a owl:AnnotationProperty .
+dcterms:modified a owl:AnnotationProperty .
+dcterms:created a owl:AnnotationProperty .
+dcterms:creator a owl:AnnotationProperty .
+dcterms:contributor a owl:AnnotationProperty .
+dcterms:source a owl:AnnotationProperty .
+skos:definition a owl:AnnotationProperty .
+skos:example a owl:AnnotationProperty .
+skos:note a owl:AnnotationProperty .
+cc:licence a owl:AnnotationProperty .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+vs:term_status a owl:AnnotationProperty .
+<http://meta.schema.org/domainIncludes> a owl:AnnotationProperty .
+<http://meta.schema.org/rangeIncludes> a owl:AnnotationProperty .
+time:TemporalEntity a owl:Class .
+
+
+sosa: a owl:Ontology .
+
+
+sosa:Observation a owl:Class .
+
+sosa:Actuation a owl:Class .
+
+
+sosa:Result a rdfs:Class, owl:Class ;
+  rdfs:label "Result"@en ;
+  skos:definition """The Result of an Observation, Actuation, or Sampling. Such result can, for instance, store an observation's value via the hasValue property.
+ 
+  The result may be an instance of sosa:Sample, an instance of qudt:QuantityValue, om:Measure, or any other OWL individual."""@en ;
+  skos:example "The value of 20m as the height of a certain tree."@en ;
+  rdfs:isDefinedBy sosa: .
+  
+  sosa:hasResult a owl:ObjectProperty ;
+    rdfs:label "has result"@en ;
+    skos:definition """Relation linking an Observation or an Actuation activity to its Result."""@en ;
+    schema:domainIncludes sosa:Actuation ;
+    schema:domainIncludes sosa:Observation ;
+    schema:rangeIncludes sosa:Result ;
+    owl:inverseOf sosa:isResultOf ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:isResultOf a owl:ObjectProperty ;
+    rdfs:label "is result of"@en ;
+    skos:definition """Relation linking a Result to the Observation or an Actuation activity that created it."""@en ;
+    schema:domainIncludes sosa:Result ;
+    schema:rangeIncludes sosa:Actuation ;
+    schema:rangeIncludes sosa:Observation ;
+    owl:inverseOf sosa:hasResult ;
+    rdfs:isDefinedBy sosa: .
