@@ -794,12 +794,12 @@ The region and offset are specified by the locally recognised governing authorit
 </table>
 <p>No specific properties are provided for the class <code><a href="#time:TimeZone">:TimeZone</a></code>, the definition of which is beyond the
 scope of this ontology. The class specified here is a stub, effectively the superclass of all time zone classes. </p> 
-<section class="note">
+<div class="note">
 <p>An ontology for time zone descriptions was described in [<a href="#OWL-T">OWL-T</a>] and provided as RDF in a separate namespace <code>tzont:</code>.
 However, that ontology was incomplete in scope, and the example datasets were selective. Furthermore, the use of a class from an external ontology as the range of an <code>ObjectProperty</code> in OWL-Time creates an undesirable dependency. Therefore, reference to the time zone class has been replaced with the 'stub' class in the normative part of this version of OWL-Time.</p>
 <p><a href="https://www.ietf.org/timezones/data/">IETF</a> and <a href="http://www.iana.org/time-zones">IANA</a> also provide databases. These are well maintained, but individual iems are not available at individual URIs, i.e. not as "Linked Data".</p>
 <p>The World Clock service provides a <a href="https://www.timeanddate.com/time/zones/">list of time zones</a>, with the description of each available as an individual webpage with a convenient individual URI (e.g. <a href="https://www.timeanddate.com/time/zones/acwst">https://www.timeanddate.com/time/zones/acwst</a>. Currently this appears to offer best practice. </p>
-</section>
+</div>
 
 <h4 id="time:TRS">TRS</h4>
 <table class="definition" style="width: 812px;">
@@ -825,12 +825,12 @@ scope of this ontology. The class specified here is a stub, effectively the supe
 may be represented directly, using this ontology, as a set of <code><a href="#time:ProperInterval">:ProperInterval</a></code>s, along with enough
 inter-relationships to support the necessary ordering relationships. See example below of <a href="#geologictimescale">Geologic
 Timescale</a>. </p>
-<section class="note">
+<div class="note">
 <p>A model and ontology for temporal reference system definitions is required.
 A taxonomy of temporal reference systems is provided in ISO 19108:2002 [<a href="#ISO-19108">ISO-19108</a>],
 including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. numeric offset from an epoch); (c) temporal ordinal reference
 systems (i.e. ordered sequence of named intervals, not necessarily of equal duration). </p>
-</section>
+</div>
 
 </section>
 
@@ -2583,7 +2583,7 @@ for the later use and easier to reason about.</p>
 </section>
 
 <section id="different-TRS">
-<h3>Use of different temporal reference systems</h3>
+<h3>Use of temporal reference systems</h3>
 <p>The use of different temporal reference systems for the same absolute time is illustrated in the following
 examples. Abby's birthday is an <code><a href="#time:Instant">:Instant</a></code> whose position may be expressed using the conventional
 XSD <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> type as <code>2001-05-23T08:20:00+08:00</code>:</p>
@@ -2631,7 +2631,7 @@ the number of seconds since the beginning of 1st January 1970): </p>
 </section>
 
 <section id="temporal-precision">
-<h3>Temporal precision using DateTimeDescription vs dateTime vs TimePosition</h3>
+<h3>Temporal precision</h3>
 <p>For the purposes of radiocarbon dating (which is the technique used in geological age determination for
 materials up to around 60,000 years old) 'the Present' is conventionally fixed at 1950 [<a href="#RC-14">RC-14</a>].
 This can be described as an individual <code><a href="#time:Instant">:Instant</a></code>, with its position expressed using any of the
@@ -2738,7 +2738,7 @@ This may be represented in multiple ways using OWL-Time, including the following
 </section>
 
 <section id="geologictimescale">
-<h3>Geologic timescale described as a graph of ProperInterval individuals</h3>
+<h3>Geologic timescale</h3>
 <p>The geologic timescale is defined as a set of named intervals arranged in a hierarchy, such that there is
 only one subdivision of the intervals of each rank (e.g. 'Era') by a set of intervals of the next rank (in
 this case 'Period') [<a href="#CR-05">CR-05</a>]. Since the relative ordering is well-defined this graph can
@@ -2751,25 +2751,24 @@ the full topology. </p>
 title="(Part of) the international chronostratigraphic chart, formalized as a set of proper intervals" src="images/GeologicTimescale.png">
 <figcaption>Part of the geologic timescale formalized as ProperIntervals, with ordering relationships
 described using the predicates defined in this ontology.</figcaption> </figure>
-<p> For example, the 'Phanerozoic Eon' is a <code><a href="#time:ProperInterval">:ProperInterval</a></code> described as follows:</p>
-<pre>geol:Phanerozoic
+<p> For example, the 'Archean Eon' is a <code><a href="#time:ProperInterval">:ProperInterval</a></code> described as follows:</p>
+<pre>geol:Archean
   rdf:type            :ProperInterval ;
-  :hasBeginning       geol:BasePhanerozoic ;
-  :hasEnd             geol:Present ;
-  :intervalFinishedBy geol:Cenozoic ;
-  :intervalMetBy      geol:Proterozoic ;
-  :intervalStartedBy  geol:Paleozoic ;
-  rdfs:label          "Phanerozoic Eon"^^xsd:string ;
+  :hasBeginning       geol:BaseArchean ;
+  :hasEnd             geol:BaseProterozoic ;
+  :intervalMeets      geol:Proterozoic ;
+  :intervalMetBy      geol:Hadean ;
+  rdfs:label          "Archean Eon"^^xsd:string ;
 .</pre>
-<p>The beginning of the Phanerozoic Eon is an <code><a href="#time:Instant">:Instant</a></code>, described as follows:</p>
-<pre>geol:BasePhanerozoic
+<p>The beginning of the Archean Eon is an <code><a href="#time:Instant">:Instant</a></code>, described as follows:</p>
+<pre>geol:BaseArchean
   rdf:type :Instant ;
   :inTimePosition [
     rdf:type          :TimePosition ;
     :hasTRS           &lt;http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime&gt; ;
-    :numericPosition  "541.0"^^:Number ;
+    :numericPosition  "4000"^^:Number ;
   ] ;
-  rdfs:label "Base of Phanerozoic Eon"^^xsd:string ;
+  rdfs:label "Base of Archean Eon"^^xsd:string ;
 . </pre>
 <p>Note that the position of this <code><a href="#time:Instant">:Instant</a></code> is specified using a <code><a href="#time:TimePosition">:TimePosition</a></code>, which
 is a numeric value relative to the temporal coordinate system indicated as the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property.
