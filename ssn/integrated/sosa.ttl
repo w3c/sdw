@@ -34,18 +34,63 @@ cc:licence a owl:AnnotationProperty .
 vann:preferredNamespacePrefix a owl:AnnotationProperty .
 vann:preferredNamespaceUri a owl:AnnotationProperty .
 vs:term_status a owl:AnnotationProperty .
-<http://meta.schema.org/domainIncludes> a owl:AnnotationProperty .
-<http://meta.schema.org/rangeIncludes> a owl:AnnotationProperty .
+schema:domainIncludes a owl:AnnotationProperty .
+schema:rangeIncludes a owl:AnnotationProperty .
 time:TemporalEntity a owl:Class .
 
 
 sosa: a owl:Ontology .
 
 
+## Features of interest and Property
+
+sosa:FeatureOfInterest a rdfs:Class , owl:Class ;
+  rdfs:label "Feature Of Interest"@en ;
+  skos:definition """The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator."""@en ;
+  skos:example "When measuring the height of a tree, the height is the ObservedProperty, 20m may be the Result of the Observation, and the tree is the FeatureOfInterest. A window is a FeatureOfInterest for an automatic window control Actuator"@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:ObservableProperty a rdfs:Class , owl:Class ;
+  rdfs:label "Observable Property"@en ;
+  skos:definition """An observable quality of a FeatureOfInterest."""@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:ActuatableProperty a rdfs:Class , owl:Class ;
+  rdfs:label "Actuatable Property"@en ;
+  skos:definition "An actuatable property, i.e., characteristic, of a FeatureOfInterest."@en ;
+  skos:example "A window actuator acts by changing the state between a frame and a window. The ability of the window to be opened and closed is its ActuatableProperty."@en 
+  rdfs:isDefinedBy sosa: .
+
+  sosa:hasProperty a owl:ObjectProperty ;
+    rdfs:label "has property"@en ;
+    skos:definition """Relation between a FeatureOfInterest and a Property of that feature."""@en ;
+    schema:domainIncludes sosa:FeatureOfInterest ;
+    schema:rangeIncludes sosa:ObservableProperty ;
+    schema:rangeIncludes sosa:ActuatableProperty ;
+    owl:inverseOf sosa:isPropertyOf ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:isPropertyOf a owl:ObjectProperty ;
+    rdfs:label "is property of"@en ;
+    skos:definition """Relation between a Property (a Quality observable by a sensor) and the FeatureOfInterest it belongs to."""@en ;
+    schema:domainIncludes sosa:ObservableProperty ;
+    schema:domainIncludes sosa:ActuatableProperty ;
+    schema:rangeIncludes sosa:FeatureOfInterest ;
+    owl:inverseOf sosa:hasProperty ;
+    rdfs:isDefinedBy sosa: .
+
+
+## Observation
+
 sosa:Observation a owl:Class .
+
+
+## Actuation
 
 sosa:Actuation a owl:Class .
 
+
+## SensorOutput, ObservationValue, Result
 
 sosa:Result a rdfs:Class, owl:Class ;
   rdfs:label "Result"@en ;
