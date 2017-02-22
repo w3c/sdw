@@ -103,6 +103,14 @@ sosa:ObservableProperty
   skos:definition "An observable quality of a FeatureOfInterest."@en ;
   skos:example "The height of a tree, the depth of a water body, or the temperature of a surface are examples of observable properties, while the value of a classic car is not (directly) observable but asserted."@en ;
 .
+sosa:ActuatableProperty
+  rdf:type rdfs:Class ;
+  rdf:type owl:Class ;
+  rdfs:comment "An actuatable property, i.e., characteristic, of a FeatureOfInterest."@en ;
+  rdfs:label "Actuatable Property"@en ;
+  skos:definition "An actuatable property, i.e., characteristic, of a FeatureOfInterest."@en ;
+  skos:example "A window actuator acts by changing the state between a frame and a window. The ability of the window to be opened and closed is its ActuatableProperty."@en 
+.
 sosa:Observation
   rdf:type rdfs:Class ;
   rdf:type owl:Class ;
@@ -217,21 +225,21 @@ sosa:hosts
   owl:inverseOf sosa:hostedBy ;
   skos:definition "Relation between a Platform and a Sensor or Actuator hosted or mounted on it."@en ;
 .
-sosa:invokedBy
+sosa:madeByActuator
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuation ;
   schema:rangeIncludes sosa:Actuator ;
   rdfs:comment "Relation linking an Actuation to the Actuator that made that Actuation."@en ;
-  rdfs:label "invoked by"@en ;
-  owl:inverseOf sosa:invokes ;
+  rdfs:label "made by actuator"@en ;
+  owl:inverseOf sosa:madeActuation ;
   skos:definition "Relation linking an Actuation to the Actuator that made that Actuation."@en ;
 .
-sosa:invokes
+sosa:madeActuation
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuator ;
   schema:rangeIncludes sosa:Actuation ;
   rdfs:comment "Relation between an Actuator and the Actuation it has made."@en ;
-  rdfs:label "invokes"@en ;
+  rdfs:label "made actuation"@en ;
   skos:definition "Relation between an Actuator and the Actuation it has made."@en ;
 .
 sosa:isFeatureOfInterestOf
@@ -287,6 +295,26 @@ sosa:observedProperty
   rdfs:comment "Relation linking an Observation to the Property that was observed. The observedProperty should be a Property (hasProperty) of the FeatureOfInterest (linked by featureOfInterest) of this observation."@en ;
   rdfs:label "observed property"@en ;
   skos:definition "Relation linking an Observation to the Property that was observed. The observedProperty should be a Property (hasProperty) of the FeatureOfInterest (linked by featureOfInterest) of this observation."@en ;
+.
+sosa:actsOnProperty
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa:Actuation ;
+  schema:rangeIncludes sosa:ActuatableProperty ;
+  rdfs:comment "Relation between an Actuation and the property of a Feature Of Interest it is acting upon."@en ;
+  rdfs:label "acts on property"@en ;
+  owl:inverseOf sosa:isActedOnBy ;
+  skos:definition "Relation between an Actuation and the property of a Feature Of Interest it is acting upon."@en ;
+  skos:example "In the activity (Actuation) of automatically closing a window if the temperature in a room drops below 20 degree Celsius, the  property on which the Actuator acts upon is the state of the window as it changes from being open to being closed. "@en 
+.
+sosa:isActedOnBy
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa:ActuatableProperty ;
+  schema:rangeIncludes sosa:Actuation ;
+  rdfs:comment "Relation between an actuatable property of a Feature Of Interest and an Actuation changing its state."@en ;
+  rdfs:label "acts on property"@en ;
+  owl:inverseOf sosa:actsOnProperty ;
+  skos:definition "Relation between an actuatable property of a Feature Of Interest and an Actuation changing its state."@en ;
+  skos:example "In the activity (Actuation) of automatically closing a window if the temperature in a room drops below 20 degree Celsius, the  property on which the Actuator acts upon is the state of the window as it changes from being open to being closed. "@en 
 .
 sosa:observes
   rdf:type owl:ObjectProperty ;
