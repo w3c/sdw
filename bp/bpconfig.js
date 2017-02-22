@@ -105,9 +105,10 @@ var respecConfig = {
       "GeoDCAT-AP":{
         href:"https://joinup.ec.europa.eu/node/139283/",
         title:"GeoDCAT-AP: A geospatial extension for the DCAT application profile for data portals in Europe",
+        publisher: "European Commission",
         date: "23 December 2015"
       },
-      "ISO19115":{
+      "ISO-19115":{
         href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
         title:"Geographic information -- Metadata",
         authors:["ISO/TC 211"],
@@ -123,6 +124,7 @@ var respecConfig = {
       "INSPIRE-MD":{
         href:"http://inspire.jrc.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
         title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
+        publisher: "European Commission",
         date: "29 October 2013"
       },
       "ISO-19101": {
@@ -256,7 +258,22 @@ var respecConfig = {
         "href": "http://www.opengeospatial.org/standards/movingfeatures",
         "title": "OGC \u00AE Moving Features Encoding Extension: Simple Comma Separated Values (CSV)",
         "date": "17 February 2015"
+      },
+      
+      "LOCN":{
+        "href":"https://www.w3.org/ns/locn",
+        "title":"ISA Location Core Vocabulary",
+        "publisher": "European Commission",
+        "date": "23 March 2015"
+      },
+      "ISO-19107": {
+        "href":"http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=26012",
+        "title":"ISO 19107:2003 Geographic information -- Geographic information -- Spatial schema",
+        "authors":["ISO/TC 211"],
+        "publisher":"ISO",
+        "date":"May 2003"
       }
+      
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
 };
