@@ -69,12 +69,14 @@ var respecConfig = {
       },
       "GeoSPARQL":{
         href:"http://www.opengeospatial.org/standards/geosparql",
+        publisher:"OGC",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
         authors: ["Matthew Perry", "John Herring"],
         date: "10 September 2012"
       },
       "Simple-Features":{
         href:"http://www.opengeospatial.org/standards/sfa",
+        publisher:"OGC",
         title:"Simple Feature Access - Part 1: Common Architecture",
         authors: ["John Herring"],
         date: "28 May 2011"
@@ -86,6 +88,7 @@ var respecConfig = {
       },
       "OandM":{
         href:"http://www.opengeospatial.org/standards/om",
+        publisher:"OGC",
         title:"Observations and Measurements - XML Implementation",
         authors: ["Simon Cox"],
         date: "22 March 2011"
@@ -117,6 +120,7 @@ var respecConfig = {
       },
       "CSW":{
         href:"http://www.opengeospatial.org/standards/cat",
+        publisher:"OGC",
         title:"Catalogue Services 3.0 - General Model",
         authors:["Douglas Nebert", "Uwe Voges", "Lorenzo Bigagli"],
         date: "10 June 2016"
@@ -212,6 +216,7 @@ var respecConfig = {
       },
       "WKT-CRS":{
         href:"http://www.opengeospatial.org/standards/wkt-crs",
+        publisher:"OGC",
         title:"Well-known text representation of coordinate reference systems",
         authors: ["Roger Lott"],
         date: "1 May 2015"
@@ -231,12 +236,14 @@ var respecConfig = {
       },
       "TIMESERIESML": {
         "authors":["James Tomkins", "Dominic Lowe"],
+        publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/tsml",
         "title": "TimeseriesML 1.0 – XML Encoding of the Timeseries Profile of Observations and Measurements",
         "date": "9 September 2016"
       },
       "SENSORTHINGS": {
         "authors":["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
+        publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/sensorthings",
         "title": "OGC \u00AE SensorThings API Part 1: Sensing",
         "date": "26 July 2016"
@@ -249,6 +256,7 @@ var respecConfig = {
       },
       "MOVING-FEATURES-XML": {
         "authors": ["Akinori Asahara", "Ryosuke Shibasaki", "Nobuhiro Ishimaru", "David Burggraf"],
+        publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/movingfeatures",
         "title": "OGC \u00AE Moving Features Encoding Part I: XML Core",
         "date": "17 February 2015"
@@ -256,6 +264,7 @@ var respecConfig = {
       "MOVING-FEATURES-CSV": {
         "authors": ["Akinori Asahara", "Ryosuke Shibasaki", "Nobuhiro Ishimaru", "David Burggraf"],
         "href": "http://www.opengeospatial.org/standards/movingfeatures",
+        publisher:"OGC",
         "title": "OGC \u00AE Moving Features Encoding Extension: Simple Comma Separated Values (CSV)",
         "date": "17 February 2015"
       },
