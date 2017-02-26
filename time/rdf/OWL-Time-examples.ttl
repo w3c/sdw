@@ -1,5 +1,6 @@
 # baseURI: http://example.org/time
 # imports: http://www.w3.org/2006/time
+# imports: http://www.w3.org/ns/time-gregorian
 
 @prefix : <http://www.w3.org/2006/time#> .
 @prefix ex: <http://example.org/time/> .
@@ -13,10 +14,11 @@
 <http://example.org/time>
   rdf:type owl:Ontology ;
   owl:imports <http://www.w3.org/2006/time> ;
+  owl:imports <http://www.w3.org/ns/time-gregorian> ;
 .
 ex:AbbyBirthday
   rdf:type :Instant ;
-  rdfs:label "Abby's birthdate"^^xsd:string ;
+  rdfs:label "Abby's birthdate" ;
   :inDateTime ex:AbbyBirthdayGregorian ;
   :inDateTime ex:AbbyBirthdayHebrew ;
   :inTimePosition ex:AbbyBirthdayUnix ;
@@ -26,9 +28,11 @@ ex:AbbyBirthdayGregorian
   rdf:type :DateTimeDescription ;
   :day "---23"^^xsd:gDay ;
   :dayOfWeek :Wednesday ;
+  :dayOfYear "143"^^xsd:nonNegativeInteger ;
   :hour "8"^^xsd:nonNegativeInteger ;
   :minute "20"^^xsd:nonNegativeInteger ;
   :month "--05"^^xsd:gMonth ;
+  :monthOfYear <http://www.w3.org/ns/time-gregorian/May> ;
   :timeZone [
       rdf:type tzont:TimeZone ;
       tzont:GMToffset "+8" ;
@@ -47,49 +51,36 @@ ex:AbbyBirthdayHebrew
 .
 ex:AbbyBirthdayUnix
   rdf:type :TimePosition ;
-  rdfs:label "Abby's birthdate in Unix time"^^xsd:string ;
+  rdfs:label "Abby's birthdate in Unix time" ;
   :hasTRS <http://dbpedia.org/resource/Unix_time> ;
   :numericPosition "990577200"^^:Number ;
 .
-ex:Year
-  rdf:type owl:Class ;
-  rdfs:label "Years duration"^^xsd:string ;
-  rdfs:subClassOf :DurationDescription ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "0"^^xsd:nonNegativeInteger ;
-      owl:onProperty :days ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "0"^^xsd:nonNegativeInteger ;
-      owl:onProperty :hours ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "0"^^xsd:nonNegativeInteger ;
-      owl:onProperty :minutes ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "0"^^xsd:nonNegativeInteger ;
-      owl:onProperty :months ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "0"^^xsd:nonNegativeInteger ;
-      owl:onProperty :seconds ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "0"^^xsd:nonNegativeInteger ;
-      owl:onProperty :weeks ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty :years ;
-    ] ;
+ex:Sivan
+  rdf:type :MonthOfYear ;
+  rdfs:label "Sivan"@en ;
+  skos:prefLabel "Sivan"@en ;
+  skos:prefLabel "סִיוָן "@he ;
+  :month "--03"^^xsd:gMonth ;
+  :unitType :unitMonth ;
+.
+ex:meetingStart
+  rdf:type :Instant ;
+  :inDateTime ex:meetingStartDescription ;
+  :inXSDDateTimeStamp "2006-01-01T10:30:00-5:00"^^xsd:dateTimeStamp ;
+.
+ex:meetingStartDescription
+  rdf:type :DateTimeDescription ;
+  :day "---01"^^xsd:gDay ;
+  :dayOfWeek :Sunday ;
+  :dayOfYear 1 ;
+  :hour 10 ;
+  :minute 30 ;
+  :month "--01"^^xsd:gMonth ;
+  :monthOfYear <http://www.w3.org/ns/time-gregorian/January> ;
+  :timeZone <https://www.timeanddate.com/time/zones/est> ;
+  :unitType :unitMinute ;
+  :week 1 ;
+  :year "2006"^^xsd:gYear ;
 .
 <http://www.w3.org/2006/time>
   rdf:type owl:Ontology ;
