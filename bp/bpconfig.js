@@ -176,6 +176,22 @@ var respecConfig = {
         publisher:"ISO",
         date:"15 December 2015"
       },
+      "SOS":{
+        href:"https://portal.opengeospatial.org/files/?artifact_id=47599",
+        publisher:"OGC",
+		  authors:["Arne Bröring", "Christoph Stasch", "Johannes Echterhoff"],
+        date:"20 April 2012",
+		  title:"Sensor Observation Service Interface Standard",
+        status:"OpenGIS Implementation Standard"
+      },
+      "SensorThings":{
+        href:"http://docs.opengeospatial.org/is/15-078r6/15-078r6.html",
+        publisher:"OGC",
+		  authors:["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
+        date:"26 July 2012",
+		  title:"SensorThings API Part 1: Sensing",
+        status:"OpenGIS Implementation Standard"
+      },
       "WCS":{
         href:"http://www.opengis.net/doc/IS/wcs-core-2.0.1",
         publisher:"OGC",
@@ -198,6 +214,14 @@ var respecConfig = {
         authors:["Jeff de la Beaujardiere"],
         date:"15 March 2006",
         title:"Web Map Server Implementation Specification",
+        status:"OpenGIS Implementation Standard"
+      },
+      "WMTS":{
+        href:"http://portal.opengeospatial.org/files/?artifact_id=35326",
+        publisher:"OGC",
+        authors:["Joan Masó", "Keith Pomakis", "Núria Julià"],
+        date:"6 April 2010",
+		  title:"Web Map Tile Service Implementation Standard",
         status:"OpenGIS Implementation Standard"
       },
       "WPS":{
