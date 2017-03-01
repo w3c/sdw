@@ -305,6 +305,13 @@ var respecConfig = {
         "authors":["ISO/TC 211"],
         "publisher":"ISO",
         "date":"May 2003"
+      },
+      "KML": {
+        "authors": ["David Burggraf"],
+        "href": "http://www.opengeospatial.org/standards/kml",
+        "publisher":"OGC",
+        "title": "OGC KML 2.3",
+        "date": "4 August 2015"
       }
       
     },
