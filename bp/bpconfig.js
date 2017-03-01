@@ -69,12 +69,14 @@ var respecConfig = {
       },
       "GeoSPARQL":{
         href:"http://www.opengeospatial.org/standards/geosparql",
+        publisher:"OGC",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
         authors: ["Matthew Perry", "John Herring"],
         date: "10 September 2012"
       },
       "Simple-Features":{
         href:"http://www.opengeospatial.org/standards/sfa",
+        publisher:"OGC",
         title:"Simple Feature Access - Part 1: Common Architecture",
         authors: ["John Herring"],
         date: "28 May 2011"
@@ -86,6 +88,7 @@ var respecConfig = {
       },
       "OandM":{
         href:"http://www.opengeospatial.org/standards/om",
+        publisher:"OGC",
         title:"Observations and Measurements - XML Implementation",
         authors: ["Simon Cox"],
         date: "22 March 2011"
@@ -105,9 +108,10 @@ var respecConfig = {
       "GeoDCAT-AP":{
         href:"https://joinup.ec.europa.eu/node/139283/",
         title:"GeoDCAT-AP: A geospatial extension for the DCAT application profile for data portals in Europe",
+        publisher: "European Commission",
         date: "23 December 2015"
       },
-      "ISO19115":{
+      "ISO-19115":{
         href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
         title:"Geographic information -- Metadata",
         authors:["ISO/TC 211"],
@@ -116,6 +120,7 @@ var respecConfig = {
       },
       "CSW":{
         href:"http://www.opengeospatial.org/standards/cat",
+        publisher:"OGC",
         title:"Catalogue Services 3.0 - General Model",
         authors:["Douglas Nebert", "Uwe Voges", "Lorenzo Bigagli"],
         date: "10 June 2016"
@@ -123,6 +128,7 @@ var respecConfig = {
       "INSPIRE-MD":{
         href:"http://inspire.jrc.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
         title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
+        publisher: "European Commission",
         date: "29 October 2013"
       },
       "ISO-19101": {
@@ -234,6 +240,7 @@ var respecConfig = {
       },
       "WKT-CRS":{
         href:"http://www.opengeospatial.org/standards/wkt-crs",
+        publisher:"OGC",
         title:"Well-known text representation of coordinate reference systems",
         authors: ["Roger Lott"],
         date: "1 May 2015"
@@ -253,12 +260,14 @@ var respecConfig = {
       },
       "TIMESERIESML": {
         "authors":["James Tomkins", "Dominic Lowe"],
+        publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/tsml",
         "title": "TimeseriesML 1.0 – XML Encoding of the Timeseries Profile of Observations and Measurements",
         "date": "9 September 2016"
       },
       "SENSORTHINGS": {
         "authors":["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
+        publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/sensorthings",
         "title": "OGC \u00AE SensorThings API Part 1: Sensing",
         "date": "26 July 2016"
@@ -271,6 +280,7 @@ var respecConfig = {
       },
       "MOVING-FEATURES-XML": {
         "authors": ["Akinori Asahara", "Ryosuke Shibasaki", "Nobuhiro Ishimaru", "David Burggraf"],
+        publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/movingfeatures",
         "title": "OGC \u00AE Moving Features Encoding Part I: XML Core",
         "date": "17 February 2015"
@@ -278,9 +288,25 @@ var respecConfig = {
       "MOVING-FEATURES-CSV": {
         "authors": ["Akinori Asahara", "Ryosuke Shibasaki", "Nobuhiro Ishimaru", "David Burggraf"],
         "href": "http://www.opengeospatial.org/standards/movingfeatures",
+        publisher:"OGC",
         "title": "OGC \u00AE Moving Features Encoding Extension: Simple Comma Separated Values (CSV)",
         "date": "17 February 2015"
+      },
+      
+      "LOCN":{
+        "href":"https://www.w3.org/ns/locn",
+        "title":"ISA Location Core Vocabulary",
+        "publisher": "European Commission",
+        "date": "23 March 2015"
+      },
+      "ISO-19107": {
+        "href":"http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=26012",
+        "title":"ISO 19107:2003 Geographic information -- Geographic information -- Spatial schema",
+        "authors":["ISO/TC 211"],
+        "publisher":"ISO",
+        "date":"May 2003"
       }
+      
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
 };
