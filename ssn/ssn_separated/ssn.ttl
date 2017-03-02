@@ -11,6 +11,8 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+
 @base <http://www.w3.org/ns/ssn/> .
 
 <http://www.w3.org/ns/ssn/> rdf:type owl:Ontology , voaf:Vocabulary ;
@@ -326,13 +328,19 @@ ssn:isProxyFor rdf:type owl:ObjectProperty ;
                rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
 
 
-###  http://www.w3.org/ns/ssn/madeObservation
-ssn:madeObservation rdf:type owl:ObjectProperty ;
-                    owl:inverseOf ssn:observedBy ;
+###  http://www.w3.org/ns/sosa/madeObservation
+sosa:madeObservation rdf:type owl:ObjectProperty ;
+                    owl:inverseOf sosa:madeBySensor ;
                     rdfs:comment "Relation between a Sensor and Observations it has made." ;
-                    rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
+                    rdfs:isDefinedBy "http://www.w3.org/ns/sosa" ;
                     rdfs:label "made observation" ;
                     rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation" .
+
+###  http://www.w3.org/ns/sosa/madeBySensor
+sosa:madeBySensor rdf:type owl:ObjectProperty ;
+                    rdfs:comment "Relation between an Observation and the Sensor which made the Observation."@en ;
+                    rdfs:label "made by sensor"@en ;
+                    owl:inverseOf sosa:madeObservation .
 
 
 ###  http://www.w3.org/ns/ssn/observationResult
@@ -365,9 +373,9 @@ ssn:observationSamplingTime rdf:type owl:ObjectProperty ;
                             rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation" .
 
 
-###  http://www.w3.org/ns/ssn/observedBy
-ssn:observedBy rdf:type owl:ObjectProperty ;
-               rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
+###  http://www.w3.org/ns/sosa/isObservedBy
+sosa:isObservedBy rdf:type owl:ObjectProperty ;
+               rdfs:isDefinedBy "http://www.w3.org/ns/sosa" ;
 			   rdfs:comment "Relation between an Observation and the Sensor that observed it. Inverse of madeObservation." ;
     		   rdfs:label "observed by" ;
                rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
@@ -388,7 +396,7 @@ ssn:observes rdf:type owl:ObjectProperty ;
              owl:propertyChainAxiom ( ssn:hasMeasurementCapability
                                       ssn:forProperty
                                     ) ,
-                                    ( ssn:madeObservation
+                                    ( sosa:madeObservation
                                       ssn:observedProperty
                                     ) ;
              rdfs:comment """Relation between a Sensor and a Property that the sensor can observe.
@@ -541,22 +549,9 @@ ssn:Drift rdf:type owl:Class ;
 
 
 ###  http://www.w3.org/ns/ssn/FeatureOfInterest
-ssn:FeatureOfInterest rdf:type owl:Class ;
-                      rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                        owl:onProperty ssn:hasProperty ;
-                                        owl:someValuesFrom ssn:Property
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty ssn:hasProperty ;
-                                        owl:allValuesFrom ssn:Property
-                                      ] ;
-                      dc:source """skos:exactMatch 'feature' [O&M] 
-		                    http://www.opengeospatial.org/standards/om""" ;
-                      rdfs:comment "A feature is an abstraction of real world phenomena (thing, person, event, etc)." ;
-                      rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
-                      rdfs:label "Feature of Interest" ;
-                      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
-
+#sosa:FeatureOfInterest
+#  rdfs:subClassOf [ owl:onProperty ssn:hasProperty ; owl:someValuesFrom ssn:Property ] ; # TODO: need resolution, is it ssn:hasProperty, or ssn:hasProperty ?
+#  rdfs:subClassOf [ owl:onProperty ssn:hasProperty ; owl:allValuesFrom ssn:Property ]  . # TODO: need resolution, is it ssn:hasProperty, or ssn:hasProperty ?
 
 ###  http://www.w3.org/ns/ssn/Frequency
 ssn:Frequency rdf:type owl:Class ;
@@ -648,15 +643,15 @@ ssn:MeasurementRange rdf:type owl:Class ;
 ###  http://www.w3.org/ns/ssn/Observation
 ssn:Observation rdf:type owl:Class ;
                 rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:featureOfInterest ;
-                                  owl:allValuesFrom ssn:FeatureOfInterest
+                                  owl:onProperty sosa:featureOfInterest ;
+                                  owl:allValuesFrom sosa:FeatureOfInterest
                                 ] ,
                                 [ rdf:type owl:Restriction ;
                                   owl:onProperty ssn:observationResult ;
                                   owl:allValuesFrom ssn:SensorOutput
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:observedBy ;
+                                  owl:onProperty sosa:isObservedBy ;
                                   owl:allValuesFrom ssn:Sensor
                                 ] ,
                                 [ rdf:type owl:Restriction ;
@@ -680,12 +675,12 @@ ssn:Observation rdf:type owl:Class ;
                                   owl:minCardinality "0"^^xsd:nonNegativeInteger
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:featureOfInterest ;
+                                  owl:onProperty sosa:featureOfInterest ;
                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                  owl:onClass ssn:FeatureOfInterest
+                                  owl:onClass sosa:FeatureOfInterest
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:observedBy ;
+                                  owl:onProperty sosa:isObservedBy ;
                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                                   owl:onClass ssn:Sensor
                                 ] ,
@@ -836,14 +831,14 @@ ssn:Process rdf:type owl:Class ;
 ssn:Property rdf:type owl:Class ;
              rdfs:subClassOf [ rdf:type owl:Restriction ;
                                owl:onProperty ssn:isPropertyOf ;
-                               owl:someValuesFrom ssn:FeatureOfInterest
+                               owl:someValuesFrom sosa:FeatureOfInterest
                              ] ;
-             dc:source """skos:exactMatch 'property' [O&M] 
-		                    http://www.opengeospatial.org/standards/om""" ;
-             rdfs:comment "An observable Quality of an Event or Object.  That is, not a Quality of an abstract entity, but rather an aspect of an entity that is intrinsic to and cannot exist without the entity and that is observable by a sensor." ;
+             rdfs:comment "A Quality of a FeatureOfInterest. An aspect of an entity that is intrinsic to and cannot exist without the entity." ;
              rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
              rdfs:label "Property" ;
              rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
+
+sosa:ObservableProperty rdfs:subClassOf ssn:Property .
 
 
 ###  http://www.w3.org/ns/ssn/Resolution
