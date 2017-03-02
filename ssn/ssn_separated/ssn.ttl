@@ -317,13 +317,19 @@ ssn:isProxyFor rdf:type owl:ObjectProperty ;
                rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
 
 
-###  http://www.w3.org/ns/ssn/madeObservation
-ssn:madeObservation rdf:type owl:ObjectProperty ;
-                    owl:inverseOf ssn:observedBy ;
+###  http://www.w3.org/ns/sosa/madeObservation
+sosa:madeObservation rdf:type owl:ObjectProperty ;
+                    owl:inverseOf sosa:madeBySensor ;
                     rdfs:comment "Relation between a Sensor and Observations it has made." ;
-                    rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
+                    rdfs:isDefinedBy "http://www.w3.org/ns/sosa" ;
                     rdfs:label "made observation" ;
                     rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation" .
+
+###  http://www.w3.org/ns/sosa/madeBySensor
+sosa:madeBySensor rdf:type owl:ObjectProperty ;
+                    rdfs:comment "Relation between an Observation and the Sensor which made the Observation."@en ;
+                    rdfs:label "made by sensor"@en ;
+                    owl:inverseOf sosa:madeObservation .
 
 
 ###  http://www.w3.org/ns/ssn/observationResult
@@ -356,9 +362,9 @@ ssn:observationSamplingTime rdf:type owl:ObjectProperty ;
                             rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation" .
 
 
-###  http://www.w3.org/ns/ssn/observedBy
-ssn:observedBy rdf:type owl:ObjectProperty ;
-               rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
+###  http://www.w3.org/ns/sosa/isObservedBy
+sosa:isObservedBy rdf:type owl:ObjectProperty ;
+               rdfs:isDefinedBy "http://www.w3.org/ns/sosa" ;
 			   rdfs:comment "Relation between an Observation and the Sensor that observed it. Inverse of madeObservation." ;
     		   rdfs:label "observed by" ;
                rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
@@ -379,7 +385,7 @@ ssn:observes rdf:type owl:ObjectProperty ;
              owl:propertyChainAxiom ( ssn:hasMeasurementCapability
                                       ssn:forProperty
                                     ) ,
-                                    ( ssn:madeObservation
+                                    ( sosa:madeObservation
                                       ssn:observedProperty
                                     ) ;
              rdfs:comment """Relation between a Sensor and a Property that the sensor can observe.
@@ -634,7 +640,7 @@ ssn:Observation rdf:type owl:Class ;
                                   owl:allValuesFrom ssn:SensorOutput
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:observedBy ;
+                                  owl:onProperty sosa:isObservedBy ;
                                   owl:allValuesFrom ssn:Sensor
                                 ] ,
                                 [ rdf:type owl:Restriction ;
@@ -663,7 +669,7 @@ ssn:Observation rdf:type owl:Class ;
                                   owl:onClass sosa:FeatureOfInterest
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:observedBy ;
+                                  owl:onProperty sosa:isObservedBy ;
                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                                   owl:onClass ssn:Sensor
                                 ] ,
