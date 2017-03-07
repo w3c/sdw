@@ -526,7 +526,7 @@
          },
       </pre>
       
-      <p>Other mechanisms include using a data format that specifies how the coordinates are included (such as GeoJSON [[RFC7946]] where section <a href="https://tools.ietf.org/html/rfc7946#section-4">4. Coordinate Reference System</a> specifies coordinate order of longitude and latitude using units of decimal degrees) or by having your data explicitly reference the CRS definition you're using. See <a href="#bp-crs" class="sectionRef">Best Practice 17: Describe the location according to a Coordinate Reference System</a> for more information.</p>
+      <p>Other mechanisms include using a data format that specifies how the coordinates are included (such as GeoJSON [[RFC7946]] where section <a href="https://tools.ietf.org/html/rfc7946#section-4">4. Coordinate Reference System</a> specifies coordinate order of longitude and latitude using units of decimal degrees) or by having your data explicitly reference the CRS definition you're using. See <a href="#bp-crs" class="sectionRef">Best Practice 17: State how coordinate values are encoded</a> for more information.</p>
 
       <p>Users of spatial data are often interested in the third dimesion too: vertical elevation (or altitude). For most situations, we can consider elevation to be the vertical distance above (or below) mean sea level. The elevation is most often expressed in meters (but this can vary between CRS definititions) and is provided as a third value in a coordinate position.</p>
 
@@ -547,17 +547,13 @@
       <p>So it may be that you have information in a projected CRS, rather than global latitude and longitude - what should you do? You can publish data as is in one of these many projected CRS, but you need to tell users which particular CRS is being used. A good directory of Coordinate Reference Systems is maintained by the International Association of Oil and Gas Producers: the <a href="http://www.epsg.org/">EPSG Geodetic Parameter Dataset</a>. </p>
 
       <div class="note">
-        <p>It is common for a CRS to be described by its ESPG code. For example, 2-dimensional WGS 84 (Lat/Long) is <a href="http://epsg.io/4326">EPSG:4326</a>, 3-dimensional WGS 84 (Lat/Long/elevation) <a href="http://epsg.io/4979">EPSG:4979</a>, Web-Mercator (a global projected CRS used in most Web-mapping applications) is <a href="http://epsg.io/3857">EPSG:3857</a> and OSGB 1936 / British National Grid (a national projected CRS) is <a href="http://epsg.io/27700">EPSG:27700</a>. </p>
+        <p>It is common for a CRS to be described by its ESPG code. For example, 2-dimensional WGS 84 (Lat/Long) is <a href="http://epsg.io/4326">EPSG:4326</a>, 3-dimensional WGS 84 (Lat/Long/Elevation) <a href="http://epsg.io/4979">EPSG:4979</a>, Web-Mercator (a global projected CRS used in most Web-mapping applications) is <a href="http://epsg.io/3857">EPSG:3857</a> and OSGB 1936 / British National Grid (a national projected CRS) is <a href="http://epsg.io/27700">EPSG:27700</a>. </p>
         <p>Definitions of coordinate reference systems are available from the <a href="http://www.opengis.net/def/crs/">Open Geospatial Consotium CRS Register</a>, <a href="http://spatialreference.org/">Spatial Reference</a> and <a href="http://epsg.io/">EPSG.io</a> (an open-source web service which simplifies discovery of coordinate reference systems utilized worldwide).</p>
       </div>  
       
-      <p>Alternatively you can re-project your coordinates to WGS 84 using many available tools online. So for example the location at <code>516076, 170953</code> in British National Grid Coordinates is <code>-0.331841, 51.425708</code> in WGS 84 Long/Lat. This conversion is a useful step as it makes you data more accessible to global users. So if you can do so, it is helpful to publish data in both local (projected) and global coordinates. </p>      
+      <p>Alternatively you can re-project your coordinates to WGS 84 using many available tools online. So for example the location at <code>516076, 170953</code> in British National Grid (<a href="http://epsg.io/27700">EPSG:27700</a>) coordinates is <code>-0.331841, 51.425708</code> in WGS 84 Long/Lat. This conversion is a useful step as it makes you data more accessible to global users. So if you can do so, it is helpful to publish data in both local (projected) and global coordinates. </p>      
       
       <p>Re-projecting to a better known CRS is also a necessary step if you are publishing data in the form of engineering or Computer Aided Design (CAD)  drawings of a new building or road layout for example. Usually these drawings are made using a very local coordinate reference system for the site itself, so the data will need to be reprojected to “fit” with existing data.</p>
-      
-      <div class="note">
-        <p>A number of open source software implementations are available to help users do such conversions. For example Apache SIS® provides an application programming interface (API) to convert coordinates into different coordinate systems (for more information on Apache SIS® please refer to their <a href="http://sis.staging.apache.org/book/en/developer-guide.html">documentation</a>). Other implementations include the <a href="http://www.gdal.org/">Geospatial Data Abstraction Library</a> (GDAL) and the <a href="http://proj.osgeo.org/">Cartographic Projections Library</a> (PROJ.4) for which there is a <a href="http://proj4js.org/">JavaScript implementation</a>.</p>
-      </div>
       
       <p>So we are now at the point where almost everyone publishing spatial data on the Web can stop reading. But for those with specific requirements concerning high precision locations, there are a few more topics that need to be mentioned.</p>
 
@@ -898,62 +894,72 @@ a:Dataset a dcat:Dataset ;
         </div>
         <div class="practice">
           <p><span id="bp-crs-choice" class="practicelab">Choose the coordinate reference system to suit your user's applications</span></p>
-          <p class="practicedesc">For high accuracy applications (such as precision agriculture and defense) where spatial referencing must be accurate to a few meters or even centimeters the most accurate Datum must be used. </p>
+          <p class="practicedesc">Consider your user's intended application when choosing the coordinate reference system(s) used to publish spatial data. </p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>One of the core components of a Coordinate Reference System (<a>CRS</a>) is the Datum used.  The datum can be thought of as the model of the object over which a coordinate reference grid and other elements of a CRS are applied.  Earth based or “Geodetic Datums” start with a reference ellipsoid (stretched sphere), which approximates the shape of the Earth and one or more points on the Earth's surface chosen as anchor "base-points".  Different datums use different models for the precise shape and size of the Earth in order to provide more accurate measurements at different positions on the globe.  For example, NAD83 provides a more accurate datum for North America than the WGS84 datum.  While less accurate in North America, WGS84 provides a good general datum for the whole of the earth and for this reason is the datum used by the Global Positioning System (GPS). However, WGS84 is usually inappropriate for high accuracy applications.  The Web Mercator projection (EPSG::3857) never is as its datum is spherical and not true to the shape of the earth.</p>
-            <p class="note">Horizontal datum - allow latitude and longitude or other coordinate system to describe relative ground position, usually based on sea level.  Vertical datum - provide a reference for measuring elevations or depths.</p>
-            <p>The use of different datums often results in different co-ordinate values.  This is commonly known as datum shift. This datum shift can vary from one place to another and can be anything from zero to hundreds of meters or more. The datum choice may also effect the position of the poles and equator. Dynamic datums such as the New Zealand Geodetic Datum (NZGD2000) are designed to adjust with time to account for tectonic shifts.  North America and Europe are receding from each other by a couple of centimeters per year, whereas Australia is moving several centimeters per year north-eastwards due to continental drift. New Zealand shifts position in multiple directions. So, for better accuracy in the New Zealand case, NZGD2000 was devised and it is frequently revised to take account of earth deformations.</p>
-            <p>For users to judge if the data is usable to them, they must always be able to determine what datum is used.  Individual numbered CRS published in EPSG use a specific datum.  The datum also has a specific identifier.  For instance, the WGS84 CRS identified as EPSG::4326 GeodeticCRS  is based on WGS84 Datum which is identified as EPSG::6326 GeodeticDatum.    It is unfortunate that both (as well as a few more CRS) are referred to colloquially as “WGS84”.  The WGS84 Datum is a popular datum for a large number of other projections as well, such as from Example 6, "WGS 84 / UTM zone 30N" (EPSG::32630 Projected CRS).  In some cases the Datum may be determined by the specification of the data format that is used, e.g GeoJSON uses WGS84 CRS.  Regardless, the Datum should be specified as part of the CRS metadata so that clients and users can judge if the data is usable.
-            </p>
-                      </section>
+            <p>A multitude of <a>coordinate reference systems</a> exist because there is no perfect solution to meet all requirements:</p>
+            <ol>
+              <li>
+                <p>The Earth is a complicated shape (neither spherical nor flat!):</p>
+                <p>For each (Earth-based) coordinate reference system, the topographical surface of the Earth is approximated to a <em>geodetic datum</em> that is described using an <a>ellipsoid</a>. The trouble with approximation is that nothing is perfect everywhere, which means that compromise is inevitable. Some datums, like WGS 84, provide a reasonable (but not highly accurate) fit everywhere on the Earth, while other datums (such as the European Terrestrial Reference System 1989 - as used by <a href="http://epsg.io/4258">ETRS89 / EPSG:4258</a>) provide a better fit in a given region at the expense of accuracy elsewhere.</p>
+                <p>Spatial data is often <em>projected</em> from the curved surface of the Earth onto a flat plane (e.g. a computer screen or a topographical map) to make it easier to compute distances between positions and calculate areas. There are many choices of projection (e.g. equirectangular, mercator, stereographic, orthographic etc.), each of which is designed for particular tasks. As with datums, projections are often chosen to better support regional, national or local needs.</p>
+                <p>It is also worth noting that as a living planet, the Earth continues to change its shape; for example, continental drift moves Australia north-eastwards several centimeters each year and New Zealand shifts in multiple directions. To retain accuracy, datums need to be adjusted from time to time - as is the case of the the New Zealand Geodetic Datum (NZGD2000) that is frequently revised to take account of earth deformations.</p>
+              </li>
+              <li>
+                <p>Sometimes we don't want to measure relative to the surface of the Earth at all:</p>
+                <p>Spatial data such as descriptions of the built environment, geological surveys or satellite imagery etc. are often captured and stored in an <em>engineering</em> coordinate refence system as measurements from a local datum (e.g. <em>X</em> and <em>Y</em> pixel positions along orthogonal axes of an image or, in the case of linear referencing, distance along a specified feature from a fixed point).</p>
+                </li>
+            </ol>
+            
+            <p>Although it is possible to convert coordinates from one CRS to another, many users will be put off by the need to do so. Furthermore, the need for such transformations introduces a point where errors can be introduced to the spatial data - especially where users have limited expertise with spatial data.</p>
+
+            <p>When publishing spatial data it is best to help users avoid the need for them to transform spatial data between coordinate reference systems themselves by providing data in a form, or forms, which they can use directly. To determine which coordinate reference system(s) are needed, data publishers must consider the intended applictions of their user community.</p>
+
+          </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>Clients or users can determine the Datum which CRS is based. Also, a Coordinate Reference System (CRS) Datum sensitive to the intended domain of high accuracy application should be chosen for the spatial data useful to these.</p>
+            <p>Spatial data is provided in a coordinate reference system, or systems, that are sensitive to the needs of user's intended applications.</p>
+            <p>The majority of a publisher's anticipated user community do not need to transform coordinate values prior to using the spatial data.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>Recommendations about CRS referencing should consider:</p>
-            <ul>
-              <li>If your goal is to support high accuracy applications, choose the best local CRS and Datum for your data.</li>
-              <li>If your goal is also to make data available to mass-market web users, make it available
-                in <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a> EPSG::4326 which uses the WGS84 Datum EPSG::6326 GeodeticDatum. This CRS
-                is suitable for many applications, but be aware (and perhaps publish) the
-                limitations of doing so.</li>
-              
-              <li>Publishing data in multiple CRSs is fine, and may help users to combine your data
-                with other sources, as well as serving multiple types of user.</li>
-              <li>In your metadata, explicitly state which CRS(s) you are using. For convenience,
-                the CRS is often designated within the data format or vocabulary specification (e.g.
-                  [[W3C-BASIC-GEO]]) and, therefore, does not appear in the data itself. This is often
-                considered as a default CRS. Data publishers and consumers should make sure they are
-                aware of the specified CRS and any limitations that this may pose regarding the use
-                of the data.</li>
-              <li>Where a specific CRS is required, the data publisher should choose a vocabulary
-                where the CRS can be defined explicitly within the data.</li>
-            </ul>
-            <aside class="example">
-              <p>In [[GeoDCAT-AP]] metadata, the "link" between data and the relevant CRS(s) is made
-                with <code>dct:conformsTo</code> [[DCTERMS]] - just like conformance with a "standard" is expressed in
-                [[VOCAB-DQV]].</p>
-              <pre class="example" id="ex-geodcat-ap-dataset-crs" title="GeoDCAT-AP specification of a dataset using coordinate reference system &quot;WGS 84 / UTM zone 30N&quot;">a:Dataset a dcat:Dataset ;
-  dct:conformsTo &lt;http://www.opengis.net/def/crs/EPSG/0/32630&gt; .
+            <div class="note">
+              <p>Whichever <a>coordinate reference system</a> is chosen for the publication of spatial data, it is imperative that that choice is made clear to users. Please refer to <a href="#bp-crs" class="sectionRef">Best Practice 17: State how coordinate values are encoded</a> for further details.</p>
+            </div>
 
-&lt;http://www.opengis.net/def/crs/EPSG/0/32630&gt; a dct:Standard, skos:Concept ;
-  dct:type &lt;http://inspire.ec.europa.eu/glossary/SpatialReferenceSystem&gt; ;
-  dct:identifier "http://www.opengis.net/def/crs/EPSG/0/32630"^^xsd:anyURI ;
-  skos:prefLabel "WGS 84 / UTM zone 30N"@en ;
-  skos:inScheme &lt;http://www.opengis.net/def/crs/EPSG/0/&gt; .</pre>
-            </aside>
+            <p>The first thing that publishers of spatial data need to do is consider their audience.</p>
+
+            <p>When publishing spatial data on the Web, the largest community of potential users will be unknown: anyone might find and use data published on the Web! To support this <em>unanticipated reuse</em>, we recommend <em>always</em> publishing your spatial data using a global coordinate reference system which allows spatial data data from multiple sources to be readily combined for display or computation. WGS 84 Lat/Long (<a href="http://epsg.io/4326">EPSG:4326</a>) or WGS 84 Lat/Long/Elevation (<a href="http://epsg.io/4979">EPSG:4979</a>) are good choices as many of the tools and applications used by Web developers are set up to use data from GPS-enabled mobile devices that all use WGS 84. Although Web Mercator (<a href="http://epsg.io/3857">EPSG:3857</a>) has global coverage data publishers should be aware that its geodetic datum is spherical and not true to the shape of the earth, thereby introducing positional differences of upto 20 kilometers when compared with WGS 84.</p>
+
+            <p>Where considerations of the known user community (or communities) call for different coordinate reference systems, we recommend publishing spatial data in multiple representations: one for each of the prioritised coordinate reference systems. Clearly, the number of representations provided needs to be determined with respect to the associated effort. However, remember that a decision not to publish data in a priority CRS will result in each member of your user community needing to do that task - or them not using your data.</p>
+            <p>Common reasons for needing to publish in additional coordinate reference systems include:</p>
+            <ol>
+              <li>
+                <p>publication through government data portals that require use of a projected CRS defined by the national mapping agency - and similar legislative requirements;</p>
+                <p class="example">The <a href="https://bag.basisregistraties.overheid.nl/">Basisregistraties Adressen en Gebouwen</a> (BAG), or <em>Basic Registers for Addresses and Buildings</em>, provided by <a href="https://www.kadaster.nl/">Kadaster</a>, publishes data in both OGC CRS84 (using the WGS 84 geodetic datum) and the Amersfoort / RD (<a href="http://epsg.io/28992">EPSG:28992</a>) coordinate reference systems.</p>
+                <p class="example">The INSPIRE Directive 2007/2/EC of the European Commission requires that the European Terrestrial Reference System 1989 ETRS89 (<a href="http://epsg.io/4258">EPSG:4258</a>) is used for the referencing of spatial data sets.</p>
+              </li>
+              <li>applications such as defence and precision agriculture that require coordinates to be accurate to tens of centimeters or less, thereby requiring the use of a CRS with an alternative geodetic datum that provides a superior fit for the local or regional geographic area - noting that every CRS and datum should define the geographic area within which it is intended to be used;</li>
+              <li>the need to support applications that work in a local frame of reference using an engineering CRS - such as in a urban environment, inside a building complex or using chainage along a survey line;</li>
+              <li>avoiding computationally intensive reprojection of raster data within end-user applications; and </li>
+              <li>the need to retain the integrity of raster data by publishing in its original projection, thereby avoiding modification of pixel values due to the reprojection.</li>
+            </ol>
+
+            <div class="note">
+              <p>Discussion of coordinate system transformations is beyond the scope of this best practice document. However, we note that there are a number of open source software implementations are available to help users do such conversions. These include: the <a href="http://www.gdal.org/">Geospatial Data Abstraction Library</a> (GDAL), the <a href="http://proj.osgeo.org/">Cartographic Projections Library</a> (PROJ.4), its associated <a href="http://proj4js.org/">JavaScript implementation</a> (PROJ4.JS) and the <a href="http://sis.apache.org/">Apache Spatial Information System Library</a> (SIS).</p>
+            </div>
+
           </section>
           <section class="test">
             <p class="subhead">How to Test</p>
-            <p>...</p>
+            <p>Spatial data is available in at least WGS 84 Lat/Long (<a href="http://epsg.io/4326">EPSG:4326</a>) or WGS 84 Lat/Long/Elevation (<a href="http://epsg.io/4979">EPSG:4979</a>).</p>
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: <a
-                href="https://www.w3.org/TR/sdw-ucr/#DeterminableCRS">R-DeterminableCRS</a></p>
+            <p><span>Relevant requirements</span>: 
+              <a href="https://www.w3.org/TR/sdw-ucr/#AvoidCoordinateTransformations">R-AvoidCoordinateTransformations</a>, 
+              <a href="https://www.w3.org/TR/sdw-ucr/#CoordinatePrecision">R-CoordinatePrecision</a>.
+            </p>
           </section>
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
@@ -961,18 +967,6 @@ a:Dataset a dcat:Dataset ;
               <li>Comprehension</li>
             </ul>
           </section>
-        </div>
-
-        <div style="background-color:yellow">
-          <p style="color:red">[ORPHAN TEXT FROM BP 17 (TEMPORARY)]</p>
-          <p>The following describes some of the key considerations in choosing a <a>CRS</a>.</p>
-          <ul>
-            <li><em>Consider the audience</em>: As a Publisher one can make decisions on behalf of the users.  Who are the primary and secondary users?  Target those whose requirements match the data. Is the primary audience known and do they work within a limited well defined spatial extent, of say an urban region?  Then it is likely that there is a local projected <a>CRS</a> by which data is commonly shared in that region.  Share the data in this projection.</li>
-            <li><em>Consider sharing the data in more than one projection</em>: Listen to the customers.  Metadata should provide contacts to publishers.  Encourage feedback particularly for new secondary users. This feedback may give insight to projections you should support.
-            <li><em>Consider the Data</em>: Vector data is quite easy for web mapping tools to project from geographic coordinates.  Raster data requires much more intensive computation for this task.  Raster is commonly published in a projected CRS instead of geographic coordinates.  Raster data should be published in the <a>CRS</a> in which it was produced and if possible and useful, also in web Mercator.</li>
-            <li><em>Consider the Use:</em> The seemingly multitude of <a>CRS</a>s exist because of different requirements.  Some projections are better for measuring area, some are better to measure distance, some are better for measuring angles, some simply look better when displayed and make for a better user interface. Are the aesthetic and readability issues associated with the data?  What projections display the data to best convey the most information you wish to share? Which way is north is affected by the projection chosen.  Spatial data often are used to provide a user interface via a map.  Some map projections may support this use better than others. While it is likely true that the majority of users may be satisfied with WGS 84 and Web Mercator, the most value may be gained by those users requiring other projections.</li>
-            <li><em>Consider how the data is distributed</em>: Different requirements may also occur if the data is downloaded as a whole dataset or accessed via a Web service.</li>
-          </ul>
         </div>
 
         <div class="practice">
@@ -2625,7 +2619,7 @@ a:Dataset a dcat:Dataset ;
           <div class="note">
             <p>There is a predominant view that "I just need to use Lat and Long - and I'm done".</p>
             <p>Although the vast majority of spatial data published on the Web uses WGS 84 Long/Lat (as used by GPS), we <em>strongly</em> recommend that spatial data is published with all the necessary information to interpret coordinate values. Even where it the use of latitude and longitude angular measurements is obvious, the choice of datum and units of measurement have an impact. In particular, angular measurements appearing as floating point numbers are mostly likely to be provided in decimal degrees, may be radians or gons (also known as grads).</p>
-            <p>The problem that the assumption of a "predominant view" leads to ambiguity. For example, many spatial data users work entirely with information provided in their national coordinate reference system (such as the <em>Dutch Amersfoort / RD</em>, <a href="http://epsg.io/28992">EPSG:28992</a> or <em>OSGB 1936 / British National Grid</em> <a href="http://epsg.io/27700">EPSG:27700</a>) which make all coordinates in WGS 84 Long/Lat (especially the negative numbers) utterly perplexing.</p>
+            <p>The problem that the assumption of a "predominant view" leads to ambiguity. For example, many spatial data users work entirely with information provided in their national coordinate reference system (such as the <em>Dutch Amersfoort / RD</em> <a href="http://epsg.io/28992">EPSG:28992</a> or <em>OSGB 1936 / British National Grid</em> <a href="http://epsg.io/27700">EPSG:27700</a>) which make all coordinates in WGS 84 Long/Lat (especially the negative numbers) utterly perplexing.</p>
             <p>In practice, a publisher not documenting their CRS and presuming that latitude and longitude can be treated as cartesian is often bailed out by fuzzy use cases and software that takes care of projections. However, CRS and coordinate axis order ambiguity leads sooner or later to serious and avoidable errors, while ignorance of datums and map projections leads to broken applications. Furthermore, these practices will also become less and less tenable as new applications such as Augmented Reality require higher data precision and accuracy.</p>
           </div>
 
@@ -2832,7 +2826,12 @@ ex:ExampleDataset
         </section>
         <section class="ucr">
           <p class="subhead">Evidence</p>
-          <p><span>Relevant requirements</span>: <a href="https://www.w3.org/TR/sdw-ucr/#DeterminableCRS">R-DeterminableCRS</a></p>
+          <p><span>Relevant requirements</span>: 
+            <a href="https://www.w3.org/TR/sdw-ucr/#DeterminableCRS">R-DeterminableCRS</a>, 
+            <a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">R-CRSDefinition</a>, 
+            <a href="https://www.w3.org/TR/sdw-ucr/#GeoreferencedData">R-GeoreferencedData</a>, 
+            <a href="https://www.w3.org/TR/sdw-ucr/#LinkingCRS">R-LinkingCRS</a>.
+          </p>
         </section>
       </div>
 
