@@ -501,7 +501,7 @@
 
       <p>One of the most fundamental aspects of publishing spatial data, data about location, is how to express and share the location in a consistent way. In almost all cases where you are publishing data for use by the wider web community the use of <a>latitude</a> and <a>longitude</a> coordinates (Lat and Long) is most appropriate. Latitude and longitude coordinates are global and offer a level of precision well suited to many applications: you can express a location to within a few metres which is perfect for locating your favorite coffee shop, geocoding a photograph or capturing an augmented reality Pokemon hiding in your local park.  </p>
       
-      <p>As with everything to do with spatial data, things can get more complicated. One of the most common problems occurs because not all <a>Coordinate Reference Systems</a> (CRS) agree how to express latitude and longitude coordinates. Some CRS order the coordinates <em>Lat/Long</em> while others use <em>Long/Lat</em>; some use <em>decimal degrees</em> while others use <em>degrees, minutes and seconds</em> (<em>dms</em>). Axis order mistakes can mean the difference between a position in the Netherlands or somewhere off the coast of Somalia, while encoding coordinates in <em>decimal degrees</em> when <em>dms</em> is expected can lead to positional errors on the kilometer scale.  </p>
+      <p>As with everything to do with spatial data, things can get more complicated. One of the most common problems occurs because not all <a>Coordinate Reference Systems</a> (CRS) agree how to express latitude and longitude coordinates. Some CRS order the coordinates <em>Lat/Long</em> while others use <em>Long/Lat</em>; some use <em>decimal degrees</em> while others use <em>degrees, minutes and seconds</em> (<em>dms</em>). Axis order mistakes can mean the difference between, say, a position in the Netherlands or somewhere in Somalia, while encoding coordinates in <em>decimal degrees</em> when <em>dms</em> is expected can lead to positional errors on the kilometer scale.  </p>
       
       <p>Therefore it is very important to provide explicit information to your users about how coordinates are encoded. For example, this snippet of results from the <a href="https://developers.google.com/maps/documentation/geocoding/intro">Google Geocoding API</a> makes explicit which is the latitude and which is the longitude coordinate. </p>
 
@@ -2630,7 +2630,7 @@ a:Dataset a dcat:Dataset ;
             <p>In practice, a publisher not documenting their CRS and presuming that latitude and longitude can be treated as cartesian is often bailed out by fuzzy use cases and software that takes care of projections. However, CRS and coordinate axis order ambiguity leads sooner or later to serious and avoidable errors, while ignorance of datums and map projections leads to broken applications. Furthermore, these practices will also become less and less tenable as new applications such as Augmented Reality require higher data precision and accuracy.</p>
           </div>
 
-          <p>There are three common ways that this information can be provided:</p>
+          <p>There are four common ways that this information can be provided:</p>
           <ol>
             <li>
               <p>Provide each coordinate value with explicit labels and provide metadata to indicate what each label means.</p>
@@ -2801,6 +2801,29 @@ Content-type: application/geo+json
                 <p>When using the <code>wktLiteral</code> datatype specified in [[GeoSPARQL]], the <a>coordinate reference system</a> URI may be omitted. In such a case, WGS 84 Long/Lat (<code>urn:ogc:def:crs:OGC::CRS84</code>) is used. Please refer to [[GeoSPARQL]] <strong>Requirement 11</strong> for more details.</p>
                 <p>The Basisregistraties Adressen en Gebouwen (BAG - the Dutch "Basic Registers for Addresses and Buildings"), provided by <a href="https://www.kadaster.nl/">Kadaster</a>, uses this default behaviour. Anne Frank's House, is identified using the URI <a href="http://bag.basisregistraties.overheid.nl/bag/id/pand/0363100012169587"><code>http://bag.basisregistraties.overheid.nl/bag/id/pand/0363100012169587</code></a>. <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587">HTML</a>, <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587&format=json">JSON</a>, <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587&format=ttl">TTL</a> and <a href="http://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587&format=xml">XML</a> representations are available.</p>
               </div>
+            </li>
+            <li>
+              <p>Describe the coordinate reference system in the dataset metadata.</p>
+              <pre class="example" id="ex-crs-dataset-metadata" title="Coordinate reference system stated in [GeoDCAT-AP] (TTL encoding)">
+@prefix ex:      &lt;http://data.example.org/datasets/&gt; .
+@prefix dcat:    &lt;http://www.w3.org/ns/dcat#&gt; .
+@prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
+@prefix skos:    &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+ex:ExampleDataset 
+  a dcat:Dataset ;
+  dcterms:conformsTo &lt;http://www.opengis.net/def/crs/EPSG/0/32630&gt; .
+
+&lt;http://www.opengis.net/def/crs/EPSG/0/32630&gt; 
+  a dcterms:Standard, skos:Concept ;
+  dcterms:type &lt;http://inspire.ec.europa.eu/glossary/SpatialReferenceSystem&gt; ;
+  dcterms:identifier "http://www.opengis.net/def/crs/EPSG/0/32630"^^xsd:anyURI ;
+  skos:prefLabel "WGS 84 / UTM zone 30N"@en ;
+  skos:inScheme &lt;http://www.opengis.net/def/crs/EPSG/0/&gt; .
+              </pre>
+              <p>The example above illustrates how to describe the coordinate reference system used for a dataset within [[GeoDCAT-AP]] metadata. The <code>conformsTo</code> property from [[DCTERMS]] is used to assert the relationship between dataset and CRS in the same way that conformance with a <em>standard</em> is expressed in [[VOCAB-DQV]].</p>
+              <p>For more information about dataset metadata, please refer to <a href="#spatial-info-dataset-metadata" class="sectionRef">Best Practice 1: Include spatial metadata in dataset metadata</a>.</p>
+
             </li>
           </ol>
         </section>
