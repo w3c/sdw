@@ -175,16 +175,14 @@ subclass, <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code>, w
 <figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes" src="./images/TemporalEntity.png">
 <figcaption>Core model model of temporal entities.</figcaption> </figure>
 
-<p>Allen and Ferguson [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>] have developed a calculus of
-binary relations on intervals (e.g., meets, overlaps) for representing qualitative temporal information and
-address the problem of reasoning about such information. The relations between intervals defined in their
-calculus can be defined in a relatively straightforward fashion in terms of <code><a href="#time:before">:before</a></code> and identity
-on the beginning and end points. The standard interval calculus assumes all intervals are proper, whose
+<p>Allen and Ferguson [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>] have developed a calculus of binary relations on intervals (e.g., meets, overlaps) for representing qualitative temporal information and address the problem of reasoning about such information. 
+The relations between intervals defined in their calculus can be defined in a relatively straightforward fashion in terms of <code><a href="#time:before">:before</a></code> and identityon the beginning and end points. 
+The standard interval calculus assumes all intervals are proper, so their
 beginning and end are different. </p>
 
 <figure> <img style="width: 545px; height: 322px;" title="Allen's Interval Relations" alt="Schematic of Interval Relations"
 src="./images/IntervalRelations.png"> 
-<figcaption>The possible relations between time periods [<a href="#AF-97">AF-97</a>]</figcaption> </figure>
+<figcaption>Thirteen elementary possible relations between time periods [<a href="#AF-97">AF-97</a>]. Two additional relations: <code>In</code> (the union of <code>During</code>, <code>Starts</code> and <code>Finishes</code>) and <code>Disjoint</code> (the union of <code>Before</code> and <code>After</code>) are not shown in the figure but are included in the ontology described below. </figcaption> </figure>
 
 </section>
 
@@ -994,7 +992,7 @@ are different</td>
 </tr>
 </tbody>
 </table>
-<p>Thirteen properties 
+<p>Fifteen properties 
 <code><a href="#time:intervalBefore">:intervalBefore</a></code>, <code><a href="#time:intervalAfter">:intervalAfter</a></code>, 
 <code><a href="#time:intervalMeets">:intervalMeets</a></code>, <code><a href="#time:intervalMetBy">:intervalMetBy</a></code>, 
 <code><a href="#time:intervalOverlaps">:intervalOverlaps</a></code>, <code><a href="#time:intervalOverlappedBy">:intervalOverlappedBy</a></code>, 
@@ -1002,7 +1000,9 @@ are different</td>
 <code><a href="#time:intervalDuring">:intervalDuring</a></code>, <code><a href="#time:intervalContains">:intervalContains</a></code>, 
 <code><a href="#time:intervalFinishes">:intervalFinishes</a></code>, <code><a href="#time:intervalFinishedBy">:intervalFinishedBy</a></code>, 
 <code><a href="#time:intervalEquals">:intervalEquals</a></code> 
-support the set of interval relations defined by Allen and Ferguson [<a href="#AF-97">AF-97</a>].</p>
+<code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> 
+<code><a href="#time:intervalIn">:intervalIn</a></code> 
+support the set of interval relations defined by Allen [<a href="#AL-84">AL-84</a>] and Allen and Ferguson [<a href="#AF-97">AF-97</a>].</p>
 
 <h4 id="time:Second">Second</h4>
 <table class="definition" style="width: 812px;">
@@ -1418,10 +1418,12 @@ with the restriction that the <code><a href="#time:unitType">:unitType</a></code
 <code><a href="#time:intervalAfter">:intervalAfter</a></code> |
 <code><a href="#time:intervalBefore">:intervalBefore</a></code> |
 <code><a href="#time:intervalContains">:intervalContains</a></code> |
+<code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> |
 <code><a href="#time:intervalDuring">:intervalDuring</a></code> |
 <code><a href="#time:intervalEquals">:intervalEquals</a></code> |
 <code><a href="#time:intervalFinishedBy">:intervalFinishedBy</a></code> |
 <code><a href="#time:intervalFinishes">:intervalFinishes</a></code> |
+<code><a href="#time:intervalIn">:intervalIn</a></code> |
 <code><a href="#time:intervalMeets">:intervalMeets</a></code> |
 <code><a href="#time:intervalMetBy">:intervalMetBy</a></code> |
 <code><a href="#time:intervalOverlappedBy">:intervalOverlappedBy</a></code> |
@@ -1978,6 +1980,22 @@ then the beginning of T<sub>1</sub> is after the end of T<sub>2</sub>. </td>
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:after">time:after</a></code></td>
+</tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:intervalDisjoint">time:intervalDisjoint</a></code></td>
+</tr>
+<tr>
 <td>Inverse of:</td>
 <td><code><a href="#time:intervalBefore">time:intervalBefore</a></code></td>
 </tr>
@@ -2012,6 +2030,14 @@ then the end of T<sub>1</sub> is before the beginning of T<sub>2</sub>. </td>
 <td>SubProperty of:</td>
 <td><code><a href="#time:before">time:before</a></code></td>
 </tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:intervalDisjoint">time:intervalDisjoint</a></code></td>
+</tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalAfter">time:intervalAfter</a></code></td>
+</tr>
 </tbody>
 </table>
 
@@ -2033,8 +2059,44 @@ is after the end of T<sub>2</sub>. </td>
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
 <td>Inverse of:</td>
 <td><code><a href="#time:intervalDuring">time:intervalDuring</a></code></td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="time:intervalDisjoint">intervalDisjoint</h4>
+<table class="definition" style="width: 812px;">
+<tbody>
+<tr>
+<th style="width: 120px;">RDF Property:</th>
+<th><code><a href="#time:intervalDisjoint">time:intervalDisjoint</a></code></th>
+</tr>
+<tr>
+<td>Definition:</td>
+<td>If a proper interval T<sub>1</sub> is <em>intervalDisjoint</em> another proper interval T<sub>2</sub>,
+then the beginning of T<sub>1</sub> is after the end of T<sub>2</sub>, or the end of T<sub>1</sub>
+is before the beginning of T<sub>2</sub>, i.e. the intervals do not overlap in any way, but their ordering relationship is not known. </td>
+</tr>
+<tr>
+<td>Instance of:</td>
+<td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2064,6 +2126,10 @@ is before the end of T<sub>2</sub>. </td>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalContains">time:intervalContains</a></code></td>
+</tr>
 </tbody>
 </table>
 
@@ -2077,7 +2143,7 @@ is before the end of T<sub>2</sub>. </td>
 <tr>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalEquals </em>another proper interval T<sub>2</sub>,
-then the beginning of T<sub>1</sub> is the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
+then the beginning of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is coincident with 
 the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
@@ -2091,6 +2157,10 @@ the end of T<sub>2</sub>. </td>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Disjoint with:</td>
+<td><code><a href="#time:intervalIn">time:intervalIn</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2106,11 +2176,19 @@ the end of T<sub>2</sub>. </td>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalFinishedBy </em>another proper interval T<sub>2</sub>,
 then the beginning of T<sub>1</sub> is before the beginning of T<sub>2</sub>, and the end of T<sub>1</sub>
-is the end of T<sub>2</sub>. </td>
+is coincident with the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 <tr>
 <td>Inverse of:</td>
@@ -2130,7 +2208,7 @@ is the end of T<sub>2</sub>. </td>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalFinishes </em>another proper interval T<sub>2</sub>,
 then the beginning of T<sub>1</sub> is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub>
-is the end of T<sub>2</sub>. </td>
+is coincident with the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -2143,6 +2221,44 @@ is the end of T<sub>2</sub>. </td>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:intervalIn">time:intervalIn</a></code></td>
+</tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalFinishedBy">time:intervalFinishedBy</a></code></td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="time:intervalIn">intervalIn</h4>
+<table class="definition" style="width: 812px;">
+<tbody>
+<tr>
+<th style="width: 120px;">RDF Property:</th>
+<th><code><a href="#time:intervalIn">time:intervalIn</a></code></th>
+</tr>
+<tr>
+<td>Definition:</td>
+<td>If a proper interval T<sub>1</sub> is intervalIn another proper interval T<sub>2</sub>, then the beginning of T<sub>1</sub> is after the beginning of T<sub>2</sub> or is coincident with the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before the end of T<sub>2</sub> or is coincident with the end of T<sub>2</sub>, except that end of T<sub>1</sub> may not be coincident with the end of T<sub>2</sub> if the beginning of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>. </td>
+</tr>
+<tr>
+<td>Instance of:</td>
+<td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Disjoint with:</td>
+<td><code><a href="#time:intervalEquals">time:intervalEquals</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2157,7 +2273,7 @@ is the end of T<sub>2</sub>. </td>
 <tr>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalMeets </em>another proper interval T<sub>2</sub>,
-then the end of T<sub>1</sub> is the beginning of T<sub>2</sub>. </td>
+then the end of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -2170,6 +2286,10 @@ then the end of T<sub>1</sub> is the beginning of T<sub>2</sub>. </td>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalMetBy">time:intervalMetBy</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2184,11 +2304,19 @@ then the end of T<sub>1</sub> is the beginning of T<sub>2</sub>. </td>
 <tr>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalMetBy </em>another proper interval T<sub>2</sub>,
-then the beginning of T<sub>1</sub> is the end of T<sub>2</sub>. </td>
+then the beginning of T<sub>1</sub> is coincident with the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 <tr>
 <td>Inverse of:</td>
@@ -2213,6 +2341,14 @@ is before the end of T<sub>2</sub>, and the end of T<sub>1</sub> is after the en
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 <tr>
 <td>Inverse of:</td>
@@ -2246,6 +2382,10 @@ is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before 
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalOverlappedBy">time:intervalOverlappedBy</a></code></td>
+</tr>
 </tbody>
 </table>
 
@@ -2259,12 +2399,20 @@ is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before 
 <tr>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalStarted </em>another proper interval T<sub>2</sub>,
-then the beginning of T<sub>1</sub> is the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
+then the beginning of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
 after the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 <tr>
 <td>Inverse of:</td>
@@ -2283,7 +2431,7 @@ after the end of T<sub>2</sub>. </td>
 <tr>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalStarts </em>another proper interval T<sub>2</sub>,
-then the beginning of T<sub>1</sub> is the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
+then the beginning of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
 before the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
@@ -2297,6 +2445,14 @@ before the end of T<sub>2</sub>. </td>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:intervalIn">time:intervalIn</a></code></td>
+</tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalStartedBy">time:intervalStartedBy</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2317,16 +2473,16 @@ before the end of T<sub>2</sub>. </td>
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
-<td>Subproperty of:</td>
-<td><code><a href="#time:inTemporalPosition">time:inTemporalPosition</a></code></td>
-</tr>
-<tr>
 <td>Domain:</td>
 <td><code><a href="#time:Instant">time:Instant</a></code></td>
 </tr>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:TimePosition">time:TimePosition</a></code></td>
+</tr>
+<tr>
+<td>Subproperty of:</td>
+<td><code><a href="#time:inTemporalPosition">time:inTemporalPosition</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -4039,6 +4195,7 @@ The principal technical changes are as follows: </p>
   <li>the time-zone ontology presented in Appendix B has been removed. A new class <code><a href="#time:TimeZone">:TimeZone</a></code> in the main namespace is used instead. The new class is a 'stub' with no properties, to serve as a superclass for any implementation</li>
   <li><code><a href="#time:MonthOfYear">:MonthOfYear</a></code> class and <code><a href="#time:monthOfYear">:monthOfYear</a></code> property added. greg:January-greg:December instances.</li>
   <li><code><a href="#time:inDataTimeStamp">:inDataTimeStamp</a></code> added</li>
+  <li><code><a href="#time:intervalIn">:intervalIn</a></code> and <code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> relations added</li>
 </ul>
 </section>
 
