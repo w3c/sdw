@@ -20,12 +20,20 @@ var respecConfig = {
       }],
     otherLinks: [
     {
+      key: "Contributors",
+      data: [ 
+      {
+        value: "Jerry R. Hobbs"
+      },{
+        value: "Feng Pan"
+      }]
+    },{
       key: "OGC Document Number",
       data: [
       {
         value: "OGC 16-071"
       }]
-      }],
+    }],
     wg: "Spatial Data on the Web Working Group",
     wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
