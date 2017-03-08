@@ -34,18 +34,95 @@ cc:licence a owl:AnnotationProperty .
 vann:preferredNamespacePrefix a owl:AnnotationProperty .
 vann:preferredNamespaceUri a owl:AnnotationProperty .
 vs:term_status a owl:AnnotationProperty .
-<http://meta.schema.org/domainIncludes> a owl:AnnotationProperty .
-<http://meta.schema.org/rangeIncludes> a owl:AnnotationProperty .
+schema:domainIncludes a owl:AnnotationProperty .
+schema:rangeIncludes a owl:AnnotationProperty .
 time:TemporalEntity a owl:Class .
 
 
-sosa: a owl:Ontology .
+sosa: a owl:Ontology , voaf:Vocabulary ;
+  vann:preferredNamespacePrefix "sosa" ;
+  vann:preferredNamespaceUri "http://www.w3.org/ns/sosa/" .
+
+## Features of interest and Property
+
+sosa:FeatureOfInterest a rdfs:Class , owl:Class ;
+  rdfs:label "Feature Of Interest"@en ;
+  skos:definition """The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator."""@en ;
+  skos:example "When measuring the height of a tree, the height is the ObservedProperty, 20m may be the Result of the Observation, and the tree is the FeatureOfInterest. A window is a FeatureOfInterest for an automatic window control Actuator"@en ;
+  rdfs:isDefinedBy sosa: .
+
+  sosa:ObservableProperty a rdfs:Class , owl:Class ;
+    rdfs:label "Observable Property"@en ;
+    skos:definition """An observable quality of a FeatureOfInterest."""@en ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:ActuatableProperty a rdfs:Class , owl:Class ;
+    rdfs:label "Actuatable Property"@en ;
+    skos:definition "An actuatable property, i.e., characteristic, of a FeatureOfInterest."@en ;
+    skos:example "A window actuator acts by changing the state between a frame and a window. The ability of the window to be opened and closed is its ActuatableProperty."@en 
+    rdfs:isDefinedBy sosa: .
 
 
-sosa:Observation a owl:Class .
+## Platform 
 
-sosa:Actuation a owl:Class .
+sosa:Platform a rdfs:Class , owl:Class ;
+  rdfs:label "Platform"@en ;
+  skos:definition "A Platform is an entity that hosts other entities, particularly Sensors, Actuators and other Platforms."@en ;
+  skos:example "A post, buoy, vehicle, ship, aircraft, satellite, cell-phone, human or animal may act as platforms for (technical or biological) sensors or actuators."@en ;
+  rdfs:isDefinedBy sosa: .
 
+  sosa:isHostedBy a owl:ObjectProperty ;
+    rdfs:label "is hosted by"@en ;
+    skos:definition "Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."@en ;
+    schema:domainIncludes sosa:Actuator ;
+    schema:domainIncludes sosa:Sensor ;
+    schema:rangeIncludes sosa:Platform ;
+    owl:inverseOf sosa:hosts ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:hosts a owl:ObjectProperty ;
+    rdfs:label "hosts"@en ;
+    skos:definition "Relation between a Platform and a Sensor or Actuator hosted or mounted on it."@en ;
+    schema:domainIncludes sosa:Platform ;
+    schema:rangeIncludes sosa:Actuator ;
+    schema:rangeIncludes sosa:Sensor ;
+    owl:inverseOf sosa:isHostedBy ;
+    rdfs:isDefinedBy sosa: .
+
+
+## Sensor and Actuator
+
+sosa:Sensor a rdfs:Class , owl:Class ;
+  rdfs:label "Sensor"@en ;
+  skos:definition """Device, agent (including humans), or software (simulation) involved in, or implementing, a (Sensing) Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior observations, and generate a Result. Sensors can be mounted on Platforms."""@en ;
+  skos:example "Accelerometers, gyroscopes, barometers, magnetometers, and so forth a sensors that are typically mounted on a modern smart phone (which acts as Platform). Other examples of sensors include the human eyes."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:Actuator a rdfs:Class , owl:Class ;
+  rdfs:label "Actuator"@en ;
+  skos:definition "A device that is used by, or implements, an (Actuation) Procedure that changes the state of the world."@en ;
+  skos:example "A window actuators for automatic window control."@en ;
+  rdfs:isDefinedBy sosa: .
+
+
+## Observation
+
+sosa:Observation a rdfs:Class , owl:Class ;
+  rdfs:label "Observation"@en ;
+  skos:definition """Activity of carrying out an (Observation) Procedure to estimate or calculate a value of a Property of a FeatureOfInterest. Links to a Platform or Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with. The Result is the output of the observation."""@en ;
+  skos:example """The activity of estimating the intensity of an Earthquake using the Mercalli intensity scale is an Observation as is measuring the moment magnitude, i.e., the energy released by said earthquake."""@en ;
+  rdfs:isDefinedBy sosa: .
+
+## Actuation
+
+sosa:Actuation a rdfs:Class , owl:Class ;
+  rdfs:label "Actuation"@en ;
+  skos:definition """An Actuation carries out an (Actuation) Procedure to change the state of the world using an Actuator."""@en ;
+  skos:example """The activity of automatically closing a window if the temperature in a room drops below 20 degree Celsius. The activity is the Actuation and the device that closes the window is the Actuator. The Procedure is the rule, plan, or specification that defines the conditions that triggers the Actuation, here a drop in temperature. """@en ;
+  rdfs:isDefinedBy sosa: .
+
+
+## SensorOutput, ObservationValue, Result
 
 sosa:Result a rdfs:Class, owl:Class ;
   rdfs:label "Result"@en ;

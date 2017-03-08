@@ -54,7 +54,122 @@ time:TemporalEntity a owl:Class .
   owl:imports sosa: , ssn: .
 
 
+## Features of interest and observable property
 
+oldssn:FeatureOfInterest a owl:Class ;
+  rdfs:label "Feature of Interest"@en ;
+  skos:definition """A feature is an abstraction of real world phenomena (thing, person, event, etc)."""@en ;
+  dcterms:source """skos:exactMatch 'feature' [O&M]
+    http://www.opengeospatial.org/standards/om""" ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
+  owl:deprecated true ;
+  owl:equivalentClass sosa:FeatureOfInterest ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+oldssn:Property a owl:Class ;
+  rdfs:label "Property"@en ;
+  skos:definition """An observable Quality of an Event or Object.  That is, not a Quality of an abstract entity, but rather an aspect of an entity that is intrinsic to and cannot exist without the entity and that is observable by a sensor."""@en ;
+  dcterms:source """skos:exactMatch 'property' [O&M]
+             http://www.opengeospatial.org/standards/om""" ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
+  owl:deprecated true ;
+  owl:equivalentClass ssn:Property ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+  
+  oldssn:hasProperty a owl:ObjectProperty ;
+    rdfs:label "has property"@en ;
+    skos:definition """Relation between a FeatureOfInterest and a Property of that feature."""@en ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:hasProperty ; ### or sosa:hasProperty? see https://www.w3.org/2015/spatial/wiki/Link_between_FeatureOfInterest_and_xxxProperty
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:isPropertyOf a owl:ObjectProperty ;
+    rdfs:label "is property of"@en ;
+    skos:definition """Relation between a FeatureOfInterest and a Property (a Quality observable by a sensor) of that feature."""@en ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:isPropertyOf ; ### or sosa:isPropertyOf? see https://www.w3.org/2015/spatial/wiki/Link_between_FeatureOfInterest_and_xxxProperty
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+
+## Systems
+
+oldssn:System a owl:Class ;
+  rdfs:label "System"@en ;
+  skos:definition """System is a unit of abstraction for pieces of infrastructure for sensing. A system has components, its subsystems, which are other systems."""@en ; # TODO: update with: "A system may have components" ? 
+  dcterms:source "http://www.w3.org/2005/Incubator/ssn/" ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#System" ;
+  owl:deprecated true ;
+  owl:equivalentClass ssn:System ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:hasSubSystem a owl:ObjectProperty ;
+    rdfs:label "has subsystem"@en ;
+    skos:definition """Relation between a system and its component parts (has-part)."""@en ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#System" ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:hasSubSystem ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+
+## Platforms
+
+oldssn:Platform a owl:Class ;
+  rdfs:label "Platform"@en ;
+  skos:definition """An Entity to which other Entities can be attached - particuarly Sensors and other Platforms.  For example, a post might act as a Platform, a buoy might act as a Platform, or a fish might act as a Platform for an attached sensor."""@en ;
+  dcterms:source """skos:exactMatch 'platform' [SensorML OGC-0700]
+  http://www.opengeospatial.org/standards/sensorml""" ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#PlatformSite" ;
+  owl:deprecated true ;
+  owl:equivalentClass sosa:Platform ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:onPlatform a owl:ObjectProperty ;
+    rdfs:label "on platform"@en ;
+    skos:definition """Relation between a System (e.g., a Sensor) and a Platform.  The relation locates the sensor relative to other described entities entities: i.e., the Sensor s1's location is Platform p1.  More precise locations for sensors in space (relative to other entities, where attached to another entity, or in 3D space) are made using DOLCE's Regions (SpaceRegion)."""@en ; # TODO: remove DOLCE ?
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#PlatformSite" ;
+    owl:deprecated true ;
+    owl:equivalentProperty sosa:isHostedBy ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:attachedSystem a owl:ObjectProperty ;
+    rdfs:label "attached system"@en ;
+    skos:definition """Relation between a Platform and any Systems (e.g., Sensors) that are attached to the Platform."""@en ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#PlatformSite" .
+    owl:deprecated true ;
+    owl:equivalentProperty sosa:hosts ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:Device rdf:type owl:Class ;
+    rdfs:label "Device"@en ;
+    skos:definition "A device is a physical piece of technology - a system in a box. Devices may of course be built of smaller devices and software components (i.e. systems have components)." ;
+    dcterms:source "http://www.w3.org/2005/Incubator/ssn/" ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Device#Device" ;
+    owl:deprecated true ;
+    rdfs:equivalentClass ssn:Device ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+
+## Sensor, Actuator
+
+oldssn:Sensor a owl:Class ;
+  rdfs:label "Sensor"@en ;
+  skos:definition """A sensor can do (implements) sensing: that is, a sensor is any entity that can follow a sensing method and thus observe some Property of a FeatureOfInterest.  Sensors may be physical devices, computational methods, a laboratory setup with a person following a method, or any other thing that can follow a Sensing Method to observe a Property."""@en ;
+  dcterms:source """skos:exactMatch 'sensor' [SensorML OGC-0700]
+  http://www.opengeospatial.org/standards/sensorml 
+
+  skos:closeMatch 'observation procedure' [O&M] 
+  http://www.opengeospatial.org/standards/om 
+
+O&M allows sensors, methods, instruments, systems, algorithms and process chains as the processUsed of an observation; this ontology allows a similar range of things (any thing that can do sensing), just they are all grouped under the term sensor (which is thus wider than the O&M concept).""" ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
+  owl:deprecated true ;
+  owl:equivalentClass sosa:Sensor ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+
+## SensorOutput, ObservationValue, Result
 
 oldssn:SensorOutput a owl:Class ;
   rdfs:label "Sensor Output"@en ;
@@ -66,8 +181,8 @@ oldssn:SensorOutput a owl:Class ;
   
   See comments at ObservationValue.""" ;
   rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
-  rdfs:subClassOf [ owl:onProperty oldssn:hasValue ; owl:someValuesFrom oldssn:ObservationValue ] .
-  rdfs:subClassOf [ owl:onProperty oldssn:isProducedBy ; owl:someValuesFrom oldssn:Sensor ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:hasValue ; owl:someValuesFrom oldssn:ObservationValue ] .
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:isProducedBy ; owl:someValuesFrom oldssn:Sensor ] ;
   owl:deprecated true ;
   rdfs:subClassOf sosa:Result ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> ;

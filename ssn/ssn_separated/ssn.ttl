@@ -9,13 +9,17 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+
 @base <http://www.w3.org/ns/ssn/> .
 
-<http://www.w3.org/ns/ssn/> rdf:type owl:Ontology ;
+<http://www.w3.org/ns/ssn/> rdf:type owl:Ontology , voaf:Vocabulary ;
                              dc:creator "W3C Semantic Sensor Network Incubator Group"^^xsd:string ;
                              dct:modified "2016-09-08" ;
-                             rdfs:comment "New modular version of the SSN ontology independent of DUL."^^xsd:string ,
-                                          " Please report any errors to the Semantic Sensor Network Incubator Activity via the public W3C list public-xg-ssn@w3.org"^^xsd:string ;
+                             owl:versionInfo "New modular version of the SSN ontology independent of DUL."^^xsd:string ;
+                             rdfs:comment " Please report any errors to the Semantic Sensor Network Incubator Activity via the public W3C list public-xg-ssn@w3.org"^^xsd:string ;
                              rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/" ;
                              dc:title "Semantic Sensor Network Ontology" ;
                              dct:modified "2011-06-20" ;
@@ -24,11 +28,19 @@
                              rdfs:comment "This ontology is developed by the W3C Semantic Sensor Networks Incubator Group (SSN-XG). The concepts and structure of the ontology were discussed in the group's meetings and on the mailing list. For more information on the group's activities see: http://www.w3.org/2005/Incubator/ssn/"^^xsd:string ;
                              dc:rights "Copyright 2009 - 2011 W3C." ;
                              rdfs:comment "This ontology describes sensors and observations, and related concepts.  It does not describe domain concepts, time, locations, etc. these are intended to be included from other ontologies via OWL imports."^^xsd:string ;
-                             dct:created "2009-12-02" .
+                             dct:created "2009-12-02" ;
+  vann:preferredNamespacePrefix "ssn" ;
+  vann:preferredNamespaceUri "http://www.w3.org/ns/ssn/" ;
+  owl:imports sosa: .
 
 #################################################################
 #    Annotation properties
 #################################################################
+
+voaf:Vocabulary a owl:Class .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+
 
 ###  http://creativecommons.org/ns#license
 cc:license rdf:type owl:AnnotationProperty .
@@ -316,13 +328,19 @@ ssn:isProxyFor rdf:type owl:ObjectProperty ;
                rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
 
 
-###  http://www.w3.org/ns/ssn/madeObservation
-ssn:madeObservation rdf:type owl:ObjectProperty ;
-                    owl:inverseOf ssn:observedBy ;
+###  http://www.w3.org/ns/sosa/madeObservation
+sosa:madeObservation rdf:type owl:ObjectProperty ;
+                    owl:inverseOf sosa:madeBySensor ;
                     rdfs:comment "Relation between a Sensor and Observations it has made." ;
-                    rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
+                    rdfs:isDefinedBy "http://www.w3.org/ns/sosa" ;
                     rdfs:label "made observation" ;
                     rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation" .
+
+###  http://www.w3.org/ns/sosa/madeBySensor
+sosa:madeBySensor rdf:type owl:ObjectProperty ;
+                    rdfs:comment "Relation between an Observation and the Sensor which made the Observation."@en ;
+                    rdfs:label "made by sensor"@en ;
+                    owl:inverseOf sosa:madeObservation .
 
 
 ###  http://www.w3.org/ns/ssn/observationResult
@@ -355,9 +373,9 @@ ssn:observationSamplingTime rdf:type owl:ObjectProperty ;
                             rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation" .
 
 
-###  http://www.w3.org/ns/ssn/observedBy
-ssn:observedBy rdf:type owl:ObjectProperty ;
-               rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
+###  http://www.w3.org/ns/sosa/isObservedBy
+sosa:isObservedBy rdf:type owl:ObjectProperty ;
+               rdfs:isDefinedBy "http://www.w3.org/ns/sosa" ;
 			   rdfs:comment "Relation between an Observation and the Sensor that observed it. Inverse of madeObservation." ;
     		   rdfs:label "observed by" ;
                rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
@@ -378,7 +396,7 @@ ssn:observes rdf:type owl:ObjectProperty ;
              owl:propertyChainAxiom ( ssn:hasMeasurementCapability
                                       ssn:forProperty
                                     ) ,
-                                    ( ssn:madeObservation
+                                    ( sosa:madeObservation
                                       ssn:observedProperty
                                     ) ;
              rdfs:comment """Relation between a Sensor and a Property that the sensor can observe.
@@ -471,7 +489,7 @@ ssn:Deployment rdf:type owl:Class ;
                rdfs:subClassOf ssn:DeploymentRelatedProcess ,
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty ssn:deployedOnPlatform ;
-                                 owl:allValuesFrom ssn:Platform
+                                 owl:allValuesFrom sosa:Platform
                                ] ,
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty ssn:deployedSystem ;
@@ -531,22 +549,9 @@ ssn:Drift rdf:type owl:Class ;
 
 
 ###  http://www.w3.org/ns/ssn/FeatureOfInterest
-ssn:FeatureOfInterest rdf:type owl:Class ;
-                      rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                        owl:onProperty ssn:hasProperty ;
-                                        owl:someValuesFrom ssn:Property
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty ssn:hasProperty ;
-                                        owl:allValuesFrom ssn:Property
-                                      ] ;
-                      dc:source """skos:exactMatch 'feature' [O&M] 
-		                    http://www.opengeospatial.org/standards/om""" ;
-                      rdfs:comment "A feature is an abstraction of real world phenomena (thing, person, event, etc)." ;
-                      rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
-                      rdfs:label "Feature of Interest" ;
-                      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
-
+#sosa:FeatureOfInterest
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasProperty ; owl:someValuesFrom ssn:Property ] ; # TODO: need resolution, is it ssn:hasProperty, or ssn:hasProperty ?
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasProperty ; owl:allValuesFrom ssn:Property ]  . # TODO: need resolution, is it ssn:hasProperty, or ssn:hasProperty ?
 
 ###  http://www.w3.org/ns/ssn/Frequency
 ssn:Frequency rdf:type owl:Class ;
@@ -638,16 +643,16 @@ ssn:MeasurementRange rdf:type owl:Class ;
 ###  http://www.w3.org/ns/ssn/Observation
 ssn:Observation rdf:type owl:Class ;
                 rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:featureOfInterest ;
-                                  owl:allValuesFrom ssn:FeatureOfInterest
+                                  owl:onProperty sosa:featureOfInterest ;
+                                  owl:allValuesFrom sosa:FeatureOfInterest
                                 ] ,
                                 [ rdf:type owl:Restriction ;
                                   owl:onProperty ssn:observationResult ;
                                   owl:allValuesFrom ssn:SensorOutput
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:observedBy ;
-                                  owl:allValuesFrom ssn:Sensor
+                                  owl:onProperty sosa:isObservedBy ;
+                                  owl:allValuesFrom sosa:Sensor
                                 ] ,
                                 [ rdf:type owl:Restriction ;
                                   owl:onProperty ssn:observedProperty ;
@@ -670,14 +675,14 @@ ssn:Observation rdf:type owl:Class ;
                                   owl:minCardinality "0"^^xsd:nonNegativeInteger
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:featureOfInterest ;
+                                  owl:onProperty sosa:featureOfInterest ;
                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                  owl:onClass ssn:FeatureOfInterest
+                                  owl:onClass sosa:FeatureOfInterest
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:observedBy ;
+                                  owl:onProperty sosa:isObservedBy ;
                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                  owl:onClass ssn:Sensor
+                                  owl:onClass sosa:Sensor
                                 ] ,
                                 [ rdf:type owl:Restriction ;
                                   owl:onProperty ssn:observedProperty ;
@@ -773,15 +778,9 @@ ssn:Output rdf:type owl:Class ;
 
 
 ###  http://www.w3.org/ns/ssn/Platform
-ssn:Platform rdf:type owl:Class ;
-             rdfs:subClassOf [ rdf:type owl:Restriction ;
-                               owl:onProperty ssn:attachedSystem ;
-                               owl:allValuesFrom ssn:System
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty ssn:inDeployment ;
-                               owl:allValuesFrom ssn:Deployment
-                             ] ;
+sosa:Platform 
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hosts ; owl:allValuesFrom ssn:System ] .
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:inDeployment ; owl:allValuesFrom ssn:Deployment ] ;
              dc:source """skos:exactMatch 'platform' [SensorML OGC-0700]
                                   http://www.opengeospatial.org/standards/sensorml""" ;
              rdfs:comment "An Entity to which other Entities can be attached - particuarly Sensors and other Platforms.  For example, a post might act as a Platform, a buoy might act as a Platform, or a fish might act as a Platform for an attached sensor." ;
@@ -824,17 +823,15 @@ ssn:Process rdf:type owl:Class ;
 
 ###  http://www.w3.org/ns/ssn/Property
 ssn:Property rdf:type owl:Class ;
-             rdfs:subClassOf [ rdf:type owl:Restriction ;
-                               owl:onProperty ssn:isPropertyOf ;
-                               owl:someValuesFrom ssn:FeatureOfInterest
-                             ] ;
-             dc:source """skos:exactMatch 'property' [O&M] 
-		                    http://www.opengeospatial.org/standards/om""" ;
-             rdfs:comment "An observable Quality of an Event or Object.  That is, not a Quality of an abstract entity, but rather an aspect of an entity that is intrinsic to and cannot exist without the entity and that is observable by a sensor." ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isPropertyOf ; owl:someValuesFrom sosa:FeatureOfInterest ] ; # TODO: need resolution, see https://www.w3.org/2015/spatial/wiki/Link_between_FeatureOfInterest_and_xxxProperty
+             rdfs:comment "A Quality of a FeatureOfInterest. An aspect of an entity that is intrinsic to and cannot exist without the entity." ;
              rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
              rdfs:label "Property" ;
              rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
 
+sosa:ObservableProperty rdfs:subClassOf ssn:Property .
+
+sosa:ActuatableProperty rdfs:subClassOf ssn:Property .
 
 ###  http://www.w3.org/ns/ssn/Resolution
 ssn:Resolution rdf:type owl:Class ;
@@ -882,7 +879,7 @@ ssn:Sensing rdf:type owl:Class ;
 ###  http://www.w3.org/ns/ssn/SensingDevice
 ssn:SensingDevice rdf:type owl:Class ;
                   rdfs:subClassOf ssn:Device ,
-                                  ssn:Sensor ;
+                                  sosa:Sensor ;
                   dc:source "http://www.w3.org/2005/Incubator/ssn/" ;
                   rdfs:comment "A sensing device is a device that implements sensing." ;
                   rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
@@ -902,23 +899,11 @@ ssn:Sensitivity rdf:type owl:Class ;
 
 
 ###  http://www.w3.org/ns/ssn/Sensor
-ssn:Sensor rdf:type owl:Class ;
-           rdfs:subClassOf [ rdf:type owl:Restriction ;
-                             owl:onProperty ssn:implements ;
-                             owl:someValuesFrom ssn:Sensing
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty ssn:detects ;
-                             owl:allValuesFrom ssn:Stimulus
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty ssn:hasMeasurementCapability ;
-                             owl:allValuesFrom ssn:MeasurementCapability
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty ssn:observes ;
-                             owl:allValuesFrom ssn:Property
-                           ] ;
+sosa:Sensor rdf:type owl:Class ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:someValuesFrom ssn:Sensing ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:detects ; owl:allValuesFrom ssn:Stimulus ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasMeasurementCapability ; owl:allValuesFrom ssn:MeasurementCapability ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:observes ; owl:allValuesFrom ssn:Property ] .
            dc:source """skos:exactMatch 'sensor' [SensorML OGC-0700]
 		                    http://www.opengeospatial.org/standards/sensorml 
 
@@ -930,6 +915,13 @@ O&M allows sensors, methods, instruments, systems, algorithms and process chains
            rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
            rdfs:label "Sensor" ;
            rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
+
+
+sosa:Actuator rdfs:subClassOf ssn:System .
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:someValuesFrom ssn:Acting ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasActuationCapability ; owl:allValuesFrom ssn:ActuationCapability ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:actsOn ; owl:allValuesFrom ssn:Property ] .
+
 
 
 ###  http://www.w3.org/ns/ssn/SensorDataSheet
@@ -965,7 +957,7 @@ ssn:SensorOutput rdf:type owl:Class ;
                                  ] ,
                                  [ rdf:type owl:Restriction ;
                                    owl:onProperty ssn:isProducedBy ;
-                                   owl:someValuesFrom ssn:Sensor
+                                   owl:someValuesFrom sosa:Sensor
                                  ] ;
                  dc:source """http://www.w3.org/2005/Incubator/ssn/
 
@@ -1018,31 +1010,16 @@ ssn:SurvivalRange rdf:type owl:Class ;
 
 ###  http://www.w3.org/ns/ssn/System
 ssn:System rdf:type owl:Class ;
-           rdfs:subClassOf [ rdf:type owl:Restriction ;
-                             owl:onProperty ssn:hasDeployment ;
-                             owl:allValuesFrom ssn:Deployment
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty ssn:hasOperatingRange ;
-                             owl:allValuesFrom ssn:OperatingRange
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty ssn:hasSubSystem ;
-                             owl:allValuesFrom ssn:System
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty ssn:hasSurvivalRange ;
-                             owl:allValuesFrom ssn:SurvivalRange
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty ssn:onPlatform ;
-                             owl:allValuesFrom ssn:Platform
-                           ] ;
-           dc:source "http://www.w3.org/2005/Incubator/ssn/" ;
-           rdfs:comment "System is a unit of abstraction for pieces of infrastructure for sensing. A system has components, its subsystems, which are other systems." ;
-           rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
-           rdfs:label "System" ;
-           rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#System" .
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isHostedBy ; owl:allValuesFrom sosa:Platform ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSubSystem ; owl:allValuesFrom ssn:System ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasDeployment ; owl:allValuesFrom ssn:Deployment ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasOperatingRange ; owl:allValuesFrom ssn:OperatingRange ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSurvivalRange ; owl:allValuesFrom ssn:SurvivalRange ] ;
+  dc:source "http://www.w3.org/2005/Incubator/ssn/" ;
+  rdfs:comment "System is a unit of abstraction for pieces of infrastructure for sensing. A system has components, its subsystems, which are other systems." ; # TODO: update with: "A system may have components" ? 
+  rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
+  rdfs:label "System" ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#System" .
 
 
 ###  http://www.w3.org/ns/ssn/SystemLifetime

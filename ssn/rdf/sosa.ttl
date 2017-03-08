@@ -10,6 +10,8 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix terms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
 @prefix xhtm: <http://www.w3.org/1999/xhtml> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -61,11 +63,17 @@ rdfs:seeAlso
 owl:topObjectProperty
   rdf:type owl:ObjectProperty ;
 .
+voaf:Vocabulary a owl:Class .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+
+
 sosa:
-  rdf:type owl:Ontology ;
+  rdf:type owl:Ontology , voaf:Vocabulary ;
   rdfs:comment "This ontology is based on the SSN Ontology by the W3C Semantic Sensor Networks Incubator Group (SSN-XG), together with considerations from the W3C/OGC Spatial Data on the Web Working Group." ;
   rdfs:label "Sensor, Observation, Sample, and Actuator (SOSA) Core Ontology" ;
-  skos:historyNote "This version is based on the horizontal/vertical modularization proposed in the W3C/OGC Spatial Data on the Web Working Group: http://w3c.github.io/sdw/ssn/#modularisation" ;
+  vann:preferredNamespacePrefix "sosa" ;
+  vann:preferredNamespaceUri "http://www.w3.org/ns/sosa/" ;
 .
 sosa:Actuation
   rdf:type rdfs:Class ;
@@ -103,6 +111,14 @@ sosa:ObservableProperty
   skos:definition "An observable quality of a FeatureOfInterest."@en ;
   skos:example "The height of a tree, the depth of a water body, or the temperature of a surface are examples of observable properties, while the value of a classic car is not (directly) observable but asserted."@en ;
 .
+sosa:ActuatableProperty
+  rdf:type rdfs:Class ;
+  rdf:type owl:Class ;
+  rdfs:comment "An actuatable property, i.e., characteristic, of a FeatureOfInterest."@en ;
+  rdfs:label "Actuatable Property"@en ;
+  skos:definition "An actuatable property, i.e., characteristic, of a FeatureOfInterest."@en ;
+  skos:example "A window actuator acts by changing the state between a frame and a window. The ability of the window to be opened and closed is its ActuatableProperty."@en 
+.
 sosa:Observation
   rdf:type rdfs:Class ;
   rdf:type owl:Class ;
@@ -114,10 +130,10 @@ sosa:Observation
 sosa:Platform
   rdf:type rdfs:Class ;
   rdf:type owl:Class ;
-  rdfs:comment "A device, (computational) system, or agent (including humans). A platform carries at least one Sensor, Actuator, or sampling device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."@en ;
+  rdfs:comment "A Platform is an entity that hosts other entities, particularly Sensors, Actuators and other Platforms."@en ;
   rdfs:label "Platform"@en ;
-  skos:definition "A device, (computational) system, or agent (including rdf:type rdfs:Class, owl:Class humans). A platform carries at least one Sensor, Actuator, or sampling device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."@en ;
-  skos:example "A post, buoy, vehicle, ship, aircraft, satellite, cell-phone, human or animal may act as platforms for (technical or biological) sensors."@en ;
+  skos:definition "A Platform is an entity that hosts other entities, particularly Sensors, Actuators and other Platforms."@en ;
+  skos:example "A post, buoy, vehicle, ship, aircraft, satellite, cell-phone, human or animal may act as platforms for (technical or biological) sensors or actuators."@en ;
 .
 sosa:Procedure
   rdf:type rdfs:Class ;
@@ -161,12 +177,13 @@ sosa:Sensor
 sosa:hasFeatureOfInterest
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Observation ;
+  schema:domainIncludes sosa:Actuation ;
   schema:rangeIncludes sosa:FeatureOfInterest ;
   schema:rangeIncludes sosa:Sample ;
-  rdfs:comment "A relation between an Observation and the entity whose quality was observed."@en ;
+  rdfs:comment "A relation between an Observation and the entity whose quality was observed or between an Actuation and the entity whose property was modified."@en ;
   rdfs:label "has feature of interest"@en ;
   owl:inverseOf sosa:isFeatureOfInterestOf ;
-  skos:definition "A relation between an Observation and the entity whose quality was observed."@en ;
+  skos:definition "A relation between an Observation and the entity whose quality was observed or between an Actuation and the entity whose property was modified."@en ;
   skos:example "For example, in an Observation of the weight of a person, the FeatureOfInterest is the person and the quality is weight."@en ;
 .
 sosa:hasResult
@@ -196,13 +213,13 @@ sosa:hasValue
   skos:definition "The value of a Result"@en ;
   skos:example "23 or true"@en ;
 .
-sosa:hostedBy
+sosa:isHostedBy
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuator ;
   schema:domainIncludes sosa:Sensor ;
   schema:rangeIncludes sosa:Platform ;
   rdfs:comment "Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."@en ;
-  rdfs:label "hosted by"@en ;
+  rdfs:label "is hosted by"@en ;
   owl:inverseOf sosa:hosts ;
   skos:definition "Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."@en ;
 .
@@ -213,34 +230,35 @@ sosa:hosts
   schema:rangeIncludes sosa:Sensor ;
   rdfs:comment "Relation between a Platform and a Sensor or Actuator hosted or mounted on it."@en ;
   rdfs:label "hosts"@en ;
-  owl:inverseOf sosa:hostedBy ;
+  owl:inverseOf sosa:isHostedBy ;
   skos:definition "Relation between a Platform and a Sensor or Actuator hosted or mounted on it."@en ;
 .
-sosa:invokedBy
+sosa:actuationMadeBy
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuation ;
   schema:rangeIncludes sosa:Actuator ;
   rdfs:comment "Relation linking an Actuation to the Actuator that made that Actuation."@en ;
-  rdfs:label "invoked by"@en ;
-  owl:inverseOf sosa:invokes ;
+  rdfs:label "actuation made by"@en ;
+  owl:inverseOf sosa:madeActuation ;
   skos:definition "Relation linking an Actuation to the Actuator that made that Actuation."@en ;
 .
-sosa:invokes
+sosa:madeActuation
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuator ;
   schema:rangeIncludes sosa:Actuation ;
   rdfs:comment "Relation between an Actuator and the Actuation it has made."@en ;
-  rdfs:label "invokes"@en ;
+  rdfs:label "made actuation"@en ;
   skos:definition "Relation between an Actuator and the Actuation it has made."@en ;
 .
 sosa:isFeatureOfInterestOf
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:FeatureOfInterest ;
   schema:rangeIncludes sosa:Observation ;
-  rdfs:comment "A relation between a FeatureOfInterest and an Observation about it."@en ;
+  schema:rangeIncludes sosa:Actuation ;
+  rdfs:comment "A relation between a FeatureOfInterest and an Observation about it or an Actuation acting on it."@en ;
   rdfs:label "is feature of interest of"@en ;
   owl:inverseOf sosa:hasFeatureOfInterest ;
-  skos:definition "A relation between a FeatureOfInterest and an Observation about it."@en ;
+  skos:definition "A relation between a FeatureOfInterest and an Observation about it or an Actuation acting on it."@en ;
 .
 sosa:isObservedBy
   rdf:type owl:ObjectProperty ;
@@ -276,7 +294,16 @@ sosa:madeObservation
   schema:rangeIncludes sosa:Observation ;
   rdfs:comment "Relation between a Sensor and an Observation it has made."@en ;
   rdfs:label "made observation"@en ;
+  owl:inverseOf sosa:madeBySensor ;
   skos:definition "Relation between a Sensor and an Observation it has made."@en ;
+.
+sosa:madeBySensor rdf:type owl:ObjectProperty ;
+ schema:domainIncludes sosa:Observation ;
+ schema:rangeIncludes sosa:Sensor ;
+ rdfs:comment "Relation between an Observation and the Sensor which made the Observation."@en ;
+ rdfs:label "made by sensor"@en ;
+ owl:inverseOf sosa:madeObservation ;
+ skos:definition "Relation between an Observation and the Sensor which made the Observation."@en
 .
 sosa:observedProperty
   rdf:type owl:ObjectProperty ;
@@ -285,6 +312,26 @@ sosa:observedProperty
   rdfs:comment "Relation linking an Observation to the Property that was observed. The observedProperty should be a Property (hasProperty) of the FeatureOfInterest (linked by featureOfInterest) of this observation."@en ;
   rdfs:label "observed property"@en ;
   skos:definition "Relation linking an Observation to the Property that was observed. The observedProperty should be a Property (hasProperty) of the FeatureOfInterest (linked by featureOfInterest) of this observation."@en ;
+.
+sosa:actsOnProperty
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa:Actuation ;
+  schema:rangeIncludes sosa:ActuatableProperty ;
+  rdfs:comment "Relation between an Actuation and the property of a Feature Of Interest it is acting upon."@en ;
+  rdfs:label "acts on property"@en ;
+  owl:inverseOf sosa:isActedOnBy ;
+  skos:definition "Relation between an Actuation and the property of a Feature Of Interest it is acting upon."@en ;
+  skos:example "In the activity (Actuation) of automatically closing a window if the temperature in a room drops below 20 degree Celsius, the  property on which the Actuator acts upon is the state of the window as it changes from being open to being closed. "@en 
+.
+sosa:isActedOnBy
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa:ActuatableProperty ;
+  schema:rangeIncludes sosa:Actuation ;
+  rdfs:comment "Relation between an actuatable property of a Feature Of Interest and an Actuation changing its state."@en ;
+  rdfs:label "acts on property"@en ;
+  owl:inverseOf sosa:actsOnProperty ;
+  skos:definition "Relation between an actuatable property of a Feature Of Interest and an Actuation changing its state."@en ;
+  skos:example "In the activity (Actuation) of automatically closing a window if the temperature in a room drops below 20 degree Celsius, the  property on which the Actuator acts upon is the state of the window as it changes from being open to being closed. "@en 
 .
 sosa:observes
   rdf:type owl:ObjectProperty ;
