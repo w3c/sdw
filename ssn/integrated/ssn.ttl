@@ -34,14 +34,87 @@ vann:preferredNamespacePrefix a owl:AnnotationProperty .
 vann:preferredNamespaceUri a owl:AnnotationProperty .
 
 
-ssn: a owl:Ontology ;
-  owl:imports sosa: .
+ssn: a owl:Ontology , voaf:Vocabulary ;
+  owl:versionInfo "New modular version of the SSN ontology independent of DUL."@en ;
+  owl:imports sosa: ;
+  vann:preferredNamespacePrefix "ssn" ;
+  vann:preferredNamespaceUri "http://www.w3.org/ns/ssn/" ;
+
+## Features of interest and Property
+
+#sosa:FeatureOfInterest
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasProperty ; owl:someValuesFrom ssn:Property ] ; # TODO: need resolution, is it ssn:hasProperty, or sosa:hasProperty ?
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasProperty ; owl:allValuesFrom ssn:Property ]  . # TODO: need resolution, is it ssn:hasProperty, or sosa:hasProperty ?
+
+ssn:Property a owl:Class ;
+  rdfs:label "Property"@en ;
+  skos:definition """A Quality of a FeatureOfInterest. An aspect of an entity that is intrinsic to and cannot exist without the entity."""@en ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isPropertyOf ; owl:someValuesFrom sosa:FeatureOfInterest ] ; # TODO: need resolution, see https://www.w3.org/2015/spatial/wiki/Link_between_FeatureOfInterest_and_xxxProperty
+  rdfs:isDefinedBy ssn: .
+
+  ssn:hasProperty a owl:ObjectProperty ; # TODO: need resolution, see https://www.w3.org/2015/spatial/wiki/Link_between_FeatureOfInterest_and_xxxProperty
+    rdfs:label "has property"@en ;
+    skos:definition """Relation between a FeatureOfInterest and a Property of that feature."""@en ;
+    owl:inverseOf ssn:isPropertyOf ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:isPropertyOf a owl:ObjectProperty ; # TODO: need resolution, see https://www.w3.org/2015/spatial/wiki/Link_between_FeatureOfInterest_and_xxxProperty
+    rdfs:label "is property of"@en ;
+    skos:definition """Relation between a FeatureOfInterest and a Property (a Quality observable by a sensor) of that feature."""@en ;
+    owl:inverseOf ssn:hasProperty ;
+    rdfs:isDefinedBy ssn: .
+
+  sosa:ObservableProperty rdfs:subClassOf ssn:Property .
+
+  sosa:ActuatableProperty rdfs:subClassOf ssn:Property .
 
 
+## Systems
+
+ssn:System a owl:Class ;
+  rdfs:label "System"@en ;
+  skos:definition """System is a unit of abstraction for pieces of infrastructure for sensing. A system has components, its subsystems, which are other systems."""@en ; # TODO: update with: "A system may have components" ? 
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isHostedBy ; owl:allValuesFrom sosa:Platform ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSubSystem ; owl:allValuesFrom ssn:System ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasDeployment ; owl:allValuesFrom ssn:Deployment ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasOperatingRange ; owl:allValuesFrom ssn:OperatingRange ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSurvivalRange ; owl:allValuesFrom ssn:SurvivalRange ] ;
+  rdfs:isDefinedBy ssn: .
+
+  ssn:hasSubSystem a owl:ObjectProperty ;
+    rdfs:label "has subsystem"@en ;
+    skos:definition """Relation between a system and its component parts (has-part)."""@en ;
+    rdfs:isDefinedBy ssn: .
+
+
+## Platforms
+
+sosa:Platform 
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hosts ; owl:allValuesFrom ssn:System ] .
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:inDeployment ; owl:allValuesFrom ssn:Deployment ] ;
+
+
+## Sensor, Actuator
+
+sosa:Sensor rdfs:subClassOf ssn:System .
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:someValuesFrom ssn:Sensing ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:detects ; owl:allValuesFrom ssn:Stimulus ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasMeasurementCapability ; owl:allValuesFrom ssn:MeasurementCapability ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:observes ; owl:allValuesFrom ssn:Property ] .
+
+sosa:Actuator rdfs:subClassOf ssn:System .
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:someValuesFrom ssn:Acting ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasActuationCapability ; owl:allValuesFrom ssn:ActuationCapability ] ;
+#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:actsOn ; owl:allValuesFrom ssn:Property ] .
+
+
+
+## SensorOutput, ObservationValue, Result
 
 
 # what would be the equivalent axiom for sosa:Result ?
-# it should be somehow equivalent to  rdfs:subClassOf [ owl:onProperty oldssn:isProducedBy ; owl:someValuesFrom oldssn:Sensor ] ;
+# it should be somehow equivalent to  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:isProducedBy ; owl:someValuesFrom oldssn:Sensor ] ;
 # but more general, because Actuators can also generate results. 
 
-sosa:Result rdfs:subClassOf [ owl:onProperty sosa:isResultOf ; owl:someValuesFrom ???ssn:ProcedureExecutor??? ] ;
+sosa:Result rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isResultOf ; owl:someValuesFrom ???ssn:ProcedureExecutor??? ] ;
+

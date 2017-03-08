@@ -10,6 +10,8 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix terms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
 @prefix xhtm: <http://www.w3.org/1999/xhtml> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -61,11 +63,17 @@ rdfs:seeAlso
 owl:topObjectProperty
   rdf:type owl:ObjectProperty ;
 .
+voaf:Vocabulary a owl:Class .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+
+
 sosa:
-  rdf:type owl:Ontology ;
+  rdf:type owl:Ontology , voaf:Vocabulary ;
   rdfs:comment "This ontology is based on the SSN Ontology by the W3C Semantic Sensor Networks Incubator Group (SSN-XG), together with considerations from the W3C/OGC Spatial Data on the Web Working Group." ;
   rdfs:label "Sensor, Observation, Sample, and Actuator (SOSA) Core Ontology" ;
-  skos:historyNote "This version is based on the horizontal/vertical modularization proposed in the W3C/OGC Spatial Data on the Web Working Group: http://w3c.github.io/sdw/ssn/#modularisation" ;
+  vann:preferredNamespacePrefix "sosa" ;
+  vann:preferredNamespaceUri "http://www.w3.org/ns/sosa/" ;
 .
 sosa:Actuation
   rdf:type rdfs:Class ;
@@ -122,10 +130,10 @@ sosa:Observation
 sosa:Platform
   rdf:type rdfs:Class ;
   rdf:type owl:Class ;
-  rdfs:comment "A device, (computational) system, or agent (including humans). A platform carries at least one Sensor, Actuator, or sampling device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."@en ;
+  rdfs:comment "A Platform is an entity that hosts other entities, particularly Sensors, Actuators and other Platforms."@en ;
   rdfs:label "Platform"@en ;
-  skos:definition "A device, (computational) system, or agent (including rdf:type rdfs:Class, owl:Class humans). A platform carries at least one Sensor, Actuator, or sampling device to produce observations, actuations, or samples, by following a Procedure. In case of virtual sensors, a platform can be a computing system which hosts software implementations, e.g., simulations."@en ;
-  skos:example "A post, buoy, vehicle, ship, aircraft, satellite, cell-phone, human or animal may act as platforms for (technical or biological) sensors."@en ;
+  skos:definition "A Platform is an entity that hosts other entities, particularly Sensors, Actuators and other Platforms."@en ;
+  skos:example "A post, buoy, vehicle, ship, aircraft, satellite, cell-phone, human or animal may act as platforms for (technical or biological) sensors or actuators."@en ;
 .
 sosa:Procedure
   rdf:type rdfs:Class ;
@@ -205,13 +213,13 @@ sosa:hasValue
   skos:definition "The value of a Result"@en ;
   skos:example "23 or true"@en ;
 .
-sosa:hostedBy
+sosa:isHostedBy
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuator ;
   schema:domainIncludes sosa:Sensor ;
   schema:rangeIncludes sosa:Platform ;
   rdfs:comment "Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."@en ;
-  rdfs:label "hosted by"@en ;
+  rdfs:label "is hosted by"@en ;
   owl:inverseOf sosa:hosts ;
   skos:definition "Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."@en ;
 .
@@ -222,15 +230,15 @@ sosa:hosts
   schema:rangeIncludes sosa:Sensor ;
   rdfs:comment "Relation between a Platform and a Sensor or Actuator hosted or mounted on it."@en ;
   rdfs:label "hosts"@en ;
-  owl:inverseOf sosa:hostedBy ;
+  owl:inverseOf sosa:isHostedBy ;
   skos:definition "Relation between a Platform and a Sensor or Actuator hosted or mounted on it."@en ;
 .
-sosa:madeByActuator
+sosa:actuationMadeBy
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuation ;
   schema:rangeIncludes sosa:Actuator ;
   rdfs:comment "Relation linking an Actuation to the Actuator that made that Actuation."@en ;
-  rdfs:label "made by actuator"@en ;
+  rdfs:label "actuation made by"@en ;
   owl:inverseOf sosa:madeActuation ;
   skos:definition "Relation linking an Actuation to the Actuator that made that Actuation."@en ;
 .
@@ -286,7 +294,16 @@ sosa:madeObservation
   schema:rangeIncludes sosa:Observation ;
   rdfs:comment "Relation between a Sensor and an Observation it has made."@en ;
   rdfs:label "made observation"@en ;
+  owl:inverseOf sosa:madeBySensor ;
   skos:definition "Relation between a Sensor and an Observation it has made."@en ;
+.
+sosa:madeBySensor rdf:type owl:ObjectProperty ;
+ schema:domainIncludes sosa:Observation ;
+ schema:rangeIncludes sosa:Sensor ;
+ rdfs:comment "Relation between an Observation and the Sensor which made the Observation."@en ;
+ rdfs:label "made by sensor"@en ;
+ owl:inverseOf sosa:madeObservation ;
+ skos:definition "Relation between an Observation and the Sensor which made the Observation."@en
 .
 sosa:observedProperty
   rdf:type owl:ObjectProperty ;

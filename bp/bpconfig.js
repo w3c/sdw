@@ -111,8 +111,22 @@ var respecConfig = {
         publisher: "European Commission",
         date: "23 December 2015"
       },
+      "ISO-19111":{
+        href:"https://www.iso.org/standard/41126.html",
+        title:"Geographic information -- Spatial referencing by coordinates",
+        authors:["ISO/TC 211"],
+        publisher:"ISO",
+        date: "2007"
+      },
+      "OGC-TOPIC-2":{
+        href:"http://portal.opengeospatial.org/files/?artifact_id=39049",
+        title:"OGC Abstract Specification Topic 2 - Spatial referencing by coordinates",
+        authors:["Roger Lott"],
+        publisher:"OGC",
+        date: "27 April 2010"
+      },
       "ISO-19115":{
-        href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
+        href:"https://www.iso.org/standard/26020.html",
         title:"Geographic information -- Metadata",
         authors:["ISO/TC 211"],
         publisher:"ISO",
@@ -132,7 +146,7 @@ var respecConfig = {
         date: "29 October 2013"
       },
       "ISO-19101": {
-        href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=59164",
+        href:"https://www.iso.org/standard/59164.html",
         title:"ISO 19101-1:2014 Geographic information -- Reference model -- Part 1: Fundamentals",
         date: "15 November 2014",
         authors:["ISO/TC 211"],
@@ -152,7 +166,7 @@ var respecConfig = {
         authors:["Barry Norton", "Luis M. Vilches", "Alexander De León", "John Goodwin", "Claus Stadler", "Suchith Anand", "Dominic Harries", "Boris Villazón-Terrazas", "Ghislain A. Atemezing"]
       },
       "ISO-19123": {
-        href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=40121",
+        href:"https://www.iso.org/standard/40121.html",
         title:"ISO 19123:2005 Geographic information -- Schema for coverage geometry and functions",
         authors:["ISO/TC 211"],
         publisher:"ISO",
@@ -176,11 +190,27 @@ var respecConfig = {
         authors:["Niles Ritter", "Mike Ruth"]
       },
       "ISO-19109": {
-        href:"http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=59193",
+        href:"https://www.iso.org/standard/59193.html",
         title:"ISO 19109:2015 Geographic information -- Rules for application schema",
         authors:["ISO/TC 211"],
         publisher:"ISO",
         date:"15 December 2015"
+      },
+      "SOS":{
+        href:"https://portal.opengeospatial.org/files/?artifact_id=47599",
+        publisher:"OGC",
+		  authors:["Arne Bröring", "Christoph Stasch", "Johannes Echterhoff"],
+        date:"20 April 2012",
+		  title:"Sensor Observation Service Interface Standard",
+        status:"OpenGIS Implementation Standard"
+      },
+      "SensorThings":{
+        href:"http://docs.opengeospatial.org/is/15-078r6/15-078r6.html",
+        publisher:"OGC",
+		  authors:["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
+        date:"26 July 2012",
+		  title:"SensorThings API Part 1: Sensing",
+        status:"OpenGIS Implementation Standard"
       },
       "WCS":{
         href:"http://www.opengis.net/doc/IS/wcs-core-2.0.1",
@@ -204,6 +234,14 @@ var respecConfig = {
         authors:["Jeff de la Beaujardiere"],
         date:"15 March 2006",
         title:"Web Map Server Implementation Specification",
+        status:"OpenGIS Implementation Standard"
+      },
+      "WMTS":{
+        href:"http://portal.opengeospatial.org/files/?artifact_id=35326",
+        publisher:"OGC",
+        authors:["Joan Masó", "Keith Pomakis", "Núria Julià"],
+        date:"6 April 2010",
+		  title:"Web Map Tile Service Implementation Standard",
         status:"OpenGIS Implementation Standard"
       },
       "WPS":{
@@ -268,7 +306,6 @@ var respecConfig = {
         "title": "OGC \u00AE Moving Features Encoding Extension: Simple Comma Separated Values (CSV)",
         "date": "17 February 2015"
       },
-      
       "LOCN":{
         "href":"https://www.w3.org/ns/locn",
         "title":"ISA Location Core Vocabulary",
@@ -276,11 +313,18 @@ var respecConfig = {
         "date": "23 March 2015"
       },
       "ISO-19107": {
-        "href":"http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=26012",
+        "href":"https://www.iso.org/standard/26012.html",
         "title":"ISO 19107:2003 Geographic information -- Geographic information -- Spatial schema",
         "authors":["ISO/TC 211"],
         "publisher":"ISO",
         "date":"May 2003"
+      },
+      "KML": {
+        "authors": ["David Burggraf"],
+        "href": "http://www.opengeospatial.org/standards/kml",
+        "publisher":"OGC",
+        "title": "OGC KML 2.3",
+        "date": "4 August 2015"
       }
       
     },
