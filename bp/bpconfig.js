@@ -69,12 +69,14 @@ var respecConfig = {
       },
       "GeoSPARQL":{
         href:"http://www.opengeospatial.org/standards/geosparql",
+        publisher:"OGC",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
         authors: ["Matthew Perry", "John Herring"],
         date: "10 September 2012"
       },
       "Simple-Features":{
         href:"http://www.opengeospatial.org/standards/sfa",
+        publisher:"OGC",
         title:"Simple Feature Access - Part 1: Common Architecture",
         authors: ["John Herring"],
         date: "28 May 2011"
@@ -86,6 +88,7 @@ var respecConfig = {
       },
       "OandM":{
         href:"http://www.opengeospatial.org/standards/om",
+        publisher:"OGC",
         title:"Observations and Measurements - XML Implementation",
         authors: ["Simon Cox"],
         date: "22 March 2011"
@@ -105,10 +108,25 @@ var respecConfig = {
       "GeoDCAT-AP":{
         href:"https://joinup.ec.europa.eu/node/139283/",
         title:"GeoDCAT-AP: A geospatial extension for the DCAT application profile for data portals in Europe",
+        publisher: "European Commission",
         date: "23 December 2015"
       },
-      "ISO19115":{
-        href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
+      "ISO-19111":{
+        href:"https://www.iso.org/standard/41126.html",
+        title:"Geographic information -- Spatial referencing by coordinates",
+        authors:["ISO/TC 211"],
+        publisher:"ISO",
+        date: "2007"
+      },
+      "OGC-TOPIC-2":{
+        href:"http://portal.opengeospatial.org/files/?artifact_id=39049",
+        title:"OGC Abstract Specification Topic 2 - Spatial referencing by coordinates",
+        authors:["Roger Lott"],
+        publisher:"OGC",
+        date: "27 April 2010"
+      },
+      "ISO-19115":{
+        href:"https://www.iso.org/standard/26020.html",
         title:"Geographic information -- Metadata",
         authors:["ISO/TC 211"],
         publisher:"ISO",
@@ -116,6 +134,7 @@ var respecConfig = {
       },
       "CSW":{
         href:"http://www.opengeospatial.org/standards/cat",
+        publisher:"OGC",
         title:"Catalogue Services 3.0 - General Model",
         authors:["Douglas Nebert", "Uwe Voges", "Lorenzo Bigagli"],
         date: "10 June 2016"
@@ -123,10 +142,11 @@ var respecConfig = {
       "INSPIRE-MD":{
         href:"http://inspire.jrc.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
         title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
+        publisher: "European Commission",
         date: "29 October 2013"
       },
       "ISO-19101": {
-        href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=59164",
+        href:"https://www.iso.org/standard/59164.html",
         title:"ISO 19101-1:2014 Geographic information -- Reference model -- Part 1: Fundamentals",
         date: "15 November 2014",
         authors:["ISO/TC 211"],
@@ -146,7 +166,7 @@ var respecConfig = {
         authors:["Barry Norton", "Luis M. Vilches", "Alexander De León", "John Goodwin", "Claus Stadler", "Suchith Anand", "Dominic Harries", "Boris Villazón-Terrazas", "Ghislain A. Atemezing"]
       },
       "ISO-19123": {
-        href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=40121",
+        href:"https://www.iso.org/standard/40121.html",
         title:"ISO 19123:2005 Geographic information -- Schema for coverage geometry and functions",
         authors:["ISO/TC 211"],
         publisher:"ISO",
@@ -170,11 +190,27 @@ var respecConfig = {
         authors:["Niles Ritter", "Mike Ruth"]
       },
       "ISO-19109": {
-        href:"http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=59193",
+        href:"https://www.iso.org/standard/59193.html",
         title:"ISO 19109:2015 Geographic information -- Rules for application schema",
         authors:["ISO/TC 211"],
         publisher:"ISO",
         date:"15 December 2015"
+      },
+      "SOS":{
+        href:"https://portal.opengeospatial.org/files/?artifact_id=47599",
+        publisher:"OGC",
+		  authors:["Arne Bröring", "Christoph Stasch", "Johannes Echterhoff"],
+        date:"20 April 2012",
+		  title:"Sensor Observation Service Interface Standard",
+        status:"OpenGIS Implementation Standard"
+      },
+      "SensorThings":{
+        href:"http://docs.opengeospatial.org/is/15-078r6/15-078r6.html",
+        publisher:"OGC",
+		  authors:["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
+        date:"26 July 2012",
+		  title:"SensorThings API Part 1: Sensing",
+        status:"OpenGIS Implementation Standard"
       },
       "WCS":{
         href:"http://www.opengis.net/doc/IS/wcs-core-2.0.1",
@@ -200,6 +236,14 @@ var respecConfig = {
         title:"Web Map Server Implementation Specification",
         status:"OpenGIS Implementation Standard"
       },
+      "WMTS":{
+        href:"http://portal.opengeospatial.org/files/?artifact_id=35326",
+        publisher:"OGC",
+        authors:["Joan Masó", "Keith Pomakis", "Núria Julià"],
+        date:"6 April 2010",
+		  title:"Web Map Tile Service Implementation Standard",
+        status:"OpenGIS Implementation Standard"
+      },
       "WPS":{
         href:"http://docs.opengeospatial.org/is/14-065/14-065.html",
         publisher:"OGC",
@@ -210,6 +254,7 @@ var respecConfig = {
       },
       "WKT-CRS":{
         href:"http://www.opengeospatial.org/standards/wkt-crs",
+        publisher:"OGC",
         title:"Well-known text representation of coordinate reference systems",
         authors: ["Roger Lott"],
         date: "1 May 2015"
@@ -229,12 +274,14 @@ var respecConfig = {
       },
       "TIMESERIESML": {
         "authors":["James Tomkins", "Dominic Lowe"],
+        publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/tsml",
         "title": "TimeseriesML 1.0 – XML Encoding of the Timeseries Profile of Observations and Measurements",
         "date": "9 September 2016"
       },
       "SENSORTHINGS": {
         "authors":["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
+        publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/sensorthings",
         "title": "OGC \u00AE SensorThings API Part 1: Sensing",
         "date": "26 July 2016"
@@ -247,6 +294,7 @@ var respecConfig = {
       },
       "MOVING-FEATURES-XML": {
         "authors": ["Akinori Asahara", "Ryosuke Shibasaki", "Nobuhiro Ishimaru", "David Burggraf"],
+        publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/movingfeatures",
         "title": "OGC \u00AE Moving Features Encoding Part I: XML Core",
         "date": "17 February 2015"
@@ -254,9 +302,31 @@ var respecConfig = {
       "MOVING-FEATURES-CSV": {
         "authors": ["Akinori Asahara", "Ryosuke Shibasaki", "Nobuhiro Ishimaru", "David Burggraf"],
         "href": "http://www.opengeospatial.org/standards/movingfeatures",
+        publisher:"OGC",
         "title": "OGC \u00AE Moving Features Encoding Extension: Simple Comma Separated Values (CSV)",
         "date": "17 February 2015"
+      },
+      "LOCN":{
+        "href":"https://www.w3.org/ns/locn",
+        "title":"ISA Location Core Vocabulary",
+        "publisher": "European Commission",
+        "date": "23 March 2015"
+      },
+      "ISO-19107": {
+        "href":"https://www.iso.org/standard/26012.html",
+        "title":"ISO 19107:2003 Geographic information -- Geographic information -- Spatial schema",
+        "authors":["ISO/TC 211"],
+        "publisher":"ISO",
+        "date":"May 2003"
+      },
+      "KML": {
+        "authors": ["David Burggraf"],
+        "href": "http://www.opengeospatial.org/standards/kml",
+        "publisher":"OGC",
+        "title": "OGC KML 2.3",
+        "date": "4 August 2015"
       }
+      
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
 };
