@@ -19,8 +19,8 @@ var respecConfig = {
 			companyURL: "http://geog.ucsb.edu/"
 		}, {
 			name: "Danh Le Phuoc",
-			company: "Insight Centre for Data Analytics",
-			companyURL: "http://www.insight-centre.org/"
+			company: "Technical University of Berlin",
+			companyURL: "http://www.tu-berlin.de/"
 		}, {
 			name: "Armin Haller",
       company: "Australian National University",
@@ -74,7 +74,7 @@ var respecConfig = {
         authors: ["Matthew Perry", "John Herring"],
         date: "10 September 2012"  
        }, 
-       "OM":{
+       "OandM":{
         href:"http://www.opengeospatial.org/standards/om",
         title:"Observations and Measurements (O&M)",
         authors: ["Simon Cox"],
@@ -104,6 +104,73 @@ var respecConfig = {
          href:"http://ontologydesignpatterns.org/wiki/Ontology:DOLCE+DnS_Ultralite",
          authors: ["Aldo Gangemi"],
          title: "DOLCE+DnS Ultralite (DUL)"
+      },
+      "Cuenca-Grau-et-al-2009": {
+         href:"https://www.cs.ox.ac.uk/publications/publication779-abstract.html",
+         authors: ["Bernardo Cuenca Grau", "Ian Horrocks", "Yevgeny Kazakov ", "Ulrike Sattler"],
+         title: "Extracting Modules from Ontologies: A Logic−based Approach",
+         publisher: "Springer",
+         date: "2009"
+      },
+      "SSO-Pattern": {
+         href:"http://ceur-ws.org/Vol-668/paper12.pdf",
+         authors: ["Krzysztof Janowicz", "Michael Compton"],
+         title: "The Stimulus-Sensor-Observation Ontology Design Pattern and its Integration into the Semantic Sensor Network Ontology",
+         publisher: "CEUR: Proceedings of the 3rd International Workshop on Semantic Sensor Networks (SSN10)",
+         date: "2010"
+      },
+      "OM-Heavy": {
+        href: "http://ceur-ws.org/Vol-1063/paper1.pdf",
+        title: "An explicit OWL representation of ISO/OGC Observations and Measurements ",
+        publisher: "CEUR: 6th International Conference on Semantic Sensor Networks",
+        date: "2013",
+        authors: ["Simon Cox"]
+      },
+      "OM-Lite": {
+        href: "http://content.iospress.com/articles/semantic-web/sw214",
+        title: "Ontology for observations and sampling features, with alignments to existing models",
+        publisher: "IOS Press/Semantic Web",
+        date: "6 December 2016",
+        authors: ["Simon Cox"]
+      },
+       "ISO-19150-2":{
+       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=57466",
+       title: "Geographic information -- Ontology -- Part 2: Rules for developing ontologies in the Web Ontology Language (OWL)",
+       publisher: "ISO",
+       date: "July 2015"
+      },
+       "ISO-19109":{
+       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=59193",
+       title: "Geographic information -- Rules for application schema",
+       publisher: "ISO",
+       date: "December 2015"
+      },
+       "ISO-19156":{
+       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=32574",
+       title: "Geographic information -- Observations and measurements",
+       publisher: "ISO",
+       date: "December 2011"
+      },
+      "SensorML" :{
+        href: "http://portal.opengeospatial.org/files/55939",
+        publisher: "OGC",
+        title: "SensorML: Model and XML Encoding Standard 2.0",
+        authors: ["Mike Botts", "Alex Robin"],
+        status:"Encoding Standard, OGC 12-000",
+        date:"2014"
+      },
+      "SSN-PROV" :{
+       href:"http://ceur-ws.org/Vol-1401/paper-05.pdf",
+       date: "2014",
+       authors:["Michael Compton", "David Corsar", "Kerry Taylor"],
+       publisher: "CEUR: 7th International Conference on Semantic Sensor Networks"
+      },
+      "SSN-Short": {
+      authors:["Kerry Taylor", "Michael Compton", "Laurent Lefort"],
+      href:"https://eresearchau.files.wordpress.com/2012/06/74-semantically-enabling-the-web-of-things-the-w3c-semantic-sensor-network-ontology.pdf",
+      title:"The Web of Things: The W3C Semantic Sensor Network Ontology",
+      publisher:"5th Australasian eResearch Conference, Melbourne",
+      date:"November 2011"
       }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta  content="text/html; charset=utf-8"  http-equiv="content-type">
+    <meta  content="width=device-width,initial-scale=1"  name="viewport">
+    <title>Publishing and Using Earth Observation Data with the RDF Data Cube and the Discrete Global Grid System</title>
+    <script  class="remove"  src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
+    <script  class="remove"  src="config.js"></script>
+    <style  type="text/css">
+
+ /* Styles to replicate key LODS styles */
+
+ ul.hlist {
+  list-style-type:none;
+  background-color: #eee;
+ }
+ ul.hlist li {
+  display:inline;
+  margin-right: 1em;
+  font-size:smaller;
+ }
+ .entity {
+  border: 1px solid black;
+  padding: 0.5em;
+  margin-top: 0.5em;
+ }
+ .entity h4 {
+  margin-top:0;
+  }
+ .entity dl {
+  border: dashed thin black;
+  border-width:1px 0;
+  background-color:#eee;
+  margin: 0 0.5em;
+ }
+ p.iri::before {
+  content: "IRI: ";
+  font-weight: bold;
+  font-family:sans-serif;
+ }
+ p.iri {
+  font-family:monospace;
+ }
+ span.logic {
+  font-weight:bold;
+  color:purple;
+ }
+ span.dotted {
+  text-decoration-line:underline;
+  text-decoration-style: dotted;
+  text-decoration-color:black;
+ }
+
+ </style>
+</head>
+<body>
+    <section  id="abstract">
+      <p>This document describes how dense geospatial raster data can be represented using the W3C RDF Data Cube (QB)  ontology [[vocab-data-cube]] in concert with other popular ontologies including the W3C/OGC  Semantic Sensor Network ontology (SSN) [[vocab-ssn]], the W3C/OGC Time ontology (Time) [[owl-time]], the W3C Simple Knowledge Organisation System (SKOS) [[skos-reference]], W3C PROV-O [[prov-o]] and the W3C/OGC QB4ST  [[vocab-qb4st]]. It offers general methods supported by worked examples that focus on Earth observation imagery.
+Current triple stores, as the default database architecture for RDF, are not suitable  for storing voluminous data like imagery derived from Landsat satellite sensors. We show how SPARQL queries can be served through an OGC Discrete Global Grid System for observations, coupled with a triple store for observational metadata.
+While the approach  may also be suitable for other forms of coverage data, we leave the  application to such data as an exercise for the reader.
+      </p>
+    </section>
+    <section  id="sotd">
+      <p><strong>For OGC</strong> This is a Public Draft of a document prepared
+        by the Spatial Data on the Web Working Group (<a  href="http://www.opengeospatial.org/projects/groups/sdwwg">SDWWG</a>)
+        — a joint W3C-OGC project (see <a  href="https://www.w3.org/2015/spatial/charter">charter</a>).
+        The document is prepared following W3C conventions. The document is
+        released at this time to solicit public comment.</p>
+		
+<p>The methods discussed in this note relate to other deliverables from SDWWG, notably the Use Cases and Requirements, The Best Practices, the Semantic Sensor Network Ontology, QB4ST and OWL-Time.  Over the coming 3-4 months we expect to resolve any differences and update the note accordingly.
+		
+		All additional work planned, including that above, is marked as an issue in this Note.</p>
+    </section>
+    <section  id="Introduction">
+      <h2>Introduction</h2>
+      <p>Publishing data on the Web using <a href="https://www.w3.org/standards/semanticweb/data">Linked Data</a>
+      technologies makes it more accessible, easier to discover, and machine-readable.
+      This format is appropriate for sparse statistical data, but publishers of denser coverage data
+      (such as <a href="http://landsat.gsfc.nasa.gov/">Landsat</a> imagery) may be justifiably reluctant to embrace the size explosion that
+      accompanies converting data to RDF. While such a conversion provides maximum machine-readability,
+      most of the benefits of Linked Data can be realized with a compromise approach where only the
+      metadata is expressed in RDF, or where the RDF is generated on-the-fly to service requests.</p>
+
+      <p>This document will refer to extracts of a small example to illustrate the approach. The complete source file is the
+      <a href="ANU-LED-example.ttl">ANU-LED example</a>.</p>
+      
+      <div  class="issue"  data-number="99 ">Add references throughout, including to other published linked-data-ish approaches to coverages.</div>
+    </section>
+    <section  id="Datacube">
+      <h2>The RDF Data Cube</h2>
+      <p>The <a href="https://www.w3.org/TR/vocab-data-cube/">RDF Data Cube</a> is an existing standard for representing data as RDF.  
+         It is typically used for data that is associated with statistical regions (e.g. suburbs).
+         Common practice includes using the SKOS vocabulary to define the concepts being measured
+         [<a href="https://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage">Observed property in coverage</a>].
+         The RDF data model allows the user to define all the relevant components of their data and the concept they measure;
+         including &ldquo;attribute&rdquo; components (metadata like sensor, resolution, uncertainty
+         [<a href="https://www.w3.org/TR/sdw-ucr/#QualityPerSample">Quality per sample</a>, <a href="https://www.w3.org/TR/sdw-ucr/#UncertaintyInObservations">Uncertainty in observations</a>] etc.),
+         &ldquo;measure&rdquo; components (the data proper) and &ldquo;dimension&rdquo; components
+         (the domain of the dataset e.g. the time and statistical region each datum refers to).
+         These techniques can easily be adapted to coverages, as the data model is flexible enough to define the appropriate attributes.</p>
+         
+      <pre class="example">:lat a qb:DimensionProperty ;
+    rdfs:subPropertyOf geo:lat .
+
+:long a qb:DimensionProperty ;
+    rdfs:subPropertyOf geo:long .
+
+:time a qb:DimensionProperty ;
+    rdfs:range xsd:dateTime ;
+    qb:concept sdmx-concept:timePeriod .
+
+:dataValue a qb:MeasureProperty ;
+    rdfs:range xsd:integer ;
+    qb:concept :reflectance ;
+    qb:concept sdmx-concept:obsValue .
+    
+:resolution a qb:AttributeProperty ;
+    rdfs:range :pixelsPerDegree .
+    
+:pixelsPerDegree rdf:type rdfs:Datatype ;
+    owl:equivalentClass xsd:double .</pre>
+
+      <p>The ontology <abbr title="Data Cube extensions for spatio-temporal components">QB4ST</abbr> [[vocab-qb4st]] extends the Data Cube for extra power and consistency when describing spatio-temporal aspects of data. [<a href="https://www.w3.org/TR/sdw-ucr/#GeoreferencedData">Georeferenced spatial data</a>].
+         Any number of such dimensions can be defined, allowing for 1D, 2D, 3D or 4D coverages [<a href="https://www.w3.org/TR/sdw-ucr/#3DSupport">Support for 3D</a>, <a href="https://www.w3.org/TR/sdw-ucr/#TimeSeries">Time series</a>, <a href="https://www.w3.org/TR/sdw-ucr/#4DModelSpaceTime">4D model of space-time</a>].</p>
+         
+      <pre class="example">:lat a qb4st:SpatialDimension ;
+    rdfs:subPropertyOf geo:lat ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; .
+
+:long a qb4st:SpatialDimension ;
+    rdfs:subPropertyOf geo:long ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; .
+
+:time a qb:DimensionProperty, qb4st:TemporalProperty ;
+    rdfs:range xsd:dateTime ;
+    qb:concept sdmx-concept:timePeriod .</pre>
+
+      <section  id="Metadata">
+        <h3>Metadata and data</h3>
+        <p>There is traditionally a distinction between data (the observations proper e.g. Landsat pixels) and metadata
+           (which adds context to the observations e.g. resolution). In the Linked Data world, this distinction is not strict.
+           However, it is still possible to separate the two in a typical Data Cube.</p>
+            
+        <p>The value of an RDF Data Cube component can be attached to each individual observation or to the dataset as a whole.
+           Dataset-wide metadata can therefore be distinguished from the rest of the dataset, because it is attached to the dataset object.
+           This also makes it easy to fetch the metadata alone with a SPARQL query. This dataset-wide description alone is already a useful
+           (and web-of-data friendly) approach to publishing spatial data
+           [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].</p>
+           
+        <pre class="example">:exampleDataset a qb:DataSet, prov:Entity ;
+    qb:structure :exampleStructure ;
+    :instrument :OLI ;
+    :satellite :landsat-8 ;
+    :band "4" ;
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    :coverageTemporalDomain :timeDomain ;
+    prov:wasGeneratedBy :ANU-led-resampling ;
+    prov:wasDerivedFrom :AGDC .
+    
+:p1 a :Pixel ;
+    qb:dataSet :exampleDataset ;
+    :lat "90.5556";
+    :long "41.2444";
+    :time "2001-10-26T21:32:52"^^xsd:dateTime ;
+    :dataValue "15"^^xsd:integer ;
+    :resolution "2.7"^^:pixelsPerDegree ;
+    :dggsCell "R00004" ;
+    :bounds  "POLYGON((90.37 41.45, 90.74 41.45, 90.74 41.04, 90.37 41.04, 90.37 41.45))"^^ogc:wktLiteral ;
+    prov:wasDerivedFrom :example-tile .</pre>
+           
+        <p>Using the RDF Data Cube also opens up the possibility of more detailed metadata, such as individually tracing
+           the provenance of each observation. It is not practical to serve Landsat imagery with RDF metadata attached
+           to each pixel. However, it is reasonable to attach such metadata to tiles of a certain size.
+           Thus, the RDF data model can be used, as long as RDF Data Cube observations are whole tiles rather than individual pixels [<a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Support for tiling</a>].
+           
+        <pre class="example">:dataValue a qb:MeasureProperty ;
+    rdfs:range [owl:unionOf(xsd:anyURI xsd:integer)] ;
+    qb:concept :reflectance ;
+    qb:concept sdmx-concept:obsValue .
+    
+:s1 a :GridSquare ;
+    qb:dataSet :exampleDataset ;
+    :lat "91.6667";
+    :long "40.0270";
+    :time "2001-10-26T21:32:52"^^xsd:dateTime ;
+    :dataValue "http://www.example.org/led-example-image-R000" ;
+    :resolution "0.9"^^:pixelsPerDegree ;
+    :dggsCell "R000" ;
+    :dggsLevelSquare "3" ;
+    :dggsLevelPixel "4" ;
+    :bounds  "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    prov:wasDerivedFrom :example-tile .</pre>
+      </section>
+      
+    </section>
+    <section  id="Spectrum">
+      <h2>A spectrum of linkiness</h2>
+      <p>In the ideal web of data, every single observation has a unique URI, can be queried using SPARQL, and have metadata attached to it.
+         Upon hearing this, anyone familiar with Landsat data would be forgiven for rejecting the whole enterprise as entirely impractical.
+         But all is not lost! Most of the benefits of Linked Data (namely, linkability, enhanced discoverability, machine-readability) can
+         be realized by just publishing the dataset-wide metadata in this format. More 'linkiness' provides diminishing returns along with increasing costs.
+         It is up to the publisher to decide where along this spectrum is the compromise position appropriate for them.</p>
+
+      <p>To characterize the spectrum, we can broadly define three applications of RDF for coverages.
+         From most to least costly, these are: to store a coverage dataset, to serve a coverage (&ldquo;serialization&rdquo;), and to describe the metadata of a coverage (&ldquo;description&rdquo;).</p>
+
+      <section  id="Storing">
+            <h3>Storing a coverage</h3>
+            <p>RDF data is stored natively in a triple store. The Data Cube, and RDF in general, are too verbose to be viable for large coverages.</p>
+      </section>
+
+      <section  id="Serving">
+          <h3>Serving a coverage</h3>
+          <p>In this model, coverage data is stored in some more appropriate format (such as HDF5).
+             Specialized middleware receives SPARQL queries from a client and responds by sending a response in dynamically-generated RDF.
+             Such a response is fairly verbose, but the cost is much smaller than actually storing the whole coverage in RDF.
+             Further optimization is still necessary for this to be viable. It is possible to use tiles as the &ldquo;observations&rdquo; in the RDF Data Cube,
+             rather than individual pixels [<a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Support for tiling</a>].
+             This significantly reduces the blowup that comes from encoding data as RDF [<a href="https://www.w3.org/TR/sdw-ucr/#Compressible">Compressible</a>].</p>
+
+          <p>The advantage of serving a coverage in RDF is that the entire coverage, and individual tiles within it, become linkable
+             [<a href="https://www.w3.org/TR/sdw-ucr/#Linkability">Linkability</a>];
+             this could be a major contribution to the Linked Data Web. With sufficiently advanced middleware, SPARQL queries over the dataset
+             could be served just as if the data were stored in RDF, but for a fraction of the storage cost.
+             The publisher can thus leverage the full power of Linked Data.</p>
+
+          <p>It is common to want only a chunk of the data available. For example, all observations near (within 10km of) Canberra, in the past year.
+             The RDF Data Cube provides only for &ldquo;slices&rdquo; &mdash; predefined chunks that hold one or more dimensions constant. Unfortunately, this is an area where the Data Cube is
+             insufficiently powerful for coverages. When data is stored and served in some other format, it is up to the publisher to provide ways for the consumer to
+             acquire only certain chunks of the data. If serving coverage data using RDF, a possible approach is to use SPARQL queries to define the appropriate chunks
+             [<a href="https://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks">Reference data chunks</a>]
+             (for example, a query returning all tiles of a certain resolution within a certain spatial rectangle).
+             Even if using this method, publishers should still make it easy for a user to select chunks without the use of SPARQL,
+             e.g. by providing an interface to generate the appropriate query using a few predefined operators.</p>
+      </section>
+
+      <section  id="Describing">
+          <h3>Describing a coverage</h3>
+          <p>A large portion of the benefits of Linked Data may be realized by describing only the metadata of a coverage in RDF.
+             Then the dataset can be linked to [<a href="https://www.w3.org/TR/sdw-ucr/#Linkability">Linkability</a>], and its essential properties are naturally machine-readable [<a href="https://www.w3.org/TR/sdw-ucr/#Discoverability">Discoverability</a>, <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Machine to machine</a>].
+             The coverage itself can remain in whatever efficient format the publisher prefers.</p>
+
+          <p>No matter what approach is taken, it should be as easy as possible
+             for the user to grab <strong>just</strong> the metadata, without having to figure out how to write an appropriate query.
+              The definition of a <code>qb:DataSet</code> and the associated <code>qb:DataStructureDefinition</code> can serve this role, but it is still up to the
+             publisher to make it easy for the user to download those definitions. This is also the appropriate place to think
+             about the experience of Web crawlers on the publisher's Web page [<a href="https://www.w3.org/TR/sdw-ucr/#Crawlability">Crawlability</a>, <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Machine to machine</a>].</p>
+
+          <p>It is also helpful if the user can easily identify the domain of a coverage (the spatial and temporal area where measurements are taken)
+             [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].
+             <abbr title="Data Cube extensions for spatio-temporal components">QB4ST</abbr> [[vocab-qb4st]] does not currently have a term for that, but it may in the future.</p>
+             
+          <pre class="example">:exampleDataset a qb:DataSet, prov:Entity ;
+    qb:structure :exampleStructure ;
+    :instrument :OLI ;
+    :satellite :landsat-8 ;
+    :band "4" ;
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    :coverageTemporalDomain :timeDomain ;
+    prov:wasGeneratedBy :ANU-led-resampling ;
+    prov:wasDerivedFrom :AGDC .
+    
+    
+
+:exampleStructure a qb4st:SpatioTemporalDSD ;
+    qb:component :spatialDomainComponent ,
+                 :temporalDomainComponent ,
+                 :latitudeComponent ,
+                 :longitudeComponent ,
+                 :timeComponent ,
+                 :satelliteComponent ,
+                 :instrumentComponent ,
+                 :bandComponent ,
+                 :dataComponent ,
+                 :dggsCellComponent ,
+                 :dggsLevelSquareComponent ,
+                 :dggsLevelPixelComponent ,
+                 :resolutionComponent ,
+                 :boundsComponent .
+
+:spatialDomainComponent a qb4st:SpatialComponentSpecification ;
+    qb:attribute :coverageSpatialDomain .
+    
+:temporalDomainComponent a qb4st:TemporalComponentSpecification ;
+    qb:attribute :coverageTemporalDomain .
+
+:latitudeComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :lat .
+
+:longitudeComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :long .
+
+:timeComponent a qb4st:TemporalComponentSpecification ;
+    qb:dimension :time .
+
+:satelliteComponent a qb:ComponentSpecification ;
+    qb:attribute :satellite .
+
+:instrumentComponent a qb:ComponentSpecification ;
+    qb:attribute :instrument .
+
+:bandComponent a qb:ComponentSpecification ;
+    qb:attribute :band .
+
+:dataComponent a qb:ComponentSpecification ;
+    qb:measure :dataValue .
+
+:dggsCellComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :dggsCell .
+
+:dggsLevelSquareComponent a qb:ComponentSpecification ;
+    qb:dimension :dggsLevelSquare .
+
+:dggsLevelPixelComponent a qb:ComponentSpecification ;
+    qb:dimension :dggsLevelPixel .
+
+:resolutionComponent a qb:ComponentSpecification ;
+    qb:attribute :resolution .
+
+:boundsComponent a qb4st:SpatialComponentSpecification ;
+    qb:attribute :bounds .
+    
+    
+    
+:coverageSpatialDomain a qb:AttributeProperty, qb4st:SpatialProperty ;
+    rdfs:subPropertyOf :bounds .
+    
+:coverageTemporalDomain a qb:AttributeProperty, qb4st:TemporalProperty ;
+    rdfs:range time:DateTimeInterval ;
+    qb:concept sdmx-concept:timePeriod .
+
+:lat a qb4st:SpatialDimension ;
+    rdfs:subPropertyOf geo:lat ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; .
+
+:long a qb4st:SpatialDimension ;
+    rdfs:subPropertyOf geo:long ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; .
+
+:time a qb:DimensionProperty, qb4st:TemporalProperty ;
+    rdfs:range xsd:dateTime ;
+    qb:concept sdmx-concept:timePeriod .
+
+:satellite a qb:AttributeProperty ;
+    rdfs:range ssn:Platform ;
+    qb:concept sdmx-concept:collMethod .
+
+:instrument a qb:AttributeProperty ;
+    rdfs:range ssn:Sensor ;
+    qb:concept sdmx-concept:collMethod .
+
+:band a qb:AttributeProperty ;
+    rdfs:range xsd:integer .
+
+:dataValue a qb:MeasureProperty ;
+    rdfs:range [owl:unionOf(xsd:anyURI xsd:integer)] ;
+    qb:concept :reflectance ;
+    qb:concept sdmx-concept:obsValue .
+
+:dggsCell a qb4st:SpatialDimension ;
+    qb4st:crs "rHEALPix WGS84 Ellipsoid" ;
+    rdfs:range xsd:string ;
+    qb:concept sdmx-concept:refArea .
+
+:dggsLevelSquare a qb:DimensionProperty ;
+    rdfs:range xsd:integer .
+
+:dggsLevelPixel a qb:DimensionProperty ;
+    rdfs:range xsd:integer .
+
+:resolution a qb:AttributeProperty ;
+    rdfs:range :pixelsPerDegree .
+
+:bounds a qb:AttributeProperty, qb4st:SpatialProperty ;
+    rdfs:subPropertyOf ogc:asWKT ;
+    rdfs:domain :GridSquare ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; ;
+    qb:concept sdmx-concept:refArea .</pre>
+      </section>
+    </section>
+    
+    <section  id="DGGS">
+      <h2>Discrete Global Grid Systems</h2>
+      <p>Discrete global grid systems are a family of spatial reference systems that subdivide the Earth's surface into a hierarchy of cells.
+      Larger cells are subdivided into smaller cells deeper in the hierarchy.
+      Instead of a latitude and longitude, a location is specified by a cell id. Smaller cells are more precise, 
+      so choosing a cell forces the publisher to include a measure of uncertainty for any spatial measure.
+      Cells are also appropriate units of tiling for gridded coverages. Each pixel in a tile covering a larger cell can represent a measurement made on a smaller cell.
+      The OGC is currently in the process of <a href="http://www.opengeospatial.org/projects/groups/dggsswg">standardizing</a> a method to represent DGGSs.</p>
+      
+      <p>The  <a href="ANU-LED-example.ttl">ANU-LED example</a> in this document does not depend on the use of a DGGS.  However, the DGGS has some convenient properties that make it particularly suitable for a Linked Data representation.
+      First, each <abbr title="Discrete Global Grid Systems">DGGS</abbr> cell has a unique identifier, so it is easy to generate natural URIs for each piece of data.
+      Second, the DGGS we use (<a href="http://raichev.net/files/rhealpix_dggs_preprint.pdf">rHEALPix</a>, PDF) defines cell geometries so that cells at the same level of the hierarchy have equal areas.
+      This makes rHEALPix a suitable format for storing multiple datasets at different resolutions, or several different resolution views of the same dataset.
+      The equal-area constraint means different resolution pixels are directly comparable, and no resampling is required [<a href="https://www.w3.org/TR/sdw-ucr/#AvoidCoordinateTransformations">Avoid coordinate transformations</a>].
+      Third, the hierarchical nature of the DGGS makes it natural to implement spatial optimizations when responding to queries, by pruning the tree early to eliminate whole regions of unpromising cells that fall outside the desired area.
+	  
+	  Data structures other than DGGS, such as n-dimensional gridded data, whether geospatial or not, and hierarchies of data such as tile sets, octree or quadtree structures, are also amenable to these approaches.
+      </p>
+
+      <section  id="Implementation">
+        <h3>Implementation</h3>
+
+        <p>A proof of concept demonstrating the <a href="ANU-LED-example.ttl">ANU-LED example</a> with a SPARQL query system to
+            retrieve satellite imagery has been implemented. 
+			<!--based on latitude/longitude or DGGS cell IDs has been implemented as a proof of concept--> This section briefly
+            describes some of the strategies employed to make the implementation
+            efficient. All code referenced here is available on <a
+            href="https://github.com/ANU-Linked-Earth-Data">GitHub.</a>
+        </p>
+
+        <p>As discussed previously, scalable implementations of a data cube
+            for Earth observations must grapple with the verbosity of RDF
+            representations relative to specialized coverage formats like GeoTIFF. This
+            precludes materializing the entire dataset as RDF, storing it on
+            disk, and serving it using an off-the-shelf triple store. Instead,
+            implementations must employ a &ldquo;virtual graph&rdquo;, which can
+            be used to service SPARQL queries without materializing all triples
+            at once.
+        </p>
+
+        <p>
+            For the purpose of illustrating how triple stores service SPARQL
+            queries &mdash; regardless of whether they are backed by virtual or
+            materialized graphs &mdash; consider the query below.
+        </p>
+
+        <pre class="example">SELECT ?s ?v WHERE {
+    ?s a :egType ;
+        rdfs:label "Example" ;
+        :value ?v .
+    FILTER (?v &lt; 15)
+}</pre>
+
+        <p>
+            The heart of the query above is a Basic Graph Pattern (BGP) which
+            specifies the triples to be accessed. In this case,
+            the BGP contains three patterns. Written explicitly, they are:
+        </p>
+
+        <pre class="example">?s a :egType .
+?s rdfs:label "Example" .
+?s :value ?v .</pre>
+
+        <p>
+            A typical triple store will begin servicing the query above by
+            iterating through each triple pattern in turn. First, a set of
+            bindings for <code>?s</code> will be generated that are consistent
+            with <code>?s a :egType</code>. That set of bindings will then be
+            filtered by matching them against the pattern <code>?s rdfs:label
+            "Example"</code>. The final <code>?s :value ?v</code> will further
+            filter the bindings for <code>?s</code> by considering only subjects
+            <code>?s</code> with a <code>:value</code> property; it will also
+            introduce a corresponding set of bindings for <code>?v</code>.
+            Having generated all bindings relevant to the BGP, a typical triple
+            store will then apply the <code>FILTER</code> condition to each. This
+            general approach works for both traditional storage backends (like
+            on-disk RDF databases) and non-traditional ones (like virtual
+            graphs).
+        </p>
+
+        <p>
+            There are a number of ways in which this naive, pattern-by-pattern
+            approach can be improved. We have implemented two simple extensions:
+        </p>
+
+        <ol>
+            <li>
+                User-supplied triple patterns often generate useful constraints
+                on the data returned by a SPARQL query. For example, the pattern
+                <code>?s :dggsLevelSquare 5 .</code> might allow a virtual graph
+                implementation to ignore all observations not corresponding to cells
+                at the fifth level of the DGGS hierarchy. In a naive
+                implementation, only one such constraint can be considered at a
+                time; this makes heuristics like query ordering essential. In
+                contrast, a virtual graph implementation can simultaneously
+                consider <em>all</em> supplied constraints in conjunction. For
+                instance, if the user specifies <code>?s :dggsLevelSquare 5;
+                :etmBand 3</code>, then the virtual graph implementation can
+                safely narrow its search to observations at level 5 of the DGGS
+                hierarchy which correspond to Landsat's third ETM band.
+            </li>
+            <li>
+                Consumers of spatial datasets typically want only a small
+                spatial slice of the available data. In SPARQL, such a slice can
+                be identified by a <code>FILTER</code> statement restricting the
+                appropriate location properties. By inspecting the contents of
+                <code>FILTER</code> statements, virtual graph implementations
+                can preemptively narrow the set of bindings they generate to
+                include only bindings which are spatially relevant. In general,
+                this approach can yield excellent gains when the spatial extent
+                of queries is small relative to the spatial extent of the
+                overall dataset.
+            </li>
+        </ol>
+
+        <p>
+            These simple optimizations can improve query time substantially.
+            Consider the following SPARQL query, which fetches the intensity
+            (<code>?val</code>) and URI (<code>?s</code>) associated with each
+            single-pixel observation in a satellite imagery database.
+        </p>
+
+        <pre class="example">SELECT DISTINCT ?s ?val WHERE {
+    ?s a led:Pixel
+        ; led:etmBand "1"^^xsd:int
+        ; led:dggsLevelSquare "5"^^xsd:int
+        ; led:latMin ?latMin
+        ; led:longMax ?longMax
+        ; led:value ?val.
+    # Everything north-west of Parliament House
+    FILTER (?latMin > -35.3082
+        &amp;&amp; ?longMax &lt; 149.1244)
+}</pre>
+
+        <p>
+            The above query was executed on a 500MB HDF5 dataset containing over
+            4000 distinct observations. Repeating the query a thousand times
+            with ten concurrent clients on a desktop machine yielded the
+            following mean running times. In the following, the &ldquo;naive&rdquo; implementation
+            simply iterates through the BGP specified above on a
+            pattern-by-pattern basis, subsequently passing results to
+            the SPARQL engine for evaluation against the filter constraint.
+            &ldquo;Multiple pattern-matching&rdquo; corresponds to the first
+            optimization identified above, and &ldquo;additional spatial
+            optimizations&rdquo; refers to a combination of the first and second
+            optimizations.
+        </p>
+
+        <table>
+            <tr>
+                <th>Implementation</th>
+                <th>Mean runtime (± standard deviation)</th>
+            <tr>
+                <td>Naive</td>
+                <td>378ms (±65.5ms)</td>
+            </tr>
+            <tr>
+                <td>
+                    …with multiple-pattern matching
+                </td>
+                <td>
+                    35ms (±22.2ms)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    …with additional spatial optimisations
+                </td>
+                <td class="right">
+                    17ms (±11.8ms)
+                </td>
+            </tr>
+        </table>
+
+        <p>
+            &ldquo;Multiple-pattern matching&rdquo; is a relatively simple
+            optimization, yet is sufficient to improve query performance
+            tenfold. Accounting for the bounding box constraint specified in the
+            query improves performance by another factor of two. It is likely
+            that further performance gains could be found with more
+            sophisticated optimizations. In particular, servicing queries with
+            spatial restrictions could be further improved by employing an
+            R-tree or some other specialized spatial data structure.
+        </p>
+
+      </section>
+
+    <div  class="issue"  data-number="98"> Could also point to the client implementation --with a screen dump and pointer to github code? The running implementation itself may be too long-term unstable to reference.</div>
+    </section>
+
+    <section  id="Ontologies">
+      <h2>Use of existing ontologies</h2>
+
+      <p>RDF makes it easy to re-use terms defined in external ontologies and some of the most widely applicable are explained here. See the
+         <a href="ANU-LED-example.ttl">ANU-LED example</a> for some specific examples of these.</p>
+
+      <div class="note">Several ontologies are being looked at by the Spatial Data on the Web working group.
+         The final best practice for using these ontologies will depend on the outputs of the group.</div>
+         
+      <div  class="issue"  data-number="100"> References to SSN, Latitude/Longitude, QB4ST, OWL-Time and  other relevant Best Practices should be updated to reflect the outputs of the working group.
+      </div>
+
+      <section  id="SSN">
+          <h3>SSN</h3>
+          <p>The Semantic Sensor Network ontology [[vocab-ssn]] defines terms for describing the sensors used to collect the data
+             [<a href="https://www.w3.org/TR/sdw-ucr/#SensorMetadata">Sensor metadata</a>].
+             The <a href="ANU-LED-example.ttl">ANU-LED example</a>
+             illustrates a minimal description of Landsat 8 OLI observations using SSN
+             [<a href="https://www.w3.org/TR/sdw-ucr/#SSNLikeRepresentation">SSN-like representation</a>].
+             Much more detailed descriptions are possible. In particular, SSN description can be attached to individual tiles
+             [<a href="http://w3c.github.io/sdw/UseCases/SDWUseCasesAndRequirements.html#QualityPerSample">Quality per sample</a>].</p>
+             
+          <pre class="example">:exampleDataset a qb:DataSet, prov:Entity ;
+    qb:structure :exampleStructure ;
+    :instrument :OLI ;
+    :satellite :landsat-8 ;
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .
+    
+:landsat-8 a ssn:Platform ;
+    owl:sameAs cci-platform:plat_landsat_8 .
+
+:OLI a ssn:Sensor ;
+    ssn:onPlatform :landsat-8 ;
+    ssn:hasMeasurementCapability :oli-capability ;
+    ssn:observes :reflectance ;
+    owl:sameAs cci-sensor:sens_oli .
+
+:oli-capability a ssn:MeasurementCapability ;
+    ssn:forProperty :reflectance .
+
+:reflectance a ssn:Property, skos:Concept ;
+    owl:sameAs sweet:Reflectance ;
+    owl:sameAs cci-dataType:dtype_sr .</pre>
+      </section>
+
+      <section  id="PROV-O">
+          <h3>PROV-O</h3>
+          <p>The Provenance ontology [[prov-o]] allows the provenance of data to be traced
+             [<a href="https://www.w3.org/TR/sdw-ucr/#Provenance">Provenance</a>].
+             It provides terms for describing what entities the data is based on,
+             what processes were used to convert those entities into each other and into the final data,
+             and what individuals and organisations were responsible for these processes.
+             PROV-O descriptions can be attached at the dataset level, or even at the individual
+             observation/tile level to indicate precisely which source material each observation is derived from.</p>
+             
+          <pre class="example">:exampleDataset a qb:DataSet, prov:Entity ;
+    qb:structure :exampleStructure ;
+    prov:wasGeneratedBy :ANU-led-resampling ;
+    prov:wasDerivedFrom :AGDC .
+    
+:ANU-led-resampling a prov:Activity ;
+    prov:wasAssociatedWith :DmitryBrizhinev ;
+    prov:used :AGDC .
+
+:DmitryBrizhinev a prov:Agent, prov:Person ;
+    foaf:givenName "Dmitry"^^xsd:string ;
+    foaf:mbox      &lt;mailto:dmitry.brizhinev@anu.edu.au&gt; .
+
+:AGDC a prov:Collection ;
+    prov:wasAssociatedWith :GeoscienceAustralia ;
+    prov:hadMember :example-tile .
+
+:example-tile a prov:Entity ;
+    prov:alternateOf &lt;http://dapds00.nci.org.au/thredds/catalog/rs0/tiles/EPSG4326_1deg_0.00025pixel/LS8_OLI_TIRS/148_-035/2016/catalog.html?dataset=rs0/tiles/EPSG4326_1deg_0.00025pixel/LS8_OLI_TIRS/148_-035/2016/LS8_OLI_TIRS_FC_148_-035_2016-01-12T23-55-57.tif&gt; .
+
+:GeoscienceAustralia a prov:Agent, prov:Organization .
+
+:s1 a :GridSquare ;
+    qb:dataSet :exampleDataset ;
+    :lat "91.6667";
+    :long "40.0270";
+    :dataValue "http://www.example.org/led-example-image-R000" ;
+    prov:wasDerivedFrom :example-tile .</pre>
+      </section>
+
+      <section  id="LatLong">
+          <h3>Latitude and longitude</h3>
+          <p>The working group wishes to discourage unqualified uses of &ldquo;latitude&rdquo; and &ldquo;longitude&rdquo;.
+             Most commonly, these terms refer to the WGS-84 Coordinate Reference System (CRS),
+             but published data should always make its CRS explicit [<a href="https://www.w3.org/TR/sdw-ucr/#Georectification">Georectification</a>].
+             In RDF, the <a href="https://www.w3.org/2003/01/geo/">WGS-84 geo vocabulary</a> is often used,
+              with its provided <code>geo:lat</code> and <code>geo:long</code> properties.
+             The working group intends to standardize better properties, which allow the use of other CRSs.
+             Once these exist, they should always be used in place of the geo properties.
+              QB4ST defines the <code>qb4st:crs</code> property which will inherit from those
+             [<a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">CRS definition</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].
+             The RDF Data Cube and QB4ST make is easy to define several CRSs and use them simultaneously, providing clients with several views of the data [<a href="https://www.w3.org/TR/sdw-ucr/#MultipleCRS">Multiple CRSs</a>]. In the example below, a grid square can be identified by latitude and longitude of its centroid, by its boundary, or by its rHEALPix cell.</p>
+             
+          <pre class="example">:lat a qb4st:SpatialDimension ;
+    rdfs:subPropertyOf geo:lat ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; .
+
+:long a qb4st:SpatialDimension ;
+    rdfs:subPropertyOf geo:long ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; .
+    
+:dggsCell a qb4st:SpatialDimension ;
+    qb4st:crs "rHEALPix WGS84 Ellipsoid" ;
+    rdfs:range xsd:string .
+    
+:bounds a qb:AttributeProperty, qb4st:SpatialProperty ;
+    rdfs:subPropertyOf ogc:asWKT ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; .
+    
+:latitudeComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :lat .
+
+:longitudeComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :long .
+    
+:dggsCellComponent a qb4st:SpatialComponentSpecification ;
+    qb:dimension :dggsCell .
+    
+:boundsComponent a qb4st:SpatialComponentSpecification ;
+    qb:attribute :bounds .
+    
+:s1 a :GridSquare ;
+    :lat "91.6667";
+    :long "40.0270";
+    :dggsCell "R000" ;
+    :bounds  "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .</pre>
+      </section>
+
+      <section  id="GeoSPARQL">
+          <h3>GeoSPARQL</h3>
+          <p>The GeoSPARQL ontology [[GeoSPARQL]] defines some terms and predicates for reasoning about objects and shapes in space
+             [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">Spatial operators</a>].
+             It allows for the use of several encodings, including WKT, to describe polygons
+             [<a href="https://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry">Encoding for vector geometry</a>].
+             The ANU-LED example uses these terms to define the area covered by individual tiles in the coverage, and the entire spatial domain.</p>
+             
+          <pre class="example">:exampleDataset a qb:DataSet, prov:Entity ;
+    qb:structure :exampleStructure ;
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .
+
+:bounds a qb:AttributeProperty, qb4st:SpatialProperty ;
+    rdfs:subPropertyOf ogc:asWKT ;
+    rdfs:domain :GridSquare ;
+    qb4st:crs &lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt; ;
+    qb:concept sdmx-concept:refArea .
+
+:s1 a :GridSquare ;
+    qb:dataSet :exampleDataset ;
+    :lat "91.6667";
+    :long "40.0270";
+    :dataValue "http://www.example.org/led-example-image-R000" ;
+    :bounds  "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .</pre>
+      </section>
+
+      <section  id="SKOS">
+          <h3>SKOS concepts</h3>
+          <p>The RDF Data Cube is commonly used in conjunction with a SKOS [[skos-reference]] concept scheme
+             (such as <a href="http://purl.org/linked-data/sdmx">SDMX-RDF</a> and its <a href="http://purl.org/linked-data/sdmx/2009/concept">concept scheme</a>)
+             to define the meanings of the components [<a href="https://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage">Observed property in coverage</a>].
+             It is appropriate to use this for coverages also, but appropriate SKOS concepts do not always exist.
+             They may need to be published along with the data proper.</p>
+             
+          <pre class="example">:reflectance a ssn:Property, skos:Concept ;
+    owl:sameAs sweet:Reflectance ;
+    owl:sameAs cci-dataType:dtype_sr .
+    
+:time a qb:DimensionProperty, qb4st:TemporalProperty ;
+    rdfs:range xsd:dateTime ;
+    qb:concept sdmx-concept:timePeriod .
+
+:satellite a qb:AttributeProperty ;
+    rdfs:range ssn:Platform ;
+    qb:concept sdmx-concept:collMethod .
+
+:instrument a qb:AttributeProperty ;
+    rdfs:range ssn:Sensor ;
+    qb:concept sdmx-concept:collMethod .
+    
+:dataValue a qb:MeasureProperty ;
+    rdfs:range [owl:unionOf(xsd:anyURI xsd:integer)] ;
+    qb:concept :reflectance ;
+    qb:concept sdmx-concept:obsValue .
+
+:dggsCell a qb4st:SpatialDimension ;
+    qb4st:crs "rHEALPix WGS84 Ellipsoid" ;
+    rdfs:range xsd:string ;
+    qb:concept sdmx-concept:refArea .</pre>
+      </section>
+
+      <section  id="OWL-Time">
+          <h3>OWL-Time</h3>
+          <p>Coverages should be annotated appropriately with the times observations were taken
+             [<a href="https://www.w3.org/TR/sdw-ucr/#CoverageTemporalExtent">Coverage temporal extent</a>].
+             OWL-Time [[owl-time]] defines terms for time intervals that are useful for expressing the temporal domain of the dataset.
+             It also allows temporal reference systems other than the Gregorian calendar.
+             However, for Gregorian time instants, a datatype property using the built-in <code>xsd:dateTime</code> datatype is sufficient.
+             </p>
+             
+          <p>QB4ST defines terms that work nicely with OWL-Time.</p>
+             
+          <pre class="example">:coverageTemporalDomain a qb:AttributeProperty, qb4st:TemporalProperty ;
+    rdfs:range time:DateTimeInterval ;
+    qb:concept sdmx-concept:timePeriod .
+    
+:time a qb:DimensionProperty, qb4st:TemporalProperty ;
+    rdfs:range xsd:dateTime ;
+    qb:concept sdmx-concept:timePeriod .
+    
+:exampleDataset a qb:DataSet, prov:Entity ;
+    qb:structure :exampleStructure ;
+    :coverageSpatialDomain "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral ;
+    :coverageTemporalDomain :timeDomain .
+
+:timeDomain a time:Interval ;
+    time:hasBeginning :timeBeginning ;
+    time:hasEnd :timeEnd .
+    
+:timeBeginning a time:Instant ;
+    time:inXSDDateTime "2001-10-26T21:32:52"^^xsd:dateTime .
+
+:timeEnd a time:Instant ;
+    time:inXSDDateTime "2001-10-26T21:32:52"^^xsd:dateTime .
+
+:s1 a :GridSquare ;
+    qb:dataSet :exampleDataset ;
+    :time "2001-10-26T21:32:52"^^xsd:dateTime .</pre>
+      </section>
+    </section>
+	
+ <section class="appendix" id="acknowledgements">
+  <h2>Acknowledgements</h2>
+  <p>This spec would not be possible without the TechLauncher program of the Australian National University and its ardent convenor, Shayne Flint.
+     We also thank Matthew Purss of Geoscience Australia for participating in the program and supporting this project.
+     Finally, Ed Parsons of Google, Robert Woodcock of CSIRO, and Robert Atkinson of the OGC provided valuable discussions and feedback.
+  </p>
+</section>
+
+ 
+	
+   </body>
+</html>
