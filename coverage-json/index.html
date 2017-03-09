@@ -3,7 +3,7 @@
   <head>
     <meta  content="text/html; charset=utf-8"  http-equiv="content-type">
     <meta  content="width=device-width,initial-scale=1"  name="viewport">
-    <title>The CoverageJSON Format Specification</title>
+    <title>Overview of the CoverageJSON format</title>
     <script  class="remove"  src="http://www.w3.org/Tools/respec/respec-w3c-common"></script>
     <script  class="remove"  src="config.js"></script>
     <style  type="text/css">
@@ -67,7 +67,7 @@ table, th, td {
   <body>
 
     <section  id="abstract">
-      <p>This Note describes CoverageJSON, a data format for describing "coverage" data in JavaScript Object Notation (JSON). The primary intended purpose of the format is to enable data transfer between servers and web browsers, to support the development of interactive, data-driven web applications. "Coverage" data is a term that encompasses many kinds of data whose properties vary with space, time and other dimensions, including (but not limited to) satellite imagery, weather forecasts and river gauge measurements. We describe the motivation and objectives of the format, and provide a high-level overview of its structure and semantics. We compare CoverageJSON with other "coverage" formats and data models and provide links to tools and libraries that can help users to produce and consume data in this format. This Note does not attempt to describe the full CoverageJSON specification in detail: this is available at <a href="https://covjson.org/">the project website</a>.</p>
+      <p>This Note describes CoverageJSON, a data format for describing "coverage" data in JavaScript Object Notation (JSON), and provides an overview of its design and capabilities. The primary intended purpose of the format is to enable data transfer between servers and web browsers, to support the development of interactive, data-driven web applications. "Coverage" data is a term that encompasses many kinds of data whose properties vary with space, time and other dimensions, including (but not limited to) satellite imagery, weather forecasts and river gauge measurements. We describe the motivation and objectives of the format, and provide a high-level overview of its structure and semantics. We compare CoverageJSON with other "coverage" formats and data models and provide links to tools and libraries that can help users to produce and consume data in this format. This Note does not attempt to describe the full CoverageJSON specification in detail: this is available at <a href="https://covjson.org/">the project website</a>.</p>
     </section>
 
     <section  id="sotd">
@@ -164,17 +164,8 @@ table, th, td {
 
     <section id="domain">
       <h3>Encoding the Domain</h3>
-      <p><strong>TODO: needs expanding and improving </strong></p>
-      <p>A Domain is a collection of named orthogonal axes, plus information about how to reference these axes to a real-world coordinate reference system.
-         An axis can contain primitive values like latitudes or longitudes but can also contain complex values
-         like tuples or polygons.</p>
-      <p>CoverageJSON knows the concept of a <dfn>domain type</dfn> which allows clients to easily identify a certain domain structure.
-         Typically, a domain type constrains the axes (e.g. value type, names, length)
-         and allowed reference systems.
-         CoverageJSON defines a number of common <a href="https://covjson.org/domain-types/">domain types</a> where custom ones
-         can be used with the extension mechanism.</p>
-      <p><strong>TODO: improve explanation of domain type</strong></p>
-      <p>The following is a complete example of a grid domain with longitude, latitude, and time axes:</p>
+      <p>A <a href="https://covjson.org/spec/#domain-objects">Domain</a> is a collection of named orthogonal <dfn>axes</dfn>, coupled with information about how to reference these axes to one or more real-world coordinate reference systems. An axis can contain primitive values like latitudes or longitudes but can also contain complex values like tuples or polygons.</p>
+      <p>The following is a complete example of a simple grid domain with longitude, latitude, and time axes:</p>
       <pre>
 {
   "type" : "Domain",
@@ -199,6 +190,11 @@ table, th, td {
   }]
 }
       </pre>
+      <p>Note that difference CRSs can be associated with different combinations of axes, providing a very flexible model that allows complex data to be encoded without the need to create composite CRSs. Axis values can also be categorical in nature (instead of numeric), enabling data values to be associated with entities that are not spatiotemporal coordinates.</p>
+
+      <p class="note">This closely mirrors the structure of the <a href="https://www.w3.org/TR/vocab-data-cube/">RDF Data Cube</a>, in which orthogonal <dfn>dimensions</dfn> are combined to form the domain of the data cube. (A "dimension" in the data cube corresponds with an "axis" in CoverageJSON.) Therefore, although a formal mapping process has yet to be performed, we expect that interoperability between the RDF Data Cube and CoverageJSON is achievable. The RDF Data Cube specification does not explicitly support spatiotemporal dimensions, but this is addressed in the <a href="https://w3c.github.io/sdw/qb4st/">QB4ST</a> extensions. <strong>TODO: is there a better way of citing QB and QB4ST?</strong></p>
+
+      <p>This mechanism allows for a huge variety of domain structures to be encoded, from multidimensional grids to one-dimensional trajectories through four-dimensional space. To ease the burden on clients, CoverageJSON allows an optional <dfn>domain type</dfn> property to be defined (see the example above). If the data provider specifies that the domain is of a known type, the client then knows in more detail what to expect when the domain is inspected. For example, if the domain type is "Grid", the client knows that the domain MUST have axes that are called <code>"x"</code> and <code>"y"</code> (corresponding to the two horizontal spatial dimensions) and MAY have axes called <code>"z"</code> and <code>"t"</code> (corresponding respectively to the vertical and temporal dimensions). A number of <a href="https://covjson.org/domain-types/">common domain types</a> are specified and there is a <a href="https://covjson.org/spec/#custom-types">mechanism for data providers to define and register their own types</a>. Note that in a typical document, short names (<code>"Grid"</code>, <code>"PointSeries"</code>, <code>"Trajectory"</code>, etc.) are used to indicate the domain type, but in fact these are full URIs in disguise - this becomes apparent when viewing CoverageJSON document as RDF using the JSON-LD context (see below).</p>
     </section>
 
     <section id="datavalues">
@@ -348,7 +344,7 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
 
   <section id="examples">
     <h2>Examples</h2>
-    <p><strong>TODO:</strong> insert links to complete, realistic examples of CoverageJSON documents, perhaps visualised in a web app like the Playground.</p>
+    <p>Complete examples of CoverageJSON documents can be found via the <a href="https://covjson.org/playground/">Playground</a>. The same documents can be <a href="https://github.com/covjson/playground/tree/master/public/coverages">accessed directly on GitHub</a>. These examples include Coverages, Coverage Collections and tiled Coverages.</p>
   </section>
 
     <section  id="tools">
