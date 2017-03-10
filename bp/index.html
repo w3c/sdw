@@ -1250,7 +1250,7 @@ a:Dataset a dcat:Dataset ;
         <p>All that said, if you consider that the change affects the fundamental nature of the spatial thing, then you should assign a new identifier. See <a href="#bp-identifiers" class="sectionRef"></a> for more details. Otherwise, read on for guidance on how to describe properties that change over time.</p>
 
         <div class="practice">
-          <p><span id="desc-changing-properties" class="practicelab">How to describe properties that change over time</span></p>
+          <p><span id="desc-changing-properties" class="practicelab">Describe properties that change over time</span></p>
           <p class="practicedesc">Spatial data should include metadata that allows a user to determine when it is valid for.</p>
           <section class="axioms">
             <p class="subhead">Why</p>
@@ -1283,7 +1283,47 @@ a:Dataset a dcat:Dataset ;
             <p>Approach (2) requires the data publisher to publish immutable resources that describe the spatial thing at specific points in time (i.e. "snapshots") and provide a mechanism for users to browse between those snapshots. Given that each snapshot of the spatial thing is published as a separate resource, this approach is suited to infrequent changes so that the number of snapshots does not become unweildy.</p>
 
             <p>The URI for the spatial thing, the <em>base</em> URI, should resolve to provide the current information and a link to its version history of snapshots. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a> describes how a version history may be implemented. Each snapshot resource within the version history must be uniquely identified; a common approach is to append a date/time stamp to the base URI as a version indicator. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a> provides relevant guidance.</p>
-
+            
+            <aside class="example">
+              <p>The extent of the City of Amsterdam has changed during the last 200 years. This example, based on <a href="http://www.gemeentegeschiedenis.nl">Gemeentegeschiedenis.nl</a> ("Parish history")</a> (condensed and changed to reflect the recommendations in this best practice), shows how the version history of Amsterdam's boundary can be provided as a series of immutable snapshots in GeoJSON. </p> 
+              <p>The current information on Amsterdam including the current boundary: </p>
+              <pre>
+{
+ "uri": "http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam",
+ "name": "Amsterdam",
+ "inProvince": "Noord-Holland",
+ "cbscode": "0363",
+ "absorbed": "http://www.gemeentegeschiedenis.nl/gemeentenaam/Weesperkarspel",
+ "2016": {
+   "type": "FeatureCollection",
+   "features": [{
+   "type": "Feature",
+   "versionedUri": "http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam/2016",
+   "replaces": "http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam/2014",
+   "year": "2016", 
+   "geometry": {
+      "type": "MultiPolygon",
+      "coordinates": [...],
+}}]}}            
+              </pre>
+              <p>The previous boundary of Amsterdam: </p>
+              <pre>
+{
+ "2014": {
+    "type": "FeatureCollection",
+    "features": [{
+       "type": "Feature",
+       "versionedUri": "http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam/2014",
+       "replacedBy": "http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam/2014",
+       "replaces": "http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam/2013",
+       "year": "2014",
+       "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [...],
+}]}}   
+              </pre>
+            </aside>
+            
             <p>Approach (3) is suitable where a spatial thing has a small number of attributes that are frequently updated. For example, the GPS-position of a runner or when streaming data from a sensor, such as the water level from a stream guage.</p>
 
             <p>With this approach, the description of the spatial thing must include a property that contains a sequentially-ordered set of data-points, each of which defines a time-stamp and the values for the time-varying attribute(s). By definition, this property can be considered as a time-series <a>coverage</a>. Standard data encodings are available for time-series data, including: [[TIMESERIESML]] for GML, plus [[COVERAGE-JSON]] and [[SENSORTHINGS]] for JSON.</p>
@@ -1291,11 +1331,28 @@ a:Dataset a dcat:Dataset ;
             <p class="note">The OGC [[MOVING-FEATURES-XML]] and [[MOVING-FEATURES-CSV]] specifications follow the pattern described above. A <code>trajectory</code> element is used to describe the position of a spatial thing, and varying attributes (such as orientation or rotation) can be added alongside the tuples in the trajectory. However, there is limited evidence of adoption outside of Japan.</p>
 
             <aside class="example">
-              <p>Example(s) to be added; including e.g.:</p>
-              <ul>
-                <li><span style="background-color:yellow">Changing extent of the City of Amsterdam during the last 200 years.</span></li>
-                <li><span style="background-color:yellow">GPS position of a runner traversing the Alps.</span></li>
-              </ul>
+              <p>This examples shows a snipped of a file storing the changing GPS position of <a href="http://www.movescount.com/moves/move121790545">a runner traversing the Alps</a>. The format is GPX, a common format for exchanging a series of GPS positions. For each track point, the coordinates as well as a timestamp are stored.</p>
+              <pre>
+&lt;gpx version="1.1">
+  &lt;trk>
+    &lt;name>Move&lt;/name>
+    &lt;trkseg>
+      &lt;trkpt lat="47.24239" lon="10.749514">
+        &lt;ele>784&lt;/ele>
+        &lt;time>2016-09-06T06:01:25.009Z&lt;/time>
+      &lt;/trkpt>
+      &lt;trkpt lat="47.242403" lon="10.749489">
+        &lt;ele>784&lt;/ele>
+        &lt;time>2016-09-06T06:01:26.009Z&lt;/time>
+      &lt;/trkpt>
+      [...]
+      &lt;trkpt lat="46.968127" lon="10.870573">
+        &lt;ele>1677&lt;/ele>
+        &lt;time>2016-09-06T17:41:50.009Z&lt;/time>
+      &lt;/trkpt>
+    &lt;/trkseg>
+  &lt;/trk>
+&lt;/gpx></pre>
             </aside>
           </section>
           <section class="test">
