@@ -259,6 +259,13 @@ var respecConfig = {
         authors: ["Roger Lott"],
         date: "1 May 2015"
       },
+      "OGC-API-WP":{
+        href:"http://docs.opengeospatial.org/wp/16-019r4/16-019r4.html",
+        publisher:"OGC",
+        title:"Open Geospatial APIs - White Paper",
+        authors: ["George Percivall (Editor)"],
+        date: "23 February 2017"
+      },
       "GS1": {
         title: "SmartSearch Implementation Guideline",
         authors: ["Mark Harrison", "Ken Traub"],
