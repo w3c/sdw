@@ -1007,7 +1007,7 @@ a:Dataset a dcat:Dataset ;
 
 				<p>You may also consider using <a href="https://www.sitemaps.org/index.html">Sitemaps</a> to direct the Web-crawler; noting that sitemaps currently are limited to several thousands of entries and will not work for larger datasets.</p>
 
-				<p>For very large datasets paging through thousands of pages is not useful for a human either. Consider supporting filtering and/or organise the spatial things into subsets, as described in <a href="#ids-for-chunks">Best Practice 13: Provide subsets for large spatial datasets</a>.</p>
+				<p>For very large datasets paging through thousands of pages is not useful for a human either. Consider supporting filtering and/or organise the spatial things into subsets, as described in <a href="#bp-exposing-via-api" class="sectionRef">section 12.6 Spatial Data Access</a>.</p>
 
             <aside class="example">
             	<p>In case of an address dataset, you could organise the spatial things (the addresses) by municipality, post code and street name in order to support a human user to get to a building with a few clicks.</p>
@@ -1462,7 +1462,7 @@ a:Dataset a dcat:Dataset ;
 
             <p>It is also good practice to use a redirection service to hide complex and potentially changing service end-point URLs, such as for a <a>Web Feature Service</a> behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API or changes in endpoint URIs or API versions in order to request information about a particular spatial thing. For example, the URI <code>http://data.example.org/aan/id/perceel/aan.2528</code> could be used as proxy for the WFS GetFeature request <a href="http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&SERVICE=WFS&REQUEST=GetFeature&featureID=aan.2528"><code>http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;featureID=aan.2528</code></a>.</p>
 
-            <p>Finally, while it is simple to use a query-pattern URL to serve information about a resource identified with a URI from a third-party internet domain, e.g. <code>http://example.org/museums?q=http://sws.geonames.org/6618987</code>, these URLs are unsuitable as persistent identifiers. More often than not, your intended users will dereference the "official" URI, e.g. <code>http://sws.geonames.org/6618987</code>. That said, this kind of search operation does provide a useful mechanism to find particular spatial things. See <a href="#include-search-api" class="sectionRef">Best Practice 12: Include search capability in your data access API</a> for further details.</p>
+            <p>Finally, while it is simple to use a query-pattern URL to serve information about a resource identified with a URI from a third-party internet domain, e.g. <code>http://example.org/museums?q=http://sws.geonames.org/6618987</code>, these URLs are unsuitable as persistent identifiers. More often than not, your intended users will dereference the "official" URI, e.g. <code>http://sws.geonames.org/6618987</code>. That said, this kind of search operation does provide a useful mechanism to find particular spatial things. See <a href="#convenience-apis" class="sectionRef">Best Practice 11: Expose spatial data through 'convenience APIs'</a> for further details.</p>
 
           </section>
           <section class="test">
@@ -1886,6 +1886,23 @@ a:Dataset a dcat:Dataset ;
 		    is relatively inexpensive to support as it relies on standard capabilities of web servers 
 		    for datasets that may be published as downloadable files stored on a server.
 		    However, this option is more complex for frequently changing datasets or real-time data.</p>
+		  <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ProvideSubsets">Best Practice 18: 
+		    Provide Subsets for Large Datasets</a> explains why providing subsets is important
+		    and how this could be implemented. 
+		    Spatial datasets, particularly <a>coverages</a> such as satellite imagery, sensor
+		    measurement time-series and climate prediction data, are often very large. 
+		    In these cases it is useful to provide subsets by having identifiers for conveniently
+		    sized subsets of large datasets that Web applications can work with.</p>
+		  <p>Effectively, breaking up a large coverage into pre-defined lumps that you can 
+		    access via HTTP GET requests is a <em>very simple</em> API.</p>
+		  <p>When a subset is provided, this should include information about the relationship to the
+		    complete dataset. In HTML this could be descriptive text or it is implicitly clear for 
+		    humans in the way the subset is presented. In schema.org it could be <a 
+		    href="http://schema.org/isPartOf">schema:isPartOf</a> property. In RDF <a
+          href="https://www.w3.org/TR/prov-o/">PROV-O</a> could be used to describe the relationship
+          between the subset and the complete dataset as well as the mechanism used to derive
+			 the subset. In ISO 19115 metadata, the LI_Lineage element may be used for a similar 
+			 purpose. Etc.</p>
 		  <p>The use of APIs to access data is covered in [[DWBP]] by the following best practices:</p>
 		  <ul>
 		    <li>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#useanAPI">Best Practice 23: Make data 
@@ -2003,19 +2020,25 @@ a:Dataset a dcat:Dataset ;
                 search on the name, label or other property may be useful.</li> 
             </ul>
 
+            <a name="elda-example">
             <aside class="example">
-              <p><a href="http://environment.data.gov.uk/bwq/">Environment Agency Bathing Water
-                Quality API</a> (implemented using the Epimorphic's <a
-                  href="https://github.com/epimorphics/elda">ELDA implementation</a> of the <a
+              <p>The <a href="http://environment.data.gov.uk/bwq/">Environment Agency Bathing Water
+                Quality API</a> is implemented using the Epimorphic's <a
+                  href="http://epimorphics.github.io/elda/current/index.html">ELDA implementation</a> of the <a
                   href="https://github.com/UKGovLD/linked-data-api/blob/wiki/Specification.md"
-                >Linked Data API</a>; enables configured queries against (general) SPARQL
-                endpoints to be exposed as RESTful web services).</p>
+                >Linked Data API</a> and enables configured queries against (general) SPARQL
+                endpoints to be exposed as RESTful web services.</p>
+            </aside>
+            </a>  
+            <aside class="example">
+              <p>Use of <a href="http://www.opensearch.org/Home">OpenSearch</a> to find 
+                <a>SpatialThings</a>. For spatial or temporal searches use the <a
+                  href="http://www.opengeospatial.org/standards/opensearchgeo">OGC Geo and
+                Temporal extensions</a>.</p>
             </aside>
             <aside class="example">
-              <p>Requesting a subset of a <a>coverage</a> or an aggregate set of
-                <a>SpatialThings</a>; for example, using a pattern like <a
-                  href="http://www.opengeospatial.org/standards/opensearchgeo">OpenSearch Geo and
-                Temporal extensions</a>.</p>
+				  <p>The APIs of <a href="http://data.ordnancesurvey.co.uk/docs"
+				    >data.ordnancesurvey.co.uk</a> support both textual and spatial searches.</p>
             </aside>
 
             <p>If the data is already published in a <a>Spatial Data Infrastructure</a>, 
@@ -2054,6 +2077,24 @@ a:Dataset a dcat:Dataset ;
                     href="https://app.swaggerhub.com/api/pdok/geluidskaarten/1.0">Geluidskaarten
                   API</a> in SwaggerHub, based on a WFS service published in the Dutch geoportal <a
                     href="http://www.pdok.nl">Publieke Dienstverlening op de Kaart (PDOK)</a>.</p>
+              </aside>  
+              <aside class="example">
+                <p>Mapping a URI template (as specified in [[RFC6570]]) to a <a>WFS</a>, <a>WCS</a> or <a
+                    href="http://www.opendap.org/">OPeNDAP</a> end-point is a very simple
+                  way of specifying a set of resources in the existing infrastructure.
+                  This will not address all API aspects described in this best practice,
+                  but it is a simple start.</p>
+                <p>One advantage of this approach is to be able to hide
+                  implementation details of the current backend in the URI. A Web service
+                  URL in general does not provide a good URI for a resource as it is unlikely to be
+                  persistent. A Web service URL is often technology and implementation dependent and
+                  in practice both are likely to change with time.</p>
+                <p>The <a href="#elda-example">Environment Agency Bathing Water
+                  Quality API</a> example above uses URI templates, too. In this case, 
+                  the Linked Data API configuration uses URI templates to provide RESTful 
+                  access to SPARQL queries thereby taking away from the user the challenge 
+                  of writing generalised SPARQL queries and understanding the underpinning 
+                  data model.</p> 
               </aside>  
               </li>  
               
@@ -2101,7 +2142,8 @@ a:Dataset a dcat:Dataset ;
             <p class="subhead">Evidence</p>
             <p><span>Relevant requirements</span>: <a
                 href="https://www.w3.org/TR/sdw-ucr/#Compatibility">R-Compatibility</a>, <a
-                href="https://www.w3.org/TR/sdw-ucr/#LightweightAPI">R-LightweightAPI</a>.</p>
+                href="https://www.w3.org/TR/sdw-ucr/#LightweightAPI">R-LightweightAPI</a>, <a
+                href="https://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks">R-ReferenceDataChunks</a>.</p>
           </section>
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
@@ -2111,141 +2153,48 @@ a:Dataset a dcat:Dataset ;
           </section>
         </div>
         <div class="practice">
-          <p><span id="include-search-api" class="practicelab">Include search capability in your
-              data access API</span></p>
-          <p class="practicedesc">If you publish an API to access your data, make sure it allows
-            users to search for specific data.</p>
-          <p class="issue" data-number="186">Should best practice "Include search capability in your data
-            access API" move or be removed? </p>
+          <p><span id="include-search-api" class="practicelab">(to be deleted)</span></p>
+          <p class="practicedesc"></p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>It can be hard to find a particular resource within a dataset, requiring either prior
-              knowledge of the respective identifier for that resource and/or some intelligent
-              manual guesswork. It is likely that users will not know the URI of the resource that
-              they are looking for- but may know (at least part of) the name of the resource or some
-              other details. A search capability will help a user to determine the identifier for
-              the resource(s) they need using the limited information they have.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>A user can do a text search on the name, label or other property of an entity that
-              they are interested in to help them find the URI of the related resource.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p><span style="background-color:yellow">to be added</span></p>
-            <aside class="example">
-              <p>example(s) to be added; including ...</p>
-              <ul>
-                <li>Search facility provided by <a href="http://data.ordnancesurvey.co.uk/"
-                    >data.ordnancesurvey.co.uk</a>.</li>
-                <li>Use of <a href="http://www.opensearch.org/Home">OpenSearch</a> - perhaps with <a
-                    href="http://www.opengeospatial.org/standards/opensearchgeo">OGC Geo and
-                    Temporal extensions</a>.</li>
-              </ul>
-            </aside>
           </section>
           <section class="test">
             <p class="subhead">How to Test</p>
-            <p>...</p>
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: {... hyperlinked list of use cases ...}</p>
           </section>
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
-            <ul class="benefitsList">
-              <li>...</li>
-            </ul>
           </section>
         </div>
         <div class="practice">
-          <p><span id="ids-for-chunks" class="practicelab">Provide subsets for large spatial datasets</span></p>
-          <p class="practicedesc">Identify subsets of large spatial data resources that are a
-            convenient size for applications to work with</p>
-          <p class="issue" data-number="195">Is the term "subset" correct?</p>
+          <p><span id="ids-for-chunks" class="practicelab">(to be deleted)</span></p>
+          <p class="practicedesc"></p>
           <section class="axioms">
             <p class="subhead">Why</p>
-            <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ProvideSubsets">Best Practice 18: Provide Subsets for Large Datasets</a> explains why providing subsets is important. Spatial datasets, particularly <a>coverages</a> such as satellite imagery, sensor
-              measurement time-series and climate prediction data, are often very large. In these cases it is useful to provide subsets by having identifiers for conveniently
-              sized subsets of large datasets that Web applications can work with.</p>
           </section>
           <section class="outcome">
             <p class="subhead">Intended Outcome</p>
-            <p>Being able to refer to subsets of a large spatial data resource that are sized for
-              convenient usage in Web applications.</p>
           </section>
           <section class="how">
             <p class="subhead">Possible Approach to Implementation</p>
-            <p>Two possible approaches are described below:</p>
-            <ol>
-              <li>Create named subsets. <ul>
-                  <li>Determine how users may seek to access the dataset, determining subsets of the
-                    larger dataset that are appropriate for the intended application. A data
-                    provider may consider a general approach to improve accessibility of a dataset,
-                    while a data user might want to publish details of a workflow for others to
-                    reuse referencing only the relevant parts of the large dataset.</li>
-                  <li>Given the anticipated access pattern, create new resources and mint a new
-                    identifier for each subset.</li>
-                  <li>Provide metadata to indicate how a given subset resource is related to the
-                    original large dataset, with reference to an identified <em>Mutually Exclusive
-                      Collectively Exhaustive</em> (MECE) set where appropriate.</li>
-                </ul>
-              </li>
-              <li>Map a URI pattern to an existing data-access API. <p class="note">A Web service
-                  URL in general does not provide a good URI for a resource as it is unlikely to be
-                  persistent. A Web service URL is often technology and implementation dependent and
-                  both are very likely to change with time. For example, consider oft used
-                  parameters such as <code>?version=</code>. Good practice is to use URIs that will
-                  resolve if the resource is relevant and may be referenced by others,
-                  therefore identifiers for subsets should be <em>protocol independent</em>.</p>
-                <ul>
-                  <li>Identify the service end-point that provides access to the larger
-                    dataset.</li>
-                  <li>Determine which parameters offered by the service end-point are required to
-                    construct a meaningful subset.</li>
-                  <li>Map these parameters into a URI pattern and configure an HTTP server to apply
-                    the necessary URL-rewrite.</li>
-                </ul>
-              </li>
-            </ol>
-            <aside class="example">
-              <p>example(s) to be added; including ...</p>
-              <ul>
-                <li>Identifying a subset of a larger dataset that is used in a re-usable workflow
-                  (e.g. to enable others to validate a scientific conclusion); use <a
-                    href="https://www.w3.org/TR/prov-o/">PROV-O</a> to describe the relationship
-                  between the subset, the original large dataset and the mechanism used to derive
-                  the subset.</li>
-                <li>Predefining subsets of a larger dataset as <a
-                    href="https://www.w3.org/TR/vocab-data-cube/#cubes-slices">slices</a> (as defined
-                  by the RDF Data Cube [[VOCAB-DATA-CUBE]]).</li>
-                <li>Mapping a URI template (as specified in [[RFC6570]]) to a <a>WCS</a> or <a
-                    href="http://www.opendap.org/">OPeNDAP</a> service end-point.</li>
-              </ul>
-            </aside>
           </section>
           <section class="test">
             <p class="subhead">How to Test</p>
-            <p>...</p>
           </section>
           <section class="ucr">
             <p class="subhead">Evidence</p>
-            <p><span>Relevant requirements</span>: <a
-                href="https://www.w3.org/TR/sdw-ucr/#Compatibility">R-Compatibility</a>, <a
-                href="https://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>, <a
-                href="https://www.w3.org/TR/sdw-ucr/#Provenance">R-Provenance</a>, <a
-                href="https://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks"
-              >R-ReferenceDataChunks</a>.</p>
           </section>
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
-            <ul class="benefitsList">
-              <li>...</li>
-            </ul>
           </section>
-          <p class="issue" data-number="113">More content needed for this best practice.</p>
         </div>
       </section>
       <section id="bp-linking">
@@ -2562,20 +2511,6 @@ a:Dataset a dcat:Dataset ;
             </ul>
           </section>
         </div>
-      </section>
-      <section id="bp-large-datasets">
-        <h3>Dealing with large datasets</h3>
-        <p>When publishing large datasets on the web, and designing APIs for accessing those datasets, data publishers must be aware of the constraints of operating in
-          a Web environment. Providing access to large spatial datasets, such as <a>coverages</a>, is a
-          particular challenge. The API should provide mechanisms to request subsets of the
-          dataset that are a convenient size for client applications to manage.</p>
-        <p>There are several best practices in this document dealing with large datasets and
-          coverages: </p>
-        <ul>
-          <li><a href="#ids-for-chunks" class="sectionRef">Best Practice 13: Provide subsets for large spatial datasets</a></li>
-          <li><a href="#describe-geometry" class="sectionRef">Best Practice 8: Provide geometries on the Web in a usable way</a></li>
-        </ul>
-        <p class="issue" data-number="149">Should we discuss scalability issues here?</p>
       </section>
       <!-- end best practices -->
     </section>
