@@ -2812,6 +2812,71 @@ ex:ExampleDataset
               <p>The example above illustrates how to describe the coordinate reference system used for a dataset within [[GeoDCAT-AP]] metadata. The <code>conformsTo</code> property from [[DCTERMS]] is used to assert the relationship between dataset and CRS in the same way that conformance with a <em>standard</em> is expressed in [[VOCAB-DQV]].</p>
               <p>For more information about dataset metadata, please refer to <a href="#spatial-info-dataset-metadata" class="sectionRef">Best Practice 1: Include spatial metadata in dataset metadata</a>.</p>
 
+              <pre class="example" id="ex-crs-sepatate-axes-lables-tabular-data" title="Coordinate position provided using column in tabular data">
+GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,Comments,Protected
+1,ADDISON AV,-122.156485,37.440963,Celtis australis,Large Tree Routine Prune,11,10/18/2010,,
+2,EMERSON ST,-122.156749,37.440958,Liquidambar styraciflua,Large Tree Routine Prune,11,6/2/2010,,
+6,ADDISON AV,-122.156299,37.441151,Robinia pseudoacacia,Large Tree Routine Prune,29,6/1/2010,cavity or decay; trunk decay; codominant leaders; included bark; large leader or limb decay; previous failure root damage; root decay;  beware of BEES,YES
+              </pre>
+              <p>In this example (adapted from the City of Palo Alto tree operations database and published as <a href="https://fusiontables.google.com/DataSource?docid=1XKUADil8qq1PT6xkJV3FF9bqLAZj2tBXwTTI_rc#rows:id=1">tabular data</a> and as an <a href="https://fusiontables.google.com/DataSource?docid=1XKUADil8qq1PT6xkJV3FF9bqLAZj2tBXwTTI_rc#map:id=3">interactive map</a>) the coordinate position of each tree is specified using separate columns (<code>Long</code> and <code>Lat</code>) as recommended in approach (1) above.</p>
+
+              <p>As shown in the abridged tabular metadata document, the columns <code>Long</code> and <code>Lat</code> are mapped onto the definitions provided by [[W3C-BASIC-GEO]] to ensure that the meaning of the data values in those columns is clear:</p> 
+
+              <pre class="example" id="ex-crs-sepatate-axes-lables-tabular-metadata" title="Abridged tabular metadata providing column meanings">
+{
+  "@context": ["http://www.w3.org/ns/csvw", {"@language": "en"}],
+  "@id": "http://example.org/tree-ops-db",
+  "url": "tree-ops-db.csv",
+  "dc:title": "Tree Operations",
+  ...
+  "tableSchema": {
+    "columns": [{
+      "name": "GID",
+      "titles": [
+        "GID",
+        "Generic Identifier"
+      ],
+      "dc:description": "An identifier for the operation on a tree.",
+      "datatype": "string",
+      "required": true, 
+      "suppressOutput": true
+    }, {
+      "name": "on_street",
+      "titles": "On Street",
+      "dc:description": "The street that the tree is on.",
+      "datatype": "string"
+    }, {
+      "name": "Long",
+      "titles": "Longitude",
+      "dc:description": "The WGS84 longitude of the tree (decimal degrees).",
+      "propertyUrl": "http://www.w3.org/2003/01/geo/wgs84_pos#long"
+      "datatype": {
+        "base": "number",
+        "minimum": "-180",
+        "maximum": "180"
+      }
+    }, {
+      "name": "Lat",
+      "titles": "Latitude",
+      "propertyUrl": "http://www.w3.org/2003/01/geo/wgs84_pos#lat"
+      "dc:description": "The WGS84 latitude of the tree (decimal degrees).",
+      "datatype": {
+        "base": "number",
+        "minimum": "-90",
+        "maximum": "90"
+      }
+    },
+    ...
+    "primaryKey": "GID",
+    "aboutUrl": "http://example.org/tree-ops-ext#gid-{GID}"
+  }
+}
+              </pre>
+
+              <div class="note">
+                <p>Please refer to [[TABULAR-DATA-PRIMER]] <a href="https://www.w3.org/TR/tabular-data-primer/#geospatial">section 6.2 How do you support geospatial data?</a> for more details on working with geospatial content in tabular data.</p>
+              </div>
+
             </li>
           </ol>
         </section>
