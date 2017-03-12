@@ -332,6 +332,17 @@ var respecConfig = {
         "publisher":"OGC",
         "title": "OGC KML 2.3",
         "date": "4 August 2015"
+      },
+      "WEB-DATA": {
+        "authors": ["Erik Wilde"],
+        "href": "http://webdata.systems",
+        "title": "Web Data",
+        "date": "1 November 2016"
+      },
+      "LINK-RELATION-TYPES": {
+        "authors": ["Mark Nottingham", "Julian Reschke", "Jan Algermissen"],
+        "href": "http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1",
+        "title": "Link Relation Types Registry"
       }
       
     },

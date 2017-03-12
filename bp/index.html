@@ -605,7 +605,7 @@
         association between Linked Data and the <a>Resource Description Framework</a> (RDF)
         [[RDF11-PRIMER]]. Yet we believe that Linked Data requires only that the formats used to
         publish data support Web linking (see [[WEBARCH]] <a
-          href="https://www.w3.org/TR/webarch/#hypertext">§4.4 Hypertext</a>). <a href="http://5stardata.info">5 Star Data</a> (based on [[5STAR-LOD]])
+          href="https://www.w3.org/TR/webarch/#hypertext">section 4.4 Hypertext</a>). <a href="http://5stardata.info">5 Star Data</a> (based on [[5STAR-LOD]])
         asserts only that data formats be open and non-proprietary (&#9733;&#9733;&#9733;); and
         infers the need for data formats to support use of URIs as identifiers
         (&#9733;&#9733;&#9733;&#9733;) and Web linking (&#9733;&#9733;&#9733;&#9733;&#9733;).</p>
@@ -1848,9 +1848,7 @@ a:Dataset a dcat:Dataset ;
         <section id="bp-expr-tempo">
           <h4>Temporal aspects of spatial data</h4>
           <p>Temporal relationship types will be described here and be entered eventually as link
-            relationship types into the IANA registry, <a
-              href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link
-              relations</a>, just like the spatial relationships. </p>
+            relationship types into the IANA [[LINK-RELATION-TYPES]] registry, just like the spatial relationships. </p>
           <p>In the same sense as with spatial data, temporal data can be fuzzy.</p>
           <aside class="example">In May 2015 the discovery was reported of a new human ancestor near
             the fossil of "Lucy". The Australopithecine lived <em>about 3.4 million years ago
@@ -2255,16 +2253,63 @@ a:Dataset a dcat:Dataset ;
 
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
-            <p>It should be possible for humans and for machine agents to understand, interpret and follow the entity-level links between resources. Preferably, the definition of the meaning of a given link is precise and explicit.</p>
-            <p>It should be possible for humans and machine agents to find spatial relationships between Things without performing post geometric processing.</p>
-            <p>Spatial things should be related to commonly used resources.</p>
+            <p>Spatial things are related to other resource in the Web of data using links with appropriate semantics.</p>
+            <p>Links can be identified and traversed by humans and software agents.</p>
+            <p>Sufficient information is provided to help humans and software agents determine whether traversal of a given link meets their goals.</p>
+            <p>Humans and software agents can find resources that link <em>to</em> and <em>from</em> a given spatial thing.</p>
           </section>
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
 
-            <p>Earlier in this document, the <a href="#linked-data" class="sectionRef">Linked Data</a> section explained that we  believe that Linked Data requires only that the formats used to publish data support Web linking. In other words, linking spatial data does not automatically mean the use of RDF; links can also be created, for example, using GML, HTML or JSON-LD.</p>
+            <p>Before we get into the details of linking spatial data it's worth stating some ground-rules that should be followed when linking any types of resource in the Web of data.</p>
+            <ol>
+              <li>
+                <p>Use formats that support Web linking (as defined in [[WEBARCH]] <a href="https://www.w3.org/TR/webarch/#hypertext">section 4.4 Hypertext</a>)</p>
+                <p>Earlier in this document (<a href="#linked-data" class="sectionRef"></a>) we explained that Linked Data requires only that the formats used to publish data support Web linking. In other words, linking spatial data does not automatically mean the use of RDF; links can also be created, for example, using GML, HTML or JSON-LD. The two key points from [[WEBARCH]] are:</p>
+                <ul>
+                  <li><strong><em>Good practice: Link identification</em></strong> &mdash; A [data format] specification SHOULD provide ways to identify links to other resources [...].</li>
+                  <li><strong><em>Good practice: Web linking</em></strong> &mdash; A [data format] specification SHOULD allow Web-wide linking, not just internal document linking.</li>
+                </ul>
+              </li>
+              <li>
+                <p>Follow the principles for <strong>4&#9733; &mdash; Linked</strong>, as defined in [[WEB-DATA]]</p>
+                <ul>
+                  <li>
+                    <p>Always use global identifiers when linking between documents, so that link identifiers can be taken out of context and shared globally.</p>
+                    <div class="note">
+                      <p>Obviously this principle is predicated on the use of global identifiers for resources. As such, we consider <a href="#globally-unique-ids" class="sectionRef">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a> as a prerequisite for linking.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <p>Links should be typed (explicitly or implicitly), so that clients can decide which link to follow when they are traversing a web of interlinked resources to reach application goals.</p>
+                    <pre class="example" id="ex-webdata2-typed-links" title="HTTP response Link header with IANA Link Relation types">
+HTTP/1.1 200 OK
+Link: <http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam/2014>; rel="predecessor-version"
+Content-type: application/geo+json
+Connection: close
 
-            <p>Crucially, the use of links is predicated on the ability to identify the beginning and end, or <em>source</em> and <em>target</em>, of the link. <a href="#globally-unique-ids">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a> is a prerequisite.</p>
+{...}
+                    </pre>
+                    <p>This example, using HTTP Link headers (as defined in [[RFC5988]]), illustrates the use of IANA [[LINK-RELATION-TYPES]] to define the link type. According to the IANA registry, <code>predecessor-version</code> <em>points to a resource containing the predecessor version in the version history</em> (as defined in [[RFC5829]] "Link Relation Types for Simple Version Navigation between Web Resources").</p>
+                    <div class="note">
+                      <p>In simple links involving only two resources, the <em>role</em>, or type, of each resource are implicit and can be inferred from the link relation type. It can be useful to include other information to help users judge whether to follow a link such as human-readable labels and hints about the target resource type. Of course, often target resources and the links that refer to them are maintained by different parties, so such hints should be assumed as prescriptive; thay may or may not turn out to be true. For example, [[RFC5988]] "Web Linking" defines a number of additional attributes including: <code>hreflang</code> &mdash; hints at the language or languages that the target resource is available in; <code>type</code> &mdash; indicates the media-type expected; and <code>title</code> &mdash; labels the link target such that it can be used as a human-readable identifier etc.</p>
+                      <p>Also note that [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#Conneg">Best Practice 19: Use content negotiation for serving data available in multiple formats</a> recommends the use of <a href="https://www.w3.org/DesignIssues/Conneg">content negotiation</a> to help ensure that a user or software agent is provided with useful content when they traverse a link and resolve the target resource. <span style="background-color:yellow">However, HTTP Request headers are limited to specifying media-type, character set, encoding (e.g. for compression) and language. There is no mechanism to request that data is provided according to a particular data model or 'profile' (see [[RFC6906]] "profile" Link Relation Type), nor request data in a particular coordinate reference system.</span> </p>
+                    </div>
+                    
+                  </li>
+                  <li>
+                    <p>Make links as specific as possible. If the linked resource supports fragment identification, and the link logically should be to a fragment of the resource (and not just the resource as a whole), try to use fragment identifiers when possible.</p>
+                    <div class="note">
+                      <p>Being specific as possible with links is important; e.g. refer to a particular <a>spatial thing</a> rather than the dataset in which that spatial thing is described. That said, we encourage publication of data about spatial things as independently resolvable resources (e.g. so that they can be accessed by search engine's Web crawlers, see <a href="#indexable-by-search-engines" class="sectionRef">Best Practice 4: Make your spatial data indexable by search engines</a>) which means that fragment identifiers are usually not required.</p>
+                    </div>
+                  </li>
+                </ul>
+                
+              </li>
+            </ol>
+
+            
+
 
             <p>----</p>
 
@@ -2308,9 +2353,7 @@ a:Dataset a dcat:Dataset ;
                 <li>Use of SKOS to define hierarchical relationships between resources (see
                   [[SKOS-PRIMER]]).</li>
                 <li>Formally defined XML elements defined in a resolvable XML schema.</li>
-                <li>Use formally registered IANA <a
-                  href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link
-                  relations</a> within HTTP link headers.</li>
+                <li>Use formally registered relations from the IANA [[LINK-RELATION-TYPES]] registry within HTTP link headers.</li>
                 <li>Use a 'profile' link relation type, as specified in [[RFC6906]], to refer to
                   online documentation that describes the links and properties used within the
                   referring resource.</li>
@@ -2370,13 +2413,13 @@ a:Dataset a dcat:Dataset ;
               relationships such as topological (e.g. contains), geographical (e.g. nearby) and hierarchical (e.g. part of) links.</p>
             <ul>
               <li>A good place to find spatial relationships to use is in spatial vocabularies. See <a href="#semantic-thing" class="sectionRef">Best Practice 9: Use spatial semantics for Spatial Things</a>.</li>
-              <li>The geographical, topological and social hierarchy should be described with clear semantics using relations registered with IANA <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">Link relations</a>.</li>
+              <li>The geographical, topological and social hierarchy should be described with clear semantics using relations registered with IANA [[LINK-RELATION-TYPES]] registry.</li>
               <li>Hierarchical relationships (i.e. part of, for example between administrative regions, have a specific need for defining <em>Mutually Exclusive Collectively Exhaustive</em> (MECE) set.</li>
               <li>Topological relationships that are described for an entity should have references to concepts such as over, under etc.</li>
               <li>Spatial relationships can use concepts such as <a href="https://en.wikipedia.org/wiki/Region_connection_calculus">Region Connection Calculus</a> (RCC8) that contains, overlaps, touches, intersects, adjacent to, or "<a href="https://en.wikipedia.org/wiki/DE-9IM#Spatial_predicates">spatial predicates</a>" or also other similar concepts from <a href="https://en.wikipedia.org/wiki/Allen%27s_interval_algebra">Allen Calculus</a>.</li>
             </ul>
             <p>Social relationships can be defined based on perception; e.g. "samePlaceAs", nearby, south of. These relationships can also be defined based on temporal concepts such as: after, around, etc. In current practice, there is no such property as <code>samePlaceAs</code> to express the social notion of <em>place</em>; enabling communities to unambiguously indicate that they are referring to the same place but without getting hung up on the semantic complexities inherent in the use of <code>owl:sameAs</code> or similar.</p>
-            <p class="issue" data-number="215">Include details of which spatial relationships are published as IANA Link relations.</p>
+            <p class="issue" data-number="215">Include details of which spatial relationships are published as IANA Link relation types.</p>
             <p class="issue" data-number="34">Which vocabularies out there have social spatial
               relationships? FOAF, GeoNames, ... </p>
             <aside class="example">
