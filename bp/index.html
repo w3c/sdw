@@ -2226,39 +2226,33 @@ a:Dataset a dcat:Dataset ;
           <p>Discussion of links in these best practices are limited to simple links that relate exactly two resources: the <em>source</em> and <em>target</em>. Complex links that relate an arbitrary number of resources, such as described in [[XLINK11]] <a href="https://www.w3.org/TR/xlink11/#extended-link">section 5.1 Extended Links</a>, are out of scope.</p>  
         </div>
 
-
-        <p>----</p>
-
-        <p>Earlier in this document, the <a href="#linked-data" class="sectionRef">Linked Data</a> section explained that we  believe that Linked Data requires only that the formats used to publish data support Web linking. In other words, linking spatial data does not automatically mean the use of RDF; links can also be created, for example, using GML, HTML or JSON-LD.</p>
-
-        <p>The <a href="http://5stardata.info">5-star rating for Linked Open Data</a> asserts that to achieve the fifth star you must "link your data to other data to provide context". The benefits for consumers and publishers of linking to other data are <a href="http://5stardata.info/en/#addendum5">listed</a> as:</p>
-        <ul>
-          <li>You can discover more (related) data while consuming the data.</li>
-          <li>You can directly learn about the data schema.</li>
-          <li>You make your data discoverable.</li>
-          <li>You increase the value of your data.</li>
-          <li>Your own organization will gain the same benefits from the links as the [other] consumers.</li>
-        </ul>
-
-        <p>Crucially, the use of links is predicated on the ability to identify the beginning and end, or <em>source</em> and <em>target</em>, of the link. <a href="#globally-unique-ids">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a> is a prerequisite.</p>
-
         <div class="practice">
           <p><span id="entity-level-links" class="practicelab">Publish links between spatial things and related resources</span></p>
           <p class="practicedesc">Bind spatial things into the Web of data using links to other resources, providing sufficient information for a user to determine whether the target resource specified in a link will be of use.</p>
           <section class="axioms">
             <h4 class="subhead">Why</h4>
-            <p>Exposing entity-level links to Web applications, user-agents and Web crawlers allows the relationships between resources to be found without the data user needing to download the entire dataset for local analysis. Entity-level links, preferably meaningful links, provide explicit description of the relationships between resources and enable users to find related data and determine whether the related data is worth accessing. Entity-level links can be used to combine information from different sources; for example, to determine correlations in statistical data relating to the same location. </p>
+            <p>The <a href="http://5stardata.info">5&#9733; rating for Linked Open Data</a> asserts that to achieve the fifth star you must "link your data to other data to provide context". The benefits for consumers and publishers of linking to other data are <a href="http://5stardata.info/en/#addendum5">listed</a> as:</p>
+            <ul>
+              <li>You can discover more (related) data while consuming the data.</li>
+              <li>You can directly learn about the data schema.</li>
+              <li>You make your data discoverable.</li>
+              <li>You increase the value of your data.</li>
+              <li>Your own organization will gain the same benefits from the links as the [other] consumers.</li>
+            </ul>
 
-            <p>Data publishers should assert the relationships that they know about. Relationships between resources with spatial extent (i.e. size, shape, or position; SpatialThings) can often be inferred from their spatial properties, but this is a complex task. It requires both complex spatial processing (e.g. region connection calculus)  and some degree of understanding about the semantics of the two, potentially related, resources in order to determine how they are related, if at all. This should not be left to the data user.</p>
-            
-            <p>When your spatial resources are linked to those in common usage it will be easier to discover them. For example, a data user interested in air quality data about the place they live might begin by searching for that place in popular data repositories such as <a href="http://www.geonames.org/">GeoNames</a>, <a href="https://www.wikidata.org/">Wikidata</a> or <a href="http://dbpedia.org/">DBpedia</a>. Once the user finds the resource that describes the correct place, they can search for data that refers to the identified resource that, in this case, relates to air quality. Furthermore, by referring to resources in common usage, it becomes even easier to find those resources as search engines will prioritize resources that are linked to more often.</p>
+            <p>Geography is often described as the "glue that binds Linked Data"; the links between <a>spatial things</a> - and between other resources and spatial things - describe how the world around us is structured and interrelated and form an important facet of the Web of Data.</p>
 
-            <div class="note">
-              <p>It is not always feasible to link your spatial things to other resources in common usage. For example, if you were maintaining a registry of cultural heritage in Amsterdam, it would be reasonably simple to look up identifiers for the city's 50 or so museums and map these to your spatial things. But it would be a huge task for, say, a topographic mapping agency to cross-reference their entire catalogue of named places containing tens of thousands of spatial things with third-party resources (although in the spirit of crowd-sourcing, if someone else found those links useful, they may take on the task of relating the spatial things and publishing those relationships to the Web as a complementary resource!).</p>
-              <p>In essence, you should only manage the data that you have the resources to maintain.</p>
-            </div>
+            <p>Spatial relationships can often be derived mathematically based on geometry - but this can be computationally expensive. <em>Topological</em> relationships such as these can be asserted, thereby removing the need to geometry-based calculations. A useful secondary benefit is that these relationships are easier for humans to understand!</p>
 
+            <p>One particular issue that spatial data is more prone to than other domains is the non-unique naming. Different authorities and agencies seek to describe the world around them by publishing spatial data, and in doing so, each minting their own URIs (as recommended in <a href="#globally-unique-ids" class="sectionRef">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a>). Where spatial things are of common interest to multiple agents, it is almost inevitable that a given spatial thing will end up being identified with several URIs. Given necessary due diligence, multiple identifiers may be linked, thereby supporting conflation of multiple sets of information and yielding new perspectives on spatial things. </p>
+
+            <p>There is always a cost to traversal of a link, even if it is just a few milliseconds delay and the need to parse a few hundred or thousand bytes returned in response to an HTTP request. In many cases, such as when dealing with large datasets and complex queries, the costs incurred from traversing a link may be significant in terms of time and data volumes. Before a user or software agent decides to traverse a link, they should be able to determine whether acquisition of the target resource, or data <em>about</em> the target resource, will support their application goals. For example, what format can one expect the response in, what type of resource is the target and how is that target related to the source resource?</p>
+
+            <p>Links by their nature are a directional relationship between source and target. Most often, a link is published within the dataset that describes the source resource specified in the link, enabling users to browse through information; traversing the links they find in documents (i.e. <em>outbound</em> links). While many links specify source and target resources that are described in the same dataset, it is commonplace, and encouraged as per the 5&#9733; rating, to link <em>between</em> datasets, thereby 'stitching' together the Web of data. In these situations, a link refers to some remote target resource. A dataset access API may interpret such links to enable a user to specify a well-known URI of a spatial thing they are interested (for example from popular data repositories such as <a href="http://www.geonames.org/">GeoNames</a>, <a href="https://www.wikidata.org/">Wikidata</a> or <a href="http://dbpedia.org/">DBpedia</a>) in order to search for related information (see <a href="#convenience-apis" class="sectionRef">Best Practice 11: Expose spatial data through 'convenience APIs'</a> for more on APIs and search). But how does a user know of the existence of a link referring <em>to</em> their target spatial thing (and potentially identifying a related resource that is useful for their intended goal) when that link is published within a remote dataset resource (i.e. an <em>inbound</em> link)?</p>
+
+            <p>Making these inbound links discoverable makes the Web of data symmetric; e.g. where both inbound and outbound links are visible to data users who may then choose to traverse them. However, links provide a secondary benefit in terms of a citation; indicating some subjective trustworthiness of the data (e.g. "it's good enough quality for me to use"). Not only do such link-based citations convey the value of the dataset in a way that the original publisher can objectively quantify (and hence continue to publish and maintain those datasets), but they can provide a subjective indication of quality; similar to a search engine’s page ranking algorithm, the larger the number of sources of inbound links, the greater the likelihood that a given dataset is if high quality.</p>
           </section>
+
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
             <p>It should be possible for humans and for machine agents to understand, interpret and follow the entity-level links between resources. Preferably, the definition of the meaning of a given link is precise and explicit.</p>
@@ -2267,6 +2261,13 @@ a:Dataset a dcat:Dataset ;
           </section>
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
+
+            <p>Earlier in this document, the <a href="#linked-data" class="sectionRef">Linked Data</a> section explained that we  believe that Linked Data requires only that the formats used to publish data support Web linking. In other words, linking spatial data does not automatically mean the use of RDF; links can also be created, for example, using GML, HTML or JSON-LD.</p>
+
+            <p>Crucially, the use of links is predicated on the ability to identify the beginning and end, or <em>source</em> and <em>target</em>, of the link. <a href="#globally-unique-ids">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a> is a prerequisite.</p>
+
+            <p>----</p>
+
             <p>Steps:</p>
             <p>1. Choose one of the following general methods to provide explicit entity-level links:</p>
             <ul>
