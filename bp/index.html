@@ -2585,7 +2585,63 @@ Connection: close
 
             <p>Now that we know how to link and the relation types that might be used, it's time to consider <em>what</em> we should link to.</p>
 
+            <ol>
+              <li>
+                <p>Describe what you know &mdash; but stop there.</p>
+                <p>Data publishers should assert the relationships that they know about and that they think will be of interest to their user community; through equality statements, spatial relations or domain-specific relations etc.</p>
+                <p>Publishers should try to avoid making assumptions about what the user may or may not know. For example, they may lack the expertise or resources to calculate a topological relationship, or lack the domain knowledge to determine how two spatial things are related, if at all. As the data publisher, you are likely to be in a better position to make these judgements than the user &mdash; so help them out by making these relationships clear.</p>
+              </li>
+              <li>
+                <p>Link to the <a>spatial thing</a>.</p>
+                <p>The geometry description or extent of a <a>spatial thing</a> may expressed using an object with its own URI. For example:</p>
+                <pre class="example" id="ex-linking-geometry-edinburgh" title="Independently identified geometry extent for the City of Edinburgh Council Area (TTL format)">
+@prefix rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix admingeo:  &lt;http://data.ordnancesurvey.co.uk/ontology/admingeo/&gt; .
+@prefix geom:      &lt;http://data.ordnancesurvey.co.uk/ontology/geometry/&gt;
+
+&lt;http://data.ordnancesurvey.co.uk/id/7000000000030505&gt;
+  a admingeo:District ;
+  rdfs:label "City of Edinburgh" ;
+  geom:extent &lt;http://data.ordnancesurvey.co.uk/id/geometry/30505-11&gt; .
+
+&lt;http://data.ordnancesurvey.co.uk/id/geometry/30505-11&gt;
+  a geom:AbstractGeometry ;
+  geom:asGML "&lt;gml:MultiPolygon&gt;...&lt;/gml:MultiPolygon&gt;"^^rdf:XMLLiteral ;
+  geom:hectares 27300.411 .
+                </pre>
+
+                <p>As can be seen in the example above, the geometry <a href="http://data.ordnancesurvey.co.uk/id/geometry/30505-11"><code>30505-11</code></a> is an <em>attribute</em> of the <a href="http://data.ordnancesurvey.co.uk/id/7000000000030505">City of Edinburgh</a>. If your intent is to make a statement about, or refer to, the real-world entity then make sure you link to the spatial thing rather than the geometry. Furthermore, note that the geometry record may be updated and re-published with a new identifier, for example, if the city boundary was resurveyed and would then result in a broken link.</p>
+                <p>Data publishers should also be aware of a common pattern used in the publication of Linked Data, where the <a>spatial thing</a> and the information resource that describes it identified separately &mdash; often, but not always, using <code>/id</code> as part of the URI for spatial thing, and <code>/doc</code> for the corresponding page/document/record. When the URI for the spatial thing is resolved, a <code>HTTP 303 (see other)</code> response is used to redirect the browser to the page/document/record URL. For example:</p>
+                <ul>
+                  <li><a href="http://statistics.gov.scot/id/statistical-geography/S12000036"><code>http://statistics.gov.scot<span style="text-decoration: underline;">/id</span>/statistical-geography/S12000036</code></a> redirects to <a href="http://statistics.gov.scot/doc/statistical-geography/S12000036"><code>http://statistics.gov.scot<span style="text-decoration: underline;">/doc</span>/statistical-geography/S12000036</code></a></li>
+                  <li><a href="http://dbpedia.org/resource/Anne_Frank_House"><code>http://dbpedia.org<span style="text-decoration: underline;">/resource</span>/Anne_Frank_House</code></a> redirects to <a href="http://dbpedia.org/page/Anne_Frank_House"><code>http://dbpedia.org<span style="text-decoration: underline;">/page</span>/Anne_Frank_House</code></a></li>
+                </ul>
+                <p>While this disambiguation has its advantages, it often seems to confuse users (and even some experts). Be aware of this <em>redirect</em> pattern, and make sure you use the correct URI &mdash; especially if you're copying the URI from a browser's address bar which ususally ends up showing the page/document/record URL.</p>
+              </li>
+              <li>
+                <p>Link to <a>spatial things</a> from popular repositories.</p>
+                <p>Linking with URIs from popular repositories may improve discoverability of your data. Not only does this provide users with better context by enabling them to browse the infomration published by the popular repository, it also helps relate your data with datasets from other parties who have also used those URIs as points of reference.</p>
+                <p>There are many popular repositories containing sets of identifiers for spatial things; the following list suggests the primary sources worth checking:</p>
+                <ul>
+                  <li><a href="http://www.geonames.org">GeoNames</a></li>
+                  <li><a href="https://www.wikidata.org/">Wikidata</a></li>
+                  <li><a href="http://dbpedia.org">DBpedia</a></li>
+                  <li>
+                    <p>National open spatial datasets such as are made available by for example the UK and Dutch governments.</p>
+                    <p>Finding out which national open spatial datasets are available, and how they can be accessed, currently requires some insider knowledge &mdash; in most cases because these datasets are often not easily discoverable. Look for national data portals / geoportals such as <a href="http://nationaalgeoregister.nl">Nationaal Georegister</a> (Dutch national register of spatial datasets) or <a href="https://data.overheid.nl">Dataportaal van de Nederlandse overheid</a> (Dutch national governmental data portal).</p>
+                  </li>
+                </ul>
+                <p>Once you've found well-known URIs for spatial things that you want to link to, proceed to create links using properties such as those described above &mdash; <code>owl:sameAs</code> (if you're careful!) and <a href="http://www.opengis.net/ont/geosparql#sfWithin"><code>geosparql:sfWithin</code></a>, or perhaps qualitative relationships like <a href="http://www.geonames.org/ontology#nearby"><code>geonames:nearby</code></a> or the <em>proposed</em> <code>schema:samePlaceAs</code>.</p>
+                <p>However, don't try to make links to <em>everything</em>. It is not always feasible to link your spatial things to well-known resources. For example, if you were maintaining a registry of cultural heritage in Amsterdam, it would be reasonably simple to look up identifiers for the city's 50 or so museums and map these to your spatial things. But it would be a huge task for, say, a topographic mapping agency to cross-reference their entire catalogue of named places containing tens of thousands of spatial things with third-party resources (although in the spirit of crowd-sourcing, if someone else found those links useful, they may take on the task of relating the spatial things and publishing those relationships to the Web as a complementary resource!). In essence, you should only create the data that you have the resources to maintain.</p>
+              </li>
+            </ol>
+
+
+
             <p>----</p>
+
+
+
 
             <p>Steps:</p>
             <p>1. Choose one of the following general methods to provide explicit entity-level links:</p>
@@ -2625,46 +2681,6 @@ Connection: close
               3rd-party link-sets existed? Is there evidence of usage in the wild?</p>
 
 
-            <p>2. Make spatial relationships explicit</p>
-
-            
-            <div class="note">
-              <p>Where possible, existing identifiers should be reused when referring to resources (see <a href="#globally-unique-ids">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a>). However, the use of multiple identifiers for the same resource is commonplace, for example, where data publishers from different jurisdictions refer to the same <a>SpatialThing</a>. In this special case, properties such as <code>owl:sameAs</code> can be used to declare that multiple identifiers refer to the same resource. It is often the case that data published from different sources about the same physical or conceptual resource may provide different view points. Note that you shouldn't use <code>owl:sameAs</code> to indicate that two spatial things are only similar, while not exactly the same.</p>
-              <p class="issue" data-number="224">Maintaining links to *all* related resources doesn't
-                scale. Redraft required.</p>
-            </div>
-
-            <p class="issue" data-number="215">Include details of which spatial relationships are published as IANA Link relation types.</p>
-
-            <p>4. Determine the things to link to</p>
-            <p>The links should connect spatial things rather than information resource(s) that describe them. In many cases, different identifiers are used to describe the <a>SpatialThing</a> and the information resource that describes that <a>SpatialThing</a>. For example, within <a href="http://dbpedia.org/">DBpedia</a>, the city of Sapporo, Japan, is identified as <code>http://dbpedia.org/<u>resource</u>/Sapporo</code>, while the information resource that describes this resource is identified as <code>http://dbpedia.org/<u>page</u>/Sapporo</code>. Care should be taken to select the identifier for the <a>SpatialThing</a> rather than the information resource that describes it; in the example above, this is <code>http://dbpedia.org/<u>resource</u>/Sapporo</code>.</p>
-            <p>Besides making the links to things within the same dataset explicit, data publishers should also relate their data to commonly used spatial resources such as GeoNames using links. </p>
-            <div style="background-color:yellow">
-
-      <p>As per <a href="https://www.w3.org/DesignIssues/LinkedData.html"
-          >https://www.w3.org/DesignIssues/LinkedData.html</a> item 4, it's useful for people to link
-        their data to other related data. In this context we're most frequently talking about either
-        Spatial Things and/or their geometry.</p>
-      <p> There are many useful sets of identifiers for spatial things and which ones are most
-        useful will depend on context. This involves discovering relevant URIs that you might want
-        to connect to.</p>
-      <p>Relevant URIs for spatial things can be found in many places. This list gives the first
-        places you should check:</p>
-      <ul>
-        <li><a href="http://www.geonames.org">GeoNames</a></li>
-        <li><a href="https://www.wikidata.org/">Wikidata</a></li>
-        <li><a href="http://dbpedia.org">DBpedia</a></li>
-        <li>National open spatial datasets such as are made available by for example the UK and
-          Dutch governments.</li>
-      </ul>
-      <p>Finding out which national open spatial datasets are available, and how they can be
-        accessed, currently requires prior knowledge in most cases because these datasets are often
-        not easily discoverable. Look for national data portals / geoportals such as <a
-          href="http://nationaalgeoregister.nl">Nationaal Georegister</a> (Dutch national register
-        of spatial datasets) or <a href="https://data.overheid.nl">Dataportaal van de Nederlandse
-          overheid</a> (Dutch national governmental data portal). </p>
-
-            </div>
 
           </section>
           <section class="test">
@@ -2673,15 +2689,12 @@ Connection: close
           </section>
           <section class="ucr">
             <h4 class="subhead">Evidence</h4>
-            <p><span>Relevant requirements</span>: <a
-              href="https://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>, <a
-                href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, <a
-                  href="https://www.w3.org/TR/sdw-ucr/#SamplingTopology">R-SamplingTopology</a>, <a
-                    href="https://www.w3.org/TR/sdw-ucr/#SpatialRelationships"
-                    >R-SpatialRelationships</a>, <a
-                      href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">R-SpatialOperators</a>. <a
-                        href="https://www.w3.org/TR/sdw-ucr/#Crawlability">R-Crawlability</a>, <a
-                          href="https://www.w3.org/TR/sdw-ucr/#Discoverability">R-Discoverability</a>.</p>
+            <p><span>Relevant requirements</span>: 
+              <a href="https://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>, 
+              <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, 
+              <a href="https://www.w3.org/TR/sdw-ucr/#SpatialRelationships">R-SpatialRelationships</a>, 
+              <a href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">R-SpatialOperators</a>, 
+              <a href="https://www.w3.org/TR/sdw-ucr/#Discoverability">R-Discoverability</a>.</p>
           </section>
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
