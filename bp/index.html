@@ -2636,51 +2636,58 @@ Connection: close
               </li>
             </ol>
 
+            <p>Finally, we need to consider how to bring symmetry to discovery of links. It's easy for a user to discover links when they are embedded in the document or data record they are working with &mdash; whether they are <em>inbound</em> or <em>outbound</em> links, all the information they need to decide whether to traverse them should be available. However, we need to consider the situation where another party publishes a dataset that refers to <em>your</em> <a>spatial things</a>. Or perhaps, a set of relationships between <a>spatial things</a> in two (or more) datasets has been developed by an agent that owns neither of the source datasets. How would a client application know that these links existed? To finish this best practice, we edscribe a number of mechanisms that might be used to help a user discover remotely published links.</p>
 
+            <ol>
+              <li>
+                <p>Help search engines find your links.</p>
+                <p>Discovery is the staple of search engines. As with the document Web, links in the Web of data will be used to support and refine search algorithms.</p>
+                <p>If your spatial data is indexable by the saerch engines, the links defined therein will be visible to them. Please refer to <a href="#indexable-by-search-engines" class="sectionRef">Best Practice 4: Make your spatial data indexable by search engines</a>.</p>
+              </li>
+              <li>
+                <p>Publish your links to a third party service.</p>
+                <p>Because the links we define use global identifiers for both the source and target resources, they do not need any context to be useful (e.g. one doesn't need any prior knowledge to determine that the URI <a href="http://dbpedia.org/resource/Anne_Frank_House"><code>http://dbpedia.org/resource/Anne_Frank_House</code></a> identifies Anne Frank's House). This means that our links can be published independently from the datasets where they were originally defined.</p>
+                <p>The service <a href="http://sameas.org">&lt;sameAs&gt;</a> provides an example of this in practice &mdash; albeit only for links using the <code>owl:sameAs</code> relation type. The HTTP GET request <a href="http://sameas.org/store/freebase/n3?uri=%3Chttp%3A%2F%2Frdf.freebase.com%2Fns%2Fm.02s5hd%3E"><code>http://sameas.org/store/freebase/n3?uri=&lt;http://rdf.freebase.com/ns/m.02s5hd&gt;</code></a> produces the following result in [[N-TRIPLES]] format:</p>
+                <pre class="example" id="ex-linking-sameas-service" title="Discovering links from the <sameAs> service ([N-TRIPLES] format)">
+HTTP/1.1 200 OK
+Connection:close
+Content-Length:864
+Content-Type:text/n3
+Date:Mon, 13 Mar 2017 16:12:04 GMT
 
-            <p>----</p>
+@prefix owl:  &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix dc:   &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix dct:  &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
 
+&lt;http://sameas.org/rdf?uri=http%3A%2F%2Frdf.freebase.com%2Fns%2Fm.02s5hd&gt;
+  dc:creator "sameAs.org/store/freebase" ;
+  dc:title "Co-references from sameAs.org/store/freebase for http://rdf.freebase.com/ns/m.02s5hd" ;
+  foaf:primaryTopic "http://rdf.freebase.com/ns/m.02s5hd" ;
+  dct:license &lt;http://creativecommons.org/publicdomain/zero/1.0/&gt; .
 
-
-
-            <p>Steps:</p>
-            <p>1. Choose one of the following general methods to provide explicit entity-level links:</p>
-            <ul>
-              <li>Publish the data with links (to uniquely identified objects) embedded in the
-                data.</li>
-              <li>Publish sets of links as a complementary resource.</li>
-              <li>Publish summaries of links for the dataset so that the semantics of the links can
-                be evaluated and accessed if deemed appropriate.</li>
-            </ul>
-            <p class="issue" data-number="36">The use of Linksets needs further discussion as
-              evidence indicates that it is not yet a widely adopted best practice. It may be
-              appropriate to publish such details in a Note co-authored with the DWBP Working Group.</p>
-            <aside class="example">
-              <p>example(s) to be added; including ...</p>
-              <ul>
-                <li>Publish summary of links for dataset using [[VoID]] <a
-                    href="https://www.w3.org/TR/void/#linkset" class="externalDFN">Linksets</a>; <ul>
-                    <li><a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference
-                        Framework</a> (SIRF) in which a summary of links for the data set is
-                      published as a Linkset; individual links are cached or computed at run-time
-                      and may be discovered via "technical features" of the Linkset.</li>
-                  </ul>
-                </li>
-                <li>Third-party provision of links: <a href="http://sameas.org">sameas.org</a>
-                  provides a (collection of) Link-set(s).</li>
-                <li>Links from entity to the 'dataset' in which it is defined (enabling a user to
-                  find 'peer' entities); e.g. RDF Data Cube observation</li>
-              </ul>
-            </aside>
-            <p class="note">[[VoID]] provides guidance on <a
-                href="https://www.w3.org/TR/void/#discovery">how to discover VoID descriptions</a>
-              (including <a href="https://www.w3.org/TR/void/#linkset">Linksets</a>)- both by
-              browsing the VoID dataset descriptions themselves to find related datasets, and using
-                <code>/.well-known/void</code> (as described in [[RFC5758]]).</p>
-            <p class="issue" data-number="162">How would a (user) agent discover that these
-              3rd-party link-sets existed? Is there evidence of usage in the wild?</p>
-
-
+&lt;http://rdf.freebase.com/ns/m.02s5hd&gt; owl:sameAs
+    &lt;http://dbpedia.org/resource/Anne_Frank_House&gt; ,
+    &lt;http://rdf.freebase.com/ns/m.02s5hd&gt; ,
+    &lt;http://rdf.freebase.com/ns/en.the_annexe&gt; ,
+    &lt;http://rdf.freebase.com/ns/guid.9202a8c04000641f80000000002c15ec&gt; .
+                </pre>
+                <p>Sets of links can be published in any of the data formats that support Web linking. However, it is worth noting that tabular data, as described in [[TABULAR-DATA-PRIMER]], may provide a reasonably compact form while retaining the semantics associated with each of the link relation types used.</p>
+                <p>While this is an example of a convenient mechanism to discover alternate identifiers for a given resource, it is ad-hoc. A client application would need to be configured to query an arbitrary number of known service end-points in order to discover links published across all the domains deemed of interest. As such, this kind of approach is only likely to be useful where one can alert the user community which services they should refer to.</p>
+              </li>
+              <li>
+                <p>Publish metadata about collections of links in a standard way.</p>
+                <p>A data publisher may consider publishing summary information about the the links defined in their dataset using <a href="https://www.w3.org/TR/void/#linkset" class="externalDFN">Linksets</a>, as defined in the Vocabulary of Interlinked Datasets [[VoID]].</p>
+                <p>A Linkset provides a summary description of the relationships between two datasets; identifying the source and target datasets, the link relation type(s) used plus optional metadata such as URI templates for identifying participating resources and the number of links specified for each relation type, and may describe <em>technical features</em> such as APIs through which the participating datasets can be accessed.</p>
+                <p>[[VoID]] dataset and linkset descriptions may be published at <code>/.well-known/void</code> on each domain (using the <code>.well-known</code> pattern defined in [[RFC5758]]) making them easy to find. Applications could be configured to harvest [[VoID]] descriptions from the Internet domains of data publishers in their community, enabling them to build a searchable graph of relationships between datasets &mdash; a <em>Data Network</em>. Because this information is summarized at the set level, the data network graph is convenient to work with, allowing simple discovery of numbers and relation types of both <em>inbound</em> and <em>outbound</em> links within a given dataset. Once the presence of interesting links within a dataset has been identified, the user would then work directly with the dataset in question (or the API through which it is accessed) to acquire the detailed information about specific links defined in that dataset.</p>
+                <p>Interactions such as those described above would be quite intensive for a human using a browser. However, the [[VoID]] descriptions could be used to drive a software agent that hides much of the complexity from the user; for example, automatically harvesting individual links once a set-level relationship is considered interesting, and then allowing the user to traverse those links either forwards or backwards.</p>
+                <p>This was the aim of the <a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference Framework</a> (SIRF), developed by <a href="http://csiro.au">CSIRO</a>. The project team describe SIRF as "a <em>Linked Data bridge</em> between Spatial Data Infrastructures and the general information Web". In summary, when a spatial dataset was registered with SIRF, URIs would be automatically created for each of the <a>spatial things</a> described in that dataset. Where identifiers in the collection of datasets were deemed to refer to the same <a>spatial thing</a> a <em>crosswalk</em> (such as <code>owl:sameAs</code>) would be created to link those identifiers and bind together different representations of the same <a>spatial thing</a>, and thereby enable users to browse information from multiple sources as a coherent whole. The SIRF application is driven by the [[VoID]] descriptions it creates for each registered dataset.</p>
+                <div class="issue" data-number="36">
+                  <p>The use of Linksets needs further discussion as evidence indicates that it is not yet a widely adopted best practice. It may be appropriate to publish such details in a Note co-authored with the DWBP Working Group.</p>
+                </div>
+              </li>
+            </ol>
 
           </section>
           <section class="test">
