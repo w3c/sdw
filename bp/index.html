@@ -1646,7 +1646,7 @@ a:Dataset a dcat:Dataset ;
                 such as using W3C [[W3C-BASIC-GEO]] (geo) <code>geo:lat</code> and <code>geo:long</code>
                 that are used extensively for describing <code>geo:Point</code> objects.</li>
               <li>Concrete geometry types are available, such as those defined in the OpenGIS
-                [[Simple-Features]] Specification, namely 0-dimensional Point and MultiPoint;
+                [[SIMPLE-FEATURES]] Specification, namely 0-dimensional Point and MultiPoint;
                 1-dimensional curve LineString and MultiLineString; 2-dimensional surface Polygon
                 and MultiPolygon; and the heterogeneous GeometryCollection. </li>
             </ul>
@@ -2270,9 +2270,10 @@ a:Dataset a dcat:Dataset ;
                   <li><strong><em>Good practice: Link identification</em></strong> &mdash; A [data format] specification SHOULD provide ways to identify links to other resources [...].</li>
                   <li><strong><em>Good practice: Web linking</em></strong> &mdash; A [data format] specification SHOULD allow Web-wide linking, not just internal document linking.</li>
                 </ul>
+                <p>The examples used in this best practice illustrate some of the data formats and mechanisms that support Web linking.</p>
               </li>
               <li>
-                <p>Follow the principles for <strong>4&#9733; &mdash; Linked</strong>, as defined in [[WEB-DATA]]</p>
+                <p>Follow the principles for <strong>4&#9733; &mdash; Linked</strong> [[WEB-DATA]]</p>
                 <ul>
                   <li>
                     <p>Always use global identifiers when linking between documents, so that link identifiers can be taken out of context and shared globally.</p>
@@ -2304,11 +2305,184 @@ Connection: close
                     </div>
                   </li>
                 </ul>
-                
               </li>
             </ol>
 
-            
+            <p>Now that we've set some ground rules for Web linking, we need to consider the types of relationship that might be used in spatial data.</p>            
+            <ol>
+              <li>
+                <p>Synonyms and equality</p>
+                <p>As described above, it is not uncommon for a spatial thing to be identified using more than one URI (also known as the "non-unique naming problem"). If you think that this is the case, the property <code>owl:sameAs</code> may be used to express this. However, caution is advised as <code>owl:sameAs</code> is an extremely strong statement; literally "these two URIs identify the same resource". As there is only <em>one</em> spatial thing, all the properties and attributes returned when resolving any of the equated URIs are considered to apply to that spatial thing. Given that spatial data is often published by different parties, each concerned with their own perspective, the spatial thing equality is often difficult to determine and depends heavily on the semantics involed.</p>
+                <p>So the advice is: if in doubt, don't use <code>owl:sameAs</code>.</p>
+
+                <p>By way of example, let's explore some data for Edinburgh.</p> 
+
+                <p>The <em>City of Edinburgh Council Area</em> (e.g. the geographical area that Edinburgh City Council is responsible for) is identified by the <a href="https://www.ons.gov.uk">Office for National Statistics</a> (the recognised national statistical institute of the UK) using their GSS code (a 9 character alpha numeric identifier) <code>S12000036</code> and the URI <a href="http://statistics.data.gov.uk/id/statistical-geography/S12000036"><code>http://statistics.data.gov.uk/doc/statistical-geography/S12000036</code></a>. At the same time, the devolved government in Scotland, operating under its own jurisdiction, retains the GSS code but uses the URI <a href="http://statistics.gov.scot/id/statistical-geography/S12000036"><code>http://statistics.gov.scot/id/statistical-geography/S12000036</code></a>. Furthermore, the <a href="https://www.ordnancesurvey.co.uk">Ordnance Survey</a> maintain yet another URI for the City of Edinburgh Council Area as part of its 'Boundary Line' service that contains administrative and statistical geography areas in the UK: <a href="http://data.ordnancesurvey.co.uk/id/7000000000030505"><code>http://data.ordnancesurvey.co.uk/id/7000000000030505</code></a>. Similarly, Geonames identifies Edinburgh, a <em>second-order administrative division</em>, as <a href="http://sws.geonames.org/2650225"><code>http://sws.geonames.org/2650225</code></a>. All of these URIs refer to the same <a>spatial thing</a> and are equated using <code>owl:sameAs</code>.</p>
+
+                <pre class="example" id="ex-linking-equality-edinburgh" title="Asserting equality between URIs for the City of Edinburgh Council Area (TTL format)">
+&lt;http://statistics.gov.scot/id/statistical-geography/S12000036&gt; &lt;http://www.w3.org/2002/07/owl#sameAs&gt; &lt;http://statistics.data.gov.uk/doc/statistical-geography/S12000036&gt; .
+&lt;http://data.ordnancesurvey.co.uk/id/7000000000030505&gt; &lt;http://www.w3.org/2002/07/owl#sameAs&gt; &lt;http://statistics.data.gov.uk/doc/statistical-geography/S12000036&gt; .
+&lt;http://sws.geonames.org/2650225&gt; &lt;http://www.w3.org/2002/07/owl#sameAs&gt; &lt;http://statistics.data.gov.uk/doc/statistical-geography/S12000036&gt; .
+                </pre>
+
+                <p>Also note that in this [[TURTLE]] snippet could easily include additional properties to help users determine whether the link is worth traversing, such as providing human-readable labels and specifying the <em>type</em> designated by each data publisher.</p>
+
+                <p>In contrast, the resource identified by <a href="http://data.ordnancesurvey.co.uk/id/50kGazetteer/81103"><code>http://data.ordnancesurvey.co.uk/id/50kGazetteer/81103</code></a> defines a Edinburgh as a <a href="http://data.ordnancesurvey.co.uk/ontology/50kGazetteer/NamedPlace">named place</a> of type <a href="http://data.ordnancesurvey.co.uk/ontology/50kGazetteer/City">city</a>. This is not the same as the <em>City of Edinburgh Area</em> and therefore use of the <code>owl:sameAs</code> relationship is inappropriate.</p>
+
+                <div class="note">
+                  <p>The mechanics of determining whether the information provided when resolving two or more URIs does indeed describe the same spatial thing is a complex topic all in its own right and way beyond the scope of best practice document. Tools such as <a href="http://openrefine.org">Open Refine</a> and the <a href="http://silkframework.org">Silk Linked Data Integration Framework</a> are designed to work with, transform and integrate heterogeneous data sources. Their documentation may provide further insight regarding these challenges.</p>
+                </div>
+
+                <div class="note">
+                  <p>The very strong semantics of the <code>owl:sameAs</code> property has lead to a number of similar sounding, but semantically weaker, properties being defined. These include:</p>
+                  <ul>
+                    <li>
+                      <p><a href="http://www.bbc.co.uk/ontologies/coreconcepts#terms_sameAs">http://www.bbc.co.uk/ontologies/coreconcepts/sameAs</a>, defined by the BBC, whose description states that the property:</p>
+                      <p style="margin-left: 40px"><em>Indicates that something is the same as something else, but in a way that is slightly weaker than owl:sameAs. It's purpose is to connect separate identities of the same thing, whilst keeping separation between the original statements of each.</em></p>
+                    </li>
+                    <li>
+                      <p>and the widely used <a href="https://schema.org/sameAs">schema:sameAs</a> defined by [[SCHEMA-ORG]] whose description states:</p>
+                      <p style="margin-left: 40px"><em>URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Freebase page, or official website.</em></p>
+                    </li>
+                  </ul>
+                </div>
+
+                <p>The lack of equality between the <em>City of Edinburgh [Administrative] Area</em> and the <a href="http://data.ordnancesurvey.co.uk/ontology/50kGazetteer/NamedPlace">named place</a> <em>Edinburgh</em> spatial things illustrates a gap in best practice. Clearly, these two resources are strongly related, but it is not clear which property one would use to assert that relationship. Unlike administrative areas that have clearly defined boundaries, places often have ill-defined, fuzzy boundaries that are based on human perception of ‘place’; you can’t always define a boundary for a place. For example, <a href="http://data.ordnancesurvey.co.uk/id/50kGazetteer/81103">Edinburgh</a> the <a href="http://data.ordnancesurvey.co.uk/ontology/50kGazetteer/NamedPlace">named place</a>, published as part of Ordnance Survey’s 50K Gazetteer, is described using a only notional point geometry; no information is provided about the geometric extent. Other examples of places with ill-defined, fuzzy geometries include the <em>American West</em> and <em>Renaissance Italy</em>. The relationships between places, with their ill-defined (or even absent) geometrical extents, defy description using the topological relationships, such as those described below, which are computed mathematically from geometry.</p> 
+
+                <p>We propose the use of a <em>qualitative</em> assertion based on human perceptions to relate places that are deemed to be the same: <strong>samePlaceAs</strong>. The <span style="background-color:yellow">proposed definition to be published in [[SCHEMA-ORG]]</span> is:</p>
+
+                <div style="margin-left: 40px">
+                  <p><a href="http://schema.org/Thing"><code>Thing</code></a> &gt; <a href="http://schema.org/Property"><code>Property</code></a> &gt; <span style="background-color:yellow"><code>samePlaceAs</code></span></p>
+                  <p>Used to relate two places that are perceived to be the same; the physical extents of the two places should be broadly comparable but do not need to equal in a topological or geometric sense.</p>
+                  <p><strong>Values expected o be one of these types:</strong> <a href="http://schema.org/Place"><code>Place</code></a></p>
+                  <p><strong>Used on these types:</strong> <a href="http://schema.org/Place"><code>Place</code></a></p>
+                </div>
+
+                <p>Given that the notion of <em>place</em> concerns a social perspective, we consider it to be distinct from <em>location</em> which is based on geometry. As a result, <code>samePlaceAs</code> can be used to assert the imprecise, social perceptions about the equality of places. <code>samePlaceAs</code> does not overlap with the topological relationships described later in this best practice document that can be computed from geometry.</p>
+
+                <p>As with all assertions of an imprecise nature that lack formal semantics, <code>samePlaceAs</code> may have limited value for semantic reasoning. Exactly what constitutes the ‘same place’ will be always be somewhat debatable. For example, is <a href="http://dbpedia.org/resource/Byzantium">ancient Byzantium</a> the same place as <a href="http://dbpedia.org/resource/Istanbul">modern Istanbul</a>? Is a historical hotel that was moved across the street to save it from demolition in a redevelopment scheme that same place that it used to be?</p>
+              </li>
+              <li>
+                <p>Spatial relationships</p>
+                <p>Topological relationships between <a>spatial things</a> can be computed based on assessment of their geometry. [[GeoSPARQL]] defines three families of topological relationships (simple features, Egenhofer and RCC8) all of which are based on the <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a> pattern, which specifies the spatial dimension of the intersections of the interiors, boundaries and exteriors of two geometric objects that may be 2-dimensional (e.g. area), 1-dimensional (e.g. linear) or 0-dimensional (e.g. point).</p>
+                <p>Most commonly used are the simple feature relationship family, described in [[SIMPLE-FEATURES]] section <span style="text-decoration: underline;">6.1.15.3 Named spatial relationship predicates based on the DE-9IM</span>. The set of seven named relationships, or <em>spatial predicates</em>, and their associated [[GeoSPARQL]] properties are listed below:</p>
+                <ul>
+                  <li><strong>Equals</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfEquals"><code>geosparql:sfEquals</code></a></li>
+                  <li><strong>Disjoint</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfDisjoint"><code>geosparql:sfDisjoint</code></a></li>
+                  <li><strong>Touches</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfTouches"><code>geosparql:sfTouches</code></a></li>
+                  <li><strong>Crosses</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfCrosses"><code>geosparql:sfCrosses</code></a></li>
+                  <li><strong>Within</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfWithin"><code>geosparql:sfWithin</code></a></li>
+                  <li><strong>Contains</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfContains"><code>geosparql:sfContains</code></a></li>
+                  <li><strong>Intersects</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfIntersects"><code>geosparql:sfIntersects</code></a></li>
+                </ul>
+                <p>Details of the Simple Features, Egenhofer and RCC8 (<a href="https://en.wikipedia.org/wiki/Region_connection_calculus">Region Connection Calculus</a>) topological relations families are provided in [[GeoSPARQL]] section <span style="text-decoration: underline;">7 Topology Vocabulary Extension</span>.</p>
+
+                <pre class="example" id="ex-linking-geosparql-sfcrosses" title="Asserting topological relationship 'crosses' (JSON format)">
+&lt;script type="application/hal+json"&gt;
+{
+  "ex:type-nl": "brug",
+  "ex:type-en": "bridge",
+  "ex:name": "Lelieslius",
+  "_links": {
+    "self": { "href" : "http://data.example.org/topo/ams/brug/Leliesluis" },
+    "curies": [ 
+      { 
+        "name": "geosparql", 
+        "href": "http://www.opengis.net/ont/geosparql#{rel}", 
+        "templated": true 
+      } , {
+        "name": "ex",
+        "href": "http://data.example.org/def/topo#{rel}",
+        "templated": "true"
+      } 
+    ],
+    "geosparql:crosses": { "href" : "http://data.example.org/topo/ams/kanaal/Prinsengracht" }
+  }, 
+  "_embedded": {
+    "ex:type-nl": "kanaal",
+    "ex:type-en": "canal",
+    "ex:name": "Prinsengracht",
+    "_links": {
+      "self": { "href" : "http://data.example.org/topo/ams/kanaal/Prinsengracht" }
+    }
+  }
+}
+&lt;/script&gt;
+                </pre>
+
+                <p>The example above uses the <a href="http://stateless.co/hal_specification.html">Hypertext Application Language</a> (HAL) conventions for expressing hyperlinks in JSON. It illustrates how one would indicate using <code>geosparql:crosses</code> that two linear features, a bridge and a canal, cross over each other.</p>
+
+                <p>In addition to the mathematically precise spatial predicates described above, a number of vocabularies define similar relationships but without the formal mathematical underpinning. For example, [[SCHEMA-ORG]] defines a pair of basic containment relationships for use with <a href="http://schema.org/Place"><code>schema:Place</code></a>:</p>
+                <ul>
+                  <li><a href="http://schema.org/containsPlace"><code>schema:containsPlace</code></a>: <em>The basic containment relation between a place and another that it contains.</em></li>
+                  <li><a href="http://schema.org/containedInPlace"><code>schema:containedInPlace</code></a>: <em>The basic containment relation between a place and one that contains it.</em></li>
+                </ul>
+
+                <p>It is also commonplace to use spatial relationships to convey distance (e.g. <em>at</em>, <em>nearby</em> or <em>far-away</em>) and direction (e.g. <em>left</em>, <em>inFrontOf</em>, <em>astern</em> and <em>below</em>). However, we find no evidence that points to use of common vocabularies to express these relationships -  perhaps because these relationships are often subjective and dependent on application context (e.g. the meaning of “near” will be quite different between an endurance cycling App and the App I use to find the bluetooth tag attached to my house keys!).</p>
+
+                <p>Two notable examples of distance relations are:</p>
+                <ul>
+                  <li><a href="http://xmlns.com/foaf/spec/#term_based_near"><code>foaf:based_near</code></a> which states "<em>We do not say much about what 'near' means in this context; it is a 'rough and ready' concept.</em>"; and</li>
+                  <li><a href="http://www.geonames.org/ontology#nearby"><code>geonames:nearby</code></a> which simply states "<em>A feature close to the reference feature</em>".</li>
+                </ul>
+
+                <pre class="example" id="ex-linking-geonames-nearby" title="Asserting distance spatial relationship using GeoNames ontology (GeoJSON [RFC7946] format)">
+&lt;script type="application/geo+json"&gt;
+{
+  "id" : "http://sws.geonames.org/6618987/",
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [ [ ... ] ]
+  },
+  "properties": {
+    "http://www.geonames.org/ontology#name": "Anne Frank's House",
+    "http://www.geonames.org/ontology#nearby" : 
+      [ "http://sws.geonames.org/6950949/",
+        "http://sws.geonames.org/6951798/",
+        "http://sws.geonames.org/6944503/",
+        ... ]
+  }
+}
+&lt;/script&gt;
+                </pre>
+
+                <p>This example snippet, adapted to use [[RFC7946]] GeoJSON format, shows a list of features (e.g. Westerkerk, Homomonument and Westertoren) that are deemed '<a href="http://sws.geonames.org/6618987/nearby.rdf">nearby</a>' Anne Frank's House according to <a href="http://www.geonames.org">GeoNames</a>.</p>
+
+                <div class="note">
+                  <p>The [[RFC7159]] JSON format provides only simple primitive types; string, number, boolean etc. The lack of a datatype for URIs means that they must be encoded as strings. As such, conventions (such as those defined in <a href="http://stateless.co/hal_specification.html">HAL</a>) are required to tell applications that a given string value is a URI. However, [[RFC7946]] GeoJSON does not define any conventions for describing URIs and forbids any extension of the data format specification.</p>
+                  <p>To mitigate this, details about object types etc. included in data payload should be provided in the documentation for the API or service end-point from which the data is accessed. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#documentYourAPI">Best Practice 25: Provide complete documentation for your API</a> for further details.</p>
+                </div>
+
+                <p style="background-color:yellow">DOMAIN SPECIFIC SPATIAL RELATIONS</p>
+
+                <p>-----</p>
+
+                <p>This simple kind of relationship might be used, say, to assert that the location that a social media message was made. In the example below, we assume that Maurits, a tourist in Amsterdam, wants to comment on his visit to Anne Frank's House. His social media App uses the [[GEOLOCATION-API]] to determine his location (<code>Lat=52.37590</code> and <code>Long=4.88452</code>) and suggests several places that Maurits might choose from in order to geo-tag his message. Maurits wants people to know roughly where he is, so he chooses "Amsterdam-Centrum" and presses 'send'. The App encodes the message and geo-information in [[SCHEMA-ORG]] and pushes the message to the server for distribution.</p>
+
+                <pre class="example" id="ex-linking-schema-locationCreated" title="Asserting basic domain-specific spatial relationship using [SCHEMA-ORG] (JSON-LD format)">
+&lt;script type="application/ld+json"&gt;
+{
+  "@context" : {
+    "@vocab" : "http://schema.org/"
+  },
+  "@id" : "http://app.example.com/message/867a52e3-6687-4471-b1f2-c7561673552e",
+  "@type" : "Message",
+  "sender" : { "@type" : "Person", "name" : "Maurits" },
+  "datePublished" : "2017-03-12", 
+  "locationCreated" : {
+    "@id" : "https://g.co/kg/m/0gh6_3j"
+    "@type" : "Place",
+    "name" : "Amsterdam-Centrum"
+  }
+}
+&lt;/script&gt;
+                </pre>
+
+<p>[[DWBP]] reuse vocabularies</p>
+
+              </li>
+            </ol>
 
 
             <p>----</p>
@@ -2376,13 +2550,7 @@ Connection: close
                 <code>/.well-known/void</code> (as described in [[RFC5758]]).</p>
             <p class="issue" data-number="162">How would a (user) agent discover that these
               3rd-party link-sets existed? Is there evidence of usage in the wild?</p>
-            <p class="issue" data-number="163">Does the [[BEACON]] link dump format allow the use of
-              wild cards / regex in URLs (e.g. URI Template as defined in [[RFC6570]]?</p>
-           <div class="issue" data-number="166">
-              <p>How do we know what is at the end of a link - and what can I do with it / can it do
-                for me (e.g. the 'affordances' of the target resource).</p>
-              <p>How to describe the 'affordances' of the target resource?</p>
-            </div>
+
 
             <p>2. Make spatial relationships explicit</p>
 
@@ -2826,7 +2994,7 @@ Content-type: application/geo+json
   }
 }
               </pre>
-              <p>The "Well Known Text" (WKT) encoding, itself defined in [[Simple-Features]], is extended by [[GeoSPARQL]] to include designation of the coordinate reference system used. The example above encodes the polygon as a [[GeoSPARQL]] <code>wktLiteral</code> data type, designating the coordinate reference system as <code>&lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt;</code> (<a href="http://epsg.io/4326">EPSG:4326</a>) - WGS 84 Lat/Long.</p>
+              <p>The "Well Known Text" (WKT) encoding, itself defined in [[SIMPLE-FEATURES]], is extended by [[GeoSPARQL]] to include designation of the coordinate reference system used. The example above encodes the polygon as a [[GeoSPARQL]] <code>wktLiteral</code> data type, designating the coordinate reference system as <code>&lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt;</code> (<a href="http://epsg.io/4326">EPSG:4326</a>) - WGS 84 Lat/Long.</p>
 
               <div class="note">
                 <p>When using the <code>wktLiteral</code> datatype specified in [[GeoSPARQL]], the <a>coordinate reference system</a> URI may be omitted. In such a case, WGS 84 Long/Lat (<code>urn:ogc:def:crs:OGC::CRS84</code>) is used. Please refer to [[GeoSPARQL]] <strong>Requirement 11</strong> for more details.</p>

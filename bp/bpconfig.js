@@ -74,7 +74,7 @@ var respecConfig = {
         authors: ["Matthew Perry", "John Herring"],
         date: "10 September 2012"
       },
-      "Simple-Features":{
+      "SIMPLE-FEATURES":{
         href:"http://www.opengeospatial.org/standards/sfa",
         publisher:"OGC",
         title:"Simple Feature Access - Part 1: Common Architecture",
