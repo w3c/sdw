@@ -1,62 +1,62 @@
 # baseURI: http://www.w3.org/ns/sosa/sampling
+# imports: http://www.w3.org/2004/02/skos/core
 # imports: http://www.w3.org/ns/sosa/
 
 @prefix : <http://www.w3.org/ns/sosa/sampling/> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sampling: <http://www.w3.org/ns/sosa/sampling/> .
 @prefix schema: <http://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-sosa:hasFeatureOfInterest
-  schema:domainIncludes sampling:SamplingActivity ;
+<http://www.w3.org/ns/sosa/hasFeatureOfInterest>
+  schema:domainIncludes sampling:Sampling ;
 .
-sosa:hosts
-  schema:rangeIncludes sampling:SamplingDevice ;
+<http://www.w3.org/ns/sosa/hosts>
+  schema:rangeIncludes sampling:Sampler ;
 .
-sosa:resultTime
-  schema:domainIncludes sampling:SamplingActivity ;
+<http://www.w3.org/ns/sosa/resultTime>
+  schema:domainIncludes sampling:Sampling ;
 .
-sosa:sampling
+<http://www.w3.org/ns/sosa/sampling>
   rdf:type owl:Ontology ;
-  dcterms:created "2017-02-15" ;
-  dcterms:creator <http://orcid.org/0000-0002-3884-3420> ;
-  dcterms:license <http://creativecommons.org/licenses/by/4.0/> ;
-  rdfs:comment "Proposal for extension to SOSA to support basic description of sampling activities."@en ;
-  rdfs:label "Sampling extension of SOSA" ;
-  owl:imports sosa: ;
+  owl:imports <http://www.w3.org/2004/02/skos/core> ;
+  owl:imports <http://www.w3.org/ns/sosa/> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
 .
 sampling:RelationshipNature
   rdf:type owl:Class ;
-  rdfs:comment "Definition of the nature of a relationship between samples."@en ;
-  rdfs:label "Nature of the relationship"@en ;
+  rdfs:comment "Members of this class indicate the nature of a relationship between two samples"@en ;
+  rdfs:label "Nature of relationship (between samples)"@en ;
   rdfs:subClassOf skos:Concept ;
-  skos:definition "Definition of the nature of a relationship between samples."@en ;
-  skos:example "Adjacent flight-line" ;
-  skos:example "Females" ;
-  skos:example "Juveniles" ;
-  skos:example "Males" ;
-  skos:example "Pixel within image or scene" ;
-  skos:example "Probe spot on polished specimen" ;
-  skos:example "Specimen taken from borehole" ;
-  skos:example "Split of core sample" ;
-  skos:example "Station along a traverse" ;
-  skos:example "Sub-sample with grain size smaller than specified seive mesh" ;
 .
 sampling:SampleRelationship
   rdf:type owl:Class ;
-  rdfs:comment "Qualified relationship between two samples"@en ;
+  rdfs:comment "Members of this class represent a relationship between a sample and another"@en ;
   rdfs:label "Sample relationship"@en ;
 .
-sampling:SamplingActivity
+sampling:Sampler
+  rdf:type rdfs:Class ;
   rdf:type owl:Class ;
-  rdfs:comment "A SamplingActivity carries out an (Sampling) Procedure to create or transform one or more samples."@en ;
-  rdfs:label "Sampling Activity"@en ;
-  skos:definition "A SamplingActivity carries out an (Sampling) Procedure to create or transform one or more samples."@en ;
+  rdfs:comment "A device that is used by, or implements, a (Sampling) Procedure to create or transform one or more samples."@en ;
+  rdfs:label "Sampling device"@en ;
+  skos:definition "A device that is used by, or implements, an (Sampling) Procedure to create or transform one or more samples."@en ;
+  skos:example "Ball mill"@en ;
+  skos:example "Diamond drill"@en ;
+  skos:example "Hammer"@en ;
+  skos:example "Hypodermic syringe and needle"@en ;
+  skos:example "Image sensor"@en ;
+  skos:example "Seive stack"@en ;
+  skos:example "Soil auger"@en ;
+.
+sampling:Sampling
+  rdf:type rdfs:Class ;
+  rdf:type owl:Class ;
+  rdfs:comment "A Sampling activity carries out a (Sampling) Procedure to create or transform one or more samples."@en ;
+  rdfs:label "Sampling activity"@en ;
+  skos:definition "A Sampling activity carries out a (Sampling) Procedure to create or transform one or more samples."@en ;
   skos:example "Crushing a rock sample in a ball mill."@en ;
   skos:example "Digging a pit through a soil sequence."@en ;
   skos:example "Dividing a field site into quadrats."@en ;
@@ -69,32 +69,20 @@ sampling:SamplingActivity
   skos:example "Splitting a piece of drill-core to create two new samples."@en ;
   skos:example "Taking a diamond-drill core from a rock outcrop."@en ;
 .
-sampling:SamplingDevice
-  rdf:type owl:Class ;
-  rdfs:comment "A device that is used by, or implements, an (Sampling) Procedure to create or transform one or more samples."@en ;
-  rdfs:label "Sampling Device"@en ;
-  skos:definition "A device that is used by, or implements, an (Sampling) Procedure to create or transform one or more samples."@en ;
-  skos:example "Ball mill."@en ;
-  skos:example "Diamond drill."@en ;
-  skos:example "Hammer."@en ;
-  skos:example "Hypodermic syringe and needle."@en ;
-  skos:example "Image sensor."@en ;
-  skos:example "Seive stack."@en ;
-  skos:example "Soil auger."@en ;
-.
 sampling:hasResultingSample
   rdf:type owl:ObjectProperty ;
-  schema:domainIncludes sampling:SamplingActivity ;
-  schema:rangeIncludes sosa:Sample ;
+  schema:domainIncludes sampling:Sampling ;
+  schema:rangeIncludes <http://www.w3.org/ns/sosa/Sample> ;
   rdfs:comment "Relation linking a SamplingActivity and the new Sample created as a result."@en ;
   rdfs:label "has resulting sample"@en ;
+  owl:inverseOf sampling:isSamplingResultOf ;
   skos:definition "Relation linking a SamplingActivity and the new Sample created as a result."@en ;
 .
 sampling:hasSampleRelationship
   rdf:type owl:ObjectProperty ;
-  schema:domainIncludes sosa:Sample ;
+  schema:domainIncludes <http://www.w3.org/ns/sosa/Sample> ;
   schema:rangeIncludes sampling:SampleRelationship ;
-  rdfs:comment "has this relationship to another sample"@en ;
+  rdfs:comment "Links a sample to a sample relationship (which links to a related sample)"@en ;
   rdfs:label "has sample relationship"@en ;
 .
 sampling:isSamplingResultOf
@@ -105,8 +93,8 @@ sampling:natureOfRelationship
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sampling:SampleRelationship ;
   schema:rangeIncludes sampling:RelationshipNature ;
-  rdfs:comment "Nature of relationship between two entities"@en ;
-  rdfs:label "nature of relationship"@en ;
+  rdfs:comment "Links a SampleRelationship to an indication of the nature of the relationship"@en ;
+  rdfs:label "nature of (sample) relationship"@en ;
 .
 sampling:performedSampling
   rdf:type owl:ObjectProperty ;
@@ -115,20 +103,21 @@ sampling:performedSampling
 sampling:relatedSample
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sampling:SampleRelationship ;
-  schema:rangeIncludes sosa:Sample ;
-  rdfs:comment "the related sample"@en ;
-  rdfs:label "Related Sample"@en ;
+  schema:rangeIncludes <http://www.w3.org/ns/sosa/Sample> ;
+  rdfs:comment "Links a sample relationship to the related sample"@en ;
+  rdfs:label "related sample"@en ;
 .
 sampling:sampledBy
   rdf:type owl:ObjectProperty ;
-  schema:domainIncludes sampling:SamplingActivity ;
-  schema:rangeIncludes sampling:SamplingDevice ;
+  schema:domainIncludes sampling:Sampling ;
+  schema:rangeIncludes sampling:Sampler ;
   rdfs:comment "Relation linking an SamplingActivity to the SamplingDevice that made that SamplingActivity."@en ;
   rdfs:label "sampled by"@en ;
+  owl:inverseOf sampling:performedSampling ;
   skos:definition "Relation linking an SamplingActivity to the SamplingDevice that made that SamplingActivity."@en ;
 .
-sosa:usedProcedure
-  schema:domainIncludes sampling:SamplingActivity ;
+<http://www.w3.org/ns/sosa/usedProcedure>
+  schema:domainIncludes sampling:Sampling ;
   rdfs:comment "or to a re-usable Procedure used in a SamplingActivity" ;
   skos:definition "or to a re-usable Procedure used in a SamplingActivity" ;
 .
