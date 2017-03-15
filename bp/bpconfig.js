@@ -343,6 +343,13 @@ var respecConfig = {
         "authors": ["Mark Nottingham", "Julian Reschke", "Jan Algermissen"],
         "href": "http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1",
         "title": "Link Relation Types Registry"
+      },
+      "TRIPLE-PATTERN-FRAGMENTS": {
+        "authors": ["Ruben Verborgh"],
+        "href": "http://www.hydra-cg.com/spec/latest/triple-pattern-fragments/",
+        "title": "Triple Pattern Fragments specification",
+        "publisher": "Hydra W3C Community Group",
+        "date": "05 January 2017"
       }
       
     },
