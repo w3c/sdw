@@ -759,47 +759,52 @@ $(document).ready( function() {
           dataset for local usage or may provide a rich API enabling the users to request only the
           required parts for their needs. The dataset-level metadata is used by the catalog to match
           the appropriate dataset(s) with the user's query.</p>
-        <p>This section includes best practices for including the spatial extent and the CRS of the
+        <p>This section includes best practices for including the spatial extent, CRS, and other spatial details of the
           dataset in the metadata. These are the extra metadata items needed to make spatial
-          datasets discoverable and reusable. A third best practice in this section helps you go a
-          step further: exposing spatial data on the web in such a way that the individual entities
-          within the dataset are discoverable. </p>
+          datasets both discoverable and usable. A third best practice in this section goes a
+          step further in granularity: exposing spatial data on the web in such a way that individual entities or "granules"
+          within a dataset can be discovered, evaluated, and utilized. </p>
         <div class="practice">
           <p><span id="spatial-info-dataset-metadata" class="practicelab">Include spatial metadata
               in dataset metadata</span></p>
           <p class="practicedesc">The description of datasets that have spatial features should
-            include explicit metadata about the spatial coverage</p>
+            include explicit metadata about their spatial extent, coverage, and representation</p>
           <p class="note">This best practice extends [[DWBP]] <a
               href="https://www.w3.org/TR/dwbp/#DescriptiveMetadata">Best Practice 2: Provide descriptive metadata</a>.</p>
           <section class="axioms">
             <h4 class="subhead">Why</h4>
-            <p>For spatial data, it is often necessary to describe the spatial details of the
-              dataset - such as spatial coverage or extent of the dataset or, put in simpler terms,
-              which area of the world the data is about. This information is used, for example, by
+            <p>Since location is such a powerful organizing principle, it is usually necessary to specifically describe the spatial details and nature of a
+              dataset in order to discover it as well as to determine its fitness for use. This information is used, for example, by
                 <a>SDI</a> catalog services that offer spatial querying to find data - but also by
-              users to understand the nature of the dataset. In some cases, for example when dealing with crowd-sourced data, provenance information is important as well. </p>
+              users to understand the nature of the dataset. In some cases, for example when dealing with crowd-sourced data, provenance information 
+              or how the dataset came to be in its published form and with what quality, is important as well. The first level of spatial description is the spatial extent of the dataset,
+              the area of the world that the dataset describes. This often suffices for initial discovery, but further levels of description are needed to evaluate a dataset for use.
+              These include the dataset spatial coverage (continuity, resolution, properties) as well as the spatial representation or geometric model (for example, grid coverage,
+              discrete coverage, point cloud, linear network). Dataset quality measures such as positional accuracy are also important for determining applicability. In the case
+              of datasets whose spatial characteristics vary over their temporal coverage, spatial descriptions must include an explicit temporal aspect</p>
           </section>
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
             <p>Dataset metadata should include the information necessary to enable spatial queries
               within catalog services such as those provided by <a>SDIs</a>.</p>
-            <p>Dataset metadata should include the information required for a user to evaluate
-              whether the spatial data is suitable for their intended application.</p>
+            <p>Dataset metadata should also include the information required for a user to evaluate
+              whether a spatial dataset is suitable for their intended application.</p>
           </section>
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
-            <p>When publishing a dataset, provide as much spatial metadata as necessary, but at least the spatial coverage.
-              Other examples of spatial metadata are: </p>
+            <p>When publishing a dataset, provide as much spatial metadata as necessary, but at least the spatial extent, coverage, and representation.
+              Other examples of spatial metadata include: </p>
             <ul>
-              <li>number of dimensions (1D, 2D, 3D)</li>
+              <li>number of dimensions (1D, 2D, 3D, 4D)</li>
               <li>spatial representation type (e.g. grid, vector, text table)</li>
-              <li>positioning system used for acquiring location</li>
+              <li>geometric property (e.g. boundary, region, centerline, centroid, field</li>
               <li>Coordinate Reference System(s) - refer to <a href="#CRS-background" class="sectionRef"></a> for an introduction to that topic</li>
               <li>spatial resolution - <a href="#desc-accuracy" class="sectionRef">Best Practice 5: Describe the positional accuracy of spatial data</a></li>
+              <li>spatial significance of non-spatial properties (e.g. point value, interpolation, unit average, sum)</li>
             </ul>
             <p>In Spatial Data Infrastructures the accepted standard for describing metadata is
-              [[ISO-19115]]. </p>
-            <p>To provide information about the spatial attributes of the dataset on the web one
+              [[ISO-19115]] or profiles thereof. </p>
+            <p>To provide information about the spatial attributes of the dataset on the Web one
               can: </p>
             <ul>
               <li>As shown in [[DWBP]] <a
@@ -934,7 +939,7 @@ a:Dataset a dcat:Dataset ;
               </li>
               <li>
                 <p>Sometimes we don't want to measure relative to the surface of the Earth at all:</p>
-                <p>Spatial data such as descriptions of the built environment, geological surveys or satellite imagery etc. are often captured and stored in an <em>engineering</em> coordinate refence system as measurements from a local datum (e.g. <em>X</em> and <em>Y</em> pixel positions along orthogonal axes of an image or, in the case of linear referencing, distance along a specified feature from a fixed point).</p>
+                <p>Spatial data such as descriptions of the built environment, geological surveys, satellite imagery, etc. are often captured and stored in an <em>engineering</em> coordinate reference system as measurements from a local datum. For example, <em>X</em>  <em>Y</em> survey coordinates relative to a building corner, pixel positions within the image swath of a satellite camera, or distance along a linear feature from a fixed origin point.</p>
                 </li>
             </ol>
             
@@ -1896,38 +1901,87 @@ other geocoding representations. The alternative is to use structured geometry o
 </div>
           
           <div class="practice">
-            <p><span id="relative-position" class="practicelab">How to describe relative
-                positions</span></p>
-            <p class="practicedesc">Provide a relative positioning capability in which the entities
-              can be linked to a specific position.</p>
+            <p><span id="relative-position" class="practicelab">Describe relative
+                positioning</span></p>
+            <p class="practicedesc">Provide a relative positioning capability in which one entity
+              can be positioned relative to another entity.</p>
             <section class="axioms">
               <h4 class="subhead">Why</h4>
-              <p>In some cases, it is necessary to describe the location of an entity in relation to
-                another location or in relation to location of another entity. For example,
-                South-West of Guildford, close to London Bridge.</p>
+              <p>Geocentric coordinate reference systems describe position relative to the earth itself. It can also
+              be valuable or even necessary to describe the position of an entity relative to a second entity. In some cases this is
+              a navigation convenience, for example a tour kiosk might be described as being located between the Boston Common Frog Pond and the Park
+              Street T entrance, or in one's lower left view when looking up at the Statehouse. In other cases of moving or generalized  entities, it may be that the 
+              entity can only usefully be given a relative position. For example, a package is reported left on seat 32L1 on the #59 bus, or 
+              part number PRG5460 is always located at position (51, 73, 3) in Acme warehouses.
+              </p>
             </section>
             <section class="outcome">
               <h4 class="subhead">Intended Outcome</h4>
-              <p>It should be possible to describe the location of an entity in relation to another
-                entity or in relation to a specific location, instead of specifying a geometry.</p>
+              <p>It should be possible to describe the location of an entity in relation to one or more other
+                entities or places, instead of specifying it's own geocentric position or geometry.</p>
               <p>The relative positioning descriptions should be machine-interpretable and/or
-                human-readable.</p>
+                human-readable as required by the intended application. The positions and/or geometries of reference entities, if available, should be retrievable through their link relations. </p>
             </section>
             <section class="how">
               <h4 class="subhead">Possible Approach to Implementation</h4>
-              <p>The relative positioning should be provided as: </p>
+              <p>Positioning of one entity (A) relative to another referenced entity (B) is a combination of two factors: the referencing target, 
+              and the means of relative positioning. "Geocentric" referencing targets the planet itself or at least a fixed point on it. "Allocentric" 
+              referencing targets another entity. "Egocentric" referencing targets a particular field of view of an observer or camera. Positioning 
+              can take the form of a complete coordinate reference system (e.g. engineering CRS), a qualitative relation such as "beside", or or a 
+              quantitative relation such as "30m northwest"</p>
+              <table id="relative-positioning-modes">
+        <caption>Combinations of relative positioning means and references</caption>
+        <tr>
+          <th></th>
+          <th>Engineering CRS</th>
+          <th>Qualitative Relation</th>
+          <th>Quantitative Relation</th>
+         </tr>
+         <tr>
+          <th>Geocentric   </th>
+          <td>Coordinate position A relative to a fixed earth datum</td>
+          <td>NA</td>
+          <td>NA</td>
+         </tr>
+         <tr>
+        <tr>
+          <th>Allocentric   </th>
+          <td>Coordinate position A relative to a fixed, mobile, or generic entity B</td>
+          <td>A "next to" B</td>
+          <td>A "20m south" of B</td>
+         </tr>
+         <tr>
+        <tr>
+          <th>Egocentric   </th>
+          <td>Coordinate position A within field of view B</td>
+          <td>A in "lower left corner" of field of view B</td>
+          <td>A "30 deg right of center" in field of view B</td>
+         </tr>
+         <tr>
+         </table>
               <ul>
-                <li>A positioning capability to describe the position of entities with explicit
-                  links to a specific location and/or other entities. </li>
-                <li>Semantic descriptions for relative positions and relative associations to an
-                  explicit or absolute positioning capability.</li>
+                <li>Descriptions of the positions of entities as explicit
+                  links to target entities. </li>
+                <li>Semantic descriptions of the target entities and type of positioning.</li>
+                <li>Encodings of the specific entity relations or the relative coordinate positions in the case of engineering CRS'</li>
               </ul>
-              <p class="issue" data-number="121">Do we need this as a best practice; if yes, this best practice
-                needs more content</p>
               <aside class="example">
-                <p>In, for example hydrology, a description of where a stream gauge is located relative to a stream confluence.</p>
+                <p>"Metes and Bounds" are a widely used system for defining land parcel boundary edges as cardinal directions and distances 
+                relative to survey markers or other landmarks. This would be considered allocentric quantitative relation type of relative positioning</p>
               </aside>
-            </section>
+             <aside class="example">
+                <p>The positions of pixels an image captured by a satellite or other camera sensor are originally recorded relative to the field of view of the sensor.
+                 A  model of the sensor optics and platform position may be used later to derive geocentric pixel positions.</p>
+              </aside>
+             <aside class="example">
+                <p>In hydrology, positions of river features and/or observations such as water depth are often recorded as distance along a stream feature relative to a well-known 
+                origin point such as a stream confluence. This provides a reproduceable form of positioning even if the geometry of the stream feature has not been precisely determined.</p>
+              </aside>
+                    <aside class="example">
+                <p>Augmented or mixed reality content is presented to the viewer in positions both relative to the real-world entities that it augments and relative the viewer's
+                visual perspective on those entities. For example, an informational callout needs to be juxtaposed with its target but also occupy the user's field of view in a meaningful fashion.</p>
+              </aside>
+       </section>
             <section class="test">
               <h4 class="subhead">How to Test</h4>
               <p>...</p>
