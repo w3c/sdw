@@ -74,7 +74,7 @@ var respecConfig = {
         authors: ["Matthew Perry", "John Herring"],
         date: "10 September 2012"
       },
-      "Simple-Features":{
+      "SIMPLE-FEATURES":{
         href:"http://www.opengeospatial.org/standards/sfa",
         publisher:"OGC",
         title:"Simple Feature Access - Part 1: Common Architecture",
@@ -259,6 +259,13 @@ var respecConfig = {
         authors: ["Roger Lott"],
         date: "1 May 2015"
       },
+      "OGC-API-WP":{
+        href:"http://docs.opengeospatial.org/wp/16-019r4/16-019r4.html",
+        publisher:"OGC",
+        title:"Open Geospatial APIs - White Paper",
+        authors: ["George Percivall (Editor)"],
+        date: "23 February 2017"
+      },
       "GS1": {
         title: "SmartSearch Implementation Guideline",
         authors: ["Mark Harrison", "Ken Traub"],
@@ -325,6 +332,24 @@ var respecConfig = {
         "publisher":"OGC",
         "title": "OGC KML 2.3",
         "date": "4 August 2015"
+      },
+      "WEB-DATA": {
+        "authors": ["Erik Wilde"],
+        "href": "http://webdata.systems",
+        "title": "Web Data",
+        "date": "1 November 2016"
+      },
+      "LINK-RELATION-TYPES": {
+        "authors": ["Mark Nottingham", "Julian Reschke", "Jan Algermissen"],
+        "href": "http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1",
+        "title": "Link Relation Types Registry"
+      },
+      "TRIPLE-PATTERN-FRAGMENTS": {
+        "authors": ["Ruben Verborgh"],
+        "href": "http://www.hydra-cg.com/spec/latest/triple-pattern-fragments/",
+        "title": "Triple Pattern Fragments specification",
+        "publisher": "Hydra W3C Community Group",
+        "date": "05 January 2017"
       }
       
     },
