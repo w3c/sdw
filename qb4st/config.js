@@ -86,6 +86,21 @@ var respecConfig = {
           href: "http://sw.joanneum.at/scovo/schema.html",
           title:"The Statistical Core Vocabulary",
         },
+		"XKOS": {
+          href: "http://www.ddialliance.org/Specification/XKOS/1.0/OWL/xkos.html",
+          title:"XKOS - An SKOS extension for representing statistical classifications",
+		  publisher:"DDAlliance",
+          status:"Working Draft",
+		  date:"1 January 2017"
+        },
+	    "QB4OLAP": {
+          href: "https://lorenae.github.io/qb4olap/",
+          title:"QB4OLAP  - Business Intelligence over Linked Data",
+          authors:["Lorena Etcheverry"],
+          status:"Paper",
+		  date:"2 April 2016"
+        },
+		
         "vocab-qb4st": {
           href:"https://www.w3.org/TR/vocab-qb4st/",
           title:"QB4ST: RDF Data Cube extensions for spatio-temporal components",
