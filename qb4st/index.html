@@ -71,7 +71,8 @@
 
 		<p>QB4ST is intended to enable the development of semantic descriptions of specific spatio-temporal data elements by appropriate communities of interest, rather than to enumerate a static list of such definitions. It provides a minimal ontology of spatio-temporal properties and defines abstract classes for data cube components (i.e. dimensions and measures) that use these, to allow classification and discovery of specialized component definitions using general terms.</p>
 
-		<p>QB4ST is designed to support the publication of consistently described re-usable and comparable definitions of spatial and temporal data elements by appropriate communities of practice. One obvious such case is the use of GPS coordinates described as decimal latitude and longitude measures. Another example is the intended publication of a register of Discrete Global Grid Systems (DGGS) by the OGC DGGS Working Group. QB4ST is intended to support publication of descriptions of such data using a common set of attributes that can be attached to a property description (extending the available RDF-QB mechanisms for attributes of observations)</p>
+
+		<p>QB4ST is designed to support the publication of consistently described re-usable and comparable definitions of spatial and temporal data elements by appropriate communities of practice. One obvious such case is the use of GPS coordinates described as decimal latitude and longitude measures. Another example is the intended publication of a register of Discrete Global Grid Systems (DGGS) by the OGC DGGS Working Group. QB4ST is intended to support publication of descriptions of such data using a common set of attributes that can be attached to a property description (extending the available RDF Data Cube mechanisms for attributes of observations)</p>
 
         <p>This document will refer to a set of instances of RDF Data Cube components defined using the QB4ST extensions. These examples are informative, although publication of a separate specification for common spatial and temporal dimensions and measures is an expected outcome.</p>
 		
@@ -142,10 +143,11 @@
       <h3>The RDF Data Cube</h3>
       <p>The RDF Data Cube [[VOCAB-DATA-CUBE]] is an existing standard for representing data as RDF.</p>
          <p>It is derived from the traditions of Statistical Data Metadata Exchange [[SDMX]], and is typically used for data that is associated with statistical regions (e.g. government jurisdictions).
-         It provides a canonical mechanism for metadata binding the components of a datacube to a range defined by a set of coded values, using the the SKOS vocabulary. It also provides for a generalized "AttributeProperty" that can contain additional information about an "Attachable" - i.e. a Dataset, a subset (slice) or an observation.  Individual components (such as measures and dimensions) are not included in this notion, so it is not directly possible to define the reference system for each component individually, and there is no canonical representation of reference systems other than "codelists."
+         It provides a canonical mechanism for metadata binding the components of a datacube to a range defined by a set of coded values, using the SKOS vocabulary. It also provides for a generalized "AttributeProperty" that can contain additional information about an "Attachable" - i.e. a Dataset, a subset (slice) or an observation.  Individual components (such as measures and dimensions) are not included in this notion, so it is not directly possible to define the reference system for each component individually, and there is no canonical representation of reference systems other than "codelists."
 	</section>
 	<section id="SDMX">
 		<h2>SDMX Dimensions</h2>
+
 		<p>Some spatio-temporal concepts have been defined as extensions to RDF Data Cube for use in SDMX applications. These simply refer to named concepts in a SDMX specific vocabulary, as seen in the example.  These are not general enough definitions for use outside the SDMX context, nor do they provide for metadata to allow these dimensions to be fully specified.  They do, however, highlight the need for such specialisations in practice, and that [[VOCAB-DATA-CUBE]] does not directly support these concerns.</p>
 		<div class="example"><div class="example-title">SDMX treatment of spatial and temporal data</div>
 			 <pre>
@@ -165,10 +167,11 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
     rdfs:comment """The period of time or point in time to which the measured observation is intended to refer."""@en ;
     rdfs:isDefinedBy &lt;https://sdmx.org/wp-content/uploads/01_sdmx_cog_annex_1_cdc_2009.pdf&gt; .
 </pre></div>
+
 		</section>
 	<section  id="OWL-Time" >
           <h2>OWL Time</h2>
-          <p>OWL-Time [[OWL-Time]] provides basic concepts for Time as well as canonical terms for commonly used specialisations. QB4ST extends RDF Data Cube by specifying use of OWL-Time as the appropriate ontology for temporal reference systems.</p>
+          <p>OWL-Time [[OWL-Time]] provides basic concepts for Time as well as canonical terms for commonly used specializations. QB4ST extends RDF Data Cube by specifying use of OWL-Time as the appropriate ontology for temporal reference systems.</p>
       </section>
 	<section  id="Spatial" >
           <h2>Spatial Concepts</h2>
@@ -189,10 +192,12 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 		</section>
 		<section id="ExtendQB">
 			<h2>Attaching attributes to specific components</h2>
+
 			<p>The RDF Data Cube specification provides an ontology in the form of a RDFS class model for describing the elements of a dataset by classifying a "record" (an instance of a resource with a set of properties) as a <code>qb:Observation</code> and then allowing the properties of that Observation to be classified as Dimensions, Measures or Attributes. This classification must be undertaken in a separate ontology that must be defined by the domain of use. Where possible, arbitrary extensions to the data model should be avoided. There are however a number of limitations of the RDF Data Cube model when it comes to the case of data organized using typical spatial and temporal reference systems.</p>
 			<p>The main limitation of RDF Data Cube is that Attribute properties, intended to convey such things as the unit of measure of an observation, can be attached to a complete Observation, or a higher level aggregation (DataSet or Slice), but not unambiguously to a specific component. Spatio-temporal data will have often have multiple values recorded, such as latitude, longitude, elevation and observation time. Often spatial measurements are either recorded in, or need to be delivered in, a domain-specific reference system &mdash; for example a national grid system, local building coordinates, pixel location in a satellite image &mdash; and converted to a more generally understood reference system &mdash; such as WGS84 coordinates for latitude and longitude. Such conversions have implications for the interpretation of such data, and require attributes to be attached to individual property definitions. Likewise, a mechanism to specify precision and data quality of each component is required. RDF Data Cube does not provide this finer-grained assignment of attributes to specific components.</p>
 
 			<p>The choice here is either to update [[VOCAB-DATA-CUBE]] or provide an extended model. The latter approach allows us to provide a set of canonical property names for such attributes, and to allow them to be attached either to a <code>qb:Component</code> (to apply to all Observations using a specific dimension), or a <code>qb:ComponentSpecification</code> (allowing attachment to components within a specific dataset). Note that if defined by extending <code>qb:Attribute</code> such attributes are already attachable to Observation, DataSet and Slice.</p>
+
 </section>
   <section id="codedProperties">
 			<h2>Refining the range of CodedProperties</h2>
@@ -206,6 +211,7 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 <section id="boundingEnvelopes">
 			<h2>Defining the bounding envelopes of spatial and temporal properties</h2>
 			<p>A common requirement when describing a spatial or temporal aspect of a dataset is to define the range of its spatial and temporal properties. This is usually a dataset specific qualification, and thus is typically required to be an attribute of a ComponentSpecification. Canonical means to specify the start and end values of [numeric, time etc] or ordered lists are required. Also required is the ability to specify range using nominal values within a notional hierachy of features, such as administrative units within a specific country.</p>
+
 </section>
 <section id="nested">
 			<h2>Identification of nested spatial elements</h2>
@@ -252,6 +258,7 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 	</section>
 	<section id="DefiningProperties">
 	 <h2>Spatio-Temporal attributes of dataset properties</h2>
+
 	 <p>When a property of an object is defined, this can be either as an rdf:Property, defining a predicate that can be used to link a value to the object - but it can also be a more abstract reference to a named element in an arbitrary data structure. (I.e. we can use QB4ST to describe data structures that are not necessarily encoded in RDF, although it does define an RDF encoding should this be required.</p>
 	 <p>
 	 The most common case is for spatial or temporal properties to be measures associated with another property measured at this time and location. In some cases however, a single observation is taken at a predetermined location or time, in which case these properties are "dimensions". In either case, common properties relating to their spatio-temporal nature are needed, and defined by QB4ST:</p>
@@ -383,7 +390,7 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 		
 	</section>
 	<section>
-		<h2>QB4ST specialisations of RDF Data Cube Properties</h2>
+		<h2>QB4ST specializations of RDF Data Cube Properties</h2>
 	 	<div class="example"><div class="example-title">Classification of spatial properties in QB4ST</div>
 	 <pre>
 	qb4st:SpatialProperty a rdfs:Class, owl:Class;
@@ -454,7 +461,7 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 	.
 	</pre>
 	</div>	
-	<p>Equivalent classes are defined for TemporalDSD and SpatioTemporalDSD, along with further specialisations such as <code>qb4st:SpatialDimensionComponentSpecification</code>.</p>
+	<p>Equivalent classes are defined for TemporalDSD and SpatioTemporalDSD, along with further specializations such as <code>qb4st:SpatialDimensionComponentSpecification</code>.</p>
 	</section>
 	<section id="componentSpecifications">
 	<h2>Defining Spatio-Temporal properties of Datasets</h2>
@@ -483,12 +490,14 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 
 	</section>
 		<section id="hierarchies">
+
 	<h2>Defining Hierarchies of component specialisations</h2>
 	 <p>A significant challenge in using RDF Data Cube is that many related dimensions and measures may be defined, but there is no obvious way of determing the relationships without potentially dereferencing and reasoning over very large, possibly dynamic, code lists. This is problematic for many reasons, including that spatial features may be regarded as <code>skos:Concept</code> to be consistent with the semantics of RDF Data Cube, but not actually dereferenceable in this form.</p>
 	 <p>The approach chosen is to use SKOS semantics to allow such declarations of hierarchy for convenience, leaving the details of the relationship between hierarchy levels to additional vocabularies, such as [[QB4OLAP]] or [[XKOS]], or to the underlying model of the Classes referenced by the rdfs:range.
 	 Note that the use of <code>skos:broader</code> relationship preserves the immediate parent-child relationship, whereas <code>A rdfs:subClassOf B . B rdfs:subClassOf C . </code> also entails <code>A rdfs:subClassOf A . A rdfs:subClassOf C . </code>, thus potentially losing information about which subject (A, B or C) is the immediate parent of A.<p>
 	 
 	 	<div class="example"><div class="example-title">Refinement of semantics of a well-known component using simple SKOS terms.</div>
+
 			 <pre>
 		geo:Point a qb4st:PositionMeasure ;
 			qb4st:crs &lt;http://www.opengis.net/def/crs/OGC/1.3/CRS84&gt; ; 
