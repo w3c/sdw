@@ -234,10 +234,9 @@ $(document).ready( function() {
         <li>Further consolidation of best practices (there is still some overlap with [[DWBP]] to be resolved).</li>
         <li>Best practices to be reordered to help readers understand where to prioritize their efforts when publishing spatial data on the Web - which will change the numbering of the best practices.</li>
         <li>Further development of <a href="#how-to-use" class="sectionRef"></a> which is intended to provide a would-be spatial data publisher navigate through best practices from here and [[DWBP]] by presenting with questions they should consider and helping them to identify which best practices they should prioritize - only about one-quarter complete and does not yet cover topics like the choice of data format or vocabulary.</li> 
-        <li><a href="#narrative" class="sectionRef">Section 15. Narrative - the Nieuwhaven flooding</a> to be removed - this may form the basis of a companion Note.</li>
       </ol>
 
-      <p>Specifically, we ask reviewers to consider <a href="https://github.com/w3c/sdw/issues/208">ISSUE 208</a> in <a href="#globally-unique-ids" class="sectionRef">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a> regarding the use of “indirect identifiers” (as discussed in [[WEBARCH]] <a href="https://www.w3.org/TR/2004/REC-webarch-20041215/#indirect-identification">section 2.2.3 Indirect Identification</a>.
+      <p>Specifically, we ask reviewers to consider <a href="https://github.com/w3c/sdw/issues/208">ISSUE 208</a> in <a href="#globally-unique-ids" class="sectionRef">Best Practice 7: Use globally unique persistent HTTP URIs for spatial things</a> regarding the use of “indirect identifiers” (as discussed in [[WEBARCH]] <a href="https://www.w3.org/TR/2004/REC-webarch-20041215/#indirect-identification">section 2.2.3 Indirect Identification</a>.</p>
       
       <p>Changes made in this and previous releases are recorded in <a href="#changes" class="sectionref">Appendix F - Changes since previous versions</a>.</p>
         
@@ -693,7 +692,7 @@ $(document).ready( function() {
         <p>Preparations for publishing spatial data on the Web need to start somewhere. Typically, your spatial data will be in the following places:</p>
         <ol>
           <li>plain text documents; e.g. historical texts, government reports, blog posts etc.</li>
-          <li>data files containing structured content or markup; e.g. geospatial vector data in Shapefile or GML format, statistical data in tabular CSV format or a spreadsheet, as GPX data with “waypoints” and “tracks”, satellite imagery in GeoTIFF, climate simulations in CF-NetCDF etc.</li>
+          <li>data files containing structured content or markup; e.g. geospatial vector data in Shapefile or [[GML]] format, statistical data in tabular CSV format or a spreadsheet, as GPX data with “waypoints” and “tracks”, satellite imagery in GeoTIFF, climate simulations in CF-NetCDF etc.</li>
           <li>a data repository; e.g. PostGIS (a spatially enabled relational database), Elasticsearch (a document-oriented noSQL repository based on Apache Lucene), Apache Jena’s TDB (an RDF triple store)</li>
           <li>exposed via an existing API; including OGC-compliant web services such as WFS and WCS</li>
         </ol>
@@ -759,47 +758,52 @@ $(document).ready( function() {
           dataset for local usage or may provide a rich API enabling the users to request only the
           required parts for their needs. The dataset-level metadata is used by the catalog to match
           the appropriate dataset(s) with the user's query.</p>
-        <p>This section includes best practices for including the spatial extent and the CRS of the
+        <p>This section includes best practices for including the spatial extent, CRS, and other spatial details of the
           dataset in the metadata. These are the extra metadata items needed to make spatial
-          datasets discoverable and reusable. A third best practice in this section helps you go a
-          step further: exposing spatial data on the web in such a way that the individual entities
-          within the dataset are discoverable. </p>
+          datasets both discoverable and usable. A third best practice in this section goes a
+          step further in granularity: exposing spatial data on the web in such a way that individual entities or "granules"
+          within a dataset can be discovered, evaluated, and utilized. </p>
         <div class="practice">
           <p><span id="spatial-info-dataset-metadata" class="practicelab">Include spatial metadata
               in dataset metadata</span></p>
           <p class="practicedesc">The description of datasets that have spatial features should
-            include explicit metadata about the spatial coverage</p>
+            include explicit metadata about their spatial extent, coverage, and representation</p>
           <p class="note">This best practice extends [[DWBP]] <a
               href="https://www.w3.org/TR/dwbp/#DescriptiveMetadata">Best Practice 2: Provide descriptive metadata</a>.</p>
           <section class="axioms">
             <h4 class="subhead">Why</h4>
-            <p>For spatial data, it is often necessary to describe the spatial details of the
-              dataset - such as spatial coverage or extent of the dataset or, put in simpler terms,
-              which area of the world the data is about. This information is used, for example, by
+            <p>Since location is such a powerful organizing principle, it is usually necessary to specifically describe the spatial details and nature of a
+              dataset in order to discover it as well as to determine its fitness for use. This information is used, for example, by
                 <a>SDI</a> catalog services that offer spatial querying to find data - but also by
-              users to understand the nature of the dataset. In some cases, for example when dealing with crowd-sourced data, provenance information is important as well. </p>
+              users to understand the nature of the dataset. In some cases, for example when dealing with crowd-sourced data, provenance information 
+              or how the dataset came to be in its published form and with what quality, is important as well. The first level of spatial description is the spatial extent of the dataset,
+              the area of the world that the dataset describes. This often suffices for initial discovery, but further levels of description are needed to evaluate a dataset for use.
+              These include the dataset spatial coverage (continuity, resolution, properties) as well as the spatial representation or geometric model (for example, grid coverage,
+              discrete coverage, point cloud, linear network). Dataset quality measures such as positional accuracy are also important for determining applicability. In the case
+              of datasets whose spatial characteristics vary over their temporal coverage, spatial descriptions must include an explicit temporal aspect</p>
           </section>
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
             <p>Dataset metadata should include the information necessary to enable spatial queries
               within catalog services such as those provided by <a>SDIs</a>.</p>
-            <p>Dataset metadata should include the information required for a user to evaluate
-              whether the spatial data is suitable for their intended application.</p>
+            <p>Dataset metadata should also include the information required for a user to evaluate
+              whether a spatial dataset is suitable for their intended application.</p>
           </section>
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
-            <p>When publishing a dataset, provide as much spatial metadata as necessary, but at least the spatial coverage.
-              Other examples of spatial metadata are: </p>
+            <p>When publishing a dataset, provide as much spatial metadata as necessary, but at least the spatial extent, coverage, and representation.
+              Other examples of spatial metadata include: </p>
             <ul>
-              <li>number of dimensions (1D, 2D, 3D)</li>
+              <li>number of dimensions (1D, 2D, 3D, 4D)</li>
               <li>spatial representation type (e.g. grid, vector, text table)</li>
-              <li>positioning system used for acquiring location</li>
+              <li>geometric property (e.g. boundary, region, centerline, centroid, field</li>
               <li>Coordinate Reference System(s) - refer to <a href="#CRS-background" class="sectionRef"></a> for an introduction to that topic</li>
               <li>spatial resolution - <a href="#desc-accuracy" class="sectionRef">Best Practice 5: Describe the positional accuracy of spatial data</a></li>
+              <li>spatial significance of non-spatial properties (e.g. point value, interpolation, unit average, sum)</li>
             </ul>
             <p>In Spatial Data Infrastructures the accepted standard for describing metadata is
-              [[ISO-19115]]. </p>
-            <p>To provide information about the spatial attributes of the dataset on the web one
+              [[ISO-19115]] or profiles thereof. </p>
+            <p>To provide information about the spatial attributes of the dataset on the Web one
               can: </p>
             <ul>
               <li>As shown in [[DWBP]] <a
@@ -873,50 +877,25 @@ a:Dataset a dcat:Dataset ;
           </section>
         </div>
         <div class="practice">
-          <p><span id="provide-context" class="practicelab">Provide context required to interpret
-            data values</span></p>
-          <p class="practicedesc">Data values should be linked to spatial, temporal and thematic
-            information that describes them.</p>
-          <p class="issue" data-number="384">This best practice is under review by the WG to see if it is sufficiently covered in DWBP. (see <a href="https://www.w3.org/2016/08/24-sdwbp-minutes.html#action01">action</a>)</p>
+          <p><span id="include-search-api" class="practicelab">(to be deleted)</span></p>
+          <p class="practicedesc"></p>
           <section class="axioms">
             <h4 class="subhead">Why</h4>
-            <p>For users of spatial or temporal data it should always be possible to look up spatial, temporal or thematic metadata about a given value. This allows them to determine, for example, which reference system (CRS or TRS) and unit of measure (UoM) is used for a numeric value, the accuracy of the data value, and so on. Such metadata
-              may be attached to metadata for collections, as described in <a href="#spatial-info-dataset-metadata" class="sectionRef">Best Practice 1: Include spatial metadata in dataset metadata</a>, or to individual values. The latter is necessary when this metadata is important for processing and interpreting the data, but varies from one value to the next. This information should be specified as explicit semantic data and/or be provided as linked to other resources.</p>
           </section>
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
-            <p>The contextual data will specify spatial, temporal and thematic data and other
-              information that can assist to interpret data values; this can include
-              information related to quality, location, time, topic, type, etc.</p>
           </section>
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
-            <p>The context required to interpret data values will require:</p>
-            <div>
-              <ul>
-                <li>Specify explicit semantics that describe temporal, spatial and thematic
-                  information related to an entity</li>
-                <li>Provide links to other related resources that can describe contextual
-                  information related to an entity</li>
-                <li>Specify provenance and other related information </li>
-              </ul>
-            </div>
-            <aside class="example">
-              <p>Information related to the resource that provide the data and properties of, for example, a measuring
-                resource/device; e.g. quality of measurement can help to interpret
-                observation data more effectively. For more information refer to <a
-                  href="https://www.w3.org/2005/Incubator/ssn/XGR-ssn-20110628/">SSN
-                  Ontology</a></p>
-            </aside>
           </section>
           <section class="test">
             <h4 class="subhead">How to Test</h4>
-            <p>...</p>
           </section>
           <section class="ucr">
             <h4 class="subhead">Evidence</h4>
-            <p><span>Relevant requirements</span>: <a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">R-CRSDefinition</a>, <a href="https://www.w3.org/TR/sdw-ucr/#Provenance">R-Provenance</a>, <a href="https://www.w3.org/TR/sdw-ucr/#QualityPerSample">R-QualityPerSample</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">R-SpatialMetadata</a>, <a
-              href="https://www.w3.org/TR/sdw-ucr/#SensorMetadata">R-SensorMetadata</a>.</p>
+          </section>
+          <section class="benefits">
+            <h4 class="subhead">Benefits</h4>
           </section>
         </div>
         <div class="practice">
@@ -934,7 +913,7 @@ a:Dataset a dcat:Dataset ;
               </li>
               <li>
                 <p>Sometimes we don't want to measure relative to the surface of the Earth at all:</p>
-                <p>Spatial data such as descriptions of the built environment, geological surveys or satellite imagery etc. are often captured and stored in an <em>engineering</em> coordinate refence system as measurements from a local datum (e.g. <em>X</em> and <em>Y</em> pixel positions along orthogonal axes of an image or, in the case of linear referencing, distance along a specified feature from a fixed point).</p>
+                <p>Spatial data such as descriptions of the built environment, geological surveys, satellite imagery, etc. are often captured and stored in an <em>engineering</em> coordinate reference system as measurements from a local datum. For example, <em>X</em>  <em>Y</em> survey coordinates relative to a building corner, pixel positions within the image swath of a satellite camera, or distance along a linear feature from a fixed origin point.</p>
                 </li>
             </ol>
             
@@ -1064,7 +1043,7 @@ a:Dataset a dcat:Dataset ;
 
 				<p>In addition to exposing the spatial data as linked HTML Web-pages, indexing by web-engines can be further enhanced by incorporating a description of the spatial thing as structured markup (in particular [[MICRODATA]] or [[JSON-LD]] annotations using [[SCHEMA-ORG]]) as this enables the search engines to make more detailed assumptions about your resource. It is important to note that this is not only helpful to search engines, but also to other tools that want to understand more about the semantics of the resource, for example, its location.</p>
 				
-				<p>In [[SCHEMA-ORG]], a spatial dataset is a <a href="http://schema.org/Dataset">Dataset</a> and a spatial thing is in general a <a href="http://schema.org/Place">Place</a> or an <a href="http://schema.org/Event">Event</a>. For some types of spatial things, more specific sub-types exist, for example <a href="http://schema.org/City">City</a> or <a href="http://schema.org/Mountain">Mountain</a>. 
+				<p>In [[SCHEMA-ORG]], a spatial dataset is a <a href="http://schema.org/Dataset">Dataset</a> and a spatial thing is in general a <a href="http://schema.org/Place">Place</a> or an <a href="http://schema.org/Event">Event</a>. For some types of spatial things, more specific sub-types exist, for example <a href="http://schema.org/City">City</a> or <a href="http://schema.org/Mountain">Mountain</a>.</p> 
 				
 				<p>Location information about a spatial thing is typically provided using a geometry (<a href="http://schema.org/GeoCoordinates">GeoCoordinates</a> or <a href="http://schema.org/GeoShape">GeoShape</a>) or a <a href="http://schema.org/PostalAddress">PostalAddress</a>. [[SCHEMA-ORG]] coordinates are restricted to WGS 84 with longitude and latitude. Supported geometry types are points, line strings, polygons, boxes and circles.</p>
 				
@@ -1131,7 +1110,7 @@ a:Dataset a dcat:Dataset ;
 				    <p>Search engines may also index resource representations in other formats than HTML.</p>
 
             <aside class="example">
-              <p>At the time of writing, Google is indexing KML documents and supporting advanced searches that are restricted to KML documents. GML files are also indexed, but only like any other XML documents. JSON, including GeoJSON, is currently not indexed.</p>
+              <p>At the time of writing, Google is indexing KML documents and supporting advanced searches that are restricted to KML documents. [[GML]] files are also indexed, but only like any other XML documents. JSON, including GeoJSON, is currently not indexed.</p>
             </aside>
 
             <div class="note">
@@ -1359,7 +1338,7 @@ a:Dataset a dcat:Dataset ;
             
             <p>Approach (3) is suitable where a spatial thing has a small number of attributes that are frequently updated. For example, the GPS-position of a runner or when streaming data from a sensor, such as the water level from a stream guage.</p>
 
-            <p>With this approach, the description of the spatial thing must include a property that contains a sequentially-ordered set of data-points, each of which defines a time-stamp and the values for the time-varying attribute(s). By definition, this property can be considered as a time-series <a>coverage</a>. Standard data encodings are available for time-series data, including: [[TIMESERIESML]] for GML, plus [[COVERAGE-JSON]] and [[SENSORTHINGS]] for JSON.</p>
+            <p>With this approach, the description of the spatial thing must include a property that contains a sequentially-ordered set of data-points, each of which defines a time-stamp and the values for the time-varying attribute(s). By definition, this property can be considered as a time-series <a>coverage</a>. Standard data encodings are available for time-series data, including: [[TIMESERIESML]] for [[GML]], plus [[COVERAGE-JSON]] and [[SENSORTHINGS]] for JSON.</p>
 
             <p class="note">The OGC [[MOVING-FEATURES-XML]] and [[MOVING-FEATURES-CSV]] specifications follow the pattern described above. A <code>trajectory</code> element is used to describe the position of a spatial thing, and varying attributes (such as orientation or rotation) can be added alongside the tuples in the trajectory. However, there is limited evidence of adoption outside of Japan.</p>
 
@@ -1493,7 +1472,7 @@ a:Dataset a dcat:Dataset ;
 
             <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a> notes that URIs can be long. You may need to define identifiers that are locally unique within your spatial dataset and provide a mechanism to programmatically convert each local identifier to a URI. For example, the Metadata Vocabulary for Tabular Data [[TABULAR-METADATA]] achieves this using URI Templates as described in [[RFC6570]].</p>
 
-            <p>It is also good practice to use a redirection service to hide complex and potentially changing service end-point URLs, such as for a <a>Web Feature Service</a> behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API or changes in endpoint URIs or API versions in order to request information about a particular spatial thing. For example, the URI <code>http://data.example.org/aan/id/perceel/aan.2528</code> could be used as proxy for the WFS GetFeature request <a href="http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&SERVICE=WFS&REQUEST=GetFeature&featureID=aan.2528"><code>http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;featureID=aan.2528</code></a>.</p>
+            <p>It is also good practice to use a redirection service to hide complex and potentially changing service end-point URLs, such as for a <a>Web Feature Service</a> behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API or changes in endpoint URIs or API versions in order to request information about a particular spatial thing. For example, the URI <code>http://data.example.org/aan/id/perceel/aan.2528</code> could be used as proxy for the WFS GetFeature request <a href="http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;featureID=aan.2528"><code>http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;featureID=aan.2528</code></a>.</p>
 
             <p>Finally, while it is simple to use a query-pattern URL to serve information about a resource identified with a URI from a third-party internet domain, e.g. <code>http://example.org/museums?q=http://sws.geonames.org/6618987</code>, these URLs are unsuitable as persistent identifiers. More often than not, your intended users will dereference the "official" URI, e.g. <code>http://sws.geonames.org/6618987</code>. That said, this kind of search operation does provide a useful mechanism to find particular spatial things. See <a href="#convenience-apis" class="sectionRef">Best Practice 11: Expose spatial data through 'convenience APIs'</a> for further details.</p>
 
@@ -1660,7 +1639,11 @@ a:Dataset a dcat:Dataset ;
 <li>The appropriate level of complexity.</li>
 </ul>
 </li>
-<li>Where multiple representations are required, consider offering as many as you can - balancing the benefit of ease of use against the cost of the additional storage or additional processing if converting on-the-fly. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#Conneg">Best Practice 19: Use content negotiation for serving data available in multiple formats</a> for more information.</li>
+<li>Where multiple representations are required, consider offering as many as you can - balancing the benefit of ease of use against the cost of the additional storage or additional processing if converting on-the-fly. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#Conneg">Best Practice 19: Use content negotiation for serving data available in multiple formats</a> for more information.
+<div class="note">
+<p>HTTP content negotiation only works for media-type, character set, encoding and language. As a consequence, it is not possible to select one representation that conforms to a given "profile" (e.g. data model, complexity level, CRS) from several that all share the same media-type; e.g. asking for the geojson features with "simple" geometries (compacted polygons or just points) not the "complex" geometries; or asking for the representation that uses CRS84 not Amersfoort-RD.</p>
+</div>
+</li>
 </ul>
 <p>It is important to note that the steps outlined above are interrelated. For instance, the dimensionality of a geometry determines the set of <a>coordinate reference systems</a> that can be used, as well as the geometry encodings / representations.</p>
 <p>Another issue to be taken into account in choosing the geometry format, it is whether the axis order is unambiguous - i.e., whether the order of the coordinates is, e.g., longitude/latitude or latitude/longitude. This specific topic is covered by <a href="#bp-crs"></a>.</p>
@@ -1670,8 +1653,8 @@ a:Dataset a dcat:Dataset ;
 <li>For geometry literals, several solutions are available, like Well-Known Text (<a>WKT</a>) representations, <a href="https://en.wikipedia.org/wiki/Geohash">GeoHash</a> and
 other geocoding representations. The alternative is to use structured geometry objects as is possible, for example, in [[GeoSPARQL]].</li>
 <li>There are also several suitable binary data formats (e.g. <a href="https://developers.google.com/protocol-buffers/">Google's protocol buffers</a> for vector tiling); however, some binary formats do not (effectively) work on the Web as there are no software tools for working with those formats from within a typical Web application; to work with data in such formats, you must first download the data and then work with it locally.</li>
-<li>There are widespread practices for representing geometric data as linked data, such as using [[W3C-BASIC-GEO]] (<code>geo</code>) <code>geo:lat</code> and <code>geo:long</code> that are used extensively for describing <code>geo:Point</code> objects.</li>
-<li>Concrete geometry types are available, such as those defined in the OpenGIS [[Simple-Features]] Specification, namely 0-dimensional Point and MultiPoint; 1-dimensional curve LineString and MultiLineString; 2-dimensional surface Polygon and MultiPolygon; and the heterogeneous GeometryCollection. </li>
+<li>There are widespread practices for representing geometric data as linked data, such as using [[W3C-BASIC-GEO]] (<code>geo</code>) <code>w3cgeo:lat</code> and <code>w3cgeo:long</code> that are used extensively for describing <code>w3cgeo:Point</code> objects.</li>
+<li>Concrete geometry types are available, such as those defined in the OpenGIS [[SIMPLE-FEATURES]] Specification, namely 0-dimensional Point and MultiPoint; 1-dimensional curve LineString and MultiLineString; 2-dimensional surface Polygon and MultiPolygon; and the heterogeneous GeometryCollection. </li>
 </ul>
 </div>
 <p>Currently, there are two reference geometry formats widely used in the geospatial and Web communities, respectively, [[GML]] and GeoJSON [[RFC7946]].</p>
@@ -1689,6 +1672,10 @@ other geocoding representations. The alternative is to use structured geometry o
 <p>The following Turtle snippet shows the [[GeoDCAT-AP]] representation of the dataset in <a href="#ex-schemaorg-dataset-and-place"></a>. Here the bounding box is provided in multiple literal encodings (<a>WKT</a>, [[GML]], GeoJSON), by using property <code>locn:geometry</code> [[LOCN]].</p>
 <aside class="example" id="ex-geodcat-ap-bag-addresses" title="GeoDCAT-AP representation of dataset spatial coverage (bounding box) in multiple encodings">
 <pre>
+@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .
+@prefix dct:  &lt;http://purl.org/dc/terms/&gt; .
+@prefix locn: &lt;http://www.w3.org/ns/locn#&gt; .
+
 &lt;http://www.ldproxy.net/bag/inspireadressen/&gt; a dcat:Dataset ;
   dct:title "Adressen"@nl ;
   dct:title "Addresses"@en ;
@@ -1702,23 +1689,23 @@ other geocoding representations. The alternative is to use structured geometry o
     a dct:Location ;
     locn:geometry
 # Bounding box in WKT
-      "POLYGON((3.053 47.975,7.24 47.975,7.24 53.504,3.053 53.504,3.053 47.975))"^^gsp:wktLiteral ,
+      "POLYGON((3.053 47.975,7.24 47.975,7.24 53.504,3.053 53.504,3.053 47.975))"^^geosparql:wktLiteral ,
 # Bounding box in GML
       "&lt;gml:Envelope srsName=\"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"&gt;
          &lt;gml:lowerCorner&gt;3.053 47.975&lt;/gml:lowerCorner&gt;
          &lt;gml:upperCorner&gt;7.24  53.504&lt;/gml:upperCorner&gt;
-       &lt;/gml:Envelope&gt;"^^gsp:gmlLiteral ,
+       &lt;/gml:Envelope&gt;"^^geosparql:gmlLiteral ,
 # Bounding box in GeoJSON
       "{ \"type\":\"Polygon\",\"coordinates\":[[
            [3.053,47.975],[7.24,47.975],[7.24,53.504],[3.053,53.504],[3.053,47.975]
-         ]] }"^^https://www.iana.org/assignments/media-types/application/vnd.geo+json
+         ]] }"^^https://www.iana.org/assignments/media-types/application/geo+json
   ] .
 </pre>
 </aside>
 <p>In the above example, the <a>coordinate reference system</a> used for the bounding box is CRS84 (equivalent to WGS84, but with axis order longitude/latitude), which is explicitly specified in the [[GML]] encoding via attribute <code>@srsName</code>, and by using the relevant HTTP URI from the <a href="http://www.opengis.net/def/crs/EPSG/0">OGC CRS registry</a>. The <a>coordinate reference system</a> is not specified for the <a>WKT</a> encoding, since CRS84 is the default <a>coordinate reference system</a> for <a>WKT</a> in [[GeoSPARQL]], and therefore it can be omitted. The <a>coordinate reference system</a> is also not specified in the GeoJSON encoding, since CRS84 is the only supported <a>coordinate reference system</a> in GeoJSON [[RFC7946]].</p>
 <p>Always with reference to <a href="#ex-schemaorg-dataset-and-place" class="exampleRef"></a>, the following snippet shows the [[GML]] and the RDF representations of the entry in the BAG Dutch register concerning the building where Anne Frank's house is located. For the corresponding GeoJSON representation, see the relevant <a href="#ex-crs-geojson">example</a> in <a href="#bp-crs"></a>.</p>
-<aside class="example" id="ex-anne-frank-building" title="Description of a building, with detailed geometry, bounding box, and centroid">
-<p>The [[GML]] representation of Anne Frank's house building (taken from the <a href="http://geodata.nationaalgeoregister.nl/bag/wfs?VERSION=2.0.0&SERVICE=WFS&REQUEST=GetFeature&typeName=pand&cql_filter=bag:identificatie=363100012169587">BAG WFS endpoint</a>):</p>
+<aside class="example" id="ex-anne-frank-building-gml" title="GML description of a building, with detailed geometry">
+<p>The [[GML]] representation of Anne Frank's house building (taken from the <a href="http://geodata.nationaalgeoregister.nl/bag/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;typeName=pand&amp;cql_filter=bag:identificatie=363100012169587">BAG WFS endpoint</a>):</p>
 <pre>
 &lt;bag:pand gml:id=&quot;pand.3323294&quot;&gt;
   &lt;bag:identificatie&gt;363100012169587&lt;/bag:identificatie&gt;
@@ -1750,35 +1737,47 @@ other geocoding representations. The alternative is to use structured geometry o
   &lt;/bag:geometrie&gt;
 &lt;/bag:pand&gt;
 </pre>
+</aside>
 <p>It is worth noting that the [[GML]] snippet above also includes the explicit specification of the axis order (via attribute <code>@axisLabels</code>) and the number of dimension of the geometry (via attribute <code>@srsDimension</code>).</p>
 <p>The corresponding RDF representation is provided in the following Turtle snippet (taken from the <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2016083000000000%2Fpand%2F0363100012169587">BAG Linked Data service</a>). NB: The RDF representation below has been complemented with additional properties (marked with <code># Added</code>) for demonstration purposes.</p>
+<aside class="example" id="ex-anne-frank-building-rdf" title="RDF description of a building, with detailed geometry, bounding box, and centroid">
 <pre>
+@prefix bag:       &lt;http://bag.basisregistraties.overheid.nl/def/bag#&gt; .
+@prefix dct:       &lt;http://purl.org/dc/terms/&gt; .
+@prefix geosparql: &lt;http://www.opengis.net/ont/geosparql#&gt; .
+@prefix gml:       &lt;http://www.opengis.net/ont/gml#&gt; .
+@prefix locn:      &lt;http://www.w3.org/ns/locn#&gt; .
+@prefix pdok:      &lt;http://data.pdok.nl/def/pdok#&gt; .
+@prefix rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix schema:    &lt;http://schema.org/&gt; .
+@prefix w3cgeo:    &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt; .
+
 &lt;http://bag.basisregistraties.overheid.nl/bag/id/pand/0363100012169587&gt; 
-  a gsp:Feature, bag:Pand ;
+  a geosparql:Feature, bag:Pand ;
   rdfs:label "Pand 0363100012169587"@nl;
   rdfs:isDefinedBy &lt;http://bag.basisregistraties.overheid.nl/bag/doc/2016083000000000/pand/0363100012169587&gt; ;
   bag:identificatiecode "0363100012169587"^^xsd:string;
 # Added
   dct:identifier "363100012169587"^^xsd:string ;
-  bag:status bag:PandInGebruik_nietIngemeten ;
+  bag:status &lt;http://bag.basisregistraties.overheid.nl/id/begrip/PandInGebruik_nietIngemeten&gt; ;
   bag:oorspronkelijkBouwjaar "1635"^^xsd:gYear;
 # Added
   dct:created "1635"^^xsd:gYear ;
 # Added
   locn:address &lt;http://www.ldproxy.net/bag/inspireadressen/inspireadressen.3329155&gt; ;
 # Added
-  geo:lat  "52.3750856076095"^^xsd:float ;
+  w3cgeo:lat  "52.3750856076095"^^xsd:float ;
 # Added
-  geo:long "4.88412047472359"^^xsd:float ;
+  w3cgeo:long "4.88412047472359"^^xsd:float ;
 # Added
   schema:box "52.3749004358275,4.88382018823377 52.3752539733183,4.88445185541417"^^xsd:string .
-  gsp:hasGeometry &lt;http://bag.basisregistraties.overheid.nl/bag/id/geometry/5C1F8F11324717378B437B2CD12871FF&gt; ;
+  geosparql:hasGeometry &lt;http://bag.basisregistraties.overheid.nl/bag/id/geometry/5C1F8F11324717378B437B2CD12871FF&gt; ;
   bag:geometriePand &lt;http://bag.basisregistraties.overheid.nl/bag/id/geometry/5C1F8F11324717378B437B2CD12871FF&gt;
 .
 
 &lt;http://bag.basisregistraties.overheid.nl/bag/id/geometry/5C1F8F11324717378B437B2CD12871FF&gt; 
-  a gsp:Geometry, sf:Surface ;
-  gsp:asWKT 
+  a geosparql:Geometry, gml:Surface ;
+  geosparql:asWKT 
     "POLYGON ((
       4.884235252217925  52.375108067329755 , 4.884276231101587 52.37515275750655  , 
       4.884256726627544  52.375159451429134 , 4.883981215233056 52.37525408134467  , 
@@ -1788,7 +1787,7 @@ other geocoding representations. The alternative is to use structured geometry o
       4.8843200184035584 52.374996422289605 , 4.88425508456153  52.37492615022757  , 
       4.884328888811774  52.37490054300959  , 4.884451143500816 52.375033882503686 , 
       4.884235252217925  52.375108067329755
-    ))"^^gsp:wktLiteral ;
+    ))"^^geosparql:wktLiteral ;
   pdok:asWKT-RD 
     "POLYGON ((
       120749.725 487589.422 , 120752.55 487594.375  ,   
@@ -1801,7 +1800,7 @@ other geocoding representations. The alternative is to use structured geometry o
       120749.725 487589.422
     ))"^^xsd:string ;
 # Added
-  gsp:asWKT 
+  geosparql:asWKT 
     "&lt;http://www.opengis.net/def/crs/EPSG/0/28992&gt; POLYGON ((
       120749.725 487589.422 , 120752.55 487594.375  ,   
       120751.227 487595.129 , 120732.539 487605.788 ,
@@ -1811,30 +1810,39 @@ other geocoding representations. The alternative is to use structured geometry o
       120755.411 487576.96  , 120750.935 487569.172 , 
       120755.941 487566.288 , 120764.369 487581.066 , 
       120749.725 487589.422
-    ))"^^gsp:wktLiteral
+    ))"^^geosparql:wktLiteral
 .
 </pre>
 </aside>
 <p>The RDF representation above includes:</p>
 <ul>
-  <li>The detailed geometry of the building (<code>gsp:asWKT</code> / <code>pdok:asWKT-RD</code>), in <a>WKT</a> and using multiple reference systems.</li>
-  <li>The bounding box (<code>schema:box</code>) and centroid (<code>geo:lat</code> and <code>geo:long</code>).</li>
+  <li>The detailed geometry of the building (<code>geosparql:asWKT</code> / <code>pdok:asWKT-RD</code>), in <a>WKT</a> and using multiple reference systems.</li>
+  <li>The bounding box (<code>schema:box</code>) and centroid (<code>w3cgeo:lat</code> and <code>w3cgeo:long</code>).</li>
 </ul>
 <p>The different <a>WKT</a> encodings in the example show alternative ways of specifying the <a>coordinate reference system</a> used.</p>
-<p>The two instances of property <code>gsp:asWKT</code> follow the syntax recommended in [[GeoSPARQL]], where the specification of the <a>coordinate reference system</a> is required only if different from CRS84. By contrast, property <code>pdok:asWKT-RD</code> implies the use of a specific <a>coordinate reference system</a>, namely, <a href="http://epsg.io/28992">EPSG:28992</a> ("Amersfoort / RD New"). The axis order used is determined here by the <a>coordinate reference system</a>, and in both cases it is longitude / latitude (more precisely, east/north for EPSG:28992). By contrast, the coordinates for the bounding box and centroid use WGS84, with axis order latitude / longitude.</p>
-<p><a href="#ex-anne-frank-building"></a> shows also how geometries for spatial things can be publshed as separate Web resources. This approach can be particularly suitable for giving access to huge geometries, consisting of hundreds of vertices (as the detailed geometry of the boundaries of a geographical region), without attaching them to the relevant spatial things. Moreover, this allows the same geometry to be linked from (i.e., re-used by) different spatial things. Finally, it is possible to use mechanisms (including HTTP content negotiation) to provide access to different representations / encodings of the geometry ([[GML]], <a>WKT</a>, GeoJSON, etc.), thus addressing different use cases. (On this topic, see also <a href="#entity-level-links"></a>).</p>
+<p>The two instances of property <code>geosparql:asWKT</code> follow the syntax recommended in [[GeoSPARQL]], where the specification of the <a>coordinate reference system</a> is required only if different from CRS84. By contrast, property <code>pdok:asWKT-RD</code> implies the use of a specific <a>coordinate reference system</a>, namely, <a href="http://epsg.io/28992">EPSG:28992</a> ("Amersfoort / RD New"). The axis order used is determined here by the <a>coordinate reference system</a>, and in both cases it is longitude / latitude (more precisely, east/north for EPSG:28992). By contrast, the coordinates for the bounding box and centroid use WGS84, with axis order latitude / longitude.</p>
+<p><a href="#ex-anne-frank-building-rdf"></a> shows also how geometries for <a>spatial things</a> can be publshed as separate Web resources. This approach can be particularly suitable for giving access to huge geometries, consisting of hundreds of vertices (as the detailed geometry of the boundaries of a geographical region), without attaching them to the relevant spatial things. Moreover, this allows the same geometry to be linked from (i.e., re-used by) different spatial things. Finally, it is possible to use mechanisms (including HTTP content negotiation) to provide access to different representations / encodings of the geometry ([[GML]], <a>WKT</a>, GeoJSON, etc.), thus addressing different use cases. (On this topic, see also <a href="#entity-level-links"></a>).</p>
 <aside class="example" id="ex-http-uris-for-geometries" title="HTTP URIs for geometries">
 <p>As shown in <a href="#ex-amsterdam-station-uri" class="exampleRef"></a>, the following URI:</p>
 <p><code>https://brt.basisregistraties.overheid.nl/top10nl/id/gebouw/102625209</code></p>
 <p>denotes Amsterdam Central train station. However, its geometry is provided as a separate, standalone resource, denoted by the following URI:</p>
 <p><code>https://brt.basisregistraties.overheid.nl/top10nl/id/geometry/2525562935f2c33152e98f65f9d8d6ff</code></p>
-<p>A similar approach is used by Ordnance Survey. For instance, the geometry of North Devon (see <a href="#ex-linking-different-spatial-things" class="exampleRef"></a>) is denoted by the following URI:</p>
+<p>A similar approach is used by Ordnance Survey. For instance, North Devon is denoted by the following URI:</p>
+<p><code>http://data.ordnancesurvey.co.uk/id/7000000000022933</code></p>
+<p>whereas its geometry is denoted by:</p>
 <p><code>http://data.ordnancesurvey.co.uk/id/geometry/22933-4</code></p>
 <p>An additional example is the API of the <a href="http://gadm.geovocab.org/">GADM-RDF project</a>, providing access to spatial linked data concerning administrative areas. For instance, the following URI <a href="http://gadm.geovocab.org/id/0/60"><code>http://gadm.geovocab.org/id/0/60</code></a> returns a description of administrative area "Germany", which links to the geometry of Germany's boundaries, provided via a separate URI: <a href="http://gadm.geovocab.org/id/0/60/geometry"><code>http://gadm.geovocab.org/id/0/60/geometry</code></a>.</p>
 <p>The geometry URIs operated by the GADM-RDF API resolve to different geometry representations / encodings (SVG included), that can be accessed via HTTP content negotiation or by appending the format extension to the URI. For instance, URI <a href="http://gadm.geovocab.org/id/0/60/geometry.geojson"><code>http://gadm.geovocab.org/id/0/60/geometry.geojson</code></a> returns the GeoJSON representation of the geometry. Direct links to the supported geometry representations / encodings are specified in the RDF and HTML representations of the geometry.</p>
 </aside>
 <div class="note">
-<p>This section needs to be completed with guidelines on how to provide geometries at different levels of complexity, highlighting issues to be taken into account when simplifying geometries.</p>
+<p>This section needs to be completed with:</p>
+<ul>
+<li>Guidelines on how to provide geometries at different levels of <em>precision</em> and <em>complexity</em>, highlighting issues to be taken into account when simplifying geometries.</li>
+<li>More details about how WKT is used.</li>
+<li>An RDF example with embedded geometry</li>
+<li>Clarification on the differences between “coordinate positions” as a literal and the “geometry” as literal; the latter includes additional metadata</li>
+<li>Clarification on "formats" for geometries only (e.g., WKT) and those used also for features (e.g., GML, GeoJSON)</li>
+</ul>
 </div>
 </section>
 <section class="test">
@@ -1870,38 +1878,84 @@ other geocoding representations. The alternative is to use structured geometry o
 </div>
           
           <div class="practice">
-            <p><span id="relative-position" class="practicelab">How to describe relative
-                positions</span></p>
-            <p class="practicedesc">Provide a relative positioning capability in which the entities
-              can be linked to a specific position.</p>
+            <p><span id="relative-position" class="practicelab">Describe relative
+                positioning</span></p>
+            <p class="practicedesc">Provide a relative positioning capability in which one entity
+              can be positioned relative to another entity.</p>
             <section class="axioms">
               <h4 class="subhead">Why</h4>
-              <p>In some cases, it is necessary to describe the location of an entity in relation to
-                another location or in relation to location of another entity. For example,
-                South-West of Guildford, close to London Bridge.</p>
+              <p>Geocentric coordinate reference systems describe position relative to the earth itself. It can also
+              be valuable or even necessary to describe the position of an entity relative to a second entity. In some cases this is
+              a navigation convenience, for example a tour kiosk might be described as being located between the Boston Common Frog Pond and the Park
+              Street T entrance, or in one's lower left view when looking up at the Statehouse. In other cases of moving or generalized  entities, it may be that the 
+              entity can only usefully be given a relative position. For example, a package is reported left on seat 32L1 on the #59 bus, or 
+              part number PRG5460 is always located at position (51, 73, 3) in Acme warehouses.
+              </p>
             </section>
             <section class="outcome">
               <h4 class="subhead">Intended Outcome</h4>
-              <p>It should be possible to describe the location of an entity in relation to another
-                entity or in relation to a specific location, instead of specifying a geometry.</p>
+              <p>It should be possible to describe the location of an entity in relation to one or more other
+                entities or places, instead of specifying it's own geocentric position or geometry.</p>
               <p>The relative positioning descriptions should be machine-interpretable and/or
-                human-readable.</p>
+                human-readable as required by the intended application. The positions and/or geometries of reference entities, if available, should be retrievable through their link relations. </p>
             </section>
             <section class="how">
               <h4 class="subhead">Possible Approach to Implementation</h4>
-              <p>The relative positioning should be provided as: </p>
+              <p>Positioning of one entity (A) relative to another referenced entity (B) is a combination of two factors: the referencing target, 
+              and the means of relative positioning. "Geocentric" referencing targets the planet itself or at least a fixed point on it. "Allocentric" 
+              referencing targets another entity. "Egocentric" referencing targets a particular field of view of an observer or camera. Positioning 
+              can take the form of a complete coordinate reference system (e.g. engineering CRS), a qualitative relation such as "beside", or or a 
+              quantitative relation such as "30m northwest"</p>
+              <table id="relative-positioning-modes">
+        <caption>Combinations of relative positioning means and references</caption>
+        <tr>
+          <th></th>
+          <th>Engineering CRS</th>
+          <th>Qualitative Relation</th>
+          <th>Quantitative Relation</th>
+         </tr>
+         <tr>
+          <th>Geocentric   </th>
+          <td>Coordinate position A relative to a fixed earth datum</td>
+          <td>NA</td>
+          <td>NA</td>
+         </tr>
+         <tr>
+          <th>Allocentric   </th>
+          <td>Coordinate position A relative to a fixed, mobile, or generic entity B</td>
+          <td>A "next to" B</td>
+          <td>A "20m south" of B</td>
+        </tr>
+        <tr>
+          <th>Egocentric   </th>
+          <td>Coordinate position A within field of view B</td>
+          <td>A in "lower left corner" of field of view B</td>
+          <td>A "30 deg right of center" in field of view B</td>
+         </tr>
+       </table>
               <ul>
-                <li>A positioning capability to describe the position of entities with explicit
-                  links to a specific location and/or other entities. </li>
-                <li>Semantic descriptions for relative positions and relative associations to an
-                  explicit or absolute positioning capability.</li>
+                <li>Descriptions of the positions of entities as explicit
+                  links to target entities. </li>
+                <li>Semantic descriptions of the target entities and type of positioning.</li>
+                <li>Encodings of the specific entity relations or the relative coordinate positions in the case of engineering CRS'</li>
               </ul>
-              <p class="issue" data-number="121">Do we need this as a best practice; if yes, this best practice
-                needs more content</p>
               <aside class="example">
-                <p>In, for example hydrology, a description of where a stream gauge is located relative to a stream confluence.</p>
+                <p>"Metes and Bounds" are a widely used system for defining land parcel boundary edges as cardinal directions and distances 
+                relative to survey markers or other landmarks. This would be considered allocentric quantitative relation type of relative positioning</p>
               </aside>
-            </section>
+             <aside class="example">
+                <p>The positions of pixels an image captured by a satellite or other camera sensor are originally recorded relative to the field of view of the sensor.
+                  A model of the sensor optics, and platform position and orientation, together with transmission path effects (if available), may be used later to derive geocentric pixel positions.</p>
+              </aside>
+             <aside class="example">
+                <p>In hydrology, positions of river features and/or observations such as water depth are often recorded as distance along a stream feature relative to a well-known 
+                origin point such as a stream confluence. This provides a reproduceable form of positioning even if the geometry of the stream feature has not been precisely determined.</p>
+              </aside>
+                    <aside class="example">
+                <p>Augmented or mixed reality content is presented to the viewer in positions both relative to the real-world entities that it augments and relative the viewer's
+                visual perspective on those entities. For example, an informational callout needs to be juxtaposed with its target but also occupy the user's field of view in a meaningful fashion.</p>
+              </aside>
+       </section>
             <section class="test">
               <h4 class="subhead">How to Test</h4>
               <p>...</p>
@@ -1936,84 +1990,88 @@ other geocoding representations. The alternative is to use structured geometry o
           </div>
 
           <div class="practice">
-            <p><span id="semantic-thing" class="practicelab">Use spatial semantics for Spatial Things</span></p>
-            <p class="practicedesc">The best vocabulary should be chosen to describe the available
-                <a>SpatialThings</a>.</p>
+            <p><span id="semantic-thing" class="practicelab">Encoding spatial data</span></p>
+            <p class="practicedesc">Represent spatial data in a way that matches the needs of the target audiences.</p>
             <section class="axioms">
               <h4 class="subhead">Why</h4>
-              <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ReuseVocabularies">Best Practice 15: Reuse vocabularies, preferably standardized ones</a> recommends the use of existing vocabularies. There are several vocabularies available in which you can describe <a>SpatialThings</a>. A
-                robust methodology or an informed decision making process should be adopted to
-                choose the best available vocabulary to describe the entities.</p>
-              <p class="note">There is nothing to stop publishers describing their
-                  <a>SpatialThings</a> multiple times using different vocabularies, thereby
-                maximizing the potential for interoperability and letting the consumers choose which
-                is the most useful. The intent for this best practice is to provide a mechanism that
-                helps the data publisher choose the right vocabulary or vocabularies that best meet
-                their intended goal.</p>
+              <p>Spatial data is used by a range of user communities, each with their own purposes, knowledge and preferred tools. Data publishers should consider which communities and purposes they want to serve and make appropriate choices for the approach to encoding data.  In general terms, data usefulness is increased when it can be used for more purposes.  This might involve providing data in several different formats. (See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#MultipleFormats">Best Practice 14: Provide data in multiple formats</a>.)</p>
             </section>
             <section class="outcome">
               <h4 class="subhead">Intended Outcome</h4>
-              <p>Entities and their properties are described using common and reusable vocabularies
-                to increase and improve the interoperability of the descriptions.</p>
+              <p>Spatial data can be used easily and reliably by the target users.</p>
             </section>
             <section class="how">
               <h4 class="subhead">Possible Approach to Implementation</h4>
-              <p>There are various vocabularies that provide common information (semantics) about
-                spatial things, such as [[W3C-BASIC-GEO]], [[GeoSPARQL]] or [[SCHEMA-ORG]]. </p>
-              <p class="note">Work is underway on an <a href="http://geosemweb.org/sdwgeo">update for the GeoSPARQL spatial ontology</a>. This will provide an agreed spatial ontology conformant to the [[ISO-19107]] abstract model and will be based on existing available ontologies such as [[GeoSPARQL]], the [[W3C-BASIC-GEO]], [[NeoGeo]] and the ISA Core Location vocabulary [[LOCN]]. This best practice will recommend the use of this spatial ontology. </p>
-                <p>This best practice provides a method for selecting the right vocabulary (or vocabularies)
-                for your intended goal. The semantic description of entities and their properties
-                should use the existing common vocabularies in their descriptions to increase the
-                interoperability with other descriptions that may refer to the same vocabularies.
-                The steps required to choose the best vocabularies are: </p>
-              <ul>
-                <li>Go through a selection process to decide on the existing and relevant
-                  vocabularies that can be used to describe the spatial things and their properties. </li>
-                <li>Maintain links to the vocabularies in the schema definitions and provide
-                  linked-data descriptions.</li>
-                <li>Define location and spatial references using the common vocabulary concepts
-                  whenever applicable instead of defining your own location instance. </li>
-                <li>Provide thematic semantics and general descriptions of spatial things and their
-                  properties as linked data. They should have URIs that return human and machine
-                  readable definitions when resolved. For more information refer to [[DWBP]] <a
-                    href="https://www.w3.org/TR/dwbp/#StructuralMetadata">Best Practice 3: Provide
-                    structural metadata</a>.</li>
-              </ul>
-              <p>The [[W3C-BASIC-GEO]] has a class
-                  <a>SpatialThing</a> which has a very broad definition. This can be applicable (as
-                a generic concept) to most of the common use-cases.</p>
-              <p class="issue" data-number="39">For some use cases we might need something more
-                specific.</p>
-              <p class="issue" data-number="214">Methodology for selecting a spatial vocabulary is
-                not yet defined.</p>
-              <aside class="example">
-                <p>example(s) to be added</p>
-                <p>fire car example</p>
+              <p>A high level objective of these best practices is to highlight approaches that data publishers can take to maximise the ease of use of their spatial data via the web and hence present data in a way that meets the needs of as wide a range of users and applications as possible.</p>
+              <p>One way of classifying the applications of spatial data is as follows:</p>
+              <ol>
+			     <li>Web pages for people to read about spatial things</li>
+			     <li>Web mapping or visualisation applications</li>
+  			     <li>Data integration - combining spatial data with other data</li>
+			     <li>Spatial Data Infrastructures</li>
+			  </ol>
+			 <p>Each of these has different needs: often it will be possible or desirable to support several of these application groups.</p>
+			 <p>The main objective is to encode data in a way that recipients can easily decode and understand. To decide this, you need to consider which purpose(s) and which audience(s) are you aiming to serve and the characteristics of the data that you want to share.  For example:</p>
+			<ul>
+			  <li>the volume of data</li>
+			  <li>how many spatial dimensions it covers (points, lines, areas, 3D)</li>
+			  <li>what kind of area it covers (one building, a town, a whole country)</li>
+			  <li>how frequently it changes</li>
+			  <li>the level of spatial precision that exists in the data and the precision needed by users</li>
+			</ul>
+			
+			<h5>1. Web pages for people to read about spatial things</h5>
+			<p>In <a href="#globally-unique-ids">Best Practice 7</a> we recommend use of HTTP URIs as a way of assigning identifiers to spatial things. The data publisher should offer the ability to look up ('dereference') such a URI to find out useful information about that spatial thing in human readable form (as well as machine readable formats - see the discussion below on data integration).  Each spatial thing therefore gets its own web page - in addition it might be useful to have web pages about groups of spatial things, but the 'page per thing' approach enables fine-grained linking of information.</p>
+			<p>To promote discovery of such web pages in search engines, each page should contain a clear text description of what it is, ideally in a way that distinguishes it from pages about other similar spatial things. Including metadata using the [[SCHEMA-ORG]] vocabulary, embedded as microdata, RDFa or as JSON-LD in the <em>&lt;head&gt;</em> section of the page can provide additional information to search engines to support more precise indexing.  See <a href="#indexable-by-search-engines">Best Practice 4: Making data indexable by search engines</a> for a more detailed discussion.</p>
+			<p>It is also very useful in such web pages to include links to descriptions of the spatial thing in other formats (typically machine-readable formats) as well as linking to related spatial things.</p>
+			<aside class="example">
+              <p>TO DO: Web pages about spatial thing example...</p>
+            </aside>
+			<h5>2. Web mapping or visualisation applications</h5>
+			<p>A common application of spatial data on the Web is delivering map data in a tiled form, suitable for display in zoomable 'slippy maps'.  The Open Geospatial Consortium <a href="http://www.opengeospatial.org/standards/wmts">Web Map Tile Service</a> is an established standard for doing this.  Other approaches in common use include <a href="https://github.com/mapbox/mbtiles-spec">MBTiles</a> or 'Tile layers' in <a href="https://developers.google.com/maps/">Google Maps APIs</a></p>
+			<p>Another frequent requirement is to draw markers or polygons on top of a web map. A typical approach is for the browser to display a base map, then separately retrieve data about the spatial things of interest, typically as GeoJSON or KML files, then to combine the two using appropriate Javascript libraries.  For applications involving boundary polygons of geographical areas, a common consideration is how to make this process efficient at different zoom levels. A high level of detail is appropriate when zoomed in, but when zoomed out a large number of areas may be visible, and delivering boundaries of all of those at full detail can lead to very large amounts of data and hence poor performance, so simplified lower resolution versions of polygons may be required.</p>
+			<aside class="example">
+                <p>TO DO: Mapping/visualisation example...</p>
               </aside>
-            </section>
+			<h5>3. Data integration - combining spatial data with other data</h5>
+			<p>Many important applications of spatial data involve combining it with other kinds of data: for example opening times of nearby supermarkets, or statistical information on the economy of a town.  Often the Spatial Thing is at the centre of the data analysis process.</p>
+			<p>Other applications involve distinguishing or selecting spatial things according to their non-spatial characteristics: hospitals with an emergency department, or restaurants that serve Japanese food.</p>
+			<p>To enable such questions to be answered using data from different sources, it is important to describe spatial things using shared identifiers and vocabularies.  This is described in [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a> and [[DWBP]]<a href="https://www.w3.org/TR/dwbp/#ReuseVocabularies">Best Practice 15: Reuse vocabularies, preferably standardized ones</a>.</p>
+            <p>From a spatial data perspective, the question of identifiers is discussed in <a href="#globally-unique-ids">Best Practice 7</a>.  How to relate a Spatial Thing to its geometry is described in <a href="#describe-geometry">Best Practice 8: Provide geometries on the Web in a usable way</a>.</p>
+            <p>A common approach to encoding data to enable data integration is Linked Data #linked-data and RDF. The spatial aspects of the data can either be included in the RDF data model, or the entity in question can link to an external web resource containing the geometry in one of the standard spatial data formats. Although RDF is well-suited to important aspects of best practice, including use of URIs as identifiers and re-use of vocabularies, other data formats are also consistent with this approach. Most spatial data formats enable associating attributes of an entity alongside its geometry.</p>	
+            <p>The publisher's choice of data model to represent the data will depend on what data is available and which audiences and purposes it seems most important to support. However a reasonable general rule is that it is always useful to provide a label and a type for each entity in the data collection. (See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ChooseRightFormalizationLevel">Best Practice 16: Choose the right formalization level</a>)</p>  
+            <p>A common way of specifying the location of a building is to use its postal address. Most spatial applications require an address to be turned into spatial coordinates, so that its location can be marked on a map, or compared with locations of other things, a process known as 'geocoding'.  Although a publisher could leave this process of geocoding to the data user, ideally the publisher should take responsibility for this as they are in a better position to check the accuracy of the results.  Different ways of specifying addresses can sometimes lead to errors in the geocoding process.</p>
+            <p>Common vocabularies for describing the address of a Spatial Thing include: <a href="https://schema.org/">schema.org</a>, <a href="https://www.w3.org/TR/vcard-rdf/">vCard</a> and <a href="https://www.w3.org/ns/locn">ISA Core Location (LOCN)</a>.</p>
+			<p><a href="http://what3words.com/">What3words</a> is an example of a service that assigns an alternative kind of address to a location - in this case a sequence of three common words associated with a 3m by 3m square on the ground.  It allows every location to be given such an address and What3words also provides a means to relate the address to latitude and longitude coordinates.  Like conventional addresses, converting to coordinates is necessary for many spatial data applications (eg to calculate the distance between points or whether a point is inside a region), but the process of conversion is more reliable and precise.</p>
+			<aside class="example">
+                <p>TO DO. data integration example. <a href="http://statistics.gov.scot">Scottish Government Statistics</a></p>
+              </aside>
+			<h5>4. Spatial Data Infrastructures</h5>
+			<p>In the section <a href="#why-are-traditional-sdi-not-enough">'Why are traditional Spatial Data Infrastructures not enough?'</a> the limitations of this approach with respect to web-based data sharing were explained.  Nonetheless this approach is a well-established and powerful way of distributing spatial data, based on open standards and suited to a community of expert users. It is thus one of the options a data publisher should consider when deciding how to encode their spatial data.</p>
+			<aside class="example">
+                <p>TO DO: SDI example...</p>
+              </aside>
+
+
+            <h4 class="subhead">Balancing quality and cost</h4>
+            <p>The four main classes of application above have a wide range of requirements.  To support all of these may require a lot of effort and cost on behalf of a data publisher. There are many aspects to the 'quality' of a spatial data publishing approach, but in general terms it relates to how well the data and approach to data delivery meet the needs of the target audience.  By choosing to concentrate on only some kinds of application the publisher can keep cost down.  Other factors to consider include performance (speed with which data is delivered), timeliness of updates - which can be a significant consideration if the underlying data changes frequently, software complexity or maintenance. </p>
+            <p>In many cases a mixture of technologies can be used together to find a good compromise of quality or performance and cost. The strengths of various approaches can be applied to the part of the publishing 'spectrum' that suits them best. For example, if using a Linked Data approach, one option is to keep all data in a triple store; but hybrid approaches are also possible, for example where geometrical information is stored and served from flat files, or where non-geometrical data and metadata is stored in a triple store and used to generate web pages and machine readable descriptions of spatial things, while geometrical data is indexed by software such as Lucene Spatial, PostGIS or ElasticSearch. Use of shared web-accessible identifiers for spatial things can help support the interconnections between a range of diverse information systems. </p>
+	          </section>
             <section class="test">
               <h4 class="subhead">How to Test</h4>
-              <p>...</p>
+              <p>TO DO...</p>
             </section>
             <section class="ucr">
               <h4 class="subhead">Evidence</h4>
-              <p><span>Relevant requirements</span>: <a
-                  href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, <a
-                  href="https://www.w3.org/TR/sdw-ucr/#MobileSensors">R-MobileSensors</a>, <a
-                  href="https://www.w3.org/TR/sdw-ucr/#MovingFeatures">R-MovingFeatures</a>.</p>
+              <p><span>Relevant requirements</span>: TO DO</p>
             </section>
             <section class="benefits">
               <h4 class="subhead">Benefits</h4>
               <ul class="benefitsList">
-                <li>...</li>
+                <li>TO DO...</li>
               </ul>
             </section>
-            <p class="issue" data-number="38">We might publish in the Best Practice Note or a complimentary Note a
-              set of statements mapping the set of available vocabularies about spatial things.
-              There are mappings available e.g. GeoNames has a mapping with [[SCHEMA-ORG]]. <a
-                href="http://www.geonames.org/ontology/mappings_v3.01.rdf"
-                >http://www.geonames.org/ontology/mappings_v3.01.rdf</a></p>
-          </div>
+         </div>
         </section>
         <section id="bp-expr-tempo">
           <h4>Temporal aspects of spatial data</h4>
@@ -2249,7 +2307,7 @@ other geocoding representations. The alternative is to use structured geometry o
                   data and metadata to schema.org according to a provided mapping scheme; 
                   assigns URIs to all resources based on a pattern; supports filtering 
                   based on a property; makes each resource available in HTML, XML, JSON-LD, 
-                  GML, GeoJSON; and generates links to data in other datasets managed in triple 
+                  [[GML]], GeoJSON; and generates links to data in other datasets managed in triple 
                   stores using SPARQL queries. The API is documented and published using 
                   Swagger.</p>
               </aside>    
@@ -2288,7 +2346,6 @@ other geocoding representations. The alternative is to use structured geometry o
                 data access APIs of the SDI will continue to be used by expert users
                 and their complex data management tasks.</p>
               <aside class="example">
-                <p><span style="background-color:yellow">@bartvanleeuwen: please check</span></p>
                 <p>Expose the underpinning relational database via a SPARQL endpoint (using
                 something like <a href="http://www.melodiesproject.eu/content/ontop-spatial"
                   >ontop-spatial</a>) and Linked Data API. The data may be mapped dynamically 
@@ -2296,8 +2353,8 @@ other geocoding representations. The alternative is to use structured geometry o
                 Publication tools. This process also allows to enrich the data represented
                 in RDF with additional information and links. To maintain a direct link 
                 between the spatial things provided through the SDI and as Linked Data, 
-                use properties that link between the GML and RDF representations, for example,
-                by including an additional feature property 'rdf_seealso' in the GML encoding 
+                use properties that link between the [[GML]] and RDF representations, for example,
+                by including an additional feature property 'rdf_seealso' in the [[GML]] encoding 
                 pointing to the RDF representation of the spatial thing.</p>
                 <figure>
                   <img src="images/bp28-example.PNG"
@@ -2434,7 +2491,7 @@ other geocoding representations. The alternative is to use structured geometry o
             <ol>
               <li>
                 <p>Use formats that support Web linking (as defined in [[WEBARCH]] <a href="https://www.w3.org/TR/webarch/#hypertext">section 4.4 Hypertext</a>)</p>
-                <p>Earlier in this document (<a href="#linked-data" class="sectionRef"></a>) we explained that Linked Data requires only that the formats used to publish data support Web linking. In other words, linking spatial data does not automatically mean the use of RDF; links can also be created, for example, using GML, HTML or JSON-LD. The two key points from [[WEBARCH]] are:</p>
+                <p>Earlier in this document (<a href="#linked-data" class="sectionRef"></a>) we explained that Linked Data requires only that the formats used to publish data support Web linking. In other words, linking spatial data does not automatically mean the use of RDF; links can also be created, for example, using [[GML]], HTML or JSON-LD. The two key points from [[WEBARCH]] are:</p>
                 <ul>
                   <li><strong><em>Good practice: Link identification</em></strong> &mdash; A [data format] specification SHOULD provide ways to identify links to other resources [...].</li>
                   <li><strong><em>Good practice: Web linking</em></strong> &mdash; A [data format] specification SHOULD allow Web-wide linking, not just internal document linking.</li>
@@ -2539,7 +2596,7 @@ geonames:2650225 owl:sameAs ukgov-stat:S12000036 .
               </li>
               <li>
                 <p>Spatial relationships</p>
-                <p>Topological relationships between <a>spatial things</a> can be computed based on assessment of their geometry. [[GeoSPARQL]] defines three families of topological relationships (simple features, Egenhofer and RCC8) all of which are based on the <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a> pattern, which specifies the spatial dimension of the intersections of the interiors, boundaries and exteriors of two geometric objects that may be 2-dimensional (e.g. area), 1-dimensional (e.g. linear) or 0-dimensional (e.g. point).</p>
+                <p>Topological relationships between <a>spatial things</a> can be computed based on assessment of their geometry. [[GeoSPARQL]] defines families of topological relationships (based on the <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a> pattern) that, in mathematical terms, specify the spatial dimension of the intersections of the interiors, boundaries and exteriors of two geometric objects that may be 2-dimensional (e.g. area), 1-dimensional (e.g. linear) or 0-dimensional (e.g. point).</p>
                 <p>Most commonly used are the simple feature relationship family, described in [[SIMPLE-FEATURES]] section <span style="text-decoration: underline;">6.1.15.3 Named spatial relationship predicates based on the DE-9IM</span>. The set of seven named relationships, or <em>spatial predicates</em>, and their associated [[GeoSPARQL]] properties are listed below:</p>
                 <ul>
                   <li><strong>Equals</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfEquals"><code>geosparql:sfEquals</code></a></li>
@@ -2550,7 +2607,7 @@ geonames:2650225 owl:sameAs ukgov-stat:S12000036 .
                   <li><strong>Contains</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfContains"><code>geosparql:sfContains</code></a></li>
                   <li><strong>Intersects</strong> &mdash; <a href="http://www.opengis.net/ont/geosparql#sfIntersects"><code>geosparql:sfIntersects</code></a></li>
                 </ul>
-                <p>Details of the Simple Features, Egenhofer and RCC8 (<a href="https://en.wikipedia.org/wiki/Region_connection_calculus">Region Connection Calculus</a>) topological relations families are provided in [[GeoSPARQL]] section <span style="text-decoration: underline;">7 Topology Vocabulary Extension</span>.</p>
+                <p>We recommend use of the Simple Features relation families for describing topological relations between points, lines and areas. Further details are provided in [[GeoSPARQL]] section <span style="text-decoration: underline;">7 Topology Vocabulary Extension</span>.</p>
 
                 <pre class="example" id="ex-linking-geosparql-sfcrosses" title="Asserting topological relationship 'crosses' (JSON format)">
 &lt;script type="application/hal+json"&gt;
@@ -2704,7 +2761,7 @@ geonames:2650225 owl:sameAs ukgov-stat:S12000036 .
                 <p>For further information about sensors, sampling, observations and measurements, please refer to [[OandM]] and also to [[VOCAB-SSN]].</p>
 
                 <div class="note">
-                  <p>[[GML]] adopted the [[XLINK11]] standard to represent links between resources. At the time of adoption, XLink was the only W3C-endorsed standard mechanism for describing links between resources within XML documents. The <a href="http://www.opengeospatial.org/">Open Geospatial Consortium</a> anticipated broad adoption of XLink over time - and, with that adoption, provision of support within software tooling. While XML Schema, XPath, XSLT and XQuery etc. have seen good software support over the years, this never happened with XLink. The authors of GML note that given the lack of widespread support, use of Xlink within GML provided no significant advantage over and above use a bespoke mechanism tailored to the needs of GML.</p>
+                  <p>[[GML]] adopted the [[XLINK11]] standard to represent links between resources. At the time of adoption, XLink was the only W3C-endorsed standard mechanism for describing links between resources within XML documents. The <a href="http://www.opengeospatial.org/">Open Geospatial Consortium</a> anticipated broad adoption of XLink over time - and, with that adoption, provision of support within software tooling. While XML Schema, XPath, XSLT and XQuery etc. have seen good software support over the years, this never happened with XLink. The authors of [[GML]] note that given the lack of widespread support, use of Xlink within [[GML]] provided no significant advantage over and above use a bespoke mechanism tailored to the needs of [[GML]].</p>
                 </div>
 
                 <p>Our final example of a domain-specific relationship concerns creative works. For example, one may want to indicate the location a social media message was sent from. In the example below, we assume that Maurits, a tourist in Amsterdam, wants to comment on his visit to Anne Frank's House. His social media App uses the [[GEOLOCATION-API]] to determine his location (<code>Lat=52.37590</code> and <code>Long=4.88452</code>) and suggests several places that Maurits might choose from in order to geo-tag his message. Maurits wants people to know roughly where he is, so he chooses "Amsterdam-Centrum" and presses 'send'. The App encodes the message in [[SCHEMA-ORG]] and pushes the message to the server for distribution. The geo-information is provided using the <a href="http://schema.org/locationCreated"><code>schema:locationCreated</code></a> property.</p>
@@ -2823,7 +2880,7 @@ geonames:2650225 owl:sameAs ukgov-stat:S12000036 .
                 <p>Publish your links to a third party service.</p>
                 <p>Because the links we define use global identifiers for both the source and target resources, they do not need any context to be useful (e.g. one doesn't need any prior knowledge to determine that the URI <a href="http://dbpedia.org/resource/Anne_Frank_House"><code>http://dbpedia.org/resource/Anne_Frank_House</code></a> identifies Anne Frank's House). This means that our links can be published independently from the datasets where they were originally defined.</p>
                 <p>The service <a href="http://sameas.org">&lt;sameAs&gt;</a> provides an example of this in practice &mdash; albeit only for links using the <code>owl:sameAs</code> relation type. The HTTP GET request <a href="http://sameas.org/store/freebase/n3?uri=%3Chttp%3A%2F%2Frdf.freebase.com%2Fns%2Fm.02s5hd%3E"><code>http://sameas.org/store/freebase/n3?uri=&lt;http://rdf.freebase.com/ns/m.02s5hd&gt;</code></a> produces the following result in [[N-TRIPLES]] format:</p>
-                <pre class="example" id="ex-linking-sameas-service" title="Discovering links from the <sameAs> service ([N-TRIPLES] format)">
+                <pre class="example" id="ex-linking-sameas-service" title="Discovering links from the &lt;sameAs> service ([N-TRIPLES] format)">
 HTTP/1.1 200 OK
 Connection:close
 Content-Length:864
@@ -2853,13 +2910,24 @@ Date:Mon, 13 Mar 2017 16:12:04 GMT
               </li>
               <li>
                 <p>Publish metadata about collections of links in a standard way.</p>
-                <p>A data publisher may consider publishing summary information about the links defined in their dataset using <a href="https://www.w3.org/TR/void/#linkset" class="externalDFN">Linksets</a>, as defined in the Vocabulary of Interlinked Datasets [[VoID]].</p>
-                <p>A Linkset provides a summary description of the relationships between two datasets; identifying the source and target datasets, the link relation type(s) used plus optional metadata such as URI templates for identifying participating resources and the number of links specified for each relation type, and may describe <em>technical features</em> such as APIs through which the participating datasets can be accessed.</p>
+                <p>A data publisher may consider publishing summary information about their datasets and the links defined in them using the Vocabulary of Interlinked Datasets [[VoID]].</p>
+                <p>In [[VoID]], <a href="https://www.w3.org/TR/void/#linkset" class="externalDFN">Linksets</a> provide summary description of the relationships between two datasets; identifying the source and target datasets, the link relation type(s) used plus optional metadata such as URI templates for identifying participating resources and the number of links specified for each relation type, and may describe <em>technical features</em> such as APIs through which the participating datasets can be accessed.</p>
                 <p>[[VoID]] dataset and linkset descriptions may be published at <code>/.well-known/void</code> on each domain (using the <code>.well-known</code> pattern defined in [[RFC5758]]) making them easy to find. Applications could be configured to harvest [[VoID]] descriptions from the Internet domains of data publishers in their community, enabling them to build a searchable graph of relationships between datasets &mdash; a <em>Data Network</em>. Because this information is summarized at the set level, the data network graph is convenient to work with, allowing simple discovery of numbers and relation types of both <em>inbound</em> and <em>outbound</em> links within a given dataset. Once the presence of interesting links within a dataset has been identified, the user would then work directly with the dataset in question (or the API through which it is accessed) to acquire the detailed information about specific links defined in that dataset.</p>
                 <p>Interactions such as those described above would be quite intensive for a human using a browser. However, the [[VoID]] descriptions could be used to drive a software agent that hides much of the complexity from the user; for example, automatically harvesting individual links once a set-level relationship is considered interesting, and then allowing the user to traverse those links either forwards or backwards.</p>
-                <p>This was the aim of the <a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference Framework</a> (SIRF), developed by <a href="http://csiro.au">CSIRO</a>. The project team describe SIRF as "a <em>Linked Data bridge</em> between Spatial Data Infrastructures and the general information Web". In summary, when a spatial dataset was registered with SIRF, URIs would be automatically created for each of the <a>spatial things</a> described in that dataset. Where identifiers in the collection of datasets were deemed to refer to the same <a>spatial thing</a> a <em>crosswalk</em> (such as <code>owl:sameAs</code>) would be created to link those identifiers and bind together different representations of the same <a>spatial thing</a>, and thereby enable users to browse information from multiple sources as a coherent whole. The SIRF application is driven by the [[VoID]] descriptions it creates for each registered dataset.</p>
+                <aside class="example">
+                  <p><a href="https://www.osi.ie/">Ordnance Survey Ireland</a> (OSi) publish Ireland's authoritative geospatial information as <a>Linked Data</a> from their <a href="http://data.geohive.ie/">data.geohive.ie</a> platform. In addition to offering a human-browsable interface and downloadable data dumps, they use <a href="http://linkeddatafragments.org/">Linked Data Fragments</a>, and specifically a [[TRIPLE-PATTERN-FRAGMENTS]] <a href="http://vma01.adaptcentre.ie/">server</a> which uses [[VoID]] descriptions, to enable users to explore the datasets via a SPARQL endpoint. For example, <a href="http://vma01.adaptcentre.ie/boundaries-links">Boundaries &mdash; links with the LOD cloud</a> provides a starting point to find links between the authoritative spatial things published by OSi and <em>similar</em> spatial things from <a href="http://dbpedia.org">DBpedia</a>; e.g.</p>
+                  <pre id="ex-linking-osi-similarto">
+@prefix ov:       &lt;http://open.vocab.org/terms/&gt; .
+
+&lt;http://data.geohive.ie/resource/county/2AE19629143D13A3E055000000000001&gt;
+      ov:similarTo &lt;http://dbpedia.org/resource/County_Carlow&gt; .
+                  </pre>
+                </aside>
+                <aside class="example">
+                  <p>This was the aim of the <a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference Framework</a> (SIRF), developed by <a href="http://csiro.au">CSIRO</a>. The project team describe SIRF as "a <em>Linked Data bridge</em> between Spatial Data Infrastructures and the general information Web". In summary, when a spatial dataset was registered with SIRF, URIs would be automatically created for each of the <a>spatial things</a> described in that dataset. Where identifiers in the collection of datasets were deemed to refer to the same <a>spatial thing</a> a <em>crosswalk</em> (such as <code>owl:sameAs</code>) would be created to link those identifiers and bind together different representations of the same <a>spatial thing</a>, and thereby enable users to browse information from multiple sources as a coherent whole. The SIRF application is driven by the [[VoID]] descriptions it creates for each registered dataset.</p>
+                </aside>
                 <div class="issue" data-number="36">
-                  <p>The use of Linksets needs further discussion as evidence indicates that it is not yet a widely adopted best practice. It may be appropriate to publish such details in a Note co-authored with the DWBP Working Group.</p>
+                  <p>The use of [[VoID]] needs further discussion; is there enough evidence of its adoption in the wild? Also, the Triple Pattern Fragments server needs a bit more investigation to determine exactly how much the [[VoID]] descriptions are used.</p>
                 </div>
               </li>
             </ol>
@@ -2915,64 +2983,9 @@ Date:Mon, 13 Mar 2017 16:12:04 GMT
       <p class="note">This section is a placeholder for best practices that were in the FPWD but have not yet
         been placed in the new doc structure. They may be removed, merged, or moved.</p>
       <div class="practice">
-        <p><span id="minimum" class="practicelab">Provide a minimum set of information about spatial things for your
-            intended application</span></p>
+        <p><span id="minimum" class="practicelab">Removed - merged with <a href="#semantic-thing">BP10</a>.</span></p>
         <p class="practicedesc">When someone looks up a URI for a SpatialThing, provide useful
           information, using the common representation formats </p>
-        <section class="axioms">
-          <h4 class="subhead">Why</h4>
-          <p>This will allow to distinguish <a>SpatialThings</a> from one another by looking at
-            their properties; e.g. type, label. It will also allow to get the basic information
-            about <a>SpatialThings</a> by referring to their URI.</p>
-        </section>
-        <section class="outcome">
-          <h4 class="subhead">Intended Outcome</h4>
-          <p>This requirement should serve a minimum set of information for a <a>SpatialThing</a>
-            against a URI. In general,  this will allow to look up the properties and features of a
-              <a>SpatialThings</a>, and get information from machine-interpretable and/or
-            human-readable descriptions.</p>
-        </section>
-        <section class="how">
-          <h4 class="subhead">Possible Approach to Implementation</h4>
-          <p>This requirement specifies that useful information should be returned when a resource
-            is referenced. This can include:</p>
-          <ul>
-            <li>Expressing properties and features of interest for a <a>SpatialThing</a> using
-              common semantic descriptions.</li>
-            <li>Expressing names of places; provides multiple names for your <a>SpatialThings</a> if
-              they are known. These could be toponyms (names that appear on a map) or colloquial
-              names (that local people use for a place). This part will explain in more detail how
-              to provide the names/labels for the spatial things that are referred to. (e.g. a way
-              to do this could be <code>rdfs:label</code>)</li>
-            <li>A 'place' may have an indistinct (or even undefined) boundary. It is often useful to
-              identify spatial things even though they are fuzzy. For example: 'Renaissance Italy'
-              or 'the American West'.</li>
-            <li>Information (about a <a>SpatialThing</a>; a place) should be provided with
-              information about authority (owner, publisher), timeliness (i.e. is it valid now? is
-              it historical data?) and, (if applicable) quality. It is common, for example, that
-              there exist many maps of a place - none of them the same. In that case users need to
-              know who produced each one, to be able to choose the right one to use.</li>
-          </ul>
-          <aside class="example">
-            <p>example(s) to be added; including:</p>
-            <ul>
-              <li>"American West" (indistinct boundary)</li>
-              <li>How to specify labels (e.g. <code>rdfs:label</code>) for the SpatialThing; toponym, thematic
-                identifier, language specific labels.</li>
-            </ul>
-          </aside>
-        </section>
-        <section class="test">
-          <h4 class="subhead">How to Test</h4>
-          <p>...</p>
-        </section>
-        <section class="ucr">
-          <h4 class="subhead">Evidence</h4>
-          <p><span>Relevant requirements</span>: <a
-              href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, <a
-              href="https://www.w3.org/TR/sdw-ucr/#MultilingualSupport">R-MultilingualSupport</a>, <a
-              href="https://www.w3.org/TR/sdw-ucr/#SpatialVagueness">R-SpatialVagueness</a></p>
-        </section>
       </div>
       <p>The best practices described in this document will incorporate practice from both
         Observations and Measurements [[OandM]] and W3C Semantic Sensor Network Ontology
@@ -3174,11 +3187,11 @@ Content-type: application/geo+json
   }
 }
               </pre>
-              <p>The "Well Known Text" (WKT) encoding, itself defined in [[SIMPLE-FEATURES]], is extended by [[GeoSPARQL]] to include designation of the coordinate reference system used. The example above encodes the polygon as a [[GeoSPARQL]] <code>wktLiteral</code> data type, designating the coordinate reference system as <code>&lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt;</code> (<a href="http://epsg.io/4326">EPSG:4326</a>) - WGS 84 Lat/Long.</p>
+              <p>The "Well Known Text" (<a>WKT</a>) encoding, itself defined in [[SIMPLE-FEATURES]], is extended by [[GeoSPARQL]] to include designation of the coordinate reference system used. The example above encodes the polygon as a [[GeoSPARQL]] <code>wktLiteral</code> data type, designating the coordinate reference system as <code>&lt;http://www.opengis.net/def/crs/EPSG/0/4326&gt;</code> (<a href="http://epsg.io/4326">EPSG:4326</a>) - WGS 84 Lat/Long.</p>
 
               <div class="note">
                 <p>When using the <code>wktLiteral</code> datatype specified in [[GeoSPARQL]], the <a>coordinate reference system</a> URI may be omitted. In such a case, WGS 84 Long/Lat (<code>urn:ogc:def:crs:OGC::CRS84</code>) is used. Please refer to [[GeoSPARQL]] <strong>Requirement 11</strong> for more details.</p>
-                <p>The Basisregistraties Adressen en Gebouwen (BAG - the Dutch "Basic Registers for Addresses and Buildings"), provided by <a href="https://www.kadaster.nl/">Kadaster</a>, uses this default behaviour. Anne Frank's House, is identified using the URI <a href="http://bag.basisregistraties.overheid.nl/bag/id/pand/0363100012169587"><code>http://bag.basisregistraties.overheid.nl/bag/id/pand/0363100012169587</code></a>. <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587">HTML</a>, <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587&format=json">JSON</a>, <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587&format=ttl">TTL</a> and <a href="http://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587&format=xml">XML</a> representations are available.</p>
+                <p>The Basisregistraties Adressen en Gebouwen (BAG - the Dutch "Basic Registers for Addresses and Buildings"), provided by <a href="https://www.kadaster.nl/">Kadaster</a>, uses this default behaviour. Anne Frank's House, is identified using the URI <a href="http://bag.basisregistraties.overheid.nl/bag/id/pand/0363100012169587"><code>http://bag.basisregistraties.overheid.nl/bag/id/pand/0363100012169587</code></a>. <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587">HTML</a>, <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587&amp;format=json">JSON</a>, <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587&amp;format=ttl">TTL</a> and <a href="http://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2013090600000000%2Fpand%2F0363100012169587&amp;format=xml">XML</a> representations are available.</p>
               </div>
             </li>
             <li>
@@ -3285,284 +3298,7 @@ GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,C
           </p>
         </section>
       </div>
-
-    </section>
-    <section id="narrative">
-      <h2>Narrative - the Nieuwhaven flooding</h2>
-      <p>This narrative introduces a flooding scenario as a background story for the Best
-        Practice.</p>
-      <p class="note">Names and places used in this scenario are fictional, procedures and practices
-        may not reflect those used in the real world. Our intent is to provide a coherent context
-        within which the best practices can be illustrated. We <strong>do not</strong> attempt to
-        provide best practice for management of flooding events. However, many of the procedures
-        discussed are based on information from <a
-          href="http://unitedkingdom.nlembassy.org/binaries/content/assets/postenweb/v/verenigd_koninkrijk_van_groot_brittannie_en_noord_ierland/nederlandse-ambassade-in-londen/import/key-topics/flood-risk-and-water-management-in-the-netherlands-a-2012-update1.pdf"
-          >flood-risk-and-water-management-in-the-netherlands</a>.</p>
-      <p>Nieuwhaven is a flourishing coastal city in the Netherlands. In common with much of the
-        Netherlands, the low lying nature of Nieuwhaven make it prone to flooding from both rivers
-        and the North Sea. To mitigate or reduce risks to homes and businesses, significant
-        investment has been made to flood control and water management infrastructure.</p>
-      <p>Flood Risk Management and Water Management are integrated in the Netherlands. By combining
-        responsibilities for daily water management and flood risk management, the same people are
-        involved who have a detailed knowledge of their water systems and flood defenses.</p>
-      <figure>
-        <img src="images/narrative-img1.png" title="Multi-layer safety for flood risk management" height="400"/>
-        <figcaption>“Multi-layer safety” for Flood Risk Management (source: §2.3 <a href="http://unitedkingdom.nlembassy.org/binaries/content/assets/postenweb/v/verenigd_koninkrijk_van_groot_brittannie_en_noord_ierland/nederlandse-ambassade-in-londen/import/key-topics/flood-risk-and-water-management-in-the-netherlands-a-2012-update1.pdf">Flood Risk and Water Management in the Netherlands</a>)</figcaption>
-      </figure>
-      <p>Flood risk management can be separated into three layers: </p>
-      <ol >
-        <li>Flood alerts, evacuation, response and recovery (civil protection issues); both
-          organizational and physical measures (e.g. identifying, checking, repairing and signaling
-          evacuation routes).</li>
-        <li>Spatial planning issues; reducing the impact of flooding through planning
-          measures.</li>
-        <li>Flood protection; constructing flood defenses to reduce the probability [of
-          inundation and the impact of flooding]</li>
-      </ol>
-      <p>Our scenario concentrates on element (3).</p>
-      <section>
-        <h2>Describing predicted flood extent using vector geometries</h2>
-        <p>The Nieuwhaven Water Board is the independent local government body responsible for regional water management; maintaining the system of dikes, drainage, canals and pumping stations that are designed to keep the city and surrounding environment from flooding. </p>
-        <p>Based on assessment of historical flooding events, Newhaven Water Board is able to determine the extent of flooding that would occur as the result of hypothetical storm surge and river flooding events. </p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li> inundation extent from hypothetical scenarios</li>
-            <li>vector geometries for the inundation extent based on assessment against high-resolution DEM (Digital Elevation Model) / DTM (Digital Terrain Model) derived from photogrammetry &amp; lidar</li>
-            <li>API enables users to define the geometry resolution (from 1m resolution up to 50m?) they need for their application using a query parameter [e.g. to manage the volume of complex geometries]</li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2>Publishing statistical data for geographic areas</h2>
-        <p>Municipal emergency services, public health authorities and water boards are grouped according to a “safety region” in order to establish a multi-disciplinary “emergency team” for crisis management. This helps to ensure that there is effective communication between those responsible for public safety and those responsible for flood control and water management.</p>
-        <p>Each safety region prepares systematically for its own specific characteristics, based on available capabilities. This plan, the “Flood Response Plan”, includes evacuation strategies that are developed in response to hypothetical flooding events. Scenarios are prepared beforehand and carefully considered. The emergency team must be prepared at all times to deliver an assessment on a disaster / incident scenario and advise on proposed interventions, e.g. evacuation and deployment of temporary flood defenses.</p>
-        <p>In developing the Flood Response Plan, the numbers of citizens impacted by each hypothetical flooding event are determined by cross-referencing the areas affected by surface water flooding with census data.</p>
-        <p><a href="https://www.cbs.nl/en-gb/about-us/organisation">Statistics Netherlands</a> (CBS) publishes reliable and coherent statistical information which respond to the needs of Dutch society and is responsible for compiling official national statistics.</p>
-        <p>CBS makes use of OData, the Open Data Protocol v4, to provide open datasets for use by third parties. Furthermore, CBS provides a search interface to help a user find the dataset of interest. Data is also provided in CSV format.</p>
-        <p>CBS provides metadata for the census dataset, in both human- and machine-readable forms. A download of each dataset is available, but may leave the data user with more data than they can conveniently work with. Users are often interested only in the subset of areas that are relevant to them - such as those by flooding. CBS provides an API enabling the user to retrieve the relevant data by selecting the area of interest and, optionally, choosing specific dimensions of the statistical data.</p>
-        <p>Census data naturally takes the form of a statistical 'data cube', with statistical dimensions of area, time, gender, age range etc. A useful standards-based approach to making the data available would be to represent it as RDF, using the RDF Data Cube Vocabulary [[VOCAB-DATA-CUBE]]. This offers a standards based way to represent statistical data and associated metadata as RDF. API access to the data could be provided via a SPARQL endpoint, or a more specific API. The Linked Data API, implemented by Epimorphics’ ELDA, provides a useful mechanism to expose simple RESTful APIs on top of RDF/SPARQL.</p>
-      </section>
-      <section>
-        <h2>Publishing data about administrative areas</h2>
-        <p>Population data from a census is typically broken down by area, gender, age (and perhaps other statistical dimensions) and relates to a particular time.</p>
-        <p>CBS uses established URLs to identify each administrative area for which population data is available. Details of the administrative areas for Nieuwhaven are published by the municipal government. This information includes the geometry for each administrative area.</p>
-        <p>Data about administrative areas are often useful - perhaps they represent one of the most popular spatial datasets. In this case they are useful for coordinating the emergency response, i.e. predicting and tracking which neighborhoods or districts are threatened. Because the names of local administrative areas such as neighborhoods are very well known they are also useful for communication with citizens, i.e. letting them know if their neighborhood is threatened by the flood or not.</p>
-        <p>Because the administrative area datasets are quite popular, all kinds of data users will want to use it - not only GIS experts. To enable them to find the data on the web, it was published in such a way that search engines can crawl the data, making the data findable using popular search engines.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li>publish administrative areas with geometry</li>
-            <li>geometries published with national CRS via SDI (this could be converted in the browser using proj4.js)</li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2>Correlating statistical and geographic areas to assess impact</h2>
-        <p>By cross-referencing the population statistics, administrative areas and surface water flooding extent (e.g. by calculating the intersection of the flood with administrative areas), the number of citizens impacted by each hypothetical flooding event can be estimated.</p>
-        <p>Once the number of citizens that need refuge has been determined, the emergency teams can designate public buildings, such as schools and sports centers, as evacuation points and define safe transit routes to get to those points.</p>
-      </section>
-      <section>
-        <h2>Publishing data about topographic features with associated discovery metadata</h2>
-        <p>The municipal government published details of the built infrastructure within Nieuwhaven, including public buildings and transport infrastructure.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li> each feature is uniquely identified</li>
-            <li>each feature is indexed by search engines</li>
-            <li>dataset is published as vector tile-set (like OSM)</li>
-          </ul>
-        </div>
-        <p>The municipal government also publishes metadata describing each dataset (DWBP-BP1) that, besides free text descriptions (e.g., title, abstract), include the following information:</p>
-        <ul>
-          <li>the type of objects/features described - e.g., with a thematic classification (DWBP-BP2)</li>
-          <li>spatial coverage / temporal coverage - to identify if data match the area of interest </li>
-          <li>coordinate reference system(s) used - to correctly interpret geometries</li>
-          <li>spatial resolution - to identify data with the right level of detail </li>
-          <li>distribution format(s) and API to get access to the data (at a different level of granularity) - to identify those datasets consumable by the intended application(s) (DWBP-BP4, DWBP-BP13)</li>
-          <li>date of last modification - to see whether data are up to date (DWBP-BP8) </li>
-          <li>the parties responsible for the creation and maintenance of the data - to verify data authoritativeness (DWBP-BP6)</li>
-        </ul>
-        <p>To facilitate data discoverability, metadata should be published via different channels and formats (DWBP-BP22). Nowadays, such metadata are typically maintained in geospatial catalogues, encoded based on [[ISO-19115]] - the standard for spatial metadata. In addition to this, such metadata can be served in RDF, and made queryable via a SPARQL endpoint; e.g. [[GeoDCAT-AP]] provides an XSLT-based <a href="https://webgate.ec.europa.eu/CITnet/stash/projects/ODCKAN/repos/iso-19139-to-dcat-ap/browse">mechanism</a> to automatically transform [[ISO-19115]] metadata into RDF, following a schema based on the W3C Data Catalog Vocabulary [[VOCAB-DCAT]].</p>
-        <p>This solution can be further enhanced by making data discoverable and indexable via search engines. The advantage is that this would allow data consumers to discover the data even though they do not know the relevant catalogue(s), and to find alternative data sources.</p>
-        <p>This can be achieved, following Search Engine Optimization (SEO) techniques, by embedding metadata in catalogue’s Web pages, with mechanisms like HTML-RDFa, Microdata, and Microformats. Examples of this approach include the following ones:</p>
-        <ul>
-          <li>In the <a href="https://geo4web-testbed.github.io/topic4/">Geonovum testbed</a>, dataset pages from a spatial catalogue embed metadata, represented by using the [[SCHEMA-ORG]] vocabulary, directly generated from the relevant [[ISO-19115]] records.</li>
-          <li>The <a href="https://webgate.ec.europa.eu/CITnet/stash/projects/ODCKAN/repos/iso-19139-to-dcat-ap/browse/api" >experimental GeoDCAT-AP API</a> allows data publishers to serve  [[ISO-19115]] records in different RDF serialization formats, including HTML+RDFa, on top of a spatial catalogue and/or an OGC Catalog Service for the Web [[CSW]].</li>
-        </ul>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <p>publish dataset metadata </p>
-        </div>
-      </section>
-      <section>
-        <h2>Using spatial relations</h2>
-        <p>Temporary flood defenses are common where roads and railways cross permanent flood defenses or are built up on boulevards along rivers. Also, temporary flood defenses are also deployed where dikes have not passed their annual visual inspection or 5-yearly assessment. Information regarding the condition of dikes cannot be incorporated into the plan, and must be considered during an actual flood event.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add examples including:</p>
-          <ul>
-            <li>individual transport network segments and flood defense features are uniquely identified</li>
-            <li>spatial relations are used to define where transport infrastructure cross flood defenses, and hence quickly determine where to deploy temporary flood defenses without the need for detailed spatial analysis … this can be used to demonstrate 3rd-party linking; e.g. the spatial relations are published by an organization that owns nether of the target datasets</li>
-            <li>locations for temporary flood defenses are provided to the relevant emergency services teams</li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2>Publishing coverage data about predicted water depth</h2>
-        <p>Storm surge and river flood warning services are provided by the National Water Management Centre (WMCN) at <a href="https://www.rijkswaterstaat.nl/">Rijkswaterstaat</a>, who are responsible for the design, construction, management and maintenance of the main infrastructure facilities in the Netherlands such as the main road network, the main waterway network and water systems.</p>
-        <p>The storm surge warning service is triggered by storm surge alert from the Royal Netherlands Meteorological Institute (KNMI), the Dutch national weather service. A forecast combination of heavy rainfall, high-tide and storm makes it likely that a flooding will occur in the next 120 hours. Specialists use meteorological, hydrological and urban flood prediction models within the Flood Early Warning System (FEWS) to estimate peak water-levels, when these will occur and which area will likely be flooded.</p>
-        <p>The Storm surge warnings consist of predicted maximum water levels and a general description of wind and tide. 10-minute water level forecasts are computed and distributed, including details of wave run-up and overtopping for dikes.</p>
-        <p>Every 6 hours, new meteorological predications are incorporated into the flood prediction, resulting in a new version of the 10-minute water level forecast dataset being made available.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li>landing page (with descriptive metadata) for each forecast dataset</li>
-            <li>entire forecast dataset available in a number of (compact binary) formats for offline use (e.g. NetCDF, HDF5)</li>
-            <li>”current" forecast uniquely identified</li>
-            <li>exposed via a self-describing restful API; subdivided by time (each time-step listed in metadata)</li>
-            <li>use RDF Data Cube to describe the dataset structure</li>
-            <li>whole time-slice available as covjson</li>
-            <li>simple point data extraction (in WGS84 coordinates); covjson point feature with water depth time series</li>
-            <li>simple bbox extraction (in WGS84 coordinates); covjson</li>
-            <li>use covjson data to illustrate (1) depth of flooding, (2) changes in inundation through time</li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2>Using an API to make it easy to work with spatial data</h2>
-        <p>The emergency team for the Nieuwhaven safety region compare the predictions for the forecast flooding event against the hypothetical scenarios developed in the Flood Response Plan to determine which of the prepared response plans to execute.</p>
-        <p>Based on this assessment, the imminent flooding event requires a number of temporary flood defenses to be deployed and evacuation of some districts of Nieuwhaven.</p>
-        <p>The emergency team identify where additional temporary flood defenses are required due to any dikes that are in a state of disrepair (e.g. having failed their annual or 5-yearly assessments).</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example: </p>
-          <p> cross reference the location of each damaged dike with predicted high-water level, determined via an API call into the 10-minute water level forecasts to extract a water level time-series for a given point to determine if the water level is predicted to exceed a threshold, in which case, temporary flood defenses will be required.</p>
-        </div>
-      </section>
-      <section>
-        <h2>Making spatial data consumable by both humans and machines</h2>
-        <p>Details of the emergency and the evacuation plan must be communicated to citizens. They are kept informed during and prior to the event using multiple channels:</p>
-        <ul>
-          <li>local radio and television networks</li>
-          <li>news and media agencies; television, radio and <strong>on-line</strong></li>
-          <li>official national Government website www.crisis.nl, including specific information about flooding events</li>
-          <li>cell broadcasting via the Government’s NL-Alert system, providing SMS message alerts to all mobile phones in the vicinity of a life and health threatening emergency</li>
-          <li>air raid sirens</li>
-        </ul>
-        <p>The evacuation plan must be discoverable by the public. The intent is for each plan to be both human (primarily) and machine readable. The requirement for machine readability is mostly to support automated discovery of the content via web search. The URL itself ideally should also be "human friendly" as it should be easy to share verbally in addition to being embedded and linked to from other web pages.</p>
-        <p>While making the plans clear and understandable to human readers is well understood (and beyond the scope of this best practices document!). The challenge is to make the content machine readable. The use of a simple tag based schema using microdata, RDFa or JSON-LD is recommended. A simple first step might be to use the [[SCHEMA-ORG]] "<code><a href="http://schema.org/Event">schema:Event</a></code>" item tag <code>&lt;div class="event-wrapper" itemscope itemtype="http://schema.org/Event"&gt;</code>, which has useful generic properties of date, location, duration etc. The places of evacuation refuges (e.g. schools, sports centers etc.) should be tagged using the generic "<code><a href="http://schema.org/Place">schema:Place</a></code>".</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li>publish simple, authoritative Web pages that describe the evacuation plans; include structured mark-up to help search engines index the rich content; each evacuation plan must be uniquely identified</li>
-            <li>the evacuation plans link to the <a>spatial things</a> (e.g. schools, sports centers, administrative areas etc.) designated as refuges etc.</li>
-          </ul>
-        </div>
-        <p>Details of the evacuation route should be provided ideally as a textual description (perhaps machine readable using the [[SCHEMA-ORG]] "TravelAction" item, although this is rather limited) and a graphical representation. Potentially route information could be encoded using a format such as <a href="http://www.openlr.org/index.html">OpenLR</a> but this has not achieved widespread adoption.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li>describe transit routes </li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2>Providing simple access to spatial data through 'convenience' APIs</h2>
-        <p>News and media agencies provide Web applications that help communicate the evacuation to citizens as effectively as possible; e.g. by creating simple Web applications that direct one to the correct evacuation plan based on their postal code or online mapping tools. Media agencies may cross-reference evacuation plans with Features that have non-official identifiers; e.g. from <a href="http://what3words.com">What3Words</a> (W3W) or <a href="http://www.geonames.org">GeoNames</a>.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li>simple App to help people determine if they will be flooded ... simple lookup based on postcode area; x-ref postcode area with predicted surface water extent (from forecast dataset) via spatial analysis of geometries; use API into forecast dataset to extract water-level time series for a given location </li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2>Publishing geographic information in simple tabular data</h2>
-        <p>During a flood event, the Flood Response Plan indicates that emergency services will have to focus their efforts on reducing the number of fatalities. This means that if an evacuation order is given, the efforts of the emergency services will be focused on traffic control and on non self reliant groups.</p>
-        <p>As the flood event progresses, the emergency services provide evacuation assistance for the vulnerable, such as the residents of care homes. </p>
-        <p>The municipal public health authority publishes details of care homes and other health care facilities on-line as open data, using a simple CSV format.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li> CSV formatted spatial data … either using well-known-text encoded geometry _or_ providing an address that can be geocoded? … It is important that the structure and meaning of the data is documented, by providing a definition for each column header and information on the type of data to be expected in the cells. This should follow the approach defined in the W3C Metadata Vocabulary for [[TABULAR-METADATA]]</li>
-          </ul>
-      </div>
-      </section>
-      <section>
-        <h2>Publishing data about moving objects</h2>
-        <p> The position of each vehicle used by the emergency services is tracked in near real-time using GPS. The coordinators within the emergency team are able to view both current position and where the vehicles have been; gauging the evacuation progress against the Flood Response Plan. </p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li>moving features; where “geometry” changes with time</li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2>Publishing real-time data streams from sensors</h2>
-        <p>During floods and storm surges, professionals (often aided by trained volunteers) constantly monitor all flood defenses. Measurements include: water level, wave height, wind speed and direction.</p>
-        <p>The emergency team use these observations to monitor the rising water levels to ensure that these are consistent with the predictions (both in terms of timing and peak water-level) in case additional interventions, such as evacuating more districts, are required.</p>
-        <p>A real-time data stream of water level at a specific location within Nieuwhaven’s canals is published from an automated monitoring system operated by the Water Board; e.g. a Web-enabled sensor.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>Example tbd including:</p>
-          <ul>
-            <li>metadata about the data stream enabling discovery and interpretation of the data stream values; e.g. what quantity kind is being measured with which units of measurement, what is the sensor etc.</li>
-            <li>relate the sensor (and the data-stream it provides) to the water body whose water level it is intended to monitor</li>
-            <li>describe the sensor location</li>
-            <li>SensorThings API example; what about use of protocols other than HTTP; e.g. MQTT?</li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2>Describing location using relative positions</h2>
-        <p>Fortunately, the prediction is sufficiently accurate that the evacuation plan remains effective. However, the emergency team notice that the water level in one particular sector is higher than predicted- and rising. Further analysis indicates that an automated control gate has malfunctioned.</p>
-        <p>A team is dispatched to use the manual override. The manual control is located using relative positioning.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li>the manual override / control is located using relative positioning</li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2>Using social media to convey spatial data</h2>
-        <p>During the flood, citizens themselves become engaged with the flood event; they use social media to post geo-tagged messages regarding their observations of the flood (“the #flood has reached my home” or “Mount Pleasant Road closed at junction with Acacia Avenue #flood”, perhaps accompanied by photographs) or offer localized help (“come charge your phone at my porch #floodresponse”).</p>
-        <p>The aggregated social media messages are used by the emergency team to complement the monitoring data provided by the Water Board, tracking the progress of the flooding event in near real-time.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li>social media, water extent … VGI … <a href="https://twitter.com/leoniemellor/status/738884030511222785">https://twitter.com/leoniemellor/status/738884030511222785</a> … aggregated social media posts; situational awareness … how to reconcile place names with resources formally identified with URLs? … especially where local or informal place names (with ‘fuzzy’ boundaries) are used (e.g. “north of Downtown”)</li>
-            <li>… ambiguity: “#flooding the water is 2 feet deep at my house”</li>
-            <li>… social media platform providers drive collection of particular information from users of the platform</li>
-            <li>… or volunteers might blog, creating content in HTML using a publishing App</li>
-            <li>geotagging photos of flood extent ... using EXIF data from photos ... provide an API to search that resource [Instagram] ... emergency responders use this to track the progress of the flood against prediction</li>
-          </ul>
-        </div>
-        <p>Due to the prioritization of emergency services elsewhere, the Flood Response Plan assumes that the general public will have to be self reliant or resilient for a number of days.</p>
-        <p>Using social media, local businesses offer services to those affected by the flood; for example, a local bakery offers food and water and asks for help to move these supplies to the evacuation refuge nearby.</p>
-        <div class="example">
-          <h3>Example</h3>
-          <p>tbd add example including:</p>
-          <ul>
-            <li>#floodresponse ... messages are geotagged (location label) but also use HTTP URI to precisely identify the location (e.g. from W3W)</li>
-          </ul>
-        </div>
-      </section>
-    </section>
+   
     <section id="conclusions">
       <h2>Conclusions</h2>
     </section>
@@ -3577,7 +3313,7 @@ GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,C
       <p>The first table is a matrix of the common formats, showing in general terms how well these
         formats help achieve goals such as discoverability, granularity etc. </p>
       <table id="x-ref_formatVbp">
-        <caption>An attempt at matrix of the common formats (GeoJSON, GML, RDF, JSON-LD) and what
+        <caption>An attempt at matrix of the common formats (GeoJSON, [[GML]], RDF, JSON-LD) and what
           you can or can't achieve with it. (<span style="background-color:yellow">source:
             @eparsons</span>)</caption>
         <tr>
@@ -3636,7 +3372,7 @@ GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,C
           <td>Yes</td>
         </tr>
         <tr>
-          <td><a href="http://www.opengeospatial.org/standards/gml">GML</a></td>
+          <td>[[GML]]</td>
           <td>Open</td>
           <td>Text</td>
           <td>Geometry and attributes inline or xlinked</td>
@@ -4093,7 +3829,7 @@ GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,C
     </section>
     <section class="appendix" id="acknowledgments">
       <h2>Acknowledgments</h2>
-      <p>The editors gratefully acknowledge the contributions made to this document by <a href="https://www.w3.org/2000/09/dbwg/details?group=75471&public=1">all members
+      <p>The editors gratefully acknowledge the contributions made to this document by <a href="https://www.w3.org/2000/09/dbwg/details?group=75471&amp;public=1">all members
         of the working group</a> and the chairs: Kerry Taylor and Ed Parsons.</p>
     </section>
     <section class="appendix" id="changes">
@@ -4112,8 +3848,6 @@ GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,C
           <li>Addition of a new, partially complete section (see <a href="#how-to-use"></a>) that is intended to help readers understand the steps they should take and the questions they should consider when publishing spatial data on the Web; referencing both the general [[DWBP]] best practices and those specific to spatial data described in this document</li>
           <li>Improvements to the <a href="#glossary"></a></li>
         </ul>
-
-        <p>Section <a href="#narrative"></a> has also be introduced in this draft in an attempt to provide a context for the best practices using an end-to-end narrative based on an urban flooding event. This introduces a number of case studies that are intended to illustrate how the challenges associated with publishing different kinds of spatial data on the Web may be approached. This draft includes only the overview for each case study and does not (yet) describe the activities that each actor should undertake in order to publish their spatial data.</p>
       </section>
       <section id="changes-since-20161025">
         <h2>Changes since working draft of 25 October 2016</h2>
