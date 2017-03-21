@@ -5,7 +5,7 @@ var respecConfig = {
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-    edDraftURI: "http://w3c.github.io/sdw/eo-qb/",
+    edDraftURI: "https://w3c.github.io/sdw/eo-qb/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
@@ -38,9 +38,9 @@ var respecConfig = {
         ]
     }],
     wg: "Spatial Data on the Web Working Group",
-    wgURI: "http://www.w3.org/2015/spatial/",
+    wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
-    wgPatentURI: "http://www.w3.org/2004/01/pp-impl/75471/status",
+    wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
@@ -115,6 +115,17 @@ var respecConfig = {
           authors:["Rob Atkinson"],
           publisher:"W3C/OGC",
           status:"W3C/OGC Working Draft"
+        },
+        "perf-vgraph": {
+            href: "http://ceur-ws.org/Vol-248/paper2.pdf",
+            title: "A Performance and Scalability Metric for Virtual RDF Graphs",
+            authors: ["Michael Hausenblas", "Wolfgang Slany", "Danny Ayers"],
+            date: "June 2007"
+        },
+        "sparql-opt": {
+            href: "https://events.linuxfoundation.org/sites/events/files/slides/SPARQL%20Optimisation%20101%20Tutorial.pdf",
+            title: "Tutorial: SPARQL Optimization 101",
+            authors: ["Rob Vesse"]
         }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"

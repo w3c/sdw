@@ -183,7 +183,7 @@ While the approach  may also be suitable for other forms of coverage data, we le
     :lat "91.6667";
     :long "40.0270";
     :time "2001-10-26T21:32:52"^^xsd:dateTime ;
-    :dataValue "http://www.example.org/led-example-image-R000" ;
+    :dataValue <http://www.example.org/led-example-image-R000> ;
     :resolution "0.9"^^:pixelsPerDegree ;
     :dggsCell "R000" ;
     :dggsLevelSquare "3" ;
@@ -211,27 +211,55 @@ While the approach  may also be suitable for other forms of coverage data, we le
 
       <section  id="Serving">
           <h3>Serving a coverage</h3>
-          <p>In this model, coverage data is stored in some more appropriate format (such as HDF5).
-             Specialized middleware receives SPARQL queries from a client and responds by sending a response in dynamically-generated RDF.
-             Such a response is fairly verbose, but the cost is much smaller than actually storing the whole coverage in RDF.
-             Further optimization is still necessary for this to be viable. It is possible to use tiles as the &ldquo;observations&rdquo; in the RDF Data Cube,
-             rather than individual pixels [<a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Support for tiling</a>].
-             This significantly reduces the blowup that comes from encoding data as RDF [<a href="https://www.w3.org/TR/sdw-ucr/#Compressible">Compressible</a>].</p>
 
-          <p>The advantage of serving a coverage in RDF is that the entire coverage, and individual tiles within it, become linkable
-             [<a href="https://www.w3.org/TR/sdw-ucr/#Linkability">Linkability</a>];
-             this could be a major contribution to the Linked Data Web. With sufficiently advanced middleware, SPARQL queries over the dataset
-             could be served just as if the data were stored in RDF, but for a fraction of the storage cost.
-             The publisher can thus leverage the full power of Linked Data.</p>
+          <p>In this model, coverage data is stored in some more appropriate
+             format (such as HDF5). Specialized middleware receives SPARQL
+             queries from a client and responds by sending a response in
+             dynamically-generated RDF. Such a response is fairly verbose, but
+             the cost is much smaller than actually storing the whole coverage
+             in RDF. Further optimization is still necessary for this to be
+             viable. It is possible to use tiles as the
+             &ldquo;observations&rdquo; in the RDF Data Cube, rather than
+             individual pixels [<a
+             href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Support for
+             tiling</a>]. This significantly reduces the blowup that comes from
+             encoding data as RDF [<a
+             href="https://www.w3.org/TR/sdw-ucr/#Compressible">Compressible</a>].</p>
 
-          <p>It is common to want only a chunk of the data available. For example, all observations near (within 10km of) Canberra, in the past year.
-             The RDF Data Cube provides only for &ldquo;slices&rdquo; &mdash; predefined chunks that hold one or more dimensions constant. Unfortunately, this is an area where the Data Cube is
-             insufficiently powerful for coverages. When data is stored and served in some other format, it is up to the publisher to provide ways for the consumer to
-             acquire only certain chunks of the data. If serving coverage data using RDF, a possible approach is to use SPARQL queries to define the appropriate chunks
-             [<a href="https://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks">Reference data chunks</a>]
-             (for example, a query returning all tiles of a certain resolution within a certain spatial rectangle).
-             Even if using this method, publishers should still make it easy for a user to select chunks without the use of SPARQL,
-             e.g. by providing an interface to generate the appropriate query using a few predefined operators.</p>
+          <p>
+              The advantage of serving a coverage in RDF is that the entire
+              coverage, and individual tiles within it, become linkable [<a
+              href="https://www.w3.org/TR/sdw-ucr/#Linkability">Linkability</a>];
+              this could be a major contribution to the Linked Data Web. With
+              sufficiently advanced middleware, SPARQL queries over the dataset
+              could be served just as if the data were stored in RDF, but for a
+              fraction of the storage cost. Not only that, but it is also
+              possible to make direct SPARQL queries performant through use of
+              spatial data structures and assumptions about data layout, as
+              explained in <a href="#Implementation" >Implementation</a>. Hence,
+              it is still possible for publishers of dense spatial data to
+              leverage much of the power of linked data.
+          </p>
+
+          <p>
+              It is common to want only a chunk of the data available. For
+              example, all observations within 10km of Canberra in the past
+              year. Regardless of the format chosen, an ability to assign
+              persistent identifiers to these sorts of queries is essential to
+              publishers of coverages. Although the RDF Data Cube provides
+              predefined chunks of triples called &ldquo;slices&rdquo; for this
+              purpose, coverage applications typically demand a greater degree
+              of flexibility. Our approach is to let the publisher define
+              appropriate chunks [<a
+              href="https://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks">Reference
+              data chunks</a>] using SPARQL queries; for example,
+              <code>FILTER</code>s with inequalities can be used to return all
+              tiles of a certain resolution within a certain spatial rectangle.
+              However, even if using this method, publishers should still make
+              it easy for a user to select chunks without the use of SPARQL,
+              e.g. by providing an interface to generate the appropriate query
+              using a few predefined operators.
+          </p>
       </section>
 
       <section  id="Describing">
@@ -389,24 +417,35 @@ While the approach  may also be suitable for other forms of coverage data, we le
       The OGC is currently in the process of <a href="http://www.opengeospatial.org/projects/groups/dggsswg">standardizing</a> a method to represent DGGSs.</p>
       
       <p>The  <a href="ANU-LED-example.ttl">ANU-LED example</a> in this document does not depend on the use of a DGGS.  However, the DGGS has some convenient properties that make it particularly suitable for a Linked Data representation.
-      First, each <abbr title="Discrete Global Grid Systems">DGGS</abbr> cell has a unique identifier, so it is easy to generate natural URIs for each piece of data.
-      Second, the DGGS we use (<a href="http://raichev.net/files/rhealpix_dggs_preprint.pdf">rHEALPix</a>, PDF) defines cell geometries so that cells at the same level of the hierarchy have equal areas.
-      This makes rHEALPix a suitable format for storing multiple datasets at different resolutions, or several different resolution views of the same dataset.
-      The equal-area constraint means different resolution pixels are directly comparable, and no resampling is required [<a href="https://www.w3.org/TR/sdw-ucr/#AvoidCoordinateTransformations">Avoid coordinate transformations</a>].
-      Third, the hierarchical nature of the DGGS makes it natural to implement spatial optimizations when responding to queries, by pruning the tree early to eliminate whole regions of unpromising cells that fall outside the desired area.
+      First, each <abbr title="Discrete Global Grid Systems">DGGS</abbr> cell
+      has a unique identifier, so it is easy to generate natural URIs for each
+      piece of data. Second, the DGGS we use (<a
+      href="http://raichev.net/files/rhealpix_dggs_preprint.pdf">rHEALPix</a>,
+      PDF) defines cell geometries so that cells at the same level of the
+      hierarchy have equal areas. This makes rHEALPix a suitable format for
+      storing multiple datasets at different resolutions, or several different
+      resolution views of the same dataset. The equal-area constraint means
+      different resolution pixels are directly comparable, and no resampling is
+      required [<a
+      href="https://www.w3.org/TR/sdw-ucr/#AvoidCoordinateTransformations">Avoid
+      coordinate transformations</a>]. Third, the hierarchical nature of the
+      DGGS makes it natural to implement spatial optimizations when responding
+      to queries, by pruning the tree early to eliminate whole regions of
+      unpromising cells that fall outside the desired area.
 	  
 	  Data structures other than DGGS, such as n-dimensional gridded data, whether geospatial or not, and hierarchies of data such as tile sets, octree or quadtree structures, are also amenable to these approaches.
       </p>
+    </section>
 
       <section  id="Implementation">
         <h3>Implementation</h3>
 
-        <p>A proof of concept demonstrating the <a href="ANU-LED-example.ttl">ANU-LED example</a> with a SPARQL query system to
-            retrieve satellite imagery has been implemented. 
-			<!--based on latitude/longitude or DGGS cell IDs has been implemented as a proof of concept--> This section briefly
-            describes some of the strategies employed to make the implementation
-            efficient. All code referenced here is available on <a
-            href="https://github.com/ANU-Linked-Earth-Data">GitHub.</a>
+        <p>A proof of concept demonstrating the <a
+            href="ANU-LED-example.ttl">ANU-LED example</a> with a SPARQL query
+            system to retrieve satellite imagery has been implemented. This
+            section briefly describes some of the strategies employed to make
+            the implementation efficient. All code referenced here is available
+            on <a href="https://github.com/ANU-Linked-Earth-Data">GitHub.</a>
         </p>
 
         <p>As discussed previously, scalable implementations of a data cube
@@ -416,13 +455,16 @@ While the approach  may also be suitable for other forms of coverage data, we le
             disk, and serving it using an off-the-shelf triple store. Instead,
             implementations must employ a &ldquo;virtual graph&rdquo;, which can
             be used to service SPARQL queries without materializing all triples
-            at once.
+            at once. This approach has precedent: virtual graphs have been used
+            to provide linked data interfaces to relational databases, RSS
+            feeds, and even ordinary HTML pages with no semantic markup
+            ([[perf-vgraph]]).
         </p>
 
         <p>
             For the purpose of illustrating how triple stores service SPARQL
-            queries &mdash; regardless of whether they are backed by virtual or
-            materialized graphs &mdash; consider the query below.
+            queries&mdash;regardless of whether they are backed by virtual or
+            materialized graphs&mdash;consider the query below.
         </p>
 
         <pre class="example">SELECT ?s ?v WHERE {
@@ -443,7 +485,7 @@ While the approach  may also be suitable for other forms of coverage data, we le
 ?s :value ?v .</pre>
 
         <p>
-            A typical triple store will begin servicing the query above by
+            Conceptually, a triple store will service the query above by
             iterating through each triple pattern in turn. First, a set of
             bindings for <code>?s</code> will be generated that are consistent
             with <code>?s a :egType</code>. That set of bindings will then be
@@ -460,8 +502,23 @@ While the approach  may also be suitable for other forms of coverage data, we le
         </p>
 
         <p>
-            There are a number of ways in which this naive, pattern-by-pattern
-            approach can be improved. We have implemented two simple extensions:
+            In practice, processing each element of a SPARQL query sequentially
+            is too inefficient to be of use in large database. Real triple
+            stores employ a range of optimisiations to combine steps of
+            the query process, speed up certian operations, or minimise the
+            number of bindings produced by each stage, as outlined in
+            [[sparql-opt]]. For example, a triple store could speed up matching
+            triples of the form <code>?s a :egType</code> by keeping an index of
+            all URIs associated with reach present <code>rdf:type</code>, or
+            could accelerate BGP matching by reordering the pattern to ensure
+            that the most restrictive patterns are evaluated first.
+        </p>
+
+        <p>
+            Although we do not materialise our RDF triples, similar techniques
+            are still applicable to our virtual graph system. As a simple
+            illustration of the optimisation opportunities available, we have
+            implemented two simple extensions:
         </p>
 
         <ol>
@@ -567,7 +624,6 @@ While the approach  may also be suitable for other forms of coverage data, we le
       </section>
 
     <div  class="issue"  data-number="98"> Could also point to the client implementation --with a screen dump and pointer to github code? The running implementation itself may be too long-term unstable to reference.</div>
-    </section>
 
     <section  id="Ontologies">
       <h2>Use of existing ontologies</h2>
@@ -650,7 +706,7 @@ While the approach  may also be suitable for other forms of coverage data, we le
     qb:dataSet :exampleDataset ;
     :lat "91.6667";
     :long "40.0270";
-    :dataValue "http://www.example.org/led-example-image-R000" ;
+    :dataValue <http://www.example.org/led-example-image-R000> ;
     prov:wasDerivedFrom :example-tile .</pre>
       </section>
 
@@ -724,7 +780,7 @@ While the approach  may also be suitable for other forms of coverage data, we le
     qb:dataSet :exampleDataset ;
     :lat "91.6667";
     :long "40.0270";
-    :dataValue "http://www.example.org/led-example-image-R000" ;
+    :dataValue <http://www.example.org/led-example-image-R000>" ;
     :bounds  "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .</pre>
       </section>
 
