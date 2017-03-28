@@ -14,13 +14,13 @@ var respecConfig = {
       company: "Met Office",
       companyURL: "http://www.metoffice.gov.uk/"
     }, {
+      name: "Linda van den Brink",
+      company: "Geonovum",
+      companyURL: "http://www.geonovum.nl/"
+    }, {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
 			companyURL: "http://www.surrey.ac.uk/"
-		}, {
-			name: "Linda van den Brink",
-			company: "Geonovum",
-			companyURL: "http://www.geonovum.nl/"
 		}],
     otherLinks: [
     {
