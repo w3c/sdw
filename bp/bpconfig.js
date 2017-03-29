@@ -5,7 +5,7 @@ var respecConfig = {
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-    edDraftURI: "http://w3c.github.io/sdw/bp/",
+    edDraftURI: "https://w3c.github.io/sdw/bp/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
@@ -14,13 +14,13 @@ var respecConfig = {
       company: "Met Office",
       companyURL: "http://www.metoffice.gov.uk/"
     }, {
+      name: "Linda van den Brink",
+      company: "Geonovum",
+      companyURL: "http://www.geonovum.nl/"
+    }, {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
 			companyURL: "http://www.surrey.ac.uk/"
-		}, {
-			name: "Linda van den Brink",
-			company: "Geonovum",
-			companyURL: "http://www.geonovum.nl/"
 		}],
     otherLinks: [
     {
@@ -31,29 +31,29 @@ var respecConfig = {
       }]
       }],
     wg: "Spatial Data on the Web Working Group",
-    wgURI: "http://www.w3.org/2015/spatial/",
+    wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-wg",
-    wgPatentURI: "http://www.w3.org/2004/01/pp-impl/75471/status",
+    wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
       logos: [
       {
-        src: "http://www.w3.org/Icons/w3c_home",
+        src: "https://www.w3.org/Icons/w3c_home",
         alt: "W3C",
         height: "48",
         width: "72",
-        url: "http://www.w3.org/"
+        url: "https://www.w3.org/"
       },
       {
-        src: "http://www.w3.org/2015/01/ogc_logo.jpg",
+        src: "https://www.w3.org/2015/01/ogc_logo.jpg",
         alt: "OGC",
         height: "48",
         width: "115",
         url: "http://www.opengeospatial.org/"
       }],
     noRecTrack: true,
-    overrideCopyright: "<p class='copyright'><a href='http://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2017 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='http://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='http://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
+    overrideCopyright: "<p class='copyright'><a href='https://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2017 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='http://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='http://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
 
 
     localBiblio: {
@@ -74,7 +74,7 @@ var respecConfig = {
         authors: ["Matthew Perry", "John Herring"],
         date: "10 September 2012"
       },
-      "Simple-Features":{
+      "SIMPLE-FEATURES":{
         href:"http://www.opengeospatial.org/standards/sfa",
         publisher:"OGC",
         title:"Simple Feature Access - Part 1: Common Architecture",
@@ -111,8 +111,22 @@ var respecConfig = {
         publisher: "European Commission",
         date: "23 December 2015"
       },
+      "ISO-19111":{
+        href:"https://www.iso.org/standard/41126.html",
+        title:"Geographic information -- Spatial referencing by coordinates",
+        authors:["ISO/TC 211"],
+        publisher:"ISO",
+        date: "2007"
+      },
+      "OGC-TOPIC-2":{
+        href:"http://portal.opengeospatial.org/files/?artifact_id=39049",
+        title:"OGC Abstract Specification Topic 2 - Spatial referencing by coordinates",
+        authors:["Roger Lott"],
+        publisher:"OGC",
+        date: "27 April 2010"
+      },
       "ISO-19115":{
-        href:"http://www.iso.org/iso/catalogue_detail?csnumber=26020",
+        href:"https://www.iso.org/standard/26020.html",
         title:"Geographic information -- Metadata",
         authors:["ISO/TC 211"],
         publisher:"ISO",
@@ -132,7 +146,7 @@ var respecConfig = {
         date: "29 October 2013"
       },
       "ISO-19101": {
-        href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=59164",
+        href:"https://www.iso.org/standard/59164.html",
         title:"ISO 19101-1:2014 Geographic information -- Reference model -- Part 1: Fundamentals",
         date: "15 November 2014",
         authors:["ISO/TC 211"],
@@ -152,7 +166,7 @@ var respecConfig = {
         authors:["Barry Norton", "Luis M. Vilches", "Alexander De León", "John Goodwin", "Claus Stadler", "Suchith Anand", "Dominic Harries", "Boris Villazón-Terrazas", "Ghislain A. Atemezing"]
       },
       "ISO-19123": {
-        href:"http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=40121",
+        href:"https://www.iso.org/standard/40121.html",
         title:"ISO 19123:2005 Geographic information -- Schema for coverage geometry and functions",
         authors:["ISO/TC 211"],
         publisher:"ISO",
@@ -176,7 +190,7 @@ var respecConfig = {
         authors:["Niles Ritter", "Mike Ruth"]
       },
       "ISO-19109": {
-        href:"http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=59193",
+        href:"https://www.iso.org/standard/59193.html",
         title:"ISO 19109:2015 Geographic information -- Rules for application schema",
         authors:["ISO/TC 211"],
         publisher:"ISO",
@@ -245,6 +259,13 @@ var respecConfig = {
         authors: ["Roger Lott"],
         date: "1 May 2015"
       },
+      "OGC-API-WP":{
+        href:"http://docs.opengeospatial.org/wp/16-019r4/16-019r4.html",
+        publisher:"OGC",
+        title:"Open Geospatial APIs - White Paper",
+        authors: ["George Percivall (Editor)"],
+        date: "23 February 2017"
+      },
       "GS1": {
         title: "SmartSearch Implementation Guideline",
         authors: ["Mark Harrison", "Ken Traub"],
@@ -292,7 +313,6 @@ var respecConfig = {
         "title": "OGC \u00AE Moving Features Encoding Extension: Simple Comma Separated Values (CSV)",
         "date": "17 February 2015"
       },
-      
       "LOCN":{
         "href":"https://www.w3.org/ns/locn",
         "title":"ISA Location Core Vocabulary",
@@ -300,7 +320,7 @@ var respecConfig = {
         "date": "23 March 2015"
       },
       "ISO-19107": {
-        "href":"http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=26012",
+        "href":"https://www.iso.org/standard/26012.html",
         "title":"ISO 19107:2003 Geographic information -- Geographic information -- Spatial schema",
         "authors":["ISO/TC 211"],
         "publisher":"ISO",
@@ -312,6 +332,24 @@ var respecConfig = {
         "publisher":"OGC",
         "title": "OGC KML 2.3",
         "date": "4 August 2015"
+      },
+      "WEB-DATA": {
+        "authors": ["Erik Wilde"],
+        "href": "http://webdata.systems",
+        "title": "Web Data",
+        "date": "1 November 2016"
+      },
+      "LINK-RELATION-TYPES": {
+        "authors": ["Mark Nottingham", "Julian Reschke", "Jan Algermissen"],
+        "href": "http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1",
+        "title": "Link Relation Types Registry"
+      },
+      "TRIPLE-PATTERN-FRAGMENTS": {
+        "authors": ["Ruben Verborgh"],
+        "href": "http://www.hydra-cg.com/spec/latest/triple-pattern-fragments/",
+        "title": "Triple Pattern Fragments specification",
+        "publisher": "Hydra W3C Community Group",
+        "date": "05 January 2017"
       }
       
     },

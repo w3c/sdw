@@ -68,8 +68,10 @@ topological relations among instants and intervals, together with information ab
 temporal position including date-time information. </p>
 <p style="text-align: center;">The namespace for OWL-Time terms is <code>http://www.w3.org/2006/time#</code></p>
 <p style="text-align: center;">The suggested prefix for the OWL-Time namespace is <code>time</code></p>
-<p style="text-align: center;">The (revised) OWL-Time ontology itself is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/time.ttl">here</a>.</p>
+<p style="text-align: center;">The OWL-Time ontology itself is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/time.ttl">here</a>.</p>
+<!--
 <p style="text-align: center;">The original OWL-Time ontology is still available <a href="http://www.w3.org/2006/time">there</a>.</p>
+-->
 </section>
 
 <section id="sotd">
@@ -81,12 +83,11 @@ prepared following W3C conventions. The document is released at this time to sol
 
 <section id="motivation">
 <h2>Motivation and background</h2>
-<p>Temporal information is so common that it’s hard to find a real world Web service without it. 
+<p>Temporal information is so common that it is hard to find a real world Web service without it. 
 For example, whenever you place an online order, the order date is always part of your order. 
 When you reserve a car at a car rental site, you have to specify the dates you need it. 
 In response to this need, a temporal ontology, OWL-Time, has been developed for describing the 
-temporal content of Web pages, or the temporal properties of any resource denoted using a web identifier 
-(URI), including real-world things if desired.</p>
+temporal content of Web pages, or the temporal properties of any other resource including real-world things if desired.</p>
 <p>This document presents the OWL encodings of the ontology. 
 For a first-order logic axiomatization of the
 ontology, see [<a href="#HP-04">HP-04</a>].</p>
@@ -175,16 +176,14 @@ subclass, <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code>, w
 <figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes" src="./images/TemporalEntity.png">
 <figcaption>Core model model of temporal entities.</figcaption> </figure>
 
-<p>Allen and Ferguson [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>] have developed a calculus of
-binary relations on intervals (e.g., meets, overlaps) for representing qualitative temporal information and
-address the problem of reasoning about such information. The relations between intervals defined in their
-calculus can be defined in a relatively straightforward fashion in terms of <code><a href="#time:before">:before</a></code> and identity
-on the beginning and end points. The standard interval calculus assumes all intervals are proper, whose
+<p>Allen and Ferguson [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>] have developed a calculus of binary relations on intervals (e.g., meets, overlaps) for representing qualitative temporal information and address the problem of reasoning about such information. 
+The relations between intervals defined in their calculus can be defined in a relatively straightforward fashion in terms of <code><a href="#time:before">:before</a></code> and identityon the beginning and end points. 
+The standard interval calculus assumes all intervals are proper, so their
 beginning and end are different. </p>
 
 <figure> <img style="width: 545px; height: 322px;" title="Allen's Interval Relations" alt="Schematic of Interval Relations"
 src="./images/IntervalRelations.png"> 
-<figcaption>The possible relations between time periods [<a href="#AF-97">AF-97</a>]</figcaption> </figure>
+<figcaption>Thirteen elementary possible relations between time periods [<a href="#AF-97">AF-97</a>]. Two additional relations: <code>In</code> (the union of <code>During</code>, <code>Starts</code> and <code>Finishes</code>) and <code>Disjoint</code> (the union of <code>Before</code> and <code>After</code>) are not shown in the figure but are included in the ontology described below. </figcaption> </figure>
 
 </section>
 
@@ -232,6 +231,7 @@ These provide for a compact representation of time positions using the conventio
 <code><a href="#time:TimePosition">:TimePosition</a></code> has properties to alternatively describe the position using a number (i.e. a temporal coordinate), or a nominal value (e.g. geologic time period, dynastic name, archeological era). 
 <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> has a set of properties to specify a date-time using calendar and clock elements. 
 Its subclass <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> fixes the temporal reference system to the Gregorian calendar, so the <code><a href="#time:hasTRS">:hasTRS</a></code> property may be omitted on individuals from this class.  </p>
+<p><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a standard duration which indicates the granularity or precision of a time position.</p>
 
 <figure> <img title="Temporal Position" alt="UML-style diagram of classes for temporal position" src="./images/TemporalPosition.png">
 <figcaption>Classes for temporal position.</figcaption> </figure>
@@ -259,6 +259,7 @@ given using multiple duration descriptions or individual durations (e.g., 2 days
 <code><a href="#time:Duration">:Duration</a></code> has properties to describe the duration using a scaled number (i.e. a temporal quantity). 
 <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> has a set of properties to specify a duration using calendar and clock elements, the definitions of which are given in the associated TRS description. 
 Its subclass <code><a href="#time:DurationDescription">:DurationDescription</a></code> fixes the temporal reference system to the Gregorian calendar, so the <code><a href="#time:hasTRS">:hasTRS</a></code> property may be omitted on individuals from this class. </p>
+<p><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a standard duration which is used to scale a length of time.</p>
 
 <figure> <img title="Temporal Duration" alt="UML representation of Temporal Duration and sub-classes"
 src="./images/TemporalDuration.png"> 
@@ -279,28 +280,21 @@ src="./images/TemporalDuration.png">
 <p>
 <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> | 
 <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> |
-<code><a href="#time:Day">:Day</a></code> |
 <code><a href="#time:DayOfWeek">:DayOfWeek</a></code> |
 <code><a href="#time:Duration">:Duration</a></code> |
 <code><a href="#time:DurationDescription">:DurationDescription</a></code> |
 <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> |
 <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> |
-<code><a href="#time:Hour">:Hour</a></code> |
 <code><a href="#time:Instant">:Instant</a></code> |
 <code><a href="#time:Interval">:Interval</a></code> |
-<code><a href="#time:Minute">:Minute</a></code> |
-<code><a href="#time:Month">:Month</a></code> |
 <code><a href="#time:MonthOfYear">:MonthOfYear</a></code> |
 <code><a href="#time:ProperInterval">:ProperInterval</a></code> |
-<code><a href="#time:Second">:Second</a></code> |
 <code><a href="#time:TemporalDuration">:TemporalDuration</a></code> |
 <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> |
 <code><a href="#time:TemporalPosition">:TemporalPosition</a></code> |
 <code><a href="#time:TemporalUnit">:TemporalUnit</a></code> |
 <code><a href="#time:TimePosition">:TimePosition</a></code> |
-<code><a href="#time:TimeZone">:TimeZone</a></code> |
-<code><a href="#time:Week">:Week</a></code> |
-<code><a href="#time:Year">:Year</a></code> 
+<code><a href="#time:TimeZone">:TimeZone</a></code> 
 </p>
 
 <h4 id="time:DateTimeDescription">DateTimeDescription</h4>
@@ -364,74 +358,6 @@ Two properties <code><a href="#time:hasDateTimeDescription">:hasDateTimeDescript
 <p>Any <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> has a duration, but only <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> can have <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>.
 For example, May 8 can be expressed as a <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>, but the interval from 1:30pm, May 8, to 1:30pm,
 May 9, cannot. Both have a duration of a day.</p>
-
-<h4 id="time:Day">Day</h4>
-<table class="definition" style="width: 812px;">
-<tbody>
-<tr>
-<th style="width: 120px;">RDFS Class:</th>
-<th><code><a href="#time:Day">time:Day</a></code></th>
-</tr>
-<tr>
-<td>Definition:</td>
-<td>Duration day, not a calendar day. </td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:DurationDescription">time:DurationDescription</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:years">time:years</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:months">time:months</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:weeks">time:weeks</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:days">time:days</a> exactly 1</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:hours">time:hours</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:minutes">time:minutes</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:seconds">time:seconds</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:days">time:days</a> value 1</code></td>
-</tr>
-<tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:Duration">time:Duration</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:unitType">time:unitType</a> value <a href="#time:unitDay">time:unitDay</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:numericDuration">time:numericDuration</a> value 1</code></td>
-</tr>
-<tr>
-</tbody>
-</table>
-<p>The class <code><a href="#time:Day">:Day</a></code> is a subclass of <code><a href="#time:DurationDescription">:DurationDescription</a></code> 
-with the restrictions that the <code><a href="#time:days">:days</a></code> property is required (with "cardinality" of <code>1</code>) and its value is fixed to <code>1</code>, and all other duration description elements (e.g., <code><a href="#time:hours">:hours</a></code>, <code><a href="#time:months">:months</a></code>, etc) should not be present (with "cardinality" of <code>0</code>). This means that the granularity (precision) is days. </p>
-<p>The class <code><a href="#time:Day">:Day</a></code> is also a subclass of <code><a href="#time:Duration">:Duration</a></code> 
-with the restriction that the <code><a href="#time:unitType">:unitType</a></code> property is fixed to <code><a href="#time:unitDay">time:unitDay</a></code>, and the value of <code><a href="#time:numericDuration">:numericDuration</a></code> is fixed to <code>1</code>. </p>
 
 <h4 id="time:DayOfWeek">DayOfWeek</h4>
 <table class="definition" style="width: 812px;">
@@ -663,74 +589,6 @@ calendar-clock system. </td>
 <p>Seven datatype properties <code><a href="#time:years">:years</a></code>, <code><a href="#time:months">:months</a></code>, <code><a href="#time:weeks">:weeks</a></code>, <code><a href="#time:days">:days</a></code>, <code><a href="#time:hours">:hours</a></code>, <code><a href="#time:minutes">:minutes</a></code>, and <code><a href="#time:seconds">:seconds</a></code> support the description of components of a temporal extent in a calendar-clock system. </p>
 <p>The property <code><a href="#time:hasTRS">time:hasTRS</a></code> indicates the temporal reference system applicable for the duration components. </p>
 
-<h4 id="time:Hour">Hour</h4>
-<table class="definition" style="width: 812px;">
-<tbody>
-<tr>
-<th style="width: 120px;">RDFS Class:</th>
-<th><code><a href="#time:Hour">time:Hour</a></code></th>
-</tr>
-<tr>
-<td>Definition:</td>
-<td>Duration hour. </td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:DurationDescription">time:DurationDescription</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:years">time:years</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:months">time:months</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:weeks">time:weeks</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:days">time:days</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:hours">time:hours</a> exactly 1</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:minutes">time:minutes</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:seconds">time:seconds</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:hours">time:hours</a> value 1</code></td>
-</tr>
-<tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:Duration">time:Duration</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:unitType">time:unitType</a> value <a href="#time:unitHour">time:unitHour</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:numericDuration">time:numericDuration</a> value 1</code></td>
-</tr>
-<tr>
-</tbody>
-</table>
-<p>The class <code><a href="#time:Hour">:Hour</a></code> is a subclass of <code><a href="#time:DurationDescription">:DurationDescription</a></code> 
-with the restrictions that the <code><a href="#time:hours">:hours</a></code> property is required (with "cardinality" of <code>1</code>) and its value is fixed to <code>1</code>, and all other duration description elements (e.g., <code><a href="#time:days">:days</a></code>, <code><a href="#time:months">:months</a></code>, etc) should not be present (with "cardinality" of <code>0</code>). This means that the granularity (precision) is hours. </p>
-<p>The class <code><a href="#time:Hour">:Hour</a></code> is also a subclass of <code><a href="#time:Duration">:Duration</a></code> 
-with the restriction that the <code><a href="#time:unitType">:unitType</a></code> property is fixed to <code><a href="#time:unitHour">time:unitHour</a></code>, and the value of <code><a href="#time:numericDuration">:numericDuration</a></code> is fixed to <code>1</code>. </p>
-
 <h4 id="time:Instant">Instant</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -769,142 +627,6 @@ provide alternative ways to describe the temporal position of an <code><a href="
 </tbody>
 </table>
 <p>One property <code><a href="#time:inside">:inside</a></code> links to an <code><a href="#time:Instant">:Instant</a></code> that falls inside the <code><a href="#time:Interval">:Interval</a></code>.</p>
-
-<h4 id="time:Minute">Minute</h4>
-<table class="definition" style="width: 812px;">
-<tbody>
-<tr>
-<th style="width: 120px;">RDFS Class:</th>
-<th><code><a href="#time:Minute">time:Minute</a></code></th>
-</tr>
-<tr>
-<td>Definition:</td>
-<td>Duration minute. </td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:DurationDescription">time:DurationDescription</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:years">time:years</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:months">time:months</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:weeks">time:weeks</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:days">time:days</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:hours">time:hours</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:minutes">time:minutes</a> exactly 1</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:seconds">time:seconds</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:minutes">time:minutes</a> value 1</code></td>
-</tr>
-<tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:Duration">time:Duration</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:unitType">time:unitType</a> value <a href="#time:unitMinute">time:unitMinute</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:numericDuration">time:numericDuration</a> value 1</code></td>
-</tr>
-<tr>
-</tbody>
-</table>
-<p>The class <code><a href="#time:Minute">:Minute</a></code> is a subclass of <code><a href="#time:DurationDescription">:DurationDescription</a></code> 
-with the restrictions that the <code><a href="#time:minutes">:minutes</a></code> property is required (with "cardinality" of <code>1</code>) and its value is fixed to <code>1</code>, and all other duration description elements (e.g., <code><a href="#time:days">:days</a></code>, <code><a href="#time:months">:months</a></code>, etc) should not be present (with "cardinality" of <code>0</code>). This means that the granularity (precision) is minutes. </p>
-<p>The class <code><a href="#time:Minute">:Minute</a></code> is also a subclass of <code><a href="#time:Duration">:Duration</a></code> 
-with the restriction that the <code><a href="#time:unitType">:unitType</a></code> property is fixed to <code><a href="#time:unitMinute">time:unitMinute</a></code>, and the value of <code><a href="#time:numericDuration">:numericDuration</a></code> is fixed to <code>1</code>. </p>
-
-<h4 id="time:Month">Month</h4>
-<table class="definition" style="width: 812px;">
-<tbody>
-<tr>
-<th style="width: 120px;">RDFS Class:</th>
-<th><code><a href="#time:Month">time:Month</a></code></th>
-</tr>
-<tr>
-<td>Definition:</td>
-<td>Duration minute. </td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:DurationDescription">time:DurationDescription</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:years">time:years</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:months">time:months</a> exactly 1</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:weeks">time:weeks</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:days">time:days</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:hours">time:hours</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:minutes">time:minutes</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:seconds">time:seconds</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:months">time:months</a> value 1</code></td>
-</tr>
-<tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:Duration">time:Duration</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:unitType">time:unitType</a> value <a href="#time:unitMonth">time:unitMonth</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:numericDuration">time:numericDuration</a> value 1</code></td>
-</tr>
-<tr>
-</tbody>
-</table>
-<p>The class <code><a href="#time:Month">:Month</a></code> is a subclass of <code><a href="#time:DurationDescription">:DurationDescription</a></code> 
-with the restrictions that the <code><a href="#time:months">:months</a></code> property is required (with "cardinality" of <code>1</code>) and its value is fixed to <code>1</code>, and all other duration description elements (e.g., <code><a href="#time:days">:days</a></code>, <code><a href="#time:minutes">:minutes</a></code>, etc) should not be present (with "cardinality" of <code>0</code>). This means that the granularity (precision) is months. </p>
-<p>The class <code><a href="#time:Month">:Month</a></code> is also a subclass of <code><a href="#time:Duration">:Duration</a></code> 
-with the restriction that the <code><a href="#time:unitType">:unitType</a></code> property is fixed to <code><a href="#time:unitMonth">time:unitMonth</a></code>, and the value of <code><a href="#time:numericDuration">:numericDuration</a></code> is fixed to <code>1</code>. </p>
 
 <h4 id="time:MonthOfYear">MonthOfYear</h4>
 <table class="definition" style="width: 812px;">
@@ -994,7 +716,7 @@ are different</td>
 </tr>
 </tbody>
 </table>
-<p>Thirteen properties 
+<p>Fifteen properties 
 <code><a href="#time:intervalBefore">:intervalBefore</a></code>, <code><a href="#time:intervalAfter">:intervalAfter</a></code>, 
 <code><a href="#time:intervalMeets">:intervalMeets</a></code>, <code><a href="#time:intervalMetBy">:intervalMetBy</a></code>, 
 <code><a href="#time:intervalOverlaps">:intervalOverlaps</a></code>, <code><a href="#time:intervalOverlappedBy">:intervalOverlappedBy</a></code>, 
@@ -1002,75 +724,9 @@ are different</td>
 <code><a href="#time:intervalDuring">:intervalDuring</a></code>, <code><a href="#time:intervalContains">:intervalContains</a></code>, 
 <code><a href="#time:intervalFinishes">:intervalFinishes</a></code>, <code><a href="#time:intervalFinishedBy">:intervalFinishedBy</a></code>, 
 <code><a href="#time:intervalEquals">:intervalEquals</a></code> 
-support the set of interval relations defined by Allen and Ferguson [<a href="#AF-97">AF-97</a>].</p>
-
-<h4 id="time:Second">Second</h4>
-<table class="definition" style="width: 812px;">
-<tbody>
-<tr>
-<th style="width: 120px;">RDFS Class:</th>
-<th><code><a href="#time:Second">time:Second</a></code></th>
-</tr>
-<tr>
-<td>Definition:</td>
-<td>Duration second. </td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:DurationDescription">time:DurationDescription</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:years">time:years</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:months">time:months</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:weeks">time:weeks</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:days">time:days</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:hours">time:hours</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:minutes">time:minutes</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:seconds">time:seconds</a> exactly 1</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:seconds">time:seconds</a> value 1</code></td>
-</tr>
-<tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:Duration">time:Duration</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:unitType">time:unitType</a> value <a href="#time:unitSecond">time:unitSecond</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:numericDuration">time:numericDuration</a> value 1</code></td>
-</tr>
-<tr>
-</tbody>
-</table>
-<p>The class <code><a href="#time:Second">:Second</a></code> is a subclass of <code><a href="#time:DurationDescription">:DurationDescription</a></code> 
-with the restrictions that the <code><a href="#time:seconds">:seconds</a></code> property is required (with "cardinality" of <code>1</code>) and its value is fixed to <code>1</code>, and all other duration description elements (e.g., <code><a href="#time:days">:days</a></code>, <code><a href="#time:months">:months</a></code>, etc) should not be present (with "cardinality" of <code>0</code>). This means that the granularity (precision) is seconds. </p>
-<p>The class <code><a href="#time:Second">:Second</a></code> is also a subclass of <code><a href="#time:Duration">:Duration</a></code> 
-with the restriction that the <code><a href="#time:unitType">:unitType</a></code> property is fixed to <code><a href="#time:unitSecond">time:unitSecond</a></code>, and the value of <code><a href="#time:numericDuration">:numericDuration</a></code> is fixed to <code>1</code>. </p>
+<code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> 
+<code><a href="#time:intervalIn">:intervalIn</a></code> 
+support the set of interval relations defined by Allen [<a href="#AL-84">AL-84</a>] and Allen and Ferguson [<a href="#AF-97">AF-97</a>].</p>
 
 <h4 id="time:TemporalDuration">TemporalDuration</h4>
 <table class="definition" style="width: 812px;">
@@ -1154,11 +810,11 @@ with the restriction that the <code><a href="#time:unitType">:unitType</a></code
 </tr>
 <tr>
 <td>Definition:</td>
-<td>A temporal unit of measure, which provides a scale factor for a time quantity. </td>
+<td>A standard duration, which provides the scale factor for a time extent, or the granularity or precision for a time position. </td>
 </tr>
 <tr>
-<td>Instance of:</td>
-<td><code>owl:Class</code></td>
+<td>Subclass of:</td>
+<td><code><a href="#time:TemporalDuration">time:TemporalDuration</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -1253,144 +909,6 @@ including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. nu
 systems (i.e. ordered sequence of named intervals, not necessarily of equal duration). </p>
 </div>
 
-<h4 id="time:Week">Week</h4>
-<table class="definition" style="width: 812px;">
-<tbody>
-<tr>
-<th style="width: 120px;">RDFS Class:</th>
-<th><code><a href="#time:Week">time:Week</a></code></th>
-</tr>
-<tr>
-<td>Definition:</td>
-<td>Duration week. </td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:DurationDescription">time:DurationDescription</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:years">time:years</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:months">time:months</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:weeks">time:weeks</a> exactly 1</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:days">time:days</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:hours">time:hours</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:minutes">time:minutes</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:seconds">time:seconds</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:weeks">time:weeks</a> value 1</code></td>
-</tr>
-<tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:Duration">time:Duration</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:unitType">time:unitType</a> value <a href="#time:unitSecond">time:unitSecond</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:numericDuration">time:numericDuration</a> value 1</code></td>
-</tr>
-<tr>
-</tbody>
-</table>
-<p>The class <code><a href="#time:Week">:Week</a></code> is a subclass of <code><a href="#time:DurationDescription">:DurationDescription</a></code> 
-with the restrictions that the <code><a href="#time:weeks">:weeks</a></code> property is required (with "cardinality" of <code>1</code>) and its value is fixed to <code>1</code>, and all other duration description elements (e.g., <code><a href="#time:days">:days</a></code>, <code><a href="#time:months">:months</a></code>, etc) should not be present (with "cardinality" of <code>0</code>). This means that the granularity (precision) is weeks. </p>
-<p>The class <code><a href="#time:Week">:Week</a></code> is also a subclass of <code><a href="#time:Duration">:Duration</a></code> 
-with the restriction that the <code><a href="#time:unitType">:unitType</a></code> property is fixed to <code><a href="#time:unitWeek">time:unitWeek/a></code>, and the value of <code><a href="#time:numericDuration">:numericDuration</a></code> is fixed to <code>1</code>. </p>
-
-
-<h4 id="time:Year">Year</h4>
-<table class="definition" style="width: 812px;">
-<tbody>
-<tr>
-<th style="width: 120px;">RDFS Class:</th>
-<th><code><a href="#time:Year">time:Year</a></code></th>
-</tr>
-<tr>
-<td>Definition:</td>
-<td>Duration year. </td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:DurationDescription">time:DurationDescription</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:years">time:years</a> exactly 1</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:months">time:months</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:weeks">time:weeks</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:days">time:days</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:hours">time:hours</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:minutes">time:minutes</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:seconds">time:seconds</a> exactly 0</code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:years">time:years</a> value 1</code></td>
-</tr>
-<tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:Duration">time:Duration</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:unitType">time:unitType</a> value <a href="#time:unitSecond">time:unitSecond</a></code></td>
-</tr>
-<tr>
-<td>Subclass of:</td>
-<td><code><a href="#time:numericDuration">time:numericDuration</a> value 1</code></td>
-</tr>
-<tr>
-</tbody>
-</table>
-<p>The class <code><a href="#time:Year">:Year</a></code> is a subclass of <code><a href="#time:DurationDescription">:DurationDescription</a></code> 
-with the restrictions that the <code><a href="#time:years">:years</a></code> property is required (with "cardinality" of <code>1</code>) and its value is fixed to <code>1</code>, and all other duration description elements (e.g., <code><a href="#time:days">:days</a></code>, <code><a href="#time:months">:months</a></code>, etc) should not be present (with "cardinality" of <code>0</code>). This means that the granularity (precision) is years. </p>
-<p>The class <code><a href="#time:Year">:Year</a></code> is also a subclass of <code><a href="#time:Duration">:Duration</a></code> 
-with the restriction that the <code><a href="#time:unitType">:unitType</a></code> property is fixed to <code><a href="#time:unitYear">time:unitYear/a></code>, and the value of <code><a href="#time:numericDuration">:numericDuration</a></code> is fixed to <code>1</code>. </p>
-
-
 </section>
 
 <section id="properties">
@@ -1418,10 +936,12 @@ with the restriction that the <code><a href="#time:unitType">:unitType</a></code
 <code><a href="#time:intervalAfter">:intervalAfter</a></code> |
 <code><a href="#time:intervalBefore">:intervalBefore</a></code> |
 <code><a href="#time:intervalContains">:intervalContains</a></code> |
+<code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> |
 <code><a href="#time:intervalDuring">:intervalDuring</a></code> |
 <code><a href="#time:intervalEquals">:intervalEquals</a></code> |
 <code><a href="#time:intervalFinishedBy">:intervalFinishedBy</a></code> |
 <code><a href="#time:intervalFinishes">:intervalFinishes</a></code> |
+<code><a href="#time:intervalIn">:intervalIn</a></code> |
 <code><a href="#time:intervalMeets">:intervalMeets</a></code> |
 <code><a href="#time:intervalMetBy">:intervalMetBy</a></code> |
 <code><a href="#time:intervalOverlappedBy">:intervalOverlappedBy</a></code> |
@@ -1978,6 +1498,22 @@ then the beginning of T<sub>1</sub> is after the end of T<sub>2</sub>. </td>
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:after">time:after</a></code></td>
+</tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:intervalDisjoint">time:intervalDisjoint</a></code></td>
+</tr>
+<tr>
 <td>Inverse of:</td>
 <td><code><a href="#time:intervalBefore">time:intervalBefore</a></code></td>
 </tr>
@@ -2012,6 +1548,14 @@ then the end of T<sub>1</sub> is before the beginning of T<sub>2</sub>. </td>
 <td>SubProperty of:</td>
 <td><code><a href="#time:before">time:before</a></code></td>
 </tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:intervalDisjoint">time:intervalDisjoint</a></code></td>
+</tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalAfter">time:intervalAfter</a></code></td>
+</tr>
 </tbody>
 </table>
 
@@ -2033,8 +1577,44 @@ is after the end of T<sub>2</sub>. </td>
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
 <td>Inverse of:</td>
 <td><code><a href="#time:intervalDuring">time:intervalDuring</a></code></td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="time:intervalDisjoint">intervalDisjoint</h4>
+<table class="definition" style="width: 812px;">
+<tbody>
+<tr>
+<th style="width: 120px;">RDF Property:</th>
+<th><code><a href="#time:intervalDisjoint">time:intervalDisjoint</a></code></th>
+</tr>
+<tr>
+<td>Definition:</td>
+<td>If a proper interval T<sub>1</sub> is <em>intervalDisjoint</em> another proper interval T<sub>2</sub>,
+then the beginning of T<sub>1</sub> is after the end of T<sub>2</sub>, or the end of T<sub>1</sub>
+is before the beginning of T<sub>2</sub>, i.e. the intervals do not overlap in any way, but their ordering relationship is not known. </td>
+</tr>
+<tr>
+<td>Instance of:</td>
+<td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2064,6 +1644,10 @@ is before the end of T<sub>2</sub>. </td>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalContains">time:intervalContains</a></code></td>
+</tr>
 </tbody>
 </table>
 
@@ -2077,7 +1661,7 @@ is before the end of T<sub>2</sub>. </td>
 <tr>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalEquals </em>another proper interval T<sub>2</sub>,
-then the beginning of T<sub>1</sub> is the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
+then the beginning of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is coincident with 
 the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
@@ -2091,6 +1675,10 @@ the end of T<sub>2</sub>. </td>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Disjoint with:</td>
+<td><code><a href="#time:intervalIn">time:intervalIn</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2106,11 +1694,19 @@ the end of T<sub>2</sub>. </td>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalFinishedBy </em>another proper interval T<sub>2</sub>,
 then the beginning of T<sub>1</sub> is before the beginning of T<sub>2</sub>, and the end of T<sub>1</sub>
-is the end of T<sub>2</sub>. </td>
+is coincident with the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 <tr>
 <td>Inverse of:</td>
@@ -2130,7 +1726,7 @@ is the end of T<sub>2</sub>. </td>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalFinishes </em>another proper interval T<sub>2</sub>,
 then the beginning of T<sub>1</sub> is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub>
-is the end of T<sub>2</sub>. </td>
+is coincident with the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -2143,6 +1739,44 @@ is the end of T<sub>2</sub>. </td>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:intervalIn">time:intervalIn</a></code></td>
+</tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalFinishedBy">time:intervalFinishedBy</a></code></td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="time:intervalIn">intervalIn</h4>
+<table class="definition" style="width: 812px;">
+<tbody>
+<tr>
+<th style="width: 120px;">RDF Property:</th>
+<th><code><a href="#time:intervalIn">time:intervalIn</a></code></th>
+</tr>
+<tr>
+<td>Definition:</td>
+<td>If a proper interval T<sub>1</sub> is <em>intervalIn</em> another proper interval T<sub>2</sub>, then the beginning of T<sub>1</sub> is after the beginning of T<sub>2</sub> or is coincident with the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before the end of T<sub>2</sub> or is coincident with the end of T<sub>2</sub>, except that end of T<sub>1</sub> may not be coincident with the end of T<sub>2</sub> if the beginning of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>. </td>
+</tr>
+<tr>
+<td>Instance of:</td>
+<td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Disjoint with:</td>
+<td><code><a href="#time:intervalEquals">time:intervalEquals</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2157,7 +1791,7 @@ is the end of T<sub>2</sub>. </td>
 <tr>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalMeets </em>another proper interval T<sub>2</sub>,
-then the end of T<sub>1</sub> is the beginning of T<sub>2</sub>. </td>
+then the end of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -2170,6 +1804,10 @@ then the end of T<sub>1</sub> is the beginning of T<sub>2</sub>. </td>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalMetBy">time:intervalMetBy</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2184,11 +1822,19 @@ then the end of T<sub>1</sub> is the beginning of T<sub>2</sub>. </td>
 <tr>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalMetBy </em>another proper interval T<sub>2</sub>,
-then the beginning of T<sub>1</sub> is the end of T<sub>2</sub>. </td>
+then the beginning of T<sub>1</sub> is coincident with the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 <tr>
 <td>Inverse of:</td>
@@ -2213,6 +1859,14 @@ is before the end of T<sub>2</sub>, and the end of T<sub>1</sub> is after the en
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 <tr>
 <td>Inverse of:</td>
@@ -2246,6 +1900,10 @@ is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before 
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalOverlappedBy">time:intervalOverlappedBy</a></code></td>
+</tr>
 </tbody>
 </table>
 
@@ -2259,12 +1917,20 @@ is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before 
 <tr>
 <td>Definition:</td>
 <td>If a proper interval T<sub>1</sub> is <em>intervalStarted </em>another proper interval T<sub>2</sub>,
-then the beginning of T<sub>1</sub> is the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
+then the beginning of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
 after the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 <tr>
 <td>Inverse of:</td>
@@ -2282,8 +1948,8 @@ after the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Definition:</td>
-<td>If a proper interval T<sub>1</sub> is <em>intervalStarts </em>another proper interval T<sub>2</sub>,
-then the beginning of T<sub>1</sub> is the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
+<td>If a proper interval T<sub>1</sub> is <em>intervalStarts</em> another proper interval T<sub>2</sub>,
+then the beginning of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
 before the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
@@ -2297,6 +1963,14 @@ before the end of T<sub>2</sub>. </td>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
+</tr>
+<tr>
+<td>SubProperty of:</td>
+<td><code><a href="#time:intervalIn">time:intervalIn</a></code></td>
+</tr>
+<tr>
+<td>Inverse of:</td>
+<td><code><a href="#time:intervalStartedBy">time:intervalStartedBy</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2317,16 +1991,16 @@ before the end of T<sub>2</sub>. </td>
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
-<td>Subproperty of:</td>
-<td><code><a href="#time:inTemporalPosition">time:inTemporalPosition</a></code></td>
-</tr>
-<tr>
 <td>Domain:</td>
 <td><code><a href="#time:Instant">time:Instant</a></code></td>
 </tr>
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:TimePosition">time:TimePosition</a></code></td>
+</tr>
+<tr>
+<td>Subproperty of:</td>
+<td><code><a href="#time:inTemporalPosition">time:inTemporalPosition</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -3059,7 +2733,7 @@ exponential or scientific notation). </p>
 <code><a href="#time:unitMonth">:unitMonth</a></code> |
 <code><a href="#time:unitSecond">:unitSecond</a></code> |
 <code><a href="#time:unitWeek">:unitWeek</a></code> |
-<code><a href="#time:unitYear">:unitYear</a></code>
+<code><a href="#time:unitYear">:unitYear</a></code> |
 <code><a href="#greg:April">greg:April</a></code> |
 <code><a href="#greg:August">greg:August</a></code> |
 <code><a href="#greg:December">greg:December</a></code> |
@@ -3071,7 +2745,7 @@ exponential or scientific notation). </p>
 <code><a href="#greg:May">greg:May</a></code> |
 <code><a href="#greg:November">greg:November</a></code> |
 <code><a href="#greg:October">greg:October</a></code> |
-<code><a href="#greg:September">greg:September</a></code> 
+<code><a href="#greg:September">greg:September</a></code> |
 </p>
 
 <table class="definition" style="width: 812px;">
@@ -3081,108 +2755,85 @@ exponential or scientific notation). </p>
 <th>Individual</td>
 </tr>
 <tr id="time:Friday">
-<td><code><a href="#time:DayOfWeek">time:DayOfWeek</a></code></td>
+<td rowspan="7"><code><a href="#time:DayOfWeek">time:DayOfWeek</a></code></td>
 <td><code>time:Friday</code></td>
 </tr>
 <tr id="time:Monday">
-<td><code><a href="#time:DayOfWeek">time:DayOfWeek</a></code></td>
 <td><code>time:Monday</code></td>
 </tr>
 <tr id="time:Saturday">
-<td><code><a href="#time:DayOfWeek">time:DayOfWeek</a></code></td>
 <td><code>time:Saturday</code></td>
 </tr>
 <tr id="time:Sunday">
-<td><code><a href="#time:DayOfWeek">time:DayOfWeek</a></code></td>
 <td><code>time:Sunday</code></td>
 </tr>
 <tr id="time:Thursday">
-<td><code><a href="#time:DayOfWeek">time:DayOfWeek</a></code></td>
 <td><code>time:Thursday</code></td>
 </tr>
 <tr id="time:Tuesday">
-<td><code><a href="#time:DayOfWeek">time:DayOfWeek</a></code></td>
 <td><code>time:Tuesday</code></td>
 </tr>
 <tr id="time:Wednesday">
-<td><code><a href="#time:DayOfWeek">time:DayOfWeek</a></code></td>
 <td><code>time:Wednesday</code></td>
 </tr>
-<tr id="time:unitDay">
-<td><code><a href="#time:TemporalUnit">time:TemporalUnit</a></code></td>
-<td><code>time:unitDay</code></td>
-</tr>
-<tr id="time:unitHour">
-<td><code><a href="#time:TemporalUnit">time:TemporalUnit</a></code></td>
-<td><code>time:unitHour</code></td>
-</tr>
-<tr id="time:unitMinute">
-<td><code><a href="#time:TemporalUnit">time:TemporalUnit</a></code></td>
-<td><code>time:unitMinute</code></td>
-</tr>
-<tr id="time:unitMonth">
-<td><code><a href="#time:TemporalUnit">time:TemporalUnit</a></code></td>
-<td><code>time:unitMonth</code></td>
-</tr>
-<tr id="time:unitSecond">
-<td><code><a href="#time:TemporalUnit">time:TemporalUnit</a></code></td>
-<td><code>time:unitSecond</code></td>
-</tr>
-<tr id="time:unitWeek">
-<td><code><a href="#time:TemporalUnit">time:TemporalUnit</a></code></td>
-<td><code>time:unitWeek</code></td>
-</tr>
-<tr id="time:unitYear">
-<td><code><a href="#time:TemporalUnit">time:TemporalUnit</a></code></td>
-<td><code>time:unitYear</code></td>
-</tr>
 <tr id="greg:April">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
+<td rowspan="12"><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:April</code></td>
 </tr>
 <tr id="greg:August">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:August</code></td>
 </tr>
 <tr id="greg:December">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:December</code></td>
 </tr>
 <tr id="greg:February">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:February</code></td>
 </tr>
 <tr id="greg:January">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:January</code></td>
 </tr>
 <tr id="greg:July">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:July</code></td>
 </tr>
 <tr id="greg:June">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:June</code></td>
 </tr>
 <tr id="greg:March">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:March</code></td>
 </tr>
 <tr id="greg:May">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:May</code></td>
 </tr>
 <tr id="greg:November">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:November</code></td>
 </tr>
 <tr id="greg:October">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:October</code></td>
 </tr>
 <tr id="greg:September">
-<td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 <td><code>greg:September</code></td>
+</tr>
+<tr id="time:unitDay">
+<td rowspan="7"><code><a href="#time:TemporalUnit">time:TemporalUnit</a></code></td>
+<td><code>time:unitDay</code></td>
+</tr>
+<tr id="time:unitHour">
+<td><code>time:unitHour</code></td>
+</tr>
+<tr id="time:unitMinute">
+<td><code>time:unitMinute</code></td>
+</tr>
+<tr id="time:unitMonth">
+<td><code>time:unitMonth</code></td>
+</tr>
+<tr id="time:unitSecond">
+<td><code>time:unitSecond</code></td>
+</tr>
+<tr id="time:unitWeek">
+<td><code>time:unitWeek</code></td>
+</tr>
+<tr id="time:unitYear">
+<td><code>time:unitYear</code></td>
 </tr>
 </tbody>
 </table>
@@ -3198,7 +2849,6 @@ exponential or scientific notation). </p>
 
 <section id="dtd-vs-dt">
 <h3>DateTimeDescription vs dateTime</h3>
-<!--        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p> -->
 <p>The following example illustrates the difference between using <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> and using
 the XML datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. An instant that represents the start of a meeting, called <code>ex:meetingStart</code>,
 happens at 10:30am EST on 01/01/2006 can be expressed using both <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code> and <code><a href="#time:inDateTime">:inDateTime</a></code>
@@ -3315,7 +2965,6 @@ This level of precision is strictly spurious, but is required to satisfy the lex
 
 <section id="iCal">
 <h3>iCalendar</h3>
-<!--        <p class="note">This example replaces the one from [<a href="#OWL-T">OWL-T</a>]. </p> -->
 <p>iCalendar [<a href="#DE-09">DE-09</a>] is a widely supported standard for personal data interchange. It provides
 the definition of a common format for openly exchanging calendaring and scheduling information across the
 Internet. The representation of temporal concepts in this time ontology can be straightforwardly mapped to
@@ -3447,24 +3096,25 @@ ex:meeting
 
 ex:teleconStart
   a               :Instant ;
-  :inXSDDateTime  "2006-11-05T18:00:00-5:00"^^xsd:dateTimeStamp .
+  :inXSDDateTimeStamp  "2006-11-05T18:00:00-5:00"^^xsd:dateTimeStamp .
 
 ex:meetingStart
   a               :Instant ;
-  :inXSDDateTime  "2006-11-05T14:00:00-8:00"^^xsd:dateTimeStamp .
+  :inXSDDateTimeStamp  "2006-11-05T14:00:00-8:00"^^xsd:dateTimeStamp .
 
 ex:meetingDuration
   a         :DurationDescription ;
   :minutes  45 .
 </pre>
 <p>The telecon and the meeting are defined as intervals. <code><a href="#time:hasBeginning">:hasBeginning</a></code> is used for specifying the
-start times of the meetings. The datetimes are specified using <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code>. The duration of
+start times of the meetings. The datetimes are specified using <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code>. The duration of
 the meeting is specified using the <code><a href="#time:DurationDescription">:DurationDescription</a></code> class.</p>
 </section>
 
+<!--
 <section id="commerce">
 <h3>Web commerce applications</h3>
-<!--        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p> -->
+<p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p>
 <p>Congo.com and Bravo Air are examples from the OWL-S 0.9 draft release [<a href="#OWL-S">OWL-S</a>]. Congo.com
 is a fictitious book-selling service site, and Bravo Air is a fictitious airline-ticketing service site. These
 examples demonstrate how the time ontology can be used to support OWL-S, including use cases for defining
@@ -3647,7 +3297,8 @@ to class <code>Interval2Days</code> and <code>Interval3Days</code> respectively 
     ] .</pre>
 <p>Properties to output delivery durations when the user selects other delivery types (FedExOneDay, UPS, and
 OrdinaryMail) can be defined similarly.</p>
-</section>
+</section> 
+-->
 </section>
 
 <hr>
@@ -3660,6 +3311,7 @@ OrdinaryMail) can be defined similarly.</p>
 <ul>
   <li><code><a href="#time:TemporalEntity">:TemporalEntity</a></code>
     <ul>
+      <li><code><a href="#time:Instant">:Instant</a></code></li>
       <li><code><a href="#time:Interval">:Interval</a></code>
         <ul>
           <li><code><a href="#time:ProperInterval">:ProperInterval</a></code>
@@ -3669,7 +3321,6 @@ OrdinaryMail) can be defined similarly.</p>
           </li>
         </ul>
       </li>
-      <li><code><a href="#time:Instant">:Instant</a></code></li>
     </ul>
   </li>
   <li><code><a href="#time:TemporalPosition">:TemporalPosition</a></code>
@@ -3688,36 +3339,17 @@ OrdinaryMail) can be defined similarly.</p>
   </li>
   <li><code><a href="#time:TemporalDuration">:TemporalDuration</a></code>
     <ul>
-  	  <li><code><a href="#time:Duration">:Duration</a></code>
-  	    <ul>
-      	  <li><code><a href="#time:Year">:Year</a></code></li>
-      	  <li><code><a href="#time:Month">:Month</a></code></li>
-      	  <li><code><a href="#time:Week">:Week</a></code></li>
-      	  <li><code><a href="#time:Day">:Day</a></code></li>
-      	  <li><code><a href="#time:Hour">:Hour</a></code></li>
-      	  <li><code><a href="#time:Minute">:Minute</a></code></li>
-      	  <li><code><a href="#time:Second">:Second</a></code></li>
-    	</ul>
-  	  </li>
+  	  <li><code><a href="#time:Duration">:Duration</a></code></li>
   	  <li><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code>
     	<ul>
-    	  <li><code><a href="#time:DurationDescription">:DurationDescription</a></code>
-  	    	<ul>
-      	  	  <li><code><a href="#time:Year">:Year</a></code></li>
-      	  	  <li><code><a href="#time:Month">:Month</a></code></li>
-      	  	  <li><code><a href="#time:Week">:Week</a></code></li>
-      	  	  <li><code><a href="#time:Day">:Day</a></code></li>
-      	  	  <li><code><a href="#time:Hour">:Hour</a></code></li>
-      	  	  <li><code><a href="#time:Minute">:Minute</a></code></li>
-      	  	  <li><code><a href="#time:Second">:Second</a></code></li>
-    		</ul>
-  	  	  </li>
+    	  <li><code><a href="#time:DurationDescription">:DurationDescription</a></code></li>
     	</ul>
   	  </li>
+  	  <li><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> </li>
   	</ul>
+  </li>
   <li><code><a href="#time:TRS">:TRS</a></code></li>
   <li><code><a href="#time:TimeZone">:TimeZone</a></code></li>
-  <li><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> </li>
   <li><code><a href="#time:DayOfWeek">:DayOfWeek</a></code></li>
 </ul>
 </section>
@@ -3777,7 +3409,17 @@ OrdinaryMail) can be defined similarly.</p>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
     </tr>
     <tr>
+      <td><code><a href="#time:intervalAfter">:intervalAfter</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+    </tr>
+    <tr>
       <td><code><a href="#time:intervalBefore">:intervalBefore</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+    </tr>
+    <tr>
+      <td><code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code></td>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
     </tr>
@@ -3787,12 +3429,37 @@ OrdinaryMail) can be defined similarly.</p>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
     </tr>
     <tr>
+      <td><code><a href="#time:intervalMetBy">:intervalMetBy</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+    </tr>
+    <tr>
       <td><code><a href="#time:intervalOverlaps">:intervalOverlaps</a></code></td>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
     </tr>
     <tr>
+      <td><code><a href="#time:intervalOverlappedBy">:intervalOverlappedBy</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+    </tr>
+    <tr>
       <td><code><a href="#time:intervalStarts">:intervalStarts</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+    </tr>
+    <tr>
+      <td><code><a href="#time:intervalStartedBy">:intervalStartedBy</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+    </tr>
+    <tr>
+      <td><code><a href="#time:intervalIn">:intervalIn</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
+    </tr>
+    <tr>
+      <td><code><a href="#time:intervalContains">:intervalContains</a></code></td>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
     </tr>
@@ -3803,31 +3470,6 @@ OrdinaryMail) can be defined similarly.</p>
     </tr>
     <tr>
       <td><code><a href="#time:intervalFinishes">:intervalFinishes</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-    </tr>
-    <tr>
-      <td><code><a href="#time:intervalAfter">:intervalAfter</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-    </tr>
-    <tr>
-      <td><code><a href="#time:intervalMetBy">:intervalMetBy</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-    </tr>
-    <tr>
-      <td><code><a href="#time:intervalOverlappedBy">:intervalOverlappedBy</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-    </tr>
-    <tr>
-      <td><code><a href="#time:intervalStartedBy">:intervalStartedBy</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-      <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
-    </tr>
-    <tr>
-      <td><code><a href="#time:intervalContains">:intervalContains</a></code></td>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
     </tr>
@@ -4028,16 +3670,21 @@ OrdinaryMail) can be defined similarly.</p>
 <h2>Changes from previous versions</h2>
 <p>This version of OWL-Time was developed in the Spatial Data on the Web Working Group 
 (a joint activity involving W3C and the Open Geospatial Consortium). 
-The Ontology is based on the one described in the 2006 Draft are [<a href="#OWL-T">OWL-T</a>] though the document has been completely re-written.  
+The Ontology is derived from the one described in the 2006 Draft [<a href="#OWL-T">OWL-T</a>] though the document has been completely re-written.  
 The principal technical changes are as follows: </p>
 <ul>
   <li><code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> and <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> are generalizations of the corresponding classes from the 2006 draft, for cases which the temporal reference system is not fixed to the Gregorian Calendar in advance</li>
-  <li><code><a href="#time:TimePosition">:TimePosition</a></code> and <code><a href="#time:Duration">:Duration</a></code> are new classes to enable position or duration to be described using a number or nominal value </li>
   <li>the property <code><a href="#time:hasTRS">:hasTRS</a></code> enables time values to be associated with a temporal reference system, represented by a new ('stub') class <code><a href="#time:TRS">:TRS</a></code></li>
-  <li>the (super-)classes <code><a href="#time:TemporalPosition">:TemporalPosition</a></code> and <code><a href="#time:TemporalDuration">:TemporalDuration</a></code> are introduced as a root of the position and duration class hierarchies</li>
-  <li>the classes <code>:Year</code> and <code>:January</code> are deprecated, and the code showing how they could be derived by sub-classing moved into the Examples chapter</li>
-  <li>the time-zone ontology presented in Appendix B has been removed. A new class <code><a href="#time:TimeZone">:TimeZone</a></code> in the main namespace is used instead. The new class is a 'stub' with no properties, to serve as a superclass for any implementation</li>
-</ul>
+  <li><code><a href="#time:TimePosition">:TimePosition</a></code> and <code><a href="#time:Duration">:Duration</a></code> are new classes to enable position or duration to be described using a number or nominal value </li>
+  <li>the (super-)classes <code><a href="#time:TemporalPosition">:TemporalPosition</a></code> and <code><a href="#time:TemporalDuration">:TemporalDuration</a></code> are introduced as roots of the position and duration class hierarchies</li>
+  <li><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> made a subclass of <code><a href="#time:TemporalDuration">:TemporalDuration</a></code></li>
+  <li><code><a href="#time:inDataTimeStamp">:inDataTimeStamp</a></code> added</li>
+  <li><code><a href="#time:intervalIn">:intervalIn</a></code> and <code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> relations added</li>
+  <li>the class <code>:Year</code> now deprecated</li>
+  <li>the class <code>:January</code> now deprecated</li>
+  <li><code><a href="#time:MonthOfYear">:MonthOfYear</a></code> class and <code><a href="#time:monthOfYear">:monthOfYear</a></code> property added. greg:January-greg:December instances added in a separate graph and namespace.</li>
+  <li>the time-zone ontology presented in the 2006 draft has been removed. A new class <code><a href="#time:TimeZone">:TimeZone</a></code> in the main namespace is used instead. The new class is a 'stub' with no properties, to serve as a superclass for any implementation</li>
+  </ul>
 </section>
 
 <section class="appendix" id="requirements">

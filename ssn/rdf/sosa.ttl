@@ -18,12 +18,6 @@
 ns:license
   rdf:type owl:AnnotationProperty ;
 .
-schema:domainIncludes
-  rdf:type owl:AnnotationProperty ;
-.
-schema:rangeIncludes
-  rdf:type owl:AnnotationProperty ;
-.
 dc:creator
   rdf:type owl:AnnotationProperty ;
 .
@@ -47,6 +41,14 @@ terms:created
 .
 terms:modified
   rdf:type owl:AnnotationProperty ;
+.
+schema:domainIncludes
+  rdf:type owl:AnnotationProperty ;
+  rdf:type owl:ObjectProperty ;
+.
+schema:rangeIncludes
+  rdf:type owl:AnnotationProperty ;
+  rdf:type owl:ObjectProperty ;
 .
 rdfs:comment
   rdf:type owl:AnnotationProperty ;
@@ -141,16 +143,17 @@ sosa:Procedure
   rdfs:comment "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many observations, samplings, or actuations. It explains the steps to be carried out to arrive at reproducible results."@en ;
   rdfs:label "Procedure"@en ;
   skos:definition "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many observations, samplings, or actuations. It explains the steps to be carried out to arrive at reproducible results."@en ;
-  skos:note "Many observations may be created via the same Procedure the same way as many tables are assembled using the same instructions (as information objects, not their concrete realization)."@en ;
   skos:example "The measured wind speed differs depending on the height of the sensor above the surface, e.g., due to friction. Consequently, procedures for measuring wind speed define a standard height for anemometers above ground, typically 10 m for meteorological measures and 2 m in agrometeorology.This definition of hight, sensor placement, and so forth are defined in by the Procedure."@en ;
+  skos:note "Many observations may be created via the same Procedure the same way as many tables are assembled using the same instructions (as information objects, not their concrete realization)."@en ;
 .
 sosa:Result
   rdf:type rdfs:Class ;
   rdf:type owl:Class ;
-  rdfs:comment "The Result of an Observation, Actuation, or Sampling. Such result can, for instance, store an observation's value via the hasValue property."@en ;
+  rdfs:comment "The Result of an Observation, Actuation, or act of Sampling. To store an observation's simple result value one can use the hasSimpleResult property."@en ;
   rdfs:label "Result"@en ;
-  skos:definition "The Result of an Observation, Actuation, or Sampling. Such result can, for instance, store an observation's value via the hasValue property."@en ;
-  skos:example "The value of 20m as the height of a certain tree."@en ;
+  skos:definition "The Result of an Observation, Actuation, or act of Sampling. To store an observation's simple result value one can use the hasSimpleResult property."@en ;
+  skos:example "The value 20 as the height of a certain tree together with the unit, e.g., Meter."@en ;
+
 .
 sosa:Sample
   rdf:type rdfs:Class ;
@@ -166,6 +169,36 @@ A Sample is intended to sample some FatureOfInterest in an application domain, s
   skos:example "A statistical sample is often designed to be characteristic of an entire population, so that observations can be made regarding the sample that provide a good estimate of the properties of the population."@en ;
   skos:note "A transient sample, such as a ships-track or flight-line, might be identified and described, but is unlikely to be revisited exactly."@en ;
 .
+sosa:Sampler
+  rdf:type rdfs:Class ;
+  rdf:type owl:Class ;
+  rdfs:label "Sampling device or entity"@en ;
+  skos:definition "A device that is used by, or implements, a sampling Procedure to create or transform one or more samples."@en ;
+  skos:example "Ball mill"@en ;
+  skos:example "Diamond drill"@en ;
+  skos:example "Hammer"@en ;
+  skos:example "Hypodermic syringe and needle"@en ;
+  skos:example "Image sensor"@en ;
+  skos:example "Seive stack"@en ;
+  skos:example "Soil auger"@en ;
+.
+sosa:Sampling
+  rdf:type rdfs:Class ;
+  rdf:type owl:Class ;
+  rdfs:label "Act of Sampling"@en ;
+  skos:definition "An act of Sampling carries out a sampling Procedure to create or transform one or more samples."@en ;
+  skos:example "Crushing a rock sample in a ball mill."@en ;
+  skos:example "Digging a pit through a soil sequence."@en ;
+  skos:example "Dividing a field site into quadrats."@en ;
+  skos:example "Drawing blood from a patient."@en ;
+  skos:example "Drilling an observation well."@en ;
+  skos:example "Establishing a station for environmental monitoring."@en ;
+  skos:example "Registering an image of the landscape."@en ;
+  skos:example "Seiving a powder to separate the subset finer than 100-mesh."@en ;
+  skos:example "Selecting a subset of a population."@en ;
+  skos:example "Splitting a piece of drill-core to create two new samples."@en ;
+  skos:example "Taking a diamond-drill core from a rock outcrop."@en ;
+.
 sosa:Sensor
   rdf:type rdfs:Class ;
   rdf:type owl:Class ;
@@ -178,12 +211,13 @@ sosa:hasFeatureOfInterest
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Observation ;
   schema:domainIncludes sosa:Actuation ;
+  schema:domainIncludes sosa:Sampling ;
   schema:rangeIncludes sosa:FeatureOfInterest ;
   schema:rangeIncludes sosa:Sample ;
-  rdfs:comment "A relation between an Observation and the entity whose quality was observed or between an Actuation and the entity whose property was modified."@en ;
+  rdfs:comment "A relation between an Observation and the entity whose quality was observed, or between an Actuation and the entity whose property was modified, or between an act of Sampling and the entity that was sampled."@en ;
   rdfs:label "has feature of interest"@en ;
   owl:inverseOf sosa:isFeatureOfInterestOf ;
-  skos:definition "A relation between an Observation and the entity whose quality was observed or between an Actuation and the entity whose property was modified."@en ;
+  skos:definition "A relation between an Observation and the entity whose quality was observed, or between an Actuation and the entity whose property was modified, or between an act of Sampling and the entity that was sampled."@en ;
   skos:example "For example, in an Observation of the weight of a person, the FeatureOfInterest is the person and the quality is weight."@en ;
 .
 sosa:hasResult
@@ -196,6 +230,14 @@ sosa:hasResult
   owl:inverseOf sosa:isResultOf ;
   skos:definition "Relation linking an Observation and a Sensor or Actuator and a Result, which contains a value representing the value associated with the observed Property."@en ;
 .
+sosa:hasResultingSample
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa:Sampling ;
+  schema:rangeIncludes sosa:Sample ;
+  rdfs:label "has resulting sample"@en ;
+  owl:inverseOf sosa:isSamplingResultOf ;
+  skos:definition "Relation linking an act of Sampling and the new Sample created as a result."@en ;
+.
 sosa:hasSample
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:FeatureOfInterest ;
@@ -205,33 +247,35 @@ sosa:hasSample
   owl:inverseOf sosa:isSampleOf ;
   skos:definition "Relation between a FeatureOfInterest and the Sample used to represent it."@en ;
 .
-sosa:hasValue
+sosa:hasSimpleResult
   rdf:type owl:DatatypeProperty ;
-  schema:domainIncludes sosa:Result ;
-  rdfs:comment "The value of a Result, e.g., 23 or true."@en ;
-  rdfs:label "has value"@en ;
-  skos:definition "The value of a Result"@en ;
-  skos:example "23 or true"@en ;
+  schema:domainIncludes sosa:Observation ;
+  rdfs:comment "The simple value of an Observation."@en ;
+  rdfs:label "has simple result"@en ;
+  skos:definition "The simple value of an Observation."@en ;
+  skos:example "For instance, the values 23 or true."@en ;
 .
 sosa:isHostedBy
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuator ;
   schema:domainIncludes sosa:Sensor ;
+  schema:domainIncludes sosa:Sampler ;
   schema:rangeIncludes sosa:Platform ;
-  rdfs:comment "Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."@en ;
+  rdfs:comment "Relation between a Sensor, or Actuator, or Sampler and the Platform that it is mounted on or hosted by."@en ;
   rdfs:label "is hosted by"@en ;
   owl:inverseOf sosa:hosts ;
-  skos:definition "Relation between a Sensor or Actuator and the Platform that it is mounted on or hosted by."@en ;
+  skos:definition "Relation between a Sensor, or Actuator, or Sampler and the Platform that it is mounted on or hosted by."@en ;
 .
 sosa:hosts
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Platform ;
   schema:rangeIncludes sosa:Actuator ;
   schema:rangeIncludes sosa:Sensor ;
-  rdfs:comment "Relation between a Platform and a Sensor or Actuator hosted or mounted on it."@en ;
+  schema:rangeIncludes sosa:Sampler ;
+  rdfs:comment "Relation between a Platform and a Sensor, or Actuator, or Sampler hosted or mounted on it."@en ;
   rdfs:label "hosts"@en ;
   owl:inverseOf sosa:isHostedBy ;
-  skos:definition "Relation between a Platform and a Sensor or Actuator hosted or mounted on it."@en ;
+  skos:definition "Relation between a Platform and a Sensor, or Actuator, or Sampler hosted or mounted on it."@en ;
 .
 sosa:actuationMadeBy
   rdf:type owl:ObjectProperty ;
@@ -279,6 +323,12 @@ sosa:isResultOf
   owl:inverseOf sosa:hasResult ;
   skos:definition "Relation linking a Result to the Observation or Actuation that created or caused it."@en ;
 .
+sosa:isSamplingResultOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "Relation linking a Sample to the act of Sampling that created or caused it."@en ;
+  rdfs:label "is result of Sampling"@en ;
+  owl:inverseOf sosa:hasResultingSample ;
+.
 sosa:isSampleOf
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Sample ;
@@ -304,6 +354,19 @@ sosa:madeBySensor rdf:type owl:ObjectProperty ;
  rdfs:label "made by sensor"@en ;
  owl:inverseOf sosa:madeObservation ;
  skos:definition "Relation between an Observation and the Sensor which made the Observation."@en
+.
+sosa:madeBySampler
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa:Sampling ;
+  schema:rangeIncludes sosa:Sampler ;
+  rdfs:label "made by Sampler"@en ;
+  owl:inverseOf sosa:madeSampling ;
+  skos:definition "Relation linking an act of Sampling to the Sampler (sampling device or entity) that made it."@en ;
+.
+sosa:madeSampling
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "made Sampling"@en ;
+  owl:inverseOf sosa:madeBySampler ;
 .
 sosa:observedProperty
   rdf:type owl:ObjectProperty ;
@@ -354,17 +417,19 @@ sosa:resultTime
   rdf:type owl:DatatypeProperty ;
   schema:domainIncludes sosa:Actuation ;
   schema:domainIncludes sosa:Observation ;
-  rdfs:comment "The result time is the time when the Observation or Actuation act was completed."@en ;
+  schema:domainIncludes sosa:Sampling ;
+  rdfs:comment "The result time is the time when the Observation, Actuation or act of Sampling act was completed."@en ;
   rdfs:label "result time"@en ;
   rdfs:range xsd:dateTime ;
-  skos:definition "The result time is the time when the Observation or Actuation act was completed."@en ;
+  skos:definition "The result time is the time when the Observation, Actuation or act of Sampling act was completed."@en ;
 .
 sosa:usedProcedure
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuation ;
   schema:domainIncludes sosa:Observation ;
+  schema:domainIncludes sosa:Sampling ;
   schema:rangeIncludes sosa:Procedure ;
-  rdfs:comment "Relation to link to a re-usable Procedure used in making an Observation or Actuation. Typically a sensor or sensor-system, algorithm, computational Process."@en ;
+  rdfs:comment "Relation to link to a re-usable Procedure or recipe used in making an Observation or Actuation or act of Sampling. Typically a sensor or sensor-system, algorithm, computational Process."@en ;
   rdfs:label "used process"@en ;
-  skos:definition "Relation to link to a re-usable Procedure used in making an Observation or Actuation. Typically a sensor or sensor-system, algorithm, computational Process."@en ;
+  skos:definition "Relation to link to a re-usable Procedure or recipe used in making an Observation or Actuation or act of Sampling. Typically a sensor or sensor-system, algorithm, computational Process."@en ;
 .
