@@ -119,6 +119,12 @@ var respecConfig = {
          publisher: "CEUR: Proceedings of the 3rd International Workshop on Semantic Sensor Networks (SSN10)",
          date: "2010"
       },
+      "OBOE" :{
+       href:"http://dx.doi.org/10.5063/F11C1TTM",
+       date: "2016",
+       authors:["Mark Schildhauer", "Matthew B. Jones", "Shawn Bowers", "Joshua Madin", "Sergeui Krivov", "Deana Pennington", "Ferdinando Villa", "Benjamin Leinfelder", "Christopher Jones", "Margaret O'Brien"],
+       title: "OBOE: the Extensible Observation Ontology, version 1.1"
+      },
       "OM-Heavy": {
         href: "http://ceur-ws.org/Vol-1063/paper1.pdf",
         title: "An explicit OWL representation of ISO/OGC Observations and Measurements ",
