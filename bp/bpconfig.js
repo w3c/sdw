@@ -39,17 +39,17 @@ var respecConfig = {
     noLegacyStyle: false,
       logos: [
       {
-        src: "https://www.w3.org/Icons/w3c_home",
+        src: "https://www.w3.org/StyleSheets/TR/2016/logos/W3C",
         alt: "W3C",
         height: "48",
         width: "72",
         url: "https://www.w3.org/"
       },
       {
-        src: "https://www.w3.org/2015/01/ogc_logo.jpg",
+        src: "https://www.w3.org/2017/01/ogc_logo.png",
         alt: "OGC",
-        height: "48",
-        width: "115",
+        height: "68",
+        width: "147",
         url: "http://www.opengeospatial.org/"
       }],
     noRecTrack: true,
