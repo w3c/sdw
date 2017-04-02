@@ -74,30 +74,40 @@ While the approach  may also be suitable for other forms of coverage data, we le
     <section  id="Introduction">
       <h2>Introduction</h2>
       <p>Publishing data on the Web using <a href="https://www.w3.org/standards/semanticweb/data">Linked Data</a>
-      technologies makes it more accessible, easier to discover, and machine-readable.
-      Linked Data has worked well for statistical data, using the RDF Data Cube approach, but the large number of data points much coverage data (such as <a href="http://landsat.gsfc.nasa.gov/">Landsat</a> imagery) mean that publishers may be justifiably reluctant to embrace the size explosion that accompanies converting data to RDF.  While such a conversion provides maximum machine-readability,
-      most of the benefits of Linked Data can be realized with a compromise approach where only the
-      metadata is expressed in RDF, or where the RDF is generated on-the-fly to service requests.</p>
+      technologies makes it more accessible, easier to discover, and machine-readable.  In the context of the rapidly growing availability and importance of earth observation data, this work aims to leverage the Linked Data approach to data publishing to make such data  both much more easily usable by non-specialists and  much more easily integrated with other Web data in applications.
+      Linked Data has worked well for multi-dimensional statistical data using the RDF Data Cube [[vocab-data-cube]]. Following this success, Earth Observation imagery can be readily modelled as a Data Cube with the three dimensions of latitude, longitude, and time.  This simple conceptualisation and its encoding as Linked Data may be convenient for scientists and consumer app developers everywhere, and especially to statisticians such as those in National Statistics Organisations. 
+ 
 
-      <p>This document will refer to extracts of a small example to illustrate the approach. The complete source file is the
+	  The large number of data points that is typical of coverage data (such as <a href="http://landsat.gsfc.nasa.gov/">Landsat</a> imagery), means that publishers may be justifiably reluctant to address the size explosion that accompanies converting data to RDF.  While such a conversion provides maximum machine-readability, the benefits of Linked Data can be realized with a compromise approach where only the metadata is directly expressed in RDF, or where the RDF is generated on-the-fly to service requests.</p>
+
+      <p>This document illustrates that approach  showing how Earth Observation imagery can be published as Linked Data using the RDF Data Cube  vocabulary [[vocab-data-cube]] in concert with other relevant ontologies including the W3C/OGC Semantic Sensor Network ontology (SSN) [[vocab-ssn]], the W3C/OGC Time ontology (Time) [[owl-time]], the W3C Simple Knowledge Organisation System (SKOS) [[skos-reference]], W3C PROV-O [prov-o] and the W3C/OGC QB4ST [[qb4st]]. We show how SPARQL queries can be served through an OGC Discrete Global Grid System for observations, coupled with a triple store for observational metadata. 
+	   </p>
+	  
+	  <p> Throughout the document we refer to relevant Use Cases and Requirements of the Spatial Data on the Web Working Group  (UCR) [[sdw-ucr]] and Best Practices of the Spatial Data on the Web Working Group (BP) [[sdw-bp]]. Those references may be helpful to provide real-world applications and further rationale for the  approach described here. We refer to extracts from a small example for illustration. The complete source file for the example is
       <a href="ANU-LED-example.ttl">ANU-LED example</a>.</p>
+	 
       
       <div  class="issue"  data-number="99 ">Add references throughout, including to other published linked-data-ish approaches to coverages.</div>
     </section>
     <section  id="Datacube">
       <h2>The RDF Data Cube</h2>
-      <p>The <a href="https://www.w3.org/TR/vocab-data-cube/">RDF Data Cube</a> is an existing standard for representing data as RDF.  
-         It is typically used for data that is associated with statistical regions (e.g. suburbs).
-         Common practice includes using the SKOS vocabulary to define the concepts being measured
+      <p>The RDF Data Cube [[vocab-data-cube]] is a standard for representing multidimensional data as RDF.  
+         It is typically used for numerical data that is associated with geographic regions (e.g. suburbs) and classifications (e.g. age, industry, or time periods).
+         Common practice includes using the SKOS vocabulary to define the concepts being reported
          [<a href="https://www.w3.org/TR/sdw-ucr/#ObservedPropertyInCoverage">Observed property in coverage</a>].
-         The RDF data model allows the user to define all the relevant components of their data and the concept they measure;
-         including &ldquo;attribute&rdquo; components (metadata like sensor, resolution, uncertainty
-         [<a href="https://www.w3.org/TR/sdw-ucr/#QualityPerSample">Quality per sample</a>, <a href="https://www.w3.org/TR/sdw-ucr/#UncertaintyInObservations">Uncertainty in observations</a>] etc.),
-         &ldquo;measure&rdquo; components (the data proper) and &ldquo;dimension&rdquo; components
-         (the domain of the dataset e.g. the time and statistical region each datum refers to).
-         These techniques can easily be adapted to coverages, as the data model is flexible enough to define the appropriate attributes.</p>
+         The RDF Data Cube vocabulary allows the publisher to define all the relevant components of their data and the concepts they quantify,
+         including: 
+		 <ul> <li> &ldquo;attribute&rdquo; components (metadata such as sensor, resolution, uncertainty
+         [<a href="https://www.w3.org/TR/sdw-ucr/#QualityPerSample">Quality per sample</a>, <a href="https://www.w3.org/TR/sdw-ucr/#UncertaintyInObservations">Uncertainty in observations</a>] etc.);</li>
+         <li> &ldquo;measure&rdquo; components (the data proper); and </li>
+		 <li> &ldquo;dimension&rdquo; components 
+         (the domain of the dataset such as the time and statistical region each datum refers to).</li>
+		 </ul>
+         These techniques can be easily adapted to coverages, as the data model is flexible enough to define the appropriate attributes. Here we follow BP [<a href="https://www.w3.org/TR/sdw-bp/#bp-crs"> State how coordinate values are encoded</a>]</p>
          
-      <pre class="example">:lat a qb:DimensionProperty ;
+      <pre class="example">
+	  
+:lat a qb:DimensionProperty ;
     rdfs:subPropertyOf geo:lat .
 
 :long a qb:DimensionProperty ;
@@ -859,9 +869,9 @@ While the approach  may also be suitable for other forms of coverage data, we le
 	
  <section class="appendix" id="acknowledgements">
   <h2>Acknowledgements</h2>
-  <p>This spec would not be possible without the TechLauncher program of the Australian National University and its ardent convenor, Shayne Flint.
+  <p>This work would not be possible without the TechLauncher program of the Australian National University and its ardent convenor, Shayne Flint.
      We also thank Matthew Purss of Geoscience Australia for participating in the program and supporting this project.
-     Finally, Ed Parsons of Google, Robert Woodcock of CSIRO, and Robert Atkinson of the OGC provided valuable discussions and feedback.
+     Finally, Ed Parsons of Google, Robert Woodcock of CSIRO, Robert Atkinson of the OGC and Bill Roberts of SWIRRL provided valuable discussions and feedback.
   </p>
 </section>
 
