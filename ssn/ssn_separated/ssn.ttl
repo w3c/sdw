@@ -125,11 +125,11 @@ ssn:deployedSystem rdf:type owl:ObjectProperty ;
                    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment" .
 
 
-###  http://www.w3.org/ns/ssn/deploymentProcessPart
-ssn:deploymentProcessPart rdf:type owl:ObjectProperty ;
-                          rdfs:comment "Relation between a deployment process and its constituent processes (has-part)." ;
+###  http://www.w3.org/ns/ssn/deploymentProcedurePart
+ssn:deploymentProcedurePart rdf:type owl:ObjectProperty ;
+                          rdfs:comment "Relation between a deployment procedure and its constituent procedures (has-part)." ;
                           rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
-                          rdfs:label "deployment process part" ;
+                          rdfs:label "deployment procedure part" ;
                           rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment" .
 
 
@@ -179,7 +179,7 @@ ssn:hasDeployment rdf:type owl:ObjectProperty ;
 ###  http://www.w3.org/ns/ssn/hasInput
 ssn:hasInput rdf:type owl:ObjectProperty ;
              rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
-			 rdfs:comment "Relation between a Process and an Input to it." ;
+			 rdfs:comment "Relation between a Procedure and an Input to it." ;
              rdfs:label "has input" ;
              rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#Process" .
 
@@ -223,7 +223,7 @@ ssn:hasOperatingRange rdf:type owl:ObjectProperty ;
 ###  http://www.w3.org/ns/ssn/hasOutput
 ssn:hasOutput rdf:type owl:ObjectProperty ;
               rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
-			  rdfs:comment "Relation between a Process and an Ouput of it." ;
+			  rdfs:comment "Relation between a Procedure and an Output of it." ;
               rdfs:label "has output" ;
               rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#Process" .
 
@@ -434,14 +434,6 @@ ssn:qualityOfObservation rdf:type owl:ObjectProperty ;
                          rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation" .
 
 
-###  http://www.w3.org/ns/ssn/sensingMethodUsed
-ssn:sensingMethodUsed rdf:type owl:ObjectProperty ;
-                      dc:source "http://www.bipm.org/en/committees/jc/jcgm/wg2.html" ;
-                      rdfs:comment "A (measurement) procedure is a detailed description of a measurement according to one or more measurement principles and to a given measurement method, based on a measurement model and including any calculation to obtain a measurement result [VIM 2.6]" ;
-                      rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
-                      rdfs:label "sensing method used" ;
-                      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
-
 
 ###  http://www.w3.org/ns/ssn/startTime
 ssn:startTime rdf:type owl:ObjectProperty ;
@@ -493,7 +485,7 @@ ssn:Condition rdf:type owl:Class ;
 
 ###  http://www.w3.org/ns/ssn/Deployment
 ssn:Deployment rdf:type owl:Class ;
-               rdfs:subClassOf ssn:DeploymentRelatedProcess ,
+               rdfs:subClassOf ssn:DeploymentRelatedProcedure ,
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty ssn:deployedOnPlatform ;
                                  owl:allValuesFrom sosa:Platform
@@ -504,22 +496,22 @@ ssn:Deployment rdf:type owl:Class ;
                                ] ;
                dc:source """skos:closeMatch 'Deployment' [MMI Dev]
                                  http://marinemetadata.org/community/teams/ontdevices""" ;
-               rdfs:comment "The ongoing Process of Entities (for the purposes of this ontology, mainly sensors) deployed for a particular purpose.  For example, a particular Sensor deployed on a Platform, or a whole network of Sensors deployed for an observation campaign.  The deployment may have sub-processes, such as installation, maintenance, addition, and decomissioning and removal." ;
+               rdfs:comment "The ongoing process of Entities (for the purposes of this ontology, mainly sensors) deployed for a particular purpose. For example, a particular Sensor deployed on a Platform, or a whole network of Sensors deployed for an observation campaign. The deployment may have sub-procedures, such as installation, maintenance, addition, and de-comissioning and removal." ;
                rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
                rdfs:label "Deployment" ;
                rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment" .
 
 
-###  http://www.w3.org/ns/ssn/DeploymentRelatedProcess
-ssn:DeploymentRelatedProcess rdf:type owl:Class ;
+###  http://www.w3.org/ns/ssn/DeploymentRelatedProcedure
+ssn:DeploymentRelatedProcedure rdf:type owl:Class ;
                              rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                               owl:onProperty ssn:deploymentProcessPart ;
-                                               owl:allValuesFrom ssn:DeploymentRelatedProcess
+                                               owl:onProperty ssn:deploymentProcedurePart ;
+                                               owl:allValuesFrom ssn:DeploymentRelatedProcedure
                                              ] ;
                              dc:source "http://www.w3.org/2005/Incubator/ssn/" ;
-                             rdfs:comment "Class to group all the various Processes related to Deployment.  For example, as well as Deployment, installation, maintenance, deployment of further sensors and the like would all be classified under DeploymentRelatedProcess." ;
+                             rdfs:comment "Class to group all the various Procedures related to Deployment. For example, as well as Deployment, installation, maintenance, deployment of further sensors and the like would all be classified under DeploymentRelatedProcedure.” ;
                              rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
-                             rdfs:label "Deployment-related Process" ;
+                             rdfs:label "Deployment-related Procedure” ;
                              rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment" .
 
 
@@ -573,7 +565,7 @@ ssn:Frequency rdf:type owl:Class ;
 ssn:Input rdf:type owl:Class ;
           owl:disjointWith ssn:Output ;
           dc:source "http://marinemetadata.org/community/teams/ontdevices" ;
-          rdfs:comment "Any information that is provided to a process for its use [MMI OntDev]" ;
+          rdfs:comment "Any information that is provided to a procedure for its use.” ;
           rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
           rdfs:label "Input" ;
           rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#Process" .
@@ -666,7 +658,7 @@ ssn:Observation rdf:type owl:Class ;
                                   owl:allValuesFrom ssn:Property
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:sensingMethodUsed ;
+                                  owl:onProperty sosa:usedProcedure ;
                                   owl:allValuesFrom ssn:Sensing
                                 ] ,
                                 [ rdf:type owl:Restriction ;
@@ -701,7 +693,7 @@ ssn:Observation rdf:type owl:Class ;
                                   owl:onClass ssn:Property
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty ssn:sensingMethodUsed ;
+                                  owl:onProperty sosa:usedProcedure ;
                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                                   owl:onClass ssn:Sensing
                                 ] ;
@@ -782,7 +774,7 @@ The difference is that here we also allow for qualities that aren't VIM influenc
 ###  http://www.w3.org/ns/ssn/Output
 ssn:Output rdf:type owl:Class ;
            dc:source "http://marinemetadata.org/community/teams/ontdevices" ;
-           rdfs:comment "Any information that is reported from a process. [MMI OntDev]" ;
+           rdfs:comment "Any information that is reported from a procedure." ;
            rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
            rdfs:label "Output" ;
            rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#Process" .
@@ -811,8 +803,8 @@ ssn:Precision rdf:type owl:Class ;
               rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" .
 
 
-###  http://www.w3.org/ns/ssn/Process
-ssn:Process rdf:type owl:Class ;
+###  http://www.w3.org/ns/sosa/Procedure
+sosa:Procedure rdf:type owl:Class ;
             rdfs:subClassOf [ rdf:type owl:Restriction ;
                               owl:onProperty ssn:hasOutput ;
                               owl:someValuesFrom ssn:Output
@@ -826,9 +818,9 @@ ssn:Process rdf:type owl:Class ;
                               owl:allValuesFrom ssn:Output
                             ] ;
             dc:source "http://www.w3.org/2005/Incubator/ssn/" ;
-            rdfs:comment "A process has an output and possibly inputs and, for a composite process, describes the temporal and dataflow dependencies and relationships amongst its parts. [SSN XG]" ;
+            rdfs:comment "A procedure has an output and possibly inputs and, for a composite procedure, describes the temporal and dataflow dependencies and relationships amongst its parts. [SSN XG]" ;
             rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
-            rdfs:label "Process" ;
+            rdfs:label “Procedure” ;
             rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#Process" .
 
 
@@ -879,9 +871,9 @@ ssn:Selectivity rdf:type owl:Class ;
 
 ###  http://www.w3.org/ns/ssn/Sensing
 ssn:Sensing rdf:type owl:Class ;
-            rdfs:subClassOf ssn:Process ;
+            rdfs:subClassOf sosa:Procedure ;
             dc:source "http://www.w3.org/2005/Incubator/ssn/" ;
-            rdfs:comment "Sensing is a process that results in the estimation, or calculation, of the value of a phenomenon." ;
+            rdfs:comment "Sensing is a procedure that results in the estimation, or calculation, of the value of a phenomenon." ;
             rdfs:isDefinedBy "http://www.w3.org/ns/ssn" ;
             rdfs:label "Sensing" ;
             rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" .
