@@ -77,8 +77,9 @@ While the approach  may also be suitable for other forms of coverage, we leave t
       technologies makes it more accessible, easier to discover, and machine-readable.  In the context of the rapidly growing availability and importance of earth observation data, this work aims to leverage the Linked Data approach to data publishing to make such data  both much more easily usable by non-specialists and  much more easily integrated with other Web data in applications.
       Linked Data has worked well for multi-dimensional statistical data using the RDF Data Cube [[vocab-data-cube]]. Following this success, Earth Observation imagery can be readily modelled as a Data Cube with the three dimensions of latitude, longitude, and time.  This simple conceptualisation and its encoding as Linked Data may be convenient for scientists and consumer app developers everywhere, and especially to statisticians such as those in National Statistics Organisations. 
 	 </p>
-
-	  <p>The large number of data points that is typical of coverage data (such as <a href="http://landsat.gsfc.nasa.gov/">Landsat</a> imagery), means that publishers may be justifiably reluctant to address the size explosion that accompanies converting data to RDF.  While such a conversion provides maximum machine-readability, the benefits of Linked Data can be realized with a compromise approach where the metadata is directly expressed in RDF and where the RDF representation of voluminous gridded coverage data is generated on-the-fly to service requests.</p>
+	 
+	<p> Satellite imagery is commonly modelled as a <i>multidimensional grid coverage</i>, as discussed in [[sdw-bp]].
+	The large number of data points that is typical of coverage data such as <a href="http://landsat.gsfc.nasa.gov/">Landsat</a> imagery means that publishers may be justifiably reluctant to address the size explosion that accompanies converting data to RDF.  While such a conversion provides maximum machine-readability, many benefits of Linked Data can be realized with a compromise approach where  only the metadata is directly expressed in RDF. Further benefits can be realized by storing voluminous gridded coverage data in more efficient storage representations and using specialised middleware to generate an RDF representation on-the-fly to respond to service requests.</p>
       </p>
       <p>This document illustrates that approach  showing how Earth Observation imagery can be published as Linked Data using the RDF Data Cube  vocabulary [[vocab-data-cube]] in concert with other relevant ontologies including the W3C/OGC Semantic Sensor Network ontology (SSN) [[vocab-ssn]], the W3C/OGC Time ontology (Time) [[owl-time]], the W3C Simple Knowledge Organisation System (SKOS) [[skos-reference]], W3C PROV-O [prov-o] and the W3C/OGC QB4ST [[qb4st]]. We show how SPARQL queries can be served through a scalable OGC Discrete Global Grid System for observation data, coupled with a triple store for observational metadata. 
 	   </p>
@@ -103,7 +104,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
 		 <li> &ldquo;dimension&rdquo; components 
          (the domain of the dataset such as the time and statistical region to which each datum refers).</li>
 		 </ul>
-         These techniques can be easily adapted to coverages, as the data model is flexible enough to define the appropriate attributes. Here we follow BP [<a href="https://www.w3.org/TR/sdw-bp/#bp-crs-choice">Choose the coordinate reference system to suit your user's applications</a>] and BP [<a href="https://www.w3.org/TR/sdw-bp/#bp-crs">State how coordinate values are encoded</a>]. By  assigning a temporal dimension to the datacube, BP [<a href="https://www.w3.org/TR/sdw-bp/#desc-changing-properties"/>Describe properties that change over time </a> (option 3) is straighforward.</p>
+         These techniques can be easily adapted to coverages, as the data model is flexible enough to define the appropriate attributes. Here we follow BP <a href="https://www.w3.org/TR/sdw-bp/#bp-crs-choice">Choose the coordinate reference system to suit your user's applications</a> and BP <a href="https://www.w3.org/TR/sdw-bp/#bp-crs">State how coordinate values are encoded</a>. By  assigning a temporal dimension to the datacube, BP <a href="https://www.w3.org/TR/sdw-bp/#desc-changing-properties"/>Describe properties that change over time </a> (option 3) is straightforward.</p>
          
       <pre class="example">
 	  
@@ -291,7 +292,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
              publisher to make it easy for the user to download those definitions. This is also the appropriate place to think
              about the experience of Web crawlers on the publisher's Web page [<a href="https://www.w3.org/TR/sdw-ucr/#Crawlability">Crawlability</a>, <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Machine to machine</a>].</p>
 
-          <p>It is also helpful if the user can easily identify the <i>domain</i> of a coverage, that is, the spatial and temporal area where measurements are taken
+          <p>It is also helpful if the user can easily identify the <i>domain</i> of a coverage, that is, the spatial and temporal area where measurements are made
              [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].
              <abbr title="Data Cube extensions for spatio-temporal components">QB4ST</abbr> [[qb4st]] does not currently have a term for that, but it might in the future.</p>
              
@@ -457,7 +458,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
     </section>
 
       <section  id="Implementation">
-        <h3>Implementation</h3>
+        <h3>Scalable Implementation</h3>
 
         <p>A proof of concept demonstrating the <a
             href="ANU-LED-example.ttl">ANU-LED example</a> with a SPARQL query
@@ -477,7 +478,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
             in advance. This approach has precedent: virtual graphs have been used
             to provide linked data interfaces to relational databases, RSS
             feeds, and ordinary HTML pages with no semantic markup
-            ([[perf-vgraph]]).
+            ([perf-vgraph]).
         </p>
 
         <p>
@@ -666,7 +667,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
              illustrates a minimal description of Landsat 8 OLI observations using SSN
              [<a href="https://www.w3.org/TR/sdw-ucr/#SSNLikeRepresentation">SSN-like representation</a>].
              Much more detailed descriptions are possible. In particular, SSN descriptions can be attached to individual tiles
-             [<a href="http://w3c.github.io/sdw/UseCases/SDWUseCasesAndRequirements.html#QualityPerSample">Quality per sample</a>].</p>
+             [<a href="http://w3c.github.io/sdw/UseCases/SDWUseCasesAndRequirements.html#QualityPerSample">Quality per sample</a>], demonstrating BP <a href="https://www.w3.org/TR/sdw-bp/#spatial-info-dataset-metadata">Include spatial metadata in dataset metadata.</a> </p>
              
           <pre class="example">:exampleDataset a qb:DataSet, prov:Entity ;
     qb:structure :exampleStructure ;
@@ -733,16 +734,14 @@ While the approach  may also be suitable for other forms of coverage, we leave t
 
       <section  id="LatLong">
           <h3>Latitude and longitude</h3>
-          <p>The working group wishes to discourage unqualified uses of &ldquo;latitude&rdquo; and &ldquo;longitude&rdquo;.
-             Most commonly, these terms refer to the WGS-84 Coordinate Reference System (CRS),
-             but published data should always make its CRS explicit [<a href="https://www.w3.org/TR/sdw-ucr/#Georectification">Georectification</a>].
+          <p>Spatial data best practice eschews unqualified uses of &ldquo;latitude&rdquo; and &ldquo;longitude&rdquo;.
+             Commonly, these terms refer to the WGS-84 Coordinate Reference System (CRS),
+             but data published according to BP <a href="https://www.w3.org/TR/sdw-bp/#bp-crs">State how coordinate values are encoded</a> should always make its CRS explicit [<a href="https://www.w3.org/TR/sdw-ucr/#Georectification">Georectification</a>].
              In RDF, the <a href="https://www.w3.org/2003/01/geo/">WGS-84 geo vocabulary</a> is often used,
               with its provided <code>geo:lat</code> and <code>geo:long</code> properties.
-             The working group intends to standardize better properties, which allow the use of other CRSs.
-             Once these exist, they should always be used in place of the geo properties.
-              QB4ST defines the <code>qb4st:crs</code> property which will inherit from those
+              QB4ST defines the <code>qb4st:crs</code> property to identify a CRS definition
              [<a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">CRS definition</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].
-             The RDF Data Cube and QB4ST make is easy to define several CRSs and use them simultaneously, providing clients with several views of the data [<a href="https://www.w3.org/TR/sdw-ucr/#MultipleCRS">Multiple CRSs</a>]. In the example below, a grid square can be identified by latitude and longitude of its centroid, by its boundary, or by its rHEALPix cell.</p>
+             The RDF Data Cube and QB4ST make is easy to define several CRSs and to use them simultaneously, providing clients with several views of the data [<a href="https://www.w3.org/TR/sdw-ucr/#MultipleCRS">Multiple CRSs</a>]. In the example below, a grid square can be identified by the latitude and longitude of its centroid, by its boundary, or by its rHEALPix cell.</p>
              
           <pre class="example">:lat a qb4st:SpatialDimension ;
     rdfs:subPropertyOf geo:lat ;
@@ -781,11 +780,12 @@ While the approach  may also be suitable for other forms of coverage, we leave t
 
       <section  id="GeoSPARQL">
           <h3>GeoSPARQL</h3>
-          <p>The GeoSPARQL ontology [[GeoSPARQL]] defines some terms and predicates for reasoning about objects and shapes in space
+          <p>The GeoSPARQL ontology [[GeoSPARQL]] defines some terms for reasoning about objects and shapes in space
              [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">Spatial operators</a>].
              It allows for the use of several encodings, including WKT, to describe polygons
              [<a href="https://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry">Encoding for vector geometry</a>].
-             The ANU-LED example uses these terms to define the area covered by individual tiles in the coverage, and the entire spatial domain.</p>
+             The ANU-LED example uses these terms to define the area covered by individual tiles in the coverage, and also to define the entire spatial domain of a dataset, as required for BPs <a href="https://www.w3.org/TR/sdw-bp/#spatial-info-dataset-metadata">Include spatial metadata in dataset metadata</a>, and BP <a href="https://www.w3.org/TR/sdw-bp/#describe-geometry">Provide geometries on the Web in a usable way</a>.</p>
+            
              
           <pre class="example">:exampleDataset a qb:DataSet, prov:Entity ;
     qb:structure :exampleStructure ;
@@ -843,13 +843,13 @@ While the approach  may also be suitable for other forms of coverage, we leave t
       <section  id="OWL-Time">
           <h3>OWL-Time</h3>
           <p>Coverages should be annotated appropriately with the times observations were taken
-             [<a href="https://www.w3.org/TR/sdw-ucr/#CoverageTemporalExtent">Coverage temporal extent</a>].
+             [<a href="https://www.w3.org/TR/sdw-ucr/#CoverageTemporalExtent">Coverage temporal extent</a>], that is BP <a href="http://w3c.github.io/sdw/bp/#desc-changing-properties">Describe properties that change over time</a>.
              OWL-Time [[owl-time]] defines terms for time intervals that are useful for expressing the temporal domain of the dataset.
              It also allows temporal reference systems other than the Gregorian calendar.
-             However, for Gregorian time instants, a datatype property using the built-in <code>xsd:dateTime</code> datatype is sufficient.
+             However, for Gregorian time instants which are typically used for Earth observation data, a datatype property using the built-in <code>xsd:dateTime</code> datatype is sufficient.
              </p>
              
-          <p>QB4ST defines terms that work nicely with OWL-Time.</p>
+          <p>QB4ST defines terms that work well together with OWL-Time.</p>
              
           <pre class="example">:coverageTemporalDomain a qb:AttributeProperty, qb4st:TemporalProperty ;
     rdfs:range time:DateTimeInterval ;
