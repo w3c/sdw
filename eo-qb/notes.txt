@@ -1,0 +1,73 @@
+
+0. validate the .ttl 
+
+1. Dont use equivalentclass here. why not just "a"?
+
+:pixelsPerDegree rdf:type rdfs:Datatype ;
+    owl:equivalentClass xsd:double .
+
+2. crs 
+qb4st:crs <http://www.opengis.net/def/crs/EPSG/0/4326> . 
+BP uses http://epsg.io/4326   -- is that better? if so, should BP be changed?
+
+3. Have not checked the qb4st
+
+
+4. :resolution "2.7"^^:pixelsPerDegree ;
+I don't think that is valid -- the bit after the ^^ has to be an xsd datatype, surely?
+
+5. DELETED 
+
+6. rdfs:range [owl:unionOf(xsd:anyURI xsd:integer)] ; - not sure I am happy with this. As rdfs tools (and so probably also datacube tools) might not figure it? Cannot think of a solution other than removing hte range entirely.
+
+7. Example 4 " :dataValue  ;" is this well-formed ttl?
+
+8. 'However, it is reasonable to attach such metadata to aggregated <i>tiles</i>of pixels.
+           Thus the RDF data model can be used, as long as RDF Data Cube observations are whole tiles rather than individual pixels [<a href="https://www.w3.org/TR/sdw-ucr/#TilngSupport">Support for tiling</a>]."  this seems out of place -- case for tiling. perhaps cut "thus...[to end]". <partly did this>
+
+9. "QB4ST [qb4st] does not currently have a term for that, but it may in the future." -check
+
+10. Consider removing "This is also the appropriate place to think about the experience of Web crawlers on the publisher's Web page [Crawlability, Machine to machine]." as the relevant BP says to put it on an HTML page and we are not doing that at all.  https://www.w3.org/TR/sdw-bp/#indexable-by-search-engines
+
+11. BP Encoding spatial data https://www.w3.org/TR/sdw-bp/#semantic-thing needs an example for "Balancing quality and cost. This could be it?
+
+12. "qb4st:crs "rHEALPix WGS84 Ellipsoid" " is that a crs?
+
+13. BP approach 3 could point to EO-QB. 
+
+14. example 8 uses unusual sparql layout (";" at begining of line) -- I like it a lot, but it is non-customary and might confuse?
+
+15. Example 8 led:etmBand      led:latMin led:longMax led:value are not in ANU-LED-example.ttl. They need to be (and they nee to be explained). LEd uses "bounds" instead.  Also the example seems to be outofdate wrt QB4st in the ontology?  Also it uses led:Pixel -- shouldn't it be a GridSquare (tile?). 
+
+16. SSN might well change its name and prefix shortly.
+
+17. Several changes to ssn in the area of example 9. Platform, observes, onPlatform, maybe hasMeasurementCapability. Should add ssn:accuracy.
+
+18 add a table of omntologies used (see section ).
+
+19. Example 10 does this again: ":s1   .... :dataValue  ;" . what about this?  ":s1 :datavalue [ a xsd:integer] ; "  
+
+
+20. example 10 :exampleDataset ... prov:wasDerivedFrom :AGDC .
+I don't think the wasderivedfrom is appropriate here. wasderivedfrom is used if you don't want to talk about the corresponding activitity, but you do -- it " prov:wasGeneratedBy :ANU-led-resampling " and you can get to the Entity that as used for that from there -- ":ANU-led-resampling  ... prov:used :AGDC ."
+
+
+
+21. example 10 ":AGDC a prov:Collection ;
+    prov:wasAssociatedWith :GeoscienceAustralia ;
+    prov:hadMember :example-tile . " this should be prov wasAttributedTo, not prov:wasAssociatedWith , becuase it relates Entity to Agent.
+
+22. Example 13: check ssn:Property for change
+
+23. BP doc section 6 'Coverages: describing properties that vary with location (and time)" should reference EO-QB and coverage-JSON.
+
+
+
+24. Example 14. timedomain is a time:Interval that appears to be very short (begins and ends at "2001-10-26T21:32:52) . However, it is normal for satellite imagery to instead be given a (real) time period due to the  time taken to travel over the surface.  I like that the particular :grid Square has only a time instant, but surely the timedomain could be longer?
+
+25 (no for eo-qb) BP doc should crossrefernce req https://www.w3.org/TR/sdw-ucr/#CoverageTemporalExtent  with 
+http://w3c.github.io/sdw/bp/#desc-changing-properties
+
+26. Needs a table of ontolgies used -- see section 7.
+
+
