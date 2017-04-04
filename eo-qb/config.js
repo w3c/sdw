@@ -72,7 +72,7 @@ var respecConfig = {
         date: "16 June 2008"
        },
        "GeoSPARQL":{
-        href:"http://www.opengeospatial.org/standards/geosparql",
+        href:"http://www.opengeospatial.org/standards/geosparql/",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
         authors: ["Matthew Perry", "John Herring"],
         date: "10 September 2012"  
