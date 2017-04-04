@@ -171,6 +171,14 @@ var respecConfig = {
       title:"The Web of Things: The W3C Semantic Sensor Network Ontology",
       publisher:"5th Australasian eResearch Conference, Melbourne",
       date:"November 2011"
+      },
+      "Lefrancois-et-al-2017": {
+         href:"http://www.maxime-lefrancois.info/docs/SEAS-D2_2-SEAS-Knowledge-Model.pdf",
+         authors: ["Maxime Lefrançois", "Jarmo Kalaoja", "Takoua Ghariani", "Antoine Zimmermann"],
+         title: "The SEAS Knowledge Model",
+         status:"Deliverable 2.2",
+         publisher: "ITEA2 12004 Smart Energy Aware Systems",
+         date: "2017"
       }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
