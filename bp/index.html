@@ -1162,10 +1162,20 @@ a:Dataset a dcat:Dataset ;
           used. This can be seen as conformance of data with a "standard" - in this case, a (spatial
           or temporal) reference system. This is how you can describe spatial data quality using
           different vocabularies. We will provide an example in this section. </p>
-        <div class="practice">
+	      <p>For some uses, it may be sufficient to simply state conformance to a published specification</p>
+            <pre class="example" id="ex-geodcat-ap-dataset-conformance-with-specification" title="GeoDCAT-AP specification of a dataset conformance with the INSPIRE Regulation on spatial data and services interoperability">a:Dataset a dcat:Dataset ;
+  dct:conformsTo &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; .
+
+&lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; a dct:Standard , foaf:Document ;
+  dct:title "COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010
+             implementing Directive 2007/2/EC of the European Parliament
+             and of the Council as regards interoperability of spatial
+             data sets and services"@en ;
+  dct:issued "2010-12-08"^^xsd:date .</pre>
+	  <div class="practice">
           <p><span id="desc-accuracy" class="practicelab">Describe the positional accuracy of
               spatial data</span></p>
-          <p class="practicedesc">Accuracy and precision of spatial data should be specified in
+          <p class="practicedesc">Accuracy of spatial data should be specified in
             machine-interpretable and human-readable form.</p>
           <section class="axioms">
             <h4 class="subhead">Why</h4>
@@ -1183,9 +1193,10 @@ a:Dataset a dcat:Dataset ;
           </section>
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
-            <p>When known, the resolution and precision of spatial data should be specified in a way
-              to allow consumers of the data to be aware of the resolution and level of details that
-              are considered in the specifications.</p>
+            <p>For many uses, the positional accuracy of the data is an important aspect of assessing
+	      its fitness for purpose (quality).
+	      As with other data quality statements, this can be a quantitative measure, a statement 
+	      of conformance to a standard or policy, or an assertion or report of fitness for a particular purpose.</p>
           </section>
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
@@ -1193,27 +1204,45 @@ a:Dataset a dcat:Dataset ;
             <p>In addition, describe the accuracy of spatial data in a machine-readable format.
               [[VOCAB-DQV]] is such a format. It is a vocabulary for describing data quality, including
               the details of quality metrics and measurements. </p>
+	    <p>For observed (measured) datasets, it is possible to make specific quantitative statements
+	      about positional accuracy, based on knowledge of the equipment used to make the observations,
+	      and any processing carried out.</p> 
+	    <p>For <a>coverages</a>, the sampling distance is an effective way of indicating the amount of
+	      detail in the dataset - this is one of the meanings of the term "resolution".
+	      Alternatively, samples of the data could be independently checked against the real world, 
+	      and the results of that check reported.
+	      Either way, this is usually a statement of <a>absolute postional accuracy</a>, but for some uses, 
+	      relative positional accuracy is more important.</p>
+	    <p>Positional accuracy measurements, whether observed or asserted based on process,
+	      can be given using QualityMeasurement.</p>
+	    <p>For modelled datasets, for example in planning and construction, there is no 'real world' against
+	      which to assess the positional accuracy - but relative positional accuracy can still be stated.</p>
+	    <p>For many uses, a statement of the amount of detail provided is sufficient to assess fitness for purpose; 
+	      examples include "level of detail" (building models), "navigational purpose" (marine navigation),
+	      "equivalent scale" or "zoom level" (cartography).
+	      Sometimes, this is expressed as if it were a statement of positional accuracy.</p>
+	    <p>These can be expressed in the same way as for non-spatial data, using for example the QualityAnnotation,
+	      Standard, and QualityPolicy statements of [[VOCAB-DQV]].</p>
             <aside class="example">
-              <p>example(s) to be added; including:</p>
+              <p>examples:</p>
               <ul>
                 <li>second quarter of the 9th century is <em>approx.</em> 825-850 but could be
                   823-852</li>
                 <li>the ends of a 'sampling traverse' could be known in a national/global CRS to
                   within ±5m, whilst the position of the samples themselves may be accurate to ±0.01
                   along the traverse</li>
-                <li>describe spatial data quality with [[VOCAB-DQV]] and [[GeoDCAT-AP]].</li>
+                <li>a hydrographic survey may conform to the 'special order' survey specification in IHO S-44</li>
+		<li>a coverage dataset may have a ground sampling distance of 1 000m</li>
               </ul>
             </aside>
-            <pre class="example" id="ex-geodcat-ap-dataset-conformance-with-specification" title="GeoDCAT-AP specification of a dataset conformance with the INSPIRE Regulation on spatial data and services interoperability">a:Dataset a dcat:Dataset ;
-  dct:conformsTo &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; .
+	    <p>The following example shows how DQV can express conformance to a specified positional accuracy</p>
+            <pre class="example" id="ex-geodcat-ap-dataset-conformance-with-specification2" title="GeoDCAT-AP specification of a dataset conformance with IHO's S44">a:Dataset a dcat:Dataset ;
+  dct:conformsTo &lt;<a href="https://www.iho.int/iho_pubs/standard/S-44_5E.pdf">https://www.iho.int/iho_pubs/standard/S-44_5E.pdf#Special</a>&gt; .
 
-&lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; a dct:Standard , foaf:Document ;
-  dct:title "COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010
-             implementing Directive 2007/2/EC of the European Parliament
-             and of the Council as regards interoperability of spatial
-             data sets and services"@en ;
-  dct:issued "2010-12-08"^^xsd:date .</pre>
-            <p>The following example shows how DQV can express the precision of a spatial dataset: </p>
+&lt;<a href="https://www.iho.int/iho_pubs/standard/S-44_5E.pdf">https://www.iho.int/iho_pubs/standard/S-44_5E.pdf</a>&gt; a dct:Standard , foaf:Document ;
+  dct:title "IHO Standards for Hydrographic Surveys"@en ;
+  dct:issued "2008-02-01"^^xsd:date.</pre>
+            <p>The following example shows how DQV can express the amount of detail in a coverage dataset: </p>
             <pre class="example" id="ex-dqv-dataset-quality" title="DQV specification of data quality">
 :myDataset a dcat:Dataset ;
    dqv:hasQualityMeasurement :myDatasetPrecision, :myDatasetAccuracy .
@@ -1238,7 +1267,9 @@ a:Dataset a dcat:Dataset ;
           </section>
           <section class="test">
             <h4 class="subhead">How to Test</h4>
-            <p>...</p>
+            <p>Check if the metadata contains at least one human and machine readable statement regarding positional accuracy </p>
+	    <p>Check that the kind of statement is relevant to the kind of data, e.g. not an absolute positional accuracy measure for Atlantis</p>
+	    <p>Checking that the accuracy statement is actually correct is beyond the scope of this best practice.</p>
           </section>
           <section class="ucr">
             <h4 class="subhead">Evidence</h4>
