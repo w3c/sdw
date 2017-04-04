@@ -18,45 +18,7 @@
 sosa:Observation
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
-      owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa/hasFeatureOfInterest> ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa/hasResult> ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa/observedProperty> ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa/phenomenonTime> ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa/usedProcedure> ;
-    ] ;
-.
-<https://www.w3.org/ns/sosa#Observation>
-  rdfs:comment """An observation is an act associated with a discrete time instant or period through which a number, term or other symbol is assigned to a phenomenon [2]. It involves application of a specified procedure, such as a sensor, instrument, algorithm or process chain. The procedure may be applied in-situ, remotely, or ex-situ with respect to the sampling location. The procedure may take inputs from the environment (as stimuli) or from the results of prior observations or processes. The result of an observation is an estimate of the value of a property of some feature. 
-
-Use of a common model allows observation data using different procedures to be combined unambiguously.
-
-The observation itself is also a feature, since it has properties and identity.
-
-Observation details are important for data discovery and for data quality estimation.
-
-The observation could be considered to carry metadata about an instance of a property (of the feature of interest). This property-value metadata complements the dataset and feature metadata that have been conventionally considered (e.g. ISO 19115).
-
-The values for the properties 'procedure', 'featureOfInterest', 'observedProperty', 'phenomenonTime', 'resultTime' may be inherited from a container resource.""" ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:allValuesFrom <https://www.w3.org/ns/sosa#Sample> ;
+      owl:allValuesFrom sosa:Sample ;
       owl:onProperty oml:usingSample ;
     ] ;
   rdfs:subClassOf [
@@ -67,91 +29,42 @@ The values for the properties 'procedure', 'featureOfInterest', 'observedPropert
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa#hasFeatureOfInterest> ;
+      owl:onProperty sosa:hasFeatureOfInterest ;
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa#phenomenonTime> ;
+      owl:onProperty sosa:hasResult ;
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa#usedProcedure> ;
+      owl:onProperty sosa:observedProperty ;
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa/hasResult> ;
+      owl:onProperty sosa:phenomenonTime ;
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa/observedProperty> ;
+      owl:onProperty sosa:resultTime ;
     ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty <https://www.w3.org/ns/sosa/resultTime> ;
+      owl:onProperty sosa:usedProcedure ;
     ] ;
-  owl:disjointWith <https://www.w3.org/ns/sosa#ObservableProperty> ;
-  owl:disjointWith <https://www.w3.org/ns/sosa#Procedure> ;
 .
-<https://www.w3.org/ns/sosa#Procedure>
-  rdfs:comment "Agent, device, sensor, software, protocol, computational method, algorithm or plan responsible for generating an observation result. Input may be a sensor stimulus, or the output from a previous process. A Procedure is re-usable, and might be involved in many observations." ;
-  rdfs:comment """Original description from ISO 19156 says: 
-
-The class OM_Process (Figure 2) is an instance of the «metaclass» GF_FeatureType (ISO 19109:2005), which therefore represents a feature type. OM_Process is abstract, and has no attributes, operations or associations. It serves as the base class for observation processes. The purpose of an observation process is to generate an observation result. An instance of OM_Process is often an instrument or sensor, but may be a human observer, a simulator, or a process or algorithm applied to more primitive results used as inputs. 
-
-NOTE	ISO 19115-2:2008 provides MI_Instrument, LE_Processing and LE_Algorithm, which could all be modelled as specializations of OM_Process. OGC SensorML [10] provides a model which is suitable for many observation procedures.""" ;
-  rdfs:comment """Original description from OGC SensorML says:
-
-In SensorML, all components are modeled as processes. This includes components normally viewed as hardware, including transducers, actuators, and processors (which are viewed as process components) and sensors and platforms (which are modeled as systems). All components are modeled as processes that take input, and which through the application of an algorithm defined by a method and parameter values, generate output. All such components can therefore participate in process chains. Process chains are themselves processes with inputs, outputs, and parameters.
-
-Hence, SensorML can be viewed as a specialized process description language with an emphasis on application to sensor data. Process descriptions in SensorML are agnostic of the development environment in which they might be executed, or the protocol by which data is transported between process execution modules. SensorML does not try to replace other existing technologies (such as BPEL or MATLAB Simulink). It is also conceived that SensorML-defined processes could be imported and executed within other execution environments, such as BPEL or MATLAB Simulink, as well as within SenosrML-enabled process execution software.""" ;
-.
-<https://www.w3.org/ns/sosa#hasFeatureOfInterest>
-  rdfs:comment """feature of interest of an observation
-
-Links the Observation to the Feature that is the ultimate subject of the observation and carries the observed property. This feature is the real-world object whose properties are under observation. An observation instance serves as a propertyValueProvider for its feature-of-interest.""" ;
-.
-<https://www.w3.org/ns/sosa#phenomenonTime>
-  rdfs:range time:TemporalEntity ;
-.
-<https://www.w3.org/ns/sosa#samplingStrategy>
-  schema:domainIncludes oml:ObservationCollection ;
-  rdfs:comment """Links to a feature or procedure intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. 
-
-N.B. this formulation varies from the UML model in ISO 19156, in which a sampling-feature is substitutable for the feature-of-interest. In this more explicit formulation, the (mandatory) feature-of-interest always refers to the ultimate feature of interest, whose type can carry the observed property, and the (optional) sampling strategy allows the sampling feature to be made explicit as an additional relationship. This overcomes some semantic sleight-of-hand in ISO 19156, in which the constraint the the observed property was commensurate with the feature-of-interest was allowed to be 'transitive' via the sampledFeature property.""" ;
-  rdfs:comment "description of the sampling strategy used in an observation (usually a sampling-feature). " ;
-  rdfs:label "sampling strategy"@en ;
-  rdfs:range [
-      rdf:type owl:Class ;
-      owl:unionOf (
-          <https://www.w3.org/ns/sosa#SamplingFeature>
-          <https://www.w3.org/ns/sosa#SamplingProcedure>
-        ) ;
-    ] ;
-  skos:definition "Links to a feature intended to sample the real-world object, as described in Clause 9 of ISO 19156:2011. " ;
-.
-<https://www.w3.org/ns/sosa#usedProcedure>
-  rdfs:range <https://www.w3.org/ns/sosa#Procedure> ;
-.
-<https://www.w3.org/ns/sosa/hasResult>
+sosa:hasResult
   rdf:type owl:FunctionalProperty ;
 .
-<https://www.w3.org/ns/sosa/observedProperty>
+sosa:observedProperty
+  rdfs:range sosa:ObservableProperty ;
+.
+sosa:resultTime
   rdf:type owl:FunctionalProperty ;
-  rdfs:comment """property whose value is the result of the observation
-
-Link from the Observation to the PropertyType for which the Observation:result provides an estimate of its value. 
-
-The observed property shall be a phenomenon associated with the feature-of-interest.
-
-The target of this shall describe a property that is either assignable or observable such as “temperature”, “height”, “colour”, “material”. A property type may be an operation or function such as a spatiotemporal coverage. Property-type definitions may be organized into a hierarchy or ontology and managed in a register and catalogued to support discovery functions. The observed property supports semantic or thematic classification of observations, which is useful for discovery and data fusion.
-
-NOTE In general, the value of a specific observedProperty can be associated with different feature types in different observations, thus allowing the results of observations made in different projects or campaigns, and even from different disciplines, to be combined when required. A property-type register used in observations is most useful if each property type is not tied to a single feature type, or if equivalence relationships between similar property types from different feature types are provided.""" ;
-  rdfs:range <https://www.w3.org/ns/sosa#ObservableProperty> ;
 .
 <https://www.w3.org/ns/sosa/oml>
   rdf:type owl:Ontology ;
@@ -440,8 +353,4 @@ oml:usingSample
   meta:rangeIncludes sosa:Sample ;
   rdfs:comment "Links to a feature intended to sample the real-world object which is the ultimate feature-of-interest. " ;
   rdfs:label "using this sample to access the feature of interest"@en ;
-.
-<https://www.w3.org/ns/sosa/resultTime>
-  rdf:type owl:FunctionalProperty ;
-  rdfs:comment "time at which the result became available, after all processing steps were completed" ;
 .
