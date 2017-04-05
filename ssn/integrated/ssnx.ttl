@@ -141,7 +141,7 @@ oldssn:Platform a owl:Class ;
     owl:equivalentProperty sosa:hosts ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
-  oldssn:Device rdf:type owl:Class ;
+  oldssn:Device a owl:Class ;
     rdfs:label "Device"@en ;
     skos:definition "A device is a physical piece of technology - a system in a box. Devices may of course be built of smaller devices and software components (i.e. systems have components)." ;
     dcterms:source "http://www.w3.org/2005/Incubator/ssn/" ;
@@ -174,7 +174,7 @@ O&M allows sensors, methods, instruments, systems, algorithms and process chains
 oldssn:SensorOutput a owl:Class ;
   rdfs:label "Sensor Output"@en ;
   skos:definition "A sensor outputs a piece of information (an observed value), the value itself being represented by an ObservationValue."@en ;
-  dc:source """http://www.w3.org/2005/Incubator/ssn/
+  dcterms:source """http://www.w3.org/2005/Incubator/ssn/
   
   skos:closeMatch 'observation result' [O&M]
   http://www.opengeospatial.org/standards/om
@@ -185,12 +185,12 @@ oldssn:SensorOutput a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:isProducedBy ; owl:someValuesFrom oldssn:Sensor ] ;
   owl:deprecated true ;
   rdfs:subClassOf sosa:Result ;
-  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
   
 oldssn:ObservationValue a owl:Class ;
   rdfs:label "Observation Value"@en ;
   rdfs:comment "The value of the result of an Observation.  An Observation has a result which is the output of some sensor, the result is an information object that encodes some value for a  Feature."@en ;
-  dc:source """skos:exactMatch 'measured quantity value' [VIM 2.10]
+  dcterms:source """skos:exactMatch 'measured quantity value' [VIM 2.10]
   http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf
   
   skos:exactMatch 'observed value' [SensorML OGC-0700]
@@ -203,4 +203,198 @@ oldssn:ObservationValue a owl:Class ;
   rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#Data" ;
   owl:deprecated true ;
   rdfs:subClassOf sosa:Result ;
-  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+
+## forProperty ofFeature inCondition
+
+oldssn:forProperty a owl:ObjectProperty ;
+  rdfs:label "for property"@en ;
+  rdfs:comment "A relation between some aspect of a sensing entity and a property.  For example, from a sensor to the properties it can observe, or from a deployment to the properties it was installed to observe.  Also from a measurement capability to the property the capability is described for.  Used in conjunction with ofFeature."@en ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
+  owl:equivalentProperty ssn:forProperty ;
+  owl:deprecated true ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+oldssn:ofFeature rdf:type owl:ObjectProperty ;
+  rdfs:label "of feature"@en ;
+  rdfs:comment "A relation between some aspect of a sensing entity and a feature.  For example, from a sensor to the features it can observe properties of, or from a deployment to the features it was installed to observe.  Also from a measurement capability to the feature the capability is described for.  (Used in conjunction with forProperty)."@en ;
+  owl:equivalentProperty ssn:ofFeature ;
+  owl:deprecated true ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+oldssn:inCondition a owl:ObjectProperty ;
+  rdfs:label "in condition"@en ;
+  rdfs:comment "Describes the prevailing environmental conditions for MeasurementCapabilites, OperatingConditions and SurvivalRanges.  Used for example to say that a sensor has a particular accuracy in particular conditions.  See also MeasurementCapability."@en ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#ConstraintBlock" ;
+  owl:equivalentProperty ssn:inCondition ;
+  owl:deprecated true ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+
+## Measurement Capabilities
+
+oldssn:hasMeasurementCapability a owl:ObjectProperty ;
+  rdfs:label "has measurement capability"@en ;
+  rdfs:comment "Relation from a Sensor to a MeasurementCapability describing the measurement properties of the sensor."@en ;
+  rdfs:subPropertyOf oldssn:hasProperty ;
+  rdfs:subPropertyOf ssn:hasSystemCapability ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+  owl:deprecated true ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:MeasurementCapability a owl:Class ;
+    rdfs:label "Measurement Capability"@en ;
+    rdfs:comment """Collects together measurement properties (accuracy, range, precision, etc) and the environmental conditions in which those properties hold, representing a specification of a sensor's capability in those conditions.
+
+    The conditions specified here are those that affect the measurement properties, while those in OperatingRange represent the sensor's standard operating conditions, including conditions that don't affect the observations."""@en ;
+    dcterms:source """Similar idea to MeasurementCapability in MMI Device Ontology
+    http://marinemetadata.org/community/teams/ontdevices
+
+    But the two express the relationship between constraints and multiple measurement properties differently.
+
+    The conditions linked to a MeasurementCapability are skos:exactMatch to 'influence quantity' [VIM 2.52]
+    http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf"""@en ;
+    rdfs:subClassOf oldssn:Property ;
+    rdfs:subClassOf ssn:SystemCapability ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:forProperty ; owl:allValuesFrom oldssn:Property ] ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:hasMeasurementProperty ; owl:allValuesFrom oldssn:MeasurementProperty ] ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:inCondition ; owl:allValuesFrom oldssn:Condition ] ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+    owl:deprecated true ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:hasMeasurementProperty a owl:ObjectProperty ;
+    rdfs:label "has measurement property"@en ;
+    rdfs:comment "Relation from a MeasurementCapability to a MeasurementProperty such as accuracy (see notes for MeasurementCapability)."@en ;
+    rdfs:subPropertyOf oldssn:hasProperty ;
+    rdfs:subPropertyOf ssn:hasSystemProperty ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+    owl:deprecated true ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:MeasurementProperty a owl:Class ;
+    rdfs:label "Measurement Property"@en ;
+    rdfs:comment "An identifiable and observable characteristic of a sensor's observations or ability to make observations."@en ;
+    rdfs:subClassOf oldssn:Property ;
+    rdfs:subClassOf ssn:SystemProperty ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+    owl:deprecated true ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:MeasurementRange a owl:Class ;
+      rdfs:label "Measurement Range"@en ;
+      rdfs:comment "The set of values that the sensor can return as the result of an observation under the defined conditions with the defined measurement properties.  If no conditions are specified or the conditions do not specify a range for the observed qualities, the measurement range is to be taken as the condition for the observed qualities."@en ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      owl:equivalentClass ssn:MeasurementRange ;   ##### equivalent here
+      dc:source """skos:exactMatch 'measuring interval/measurement range' [VIM 4.7]
+      http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:Accuracy a owl:Class ;
+      rdfs:label "Accuracy"@en ;
+      rdfs:comment "The closeness of agreement between the value of an observation and the true value of the observed quality."@en ;
+      dc:source """skos:exactMatch 'measurement accuracy/accuracy' [VIM 2.13] 
+      http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      rdfs:subClassOf ssn:Accuracy ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:DetectionLimit a owl:Class ;
+      rdfs:label "Detection Limit"@en ;
+      rdfs:comment "An observed value for which the probability of falsely claiming the absence of a component in a material is beta, given a probability alpha of falsely claiming its presence."@en ;
+      dc:source """skos:exactMatch 'detection limit' [VIM 4.18] 
+      http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      rdfs:subClassOf ssn:DetectionLimit ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:Drift a owl:Class ;
+      rdfs:label "Drift"@en ;
+      rdfs:comment "A continuous or incremental change in the reported values of observations over time for an unchanging quality."@en ;
+      dc:source """skos:exactMatch 'instrumental drift' [VIM 4.21]
+      http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      rdfs:subClassOf ssn:Drift ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:Frequency a owl:Class ;
+      rdfs:label "Frequency"@en ;
+      rdfs:comment "The smallest possible time between one observation and the next."@en ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      rdfs:subClassOf ssn:Frequency ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:Latency a owl:Class ;
+      rdfs:label "Latency"@en ;
+      rdfs:comment "The time between a request for an observation and the sensor providing a result."@en ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      rdfs:subClassOf ssn:Latency ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:Precision a owl:Class ;
+      rdfs:label "Precision"@en ;
+      rdfs:comment "The closeness of agreement between replicate observations on an unchanged or similar quality value: i.e., a measure of a sensor's ability to consistently reproduce an observation."@en ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      owl:equivalentClass ssn:Precision ;   ##### equivalent here
+      dc:source """skos:exactMatch 'measurement precision/precision' [VIM 2.15]
+      http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:Resolution a owl:Class ;
+      rdfs:label "Resolution"@en ;
+      rdfs:comment "The smallest difference in the value of a quality being observed that would result in perceptably different values of observation results."@en ;
+      dc:source """skos:exactMatch 'resolution' [VIM 4.14]
+      http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      rdfs:subClassOf ssn:Resolution ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:ResponseTime a owl:Class ;
+      rdfs:label "Response Time"@en ;
+      rdfs:comment "The time between a (step) change in the value of an observed quality and a sensor (possibly with specified error) 'settling' on an observed value."@en ;
+      dc:source """skos:exactMatch 'step response time' [VIM 4.23]
+      http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      rdfs:subClassOf ssn:ResponseTime ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:Selectivity a owl:Class ;
+      rdfs:label "Selectivity"@en ;
+      rdfs:comment "Selectivity is a property of a sensor whereby it provides observed values for one or more qualities such that the values of each quality are independent of other qualities in the phenomenon, body, or substance being investigated."@en ;
+      dc:source """skos:exactMatch 'selectivity' [VIM 4.13]
+      http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      rdfs:subClassOf ssn:Selectivity ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:Sensitivity a owl:Class ;
+      rdfs:label "Sensitivity"@en ;
+      rdfs:comment "Sensitivity is the quotient of the change in a result of sensor and the corresponding change in a value of a quality being observed."@en ;
+      dc:source """skos:exactMatch 'sensitivity' [VIM 4.12]
+      http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+      rdfs:subClassOf oldssn:MeasurementProperty ;
+      owl:equivalentClass ssn:Sensitivity ;   ##### equivalent here
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
+      owl:deprecated true ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
