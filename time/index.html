@@ -154,12 +154,12 @@ The substantial changes are listed in the <a href="#changes">change-log</a>.</p>
 (e.g., meets, overlaps, during) developed by Allen [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>] for
 representing qualitative temporal information, and to address the problem of reasoning about such information.
 </p>
-<p>The ontology starts with a class <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> with properties <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code> that link to the temporal instants that define its limits, and <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code> to express its extent. 
+<p>The ontology starts with a class <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> with properties <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code> that link to the temporal instants that define its limits, and <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code> to describe its extent. 
 There are two subclasses: <code><a href="#time:Interval">:Interval</a></code>
 and <code><a href="#time:Instant">:Instant</a></code>, and they are the only two subclasses of <code><a href="#time:TemporalEntity">:TemporalEntity</a></code>. 
 Intervals are, intuitively, things with extent. 
-Instants are, intuitively, point-like in that they have no interior points, but it is generally safe to think of an instant as an interval with zero length, where the beginning and end are the same. 
-This idea - that time intervals are the more general case and time instants are just a limited specialization - is the first key contribution of Allen's analysis. </p>
+Instants are, intuitively, point-like in that they have no interior points, but it is generally safe to think of an instant as an interval with zero length, where the beginning and end are the same. </p>
+<p>This idea - that time intervals are the more general case and time instants are just a limited specialization - is the first key contribution of Allen's analysis. </p>
 <p>The class <code><a href="#time:Interval">:Interval</a></code> has one subclass <code><a href="#time:ProperInterval">:ProperInterval</a></code>, which
 corresponds with the common understanding of intervals, in that the beginning and end are distinct, and whose
 membership is therefore disjoint from <code><a href="#time:Instant">:Instant</a></code>. </p>
@@ -167,11 +167,11 @@ membership is therefore disjoint from <code><a href="#time:Instant">:Instant</a>
 <figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes" src="./images/TemporalEntity.png">
 <figcaption>Core model model of temporal entities.</figcaption> </figure>
 
-<p>The class <code><a href="#time:ProperInterval">:ProperInterval</a></code> has one
+<p>The class <code><a href="#time:ProperInterval">:ProperInterval</a></code> also has one
 subclass, <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code>, whose position and extent may be expressed using a single 
 <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. </p>
 
-<p>Relations between intervals are the key logic provided by Allen's analysis, and implemented in the ontology. 
+<p>Relations between intervals are the critical logic provided by Allen's analysis, and implemented in the ontology. 
 These can be defined in a relatively straightforward fashion in terms of <code><a href="#time:before">:before</a></code> and identity on the beginning and end points. 
 The thirteen elementary relations shown below are the second key contribution of Allen's analysis. 
 These support unambiguous expression of all possible relations between temporal entities, which allows the computation of any relative position or sequence.
@@ -183,15 +183,15 @@ src="./images/IntervalRelations.png">
 
 <p>Two additional relations: <code>In</code> (the union of <code>During</code>, <code>Starts</code> and <code>Finishes</code>) and <code>Disjoint</code> (the union of <code>Before</code> and <code>After</code>) are not shown in the figure but are included in the ontology. </p>
 
-<p>The three properties <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code>, together with a fourth generic property <code><a href="#time:hasTime">:hasTime</a></code>, support the association of temporal information with any activity or event, or other entity, including but not limited to temporal entities. 
-These properties provide a standard way to attach time information, which may be used in an external application if suitable. </p>
+<p>The properties <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code>, together with a fourth generic property <code><a href="#time:hasTime">:hasTime</a></code>, support the association of temporal information with any activity or event, or other entity, including but not limited to temporal entities. 
+These provide a standard way to attach time information to things, which may be used directly in applications if suitable, or specialized if needed. </p>
 
 </section>
 
 <section id="trs-clock-calendar">
 <h3>Temporal reference systems, clocks, calendars</h3>
-<p>The position of an Instant may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> which is built in to OWL 2 [<a href="#OWL-2">OWL-2</a>], and uses the conventional Gregorian calendar and 24-hour clock. 
-While this satisfies most web applications, many other calendars and
+<p>The position of an Instant may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>, which is built in to OWL 2 [<a href="#OWL-2">OWL-2</a>], and uses the conventional Gregorian calendar and 24-hour clock. </p>
+<p>While this satisfies most web applications, many other calendars and
 temporal reference systems are used in particular cultural and scholarly contexts. For example, the Julian
 calendar was used throughout Europe until the 16<sup>th</sup> century, and is still used for computing key dates
 in some orthodox Christian communities. Lunisolar (e.g. Hebrew) and lunar (e.g. Islamic) calendars are currently
@@ -201,8 +201,7 @@ time are based on seconds counted from a specified origin in 1958, 1970 and 1980
 and geological applications use chronometric scales based on years counted backwards from ‘the present’ (defined
 as 1950 for radiocarbon dating [<a href="#RC-14">RC-14</a>]), or using named periods associated with specified
 correlation markers [<a href="#CR-05">CR-05</a>, <a href="#CR-14">CR-14</a>, <a href="#MF-13">MF-13</a>].
-Dynastic calendars (counting years within eras defined by the reign of a monarch or dynasty) were used earlier
-in many cultures. In order to support these more general applications, the representation of temporal position
+Dynastic calendars (counting years within eras defined by the reign of a monarch or dynasty) were used in many cultures. In order to support these more general applications, the representation of temporal position
 and duration must be flexible, and annotated with the <em>temporal reference system </em>in use. </p>
 <p>A set of ordered intervals (e.g. named dynasties, geological periods, geomagnetic reversals, tree rings) can
 make a simple form of temporal reference system that supports logical reasoning, known as an <em>ordinal
@@ -221,32 +220,23 @@ consumption. </p>
 statement about the assumed underlying calendar and clock. </p>
 </section>
 
-<section id="time-position-units">
-<h3>Time position and time units</h3>
+<section id="time-position">
+<h3>Time position</h3>
 <p>OWL 2 has two built-in datatypes relating to time: <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code> and <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> [<a
 href="#OWL-2">OWL-2</a>]. Other XSD types such as <code><a href="https://www.w3.org/TR/xmlschema11-2/#date">xsd:date</a></code>, <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code> and <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYearMonth">xsd:gYearMonth</a></code> [<a href="#XSD-D">XSD-D</a>] are also commonly used in OWL applications.
 These provide for a compact representation of time positions using the conventional Gregorian calendar and
 24-hour clock, with timezone offset from UTC.</p>
 <p>Four classes in the ontology support an explicit description of temporal position. 
-<code><a href="#time:TemporalDuration">:TemporalPosition</a></code> is the common super-class, with a property <code><a href="#time:hasTRS">:hasTRS</a></code> to indicate the temporal reference system <code><a href="#time:TRS">:TRS</a></code>. 
+<code><a href="#time:TemporalPosition">:TemporalPosition</a></code> is the common super-class, with a property <code><a href="#time:hasTRS">:hasTRS</a></code> to indicate the temporal reference system in use. 
 <code><a href="#time:TimePosition">:TimePosition</a></code> has properties to alternatively describe the position using a number (i.e. a temporal coordinate), or a nominal value (e.g. geologic time period, dynastic name, archeological era). 
 <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> has a set of properties to specify a date-time using calendar and clock elements. 
-Its subclass <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> fixes the temporal reference system to the Gregorian calendar, so the <code><a href="#time:hasTRS">:hasTRS</a></code> property may be omitted on individuals from this class.  </p>
-<p><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a standard duration which indicates the granularity or precision of a time position.</p>
+Its subclass <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> fixes the temporal reference system to the Gregorian calendar.  </p>
 
 <figure> <img title="Temporal Position" alt="UML-style diagram of classes for temporal position" src="./images/TemporalPosition.png">
 <figcaption>Classes for temporal position.</figcaption> </figure>
 
-<p> Following the theoretical basis laid out by Allen [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>], a time position has a finite extent,
-corresponding to the precision or <em>temporal unit </em>used. Thus, a <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code>
-or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> is strictly always a description of an interval,
-not an instant, with a duration corresponding to the value of its <code><a href="#time:unitType">:unitType</a></code>.
-</p>
-<p>We use two different sets of properties for <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>
-and <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> or <code><a href="#time:DurationDescription">:DurationDescription</a></code>, because their ranges are
-different. For example, <code><a href="#time:year">:year</a></code> (in <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>) has a range of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code>,
-while <code><a href="#time:years">:years</a></code> (in <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code>) has a range of <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code>
-so that you can say duration of 2.5 years.</p>
+<p>Following Allen's first key idea described above, even a time position has a finite extent, corresponding to the precision or <em>temporal unit </em>used. Thus, a <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code>
+or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> has a duration corresponding to the value of its <code><a href="#time:unitType">:unitType</a></code>.</p>
 </section>
 
 <section id="duration">
@@ -260,11 +250,17 @@ given using multiple duration descriptions or individual durations (e.g., 2 days
 <code><a href="#time:Duration">:Duration</a></code> has properties to describe the duration using a scaled number (i.e. a temporal quantity). 
 <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> has a set of properties to specify a duration using calendar and clock elements, the definitions of which are given in the associated TRS description. 
 Its subclass <code><a href="#time:DurationDescription">:DurationDescription</a></code> fixes the temporal reference system to the Gregorian calendar, so the <code><a href="#time:hasTRS">:hasTRS</a></code> property may be omitted on individuals from this class. </p>
-<p><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a standard duration which is used to scale a length of time.</p>
+<p><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a standard duration which is used to scale a length of time, and to captures its granularity or precision. </p>
 
 <figure> <img title="Temporal Duration" alt="UML representation of Temporal Duration and sub-classes"
 src="./images/TemporalDuration.png"> 
 <figcaption>Classes for temporal duration.</figcaption> </figure>
+
+<p>We use two different sets of properties for <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>,
+and <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> or <code><a href="#time:DurationDescription">:DurationDescription</a></code>, because their ranges are
+different. For example, <code><a href="#time:year">:year</a></code> (in <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>) has a range of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code> which is a position in the Gregorian calendar,
+while <code><a href="#time:years">:years</a></code> (in <code><a href="#time:DurationDescription">:DurationDescription</a></code>) has a range of <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code>
+so that you can say "duration of 2.5 years".</p>
 
 </section>
 
