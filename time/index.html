@@ -167,9 +167,11 @@ membership is therefore disjoint from <code><a href="#time:Instant">:Instant</a>
 <figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes" src="./images/TemporalEntity.png">
 <figcaption>Core model model of temporal entities.</figcaption> </figure>
 
+<!--
 <p>The class <code><a href="#time:ProperInterval">:ProperInterval</a></code> also has one
 subclass, <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code>, whose position and extent may be expressed using a single 
 <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. </p>
+-->
 
 <p>Relations between intervals are the critical logic provided by Allen's analysis, and implemented in the ontology. 
 These can be defined in a relatively straightforward fashion in terms of <code><a href="#time:before">:before</a></code> and identity on the beginning and end points. 
@@ -351,6 +353,9 @@ multi-element <code><a href="#time:DateTimeDescription">time:DateTimeDescription
 <td>Subclass of:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td></td>
 </tr>
+<td>Instance of of:</td>
+<td><code>owl:DeprecatedClass</code></td></td>
+</tr>
 </tbody>
 </table>
 <p>The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is a subclass of <code><a href="#time:ProperInterval">:ProperInterval</a></code>, being an interval whose boundaries fall on the limits of a date-time description with truncated precision. 
@@ -360,8 +365,10 @@ Two properties <code><a href="#time:hasDateTimeDescription">:hasDateTimeDescript
 -->
 </p>
 <p>Any <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> has a duration, but only <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> can have <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>.
-For example, May 8 can be expressed as a <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>, but the interval from 1:30pm, May 8, to 1:30pm,
-May 9, cannot. Both have a duration of a day.</p>
+For example, May 8 can be expressed as a <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>, 
+but the interval from 1:30pm, May 8, to 1:30pm, May 9, cannot. Both have a duration of a day.</p>
+
+<p class="note">The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> was designed to support the compact description of a proper interval whose limits coincide with the elements of the calendar-clock system in use ('clock ticks"). However, there is some ambiguity in usage, particularly for intervals whose duration is smaller than the next finest time unit relative to a boundary definition. Furthermore, its position in the hierarchy is a consequence of implementation details, rather than a semantic distinction. Therefore use of this class is not recommended. </p>
 
 <h4 id="time:DayOfWeek">Day of week</h4>
 <table class="definition" style="width: 812px;">
@@ -462,7 +469,9 @@ each of the numeric properties is restricted to <a href="https://www.w3.org/TR/x
 </tr>
 </tbody>
 </table>
+<!--
 <p>Other duration concepts can be straightforwardly defined - see <a href="#specialization">examples below</a>.</p>
+-->
 
 <h4 id="time:GeneralDateTimeDescription">Generalized date-time description</h4>
 <table class="definition" style="border-collapse: collapse; width: 812px; ">
@@ -537,8 +546,8 @@ components of a temporal position in a calendar-clock system. These correspond w
 model' described in ISO 8601 [<a href="#ISO-8601">ISO-8601</a>] and XML Schema Definition Language Part 2:
 Datatypes [<a href="#XSD-D">XSD-D</a>], except that the calendar is not specified in advance, but is provided
 through the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property (defined above). </p>
-<p>Two additional properties <code><a href="#time:week">:week</a></code> and <code><a href="#time:dayOfYear">:dayOfYear</a></code> allow for the the numeric value of the week or day relative to the year. </p>
-<p>The property <code><a href="#time:dayOfWeek">:dayOfWeek</a></code> provides the name of the day, and the property <code><a href="#time:monthOfYear">:monthOfYear</a></code> provides the name of the month. </p>
+<p>Two additional properties <code><a href="#time:week">:week</a></code> and <code><a href="#time:dayOfYear">:dayOfYear</a></code> allow for the the numeric value of the week or day relative to the year. 
+The property <code><a href="#time:dayOfWeek">:dayOfWeek</a></code> provides the name of the day, and the property <code><a href="#time:monthOfYear">:monthOfYear</a></code> provides the name of the month. </p>
 
 <h4 id="time:GeneralDurationDescription">Generalized duration description</h4>
 <table class="definition" style="width: 812px;">
@@ -1173,6 +1182,10 @@ The range of this property is not specified, so can be replaced by any specific 
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+<td>Instance of:</td>
+<td><code>owl:DeprecatedProperty</code></td>
+</tr>
+<tr>
 <td>Domain:</td>
 <td><code><a href="#time:DateTimeInterval">time:DateTimeInterval</a></code></td>
 </tr>
@@ -1182,6 +1195,8 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+
+<p class="note">The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is not recommended, so this property is deprecated. </p>
 
 <h4 id="time:hasDuration">has duration</h4>
 <table class="definition" style="width: 812px;">
@@ -2047,6 +2062,8 @@ before the end of T<sub>2</sub>. </td>
 </tbody>
 </table>
 
+<p class="note">The property <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code> is replaced by <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code> which makes the time-zone field mandatory. </p>
+
 <h4 id="time:inXSDDateTimeStamp">in XSD date-time-stamp</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2525,6 +2542,8 @@ time:TRS</a> which is handled this way.) </p> -->
 </tr>
 </tbody>
 </table>
+
+<p class="note">The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is not recommended, so this property is deprecated. </p>
 
 <h4 id="time:year">year</h4>
 <table class="definition" style="width: 812px;">
@@ -3308,7 +3327,7 @@ OrdinaryMail) can be defined similarly.</p>
         <ul>
           <li><code><a href="#time:ProperInterval">:ProperInterval</a></code>
             <ul>
-              <li><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code></li>
+              <li><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> (<i>deprecated</i>)</li>
             </ul>
           </li>
         </ul>
@@ -3476,7 +3495,7 @@ OrdinaryMail) can be defined similarly.</p>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
     </tr>
     <tr>
-      <td><code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code></td>
+      <td><code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code> (<i>deprecated</i>)</td>
       <td><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code></td>
       <td><code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code></td>
     </tr>
@@ -3674,6 +3693,7 @@ The principal technical changes are as follows: </p>
   <li><code><a href="#time:intervalIn">:intervalIn</a></code> and <code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> relations added</li>
   <li>Remove universal domain constraints on <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code>, <code><a href="#time:hasEnd">:hasEnd</a></code> so that temporal instants and durations can be associated to any resource (e.g. an activity or event, or anything else) and not just other temporal entities; introduce additional predicate <code><a href="#time:hasTime">:hasTime</a></code> for the general case </li>
   <li><code>:xsdDateTime</code> deprecated - not practically useful.</li>
+  <li><code>:DateTimeInterval</code> and its properties <code>:hasDateTimeDescription</code> and <code>:xsdDateTime</code> deprecated - difficult/ambiguous encoding, no semantic distinction from <code>ProperInterval</code>.</li>
   <li><code>:Year</code> deprecated</li>
   <li><code>:January</code> deprecated</li>
   <li><code><a href="#time:MonthOfYear">:MonthOfYear</a></code> class and <code><a href="#time:monthOfYear">:monthOfYear</a></code> property added. greg:January-greg:December instances added in a separate graph and namespace.</li>
