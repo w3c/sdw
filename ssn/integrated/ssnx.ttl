@@ -212,25 +212,33 @@ oldssn:forProperty a owl:ObjectProperty ;
   rdfs:label "for property"@en ;
   rdfs:comment "A relation between some aspect of a sensing entity and a property.  For example, from a sensor to the properties it can observe, or from a deployment to the properties it was installed to observe.  Also from a measurement capability to the property the capability is described for.  Used in conjunction with ofFeature."@en ;
   rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton" ;
-  owl:equivalentProperty ssn:forProperty ;
   owl:deprecated true ;
+  owl:equivalentProperty ssn:forProperty ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
 oldssn:ofFeature rdf:type owl:ObjectProperty ;
   rdfs:label "of feature"@en ;
   rdfs:comment "A relation between some aspect of a sensing entity and a feature.  For example, from a sensor to the features it can observe properties of, or from a deployment to the features it was installed to observe.  Also from a measurement capability to the feature the capability is described for.  (Used in conjunction with forProperty)."@en ;
-  owl:equivalentProperty ssn:ofFeature ;
   owl:deprecated true ;
+  owl:equivalentProperty ssn:ofFeature ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
 oldssn:inCondition a owl:ObjectProperty ;
   rdfs:label "in condition"@en ;
   rdfs:comment "Describes the prevailing environmental conditions for MeasurementCapabilites, OperatingConditions and SurvivalRanges.  Used for example to say that a sensor has a particular accuracy in particular conditions.  See also MeasurementCapability."@en ;
   rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#ConstraintBlock" ;
-  owl:equivalentProperty ssn:inCondition ;
   owl:deprecated true ;
+  owl:equivalentProperty ssn:inCondition ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
+  oldssn:Condition a owl:Class ;
+    rdfs:label "Condition"@en ;
+    rdfs:comment "Used to specify ranges for qualities that act as conditions on a system/sensor's operation.  For example, wind speed of 10-60m/s is expressed as a condition linking a quality, wind speed, a unit of measurement, metres per second, and a set of values, 10-60, and may be used as the condition on a MeasurementProperty, for example, to state that a sensor has a particular accuracy in that condition."@en ;
+    rdfs:subClassOf oldssn:Property ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#ConstraintBlock" ;
+    owl:equivalentClass ssn:Condition ;
+    owl:deprecated true ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
 ## Measurement Capabilities
 
@@ -256,41 +264,41 @@ oldssn:hasMeasurementCapability a owl:ObjectProperty ;
     The conditions linked to a MeasurementCapability are skos:exactMatch to 'influence quantity' [VIM 2.52]
     http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf"""@en ;
     rdfs:subClassOf oldssn:Property ;
-    rdfs:subClassOf ssn:SystemCapability ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:forProperty ; owl:allValuesFrom oldssn:Property ] ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:hasMeasurementProperty ; owl:allValuesFrom oldssn:MeasurementProperty ] ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:inCondition ; owl:allValuesFrom oldssn:Condition ] ;
     rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
     owl:deprecated true ;
+    rdfs:subClassOf ssn:SystemCapability ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
   oldssn:hasMeasurementProperty a owl:ObjectProperty ;
     rdfs:label "has measurement property"@en ;
     rdfs:comment "Relation from a MeasurementCapability to a MeasurementProperty such as accuracy (see notes for MeasurementCapability)."@en ;
     rdfs:subPropertyOf oldssn:hasProperty ;
-    rdfs:subPropertyOf ssn:hasSystemProperty ;
     rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
     owl:deprecated true ;
+    rdfs:subPropertyOf ssn:hasSystemProperty ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
   oldssn:MeasurementProperty a owl:Class ;
     rdfs:label "Measurement Property"@en ;
     rdfs:comment "An identifiable and observable characteristic of a sensor's observations or ability to make observations."@en ;
     rdfs:subClassOf oldssn:Property ;
-    rdfs:subClassOf ssn:SystemProperty ;
     rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
     owl:deprecated true ;
+    rdfs:subClassOf ssn:SystemProperty ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:MeasurementRange a owl:Class ;
       rdfs:label "Measurement Range"@en ;
       rdfs:comment "The set of values that the sensor can return as the result of an observation under the defined conditions with the defined measurement properties.  If no conditions are specified or the conditions do not specify a range for the observed qualities, the measurement range is to be taken as the condition for the observed qualities."@en ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      owl:equivalentClass ssn:MeasurementRange ;   ##### equivalent here
       dcterms:source """skos:exactMatch 'measuring interval/measurement range' [VIM 4.7]
       http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      owl:equivalentClass ssn:MeasurementRange ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:Accuracy a owl:Class ;
@@ -299,9 +307,9 @@ oldssn:hasMeasurementCapability a owl:ObjectProperty ;
       dcterms:source """skos:exactMatch 'measurement accuracy/accuracy' [VIM 2.13] 
       http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      rdfs:subClassOf ssn:Accuracy ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      rdfs:subClassOf ssn:Accuracy ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:DetectionLimit a owl:Class ;
@@ -310,9 +318,9 @@ oldssn:hasMeasurementCapability a owl:ObjectProperty ;
       dcterms:source """skos:exactMatch 'detection limit' [VIM 4.18] 
       http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      rdfs:subClassOf ssn:DetectionLimit ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      rdfs:subClassOf ssn:DetectionLimit ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:Drift a owl:Class ;
@@ -321,38 +329,38 @@ oldssn:hasMeasurementCapability a owl:ObjectProperty ;
       dcterms:source """skos:exactMatch 'instrumental drift' [VIM 4.21]
       http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      rdfs:subClassOf ssn:Drift ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      rdfs:subClassOf ssn:Drift ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:Frequency a owl:Class ;
       rdfs:label "Frequency"@en ;
       rdfs:comment "The smallest possible time between one observation and the next."@en ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      rdfs:subClassOf ssn:Frequency ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      rdfs:subClassOf ssn:Frequency ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:Latency a owl:Class ;
       rdfs:label "Latency"@en ;
       rdfs:comment "The time between a request for an observation and the sensor providing a result."@en ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      rdfs:subClassOf ssn:Latency ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      rdfs:subClassOf ssn:Latency ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:Precision a owl:Class ;
       rdfs:label "Precision"@en ;
       rdfs:comment "The closeness of agreement between replicate observations on an unchanged or similar quality value: i.e., a measure of a sensor's ability to consistently reproduce an observation."@en ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      owl:equivalentClass ssn:Precision ;   ##### equivalent here
       dcterms:source """skos:exactMatch 'measurement precision/precision' [VIM 2.15]
       http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      owl:equivalentClass ssn:Precision ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:Resolution a owl:Class ;
@@ -361,9 +369,9 @@ oldssn:hasMeasurementCapability a owl:ObjectProperty ;
       dcterms:source """skos:exactMatch 'resolution' [VIM 4.14]
       http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      rdfs:subClassOf ssn:Resolution ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      rdfs:subClassOf ssn:Resolution ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:ResponseTime a owl:Class ;
@@ -372,9 +380,9 @@ oldssn:hasMeasurementCapability a owl:ObjectProperty ;
       dcterms:source """skos:exactMatch 'step response time' [VIM 4.23]
       http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      rdfs:subClassOf ssn:ResponseTime ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      rdfs:subClassOf ssn:ResponseTime ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:Selectivity a owl:Class ;
@@ -383,9 +391,9 @@ oldssn:hasMeasurementCapability a owl:ObjectProperty ;
       dcterms:source """skos:exactMatch 'selectivity' [VIM 4.13]
       http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      rdfs:subClassOf ssn:Selectivity ;
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      rdfs:subClassOf ssn:Selectivity ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:Sensitivity a owl:Class ;
@@ -394,7 +402,131 @@ oldssn:hasMeasurementCapability a owl:ObjectProperty ;
       dcterms:source """skos:exactMatch 'sensitivity' [VIM 4.12]
       http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
       rdfs:subClassOf oldssn:MeasurementProperty ;
-      owl:equivalentClass ssn:Sensitivity ;   ##### equivalent here
       rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#MeasuringCapability" ;
       owl:deprecated true ;
+      owl:equivalentClass ssn:Sensitivity ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+
+## Operating Ranges
+
+oldssn:hasOperatingRange a owl:ObjectProperty ;
+  rdfs:label "has operating range"@en ;
+  rdfs:comment "Relation from a System to an OperatingRange describing the normal operating environment of the System."@en ;
+  rdfs:subPropertyOf oldssn:hasProperty ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" ;
+  owl:deprecated true ;
+  owl:equivalentProperty ssn:hasOperatingRange ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:OperatingRange a owl:Class ;
+    rdfs:label "Operating Range"@en ;
+    rdfs:comment "The environmental conditions and characteristics of a system or sensor's normal operating environment.  Can be used to specify for example the standard environmental conditions in which the sensor is expected to operate (a Condition with no OperatingProperty), or how the environmental and other operating properties relate: i.e., that the maintenance schedule or power requirements differ according to the conditions."@en ;
+    rdfs:subClassOf oldssn:Property ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:hasOperatingProperty ; owl:allValuesFrom oldssn:OperatingProperty ] ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:inCondition ; owl:allValuesFrom oldssn:Condition ] ;
+    dcterms:source """skos:broaderMatch 'reference operating condition' [VIM 4.11]
+    http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf
+
+    The difference is that here we also allow for qualities that aren't VIM influence quantities [VIM 2.52] - for example, a quantity that alters the power requirements, but doesn't affect the measurement properties - conditions specified in MeasurementCapability should be influence quantities.""" ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" ;
+    owl:deprecated true ;
+    owl:equivalentClass ssn:OperatingRange ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:hasOperatingProperty a owl:ObjectProperty ;
+    rdfs:label "has operating property"@en ;
+    rdfs:comment "Relation from an OperatingRange to a Property such as battery lifetime."@en ;
+    rdfs:subPropertyOf oldssn:hasProperty ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:hasOperatingProperty ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:OperatingProperty a owl:Class ;
+    rdfs:label "Operating Property"@en ;
+    rdfs:comment "An identifiable characteristic of the environmental and other conditions in which the sensor is intended to operate.  May include power ranges, power sources, standard configurations, attachments and the like."@en ;
+    rdfs:subClassOf oldssn:Property ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" ;
+    owl:deprecated true ;
+    owl:equivalentClass ssn:OperatingProperty ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:MaintenanceSchedule a owl:Class ;
+      rdfs:label "Maintenance Schedule"@en ;
+      rdfs:comment "Schedule of maintenance for a system or sensor in the specified conditions."@en ;
+      rdfs:subClassOf oldssn:OperatingProperty ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" .
+      owl:deprecated true ;
+      owl:equivalentClass ssn:MaintenanceSchedule ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:OperatingPowerRange a owl:Class ;
+      rdfs:label "Operating Power Range"@en ;
+      rdfs:comment "Power range in which system or sensor is expected to operate."@en ;
+      rdfs:subClassOf oldssn:OperatingProperty ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Energy#EnergyRestriction" .
+      owl:deprecated true ;
+      owl:equivalentClass ssn:OperatingPowerRange ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+
+## Survival Ranges
+
+oldssn:hasSurvivalRange a owl:ObjectProperty ;
+  rdfs:label "has survival range"@en ;
+  rdfs:comment "Relation from a System to a SurvivalRange."@en ;
+  rdfs:subPropertyOf oldssn:hasProperty ;
+  rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" ;
+  owl:deprecated true ;
+  owl:equivalentProperty ssn:hasSurvivalRange ;
+  rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> ;
+
+  oldssn:SurvivalRange a owl:Class ;
+    rdfs:label "Survival Range"@en ;
+    rdfs:comment "The conditions a sensor can be exposed to without damage: i.e., the sensor continues to operate as defined using MeasurementCapability.  If, however, the SurvivalRange is violated, the sensor is 'damaged' and MeasurementCapability specifications may no longer hold."@en ;
+    rdfs:subClassOf oldssn:Property ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:hasSurvivalProperty ; owl:allValuesFrom oldssn:SurvivalProperty ] ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:inCondition ; owl:allValuesFrom oldssn:Condition ] ;
+    dcterms:source """skos:narrowerMatch 'limiting operating condition' [VIM 4.10]
+    http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" ;
+    owl:deprecated true ;
+    rdfs:subClassOf ssn:SurvivalRange ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:hasSurvivalProperty a owl:ObjectProperty ;
+    rdfs:label "has survival property"@en ;
+    rdfs:comment "Relation from a SurvivalRange of a System to a Property describing the survival range of the system. For example, to the temperature range that a system can withstand before being considered damaged."@en ;
+    rdfs:subPropertyOf oldssn:hasProperty ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:hasSurvivalProperty ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:SurvivalProperty a owl:Class ;
+    rdfs:label "Survival Property"@en ;
+    rdfs:comment "An identifiable characteristic that represents the extent of the sensor's useful life.  Might include for example total battery life or number of recharges, or, for sensors that are used only a fixed number of times, the number of observations that can be made before the sensing capability is depleted."@en ;
+    rdfs:subClassOf oldssn:Property ;
+    rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" ;
+    owl:deprecated true ;
+    owl:equivalentClass ssn:SurvivalProperty ;
+    rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:SystemLifetime a owl:Class ;
+      rdfs:label "System Lifetime"@en ;
+      rdfs:comment "Total useful life of a sensor or system (expressed as total life since manufacture, time in use, number of operations, etc.)."@en ;
+      rdfs:subClassOf oldssn:SurvivalProperty ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction" ;
+      owl:deprecated true ;
+      owl:equivalentClass ssn:SystemLifetime ;
+      rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
+
+    oldssn:BatteryLifetime a owl:Class ;
+      rdfs:label "Battery Lifetime"@en ;
+      rdfs:comment "Total useful life of a battery."@en ;
+      rdfs:subClassOf oldssn:SurvivalProperty ;
+      rdfs:seeAlso "http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Energy#EnergyRestriction" ;
+      owl:deprecated true ;
+      owl:equivalentClass ssn:BatteryLifetime ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
