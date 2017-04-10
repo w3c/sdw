@@ -65,13 +65,20 @@ var respecConfig = {
 
 
     localBiblio: {
+      "w3c-basic-geo":{
+        href:"https://www.w3.org/2003/01/geo/",
+        title:"Basic Geo (WGS84 lat/long) Vocabulary",
+        authors:["Dan Brickley"],
+        publisher:"W3C Semantic Web Interest Group",
+        date:"1 February 2006"
+      },
       "GeoJSON":{
         href:"http://geojson.org/geojson-spec.html",
         title:"The GeoJSON Format Specification",
         authors: ["Howard Butler", "Martin Daly", "Allan Doyle", "Sean Gillies", "Tim Schaub", "Christopher Schmidt"],
         date: "16 June 2008"
        },
-       "GeoSPARQL":{
+       "geosparql":{
         href:"http://www.opengeospatial.org/standards/geosparql/",
         title:"GeoSPARQL - A Geographic Query Language for RDF Data",
         authors: ["Matthew Perry", "John Herring"],
@@ -108,6 +115,11 @@ var respecConfig = {
          authors: ["Aldo Gangemi"],
          title: "DOLCE+DnS Ultralite (DUL)"
       },
+        "sweet": {
+            href: "https://sweet.jpl.nasa.gov/",
+            authors: ["JPL"],
+            title: "SWEET Overview"
+        },
         "qb4st": {
           href:"https://www.w3.org/TR/qb4st/",
           title:"QB4ST: RDF Data Cube extensions for spatio-temporal components",
@@ -126,6 +138,17 @@ var respecConfig = {
             href: "https://events.linuxfoundation.org/sites/events/files/slides/SPARQL%20Optimisation%20101%20Tutorial.pdf",
             title: "Tutorial: SPARQL Optimization 101",
             authors: ["Rob Vesse"]
+        },
+        "cci": {
+            href: "http://cci.esa.int/sites/default/files/CCI_Data_Requirements_Iss1.2_Mar2015.pdf",
+            title: "Data Standards Requirements for CCI Data Producers",
+            authors: ["ESA Climate Office"],
+            date: "9 March 2015"
+        },
+        "led-github": {
+            href: "https://github.com/ANU-Linked-Earth-Data",
+            title: "ANU Linked Earth Data",
+            authors: ["Dmitry Brizhinev", "Mike Ledger", "Yadunandan Sannappa", "Sam Toyer", "Zhiduo Zhang"]
         }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
