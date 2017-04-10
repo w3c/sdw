@@ -583,7 +583,7 @@ $(document).ready( function() {
       <p>So, it may be that you have information in a projected CRS, rather than global latitude and longitude - what should you do? You can publish data as is in one of these many projected CRS, but you need to tell users which particular CRS is being used. A good directory of Coordinate Reference Systems is maintained by the International Association of Oil and Gas Producers: the <a href="http://www.epsg.org/">EPSG Geodetic Parameter Dataset</a>. </p>
 
       <div class="note">
-        <p>It is common for a CRS to be described by its ESPG code. For example, 2-dimensional WGS 84 (Lat/Long) is <a href="http://epsg.io/4326">EPSG:4326</a>, 3-dimensional WGS 84 (Lat/Long/Elevation) <a href="http://epsg.io/4979">EPSG:4979</a>, Web-Mercator (a global projected CRS used in most Web-mapping applications) is <a href="http://epsg.io/3857">EPSG:3857</a> and OSGB 1936 / British National Grid (a national projected CRS) is <a href="http://epsg.io/27700">EPSG:27700</a>. </p>
+        <p>It is common for a CRS to be described by its ESPG code. For example, 2-dimensional WGS 84 (Lat/Long) is <a href="http://epsg.io/4326">EPSG:4326</a>, 3-dimensional WGS 84 (Lat/Long/Elevation) <a href="http://epsg.io/4979">EPSG:4979</a>, Web-Mercator (a global projected CRS used in most Web-mapping applications) is <a href="http://epsg.io/3857">EPSG:3857</a> and British National Grid (a national projected CRS, based on the OSGB 1936 datum) is <a href="http://epsg.io/27700">EPSG:27700</a>. </p>
         <p>Definitions of coordinate reference systems are available from the <a href="http://www.opengis.net/def/crs/">Open Geospatial Consortium CRS Register</a>, <a href="http://spatialreference.org/">Spatial Reference</a> and <a href="http://epsg.io/">EPSG.io</a> (an open-source web service which simplifies discovery of coordinate reference systems utilized worldwide).</p>
       </div>  
       
@@ -1155,24 +1155,43 @@ a:Dataset a dcat:Dataset ;
         <p>[[DWBP]] provides a best practice discussing how the quality of data on the web should be
           described (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#quality">section 8.5 Data Quality</a> for
           more details). This section is based on the Data Quality section from [[DWBP]] and adds a
-          best practice specific for spatial data.</p>
+          best practice specific for spatial data, which concentrates on the accuracy of the positions in the data
+          - how close are they to the actual positions of the real world things?</p>
         <p>In the Spatial Metadata section, we provided a <a href="#bp-crs-choice" class="sectionRef">Best Practice</a> on how
           to deal with CRS in spatial data on the web. There is also a clear link between CRS and
           data quality, because the accuracy of spatial data depends for a large part on the CRS
           used. This can be seen as conformance of data with a "standard" - in this case, a (spatial
           or temporal) reference system. This is how you can describe spatial data quality using
           different vocabularies. We will provide an example in this section. </p>
-        <div class="practice">
+	      <p>For some uses, simply stating conformance to a published specification may be sufficient information on spatial data quality:</p>
+            <pre class="example" id="ex-geodcat-ap-dataset-conformance-with-specification" title="GeoDCAT-AP specification of a dataset conformance with the INSPIRE Regulation on spatial data and services interoperability">a:Dataset a dcat:Dataset ;
+  dct:conformsTo &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; .
+
+&lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; a dct:Standard , foaf:Document ;
+  dct:title "COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010
+             implementing Directive 2007/2/EC of the European Parliament
+             and of the Council as regards interoperability of spatial
+             data sets and services"@en ;
+  dct:issued "2010-12-08"^^xsd:date .</pre>
+        <p>However, that specification makes no statement about the positional accuracy of the data, 
+          so on its own, it is only a useful quality statement for users to whom positional accuracy is not that important.</p>
+	  <div class="practice">
           <p><span id="desc-accuracy" class="practicelab">Describe the positional accuracy of
               spatial data</span></p>
-          <p class="practicedesc">Accuracy and precision of spatial data should be specified in
+          <p class="practicedesc">Accuracy of spatial data should be specified in
             machine-interpretable and human-readable form.</p>
           <section class="axioms">
             <h4 class="subhead">Why</h4>
             <p>The amount of detail that is provided in spatial data and the resolution of the data
               can vary. No measurement system is infinitely precise and in some cases the spatial
               data can be intentionally generalized (e.g. merging entities, reducing the details,
-              and aggregation of the data) [[Veregin]].</p>
+              and aggregation of the data) [[Veregin]]. 
+              Some spatial data applications, such as aircraft navigation, require highly accurate data.
+              For others, such as human navigation, a horizontal accuracy of a few metres is good enough.
+              For yet others, such as overlaying weather forecasts on a map, the map is only giving a general indication of place.
+              If the positional accuracy is published together with the data,
+              the user can determine whether it is appropriate to use for their application.
+              Potentially, this makes existing data more re-usable.</p>
             <p class="note">It is important to understand the difference between precision and
               accuracy. Seven decimal places of a latitude degree corresponds to about one
               centimeter. Whatever the precision of the specified coordinates, the accuracy of
@@ -1183,9 +1202,10 @@ a:Dataset a dcat:Dataset ;
           </section>
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
-            <p>When known, the resolution and precision of spatial data should be specified in a way
-              to allow consumers of the data to be aware of the resolution and level of details that
-              are considered in the specifications.</p>
+            <p>For many uses, the positional accuracy of the data is an important aspect of assessing
+	      its fitness for purpose (quality).
+	      As with other data quality statements, this can be a quantitative measure, a statement 
+	      of conformance to a standard or policy, or an assertion or report of fitness for a particular purpose.</p>
           </section>
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
@@ -1193,27 +1213,43 @@ a:Dataset a dcat:Dataset ;
             <p>In addition, describe the accuracy of spatial data in a machine-readable format.
               [[VOCAB-DQV]] is such a format. It is a vocabulary for describing data quality, including
               the details of quality metrics and measurements. </p>
+	    <p>For observed (measured) datasets, it is possible to make specific quantitative statements
+	      about positional accuracy, based on knowledge of the equipment used to make the observations,
+	      and any processing carried out.</p> 
+	    <p>For <a>coverages</a>, the sampling distance is an effective way of indicating the amount of
+	      detail in the dataset - this is one of the meanings of the term "resolution".
+	      Alternatively, samples of the data could be independently checked against the real world, 
+	      and the results of that check reported.
+	      Either way, this is usually a statement of <a>absolute positional accuracy</a>, but for some uses, 
+	      relative positional accuracy is more important.</p>
+	    <p>Positional accuracy measurements, whether observed or asserted based on process,
+	      can be given using QualityMeasurement.</p>
+	    <p>For modelled datasets, for example in planning and construction, there is no 'real world' against
+	      which to assess the positional accuracy - but relative positional accuracy can still be stated.</p>
+	    <p>For many uses, a statement of the amount of detail provided is sufficient to assess fitness for purpose; 
+	      examples include "level of detail" (building models), "navigational purpose" (marine navigation),
+	      "equivalent scale" or "zoom level" (cartography).
+	      Sometimes, this is expressed as if it were a statement of positional accuracy.</p>
+	    <p>These can be expressed in the same way as for non-spatial data, using for example the QualityAnnotation,
+	      Standard, and QualityPolicy statements of [[VOCAB-DQV]].</p>
             <aside class="example">
-              <p>example(s) to be added; including:</p>
+              <p>examples:</p>
               <ul>
-                <li>second quarter of the 9th century is <em>approx.</em> 825-850 but could be
-                  823-852</li>
                 <li>the ends of a 'sampling traverse' could be known in a national/global CRS to
                   within ±5m, whilst the position of the samples themselves may be accurate to ±0.01
                   along the traverse</li>
-                <li>describe spatial data quality with [[VOCAB-DQV]] and [[GeoDCAT-AP]].</li>
+                <li>a hydrographic survey may conform to the 'special order' survey specification in IHO S-44</li>
+		<li>a coverage dataset may have a ground sampling distance of 1000 metres</li>
               </ul>
             </aside>
-            <pre class="example" id="ex-geodcat-ap-dataset-conformance-with-specification" title="GeoDCAT-AP specification of a dataset conformance with the INSPIRE Regulation on spatial data and services interoperability">a:Dataset a dcat:Dataset ;
-  dct:conformsTo &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; .
+	    <p>The following example shows how DQV can express conformance to a specified positional accuracy</p>
+            <pre class="example" id="ex-geodcat-ap-dataset-conformance-with-specification2" title="GeoDCAT-AP specification of a dataset conformance with IHO's S44">a:Dataset a dcat:Dataset ;
+  dct:conformsTo &lt;<a href="https://www.iho.int/iho_pubs/standard/S-44_5E.pdf">https://www.iho.int/iho_pubs/standard/S-44_5E.pdf#Special</a>&gt; .
 
-&lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; a dct:Standard , foaf:Document ;
-  dct:title "COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010
-             implementing Directive 2007/2/EC of the European Parliament
-             and of the Council as regards interoperability of spatial
-             data sets and services"@en ;
-  dct:issued "2010-12-08"^^xsd:date .</pre>
-            <p>The following example shows how DQV can express the precision of a spatial dataset: </p>
+&lt;<a href="https://www.iho.int/iho_pubs/standard/S-44_5E.pdf">https://www.iho.int/iho_pubs/standard/S-44_5E.pdf</a>&gt; a dct:Standard , foaf:Document ;
+  dct:title "IHO Standards for Hydrographic Surveys"@en ;
+  dct:issued "2008-02-01"^^xsd:date.</pre>
+            <p>The following example shows how DQV can express the amount of detail in a coverage dataset: </p>
             <pre class="example" id="ex-dqv-dataset-quality" title="DQV specification of data quality">
 :myDataset a dcat:Dataset ;
    dqv:hasQualityMeasurement :myDatasetPrecision, :myDatasetAccuracy .
@@ -1238,7 +1274,9 @@ a:Dataset a dcat:Dataset ;
           </section>
           <section class="test">
             <h4 class="subhead">How to Test</h4>
-            <p>...</p>
+            <p>Check if the metadata contains at least one human and machine readable statement regarding positional accuracy </p>
+	    <p>Check that the kind of statement is relevant to the kind of data, e.g. not an absolute positional accuracy measure for Atlantis</p>
+	    <p>Checking that the accuracy statement is actually correct is beyond the scope of this best practice.</p>
           </section>
           <section class="ucr">
             <h4 class="subhead">Evidence</h4>
@@ -3030,7 +3068,7 @@ Date:Mon, 13 Mar 2017 16:12:04 GMT
             <div class="note">
               <p>There is a predominant view that "I just need to use Lat and Long - and I'm done".</p>
               <p>Although the clear majority of spatial data published on the Web uses WGS 84 Long/Lat (as used by GPS), we <em>strongly</em> recommend that spatial data is published with all the necessary information to interpret coordinate values. Even where it the use of latitude and longitude angular measurements is obvious; the choice of datum and units of measurement have an impact. In particular, angular measurements appearing as floating point numbers are mostly likely to be provided in decimal degrees, may be radians or gons (also known as grads).</p>
-              <p>The problem that the assumption of a "predominant view" leads to ambiguity. For example, many spatial data users work entirely with information provided in their national coordinate reference system (such as the <em>Dutch Amersfoort / RD</em> <a href="http://epsg.io/28992">EPSG:28992</a> or <em>OSGB 1936 / British National Grid</em> <a href="http://epsg.io/27700">EPSG:27700</a>) which make all coordinates in WGS 84 Long/Lat (especially the negative numbers) utterly perplexing.</p>
+              <p>The problem that the assumption of a "predominant view" leads to ambiguity. For example, many spatial data users work entirely with information provided in their national coordinate reference system (such as the <em>Dutch Amersfoort / RD</em> <a href="http://epsg.io/28992">EPSG:28992</a> or <em>British National Grid</em> <a href="http://epsg.io/27700">EPSG:27700</a>) which make all coordinates in WGS 84 Long/Lat (especially the negative numbers) utterly perplexing.</p>
               <p>In practice, a publisher not documenting their CRS and presuming that latitude and longitude can be treated as cartesian is often bailed out by fuzzy use cases and software that takes care of projections. However, CRS and coordinate axis order ambiguity leads sooner or later to serious and avoidable errors, while ignorance of datums and map projections leads to broken applications. Furthermore, these practices will also become less and less tenable as new applications such as Augmented Reality require higher data precision and accuracy.</p>
             </div>
 
@@ -3698,6 +3736,8 @@ GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,C
           SPARQL)? Maybe WFS etc. should be added to the references, too, and the text should include
           a link both to the glossary and the references?</p>
       </div>
+	    <p><dfn>absolute positional accuracy</dfn>: 
+		    closeness of reported coordinate values to values accepted as or being true (ISO 19159-2)</p>
       <p><dfn data-lt="Coverage|Coverages|Coverage Function">Coverage</dfn>: A coverage is a function that describe characteristics of real-world phenomena that vary over space and/or time. Typical examples are temperature, elevation and precipitation. A coverage is typically represented as a data structure containing a set of such values, each associated with one of the elements in a spatial, temporal or spatiotemporal domain. Typical spatial domains are point sets (e.g. sensor locations), curve sets (e.g. contour lines), grids (e.g. orthoimages, elevation models), etc. A property whose value varies as a function of time may be represented as a temporal coverage or time-series [[ISO-19109]] §8.8.</p>
       <p><dfn data-lt="CRS|Coordinate Reference System|Coordinate Reference Systems">Coordinate Reference System (CRS)</dfn>: A
         coordinate-based local, regional or global system used to locate geographical entities. Also known as <em>Spatial Reference System</em>.
