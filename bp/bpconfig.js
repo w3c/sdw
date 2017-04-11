@@ -14,13 +14,13 @@ var respecConfig = {
       company: "Met Office",
       companyURL: "http://www.metoffice.gov.uk/"
     }, {
+      name: "Linda van den Brink",
+      company: "Geonovum",
+      companyURL: "http://www.geonovum.nl/"
+    }, {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
 			companyURL: "http://www.surrey.ac.uk/"
-		}, {
-			name: "Linda van den Brink",
-			company: "Geonovum",
-			companyURL: "http://www.geonovum.nl/"
 		}],
     otherLinks: [
     {
@@ -39,17 +39,17 @@ var respecConfig = {
     noLegacyStyle: false,
       logos: [
       {
-        src: "https://www.w3.org/Icons/w3c_home",
+        src: "https://www.w3.org/StyleSheets/TR/2016/logos/W3C",
         alt: "W3C",
         height: "48",
         width: "72",
         url: "https://www.w3.org/"
       },
       {
-        src: "https://www.w3.org/2015/01/ogc_logo.jpg",
+        src: "https://www.w3.org/2017/01/ogc_logo.png",
         alt: "OGC",
-        height: "48",
-        width: "115",
+        height: "68",
+        width: "147",
         url: "http://www.opengeospatial.org/"
       }],
     noRecTrack: true,
@@ -350,6 +350,20 @@ var respecConfig = {
         "title": "Triple Pattern Fragments specification",
         "publisher": "Hydra W3C Community Group",
         "date": "05 January 2017"
+      },
+      "EO-QB": {
+        "authors":["Dmitry Brizhinev", "Sam Toyer", "Kerry Taylor"],
+        "href": "https://www.w3.org/TR/eo-qb/",
+        "title": "Publishing and Using Earth Observation Data with the RDF Data Cube and the Discrete Global Grid System",
+        "publisher": "W3C and OGC",
+        "date": "5 January 2017"
+      },
+      "QB4ST": {
+        "authors":["Rob Atkinson"],
+        "href": "https://www.w3.org/TR/qb4st/",
+        "title": "QB4ST: RDF Data Cube extensions for spatio-temporal components",
+        "publisher": "W3C and OGC",
+        "date": "5 January 2017"
       }
       
     },

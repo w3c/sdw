@@ -119,6 +119,12 @@ var respecConfig = {
          publisher: "CEUR: Proceedings of the 3rd International Workshop on Semantic Sensor Networks (SSN10)",
          date: "2010"
       },
+      "OBOE" :{
+       href:"http://dx.doi.org/10.5063/F11C1TTM",
+       date: "2016",
+       authors:["Mark Schildhauer", "Matthew B. Jones", "Shawn Bowers", "Joshua Madin", "Sergeui Krivov", "Deana Pennington", "Ferdinando Villa", "Benjamin Leinfelder", "Christopher Jones", "Margaret O'Brien"],
+       title: "OBOE: the Extensible Observation Ontology, version 1.1"
+      },
       "OM-Heavy": {
         href: "http://ceur-ws.org/Vol-1063/paper1.pdf",
         title: "An explicit OWL representation of ISO/OGC Observations and Measurements ",
@@ -171,6 +177,14 @@ var respecConfig = {
       title:"The Web of Things: The W3C Semantic Sensor Network Ontology",
       publisher:"5th Australasian eResearch Conference, Melbourne",
       date:"November 2011"
+      },
+      "Lefrancois-et-al-2017": {
+         href:"http://www.maxime-lefrancois.info/docs/SEAS-D2_2-SEAS-Knowledge-Model.pdf",
+         authors: ["Maxime Lefrançois", "Jarmo Kalaoja", "Takoua Ghariani", "Antoine Zimmermann"],
+         title: "The SEAS Knowledge Model",
+         status:"Deliverable 2.2",
+         publisher: "ITEA2 12004 Smart Energy Aware Systems",
+         date: "2017"
       }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
