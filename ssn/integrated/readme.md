@@ -29,7 +29,7 @@ This folder contains a proposal for the various documents that need to be expose
 
 1. copy the old SSN document without the DUL alignments, name it `oldssn.ttl`
 2. create the stub of the documents: `ssnx.ttl`, `sosa.ttl`, `ssn.ttl`;
-3. propose an order for the old SSN terms and group them in sections of no more than 8-10 terms in terms.xlsx;
+3. propose an order for the old SSN terms and group them in sections of no more than 8-10 terms in https://www.w3.org/2015/spatial/wiki/Terms;
 
 For ssnx, sosa, ssn:
 
