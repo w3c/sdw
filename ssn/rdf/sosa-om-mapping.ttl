@@ -64,6 +64,12 @@ iso19156_sf:SF_SamplingFeature
 <http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#SF_SpatialSamplingFeature.hostedProcedure>
   rdfs:subPropertyOf sosa:hosts ;
 .
+iso19156-sp:PreparationStep
+  rdfs:subClassOf sosa:Sampling ;
+.
+<http://def.isotc211.org/iso19156/2011/Specimen#PreparationStep.processingDetails>
+  owl:equivalentProperty sosa:isSamplingResultOf ;
+.
 <http://def.isotc211.org/iso19156/2011/Specimen#PreparationStep.time>
   rdfs:subPropertyOf sosa:resultTime ;
 .
@@ -72,7 +78,7 @@ iso19156-sp:SF_Process
   owl:equivalentClass [
       rdf:type owl:Class ;
       owl:unionOf (
-          sosa-om:SamplingDevice
+          sosa:Sampler
           sosa-om:SamplingProcedure
         ) ;
     ] ;
@@ -103,11 +109,8 @@ sosa:Procedure
         ) ;
     ] ;
 .
-sosa:hasResult
-  <http://meta.schema.org/domainIncludes> sosa-om:SamplingEvent ;
-.
-sosa:isResultOf
-  <http://meta.schema.org/rangeIncludes> sosa-om:SamplingEvent ;
+sosa:isSamplingResultOf
+  owl:equivalentProperty <http://def.isotc211.org/iso19156/2011/Specimen#PreparationStep.processingDetails> ;
 .
 sosa:om
   rdf:type owl:Ontology ;
@@ -148,17 +151,6 @@ sosa-om:ObservationProcedure
   owl:disjointWith sosa-om:ActuationProcedure ;
   owl:disjointWith sosa-om:SamplingProcedure ;
 .
-sosa-om:SamplingDevice
-  rdf:type owl:Class ;
-  rdfs:comment "(Notional) Sampling or sample preparation or processing device, complementing sosa:Sensor and sosa:Actuator"@en ;
-  rdfs:label "Sampling device"@en ;
-  rdfs:subClassOf iso19156-sp:SF_Process ;
-.
-sosa-om:SamplingEvent
-  rdf:type owl:Class ;
-  rdfs:comment "(Notional) Sampling or sample preparation or processing event, complementing sosa:Observation and sosa:Actuation"@en ;
-  rdfs:label "Sampling event"@en ;
-.
 sosa-om:SamplingProcedure
   rdf:type owl:Class ;
   rdfs:comment "(Notional) Sampling or sample preparation or processing procedure or recipe, complementing ObservationProcedure and ActuationProcedure"@en ;
@@ -167,7 +159,4 @@ sosa-om:SamplingProcedure
   rdfs:subClassOf sosa:Procedure ;
   owl:disjointWith sosa-om:ActuationProcedure ;
   owl:disjointWith sosa-om:ObservationProcedure ;
-.
-sosa:usedProcedure
-  <http://meta.schema.org/domainIncludes> sosa-om:SamplingEvent ;
 .

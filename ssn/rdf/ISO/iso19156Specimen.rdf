@@ -8,7 +8,7 @@
     xmlns:iso19103_336="http://def.isotc211.org/iso19103/2005/Names#"
     xmlns:dct="http://purl.org/dc/terms/"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:iso19156_1677="http://def.isotc211.org/iso19156/2011/SamplingFeature#"
+    xmlns:iso19156-sf="http://def.isotc211.org/iso19156/2011/SamplingFeature#"
     xmlns:iso19103_333="http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:iso19115_516="http://def.isotc211.org/iso19115/2006/CitationAndResponsiblePartyInformation#"
@@ -69,9 +69,29 @@
   <owl:Class rdf:ID="PreparationStep">
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19115/2006/CitationAndResponsiblePartyInformation#CI_ResponsibleParty"/>
+        <owl:allValuesFrom rdf:resource="#PreparationStep"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="PreparationStep.processingDetails"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label>PreparationStep</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
         <owl:onProperty>
           <owl:ObjectProperty rdf:ID="PreparationStep.processOperator"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <skos:definition>In many applications specimen preparation procedures are applied to the material prior to its use in an observation. The class .lt.i.gt.PreparationStep.lt..sl.i.gt. (Figure 13) shall link a SF_Specimen to a OM_Process that describes a phase of the specimen preparation.  It shall support one attribute. </skos:definition>
+    <rdfs:isDefinedBy>http://standards.iso.org/iso/19156/ed-1/en/</rdfs:isDefinedBy>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19115/2006/CitationAndResponsiblePartyInformation#CI_ResponsibleParty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#PreparationStep.processOperator"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -84,14 +104,12 @@
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:label>PreparationStep</rdfs:label>
-    <skos:definition>In many applications specimen preparation procedures are applied to the material prior to its use in an observation. The class .lt.i.gt.PreparationStep.lt..sl.i.gt. (Figure 13) shall link a SF_Specimen to a OM_Process that describes a phase of the specimen preparation.  It shall support one attribute. </skos:definition>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="PreparationStep.processingDetails"/>
+          <owl:ObjectProperty rdf:about="#PreparationStep.processingDetails"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -100,24 +118,6 @@
         <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19108/2006/TemporalObjects#TM_Object"/>
         <owl:onProperty>
           <owl:ObjectProperty rdf:about="#PreparationStep.time"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:isDefinedBy>http://standards.iso.org/iso/19156/ed-1/en/</rdfs:isDefinedBy>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="#PreparationStep"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#PreparationStep.processingDetails"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#PreparationStep.processOperator"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -147,6 +147,15 @@
   <owl:Class rdf:ID="SF_Specimen">
     <rdfs:subClassOf>
       <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="SF_Specimen.samplingTime"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
         >1</owl:maxCardinality>
         <owl:onProperty>
@@ -156,33 +165,9 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="#PreparationStep"/>
-        <owl:onProperty rdf:resource="#SF_Specimen.thePreparationStep"/>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="#SF_Process"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="SF_Specimen.samplingMethod"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:label>SF_Specimen</rdfs:label>
-    <rdfs:subClassOf>
-      <owl:Restriction>
         <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19107/2003/GeometryRoot#GM_Object"/>
         <owl:onProperty>
           <owl:ObjectProperty rdf:about="#SF_Specimen.samplingLocation"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#SF_Specimen.samplingMethod"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -197,9 +182,9 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="#Location"/>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19108/2006/TemporalObjects#TM_Object"/>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#SF_Specimen.currentLocation"/>
+          <owl:ObjectProperty rdf:about="#SF_Specimen.samplingTime"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -212,21 +197,21 @@
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:label>SF_Specimen</rdfs:label>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19103/2005/Names#GenericName"/>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="SF_Specimen.materialClass"/>
+          <owl:ObjectProperty rdf:ID="SF_Specimen.samplingMethod"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeature"/>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-        >1</owl:cardinality>
+        <owl:allValuesFrom rdf:resource="#SF_Process"/>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#SF_Specimen.materialClass"/>
+          <owl:ObjectProperty rdf:about="#SF_Specimen.samplingMethod"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -243,7 +228,7 @@
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="SF_Specimen.samplingTime"/>
+          <owl:ObjectProperty rdf:ID="SF_Specimen.materialClass"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -256,6 +241,7 @@
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://def.isotc211.org/iso19156/2011/SamplingFeature#SF_SamplingFeature"/>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19103/2005/UnitsOfMeasure#Measure"/>
@@ -266,9 +252,23 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19108/2006/TemporalObjects#TM_Object"/>
+        <owl:allValuesFrom rdf:resource="#PreparationStep"/>
+        <owl:onProperty rdf:resource="#SF_Specimen.thePreparationStep"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19103/2005/Names#GenericName"/>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#SF_Specimen.samplingTime"/>
+          <owl:ObjectProperty rdf:about="#SF_Specimen.materialClass"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Location"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#SF_Specimen.currentLocation"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>

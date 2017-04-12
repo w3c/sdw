@@ -3,16 +3,16 @@
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:iso19150-2="http://def.isotc211.org/iso19150/-2/2012/base#"
     xmlns:iso19115_503="http://def.isotc211.org/iso19115/2006/MetadataEntitySetInformation#"
-    xmlns:iso19109_449="http://def.isotc211.org/iso19109/2005/GeneralFeatureModel#"
+    xmlns:iso19109-gf="http://def.isotc211.org/iso19109/2005/GeneralFeatureModel#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:iso19103_336="http://def.isotc211.org/iso19103/2005/Names#"
-    xmlns:iso19115_506="http://def.isotc211.org/iso19115/2006/DataQualityInformation#"
-    xmlns:iso19156_1687="http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#"
+    xmlns:iso19115-dq="http://def.isotc211.org/iso19115/2006/DataQualityInformation#"
     xmlns:dct="http://purl.org/dc/terms/"
+    xmlns:iso19156-gfi="http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
-    xmlns:iso19108_407="http://def.isotc211.org/iso19108/2006/TemporalObjects#"
+    xmlns:iso19108-tm="http://def.isotc211.org/iso19108/2006/TemporalObjects#"
     xmlns:iso19156-om="http://def.isotc211.org/iso19156/2011/Observation#"
     xmlns:iso19103_337="http://def.isotc211.org/iso19103/2005/RecordsAndClassMetadata#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
@@ -65,6 +65,32 @@
   <owl:Class rdf:ID="OM_Observation">
     <rdfs:subClassOf>
       <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="OM_Observation.validTime"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19108/2006/TemporalObjects#TM_Instant"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="OM_Observation.resultTime"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19115/2006/DataQualityInformation#DQ_Element"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="OM_Observation.resultQuality"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label>OM_Observation</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
         <owl:allValuesFrom>
           <owl:Class rdf:ID="OM_Process"/>
         </owl:allValuesFrom>
@@ -75,9 +101,62 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19115/2006/MetadataEntitySetInformation#MD_Metadata"/>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#GFI_Feature"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="OM_Observation.featureOfInterest"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19108/2006/TemporalObjects#TM_Period"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#OM_Observation.validTime"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
         <owl:onProperty>
           <owl:ObjectProperty rdf:ID="OM_Observation.metadata"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:isDefinedBy>http://standards.iso.org/iso/19156/ed-1/en/</rdfs:isDefinedBy>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#NamedValue"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="OM_Observation.parameter"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="OM_Observation.result"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19115/2006/MetadataEntitySetInformation#MD_Metadata"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#OM_Observation.metadata"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <skos:definition>An observation is an act that results in the estimation of the value of a feature property, and involves application of a specified procedure, such as a sensor, instrument, algorithm or process chain. The procedure may be applied in-situ, remotely, or ex-situ with respect to the sampling location. Use of a common model allows observation data using different procedures to be combined unambiguously. Observation details are also important for data discovery and for data quality estimation. Observation feature types are defined by the properties that support these applications. An observation is an act associated with a discrete time instant or period through which a number, term or other symbol is assigned to a phenomenon [2]. The result of an observation is an estimate of the value of a property of some feature, so the details of the observation are metadata concerning the value of the feature property. The observation itself is also a feature, since it has properties and identity. </skos:definition>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="OM_Observation.phenomenonTime"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -92,124 +171,10 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="#NamedValue"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="OM_Observation.parameter"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#GFI_Feature"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="OM_Observation.featureOfInterest"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19108/2006/TemporalObjects#TM_Object"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="OM_Observation.phenomenonTime"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:label>OM_Observation</rdfs:label>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-        >1</owl:cardinality>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#OM_Observation.procedure"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
         >1</owl:cardinality>
         <owl:onProperty>
           <owl:ObjectProperty rdf:about="#OM_Observation.featureOfInterest"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:isDefinedBy>http://standards.iso.org/iso/19156/ed-1/en/</rdfs:isDefinedBy>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="OM_Observation.validTime"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom>
-          <owl:Class rdf:ID="ObservationContext"/>
-        </owl:allValuesFrom>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="OM_Observation.theObservationContext"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19115/2006/DataQualityInformation#DQ_Element"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="OM_Observation.resultQuality"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <skos:definition>An observation is an act that results in the estimation of the value of a feature property, and involves application of a specified procedure, such as a sensor, instrument, algorithm or process chain. The procedure may be applied in-situ, remotely, or ex-situ with respect to the sampling location. Use of a common model allows observation data using different procedures to be combined unambiguously. Observation details are also important for data discovery and for data quality estimation. Observation feature types are defined by the properties that support these applications. An observation is an act associated with a discrete time instant or period through which a number, term or other symbol is assigned to a phenomenon [2]. The result of an observation is an estimate of the value of a property of some feature, so the details of the observation are metadata concerning the value of the feature property. The observation itself is also a feature, since it has properties and identity. </skos:definition>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19103/2005/RecordsAndClassMetadata#Any"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="OM_Observation.result"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-        >1</owl:cardinality>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#OM_Observation.phenomenonTime"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19108/2006/TemporalObjects#TM_Instant"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="OM_Observation.resultTime"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19109/2005/GeneralFeatureModel#GF_PropertyType"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#OM_Observation.observedProperty"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <iso19150-2:constraint>result type shall be suitable for observedProperty</iso19150-2:constraint>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#OM_Observation.metadata"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19108/2006/TemporalObjects#TM_Period"/>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#OM_Observation.validTime"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -222,12 +187,47 @@
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <iso19150-2:constraint>result type shall be suitable for observedProperty</iso19150-2:constraint>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19103/2005/RecordsAndClassMetadata#Any"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#OM_Observation.result"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:about="#OM_Observation.result"/>
+          <owl:ObjectProperty rdf:about="#OM_Observation.procedure"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19108/2006/TemporalObjects#TM_Object"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#OM_Observation.phenomenonTime"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="http://def.isotc211.org/iso19109/2005/GeneralFeatureModel#GF_PropertyType"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#OM_Observation.observedProperty"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="ObservationContext"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="OM_Observation.theObservationContext"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
