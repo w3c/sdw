@@ -68,8 +68,8 @@ topological relations among instants and intervals, together with information ab
 temporal position including date-time information. Time positions and durations may be expressed using either the conventional (Gregorian) calendar and clock, or using another temporal reference system such as Unix-time, geologic time or different calendars.</p>
 <p style="text-align: center;">The namespace for OWL-Time terms is <code>http://www.w3.org/2006/time#</code></p>
 <p style="text-align: center;">The suggested prefix for the OWL-Time namespace is <code>time</code></p>
-<p style="text-align: center;">The OWL-Time ontology itself is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/time.ttl">here</a>.</p>
-
+<p style="text-align: center;">The OWL-Time ontology is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/time.ttl">here</a>.</p>
+<p style="text-align: center;">An ontology of individuals for the Gregorian calendar (months) is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/time-gregorian.ttl">here</a>.</p>
 </section>
 
 <section id="sotd">
@@ -97,7 +97,8 @@ The substantial changes are listed in the <a href="#changes">change-log</a>.</p>
 </section>
 
 <section id="namespaces">
-<h2>Namespaces </h2>
+<h2>Notation and namespaces</h2>
+	<p>Classes and properties from the Time Ontology are denoted using <a href="https://www.w3.org/TR/curie/">Compact URIs</a>. </p>
 <p>The namespace for OWL-Time is <code>http://www.w3.org/2006/time#</code>. OWL-Time does not re-use elements from any other vocabularies, but does use some built-in datatypes from OWL and some additional types from XML Schema Part 2. </p>
 <p>The table below indicates the full list of namespaces and prefixes used in this document.</p>
 <table id="namespacesTable">
@@ -143,6 +144,11 @@ The substantial changes are listed in the <a href="#changes">change-log</a>.</p>
 </tr>
 </tbody>
 </table>
+
+<p>Where class descriptions include local restrictions on properties, these are described using the <a href="https://www.w3.org/TR/owl2-manchester-syntax/#Descriptions">OWL 2 Manchester Syntax</a>. </p>
+
+<p>Examples and other code fragments are serialized using <a href="https://www.w3.org/TR/turtle/">RDF 1.1 Turtle</a> notation.</p>
+
 </section>
 
 <section id="overview" class="informative">
@@ -154,12 +160,12 @@ The substantial changes are listed in the <a href="#changes">change-log</a>.</p>
 (e.g., meets, overlaps, during) developed by Allen [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>] for
 representing qualitative temporal information, and to address the problem of reasoning about such information.
 </p>
-<p>The ontology starts with a class <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> with properties <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code> that link to the temporal instants that define its limits, and <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code> to express its extent. 
+<p>The ontology starts with a class <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> with properties <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code> that link to the temporal instants that define its limits, and <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code> to describe its extent. 
 There are two subclasses: <code><a href="#time:Interval">:Interval</a></code>
 and <code><a href="#time:Instant">:Instant</a></code>, and they are the only two subclasses of <code><a href="#time:TemporalEntity">:TemporalEntity</a></code>. 
 Intervals are, intuitively, things with extent. 
-Instants are, intuitively, point-like in that they have no interior points, but it is generally safe to think of an instant as an interval with zero length, where the beginning and end are the same. 
-This idea - that time intervals are the more general case and time instants are just a limited specialization - is the first key contribution of Allen's analysis. </p>
+Instants are, intuitively, point-like in that they have no interior points, but it is generally safe to think of an instant as an interval with zero length, where the beginning and end are the same. </p>
+<p>This idea - that time intervals are the more general case and time instants are just a limited specialization - is the first key contribution of Allen's analysis. </p>
 <p>The class <code><a href="#time:Interval">:Interval</a></code> has one subclass <code><a href="#time:ProperInterval">:ProperInterval</a></code>, which
 corresponds with the common understanding of intervals, in that the beginning and end are distinct, and whose
 membership is therefore disjoint from <code><a href="#time:Instant">:Instant</a></code>. </p>
@@ -167,11 +173,13 @@ membership is therefore disjoint from <code><a href="#time:Instant">:Instant</a>
 <figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes" src="./images/TemporalEntity.png">
 <figcaption>Core model model of temporal entities.</figcaption> </figure>
 
-<p>The class <code><a href="#time:ProperInterval">:ProperInterval</a></code> has one
+<!--
+<p>The class <code><a href="#time:ProperInterval">:ProperInterval</a></code> also has one
 subclass, <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code>, whose position and extent may be expressed using a single 
 <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. </p>
+-->
 
-<p>Relations between intervals are the key logic provided by Allen's analysis, and implemented in the ontology. 
+<p>Relations between intervals are the critical logic provided by Allen's analysis, and implemented in the ontology. 
 These can be defined in a relatively straightforward fashion in terms of <code><a href="#time:before">:before</a></code> and identity on the beginning and end points. 
 The thirteen elementary relations shown below are the second key contribution of Allen's analysis. 
 These support unambiguous expression of all possible relations between temporal entities, which allows the computation of any relative position or sequence.
@@ -183,15 +191,16 @@ src="./images/IntervalRelations.png">
 
 <p>Two additional relations: <code>In</code> (the union of <code>During</code>, <code>Starts</code> and <code>Finishes</code>) and <code>Disjoint</code> (the union of <code>Before</code> and <code>After</code>) are not shown in the figure but are included in the ontology. </p>
 
-<p>The three properties <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code>, together with a fourth generic property <code><a href="#time:hasTime">:hasTime</a></code>, support the association of temporal information with any activity or event, or other entity, including but not limited to temporal entities. 
-These properties provide a standard way to attach time information, which may be used in an external application if suitable. </p>
+<p>The properties <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code>, together with a fourth generic property <code><a href="#time:hasTime">:hasTime</a></code>, support the association of temporal information with any activity or event, or other entity, including but not limited to temporal entities. 
+These provide a standard way to attach time information to things, which may be used directly in applications if suitable, or specialized if needed. </p>
 
 </section>
 
 <section id="trs-clock-calendar">
 <h3>Temporal reference systems, clocks, calendars</h3>
-<p>The position of an Instant may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> which is built in to OWL 2 [<a href="#OWL-2">OWL-2</a>], and uses the conventional Gregorian calendar and 24-hour clock. 
-While this satisfies most web applications, many other calendars and
+
+<p>The position of an Instant may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>, which is built in to OWL 2 [<a href="#OWL-2">OWL-2</a>], and uses the conventional Gregorian calendar and 24-hour clock. </p>
+<p>While this satisfies most web applications, many other calendars and
 temporal reference systems are used in particular cultural and scholarly contexts. For example, the Julian
 calendar was used throughout Europe until the 16<sup>th</sup> century, and is still used for computing key dates
 in some orthodox Christian communities. Lunisolar (e.g. Hebrew) and lunar (e.g. Islamic) calendars are currently
@@ -201,8 +210,7 @@ time are based on seconds counted from a specified origin in 1958, 1970 and 1980
 and geological applications use chronometric scales based on years counted backwards from ‘the present’ (defined
 as 1950 for radiocarbon dating [<a href="#RC-14">RC-14</a>]), or using named periods associated with specified
 correlation markers [<a href="#CR-05">CR-05</a>, <a href="#CR-14">CR-14</a>, <a href="#MF-13">MF-13</a>].
-Dynastic calendars (counting years within eras defined by the reign of a monarch or dynasty) were used earlier
-in many cultures. In order to support these more general applications, the representation of temporal position
+Dynastic calendars (counting years within eras defined by the reign of a monarch or dynasty) were used in many cultures. In order to support these more general applications, the representation of temporal position
 and duration must be flexible, and annotated with the <em>temporal reference system </em>in use. </p>
 <p>A set of ordered intervals (e.g. named dynasties, geological periods, geomagnetic reversals, tree rings) can
 make a simple form of temporal reference system that supports logical reasoning, known as an <em>ordinal
@@ -221,32 +229,24 @@ consumption. </p>
 statement about the assumed underlying calendar and clock. </p>
 </section>
 
-<section id="time-position-units">
-<h3>Time position and time units</h3>
+<section id="time-position">
+<h3>Time position</h3>
 <p>OWL 2 has two built-in datatypes relating to time: <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code> and <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> [<a
 href="#OWL-2">OWL-2</a>]. Other XSD types such as <code><a href="https://www.w3.org/TR/xmlschema11-2/#date">xsd:date</a></code>, <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code> and <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYearMonth">xsd:gYearMonth</a></code> [<a href="#XSD-D">XSD-D</a>] are also commonly used in OWL applications.
 These provide for a compact representation of time positions using the conventional Gregorian calendar and
 24-hour clock, with timezone offset from UTC.</p>
 <p>Four classes in the ontology support an explicit description of temporal position. 
-<code><a href="#time:TemporalDuration">:TemporalPosition</a></code> is the common super-class, with a property <code><a href="#time:hasTRS">:hasTRS</a></code> to indicate the temporal reference system <code><a href="#time:TRS">:TRS</a></code>. 
+<code><a href="#time:TemporalPosition">:TemporalPosition</a></code> is the common super-class, with a property <code><a href="#time:hasTRS">:hasTRS</a></code> to indicate the temporal reference system in use. 
 <code><a href="#time:TimePosition">:TimePosition</a></code> has properties to alternatively describe the position using a number (i.e. a temporal coordinate), or a nominal value (e.g. geologic time period, dynastic name, archeological era). 
 <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> has a set of properties to specify a date-time using calendar and clock elements. 
-Its subclass <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> fixes the temporal reference system to the Gregorian calendar, so the <code><a href="#time:hasTRS">:hasTRS</a></code> property may be omitted on individuals from this class.  </p>
-<p><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a standard duration which indicates the granularity or precision of a time position.</p>
+Its subclass <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> fixes the temporal reference system to the Gregorian calendar.  </p>
 
 <figure> <img title="Temporal Position" alt="UML-style diagram of classes for temporal position" src="./images/TemporalPosition.png">
 <figcaption>Classes for temporal position.</figcaption> </figure>
 
-<p> Following the theoretical basis laid out by Allen [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>], a time position has a finite extent,
-corresponding to the precision or <em>temporal unit </em>used. Thus, a <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code>
-or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> is strictly always a description of an interval,
-not an instant, with a duration corresponding to the value of its <code><a href="#time:unitType">:unitType</a></code>.
-</p>
-<p>We use two different sets of properties for <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>
-and <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> or <code><a href="#time:DurationDescription">:DurationDescription</a></code>, because their ranges are
-different. For example, <code><a href="#time:year">:year</a></code> (in <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>) has a range of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code>,
-while <code><a href="#time:years">:years</a></code> (in <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code>) has a range of <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code>
-so that you can say duration of 2.5 years.</p>
+<p>Following Allen's first key idea described above, even a time position has a finite extent, corresponding to the precision or <em>temporal unit </em>used. Thus, a <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code>
+or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> has a duration corresponding to the value of its <code><a href="#time:unitType">:unitType</a></code>.</p>
+
 </section>
 
 <section id="duration">
@@ -260,11 +260,17 @@ given using multiple duration descriptions or individual durations (e.g., 2 days
 <code><a href="#time:Duration">:Duration</a></code> has properties to describe the duration using a scaled number (i.e. a temporal quantity). 
 <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> has a set of properties to specify a duration using calendar and clock elements, the definitions of which are given in the associated TRS description. 
 Its subclass <code><a href="#time:DurationDescription">:DurationDescription</a></code> fixes the temporal reference system to the Gregorian calendar, so the <code><a href="#time:hasTRS">:hasTRS</a></code> property may be omitted on individuals from this class. </p>
-<p><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a standard duration which is used to scale a length of time.</p>
+<p><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a standard duration which is used to scale a length of time, and to capture its granularity or precision. </p>
 
 <figure> <img title="Temporal Duration" alt="UML representation of Temporal Duration and sub-classes"
 src="./images/TemporalDuration.png"> 
 <figcaption>Classes for temporal duration.</figcaption> </figure>
+
+<p>We use two different sets of properties for <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>,
+and <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> or <code><a href="#time:DurationDescription">:DurationDescription</a></code>, because their ranges are
+different. For example, <code><a href="#time:year">:year</a></code> (in <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>) has a range of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code> which is a position in the Gregorian calendar,
+while <code><a href="#time:years">:years</a></code> (in <code><a href="#time:DurationDescription">:DurationDescription</a></code>) has a range of <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code>
+so that you can say "duration of 2.5 years".</p>
 
 </section>
 
@@ -295,9 +301,11 @@ src="./images/TemporalDuration.png">
 <code><a href="#time:TemporalPosition">:TemporalPosition</a></code> |
 <code><a href="#time:TemporalUnit">:TemporalUnit</a></code> |
 <code><a href="#time:TimePosition">:TimePosition</a></code> |
-<code><a href="#time:TimeZone">:TimeZone</a></code> 
+<code><a href="#time:TimeZone">:TimeZone</a></code> | 
+<code><a href="#time:TRS">:TRS</a></code> 
 </p>
 
+<section>
 <h4 id="time:DateTimeDescription">Date-time description</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -335,7 +343,9 @@ xsd:gDay, respectively. </td>
 </tbody>
 </table>
 <p>Other datetime concepts can be defined by specialization of <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> - see <a href="#specialization">examples below</a>.</p>
+</section>
 
+<section>
 <h4 id="time:DateTimeInterval">Date-time interval</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -352,6 +362,9 @@ multi-element <code><a href="#time:DateTimeDescription">time:DateTimeDescription
 <td>Subclass of:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td></td>
 </tr>
+<td>Instance of of:</td>
+<td><code>owl:DeprecatedClass</code></td></td>
+</tr>
 </tbody>
 </table>
 <p>The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is a subclass of <code><a href="#time:ProperInterval">:ProperInterval</a></code>, being an interval whose boundaries fall on the limits of a date-time description with truncated precision. 
@@ -361,9 +374,16 @@ Two properties <code><a href="#time:hasDateTimeDescription">:hasDateTimeDescript
 -->
 </p>
 <p>Any <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> has a duration, but only <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> can have <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>.
+
 For example, May 8 can be expressed as a <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>, but the interval from 1:30pm, May 8, to 1:30pm,
 May 9, cannot. Both have a duration of a day.</p>
+For example, May 8 can be expressed as a <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>, 
+but the interval from 1:30pm, May 8, to 1:30pm, May 9, cannot. Both have a duration of a day.</p>
 
+<p class="note">The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> was designed to support the compact description of a proper interval whose limits coincide with the elements of the calendar-clock system in use ('clock ticks"). However, there is some ambiguity in usage, particularly for intervals whose duration is smaller than the next finest time unit relative to a boundary definition. Furthermore, its position in the hierarchy is a consequence of implementation details, rather than a semantic distinction. Therefore use of this class is not recommended. </p>
+</section>
+
+<section>
 <h4 id="time:DayOfWeek">Day of week</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -385,7 +405,9 @@ May 9, cannot. Both have a duration of a day.</p>
 days used in the Gregorian calendar, and using the English names <code><a href="#time:Sunday">:Sunday</a></code>, <code><a href="#time:Monday">:Monday</a></code>, <code><a href="#time:Tuesday">:Tuesday</a></code>,
 <code><a href="#time:Wednesday">:Wednesday</a></code>, <code><a href="#time:Thursday">:Thursday</a></code>, <code><a href="#time:Friday">:Friday</a></code>, <code><a href="#time:Saturday">:Saturday</a></code>.</p>
 <p class="note">Membership of the class <code><a href="#time:DayOfWeek">:DayOfWeek</a></code> is open, to allow for alternative week lengths and different day names. </p>
+</section>
 
+<section>
 <h4 id="time:Duration">Duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -411,7 +433,9 @@ days used in the Gregorian calendar, and using the English names <code><a href="
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:DurationDescription">Duration description</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -463,8 +487,12 @@ each of the numeric properties is restricted to <a href="https://www.w3.org/TR/x
 </tr>
 </tbody>
 </table>
+<!--
 <p>Other duration concepts can be straightforwardly defined - see <a href="#specialization">examples below</a>.</p>
+-->
+</section>
 
+<section>
 <h4 id="time:GeneralDateTimeDescription">Generalized date-time description</h4>
 <table class="definition" style="border-collapse: collapse; width: 812px; ">
 <tbody>
@@ -538,9 +566,13 @@ components of a temporal position in a calendar-clock system. These correspond w
 model' described in ISO 8601 [<a href="#ISO-8601">ISO-8601</a>] and XML Schema Definition Language Part 2:
 Datatypes [<a href="#XSD-D">XSD-D</a>], except that the calendar is not specified in advance, but is provided
 through the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property (defined above). </p>
-<p>Two additional properties <code><a href="#time:week">:week</a></code> and <code><a href="#time:dayOfYear">:dayOfYear</a></code> allow for the the numeric value of the week or day relative to the year. </p>
-<p>The property <code><a href="#time:dayOfWeek">:dayOfWeek</a></code> provides the name of the day, and the property <code><a href="#time:monthOfYear">:monthOfYear</a></code> provides the name of the month. </p>
+<p>Some combinations of properties are redundant. For example, within a specified :year if <code><a href="#time:dayOfYear">:dayOfYear</a></code> is provided then <code><a href="#time:day">:day</a></code> and <code><a href="#time:month">:month</a></code> can be computed, and vice versa. 
+Individual values SHOULD be consistent with each other and the calendar, indicated through the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property.</p>
+<p>Two additional properties <code><a href="#time:week">:week</a></code> and <code><a href="#time:dayOfYear">:dayOfYear</a></code> allow for the the numeric value of the week or day relative to the year. 
+The property <code><a href="#time:dayOfWeek">:dayOfWeek</a></code> provides the name of the day, and the property <code><a href="#time:monthOfYear">:monthOfYear</a></code> provides the name of the month. </p>
+</section>
 
+<section>
 <h4 id="time:GeneralDurationDescription">Generalized duration description</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -593,7 +625,9 @@ calendar-clock system. </td>
 </table>
 <p>Seven datatype properties <code><a href="#time:years">:years</a></code>, <code><a href="#time:months">:months</a></code>, <code><a href="#time:weeks">:weeks</a></code>, <code><a href="#time:days">:days</a></code>, <code><a href="#time:hours">:hours</a></code>, <code><a href="#time:minutes">:minutes</a></code>, and <code><a href="#time:seconds">:seconds</a></code> support the description of components of a temporal extent in a calendar-clock system. </p>
 <p>The property <code><a href="#time:hasTRS">time:hasTRS</a></code> indicates the temporal reference system applicable for the duration components. </p>
+</section>
 
+<section>
 <h4 id="time:Instant">Time instant</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -613,7 +647,9 @@ calendar-clock system. </td>
 </table>
 <p>Seven properties, <code><a href="#time:inXSDDate">:inXSDDate</a></code>, <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code> (deprecated), <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code>, <code><a href="#time:inXSDgYear">:inXSDgYear</a></code>, <code><a href="#time:inXSDgYearMonth">:inXSDgYearMonth</a></code>, <code><a href="#time:inTimePosition">:inTimePosition</a></code>, and <code><a href="#time:inDateTime">:inDateTime</a></code>
 provide alternative ways to describe the temporal position of an <code><a href="#time:Instant">:Instant</a></code>. </p>
+</section>
 
+<section>
 <h4 id="time:Interval">Time interval</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -632,7 +668,9 @@ provide alternative ways to describe the temporal position of an <code><a href="
 </tbody>
 </table>
 <p>One property <code><a href="#time:inside">:inside</a></code> links to an <code><a href="#time:Instant">:Instant</a></code> that falls inside the <code><a href="#time:Interval">:Interval</a></code>.</p>
+</section>
 
+<section>
 <h4 id="time:MonthOfYear">Month of year</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -697,8 +735,9 @@ provide alternative ways to describe the temporal position of an <code><a href="
 <code><a href="#greg:December">greg:December</a></code>. 
 Each month is defined by setting the value of <code><a href="#time:month">time:month</a></code> to the corresponding value.</p>
 <p class="note">Membership of the class <code><a href="#time:MonthOfYear">:MonthOfYear</a></code> is open, to allow for alternative annual calendars and different month names. </p>
+</section>
 
-
+<section>
 <h4 id="time:ProperInterval">Proper interval</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -732,7 +771,9 @@ are different</td>
 <code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> 
 <code><a href="#time:intervalIn">:intervalIn</a></code> 
 support the set of interval relations defined by Allen [<a href="#AL-84">AL-84</a>] and Allen and Ferguson [<a href="#AF-97">AF-97</a>].</p>
+</section>
 
+<section>
 <h4 id="time:TemporalDuration">Temporal duration</h4>
 <table class="definition" style="width: 812px;">
 <thead>
@@ -752,7 +793,9 @@ support the set of interval relations defined by Allen [<a href="#AL-84">AL-84</
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:TemporalEntity">Temporal entity</h4>
 <table class="definition" style="width: 812px;">
 <thead>
@@ -778,7 +821,9 @@ support the set of interval relations defined by Allen [<a href="#AL-84">AL-84</
 </table>
 <p>Two properties, <code><a href="#time:before">:before</a></code>, <code><a href="#time:after">:after</a></code>, support ordering relationships between two <code><a href="#time:TemporalEntity">:TemporalEntity</a></code>s.</p>
 <p>The properties <code><a href="#time:hasBeginning">:hasBeginning</a></code>, <code><a href="#time:hasEnd">:hasEnd</a></code> and <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code> (or its sub-properties), support the description of the bounds and extent of a <code><a href="#time:TemporalEntity">:TemporalEntity</a></code>.</p>
+</section>
 
+<section>
 <h4 id="time:TemporalPosition">Temporal position</h4>
 <table class="definition" style="width: 812px;">
 <thead>
@@ -803,7 +848,9 @@ support the set of interval relations defined by Allen [<a href="#AL-84">AL-84</
 </tbody>
 </table>
 <p>The property <code><a href="#time:hasTRS">time:hasTRS</a></code> indicates the temporal reference system. </p>
+</section>
 
+<section>
 <h4 id="time:TemporalUnit">Temporal unit</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -826,7 +873,9 @@ elements of the standard calendar-clock: <code><a href="#time:unitYear">:unitYea
 <code><a href="#time:unitDay">:unitDay</a></code>, <code><a href="#time:unitHour">:unitHour</a></code>, <code><a href="#time:unitMinute">:unitMinute</a></code> and <code><a href="#time:unitSecond">:unitSecond</a></code>. </p>
 <p class="note">Membership of the class TemporalUnit is open, to allow for
 other temporal units used in some technical applications (e.g. millions of years, Baha'i month). </p>
+</section>
 
+<section>
 <h4 id="time:TimePosition">Time position</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -853,7 +902,9 @@ other temporal units used in some technical applications (e.g. millions of years
 descriptions of position or extent. One of these is expected to be present. </p>
 <p>The temporal ordinal reference system should be provided as the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property</p>
 <p>The temporal coordinate system should be provided as the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property</p>
+</section>
 
+<section>
 <h4 id="time:TimeZone">Time-zone</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -880,7 +931,9 @@ However, that ontology was incomplete in scope, and the example datasets were se
 <p><a href="https://www.ietf.org/timezones/data/">IETF</a> and <a href="http://www.iana.org/time-zones">IANA</a> also provide databases. These are well maintained, but individual iems are not available at individual URIs, i.e. not as "Linked Data".</p>
 <p>The World Clock service provides a <a href="https://www.timeanddate.com/time/zones/">list of time zones</a>, with the description of each available as an individual webpage with a convenient individual URI (e.g. <a href="https://www.timeanddate.com/time/zones/acwst">https://www.timeanddate.com/time/zones/acwst</a>. Currently this appears to offer best practice. </p>
 </div>
+</section>
 
+<section>
 <h4 id="time:TRS">Temporal reference system</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -910,6 +963,7 @@ Timescale</a>. </p>
 including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. numeric offset from an epoch); 
 (c) temporal ordinal reference systems (i.e. ordered sequence of named intervals, not necessarily of equal duration). </p>
 </div>
+</section>
 
 </section>
 
@@ -978,6 +1032,7 @@ including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. nu
 <code><a href="#time:years">:years</a></code>
 </p>
 
+<section>
 <h4 id="time:after">after</h4>
 <table class="definition" style="width: 812px;">
 <thead>
@@ -1002,7 +1057,9 @@ entity T<sub>2</sub>, then the beginning of T<sub>1</sub> is after the end of T<
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:before">before</h4>
 <table class="definition" style="width: 812px;">
 <thead>
@@ -1032,8 +1089,9 @@ Thus, <em>before</em> can be considered to be basic to instants and derived for 
 </tr>
 </tbody>
 </table>
+</section>
 
-
+<section>
 <h4 id="time:day">day</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1057,7 +1115,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:dayOfWeek">day of week</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1083,7 +1143,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:dayOfYear">day of year</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1109,7 +1171,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:days">days duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1131,11 +1195,13 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#time:Number">time:Number</a></code></td>
+<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:hasBeginning">has beginning</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1157,7 +1223,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:hasDateTimeDescription">has date-time description</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1174,6 +1242,10 @@ The range of this property is not specified, so can be replaced by any specific 
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+<td>Instance of:</td>
+<td><code>owl:DeprecatedProperty</code></td>
+</tr>
+<tr>
 <td>Domain:</td>
 <td><code><a href="#time:DateTimeInterval">time:DateTimeInterval</a></code></td>
 </tr>
@@ -1184,6 +1256,10 @@ The range of this property is not specified, so can be replaced by any specific 
 </tbody>
 </table>
 
+<p class="note">The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is not recommended, so this property is deprecated. </p>
+</section>
+  
+<section>
 <h4 id="time:hasDuration">has duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1209,7 +1285,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:hasDurationDescription">has duration description</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1235,13 +1313,15 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:hasEnd">has end</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
 <tr>
 <th style="width: 120px;">RDF Property:</th>
-<th><a href="#time:hasEnd">time:hasEnd</a></th>
+<th><code><a href="#time:hasEnd">time:hasEnd</a></code></th>
 </tr>
 <tr>
 <td>Definition:</td>
@@ -1257,7 +1337,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:hasTemporalDuration">has temporal duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1279,7 +1361,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:hasTime">has time</h4>
 <table class="definition" style="width: 812px;">
 <thead>
@@ -1303,7 +1387,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:hasTRS">temporal reference system used</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1329,7 +1415,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:hour">hour</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1355,7 +1443,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:hours">hours duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1377,11 +1467,13 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#time:Number">time:Number</a></code></td>
+<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:inDateTime">in date-time description</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1411,7 +1503,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:inside">has time instant inside</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1438,7 +1532,9 @@ intervals. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:inTemporalPosition">temporal position</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1464,7 +1560,9 @@ intervals. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalAfter">interval after</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1503,7 +1601,9 @@ then the beginning of T<sub>1</sub> is after the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalBefore">interval before</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1542,7 +1642,9 @@ then the end of T<sub>1</sub> is before the beginning of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalContains">interval contains</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1574,7 +1676,9 @@ is after the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalDisjoint">interval disjoint</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1602,7 +1706,9 @@ is before the beginning of T<sub>2</sub>, i.e. the intervals do not overlap in a
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalDuring">interval during</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1634,7 +1740,9 @@ is before the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalEquals">interval equals</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1666,7 +1774,9 @@ the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalFinishedBy">interval finished by</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1698,7 +1808,9 @@ is coincident with the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalFinishes">interval finishes</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1734,7 +1846,9 @@ is coincident with the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalIn">interval in</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1764,7 +1878,9 @@ is coincident with the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalMeets">interval meets</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1795,7 +1911,9 @@ then the end of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>.
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalMetBy">interval met by</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1826,7 +1944,9 @@ then the beginning of T<sub>1</sub> is coincident with the end of T<sub>2</sub>.
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalOverlappedBy">interval overlapped by</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1858,7 +1978,9 @@ is before the end of T<sub>2</sub>, and the end of T<sub>1</sub> is after the en
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalOverlaps">interval overlaps</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1890,7 +2012,9 @@ is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalStartedBy">interval started by</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1922,7 +2046,9 @@ after the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:intervalStarts">interval starts</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1958,7 +2084,9 @@ before the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:inTimePosition">time position</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -1988,7 +2116,9 @@ before the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:inXSDDate">in XSD date</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2014,7 +2144,9 @@ before the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:inXSDDateTime">in XSD date-time</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2029,6 +2161,9 @@ before the end of T<sub>2</sub>. </td>
 <tr>
 <td>Instance of:</td>
 <td><code>owl:DatatypeProperty</code></td>
+</tr>
+<td>Instance of:</td>
+<td><code>owl:DeprecatedProperty</code></td>
 </tr>
 <tr>
 <td>Domain:</td>
@@ -2045,6 +2180,10 @@ before the end of T<sub>2</sub>. </td>
 </tbody>
 </table>
 
+<p class="note">The property <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code> is replaced by <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code> which makes the time-zone field mandatory. </p>
+</section>
+
+<section>
 <h4 id="time:inXSDDateTimeStamp">in XSD date-time-stamp</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2070,9 +2209,9 @@ before the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
-<p class="issue" data-number="125">(Was local Issue 8) <code><a href="#time:inXSDDateTime">time:inXSDDateTime</a></code> uses <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code> which was available in OWL v1. The datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>, makes the timezone element mandatory instead of optional, was added in OWL2. Use of <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> is recommended. <code><a href="#time:inXSDDateTime">time:inXSDDateTime</a></code> is retained for backward-compatibility, but marked 'deprecated'. See SDWWG requirement 
-<a href="https://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.58 Update datatypes in OWL Time</a></p>
+</section>
 
+<section>
 <h4 id="time:inXSDgYear">in XSD gYear</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2098,7 +2237,9 @@ before the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:inXSDgYearMonth">in XSD gYearMonth</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2124,7 +2265,9 @@ before the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:minute">minute</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2150,7 +2293,9 @@ before the end of T<sub>2</sub>. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:minutes">minutes duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2172,11 +2317,13 @@ before the end of T<sub>2</sub>. </td>
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#time:Number">time:Number</a></code></td>
+<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:month">month</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2200,7 +2347,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:monthOfYear">month of year</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2226,7 +2375,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:months">months duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2248,11 +2399,13 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#time:Number">time:Number</a></code></td>
+<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:nominalPosition">name of temporal position</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2278,7 +2431,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:numericDuration">numeric value of temporal duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2304,7 +2459,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:numericPosition">numeric value of temporal position</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2330,7 +2487,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:second">second</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2356,7 +2515,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:seconds">seconds duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2378,11 +2539,13 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#time:Number">time:Number</a></code></td>
+<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:timeZone">in time zone</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2413,7 +2576,9 @@ The range of this property is not specified, so can be replaced by any specific 
 is not ideal. We propose adding a stub class <code><a href="#time:TimeZone">:TimeZone</a></code> into the the main namespace (i.e. no
 properties) which can then be a super-class or equivalent class to any time zone formalization.(Compare with <a href="#time:">
 time:TRS</a> which is handled this way.) </p> -->
+</section>
 
+<section>
 <h4 id="time:unitType">temporal unit type</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2439,8 +2604,9 @@ time:TRS</a> which is handled this way.) </p> -->
 </tr>
 </tbody>
 </table>
-<p class="note">The property <code>:unitType</code> indicates the precision of a time position or duration, when that is expressed using <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>. Seven individual unitTypes are included in the ontology, corresponding to the conventional clock-calendar units.</p>
+</section>
 
+<section>
 <h4 id="time:week">week</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2450,7 +2616,7 @@ time:TRS</a> which is handled this way.) </p> -->
 </tr>
 <tr>
 <td>Definition:</td>
-<td>The number of the week within the year</td>
+<td>Week number within the year. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -2467,6 +2633,11 @@ time:TRS</a> which is handled this way.) </p> -->
 </tbody>
 </table>
 
+<p class="note">According to ISO-8601, the first Monday in the year is the start of week number 1. </p>
+
+</section>
+
+<section>
 <h4 id="time:weeks">weeks duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2488,14 +2659,14 @@ time:TRS</a> which is handled this way.) </p> -->
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#time:Number">time:Number</a></code></td>
+<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
 </tr>
 </tbody>
 </table>
+</section>
 
-<!--
+<section>
 <h4 id="time:xsdDateTime">has XSD date-time</h4>
-<p class="issue"  data-number="126">How to use <code><a href="#time:xsdDateTime">:xsdDateTime</a></code> to describe a <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is unclear at best, and appears to be untested. Propose deprecating it in the ontology, and removing it from the rec document. </p>
 <table class="definition" style="width: 812px;">
 <tbody>
 <tr>
@@ -2511,6 +2682,10 @@ time:TRS</a> which is handled this way.) </p> -->
 <td><code>owl:DatatypeProperty</code></td>
 </tr>
 <tr>
+<td>Instance of:</td>
+<td><code>owl:DeprecatedProperty</code></td>
+</tr>
+<tr>
 <td>Domain:</td>
 <td><code><a href="#time:DateTimeInterval">time:DateTimeInterval</a></code></td>
 </tr>
@@ -2518,12 +2693,16 @@ time:TRS</a> which is handled this way.) </p> -->
 <td>Range:</td>
 <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code></td>
 </tr>
+<tr>
+<td>Deprecated:</td>
+<td><code>true</code></td>
+</tr>
 </tbody>
 </table>
-<p class="issue"  data-number="125">(Was local Issue 7) Verify that this satisfies the SDWWG requirement <a href="https://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.58
-Update datatypes in OWL Time</a></p>
--->
+<p class="note">The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is not recommended, so this property is deprecated. </p>
+</section>
 
+<section>
 <h4 id="time:year">year</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2547,7 +2726,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:years">years duration</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2569,10 +2750,11 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#time:Number">time:Number</a></code></td>
+<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
 </tr>
 </tbody>
 </table>
+</section>
 
 </section>
 
@@ -2586,6 +2768,7 @@ The range of this property is not specified, so can be replaced by any specific 
 <code><a href="#time:Number">:Number</a></code>
 </p>
 
+<section>
 <h4 id="time:generalDay">generalDay</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2595,8 +2778,8 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Definition:</td>
-<td>Day of month - generalization of <code>xsd:gDay</code>, formulated as a text string with a pattern constraint to
-reproduce the same lexical form as <code>xsd:gDay</code>, except that values up to 99 are permitted, in order to support
+<td>Day of month - generalization of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gDay">xsd:gDay</a></code>, formulated as a text string with a pattern constraint to
+reproduce the <a href="https://www.w3.org/TR/xmlschema11-2/#nt-gDayRep">same lexical form as <code>xsd:gDay</code></a>, except that values up to 99 are permitted, in order to support
 calendars with more than 31 days in a month. Note that the value-space is not defined, so a generic OWL2
 processor cannot compute ordering relationships of values of this type. </td>
 </tr>
@@ -2615,7 +2798,9 @@ processor cannot compute ordering relationships of values of this type. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:generalMonth">generalMonth</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2625,8 +2810,8 @@ processor cannot compute ordering relationships of values of this type. </td>
 </tr>
 <tr>
 <td>Definition:</td>
-<td>Month of year - generalization of <code>xsd:gMonth</code>, formulated as a text string with a pattern constraint to
-reproduce the same lexical form as <code>xsd:gMonth</code>, except that values up to 20 are permitted, in order to
+<td>Month of year - generalization of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gMonth">xsd:gMonth</a></code>, formulated as a text string with a pattern constraint to
+reproduce the <a href="https://www.w3.org/TR/xmlschema11-2/#nt-gMonthRep">same lexical form as <code>xsd:gMonth</code></a>, except that values up to 20 are permitted, in order to
 support calendars with more than 12 months in the year. Note that the value-space is not defined, so a
 generic OWL2 processor cannot compute ordering relationships of values of this type. </td>
 </tr>
@@ -2645,7 +2830,9 @@ generic OWL2 processor cannot compute ordering relationships of values of this t
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:generalYear">generalYear</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2656,7 +2843,7 @@ generic OWL2 processor cannot compute ordering relationships of values of this t
 <tr>
 <td>Definition:</td>
 <td>Year number - generalization of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code>, formulated as a text string with a pattern constraint to
-reproduce the same lexical form as <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code>. Note that the value-space is not defined, so a generic OWL2
+reproduce the <a href="https://www.w3.org/TR/xmlschema11-2/#nt-gYearRep">same lexical form as <code>xsd:gYear</code></a>. Note that the value-space is not defined, so a generic OWL2
 processor cannot compute ordering relationships of values of this type. </td>
 </tr>
 <tr>
@@ -2674,7 +2861,9 @@ processor cannot compute ordering relationships of values of this type. </td>
 </tr>
 </tbody>
 </table>
+</section>
 
+<section>
 <h4 id="time:Number">Number</h4>
 <table class="definition" style="width: 812px;">
 <tbody>
@@ -2699,6 +2888,7 @@ processor cannot compute ordering relationships of values of this type. </td>
 <p>The datatype <code><a href="#time:Number">:Number</a></code> provides for numbers expressed using any of the XSD types <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code> (of
 which <code>xsd:integer</code> is a sub-type), <code><a href="https://www.w3.org/TR/xmlschema11-2/#float">xsd:float</a></code>, or <code><a href="https://www.w3.org/TR/xmlschema11-2/#double">xsd:double</a></code> (which allows
 exponential or scientific notation). </p>
+</section>
 
 </section>
 
@@ -2837,33 +3027,32 @@ exponential or scientific notation). </p>
 <h3>DateTimeDescription vs dateTime</h3>
 <p>The following example illustrates the difference between using <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> and using
 the XML datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. An instant that represents the start of a meeting, called <code>ex:meetingStart</code>,
-happens at 10:30am EST on 01/01/2006 can be expressed using both <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code> and <code><a href="#time:inDateTime">:inDateTime</a></code>
+happens at 10:30am AEST on 12/04/2017 can be expressed using both <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code> and <code><a href="#time:inDateTime">:inDateTime</a></code>
 in OWL as:</p>
 <pre>ex:meetingStart
   a                    :Instant ;
   :inDateTime          ex:meetingStartDescription ;
-  :inXSDDateTimeStamp  2006-01-01T10:30:00-5:00 .
+  :inXSDDateTimeStamp  2017-04-12T10:30:00+10:00 .
 
 ex:meetingStartDescription
   a           :DateTimeDescription ;
   :unitType   :unitMinute ;
   :minute     30 ;
   :hour       10 ;
-  :day        "---01"^^xsd:gDay ;
-  :dayOfWeek  :Sunday ;
-  :dayOfYear  1 ;
-  :week       1 ;
-  :month      "--01"^^xsd:gMonth ;
-  time:monthOfYear greg:January ;
-  :timeZone   &lt;https://www.timeanddate.com/time/zones/est&gt; ;
-  :year       "2006"^^xsd:gYear .</pre>
+  :day        "---12"^^xsd:gDay ;
+  :dayOfWeek  :Wednesday ;
+  :dayOfYear  102 ;
+  :week       15 ;
+  :month      "--04"^^xsd:gMonth ;
+  time:monthOfYear greg:April ;
+  :timeZone   &lt;https://www.timeanddate.com/time/zones/aest&gt; ;
+  :year       "2017"^^xsd:gYear .</pre>
+
 <p>It is much more concise to use the XML Schema datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. 
-However, using <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> more information can be expressed, 
-such as "week", "day of week" and "day of year", so in the example, 
-on the first day of the year, and in the first week of the year, and we can also know that 01/01/2006 is Sunday and the month is January. 
-Since, each field of <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> is separate it is easier to extract the value of some fields 
-for the later use and easier to reason about.</p>
-<p>The <code><a href="#time:timeZone">:timeZone</a></code> property points to a definition of US Eastern Standard Time. </p>
+However, using <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> more information can be included directly in a message, such as the "week", "day of week" and "day of year". 
+In the example we can also see that 12/04/2017 is a Wednesday, the month is April, it is the 102<sup>nd</sup> day of the year, and in the 15<sup>th</sup> week of the year. 
+Since each field of <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> is separate no computation is required to get the values of these fields for use in reasoning.</p>
+<p>The <code><a href="#time:timeZone">:timeZone</a></code> property points to a definition of Australian Eastern Standard Time. </p>
 </section>
 
 <section id="different-TRS">
@@ -3306,7 +3495,7 @@ OrdinaryMail) can be defined similarly.</p>
         <ul>
           <li><code><a href="#time:ProperInterval">:ProperInterval</a></code>
             <ul>
-              <li><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code></li>
+              <li><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> (<i>deprecated</i>)</li>
             </ul>
           </li>
         </ul>
@@ -3474,19 +3663,15 @@ OrdinaryMail) can be defined similarly.</p>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
     </tr>
     <tr>
-      <td><code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code></td>
+      <td><code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code> (<i>deprecated</i>)</td>
       <td><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code></td>
       <td><code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code></td>
     </tr>
-
-    <!--
     <tr>
       <td><code><a href="#time:xsdDateTime">:xsdDateTime</a></code> (<i>deprecated</i>)</td>
       <td><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code></td>
       <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code></td>
     </tr>
--->
-
     <tr>
       <td><code><a href="#time:inTemporalPosition">:inTemporalPosition</a></code></td>
       <td><code><a href="#time:Instant">:Instant</a></code></td>
@@ -3503,7 +3688,7 @@ OrdinaryMail) can be defined similarly.</p>
       <td><code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code></td>
     </tr>
     <tr>
-      <td><code><a href="#time:inXSDDateTime">:inXSDDate</a></code></td>
+      <td><code><a href="#time:inXSDDate">:inXSDDate</a></code></td>
       <td><code><a href="#time:Instant">:Instant</a></code></td>
       <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#date">xsd:date</a></code></td>
     </tr>
@@ -3513,7 +3698,7 @@ OrdinaryMail) can be defined similarly.</p>
       <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code></td>
     </tr>
     <tr>
-      <td><code><a href="#time:inXSDDateTime">:inXSDDateTimeStamp</a></code></td>
+      <td><code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code></td>
       <td><code><a href="#time:Instant">:Instant</a></code></td>
       <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code></td>
     </tr>
@@ -3535,37 +3720,37 @@ OrdinaryMail) can be defined similarly.</p>
     <tr>
       <td><code><a href="#time:years">:years</a></code></td>
       <td><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
-      <td><code><a href="#time:Number">:Number</a></code></td>
+	  <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:months">:months</a></code></td>
       <td><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
-      <td><code><a href="#time:Number">:Number</a></code></td>
+	  <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:weeks">:weeks</a></code></td>
       <td><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
-      <td><code><a href="#time:Number">:Number</a></code></td>
+	  <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:days">:days</a></code></td>
       <td><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
-      <td><code><a href="#time:Number">:Number</a></code></td>
+	  <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:hours">:hours</a></code></td>
       <td><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
-      <td><code><a href="#time:Number">:Number</a></code></td>
+	  <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:minutes">:minutes</a></code></td>
       <td><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
-      <td><code><a href="#time:Number">:Number</a></code></td>
+	  <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:seconds">:seconds</a></code></td>
       <td><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
-      <td><code><a href="#time:Number">:Number</a></code></td>
+	  <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:numericPosition">:numericPosition</a></code></td>
@@ -3671,11 +3856,12 @@ The principal technical changes are as follows: </p>
   <li>the property <code><a href="#time:hasTRS">:hasTRS</a></code> enables time values to be associated with a temporal reference system, represented by a new ('stub') class <code><a href="#time:TRS">:TRS</a></code></li>
   <li><code><a href="#time:TimePosition">:TimePosition</a></code> and <code><a href="#time:Duration">:Duration</a></code> are new classes to enable position or duration to be described using a number or nominal value </li>
   <li>the (super-)classes <code><a href="#time:TemporalPosition">:TemporalPosition</a></code> and <code><a href="#time:TemporalDuration">:TemporalDuration</a></code> are introduced as roots of the position and duration class hierarchies</li>
-  <li><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> a subclass of <code><a href="#time:TemporalDuration">:TemporalDuration</a></code></li>
+  <li><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a subclass of <code><a href="#time:TemporalDuration">:TemporalDuration</a></code></li>
   <li><code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code> added, and <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code> deprecated</li>
   <li><code><a href="#time:intervalIn">:intervalIn</a></code> and <code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> relations added</li>
   <li>Remove universal domain constraints on <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code>, <code><a href="#time:hasEnd">:hasEnd</a></code> so that temporal instants and durations can be associated to any resource (e.g. an activity or event, or anything else) and not just other temporal entities; introduce additional predicate <code><a href="#time:hasTime">:hasTime</a></code> for the general case </li>
   <li><code>:xsdDateTime</code> deprecated - not practically useful.</li>
+  <li><code>:DateTimeInterval</code> and its properties <code>:hasDateTimeDescription</code> and <code>:xsdDateTime</code> deprecated - difficult/ambiguous encoding, no semantic distinction from <code>ProperInterval</code>.</li>
   <li><code>:Year</code> deprecated</li>
   <li><code>:January</code> deprecated</li>
   <li><code><a href="#time:MonthOfYear">:MonthOfYear</a></code> class and <code><a href="#time:monthOfYear">:monthOfYear</a></code> property added. greg:January-greg:December instances added in a separate graph and namespace.</li>
@@ -3686,67 +3872,22 @@ The principal technical changes are as follows: </p>
 <section class="appendix" id="requirements">
 <h2>Response to Requirements identified in working group analysis</h2>
 <p>A number of requirements relating to Time were identified in the <a href="https://www.w3.org/TR/sdw-ucr/#arTimeOntologyInOWL">Spatial
-Data on the Web Use Cases &amp; Requirements</a>. </p>
+Data on the Web Use Cases &amp; Requirements</a>. This section provides brief descriptions of how these requirements have been resolved. </p>
 <ul>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7 Date, time and duration</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.53 Update datatypes in OWL Time</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#DifferentTimeModels">5.9 Different time models</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#TemporalReferenceSystem">5.48 Temporal reference system</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#NominalTemporalReferences">5.28 Nominal temporal references</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#ValidTime">5.56 Valid time</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#TemporalVagueness">5.49 Temporal vagueness</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#TimeSeries">5.51 Time series</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#SpaceTimeMultiScale">5.39 Space-time multi-scale</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#4DModelSpaceTime">5.22 4D model of space-time</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#Provenance">5.32 Provenance</a></li>
-  <li><a href="https://www.w3.org/TR/sdw-ucr/#MultilingualSupport">5.25 Multilingual support</a></li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7 Date, time and duration</a>: see <a href="#overview">overview</a>, <code><a href="#time:TemporalEntity">time:TemporalEntity</a></code>, <code><a href="#time:TemporalPosition">time:TemporalPosition</a></code>, <code><a href="#time:TemporalDuration">time:TemporalDuration</a></code></li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.53 Update datatypes in OWL Time</a>: see <code><a href="#time:inXSDDateTimeStamp">time:inXSDDateTimeStamp</a></code> and <a href="#Datatypes">Datatypes</a></li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#DifferentTimeModels">5.9 Different time models</a>: see <a href="#trs-clock-calendar">trs-clock-calendar</a>, <code><a href="#time:TRS">time:TRS</a></code>, <code><a href="#time:hasTRS">time:hasTRS</a></code></li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#TemporalReferenceSystem">5.48 Temporal reference system</a>: see <code><a href="#trs-clock-calendar">trs-clock-calendar</a></code>, <code><a href="#time:TRS">time:TRS</a></code>, <code><a href="#time:hasTRS">time:hasTRS</a></code></li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#NominalTemporalReferences">5.28 Nominal temporal references</a>: see <code><a href="#time:TimePosition">time:TimePosition</a></code>, <code><a href="#time:nominalPosition">time:nominalPosition</a></code></li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#ValidTime">5.56 Valid time</a>: not resolved explicitly. A specialization of <code><a href="#time:hasTime">time:hasTime</a></code> can be used</li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#TemporalVagueness">5.49 Temporal vagueness</a>: not addressed explicitly, but <a href="#topology">interval relations</a> single-ended intervals may be used for some cases</li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#TimeSeries">5.51 Time series</a>: out of scope for OWL-Time which is concerned with the representation of the temporal aspects only. <a href="https://www.w3.org/2015/spatial/wiki/Coverages_in_Linked_Data">Coverages in Linked Data</a> provides some support</li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#SpaceTimeMultiScale">5.39 Space-time multi-scale</a>: OWL-Time supports the representation of the tempral properties of things, so may be used as a component of an integrated solution, but the latter is out of scope for this document. </li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#4DModelSpaceTime">5.22 4D model of space-time</a>: OWL-Time supports the representation of time that may be used in 4D applications. In particular the classes <code><a href="#time:Duration">time:Duration</a></code> and <code><a href="#time:TimePosition">time:TimePosition</a></code> support descriptions of time duration as a scaled number, and time position as a time coordinate. </li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#Provenance">5.32 Provenance</a>: individuals from classes in the <code><a href="#time:TemporalEntity">time:TemporalEntity</a></code> hierarchy may be used in the description of activities involved in provenance traces. <code><a href="https://www.w3.org/TR/prov-o/#Activity">prov:Activity</a></code> could itself be modelled as an <code>rdfs:subClassOf</code> of <code><a href="#time:TemporalEntity">time:TemporalEntity</a></code>. Allen's interval algebra described in <a href="#topology">topology</a> can support the description of temporal relationships between activities in a provenance trace. However, these applications have not been explicitly modelled in this document.</li>
+  <li><a href="https://www.w3.org/TR/sdw-ucr/#MultilingualSupport">5.25 Multilingual support</a>: all labels and other annotations in the ontology have correct language tags. Individuals from the classes <code><a href="#time:DayOfWeek">time:DayOfWeek</a></code> and <code><a href="#time:MonthOfYear">time:MonthOfYear</a></code> have labels in several languages in the RDF artefacts. </li>
 </ul>
-<p>The following notes indicate where these have been addressed. (TBC) </p>
-<p class="issue" data-number="64">(Was local Issue 1) Most of the properties defined in the original ontology have global constraints on the domain and range. If the
-<code>rdfs:domain</code> were left unspecified, the properties could be used more widely without undesirable
-entailments. Their use in the context of the classes in the ontology is adequately controlled through guarded
-restrictions (local cardinality constraints) - superseded by ISSUE-65</p>
-<p class="issue" data-number="65">(Was local Issue 2)
-The Time ontology is concerned only with formalizing temporal intervals and instants, and does not include any
-predicates to tie temporal objects to spatial entities or features, or other things. The editors note that
-predicates that concern temporal behaviour and properties will usually be part of an application or associated
-with a community of practice. Nevertheless, there may be some generic predicates that could be conveniently
-provided as part of the generic time ontology. Some may already exist in the ontology (<code><a href="#time:before">:before</a></code>, <code><a href="#time:after">:after</a></code>,
-<code><a href="#time:hasEnd">:hasEnd</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code>, <code><a href="#time:intervalEquals">:intervalEquals</a></code> ) but their <code>rdfs:domain</code> is <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> or <code><a href="#time:ProperInterval">:ProperInterval</a></code>,
-so this may need to be generalized to avoid inappropriate entailments. Else predicates with similar names
-could be provided for linking to other entities. </p>
-<p class="note">The SDWWG requirement <a href="https://www.w3.org/TR/sdw-ucr/#ValidTime">5.56 Valid time</a>
-relates to <a href="https://www.w3.org/2015/spatial/track/issues/65">ISSUE-65</a>.
-</p>
-<p class="issue" data-number="26">(Was local Issue 3)
-Temporal vagueness requirement. <a href="http://www.loc.gov/standards/datetime/pre-submission.html">Extended
-Data/Time Format (EDTF)</a> is a detailed proposal for how to encode temporal vagueness, and some other
-concerns, by extending the <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code> syntax . The editors consider that would be the wrong
-direction since it would make the encoding inconsistent with all XSD-based processors. On the other hand,
-specific RDF properties matching the ones proposed in EDTF could be used to make it amenable to RDF reasoning.
-However, it could be done in a separate namespace. Note that some of the concerns in EDTF are
-already accommodated in OWL-Time (e.g. 'unspecified' appears to only require the timeUnit to be chosen
-appropriately). </p>
-<p class="note">The SDWWG requirement <a href="https://www.w3.org/TR/sdw-ucr/#TemporalVagueness">5.49 Temporal
-vagueness</a> relates to <a href="https://www.w3.org/2015/spatial/track/issues/26">ISSUE-26</a>.
-</p>
-<p class="note">The classes <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code>, <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>, <code><a href="#time:TimePosition">:TimePosition</a></code> address the 'date' and 'time' requirement from <a href="https://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7
-Date, time and duration</a></p>
-<p class="note">The classes <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code>, <code><a href="#time:DurationDescription">:DurationDescription</a></code>, <code><a href="#time:Duration">:Duration</a></code> address the 'duration' requirement from <a href="https://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7
-Date, time and duration</a></p>
-<p class="note">The class <code><a href="#time:TRS">:TRS</a></code> and property <code><a href="#time:hasTRS">:hasTRS</a></code> addresses the following requirements from the SDWWG: <a href="https://www.w3.org/TR/sdw-ucr/#DifferentTimeModels">5.9
-Different time models</a>, <a href="https://www.w3.org/TR/sdw-ucr/#TemporalReferenceSystem">5.48 Temporal
-reference system</a>, <a href="https://www.w3.org/TR/sdw-ucr/#NominalTemporalReferences">5.28 Nominal
-temporal references</a>.</p>
-<p class="issue" data-number="15">(Was local Issue 4)
-Past, present future - this appears to already be supported using capabilities in OWL-Time, but needs to be
-verified. </p>
-<p class="note">The SDWWG requirement <a href="https://www.w3.org/TR/sdw-ucr/#MultilingualSupport">5.25
-Multilingual support</a> relates to the documentation of the ontology. </p>
-<!--        <p class="issue" data-number="66">(Was local Issue 9)
-Should we define a vocabulary for the definition of the other temporal reference system types?
-(Calendar+clock, temporal coordinate reference system). Perhaps as an additional annex to this document,
-alongside the Time Zone resource?</p> -->
+
 </section>
 
 <section id="references">

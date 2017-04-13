@@ -350,6 +350,20 @@ var respecConfig = {
         "title": "Triple Pattern Fragments specification",
         "publisher": "Hydra W3C Community Group",
         "date": "05 January 2017"
+      },
+      "EO-QB": {
+        "authors":["Dmitry Brizhinev", "Sam Toyer", "Kerry Taylor"],
+        "href": "https://www.w3.org/TR/eo-qb/",
+        "title": "Publishing and Using Earth Observation Data with the RDF Data Cube and the Discrete Global Grid System",
+        "publisher": "W3C and OGC",
+        "date": "5 January 2017"
+      },
+      "QB4ST": {
+        "authors":["Rob Atkinson"],
+        "href": "https://www.w3.org/TR/qb4st/",
+        "title": "QB4ST: RDF Data Cube extensions for spatio-temporal components",
+        "publisher": "W3C and OGC",
+        "date": "5 January 2017"
       }
       
     },

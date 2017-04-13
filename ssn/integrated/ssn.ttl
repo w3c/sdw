@@ -42,25 +42,25 @@ ssn: a owl:Ontology , voaf:Vocabulary ;
 
 ## Features of interest and Property
 
-#sosa:FeatureOfInterest
-#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasProperty ; owl:someValuesFrom ssn:Property ] ; # TODO: need resolution, is it ssn:hasProperty, or sosa:hasProperty ?
-#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasProperty ; owl:allValuesFrom ssn:Property ]  . # TODO: need resolution, is it ssn:hasProperty, or sosa:hasProperty ?
+sosa:FeatureOfInterest
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasProperty ; owl:someValuesFrom ssn:Property ] ; 
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasProperty ; owl:allValuesFrom ssn:Property ]  . 
 
 ssn:Property a owl:Class ;
   rdfs:label "Property"@en ;
-  skos:definition """A Quality of a FeatureOfInterest. An aspect of an entity that is intrinsic to and cannot exist without the entity."""@en ;
-#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isPropertyOf ; owl:someValuesFrom sosa:FeatureOfInterest ] ; # TODO: need resolution, see https://www.w3.org/2015/spatial/wiki/Link_between_FeatureOfInterest_and_xxxProperty
+  skos:definition """A quality of a FeatureOfInterest. An aspect of an entity that is intrinsic to and cannot exist without the entity."""@en ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:isPropertyOf ; owl:someValuesFrom sosa:FeatureOfInterest ] ;
   rdfs:isDefinedBy ssn: .
 
-  ssn:hasProperty a owl:ObjectProperty ; # TODO: need resolution, see https://www.w3.org/2015/spatial/wiki/Link_between_FeatureOfInterest_and_xxxProperty
+  ssn:hasProperty a owl:ObjectProperty ; 
     rdfs:label "has property"@en ;
     skos:definition """Relation between a FeatureOfInterest and a Property of that feature."""@en ;
     owl:inverseOf ssn:isPropertyOf ;
     rdfs:isDefinedBy ssn: .
 
-  ssn:isPropertyOf a owl:ObjectProperty ; # TODO: need resolution, see https://www.w3.org/2015/spatial/wiki/Link_between_FeatureOfInterest_and_xxxProperty
+  ssn:isPropertyOf a owl:ObjectProperty , owl:FunctionalProperty ;
     rdfs:label "is property of"@en ;
-    skos:definition """Relation between a FeatureOfInterest and a Property (a Quality observable by a sensor) of that feature."""@en ;
+    skos:definition """Relation between a Property and the FeatureOfInterest it belongs to."""@en ;
     owl:inverseOf ssn:hasProperty ;
     rdfs:isDefinedBy ssn: .
 
@@ -77,8 +77,9 @@ ssn:System a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isHostedBy ; owl:allValuesFrom sosa:Platform ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSubSystem ; owl:allValuesFrom ssn:System ] ;
 #  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasDeployment ; owl:allValuesFrom ssn:Deployment ] ;
-#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasOperatingRange ; owl:allValuesFrom ssn:OperatingRange ] ;
-#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSurvivalRange ; owl:allValuesFrom ssn:SurvivalRange ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasOperatingRange ; owl:allValuesFrom ssn:OperatingRange ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSurvivalRange ; owl:allValuesFrom ssn:SurvivalRange ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSystemCapability ; owl:allValuesFrom ssn:SystemCapability ] ;
   rdfs:isDefinedBy ssn: .
 
   ssn:hasSubSystem a owl:ObjectProperty ;
@@ -99,12 +100,10 @@ sosa:Platform
 sosa:Sensor rdfs:subClassOf ssn:System .
 #  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:someValuesFrom ssn:Sensing ] ;
 #  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:detects ; owl:allValuesFrom ssn:Stimulus ] ;
-#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasMeasurementCapability ; owl:allValuesFrom ssn:MeasurementCapability ] ;
 #  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:observes ; owl:allValuesFrom ssn:Property ] .
 
 sosa:Actuator rdfs:subClassOf ssn:System .
 #  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:someValuesFrom ssn:Acting ] ;
-#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasActuationCapability ; owl:allValuesFrom ssn:ActuationCapability ] ;
 #  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:actsOn ; owl:allValuesFrom ssn:Property ] .
 
 
@@ -118,3 +117,226 @@ sosa:Actuator rdfs:subClassOf ssn:System .
 
 sosa:Result rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isResultOf ; owl:someValuesFrom ???ssn:ProcedureExecutor??? ] ;
 
+
+
+## forProperty, inCondition
+
+ssn:forProperty a owl:ObjectProperty ;
+  rdfs:label "for property"@en ;
+  rdfs:comment "A relation between some aspect of a sensing or actuating entity and a property. Used in conjunction with ofFeature."@en ;
+  skos:example "For example, from a sensor to the properties it can observe, or from a deployment to the properties it was installed to observe.  Also from a system capability to the property the capability is described for."@en ;
+  owl:equivalentProperty ssn:forProperty ;
+  rdfs:isDefinedBy ssn: .
+
+ssn:ofFeature a owl:ObjectProperty ;
+  rdfs:label "of feature"@en ;
+  rdfs:comment "A relation between some aspect of a sensing or actuating entity and a feature. Used in conjunction with forProperty."@en ;
+  skos:example "For example, from a sensor to the features it can observe properties of, or from a deployment to the features it was installed to observe.  Also from a system capability to the feature the capability is described for."@en ;
+  owl:equivalentProperty ssn:ofFeature ;
+  rdfs:isDefinedBy ssn: .
+
+ssn:inCondition a owl:ObjectProperty ;
+  rdfs:label "in condition"@en ;
+  rdfs:comment "Describes the prevailing environmental conditions for SystemCapabilites, OperatingConditions and SurvivalRanges."@en ;
+  skos:example "Used for example to say that a sensor has a particular accuracy in particular conditions."@en ;
+  owl:equivalentProperty ssn:inCondition ;
+  rdfs:isDefinedBy ssn: .
+
+oldssn:Condition a owl:Class ;
+  rdfs:label "Condition"@en ;
+  rdfs:comment "Used to specify ranges for qualities that act as conditions on a system/sensor's operation.  For example, wind speed of 10-60m/s is expressed as a condition linking a quality, wind speed, a unit of measurement, metres per second, and a set of values, 10-60, and may be used as the condition on a SystemProperty, for example, to state that a sensor has a particular accuracy in that condition."@en ;
+  rdfs:subClassOf ssn:Property ;
+  rdfs:isDefinedBy ssn: .
+
+
+## System Capabilities
+
+ssn:hasSystemCapability a owl:ObjectProperty ;
+  rdfs:label "has system capability"@en ;
+  rdfs:comment "Relation from a System to a SystemCapability describing the capabilities of the system."@en ;
+  rdfs:subPropertyOf ssn:hasProperty ;
+  rdfs:subPropertyOf ssn:hasSystemCapability ;
+  rdfs:isDefinedBy ssn: .
+
+  ssn:SystemCapability a owl:Class ;
+    rdfs:label "System Capability"@en ;
+    rdfs:comment """Collects together measurement or actuation properties (accuracy, range, precision, etc) and the environmental conditions in which those properties hold, representing a specification of a system capability in those conditions.
+
+    The conditions specified here are those that affect the measurement or actuation properties, while those in OperatingRange represent the system's standard operating conditions, including conditions that don't affect the observations or the actuations."""@en ;
+    rdfs:subClassOf ssn:Property ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:forProperty ; owl:allValuesFrom ssn:Property ] ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSystemProperty ; owl:allValuesFrom ssn:SystemProperty ] ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:inCondition ; owl:allValuesFrom ssn:Condition ] ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:hasSystemProperty a owl:ObjectProperty ;
+    rdfs:label "has system property"@en ;
+    rdfs:comment "Relation from a SystemCapability to a SystemProperty such as accuracy (see notes for SystemCapability)."@en ;
+    rdfs:subPropertyOf ssn:hasProperty ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:SystemProperty a owl:Class ;
+    rdfs:label "System Property"@en ;
+    rdfs:comment "An identifiable and observable characteristic of a sensor's observations or ability to make observations, or of an actuator's actuations or ability to make actuations."@en ;
+    rdfs:subClassOf ssn:Property ;
+    rdfs:isDefinedBy ssn: .
+
+    ssn:MeasurementRange a owl:Class ;
+      rdfs:label "Measurement Range"@en ;
+      rdfs:comment "The set of values that the sensor can return as the result of an observation under the defined conditions with the defined system properties.  If no conditions are specified or the conditions do not specify a range for the observed qualities, the measurement range is to be taken as the condition for the observed qualities."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:ActuationRange a owl:Class ;
+      rdfs:label "Actuation Range"@en ;
+      rdfs:comment "The range of quality values that can be the result of an actuation under the defined conditions with the defined system properties.  If no conditions are specified or the conditions do not specify a range for the actuated qualities, the actuation range is to be taken as the condition for the actuatable qualities."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:Accuracy a owl:Class ;
+      rdfs:label "Accuracy"@en ;
+      rdfs:comment "The closeness of agreement between the result of an observation (resp. the command of an actuation) and the true value of the observed quality (resp. of the actuated quality)."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:DetectionLimit a owl:Class ;
+      rdfs:label "Detection Limit"@en ;
+      rdfs:comment "An observed value for which the probability of falsely claiming the absence of a component in a material is beta, given a probability alpha of falsely claiming its presence."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:Drift a owl:Class ;
+      rdfs:label "Drift"@en ;
+      rdfs:comment "As a sensor property: a continuous or incremental change in the reported values of observations over time for an unchanging quality. As an actuator property: a continuous or incremental change in the true value of the actuated quality over time for an unchanging command."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:Frequency a owl:Class ;
+      rdfs:label "Frequency"@en ;
+      rdfs:comment "The smallest possible time between one observation or actuation and the next."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:Latency a owl:Class ;
+      rdfs:label "Latency"@en ;
+      rdfs:comment "The time between a request for an observation (resp. actuation) and the sensor providing a result (resp. the actuator operating the actuation)."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:Precision a owl:Class ;
+      rdfs:label "Precision"@en ;
+      rdfs:comment "The closeness of agreement between replicate observations on an unchanged or similar quality value: i.e., a measure of a sensor's ability to consistently reproduce an observation."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:Resolution a owl:Class ;
+      rdfs:label "Resolution"@en ;
+      rdfs:comment "As a sensor property: the smallest difference in the value of a quality being observed that would result in perceptably different values of observation results. As an actuator property: the smallest difference in the value of an actuation command that would result in a value change of the quality being observed."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:Repeatability a owl:Class ;
+      rdfs:label "Repeatability"@en ;
+      rdfs:comment "The closeness of agreement between replicate actuations for an unchanged or similar command: i.e., a measure of an actuator's ability to consistently reproduce an actuation."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:ResponseTime a owl:Class ;
+      rdfs:label "Response Time"@en ;
+      rdfs:comment "As a sensor property: the time between a (step) change in the value of an observed quality and a sensor (possibly with specified error) 'settling' on an observed value. As an actuator property: the time between a (step) change in the command of an actuator and a change in the actuated quality."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:Selectivity a owl:Class ;
+      rdfs:label "Selectivity"@en ;
+      rdfs:comment "As a sensor property: Selectivity is a property of a sensor whereby it provides observed values for one or more qualities such that the values of each quality are independent of other qualities in the phenomenon, body, or substance being investigated. As an actuator property: Selectivity is a property of an actuator whereby it actuates one or more qualities such as the values of each quality are independent of other qualities in the feature of interest being actuated."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:Sensitivity a owl:Class ;
+      rdfs:label "Sensitivity"@en ;
+      rdfs:comment "Sensitivity is the quotient of the change in a result of sensor and the corresponding change in a value of a quality being observed."@en ;
+      rdfs:subClassOf ssn:SystemProperty ;
+      rdfs:isDefinedBy ssn: .
+
+
+## Operating Ranges
+
+ssn:hasOperatingRange a owl:ObjectProperty ;
+  rdfs:label "has operating range"@en ;
+  rdfs:comment "Relation from a System to an OperatingRange describing the normal operating environment of the System."@en ;
+  rdfs:subPropertyOf ssn:hasProperty ;
+  rdfs:isDefinedBy ssn: .
+
+  ssn:OperatingRange a owl:Class ;
+    rdfs:label "Operating Range"@en ;
+    rdfs:comment "The environmental conditions and characteristics of a system's normal operating environment.  Can be used to specify for example the standard environmental conditions in which the sensor is expected to operate (a Condition with no OperatingProperty), or how the environmental and other operating properties relate: i.e., that the maintenance schedule or power requirements differ according to the conditions."@en ;
+    rdfs:subClassOf ssn:Property ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasOperatingProperty ; owl:allValuesFrom ssn:OperatingProperty ] ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:inCondition ; owl:allValuesFrom ssn:Condition ] ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:hasOperatingProperty a owl:ObjectProperty ;
+    rdfs:label "has operating property"@en ;
+    rdfs:comment "Relation from an OperatingRange to a Property such as battery lifetime."@en ;
+    rdfs:subPropertyOf ssn:hasProperty ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:OperatingProperty a owl:Class ;
+    rdfs:label "Operating Property"@en ;
+    rdfs:comment "An identifiable characteristic of the environmental and other conditions in which the system is intended to operate.  May include power ranges, power sources, standard configurations, attachments and the like."@en ;
+    rdfs:subClassOf ssn:Property ;
+    rdfs:isDefinedBy ssn: .
+
+    ssn:MaintenanceSchedule a owl:Class ;
+      rdfs:label "Maintenance Schedule"@en ;
+      rdfs:comment "Schedule of maintenance for a system in the specified conditions."@en ;
+      rdfs:subClassOf ssn:OperatingProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:OperatingPowerRange a owl:Class ;
+      rdfs:label "Operating Power Range"@en ;
+      rdfs:comment "Power range in which system is expected to operate."@en ;
+      rdfs:subClassOf ssn:OperatingProperty ;
+      rdfs:isDefinedBy ssn: .
+
+
+## Survival Ranges
+
+ssn:hasSurvivalRange a owl:ObjectProperty ;
+  rdfs:label "has survival range"@en ;
+  rdfs:comment "Relation from a System to a SurvivalRange."@en ;
+  rdfs:subPropertyOf ssn:hasProperty ;
+  rdfs:isDefinedBy ssn: ;
+
+  ssn:SurvivalRange a owl:Class ;
+    rdfs:label "Survival Range"@en ;
+    rdfs:comment "The conditions a system can be exposed to without damage: e.g., the system continues to operate as defined using SystemCapability.  If, however, the SurvivalRange is violated, the system is 'damaged' and SystemCapability specifications may no longer hold."@en ;
+    rdfs:subClassOf ssn:Property ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSurvivalProperty ; owl:allValuesFrom ssn:SurvivalProperty ] ;
+    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:inCondition ; owl:allValuesFrom ssn:Condition ] ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:hasSurvivalProperty a owl:ObjectProperty ;
+    rdfs:label "has survival property"@en ;
+    rdfs:comment "Relation from a SurvivalRange of a System to a Property describing the survival range of the system. For example, to the temperature range that a system can withstand before being considered damaged."@en ;
+    rdfs:subPropertyOf ssn:hasProperty ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:SurvivalProperty a owl:Class ;
+    rdfs:label "Survival Property"@en ;
+    rdfs:comment "An identifiable characteristic that represents the extent of the system's useful life.  Might include for example total battery life or number of recharges, or, for sensors that are used only a fixed number of times, the number of observations that can be made before the sensing capability is depleted."@en ;
+    rdfs:subClassOf ssn:Property ;
+    rdfs:isDefinedBy ssn: .
+
+    ssn:SystemLifetime a owl:Class ;
+      rdfs:label "System Lifetime"@en ;
+      rdfs:comment "Total useful life of a system (expressed as total life since manufacture, time in use, number of operations, etc.)."@en ;
+      rdfs:subClassOf ssn:SurvivalProperty ;
+      rdfs:isDefinedBy ssn: .
+
+    ssn:BatteryLifetime a owl:Class ;
+      rdfs:label "Battery Lifetime"@en ;
+      rdfs:comment "Total useful life of a battery."@en ;
+      rdfs:subClassOf ssn:SurvivalProperty ;
+      rdfs:isDefinedBy ssn: .
