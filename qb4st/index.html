@@ -7,6 +7,13 @@
     <script  class="remove"  src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
     <script  class="remove"  src="config.js"></script>
     <style  type="text/css">
+/* Force W3C logo to site side by side with OGC logo */
+.head img[src*="logos/W3C"] {
+  display: inherit !important;
+}
+.head a:hover > img[src*='ogc'] {
+  opacity: 0.8;
+}
 
  /* Styles to replicate key LODS styles */
 
@@ -78,7 +85,7 @@
 		
 <section id="motivation">
 	<h3>Motivation</h3>
-      <p>The motivation for <abbr title="RDF Data Cube extensions for spatio-temporal components">QB4ST</abbr> arises from identification of Use Case Requirements [[SDW-UCR]] and Best Practices [[SDW-BP]] by the Spatial Data on the Web Working Group. The Data on the Web Best Practices [[DWBP]] indicate re-use of common vocabularies: <a href="https://www.w3.org/TR/dwbp/#ReuseVocabularies">BP15: Reuse vocabularies, preferably standardized ones</a>. As far as could be ascertained no such vocabularies existed to support key UCRs identified that require explicit metadata about spatio-temporal aspects of data: <a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">CRS Definition</a>, <a href="http://www.w3.org/TR/sdw-ucr/#DeterminableCRS">Determinable CRS</a>, <a href="https://www.w3.org/TR/sdw-ucr/#QualityPerSample">Quality Per Sample</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial Metadata</a>, <a href="http://www.w3.org/TR/sdw-ucr/#GeoreferencedData">GeoReferenced Data</a> and <a href="http://www.w3.org/TR/sdw-ucr/#MachineToMachine">Machine To Machine</a>. Two sets of vocabularies are required for each case - one to describe the aspect of the data being expressed, and another for the relationships (predicates) by which such descriptions may be attached to data objects. <abbr title="RDF Data Cube extensions for spatio-temporal components">QB4ST</abbr> is primarily aimed at providing canonical predicates to include metadata about data elements with spatial and/or temporal characteristics.</p>
+      <p>The motivation for <abbr title="RDF Data Cube extensions for spatio-temporal components">QB4ST</abbr> arises from identification of Use Case Requirements [[SDW-UCR]] and Best Practices [[SDW-BP]] by the Spatial Data on the Web Working Group. The Data on the Web Best Practices [[DWBP]] indicate re-use of common vocabularies: <a href="https://www.w3.org/TR/dwbp/#ReuseVocabularies">BP15: Reuse vocabularies, preferably standardized ones</a>. As far as could be ascertained no such vocabularies existed to support key UCRs identified that require explicit metadata about spatio-temporal aspects of data: <a href="https://www.w3.org/TR/sdw-ucr/#CRSDefinition">CRS Definition</a>, <a href="https://www.w3.org/TR/sdw-ucr/#DeterminableCRS">Determinable CRS</a>, <a href="https://www.w3.org/TR/sdw-ucr/#QualityPerSample">Quality Per Sample</a>, <a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial Metadata</a>, <a href="https://www.w3.org/TR/sdw-ucr/#GeoreferencedData">GeoReferenced Data</a> and <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Machine To Machine</a>. Two sets of vocabularies are required for each case - one to describe the aspect of the data being expressed, and another for the relationships (predicates) by which such descriptions may be attached to data objects. <abbr title="RDF Data Cube extensions for spatio-temporal components">QB4ST</abbr> is primarily aimed at providing canonical predicates to include metadata about data elements with spatial and/or temporal characteristics.</p>
     </section></section>
 	
 <section id="namespaces">
@@ -143,7 +150,7 @@
       <h3>The RDF Data Cube</h3>
       <p>The RDF Data Cube [[VOCAB-DATA-CUBE]] is an existing standard for representing data as RDF.</p>
          <p>It is derived from the traditions of Statistical Data Metadata Exchange [[SDMX]], and is typically used for data that is associated with statistical regions (e.g. government jurisdictions).
-         It provides a canonical mechanism for metadata binding the components of a datacube to a range defined by a set of coded values, using the SKOS vocabulary. It also provides for a generalized "AttributeProperty" that can contain additional information about an "Attachable" - i.e. a Dataset, a subset (slice) or an observation.  Individual components (such as measures and dimensions) are not included in this notion, so it is not directly possible to define the reference system for each component individually, and there is no canonical representation of reference systems other than "codelists."
+         It provides a canonical mechanism for metadata binding the components of a datacube to a range defined by a set of coded values, using the SKOS vocabulary. It also provides for a generalized "AttributeProperty" that can contain additional information about an "Attachable" - i.e. a Dataset, a subset (slice) or an observation.  Individual components (such as measures and dimensions) are not included in this notion, so it is not directly possible to define the reference system for each component individually, and there is no canonical representation of reference systems other than "codelists."</p>
 	</section>
 	<section id="SDMX">
 		<h2>SDMX Dimensions</h2>
@@ -177,10 +184,10 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
           <h2>Spatial Concepts</h2>
           <p>There is currently no foundation ontology equivalent to OWL-Time for spatial concepts.  Although the GeoSPARQL [[GeoSPARQL]] specification includes some concepts within the larger scope of defining functions to extend the SPARQL language. QB4ST will thus provide placeholders for necessary concepts that can be declared equivalent to the spatial concepts in use within an implementation.</p>
 		  <p class="issue" data-number="129">Insert appropriate form of reference to SDW work if available to fill this gap</p>
+  </section>
 	<section  id="OLAP" >
           <h2>OLAP Concepts - Dimension Levels, functions</h2>
-          <p>Online Analytical Processing (OLAP) provides the underlying meta-model for dimensional data, and a richer set of concepts including how dimensions are "rolled-up" with functions that aggregate data. At least two attempts have been made recently to characterise these general concepts using an ontology, [[QB4OLAP]] and [[XKOS]]. These do not currently have a formal status, and so its not appropriate to directly reuse thes vocabularies within QB4ST, however it is also noted that this is a more general set of issues, and is thus out of scope for QB4ST. Application may choose the model and vocabulary for these aspects and combine with QB4ST elements as required. What has been provided is a simple model based on the SKOS semantics already adopted by [[VOCAB-DATA-CUBE]] that will allow at least declaration of structural hierarchies to be provide, whilst leaving the semantics of the relationships in that structure to more specialised models.</p>
->	
+          <p>Online Analytical Processing (OLAP) provides the underlying meta-model for dimensional data, and a richer set of concepts including how dimensions are "rolled-up" with functions that aggregate data. At least two attempts have been made recently to characterise these general concepts using an ontology, [[QB4OLAP]] and [[XKOS]]. These do not currently have a formal status, and so its not appropriate to directly reuse these vocabularies within QB4ST, however it is also noted that this is a more general set of issues, and is thus out of scope for QB4ST. Application may choose the model and vocabulary for these aspects and combine with QB4ST elements as required. What has been provided is a simple model based on the SKOS semantics already adopted by [[VOCAB-DATA-CUBE]] that will allow at least declaration of structural hierarchies to be provide, whilst leaving the semantics of the relationships in that structure to more specialised models.</p>	
     </section>
 </section>
 
@@ -215,7 +222,7 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 </section>
 <section id="nested">
 			<h2>Identification of nested spatial elements</h2>
-			<p>In much the same way as skos:Concepts may have defined narrower terms, spatial references may be nested, for example a country may be divided into a series of administrative units, or a grid may be broken into a finer grid. Determining the nature of such relationships may be possible by analysing the declared types designated by the rdfs:range of qb:ComponentProperty elements - however this requires both dereferencing these and the ability to interpret how such nesting relationships are described, if in fact such information is available. There is thus a requirement to provide a simple declaration of sub-division relationships between the ranges of related spatial components.
+			<p>In much the same way as skos:Concepts may have defined narrower terms, spatial references may be nested, for example a country may be divided into a series of administrative units, or a grid may be broken into a finer grid. Determining the nature of such relationships may be possible by analysing the declared types designated by the rdfs:range of qb:ComponentProperty elements - however this requires both dereferencing these and the ability to interpret how such nesting relationships are described, if in fact such information is available. There is thus a requirement to provide a simple declaration of sub-division relationships between the ranges of related spatial components.</p>
 </section>
 </section>
 
@@ -223,7 +230,7 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 	<h1>Vocabulary Reference</h1>
 	<section id="SpatialConcepts">
 	<h2>Spatial Concepts</h2>
-	<p>QB4ST defines a number of basic concepts that could be defined by standard vocabularies with broader scope, but which are not currently available. These can be expected to be aligned (e.g. using <code>owl:equivalentClass</code>) with future standards.<p>
+	<p>QB4ST defines a number of basic concepts that could be defined by standard vocabularies with broader scope, but which are not currently available. These can be expected to be aligned (e.g. using <code>owl:equivalentClass</code>) with future standards.</p>
 	 	<div class="example"><div class="example-title">Spatial Concepts</div>
 	 <pre>
 	
@@ -494,7 +501,7 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 	<h2>Defining Hierarchies of component specialisations</h2>
 	 <p>A significant challenge in using RDF Data Cube is that many related dimensions and measures may be defined, but there is no obvious way of determing the relationships without potentially dereferencing and reasoning over very large, possibly dynamic, code lists. This is problematic for many reasons, including that spatial features may be regarded as <code>skos:Concept</code> to be consistent with the semantics of RDF Data Cube, but not actually dereferenceable in this form.</p>
 	 <p>The approach chosen is to use SKOS semantics to allow such declarations of hierarchy for convenience, leaving the details of the relationship between hierarchy levels to additional vocabularies, such as [[QB4OLAP]] or [[XKOS]], or to the underlying model of the Classes referenced by the rdfs:range.
-	 Note that the use of <code>skos:broader</code> relationship preserves the immediate parent-child relationship, whereas <code>A rdfs:subClassOf B . B rdfs:subClassOf C . </code> also entails <code>A rdfs:subClassOf A . A rdfs:subClassOf C . </code>, thus potentially losing information about which subject (A, B or C) is the immediate parent of A.<p>
+	 Note that the use of <code>skos:broader</code> relationship preserves the immediate parent-child relationship, whereas <code>A rdfs:subClassOf B . B rdfs:subClassOf C . </code> also entails <code>A rdfs:subClassOf A . A rdfs:subClassOf C . </code>, thus potentially losing information about which subject (A, B or C) is the immediate parent of A.</p>
 	 
 	 	<div class="example"><div class="example-title">Refinement of semantics of a well-known component using simple SKOS terms.</div>
 
@@ -549,6 +556,7 @@ sdmx-dimension:refPeriod a qb:DimensionProperty, rdf:Property ;
 		<p class="issue" data-number="136">Add a section on DGGS or other grid based SRS - or can this be done as a separate QB4ST application note? - RESOLVED - cannot deal with DGGS at this stage</p>
 -->
 
+</section>
 </section>
 
  <section class="appendix" id="SDMXextensions">
