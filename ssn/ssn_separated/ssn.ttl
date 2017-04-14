@@ -1,3 +1,7 @@
+# baseURI: http://www.w3.org/ns/ssn/
+# imports: http://www.w3.org/ns/sosa/
+# prefix: ssn
+
 @prefix : <http://www.w3.org/ns/ssn/> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
@@ -16,17 +20,21 @@
 @base <http://www.w3.org/ns/ssn/> .
 
 <http://www.w3.org/ns/ssn/> rdf:type owl:Ontology , voaf:Vocabulary ;
-                             dc:creator "W3C Spatial Data on the Web Working Group"^^xsd:string ;
+                             dc:creator "W3C/OGC Spatial Data on the Web Working Group"^^xsd:string ;
                              dct:modified "2017-04-17" ;
-                             owl:versionInfo "New modular version of the SSN ontology."^^xsd:string ;
-                             rdfs:comment "Please report any errors to the W3C Spatial Data on the Web Working Group via the SDW WG Public List public-sdw-wg@w3.org"^^xsd:string ;
-                             rdfs:seeAlso <https://www.w3.org/2015/spatial/wiki/Semantic_Sensor_Network_Ontology> ;
+                             owl:versionInfo ""^^xsd:string ;
+                             skos:note "Please report any errors to the W3C Spatial Data on the Web Working Group via the SDW WG Public List public-sdw-wg@w3.org"^^xsd:string ;
+                             rdfs:seeAlso "https://www.w3.org/2015/spatial/wiki/Semantic_Sensor_Network_Ontology" ;
                              dc:title "Semantic Sensor Network Ontology" ;
                              dc:identifier "http://www.w3.org/ns/ssn" ;
                              dct:license <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
-                             rdfs:comment "This ontology is developed by the W3C Semantic Sensor Networks Incubator Group (SSN-XG). The concepts and structure of the ontology were discussed in the group's meetings and on the mailing list. For more information on the group's activities see: http://www.w3.org/2005/Incubator/ssn/"^^xsd:string ;
+                             owl:versionInfo """New modular version of the SSN ontology. 
+
+                             This ontology was originally developed in 2009-2011 by the W3C Semantic Sensor Networks Incubator Group (SSN-XG). For more information on the group's activities see: http://www.w3.org/2005/Incubator/ssn/. The ontology was revised and modularized in 2015-2017 by the W3C/OGC Spatial Data on the Web Working Group, see: https://www.w3.org/2015/spatial/wiki/Semantic_Sensor_Network_Ontology. 
+
+                             In particular, (a) the scope is extended to include actuation and sampling; (b) the core concepts and properties are factored out into the SOSA ontology. The SSN ontology imports SOSA and adds formal axiomatization consistent with the text definitions in SOSA, and adds classes and properties to accommodate the scope of the original SSN ontology. """^^xsd:string ;
                              rdfs:comment "This ontology describes sensors, actuators and observations, and related concepts. It does not describe domain concepts, time, locations, etc. these are intended to be included from other ontologies via OWL imports."^^xsd:string ;
-                             dct:created "2017-04-17" ;
+                             dct:created "2016" ;
   vann:preferredNamespacePrefix "ssn" ;
   vann:preferredNamespaceUri "http://www.w3.org/ns/ssn/" ;
   owl:imports sosa: .
@@ -200,7 +208,7 @@ ssn:inCondition rdf:type owl:ObjectProperty ;
 
 ###  http://www.w3.org/ns/ssn/inDeployment
 ssn:inDeployment rdf:type owl:ObjectProperty ;
-                 rdfs:comment "Relation between a Platform and a Deployment, meaning that the subject was used as a Platform for a System in the particular Deployment. "@en ;
+                 rdfs:comment "Relation between a Platform and a Deployment, meaning that the subject was used as a Platform for a System in the particular Deployment."@en ;
                  skos:example "For example, a relation between a buoy and a deployment identifier."@en ;
                  rdfs:isDefinedBy ssn: ;
                  rdfs:label "in deployment"@en .
@@ -502,10 +510,12 @@ sosa:Procedure rdf:type owl:Class ;
 
 ###  http://www.w3.org/ns/ssn/Property
 ssn:Property rdf:type owl:Class ;
+
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:isPropertyOf ; owl:someValuesFrom sosa:FeatureOfInterest ] ; 
              rdfs:comment "A quality of a FeatureOfInterest. An aspect of an entity that is intrinsic to and cannot exist without the entity."@en ;
              rdfs:isDefinedBy ssn: ;
              rdfs:label "Property"@en .
+
 
 ###  http://www.w3.org/ns/sosa/ObservableProperty
 sosa:ObservableProperty rdfs:subClassOf ssn:Property ;
@@ -532,6 +542,7 @@ sosa:Sensor rdf:type owl:Class ;
                 rdfs:subClassOf ssn:System ;
                 rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:someValuesFrom sosa:Procedure ] ;
                 rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:detects ; owl:allValuesFrom ssn:Stimulus ] ;
+                rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasMeasurementCapability ; owl:allValuesFrom ssn:MeasurementCapability ] ;
                 rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:observes ; owl:allValuesFrom sosa:ObservableProperty ] ;
            dc:source """skos:exactMatch 'sensor' [SensorML OGC-0700]
                         http://www.opengeospatial.org/standards/sensorml 
