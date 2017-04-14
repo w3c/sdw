@@ -329,13 +329,55 @@ ssn:System a owl:Class ;
 
 ## Deployment
 
+ssn:DeploymentRelatedProcedure a owl:Class ;
+  rdfs:label "Deployment-related Procedure"@en ;
+  skos:definition "Class to group all the various Procedures related to Deployment."@en ;
+  rdfs:comment "Class to group all the various Procedures related to Deployment."@en ;
+  skos:example "For example, as well as Deployment, installation, maintenance, deployment of further Sensors and the like would all be classified under DeploymentRelatedProcedure."@en ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deploymentProcedurePart ; owl:allValuesFrom ssn:DeploymentRelatedProcedure ] ;
+  rdfs:isDefinedBy ssn: .
+
+  ssn:deploymentProcedurePart a owl:ObjectProperty ;
+    rdfs:label "deployment procedure part"@en ;
+    skos:definition "Relation between a DeploymentRelatedProcedure and its constituent Procedures"@en ;
+    rdfs:comment "Relation between a DeploymentRelatedProcedure and its constituent Procedures"@en ;
+    rdfs:isDefinedBy ssn: .
+
 ssn:Deployment a owl:Class ;
   rdfs:label "Deployment"@en ;
-  skos:definition "The ongoing process of entities (for the purposes of this ontology, mainly Sensors or Actuators) deployed for a particular purpose. For example, a particular Sensor deployed on a Platform, or a whole network of Sensors deployed for an Observation campaign. The Deployment may have sub-Procedures, such as installation, maintenance, addition, and de-comissioning and removal Procedures."@en ;
-  rdfs:comment "The ongoing process of entities (for the purposes of this ontology, mainly Sensors or Actuators) deployed for a particular purpose. For example, a particular Sensor deployed on a Platform, or a whole network of Sensors deployed for an Observation campaign. The Deployment may have sub-Procedures, such as installation, maintenance, addition, and de-comissioning and removal Procedures."@en ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:deployedOnPlatform ; owl:allValuesFrom sosa:Platform ] ;
+  skos:definition "The ongoing Procedure of entities (for the purposes of this ontology, mainly Sensors or Actuators) deployed for a particular purpose."@en ;
+  rdfs:comment "The ongoing Procedure of entities (for the purposes of this ontology, mainly Sensors or Actuators) deployed for a particular purpose."@en ;
+  skos:example "For example, a particular Sensor deployed on a Platform, or a whole network of Sensors deployed for an Observation campaign. The Deployment may have sub-Procedures, such as installation, maintenance, addition, and de-comissioning and removal Procedures."@en ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deployedOnPlatform ; owl:allValuesFrom sosa:Platform ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deployedSystem ; owl:allValuesFrom ssn:System ] ;
   rdfs:isDefinedBy ssn: .
+
+  ssn:deployedOnPlatform a owl:ObjectProperty ;
+    rdfs:label "deployed on platform"@en ;
+    skos:definition "Relation between a Deployment and the Platform on which the system is deployed."@en ;
+    rdfs:comment "Relation between a Deployment and the Platform on which the system is deployed."@en ;
+    owl:inverseOf ssn:inDeployment ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:inDeployment a owl:ObjectProperty ;
+    rdfs:label "in deployment"@en ;
+    skos:definition "Relation between a Platform and a Deployment, meaning that the subject was used as a Platform for a System in the particular Deployment. "@en ;
+    rdfs:comment "Relation between a Platform and a Deployment, meaning that the subject was used as a Platform for a System in the particular Deployment. "@en ;
+    skos:example "For example, a relation between a buoy and a deployment identifier."@en ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:deployedSystem a owl:ObjectProperty ;
+    rdfs:label "deployed system"@en ;
+    skos:definition "Relation between a Deployment and the deployed System."@en ;
+    rdfs:comment "Relation between a Deployment and the deployed System."@en ;
+    owl:inverseOf ssn:hasDeployment ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:hasDeployment a owl:ObjectProperty ;
+    rdfs:label "has deployment"@en ;
+    skos:definition "Relation between a System and a Deployment, recording that the System was deployed in that Deployment."@en ;
+    rdfs:comment "Relation between a System and a Deployment, recording that the System was deployed in that Deployment."@en ;
+    rdfs:isDefinedBy ssn: .
 
 
 ## forProperty, inCondition
@@ -343,13 +385,13 @@ ssn:Deployment a owl:Class ;
 ssn:forProperty a owl:ObjectProperty ;
   rdfs:label "for property"@en ;
   rdfs:comment "A relation between some aspect of a sensing or actuating entity and a property. Used in conjunction with ofFeature."@en ;
-  skos:example "For example, from a sensor to the properties it can observe, or from a deployment to the properties it was installed to observe.  Also from a system capability to the property the capability is described for."@en ;
+  skos:example "For example, from a sensor to the properties it can observe, or from a deployment to the properties it was installed to observe.  Also from a SystemCapability to the property the capability is described for."@en ;
   rdfs:isDefinedBy ssn: .
 
 ssn:ofFeature a owl:ObjectProperty ;
   rdfs:label "of feature"@en ;
   rdfs:comment "A relation between some aspect of a sensing or actuating entity and a feature. Used in conjunction with forProperty."@en ;
-  skos:example "For example, from a sensor to the features it can observe properties of, or from a deployment to the features it was installed to observe.  Also from a system capability to the feature the capability is described for."@en ;
+  skos:example "For example, from a sensor to the features it can observe properties of, or from a deployment to the features it was installed to observe.  Also from a SystemCapability to the feature the capability is described for."@en ;
   rdfs:isDefinedBy ssn: .
 
 ssn:inCondition a owl:ObjectProperty ;

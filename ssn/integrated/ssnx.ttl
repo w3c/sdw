@@ -43,7 +43,7 @@ time:TemporalEntity a owl:Class .
   skos:note """New modular version of the SSN ontology independent of DUL."""@en ;
   skos:note """Please report any errors to the Semantic Sensor Network Incubator Activity via the public W3C list public-xg-ssn@w3.org"""@en ;
   dcterms:source """This ontology is developed by the W3C Semantic Sensor Networks Incubator Group (SSN-XG). The concepts and structure of the ontology were discussed in the group's meetings and on the mailing list. For more information on the group's activities see: http://www.w3.org/2005/Incubator/ssn/"""@en ;
-  rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/> .
+  rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/> ;
   owl:imports ssn: .
 
 
@@ -476,7 +476,7 @@ oldssn:System a owl:Class ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Device#Device> ;
     owl:deprecated true ;
     rdfs:subClassOf sosa:Platform ;
-    rdfs:subClassOf sosa:System ;
+    rdfs:subClassOf ssn:System ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:SensingDevice a owl:Class ;
@@ -492,6 +492,24 @@ oldssn:System a owl:Class ;
 
 # Deployment
 
+oldssn:DeploymentRelatedProcess a owl:Class ;
+  rdfs:label "Deployment-related Process"@en ;
+  skos:definition "Class to group all the various Processes related to Deployment.  For example, as well as Deployment, installation, maintenance, deployment of further sensors and the like would all be classified under DeploymentRelatedProcess."@en ;
+  dcterms:source <http://www.w3.org/2005/Incubator/ssn/> ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:deploymentProcessPart ; owl:allValuesFrom oldssn:DeploymentRelatedProcess ] ;
+  rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+  owl:deprecated true ;
+  owl:equivalentClass ssn:DeploymentRelatedProcedure ;
+  rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
+
+  oldssn:deploymentProcessPart a owl:ObjectProperty ;
+    rdfs:label "deployment process part"@en ;
+    skos:definition "Relation between a deployment process and its constituent processes (has-part)."@en ;
+    rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:deploymentProcedurePart ;
+    rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
+
 oldssn:Deployment a owl:Class ;
   rdfs:label "Deployment"@en ;
   skos:definition "The ongoing Process of Entities (for the purposes of this ontology, mainly sensors) deployed for a particular purpose.  For example, a particular Sensor deployed on a Platform, or a whole network of Sensors deployed for an observation campaign.  The deployment may have sub-processes, such as installation, maintenance, addition, and decomissioning and removal."@en ;
@@ -505,57 +523,39 @@ oldssn:Deployment a owl:Class ;
   owl:equivalentClass ssn:Deployment ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
-oldssn:DeploymentRelatedProcess a owl:Class ;
-  rdfs:label "Deployment-related Process"@en ;
-  skos:definition "Class to group all the various Processes related to Deployment.  For example, as well as Deployment, installation, maintenance, deployment of further sensors and the like would all be classified under DeploymentRelatedProcess."@en ;
-  dcterms:source <http://www.w3.org/2005/Incubator/ssn/> ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:deploymentProcessPart ; owl:allValuesFrom oldssn:DeploymentRelatedProcess ] ;
-  rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
-  owl:deprecated true ;
-  owl:equivalentClass ssn:DeploymentRelatedProcedure ;
-  rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
+  oldssn:deployedOnPlatform a owl:ObjectProperty ;
+    rdfs:label "deployed on platform"@en ;
+    skos:definition "Relation between a deployment and the platform on which the system is deployed."@en ;
+    rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+    owl:inverseOf oldssn:inDeployment ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:deployedOnPlatform ;
+    rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
-oldssn:deployedOnPlatform a owl:ObjectProperty ;
-  rdfs:label "deployed on platform"@en ;
-  skos:definition "Relation between a deployment and the platform on which the system is deployed."@en ;
-  rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
-  owl:inverseOf oldssn:inDeployment ;
-  owl:deprecated true ;
-  owl:equivalentProperty ssn:deployedOnPlatform ;
-  rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
+  oldssn:deployedSystem a owl:ObjectProperty ;
+    owl:inverseOf oldssn:hasDeployment ;
+    rdfs:label "deployed system"@en ;
+    skos:definition "Relation between a deployment and the deployed system."@en ;
+    rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:deployedSystem ;
+    rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
-oldssn:deployedSystem a owl:ObjectProperty ;
-  owl:inverseOf oldssn:hasDeployment ;
-  rdfs:label "deployed system"@en ;
-  skos:definition "Relation between a deployment and the deployed system."@en ;
-  rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
-  owl:deprecated true ;
-  owl:equivalentProperty ssn:deployedSystem ;
-  rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
+  oldssn:hasDeployment a owl:ObjectProperty ;
+    rdfs:label "has deployment"@en ;
+    skos:definition "Relation between a System and a Deployment, recording that the System or Sensor was deployed in that Deployment."@en ;
+    rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:hasDeployment ;
+    rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
-oldssn:deploymentProcessPart a owl:ObjectProperty ;
-  rdfs:label "deployment process part"@en ;
-  skos:definition "Relation between a deployment process and its constituent processes (has-part)."@en ;
-  rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
-  owl:deprecated true ;
-  owl:equivalentProperty ssn:deploymentProcedurePart ;
-  rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
-
-oldssn:hasDeployment a owl:ObjectProperty ;
-  rdfs:label "has deployment"@en ;
-  skos:definition "Relation between a System and a Deployment, recording that the System or Sensor was deployed in that Deployment."@en ;
-  rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
-  owl:deprecated true ;
-  owl:equivalentProperty ssn:hasDeployment ;
-  rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
-
-oldssn:inDeployment a owl:ObjectProperty ;
-  rdfs:label "in deployment"@en ;
-  skos:definition "Relation between a Platform and a Deployment, meaning that the subject was used as a platform for a system or sensor in the particular deployment. For example, between a buoy and a deployment identifier. "@en ;
-  rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
-  owl:deprecated true ;
-  owl:equivalentProperty ssn:inDeployment ;
-  rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
+  oldssn:inDeployment a owl:ObjectProperty ;
+    rdfs:label "in deployment"@en ;
+    skos:definition "Relation between a Platform and a Deployment, meaning that the subject was used as a platform for a system or sensor in the particular deployment. For example, between a buoy and a deployment identifier. "@en ;
+    rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+    owl:deprecated true ;
+    owl:equivalentProperty ssn:inDeployment ;
+    rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
 
 ## forProperty ofFeature inCondition
