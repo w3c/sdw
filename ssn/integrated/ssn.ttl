@@ -31,14 +31,14 @@ vann:preferredNamespaceUri a owl:AnnotationProperty .
 
 
 ssn: a owl:Ontology , voaf:Vocabulary ;
-  dcterms:title "Semantic Sensor Network Ontology" ;
-  dcterms:description "This ontology describes sensors, actuators and observations, and related concepts. It does not describe domain concepts, time, locations, etc. these are intended to be included from other ontologies via OWL imports." ;
+  dcterms:title "Semantic Sensor Network Ontology"@en ;
+  dcterms:description "This ontology describes sensors, actuators and observations, and related concepts. It does not describe domain concepts, time, locations, etc. these are intended to be included from other ontologies via OWL imports."@en ;
   dcterms:creator [ a foaf:Agent ; foaf:name "W3C/OGC Spatial Data on the Web Working Group"@en ] ;
   dcterms:rights "Copyright 2017 W3C/OGC." ;
   dcterms:license <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
   dcterms:license <http://www.opengeospatial.org/ogc/Software> ;
   owl:versionInfo "This ontology is based on the SSN Ontology by the W3C Semantic Sensor Networks Incubator Group (SSN-XG), together with considerations from the W3C/OGC Spatial Data on the Web Working Group. It is a simplified version of the old SSN Ontology, and is made independent of DUL. "@en ;
-  rdfs:comment "Please report any errors to the W3C Spatial Data on the Web Working Group via the SDW WG Public List public-sdw-wg@w3.org" ;
+  rdfs:comment "Please report any errors to the W3C Spatial Data on the Web Working Group via the SDW WG Public List public-sdw-wg@w3.org"@en ;
   rdfs:seeAlso <https://www.w3.org/2015/spatial/wiki/Semantic_Sensor_Network_Ontology> ;
   dcterms:created "2017-04-17" ;
   vann:preferredNamespacePrefix "ssn" ;
@@ -111,25 +111,25 @@ sosa:Procedure a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasOutput ; owl:allValuesFrom ssn:Output ] ;
   rdfs:isDefinedBy sosa: .
 
-  oldssn:hasInput a owl:ObjectProperty ;
+  ssn:hasInput a owl:ObjectProperty ;
     rdfs:label "has input"@en ;
     skos:definition "Relation between a Procedure and an Input to it."@en ;
     rdfs:comment "Relation between a Procedure and an Input to it."@en ;
     rdfs:isDefinedBy ssn: .
 
-    oldssn:Input a owl:Class ;
+    ssn:Input a owl:Class ;
       rdfs:label "Input"@en ;
       skos:definition "Any information that is provided to a Procedure for its use. [MMI OntDev]"@en ;
       rdfs:comment "Any information that is provided to a Procedure for its use. [MMI OntDev]"@en ;
       rdfs:isDefinedBy ssn: .
 
-  oldssn:hasOutput a owl:ObjectProperty ;
+  ssn:hasOutput a owl:ObjectProperty ;
     rdfs:label "has output"@en ;
     skos:definition "Relation between a Procedure and an Output of it."@en ;
     rdfs:comment "Relation between a Procedure and an Output of it."@en ;
     rdfs:isDefinedBy ssn: .
 
-    oldssn:Output a owl:Class ;
+    ssn:Output a owl:Class ;
       rdfs:label "Output"@en ;
       skos:definition "Any information that is reported from a Procedure. [MMI OntDev]"@en ;
       rdfs:comment "Any information that is reported from a Procedure. [MMI OntDev]"@en ;
@@ -147,9 +147,9 @@ ssn:implements a owl:ObjectProperty ;
 
 ssn:implementedBy a owl:ObjectProperty ;
   rdfs:label "implemented by"@en ;
-  skos:definition "Relation between a Procedure (an algorithm, procedure or method) and an entity that implements that Procedure in some executable way." ;
-  rdfs:comment "Relation between a Procedure (an algorithm, procedure or method) and an entity that implements that Procedure in some executable way." ;
-  skos:example "For example, the relationship between a scientific measuring Procedure and a sensor that senses via that Procedure." ;
+  skos:definition "Relation between a Procedure (an algorithm, procedure or method) and an entity that implements that Procedure in some executable way."@en ;
+  rdfs:comment "Relation between a Procedure (an algorithm, procedure or method) and an entity that implements that Procedure in some executable way."@en ;
+  skos:example "For example, the relationship between a scientific measuring Procedure and a sensor that senses via that Procedure."@en ;
   owl:inverseOf ssn:implements ;
   rdfs:isDefinedBy ssn: .
 
@@ -254,18 +254,69 @@ sosa:Sampling a owl:Class ;
     # axioms about sosa:madeBySampler ?
 
 
+## Stimulus
 
+ssn:Stimulus a owl:Class ;
+  rdfs:label "Stimulus"@en .
+  skos:definition "An event in the real world that 'triggers' the Sensor. The properties associated to the Stimulus may be different to the eventual observed ObservableProperty. It is the event, not the object, that triggers the Sensor."@en ;
+  rdfs:comment "An event in the real world that 'triggers' the Sensor. The properties associated to the Stimulus may be different to the eventual observed ObservableProperty. It is the event, not the object, that triggers the Sensor."@en ;
+  rdfs:isDefinedBy ssn: ;
 
+  ssn:wasOriginatedBy a owl:ObjectProperty ;
+    rdfs:label "was originated by"@en .
+    skos:definition "Relation between an Observation and the Stimulus that originated it."@en ;
+    rdfs:comment "Relation between an Observation and the Stimulus that originated it."@en ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:detects a owl:ObjectProperty ;
+    rdfs:label "detects"@en ;
+    skos:definition "A relation from a Sensor to the Stimulus that the Sensor can detect. The Stimulus itself will be serving as a proxy for some ObservableProperty."@en ;
+    rdfs:comment "A relation from a Sensor to the Stimulus that the Sensor can detect. The Stimulus itself will be serving as a proxy for some ObservableProperty."@en ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:isProxyFor a owl:ObjectProperty ;
+    rdfs:label "is proxy for"@en ;
+    skos:definition "A relation from a Stimulus to the Property that the Stimulus is serving as a proxy for."@en ;
+    rdfs:comment "A relation from a Stimulus to the Property that the Stimulus is serving as a proxy for."@en ;
+    skos:example "For example, the expansion of quicksilver is a stimulus that serves as a proxy for temperature. An increase or decrease in the velocity of spinning cups on a wind sensor is serving as a proxy for wind speed."@en ;
+    rdfs:isDefinedBy ssn: .
+
+  
+## Result
+
+sosa:Result rdfs:isDefinedBy sosa: .
+
+  sosa:hasResult rdfs:isDefinedBy sosa: .
+
+  sosa:isResultOf rdfs:isDefinedBy sosa: .
+
+  sosa:hasSimpleResult rdfs:isDefinedBy sosa: .
+
+  sosa:hasResultingSample rdfs:isDefinedBy sosa: .
+
+  sosa:isSamplingResultOf rdfs:isDefinedBy sosa: .
+
+  sosa:resultTime rdfs:isDefinedBy sosa: .
+
+  sosa:phenomenonTime rdfs:isDefinedBy sosa: .
+
+  ssn:qualityOfObservation a owl:ObjectProperty ;
+    rdfs:label "quality of observation"@en ;
+    skos:definition "Relation linking an Observation to the adjudged quality of the Result. This is complimentary to the MeasurementCapability information recorded for the Sensor that made the Observation."@en ;
+    rdfs:comment "Relation linking an Observation to the adjudged quality of the Result. This is complimentary to the MeasurementCapability information recorded for the Sensor that made the Observation."@en ;
+    rdfs:subPropertyOf ssn:hasProperty ;
+    rdfs:isDefinedBy ssn: ;
 
 
 ## Systems
 
 ssn:System a owl:Class ;
   rdfs:label "System"@en ;
-  skos:definition """System is a unit of abstraction for pieces of infrastructure for sensing. A system has components, its subsystems, which are other systems."""@en ; # TODO: update with: "A system may have components" ? 
+  skos:definition "System is a unit of abstraction for pieces of infrastructure that implements Procedures. A System may have components, its subsystems, which are other systems."@en ; 
+  rdfs:comment "System is a unit of abstraction for pieces of infrastructure that implements Procedures. A System may have components, its subsystems, which are other systems."@en ; 
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isHostedBy ; owl:allValuesFrom sosa:Platform ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSubSystem ; owl:allValuesFrom ssn:System ] ;
-#  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasDeployment ; owl:allValuesFrom ssn:Deployment ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasDeployment ; owl:allValuesFrom ssn:Deployment ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasOperatingRange ; owl:allValuesFrom ssn:OperatingRange ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSurvivalRange ; owl:allValuesFrom ssn:SurvivalRange ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSystemCapability ; owl:allValuesFrom ssn:SystemCapability ] ;
@@ -273,19 +324,20 @@ ssn:System a owl:Class ;
 
   ssn:hasSubSystem a owl:ObjectProperty ;
     rdfs:label "has subsystem"@en ;
-    skos:definition """Relation between a system and its component parts (has-part)."""@en ;
+    skos:definition """Relation between a System and its component parts (has-part)."""@en ;
+    rdfs:comment """Relation between a System and its component parts (has-part)."""@en ;
     rdfs:isDefinedBy ssn: .
 
 
-## SensorOutput, ObservationValue, Result
+## Deployment
 
-
-# what would be the equivalent axiom for sosa:Result ?
-# it should be somehow equivalent to  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:isProducedBy ; owl:someValuesFrom oldssn:Sensor ] ;
-# but more general, because Actuators can also generate results. 
-
-sosa:Result rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isResultOf ; owl:someValuesFrom ???ssn:ProcedureExecutor??? ] ;
-
+ssn:Deployment a owl:Class ;
+  rdfs:label "Deployment"@en ;
+  skos:definition "The ongoing process of entities (for the purposes of this ontology, mainly Sensors or Actuators) deployed for a particular purpose. For example, a particular Sensor deployed on a Platform, or a whole network of Sensors deployed for an Observation campaign. The Deployment may have sub-Procedures, such as installation, maintenance, addition, and de-comissioning and removal Procedures."@en ;
+  rdfs:comment "The ongoing process of entities (for the purposes of this ontology, mainly Sensors or Actuators) deployed for a particular purpose. For example, a particular Sensor deployed on a Platform, or a whole network of Sensors deployed for an Observation campaign. The Deployment may have sub-Procedures, such as installation, maintenance, addition, and de-comissioning and removal Procedures."@en ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deployedOnPlatform ; owl:allValuesFrom sosa:Platform ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deployedSystem ; owl:allValuesFrom ssn:System ] ;
+  rdfs:isDefinedBy ssn: .
 
 
 ## forProperty, inCondition
@@ -311,7 +363,7 @@ ssn:inCondition a owl:ObjectProperty ;
   owl:equivalentProperty ssn:inCondition ;
   rdfs:isDefinedBy ssn: .
 
-oldssn:Condition a owl:Class ;
+ssn:Condition a owl:Class ;
   rdfs:label "Condition"@en ;
   rdfs:comment "Used to specify ranges for qualities that act as conditions on a system/sensor's operation.  For example, wind speed of 10-60m/s is expressed as a condition linking a quality, wind speed, a unit of measurement, metres per second, and a set of values, 10-60, and may be used as the condition on a SystemProperty, for example, to state that a sensor has a particular accuracy in that condition."@en ;
   rdfs:subClassOf ssn:Property ;
