@@ -1,5 +1,5 @@
 # baseURI: https://www.w3.org/ns/sosa-prov
-# imports: http://www.w3.org/ns/prov
+# imports: http://www.w3.org/ns/prov-o#
 # imports: http://www.w3.org/ns/sosa/
 
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
@@ -8,7 +8,7 @@
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sosa: <http://www.w3.org/ns/sosa#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 sosa:Actuation
@@ -39,9 +39,19 @@ sosa:Result
 sosa:Sample
   rdfs:subClassOf prov:Entity ;
 .
+sosa:Sampler
+  rdfs:subClassOf prov:Agent ;
+  rdfs:subClassOf prov:Entity ;
+.
+sosa:Sampling
+  rdfs:subClassOf prov:Activity ;
+.
 sosa:Sensor
   rdfs:subClassOf prov:Agent ;
   rdfs:subClassOf prov:Entity ;
+.
+sosa:actuationMadeBy
+  rdfs:subPropertyOf prov:wasAssociatedWith ;
 .
 sosa:hasFeatureOfInterest
   rdfs:subPropertyOf prov:used ;
@@ -58,11 +68,23 @@ sosa:isResultOf
 sosa:isSampleOf
   rdfs:subPropertyOf prov:wasDerivedFrom ;
 .
+sosa:madeBySampler
+  rdfs:subPropertyOf prov:wasAssociatedWith ;
+.
+sosa:madeBySensor
+  rdfs:subPropertyOf prov:wasAssociatedWith ;
+.
 sosa:resultTime
   rdfs:subPropertyOf prov:endedAtTime ;
 .
 sosa:usedProcedure
-  rdfs:subPropertyOf prov:used ;
+  rdfs:subPropertyOf [
+      rdf:type owl:ObjectProperty ;
+      owl:propertyChainAxiom (
+          prov:qualifiedAssociation
+          prov:hadPlan
+        ) ;
+    ] ;
 .
 sosa:usedProcess
   rdfs:subPropertyOf prov:used ;
@@ -72,8 +94,9 @@ sosa:usedProcess
   rdf:type owl:Ontology ;
   dc:creator "Simon J D Cox" ;
   dcterms:created "2016-12-14"^^xsd:date ;
+  dcterms:modified "2017-04-13"^^xsd:date ;
   rdfs:comment "Alignment of the the W3C/OGC SOSA Ontology with the W3C PROV-O Ontology"@en ;
   rdfs:label "Alignment of SOSA with PROV-O"@en ;
-  owl:imports <http://www.w3.org/ns/prov> ;
-  owl:imports <http://www.w3.org/ns/sosa/> ;
+  owl:imports <http://www.w3.org/ns/prov-o#> ;
+  owl:imports sosa: ;
 .
