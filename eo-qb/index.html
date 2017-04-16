@@ -50,6 +50,14 @@
   text-decoration-style: dotted;
   text-decoration-color:black;
  }
+ table#ontologies {
+  border-collapse: collapse;
+ }
+ table#ontologies th,
+ table#ontologies td {
+  border: 1px solid black;
+  padding: 0.3em;
+ }
 
  </style>
 </head>
@@ -125,7 +133,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
 :resolution a qb:AttributeProperty ;
     rdfs:range :pixelsPerDegree .
     
-:pixelsPerDegree rdf:type rdfs:Datatype ;
+:pixelsPerDegree a rdfs:Datatype ;
     owl:equivalentClass xsd:double .
 	
 </pre>
@@ -180,13 +188,21 @@ While the approach  may also be suitable for other forms of coverage, we leave t
     :bounds  "POLYGON((90.37 41.45, 90.74 41.45, 90.74 41.04, 90.37 41.04, 90.37 41.45))"^^ogc:wktLiteral ;
     prov:wasDerivedFrom :example-tile .</pre>
            
-        <p>The RDF Data Cube also enables much more detailed metadata, such as individual 
-           provenance for each observation. It is not practical to serve Landsat imagery with RDF metadata attached
-           to each pixel. However, it may be reasonable to attach such metadata to aggregated <i>tiles</i> of pixels.
-		   In this case, each <code>qb:Observation</code> is a whole tile (<code>:GridSquare</code>)
-           rather than an individual pixel [<a href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Support for tiling</a>].
-		    Here, BP <a href="https://www.w3.org/TR/sdw-bp/#globally-unique-ids"/>Use globally unique persistent HTTP URIs for spatial things</a> is applied at the level of image tiles.
-           
+        <p>
+           The RDF Data Cube also enables much more detailed metadata, like
+           separate provenance for each observation. While it is not practical
+           to serve Landsat imagery with such detailed metadata attached to each
+           <em>pixel</em>, it may be reasonable to attach such metadata to
+           aggregated <em>tiles</em> of pixels. In this case, each
+           <code>qb:Observation</code> will be a whole tile
+           (<code>:GridSquare</code>) rather than an individual pixel [<a
+           href="https://www.w3.org/TR/sdw-ucr/#TilingSupport">Support for
+           tiling</a>]. Note that this technique applies BP <a
+           href="https://www.w3.org/TR/sdw-bp/#globally-unique-ids"/>Use
+           globally unique persistent HTTP URIs for spatial things</a> at the
+           level of image tiles.
+        </p>
+
         <pre class="example">:dataValue a qb:MeasureProperty ;
     rdfs:range [owl:unionOf(xsd:anyURI xsd:integer)] ;
     qb:concept :reflectance ;
@@ -197,7 +213,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
     :lat "91.6667";
     :long "40.0270";
     :time "2001-10-26T21:32:52"^^xsd:dateTime ;
-    :dataValue <http://www.example.org/led-example-image-R000> ;
+    :dataValue &lt;http://www.example.org/led-example-image-R000&gt; ;
     :resolution "0.9"^^:pixelsPerDegree ;
     :dggsCell "R000" ;
     :dggsLevelSquare "3" ;
@@ -288,8 +304,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
           <p>Whatever approach is taken, it should be as easy as possible
              for the user to grab <strong>just</strong> the metadata, without having to figure out how to write an appropriate query.
               The definition of a <code>qb:DataSet</code> and the associated <code>qb:DataStructureDefinition</code> can serve this role, but it is still up to the
-             publisher to make it easy for the user to download those definitions. This is also the appropriate place to think
-             about the experience of Web crawlers on the publisher's Web page [<a href="https://www.w3.org/TR/sdw-ucr/#Crawlability">Crawlability</a>, <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">Machine to machine</a>].</p>
+             publisher to make it easy for the user to download those definitions.
 
           <p>It is also helpful if the user can easily identify the <i>domain</i> of a coverage, that is, the spatial and temporal area where measurements are made
              [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialMetadata">Spatial metadata</a>].
@@ -464,7 +479,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
             system employing rHEALPix to retrieve satellite imagery has been implemented. This
             section briefly describes some of the strategies employed to make
             the implementation efficient. All code referenced here is available
-            on <a href="https://github.com/ANU-Linked-Earth-Data">GitHub.</a>
+            on GitHub [[led-github]].
         </p>
 
         <p>As discussed previously, scalable implementations of a Data Cube
@@ -477,7 +492,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
             in advance. This approach has precedent: virtual graphs have been used
             to provide linked data interfaces to relational databases, RSS
             feeds, and ordinary HTML pages with no semantic markup
-            ([perf-vgraph]).
+            [[perf-vgraph]].
         </p>
 
         <p>
@@ -578,12 +593,12 @@ While the approach  may also be suitable for other forms of coverage, we leave t
         </p>
 
         <pre class="example">SELECT DISTINCT ?s ?val WHERE {
-    ?s a led:Pixel
-        ; led:etmBand "1"^^xsd:int
-        ; led:dggsLevelSquare "5"^^xsd:int
-        ; led:latMin ?latMin
-        ; led:longMax ?longMax
-        ; led:value ?val.
+    ?s a :Pixel
+        :etmBand "1"^^xsd:int ;
+        :dggsLevelSquare "5"^^xsd:int ;
+        :latMin ?latMin ;
+        :longMax ?longMax ;
+        :value ?val .
     # Everything north-west of Parliament House
     FILTER (?latMin > -35.3082
         &amp;&amp; ?longMax &lt; 149.1244)
@@ -727,7 +742,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
     qb:dataSet :exampleDataset ;
     :lat "91.6667";
     :long "40.0270";
-    :dataValue <http://www.example.org/led-example-image-R000> ;
+    :dataValue &lt;http://www.example.org/led-example-image-R000&gt; ;
     prov:wasDerivedFrom :example-tile .</pre>
       </section>
 
@@ -779,7 +794,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
 
       <section  id="GeoSPARQL">
           <h3>GeoSPARQL</h3>
-          <p>The GeoSPARQL ontology [[GeoSPARQL]] defines some terms for reasoning about objects and shapes in space
+          <p>The GeoSPARQL ontology [[geosparql]] defines some terms for reasoning about objects and shapes in space
              [<a href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">Spatial operators</a>].
              It allows for the use of several encodings, including WKT, to describe polygons
              [<a href="https://www.w3.org/TR/sdw-ucr/#EncodingForVectorGeometry">Encoding for vector geometry</a>].
@@ -800,7 +815,7 @@ While the approach  may also be suitable for other forms of coverage, we leave t
     qb:dataSet :exampleDataset ;
     :lat "91.6667";
     :long "40.0270";
-    :dataValue <http://www.example.org/led-example-image-R000>" ;
+    :dataValue &lt;http://www.example.org/led-example-image-R000&gt; ;
     :bounds  "POLYGON((90 41.87, 93.33 41.87, 93.33 38.18, 90 38.18, 90 41.87))"^^ogc:wktLiteral .</pre>
       </section>
 
@@ -878,12 +893,35 @@ While the approach  may also be suitable for other forms of coverage, we leave t
     :time "2001-10-26T21:32:52"^^xsd:dateTime .</pre>
       </section>
     </section>
-	
+    
 <section  id="Prefixes">
-      <h2>Summary of ontologies used</h2>
-	  <div class="note"> Need a table of the prefix used here, the full namespace, and some reference to the ontology, e.g. SWEET</div>  
+    <h2>Summary of ontologies used</h2>
+
+    <table id="ontologies">
+  <thead><tr><th>Prefix</th><th>Namespace</th><th>Reference</th></tr></thead>
+  <tbody>
+    <tr><td><code>cci-dataType:</code></td><td><a href="http://vocab-test.ceda.ac.uk/collection/cci/dataType/">http://vocab-test.ceda.ac.uk/collection/cci/dataType/</a></td><td rowspan="3">[[cci]]</td></tr>
+    <tr><td><code>cci-platform:</code></td><td><a href="http://vocab-test.ceda.ac.uk/collection/cci/platform/">http://vocab-test.ceda.ac.uk/collection/cci/platform/</a></td></tr>
+    <tr><td><code>cci-sensor:</code></td><td><a href="http://vocab-test.ceda.ac.uk/collection/cci/sensor/">http://vocab-test.ceda.ac.uk/collection/cci/sensor/</a></td></tr>
+    <tr><td><code>foaf:</code></td><td><a href="http://xmlns.com/foaf/0.1/">http://xmlns.com/foaf/0.1/</a></td><td>[[foaf]]</td></tr>
+  	<tr><td><code>geo:</code></td><td><a href="http://www.w3.org/2003/01/geo/wgs84_pos#">http://www.w3.org/2003/01/geo/wgs84_pos#</a></td><td>[[w3c-basic-geo]]</td></tr>
+    <tr><td><code>ogc:</code></td><td><a href="http://www.opengis.net/ont/geosparql#">http://www.opengis.net/ont/geosparql#</a></td><td>[[geosparql]]</td></tr>
+    <tr><td><code>owl:</code></td><td><a href="http://www.w3.org/2002/07/owl">http://www.w3.org/2002/07/owl#</a></td><td>[[owl2-primer]]</td></tr>
+    <tr><td><code>prov:</code></td><td><a href="http://www.w3.org/ns/prov#">http://www.w3.org/ns/prov#</a></td><td>[[prov-o]]</td></tr>
+    <tr><td><code>qb:</code></td><td><a href="http://purl.org/linked-data/cube#">http://purl.org/linked-data/cube#</a></td><td>[[vocab-data-cube]]</td></tr>
+    <tr><td><code>qb4st:</code></td><td><a href="http://www.w3.org/ns/qb4st/">http://www.w3.org/ns/qb4st/</a></td><td>[[qb4st]]</td></tr>
+    <tr><td><code>rdf:</code></td><td><a href="http://www.w3.org/1999/02/22-rdf-syntax-ns">http://www.w3.org/1999/02/22-rdf-syntax-ns#</a></td><td>[[rdf-concepts]]</td></tr>
+    <tr><td><code>rdfs:</code></td><td><a href="http://www.w3.org/2000/01/rdf-schema">http://www.w3.org/2000/01/rdf-schema#</a></td><td>[[rdf-schema]]</td></tr>
+    <tr><td><code>sdmx-concept:</code></td><td><a href="http://purl.org/linked-data/sdmx/2009/concept#">http://purl.org/linked-data/sdmx/2009/concept#</a></td><td></td></tr>
+    <tr><td><code>skos:</code></td><td><a href="http://www.w3.org/2004/02/skos/core">http://www.w3.org/2004/02/skos/core#</a></td><td>[[skos-reference]]</td></tr>
+    <tr><td><code>ssn:</code></td><td><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></td><td>[[vocab-ssn]]</td></tr>
+    <tr><td><code>sweet:</code></td><td><a href="http://sweet.jpl.nasa.gov/2.3/prop.owl#">http://sweet.jpl.nasa.gov/2.3/prop.owl#</a></td><td>[[sweet]]</td></tr>
+    <tr><td><code>time:</code></td><td><a href="http://www.w3.org/2006/time#">http://www.w3.org/2006/time#</a></td><td>[[owl-time]]</td></tr>
+    <tr><td><code>xsd:</code></td><td><a href="http://www.w3.org/2001/XMLSchema#">http://www.w3.org/2001/XMLSchema#</a></td><td>[[swbp-xsch-datatypes]]</td></tr>
+</tbody>
+    </table>
 </section>
-	  
+
  <section class="appendix" id="acknowledgements">
   <h2>Acknowledgements</h2>
   <p>This work would not be possible without the TechLauncher program of the Australian National University and its ardent convenor, Shayne Flint.
