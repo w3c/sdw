@@ -250,11 +250,13 @@ sosa:Actuation a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actsOnProperty ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:commandTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actuationMadeBy ; owl:allValuesFrom sosa:Actuator ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actsOnProperty ; owl:allValuesFrom sosa:ActuatableProperty ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:allValuesFrom sosa:Result ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasCommand ; owl:allValuesFrom sosa:Command ] ;
   rdfs:isDefinedBy sosa: .
 
   sosa:madeActuation
@@ -275,9 +277,11 @@ sosa:Sampling a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResultingSample ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:commandTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySampler ; owl:allValuesFrom sosa:Sampler ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasCommand ; owl:allValuesFrom sosa:Command ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:allValuesFrom sosa:Result ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResultingSample ; owl:allValuesFrom sosa:Sample ] ;
   rdfs:isDefinedBy sosa: .
@@ -355,6 +359,24 @@ sosa:Result
     rdfs:comment "Relation linking an Observation to the adjudged quality of the Result. This is complimentary to the MeasurementCapability information recorded for the Sensor that made the Observation."@en ;
     rdfs:subPropertyOf ssn:hasProperty ;
     rdfs:isDefinedBy ssn: .
+
+## Command - Feature at risk
+
+sosa:Command
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty [ owl:inverseOf sosa:isCommandOf ] ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:isDefinedBy sosa: .
+
+  sosa:hasCommand 
+    rdfs:isDefinedBy sosa: .
+
+  sosa:isCommandOf
+    rdfs:isDefinedBy sosa: .
+
+  sosa:hasSimpleCommand 
+    rdfs:isDefinedBy sosa: .
+
+  sosa:commandTime
+    rdfs:isDefinedBy sosa: .
 
 
 ## Systems
@@ -502,8 +524,8 @@ ssn:hasSystemCapability a owl:ObjectProperty ;
 
     ssn:Accuracy a owl:Class ;
       rdfs:label "Accuracy"@en ;
-      skos:definition "The closeness of agreement between the Result of an Observation (resp. the command of an Actuation) and the true value of the observed ObservableProperty (resp. of the acted on ActuatableProperty) under the defined Conditions."@en ;
-      rdfs:comment "The closeness of agreement between the Result of an Observation (resp. the command of an Actuation) and the true value of the observed ObservableProperty (resp. of the acted on ActuatableProperty) under the defined Conditions."@en ;
+      skos:definition "The closeness of agreement between the Result of an Observation (resp. the Command of an Actuation) and the true value of the observed ObservableProperty (resp. of the acted on ActuatableProperty) under the defined Conditions."@en ;
+      rdfs:comment "The closeness of agreement between the Result of an Observation (resp. the Command of an Actuation) and the true value of the observed ObservableProperty (resp. of the acted on ActuatableProperty) under the defined Conditions."@en ;
       rdfs:subClassOf ssn:SystemProperty ;
       rdfs:isDefinedBy ssn: .
 
@@ -535,8 +557,8 @@ ssn:hasSystemCapability a owl:ObjectProperty ;
 
     ssn:Latency a owl:Class ;
       rdfs:label "Latency"@en ;
-      skos:definition "The time between a command for an Observation (resp. Actuation) and the Sensor providing a Result (resp. the Actuator operating the Actuation), under the defined Conditions."@en ;
-      rdfs:comment "The time between a command for an Observation (resp. Actuation) and the Sensor providing a Result (resp. the Actuator operating the Actuation), under the defined Conditions."@en ;
+      skos:definition "The time between a Command for an Observation (resp. Actuation) and the Sensor providing a Result (resp. the Actuator operating the Command), under the defined Conditions."@en ;
+      rdfs:comment "The time between a Command for an Observation (resp. Actuation) and the Sensor providing a Result (resp. the Actuator operating the Command), under the defined Conditions."@en ;
       rdfs:subClassOf ssn:SystemProperty ;
       rdfs:isDefinedBy ssn: .
 
@@ -552,10 +574,10 @@ ssn:hasSystemCapability a owl:ObjectProperty ;
       rdfs:label "Resolution"@en ;
       skos:definition """As a Sensor Property: the smallest difference in the value of a Property being observed that would result in perceptably different values of Observation Results, under the defined Conditions.
 
-      As an Actuator Property: the smallest difference in the value of an Actuation command that would result in a value change of the ActuatableProperty being acted on, under the defined Conditions."""@en ;
+      As an Actuator Property: the smallest difference in the value of an Command that would result in a value change of the ActuatableProperty being acted on, under the defined Conditions."""@en ;
       rdfs:comment """As a Sensor Property: the smallest difference in the value of a Property being observed that would result in perceptably different values of Observation Results, under the defined Conditions. 
 
-      As an Actuator Property: the smallest difference in the value of an Actuation command that would result in a value change of the ActuatableProperty being acted on, under the defined Conditions."""@en ;
+      As an Actuator Property: the smallest difference in the value of an Command that would result in a value change of the ActuatableProperty being acted on, under the defined Conditions."""@en ;
       rdfs:subClassOf ssn:SystemProperty ;
       rdfs:isDefinedBy ssn: .
 
