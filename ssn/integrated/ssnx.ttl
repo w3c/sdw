@@ -216,7 +216,6 @@ O&M allows sensors, methods, instruments, systems, algorithms and process chains
 
   Note that, given the DUL modelling of Qualities, a sensor defined with 'observes only Windspeed' technically links the sensor to particular instances of Windspeed, not to the concept itself - OWL can't express concept-concept relations, only individual-individual.  The property composition ensures that if an observation is made of a particular quality then one can infer that the sensor observes that quality."""@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#Measuring> ;
-    owl:propertyChainAxiom ( oldssn:hasMeasurementCapability oldssn:forProperty ) ;
     owl:propertyChainAxiom ( oldssn:madeObservation oldssn:observedProperty ) ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:observes ;
@@ -268,7 +267,6 @@ Measurement result in VIM is the measured value plus any other relevant informat
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:featureOfInterest ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass oldssn:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:observedBy ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass oldssn:Sensor ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:observedProperty ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass oldssn:Property ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:sensingMethodUsed ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass oldssn:Sensing ] ;
   owl:deprecated true ;
   owl:equivalentClass sosa:Observation ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -328,7 +326,7 @@ oldssn:SensorInput a owl:Class ;
   The Stimulus itself will be serving as a proxy for (see isProxyOf) some observable property."""@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
     owl:deprecated true ;
-    # TODO ALIGNMENT ?
+    owl:equivalentProperty ssn:detects ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
   oldssn:isProxyFor a owl:ObjectProperty ;
@@ -336,7 +334,7 @@ oldssn:SensorInput a owl:Class ;
     skos:definition "A relation from a Stimulus to the Property that the Stimulus is serving as a proxy for.  For example, the expansion of quicksilver is a stimulus that serves as a proxy for temperature. An increase or decrease in the velocity of spinning cups on a wind sensor is serving as a proxy for wind speed."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
     owl:deprecated true ;
-    # TODO ALIGNMENT ?
+    owl:equivalentProperty ssn:isProxyFor ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
 
@@ -409,7 +407,7 @@ oldssn:SensorOutput a owl:Class ;
     dcterms:source <http://www.opengeospatial.org/standards/om> ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation> ;
     owl:deprecated true ;
-    owl:equivalentProperty sosa:resultTime ;
+    rdfs:seeAlso sosa:resultTime ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
   oldssn:observationSamplingTime a owl:ObjectProperty ;
@@ -454,7 +452,7 @@ oldssn:endTime a owl:ObjectProperty ;
 
 oldssn:System a owl:Class ;
   rdfs:label "System"@en ;
-  skos:definition """System is a unit of abstraction for pieces of infrastructure for sensing. A system has components, its subsystems, which are other systems."""@en ; # TODO: update with: "A system may have components" ? 
+  skos:definition """System is a unit of abstraction for pieces of infrastructure for sensing. A system has components, its subsystems, which are other systems."""@en ;
   dcterms:source "http://www.w3.org/2005/Incubator/ssn/" ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#System> ;
   owl:deprecated true ;
@@ -499,7 +497,6 @@ oldssn:DeploymentRelatedProcess a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:deploymentProcessPart ; owl:allValuesFrom oldssn:DeploymentRelatedProcess ] ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
   owl:deprecated true ;
-  owl:equivalentClass ssn:DeploymentRelatedProcedure ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
   oldssn:deploymentProcessPart a owl:ObjectProperty ;
@@ -507,7 +504,6 @@ oldssn:DeploymentRelatedProcess a owl:Class ;
     skos:definition "Relation between a deployment process and its constituent processes (has-part)."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
     owl:deprecated true ;
-    owl:equivalentProperty ssn:deploymentProcedurePart ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
 oldssn:Deployment a owl:Class ;
@@ -572,7 +568,6 @@ oldssn:ofFeature rdf:type owl:ObjectProperty ;
   rdfs:label "of feature"@en ;
   skos:definition "A relation between some aspect of a sensing entity and a feature.  For example, from a sensor to the features it can observe properties of, or from a deployment to the features it was installed to observe.  Also from a measurement capability to the feature the capability is described for.  (Used in conjunction with forProperty)."@en ;
   owl:deprecated true ;
-  owl:equivalentProperty ssn:ofFeature ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
 oldssn:inCondition a owl:ObjectProperty ;
@@ -588,8 +583,8 @@ oldssn:inCondition a owl:ObjectProperty ;
     skos:definition "Used to specify ranges for qualities that act as conditions on a system/sensor's operation.  For example, wind speed of 10-60m/s is expressed as a condition linking a quality, wind speed, a unit of measurement, metres per second, and a set of values, 10-60, and may be used as the condition on a MeasurementProperty, for example, to state that a sensor has a particular accuracy in that condition."@en ;
     rdfs:subClassOf oldssn:Property ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#ConstraintBlock> ;
-    owl:equivalentClass ssn:Condition ;
     owl:deprecated true ;
+    owl:equivalentClass ssn:Condition ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
 
