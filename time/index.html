@@ -354,7 +354,7 @@ multi-element <code><a href="#time:DateTimeDescription">time:DateTimeDescription
 </tr>
 <tr>
 <td>Subclass of:</td>
-<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td></td>
+<td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -1008,9 +1008,7 @@ including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. nu
 <code><a href="#time:unitType">:unitType</a></code> |
 <code><a href="#time:week">:week</a></code> |
 <code><a href="#time:weeks">:weeks</a></code> |
-<!--
 <code><a href="#time:xsdDateTime">:xsdDateTime</a></code> |
--->
 <code><a href="#time:year">:year</a></code> |
 <code><a href="#time:years">:years</a></code>
 </p>
@@ -1033,6 +1031,14 @@ entity T<sub>2</sub>, then the beginning of T<sub>1</sub> is after the end of T<
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#time:TemporalEntity">time:TemporalEntity</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#time:TemporalEntity">time:TemporalEntity</a></code></td>
 </tr>
 <tr>
 <td>Inverse Property:</td>
@@ -1069,6 +1075,10 @@ Thus, <em>before</em> can be considered to be basic to instants and derived for 
 <tr>
 <td>Range:</td>
 <td><code><a href="#time:TemporalEntity">time:TemporalEntity</a></code></td>
+</tr>
+<tr>
+<td>Inverse Property:</td>
+<td><code><a href="#time:after">time:after</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -1400,6 +1410,10 @@ The range of this property is not specified, so can be replaced by any specific 
 <td><code>owl:FunctionalProperty</code></td>
 </tr>
 <tr>
+<td>Domain:</td>
+<td><code><a href="#time:TemporalPosition">time:TemporalPosition</a> or <a href="#time:GeneralDurationDescription">time:GeneralDurationDescription</a></code></td>
+</tr>
+<tr>
 <td>Range:</td>
 <td><code><a href="#time:TRS">time:TRS</a></code></td>
 </tr>
@@ -1425,7 +1439,7 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Domain:</td>
-<td><code><a href="#time:TemporalDuration">time:TemporalDuration</a></code></td>
+<td><code><a href="#time:TemporalEntity">time:TemporalEntity</a></code></td>
 </tr>
 <tr>
 <td>Range:</td>
@@ -2180,6 +2194,7 @@ before the end of T<sub>2</sub>. </td>
 <td>Instance of:</td>
 <td><code>owl:DatatypeProperty</code></td>
 </tr>
+<tr>
 <td>Instance of:</td>
 <td><code>owl:DeprecatedProperty</code></td>
 </tr>
@@ -2918,7 +2933,7 @@ processor cannot compute ordering relationships of values of this type. </td>
 <tbody>
 <tr>
 <th style="width: 120px;">Class</th>
-<th>Individual</td>
+<th>Individual</th>
 </tr>
 <tr id="time:Friday">
 <td rowspan="7"><code><a href="#time:DayOfWeek">time:DayOfWeek</a></code></td>
@@ -3056,7 +3071,7 @@ XSD <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateT
   :inTimePosition ex:AbbyBirthdayUnix ;
   rdfs:label      "Abby's birthdate"^^xsd:string ;
   :inDateTime     ex:AbbyBirthdayGregorian ;
-  :inXSDDateTime  "2001-05-23T08:20:00+08:00"^^xsd:dateTimeStamp ;
+  :inXSDDateTimeStamp  "2001-05-23T08:20:00+08:00"^^xsd:dateTimeStamp ;
 .</pre>
 <p>Using the <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> class, the elements of the date and time using the Gregorian
 Calendar are split out into separate properties: </p>
@@ -3221,16 +3236,6 @@ This may be represented in multiple ways using OWL-Time, including the following
   ] ;
 .</pre>
 <p>The boundaries of the interval are implicitly the beginning and end of the day specified in the <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>. 
-
-	<!--
-<p>As a <b><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code></b> using the <code><a href="#time:xsdDateTime">:xsdDateTime</a></code> form:</p>
-<pre>al:DTI-3
-  rdf:type :DateTimeInterval ;
-  rdfs:label "Abraham Lincoln" ;
-  :xsdDateTime "2008-02-12T00:00:00.00-05:00"^^xsd:dateTimeStamp ;
-.</pre>
-<p>In this formulation, the length of the entity is implicitly one day, as there is no sub-day value provided in the <code><a href="#time:xsdDateTime">:xsdDateTime</a></code> property. 
--->
 
 <p>As a <b><code><a href="#time:TemporalEntity">:TemporalEntity</a></code></b> using the <code><a href="#time:TimePosition">:TimePosition</a></code> to define the beginning and end:</p>
 <pre>_:TE-2
@@ -3693,8 +3698,7 @@ the meeting is specified using the <code><a href="#time:DurationDescription">:Du
     </tr>
     <tr>
       <td><code><a href="#time:hasTRS">:hasTRS</a></code></td>
-      <td><code><a href="#time:TemporalPosition">:TemporalPosition</a>
- or <a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
+      <td><code><a href="#time:TemporalPosition">:TemporalPosition</a> or <a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
       <td><code><a href="#time:TRS">:TRS</a></code></td>
     </tr>
   </tbody>
@@ -3762,30 +3766,30 @@ Data on the Web Use Cases &amp; Requirements</a>. This section provides brief de
 <h2>References</h2>
 <dl class="bibliography">
   <dt id="AF-97">[AF-97]</dt>
-    <dd>Allen, J. F. and Ferguson, G. 1997. <a href="http://dx.doi.org/10.1007/978-0-585-28322-7_7"><cite>Actions
+    <dd>J.F. Allen, G. Ferguson (1997) <a href="http://dx.doi.org/10.1007/978-0-585-28322-7_7"><cite>Actions
 and events in interval temporal logic</cite></a>. In: Spatial and Temporal Reasoning. O. Stock, ed.,
 Kluwer, Dordrecht, Netherlands, pp. 205-245. <a href="http://dx.doi.org/10.1007/978-0-585-28322-7_7">doi:10.1007/978-0-585-28322-7_7</a></dd>
   <dt id="AL-84">[AL-84]</dt>
-    <dd>Allen, J. F. 1984. <a href="http://dx.doi.org/10.1016/0004-3702%2884%2990008-0"><cite>Towards a general
+    <dd>J.F. Allen (1984) <a href="http://dx.doi.org/10.1016/0004-3702%2884%2990008-0"><cite>Towards a general
 theory of action and time</cite></a>. Artificial Intelligence <strong>23</strong>, pp. 123-154. <a href="http://dx.doi.org/10.1016/0004-3702%2884%2990008-0">doi:10.1016/0004-3702(84)90008-0</a></dd>
   <dt id="CO-15">[CO-15]</dt>
-    <dd>Cox, S. J. D. 2015. <a href="http://dx.doi.org/10.3233/SW-150187"><cite>Time Ontology Extended for
+    <dd>S.J.D. Cox (2015) <a href="http://dx.doi.org/10.3233/SW-150187"><cite>Time Ontology Extended for
 Non-Gregorian Calendar Applications</cite></a>. Semantic Web Journal <strong>7</strong>, pp. 201-209 <a
 href="http://dx.doi.org/10.3233/SW-150187">doi:10.3233/SW-150187</a></dd>
   <dt id="CR-05">[CR-05]</dt>
-    <dd>S.J.D. Cox, S.M. Richard, <a href="http://dx.doi.org/10.1130/GES00022.1"><cite>A formal model for the
+    <dd>S.J.D. Cox, S.M. Richard (2005) <a href="http://dx.doi.org/10.1130/GES00022.1"><cite>A formal model for the
 geologic time scale and global stratotype section and point, compatible with geospatial information
-transfer standards</cite></a>. Geosphere <strong>1</strong> (2005) 119. <a href="http://dx.doi.org/10.1130/GES00022.1">doi:10.1130/GES00022.1</a>.</dd>
+transfer standards</cite></a>. Geosphere <strong>1</strong> 119. <a href="http://dx.doi.org/10.1130/GES00022.1">doi:10.1130/GES00022.1</a>.</dd>
   <dt id="CR-14">[CR-14]</dt>
-    <dd>S.J.D. Cox, S.M. Richard, <a href="http://dx.doi.org/10.1007/s12145-014-0166-2"><cite>A geologic timescale
-ontology and service</cite></a>, <em>Earth Sci. Informatics</em>. <strong>8</strong> (2014) 5–19. <a href="http://dx.doi.org/10.1007/s12145-014-0170-6">doi:10.1007/s12145-014-0170-6</a>.</dd>
+    <dd>S.J.D. Cox, S.M. Richard (2014), <a href="http://dx.doi.org/10.1007/s12145-014-0166-2"><cite>A geologic timescale
+ontology and service</cite></a>, <em>Earth Sci. Informatics</em>. <strong>8</strong> 5–19. <a href="http://dx.doi.org/10.1007/s12145-014-0170-6">doi:10.1007/s12145-014-0170-6</a>.</dd>
   <dt id="DE-09">[DE-09]</dt>
-    <dd>Desruisseaux, B. 2009. <a href="http://www.ietf.org/rfc/rfc5545.txt"><cite>Internet Calendaring
+    <dd>B. Desruisseaux (2009) <a href="http://www.ietf.org/rfc/rfc5545.txt"><cite>Internet Calendaring
 and Scheduling Core Object Specification (iCalendar), RFC5545</cite></a>. <a href="http://www.ietf.org/rfc/rfc5545.txt">http://www.ietf.org/rfc/rfc5545.txt</a></dd>
   <dt id="FIPS">[FIPS]</dt>
     <dd><a href="http://www.daml.org/2003/02/fips55/"><cite>FIPS 55 County instance file</cite></a>. <a href="http://www.daml.org/2003/02/fips55/">http://www.daml.org/2003/02/fips55/</a></dd>
   <dt id="HP-04">[HP-04]</dt>
-    <dd>Hobbs, J. R. and Pan, F. 2004. <a href="http://dx.doi.org/10.1145/1017068.1017073"><cite>An Ontology of
+    <dd>J. R. Hobbs, F. Pan (2004) <a href="http://dx.doi.org/10.1145/1017068.1017073"><cite>An Ontology of
 Time for the Semantic Web</cite></a>. <em>ACM Transactions on Asian Language Processing (TALIP): Special
 issue on Temporal Information Processing</em>, <strong>3</strong>, No. 1, March 2004, pp. 66-85. <a href="http://dx.doi.org/10.1145/1017068.1017073">doi:10.1145/1017068.1017073</a></dd>
   <dt id="ISO-19108">[ISO-19108]</dt>
@@ -3797,9 +3801,9 @@ interchange formats -- Information interchange -- Representation of dates and ti
   <dt id="ISO-C">[ISO-C]</dt>
     <dd><a href="http://www.daml.org/2001/09/countries/iso"><cite>ISO Country instance file</cite></a>. <a href="http://www.daml.org/2001/09/countries/iso">http://www.daml.org/2001/09/countries/iso</a></dd>
   <dt id="MF-13">[MF-13]</dt>
-    <dd>X. Ma, P. Fox, <a href="http://dx.doi.org/10.1007/s12145-013-0110-x"><cite>Recent progress on geologic time
+    <dd>X. Ma, P. Fox (2013) <a href="http://dx.doi.org/10.1007/s12145-013-0110-x"><cite>Recent progress on geologic time
 ontologies and considerations for future works</cite></a>, Earth Sci. Informatics. <strong>6</strong>
-(2013) 31–46. <a href="http://dx.doi.org/10.1007/s12145-013-0110-x">doi:10.1007/s12145-013-0110-x</a>.</dd>
+31–46. <a href="http://dx.doi.org/10.1007/s12145-013-0110-x">doi:10.1007/s12145-013-0110-x</a>.</dd>
   <dt id="OE-06">[OE-06]</dt>
     <dd><a href="http://www.w3.org/2006/time-entry"><cite>OWL code of the entry sub-ontology of time</cite></a>. <a
 href="http://www.w3.org/2006/time-entry">http://www.w3.org/2006/time-entry</a></dd>
@@ -3809,23 +3813,23 @@ href="http://www.w3.org/2006/time-entry">http://www.w3.org/2006/time-entry</a></
     <dd><a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes"><cite>Owl2-quick-reference</cite></a>
 <a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes">https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes</a></dd>
   <dt id="OWL-M">[OWL-M]</dt>
-    <dd>Horridge, M. and Patel-Schneider, P. 2012. <a href="https://www.w3.org/TR/owl2-manchester-syntax/"><cite>OWL 2 Web Ontology Language 
+    <dd>M. Horridge, P. Patel-Schneider (2012) <a href="https://www.w3.org/TR/owl2-manchester-syntax/"><cite>OWL 2 Web Ontology Language 
 Manchester Syntax (Second Edition)</cite></a>.  W3C Working Group Note <a href="https://www.w3.org/TR/owl2-manchester-syntax/">https://www.w3.org/TR/owl2-manchester-syntax/</a></dd>
   <dt id="OWL-S">[OWL-S]</dt>
     <dd><a href="http://www.daml.org/services/owl-s/"><cite>OWL-S homepage</cite></a>. <a href="http://www.daml.org/services/owl-s/">http://www.daml.org/services/owl-s/</a></dd>
   <dt id="OWL-T">[OWL-T]</dt>
-    <dd>Hobbs, J. R. and Pan, F. 2006. <a href="https://www.w3.org/TR/2006/WD-owl-time-20060927/"><cite>Time Ontology in OWL</cite></a>.
+    <dd>J.R. Hobbs, F. Pan (2006) <a href="https://www.w3.org/TR/2006/WD-owl-time-20060927/"><cite>Time Ontology in OWL</cite></a>.
 W3C Working Draft <a href="https://www.w3.org/TR/2006/WD-owl-time-20060927/">https://www.w3.org/TR/2006/WD-owl-time-20060927/</a></dd>
   <dt id="PA-05">[PA-05]</dt>
-    <dd>Pan, F. 2005. <a href="https://pdfs.semanticscholar.org/daf3/2ec8803b0749952ee89be3644303cb6b3ff2.pdf"><cite>A
+    <dd>F. Pan (2005) <a href="https://pdfs.semanticscholar.org/daf3/2ec8803b0749952ee89be3644303cb6b3ff2.pdf"><cite>A
 Temporal Aggregates Ontology in OWL for the Semantic Web</cite></a>. In: Proceedings of the AAAI Fall
 Symposium on Agents and the Semantic Web, Arlington, Virginia, pp. 30-37. <a href="https://pdfs.semanticscholar.org/daf3/2ec8803b0749952ee89be3644303cb6b3ff2.pdf">https://pdfs.semanticscholar.org/daf3/2ec8803b0749952ee89be3644303cb6b3ff2.pdf</a></dd>
   <dt id="PH-04">[PH-04]</dt>
-    <dd>Pan, F and Hobbs, J. R. 2004. <a href="http://www.isi.edu/%7Ehobbs/time/pub/pan-hobbs-AAAI-SSS04.pdf"><cite>Time
+    <dd>F. Pan, J.R. Hobbs (2004) <a href="http://www.isi.edu/%7Ehobbs/time/pub/pan-hobbs-AAAI-SSS04.pdf"><cite>Time
 in OWL-S</cite></a>. In: Proceedings of the AAAI Spring Symposium on Semantic Web Services, Stanford
 University, CA, pp. 29-36. <a href="http://www.isi.edu/%7Ehobbs/time/pub/pan-hobbs-AAAI-SSS04.pdf">http://www.isi.edu/~hobbs/time/pub/pan-hobbs-AAAI-SSS04.pdf</a></dd>
   <dt id="PH-05">[PH-05]</dt>
-    <dd>Pan, F and Hobbs, J. R. 2005. <a href="http://www.isi.edu/%7Ehobbs/FLAIRS-05.pdf"><cite>Temporal Aggregates
+    <dd>F. Pan, J.R. Hobbs (2005) <a href="http://www.isi.edu/%7Ehobbs/FLAIRS-05.pdf"><cite>Temporal Aggregates
 in OWL-Time</cite></a>. In <em> Proceedings of the 18th International Florida Artificial Intelligence
 Research Society Conference (FLAIRS)</em>, Clearwater Beach, Florida, pp. 560-565, AAAI Press. <a href="http://www.isi.edu/%7Ehobbs/FLAIRS-05.pdf">http://www.isi.edu/~hobbs/FLAIRS-05.pdf</a></dd>
   <dt id="PR-OS">[PR-OS]</dt>
@@ -3836,7 +3840,7 @@ Research Society Conference (FLAIRS)</em>, Clearwater Beach, Florida, pp. 560-56
 to Authors</cite></a>, Radiocarb. Mag. (2014). <a href="https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissions#authorGuidelines">https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissions#authorGuidelines</a>
 (accessed September 9, 2014)</dd>
   <dt id="TTL-14">[TTL-14]</dt>
-    <dd>Prud'hommeaux, E. and Carothers, G. 2014. <a href="https://www.w3.org/TR/turtle/"><cite>RDF 1.1 Turtle -
+    <dd>E. Prud'hommeaux, G. Carothers (2014) <a href="https://www.w3.org/TR/turtle/"><cite>RDF 1.1 Turtle -
 Terse RDF Triple Language</cite></a>. W3C Recommendation. <a href="https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/
 </a></dd> 
 <!-- <dt id="TZ-ON">[TZ-ON]</dt>
