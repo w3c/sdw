@@ -185,10 +185,11 @@ th, td {
         a generic framework for delivering sensor data, dealing with
         remote-sensing, moving platforms, and in-situ monitoring and sensing.
         The Sensor Observation Service defines a standard query interface for
-        sensor and observation data, following the pattern established by OGC for their Web Services. </p>
-      <p>The Sensor Model Language (SensorML) [SensorML] and Observations and
-        Measurements (O&amp;M) [OandM] are complementary viewpoints. SensorML is
-        'provider-centric' and encodes details of the sensor along with raw
+        sensor and observation data, following the pattern established by OGC
+        for their Web Services. </p>
+      <p>The Sensor Model Language (SensorML) [[SensorML]] and Observations and
+        Measurements (O&amp;M) [[OandM]] are complementary viewpoints. SensorML
+        is 'provider-centric' and encodes details of the sensor along with raw
         observation data. SensorML is self-contained and highly flexible. The
         latter makes life easy for data producers but is demanding on consumers.
         It provides extensive support for serialization of numeric data arrays
@@ -204,31 +205,31 @@ th, td {
         applications and domains. O&amp;M also provided a model for sampling,
         since almost all scientific observations are made on a subset of, or
         proxy for, the ultimate feature-of-interest. </p>
-      Drawing on considerable implementation experience with SSN [[SSNO]] since
-      it was first published, it is modified to solve some known problems and to
-      reflect developments in the Linked Data environment. An important one of
-      these developments is the growth of interest in Internet of Things, where
-      experiments have used SSN, but where SSN has been found to be too big, too
-      dependent on OWL reasoning, and missing some key concepts such as
-      Actuation. Specifically,
-      <ol>
-        <li> The namespace has changed to a permanent W3C address. </li>
-        <li> For the purpose of modularization, a new ontology derived from SSN
-          has been developed. See section <a href="#Modularization">Modularization</a>
-          for a detailed description on how the parts relate. </li>
-        <li>
-          <p>The SSN previously imported the Dolce-UltraLite ontology (DUL) and
-            many SSN terms inherited from DUL terms. This has been redesigned
-            into so that SSN can be used quite independently of DUL if desired.
-            Some of the alignments with DUL have been reconsidered. Those parts
-            of SSN that use DUL terms have been separated into the <a href="http://www.w3.org/ns/ssn/dul/">SSN
-              Alignment with DUL ontology.</a> </p>
-        </li>
-        <li> Many rdfs:comment annotation properties have changed slightly to
-          improve explanation or to correct minor errors. </li>
-      </ol>
-      <!-- The reader is referred to the <a href="#changes">appendix</a> for a
-      complete change-log.--> </section>
+ <p>Drawing on considerable implementation and application experience with SSN and sensor and observation ontologies more broadly, the new SSN and SOSA ontologies presented here are set out to address changes in scope and audience, shortcomings of the initial work, as well as new technical developments. The list below highlights the most important (but by far not exclusive) updates.</p>
+<ul>
+    <li><strong>Addressing changes in scope and audience</strong></li>
+    <ul>
+    <li>The initial SSN was developed with ontology engineers in mind as the primary audience. Due to the widespread adaptation of SSN, the increasing role of citizen science, the strong focus on lightweight vocabularies by the Linked Data community, vocabularies such as Schema.org, and so forth, the new SSN  was streamlined, and SOSA was added as its core while remaining usable as a standalone lightweight ontology. SOSA targets Web developers, citizen science, lightweight Linked Data publishing, and so on. The new SSN introduces additional classes and relations on top of SOSA to model the capabilities of sensors and actuators, the compositionality of systems, and so forth to suit more complex needs or cases in which more provenance data is required, e.g., to improve reproducibility.  </li>
+        <li>Allmost all scientific observations make heavy use of sampling strategies, and, therefore, the Sampling, Sampler, and Sample classes, as well as their corresponding properties, have been added to SOSA and SSN.</li>
+        <li>Due to the increasing importance of the Web of Things and smart instrumentation and environments more  generally, the classes Actuator and Actuation have been added to SOSA and SSN.</li>
+    </ul>
+    <li><strong>Addressing shortcomings of the initial SSN</strong></li>
+    <ul>
+    <li>The new SSN streamlines the relations (and need for) the old Device, Platform, and Systems classes.</li>
+    <li>The old SSN was perceived as too heavyweight (on its axiomatization) and too dependent on OWL reasoning by some users. To strike a balance, DL expressivity of new lightweight SOSA ontology is ALI(D), while SSN remains in SRIQ.</li>
+    <li>The SSN previously imported the Dolce-UltraLite ontology (DUL) and many SSN terms inherited from DUL terms. Due to frequent user requests, this has been redesigned so that SSN (and SOSA) can be used entirely independently of DUL if desired. Some of the alignments with DUL have been reconsidered. Those parts of SSN that use DUL terms have been separated into the <a href="http://www.w3.org/ns/ssn/dul/">SSN Alignment with DUL ontology.</a> This alignment and therefore the role of DUL in SSN have been declared non-normative.</li>
+    <li>The definitions for many classes and properties have changed slightly to improve explanation or to correct minor errors. Examples have been separated from the main definitions.</li>
+    <li>The initial SSN has been criticized for its partially inconsistent handling of virtual sensors and related classes and properties. The new SSN and SOSA address this issue by allowing all major classes to be virtual and to better support humans and other animals as agents.</li>
+    <li>The notion of Procedure (formerly Plan) has been clarified to describe a workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world via an Actuator.</li>
+    <li>The Observation class in the initial SSN was conceptualized as a subclass of the DUL Situation class. To improve alignment with O&amp;M and user expectations, as well as to follow a consistent modeling strategy for observations, sampling, and actuation, the Observation class defined in SOSA and the new SSN are now conceptualized as activities. </li>
+    </ul>
+<li><strong>Addressing technical developments</strong></li>
+<ul>
+<li>The initial SSN used local/guarded domain and range restrictions. The lightweight SOSA ontology uses an even more restrained axiomatization to foster wide reuse and adaptation among an audience that is not necessarily familiar with OWL. SOSA makes use os the domainIncludes and rangeIncludes annotation properties defined in Schema.org. These had not been available before.</li>
+<li>Given the increased interest in using Semantic Web technologies directly on the level of individual sensors, actuators, or platforms, SOSA's axiomatization does not use many of the more complex language elements introduced by the SSN.</li>
+</ul>
+</ul>
+    </section>
     <section id="Modularization" class="informative">
       <h2>Modularization</h2>
       <p> </p>
@@ -1545,16 +1546,14 @@ th, td {
     </section>
     <section id="TheSSNontology" class="normative">
       <h2>Semantic Sensor Network (SSN) Ontology</h2>
-      <!-- document for SSN ontology by specgen6 -->
-      <!-- summary fragment cut from specgen output -->
       <h3 id="ssn-specification">SSN specification</h3>
       <p>An a-z index of <em>SSN</em> terms, by class (categories or types) and
         by property.</p>
       <!-- this is the a-z listing -->
       <div class="azlist">
-        <p>Classes: | <a href="#SSNAccuracy">Accuracy</a> | <a href="#SSNBatteryLifetime">BatteryLifetime</a>
-          | <a href="#SSNCondition">Condition</a> | <a href="#SSNDeployment">Deployment</a>
-          | <a href="#SSNDeploymentRelatedProcedure">DeploymentRelatedProcedure</a>
+        <p>Classes: | <a href="#SSNAccuracy">Accuracy</a> | <a href="#SSNActuatableProperty">ActuatableProperty</a>
+          | <a href="#SSNBatteryLifetime">BatteryLifetime</a> | <a href="#SSNCondition">Condition</a>
+          | <a href="#SSNDeployment">Deployment</a> | <a href="#SSNDeploymentRelatedProcedure">DeploymentRelatedProcedure</a>
           | <a href="#SSNDetectionLimit">DetectionLimit</a> | <a href="#SSNDrift">Drift</a>
           | <a href="#SSNFeatureOfInterest">FeatureOfInterest</a> | <a href="#SSNFrequency">Frequency</a>
           | <a href="#SSNInput">Input</a> | <a href="#SSNLatency">Latency</a>
@@ -1570,26 +1569,17 @@ th, td {
           | <a href="#SSNStimulus">Stimulus</a> | <a href="#SSNSurvivalProperty">SurvivalProperty</a>
           | <a href="#SSNSurvivalRange">SurvivalRange</a> | <a href="#SSNSystem">System</a>
           | <a href="#SSNSystemLifetime">SystemLifetime</a> | </p>
-        <p>Properties: | <a href="#SSNattachedSystem">attachedSystem</a> | <a
-            href="#SSNdeployedOnPlatform">deployedOnPlatform</a>
-          | <a href="#SSNdeployedSystem">deployedSystem</a> | <a href="#SSNdeploymentProcessPart">deploymentProcessPart</a>
-          | <a href="#SSNdetects">detects</a> | <a href="#SSNfeatureOfInterest">featureOfInterest</a>
+        <p>Properties: | <a href="#SSNdeployedOnPlatform">deployedOnPlatform</a>
+          | <a href="#SSNdeployedSystem">deployedSystem</a> | <a href="#SSNdetects">detects</a>
           | <a href="#SSNforProperty">forProperty</a> | <a href="#SSNhasDeployment">hasDeployment</a>
-          | <a href="#SSNhasMeasurementCapability">hasMeasurementCapability</a>
-          | <a href="#SSNhasMeasurementProperty">hasMeasurementProperty</a> | <a
-            href="#SSNhasOperatingProperty">hasOperatingProperty</a>
-          | <a href="#SSNhasOperatingRange">hasOperatingRange</a> | <a href="#SSNhasProperty">hasProperty</a>
-          | <a href="#SSNhasSubSystem">hasSubSystem</a> | <a href="#SSNhasSurvivalProperty">hasSurvivalProperty</a>
-          | <a href="#SSNhasSurvivalRange">hasSurvivalRange</a> | <a href="#SSNimplementedBy">implementedBy</a>
-          | <a href="#SSNimplements">implements</a> | <a href="#SSNinCondition">inCondition</a>
-          | <a href="#SSNinDeployment">inDeployment</a> | <a href="#SSNisProducedBy">isProducedBy</a>
+          | <a href="#SSNhasSystemCapability">hasSystemCapability</a> | <a href="#SSNhasSystemProperty">hasSystemProperty</a>
+          | <a href="#SSNhasOperatingProperty">hasOperatingProperty</a> | <a href="#SSNhasOperatingRange">hasOperatingRange</a>
+          | <a href="#SSNhasProperty">hasProperty</a> | <a href="#SSNhasSubSystem">hasSubSystem</a>
+          | <a href="#SSNhasSurvivalProperty">hasSurvivalProperty</a> | <a href="#SSNhasSurvivalRange">hasSurvivalRange</a>
+          | <a href="#SSNimplementedBy">implementedBy</a> | <a href="#SSNimplements">implements</a>
+          | <a href="#SSNinCondition">inCondition</a> | <a href="#SSNinDeployment">inDeployment</a>
           | <a href="#SSNisPropertyOf">isPropertyOf</a> | <a href="#SSNisProxyFor">isProxyFor</a>
-          | <a href="#SSNmadeObservation">madeObservation</a> | <a href="#SSNobservationResult">observationResult</a>
-          | <a href="#SSNobservationResultTime">observationResultTime</a> | <a
-            href="#SSNobservationSamplingTime">observationSamplingTime</a>
-          | <a href="#SSNobservedProperty">observedProperty</a> | <a href="#SSNobserves">observes</a>
-          | <a href="#SSNofFeature">ofFeature</a> | <a href="#SSNonPlatform">onPlatform</a>
-          | <a href="#SSNqualityOfObservation">qualityOfObservation</a> | <a href="#SSNsensingMethodUsed">sensingMethodUsed</a>
+          | <a href="#SSNobserves">observes</a> | <a href="#SSNqualityOfObservation">qualityOfObservation</a>
           | </p>
       </div>
       <!-- The list of groups starts here -->
@@ -1624,6 +1614,47 @@ th, td {
             </table>
             <p style="float: right; font-size: small;">[<a href="#SSNAccuracy">#</a>]
               <!-- Accuracy --> [<a href="#ssn-specification">back to top</a>]</p>
+            <br>
+          </div>
+          <div class="specterm" id="SSNActuatableProperty" about="http://www.w3.org/ns/sosa/ActuatableProperty"
+            typeof="owl:Class">
+            <h3>Class: sosa:ActuatableProperty</h3>
+            <em property="rdfs:label">ActuatableProperty</em> - <span class="pl-s">An
+              actuatable property, i.e., characteristic, of a FeatureOfInterest.</span>
+            <table style="th { float: top; }">
+              <tbody>
+                <tr>
+                  <th>Sub class of</th>
+                  <td> <span rel="rdfs:subClassOf"><a href="#SSNProperty">ssn:Property</a></span>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="restrictions">Restriction</th>
+                  <td> <span about="http://www.w3.org/ns/sosa/ActuatableProperty"
+                      rel="rdfs:subClassOf"
+                      resource="[_:Nccfe75029e7b47c4b9c41e9d5b9a3be7]"></span>
+                    <span about="[_:Nccfe75029e7b47c4b9c41e9d5b9a3be7]" typeof="owl:Restriction"></span>
+                    <span about="[_:http://www.w3.org/ns/sosa/isActedOnBy]" rel="owl:onProperty"><a
+                        href="#SOSAActuation">sosa:Actuation</a></span>
+                    <em><b>must be</b></em> <span about="[_:Nccfe75029e7b47c4b9c41e9d5b9a3be7]"
+                      property="owl:allValuesFrom"
+                      datatype="xsd:anyURI"><a
+                        href="http://www.w3.org/ns/ssn/DeploymentRelatedProcedure">ssn:DeploymentRelatedProcedure</a></span>
+                  </td>
+                </tr>
+                <tr>
+                  <th>is Defined By</th>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/sosa/">http://www.w3.org/ns/sosa/</a></span>
+                  </td>
+                </tr>
+                <tr>
+                  <th colspan="2">OWL Class</th>
+                </tr>
+              </tbody>
+            </table>
+            <p style="float: right; font-size: small;">[<a href="#SSNActuatableProperty">#</a>]
+              <!-- ActuatableProperty --> [<a href="#ssn-specification">back to
+                top</a>]</p>
             <br>
           </div>
           <div class="specterm" id="SSNBatteryLifetime" about="http://www.w3.org/ns/ssn/BatteryLifetime"
@@ -2264,21 +2295,21 @@ th, td {
                       about="[_:N9ee54272512f434197e8fc7f5c79f098]"
                       rel="owl:onProperty"><a
                         href="#SOSAresultTime">sosa:resultTime</a></span>
-                    <em><b>occurring at least 0 times</b></em> <br>
+                    <em><b>must occur at least 0 times</b></em> <br>
                     <span about="http://www.w3.org/ns/sosa/Observation" rel="rdfs:subClassOf"
                       resource="[_:N9ee54272512f434197e8fc7f5c79e098]"></span>
                     <span about="[_:N9ee54272512f434197e8fc7f5c79e098]" typeof="owl:Restriction"></span><span
                       about="[_:N9ee54272512f434197e8fc7f5c79e098]"
                       rel="owl:onProperty"><a
                         href="#SOSAphenomenonTime">sosa:phenomenonTime</a></span>
-                    <em><b>occurring at least 0 times</b></em> <br>
+                    <em><b>must occur at least 0 times</b></em> <br>
                     <span about="http://www.w3.org/ns/ssn/Observation" rel="rdfs:subClassOf"
                       resource="[_:N0f299f58767b4c00a2dca996258b5a33]"></span>
                     <span about="[_:N0f299f58767b4c00a2dca996258b5a33]" typeof="owl:Restriction"></span><span
                       about="[_:N0f299f58767b4c00a2dca996258b5a33]"
                       rel="owl:onProperty"><a
                         href="#SSNqualityOfObservation">ssn:qualityOfObservation</a></span>
-                    <em><b>occurring at least 0 times</b></em> </td>
+                    <em><b>must occur at least 0 times</b></em> </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
@@ -3022,49 +3053,22 @@ th, td {
               <!-- SystemLifetime --> [<a href="#ssn-specification">back to top</a>]</p>
             <br>
           </div>
-          <div class="specterm" id="SSNattachedSystem" about="http://www.w3.org/ns/ssn/attachedSystem"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:attachedSystem</h3>
-            <em property="rdfs:label">attached system</em> - <span property="rdfs:comment">Relation
-              between a Platform and any Systems (e.g., Sensors) that are
-              attached to the Platform.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>Inverse property of</th>
-                  <td> <span rel="owl:inverseOf"><a href="#SSNonPlatform">on
-                        platform</a></span> </td>
-                </tr>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNattachedSystem">#</a>]
-              <!-- attachedSystem --> [<a href="#ssn-specification">back to top</a>]</p>
-            <br>
-          </div>
           <div class="specterm" id="SSNdeployedOnPlatform" about="http://www.w3.org/ns/ssn/deployedOnPlatform"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:deployedOnPlatform</h3>
             <em property="rdfs:label">deployed on platform</em> - <span property="rdfs:comment">Relation
-              between a deployment and the platform on which the system is
+              between a Deployment and the Platform on which the Systems are
               deployed.</span> <br>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Inverse property of</th>
-                  <td> <span rel="owl:inverseOf"><a href="#SSNinDeployment">in
-                        deployment</a></span> </td>
+                  <td> <span rel="owl:inverseOf"><a href="#SSNinDeployment">ssn:inDeployment</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3080,18 +3084,18 @@ th, td {
           <div class="specterm" id="SSNdeployedSystem" about="http://www.w3.org/ns/ssn/deployedSystem"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:deployedSystem</h3>
-            <em property="rdfs:label">deployed system</em> - <span property="rdfs:comment">Relation
-              between a deployment and the deployed system.</span> <br>
+            <em property="rdfs:label">deployed system</em> - <span class="pl-s">Relation
+              between a Deployment and a deployed System.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Inverse property of</th>
-                  <td> <span rel="owl:inverseOf"><a href="#SSNhasDeployment">has
-                        deployment</a></span> </td>
+                  <td> <span rel="owl:inverseOf"><a href="#SSNhasDeployment">ssn:hasDeployment</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3103,41 +3107,18 @@ th, td {
               <!-- deployedSystem --> [<a href="#ssn-specification">back to top</a>]</p>
             <br>
           </div>
-          <div class="specterm" id="SSNdeploymentProcessPart" about="http://www.w3.org/ns/ssn/deploymentProcessPart"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:deploymentProcessPart</h3>
-            <em property="rdfs:label">deployment process part</em> - <span property="rdfs:comment">Relation
-              between a deployment process and its constituent processes
-              (has-part).</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNdeploymentProcessPart">#</a>]
-              <!-- deploymentProcessPart --> [<a href="#ssn-specification">back
-                to top</a>]</p>
-            <br>
-          </div>
           <div class="specterm" id="SSNdetects" about="http://www.w3.org/ns/ssn/detects"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:detects</h3>
-            <em property="rdfs:label">detects</em> - <span property="rdfs:comment">A
-              relation from a sensor to the Stimulus that the sensor can detect.
-              The Stimulus itself will be serving as a proxy for (see isProxyOf)
-              some observable property.</span> <br>
+            <em property="rdfs:label">detects</em> - <span class="pl-s">A
+              relation from a Sensor to the Stimulus that the Sensor can detect.
+              The Stimulus itself will be serving as a proxy for some
+              ObservableProperty.<span class="pl-pds"></span></span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3149,45 +3130,25 @@ th, td {
               <!-- detects --> [<a href="#ssn-specification">back to top</a>]</p>
             <br>
           </div>
-          <div class="specterm" id="SSNfeatureOfInterest" about="http://www.w3.org/ns/ssn/featureOfInterest"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:featureOfInterest</h3>
-            <em property="rdfs:label">feature of interest</em> - <span property="rdfs:comment">A
-              relation between an observation and the entity whose quality was
-              observed. For example, in an observation of the weight of a
-              person, the feature of interest is the person and the quality is
-              weight.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNfeatureOfInterest">#</a>]
-              <!-- featureOfInterest --> [<a href="#ssn-specification">back to
-                top</a>]</p>
-            <br>
-          </div>
           <div class="specterm" id="SSNforProperty" about="http://www.w3.org/ns/ssn/forProperty"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:forProperty</h3>
             <em property="rdfs:label">for property</em> - <span property="rdfs:comment">A
-              relation between some aspect of a sensing entity and a property.
-              For example, from a sensor to the properties it can observe, or
-              from a deployment to the properties it was installed to observe.
-              Also from a measurement capability to the property the capability
-              is described for. Used in conjunction with ofFeature.</span> <br>
+              relation between some aspect of an entity and a Property.</span> <br>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
+                  <th>skos:example</th>
+                  <td><span class="pl-s">For example, from a Sensor to the
+                      properties it can observe; from an Actuator to the
+                      properties it can act on; from a Deployment to the
+                      properties it was installed to observe or act on; from a
+                      SystemCapability to the Property the capability is
+                      described for.</span></td>
+                </tr>
+                <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3202,18 +3163,18 @@ th, td {
           <div class="specterm" id="SSNhasDeployment" about="http://www.w3.org/ns/ssn/hasDeployment"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:hasDeployment</h3>
-            <em property="rdfs:label">has deployment</em> - <span property="rdfs:comment">Relation
-              between a System and a Deployment, recording that the System or
-              Sensor was deployed in that Deployment.</span> <br>
+            <em property="rdfs:label">has deployment</em> - <span class="pl-s">Relation
+              between a System and a Deployment, recording that the System is
+              deployed in that Deployment.<span class="pl-pds"></span></span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Has inverse property</th>
-                  <td> <a href="#SSNdeployedSystem">deployed system</a> </td>
+                  <td> <a href="#SSNdeployedSystem">ssn:deployedSystem</a> </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3225,22 +3186,23 @@ th, td {
               <!-- hasDeployment --> [<a href="#ssn-specification">back to top</a>]</p>
             <br>
           </div>
-          <div class="specterm" id="SSNhasMeasurementCapability" about="http://www.w3.org/ns/ssn/hasMeasurementCapability"
+          <div class="specterm" id="SSNhasSystemCapability" about="http://www.w3.org/ns/ssn/hasSystemCapability"
             typeof="owl:ObjectProperty">
-            <h3>Property: ssn:hasMeasurementCapability</h3>
-            <em property="rdfs:label">has measurement capability</em> - <span property="rdfs:comment">Relation
-              from a Sensor to a MeasurementCapability describing the
-              measurement properties of the sensor.</span> <br>
+            <h3>Property: ssn:hasSystemCapability</h3>
+            <em property="rdfs:label">has system capability</em> - <span class="pl-s"><span
+                class="pl-pds"></span>Relation
+              from a System to a SystemCapability describing the capabilities of
+              the System under certain Conditions.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Sub property of</th>
-                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">has
-                        property</a></span> </td>
+                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">ssn:hasProperty</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3248,27 +3210,27 @@ th, td {
                 </tr>
               </tbody>
             </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNhasMeasurementCapability">#</a>]
-              <!-- hasMeasurementCapability --> [<a href="#ssn-specification">back
-                to top</a>]</p>
+            <p style="float: right; font-size: small;">[<a href="#SSNhasSystemCapability">#</a>]
+              <!-- hasSystemCapability --> [<a href="#ssn-specification">back to
+                top</a>]</p>
             <br>
           </div>
-          <div class="specterm" id="SSNhasMeasurementProperty" about="http://www.w3.org/ns/ssn/hasMeasurementProperty"
+          <div class="specterm" id="SSNhasSystemProperty" about="http://www.w3.org/ns/ssn/hasSystemProperty"
             typeof="owl:ObjectProperty">
-            <h3>Property: ssn:hasMeasurementProperty</h3>
-            <em property="rdfs:label">has measurement property</em> - <span property="rdfs:comment">Relation
-              from a MeasurementCapability to a MeasurementProperty such as
-              accuracy (see notes for MeasurementCapability).</span> <br>
+            <h3>Property: ssn:hasSystemProperty</h3>
+            <em property="rdfs:label">has system property</em> - <span class="pl-s">Relation
+              from an SystemCapability of a System to a SystemProperty
+              describing the capabilities of the System.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Sub property of</th>
-                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">has
-                        property</a></span> </td>
+                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">ssn:hasProperty</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3277,26 +3239,27 @@ th, td {
               </tbody>
             </table>
             <p style="float: right; font-size: small;">[<a href="#SSNhasMeasurementProperty">#</a>]
-              <!-- hasMeasurementProperty --> [<a href="#ssn-specification">back
-                to top</a>]</p>
+              <!-- hasSystemProperty --> [<a href="#ssn-specification">back to
+                top</a>]</p>
             <br>
           </div>
           <div class="specterm" id="SSNhasOperatingProperty" about="http://www.w3.org/ns/ssn/hasOperatingProperty"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:hasOperatingProperty</h3>
-            <em property="rdfs:label">has operating property</em> - <span property="rdfs:comment">Relation
-              from an OperatingRange to a Property such as battery lifetime.</span>
-            <br>
+            <em property="rdfs:label">has operating property</em> - <span class="pl-s"><span
+                class="pl-pds"></span>Relation
+              from a System to an OperatingRange describing the normal operating
+              environment of the System.<span class="pl-pds"></span></span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Sub property of</th>
-                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">has
-                        property</a></span> </td>
+                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">ssn:hasProperty</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3312,19 +3275,20 @@ th, td {
           <div class="specterm" id="SSNhasOperatingRange" about="http://www.w3.org/ns/ssn/hasOperatingRange"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:hasOperatingRange</h3>
-            <em property="rdfs:label">has operating range</em> - <span property="rdfs:comment">Relation
+            <em property="rdfs:label">has operating range</em> - <span class="pl-s"><span
+                class="pl-pds"></span>Relation
               from a System to an OperatingRange describing the normal operating
-              environment of the System.</span> <br>
+              environment of the System.<span class="pl-pds"></span></span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Sub property of</th>
-                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">has
-                        property</a></span> </td>
+                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">ssn:hasProperty</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3340,30 +3304,18 @@ th, td {
           <div class="specterm" id="SSNhasProperty" about="http://www.w3.org/ns/ssn/hasProperty"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:hasProperty</h3>
-            <em property="rdfs:label">has property</em> - <span property="rdfs:comment">Relation
-              between a FeatureOfInterest and a Property of that feature.</span>
-            <br>
+            <em property="rdfs:label">has property</em> - <span class="pl-s">Relation
+              between a FeatureOfInterest and a Property of that feature.<span class="pl-pds"></span></span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
-                  <th>Has sub property</th>
-                  <td> <a href="#SSNhasMeasurementCapability">has measurement
-                      capability</a> <a href="#SSNhasOperatingProperty">has
-                      operating property</a> <a href="#SSNqualityOfObservation">quality
-                      of observation</a> <a href="#SSNhasSurvivalRange">has
-                      survival range</a> <a href="#SSNhasSurvivalProperty">has
-                      survival property</a> <a href="#SSNhasMeasurementProperty">has
-                      measurement property</a> <a href="#SSNhasOperatingRange">has
-                      operating range</a> </td>
-                </tr>
-                <tr>
                   <th>Inverse property of</th>
-                  <td> <span rel="owl:inverseOf"><a href="#SSNisPropertyOf">is
-                        property of</a></span> </td>
+                  <td> <span rel="owl:inverseOf"><a href="#SSNisPropertyOf">ssn:isPropertyOf</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3378,13 +3330,13 @@ th, td {
           <div class="specterm" id="SSNhasSubSystem" about="http://www.w3.org/ns/ssn/hasSubSystem"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:hasSubSystem</h3>
-            <em property="rdfs:label">has subsystem</em> - <span property="rdfs:comment">Relation
-              between a system and its component parts (has-part).</span> <br>
+            <em property="rdfs:label">has subsystem</em> - <span class="pl-s">Relation
+              between a System and its component parts (has-part).</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3399,21 +3351,19 @@ th, td {
           <div class="specterm" id="SSNhasSurvivalProperty" about="http://www.w3.org/ns/ssn/hasSurvivalProperty"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:hasSurvivalProperty</h3>
-            <em property="rdfs:label">has survival property</em> - <span property="rdfs:comment">Relation
-              from a SurvivalRange of a System to a Property describing the
-              survival range of the system. For example, to the temperature
-              range that a system can withstand before being considered damaged.</span>
-            <br>
+            <em property="rdfs:label">has survival property</em> - <span class="pl-s">Relation
+              from a SurvivalRange of a System to a SurvivalProperty describing
+              the survival range of the System.<span class="pl-pds"></span></span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Sub property of</th>
-                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">has
-                        property</a></span> </td>
+                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">ssn:hasProperty</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3429,18 +3379,19 @@ th, td {
           <div class="specterm" id="SSNhasSurvivalRange" about="http://www.w3.org/ns/ssn/hasSurvivalRange"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:hasSurvivalRange</h3>
-            <em property="rdfs:label">has survival range</em> - <span property="rdfs:comment">Relation
-              from a System to a SurvivalRange.</span> <br>
+            <em property="rdfs:label">has survival range</em> - <span class="pl-s"><span
+                class="pl-pds"></span>Relation
+              from a System to a SurvivalRange.<span class="pl-pds"></span></span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Sub property of</th>
-                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">has
-                        property</a></span> </td>
+                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">ssn:hasProperty</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3456,21 +3407,20 @@ th, td {
           <div class="specterm" id="SSNimplementedBy" about="http://www.w3.org/ns/ssn/implementedBy"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:implementedBy</h3>
-            <em property="rdfs:label">implemented by</em> - <span property="rdfs:comment">Relation
-              between the description of an algorithm, procedure or method and
-              an entity that implements that method in some executable way. For
-              example, between a scientific measuring method and a sensor that
-              senses via that method.</span> <br>
+            <em property="rdfs:label">implemented by</em> - <span class="pl-s">Relation
+              between a Procedure (an algorithm, procedure or method) and an
+              entity that implements that Procedure in some executable way.<span
+                class="pl-pds"></span></span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Inverse property of</th>
-                  <td> <span rel="owl:inverseOf"><a href="#SSNimplements">implements</a></span>
+                  <td> <span rel="owl:inverseOf"><a href="#SSNimplements">ssn:implements</a></span>
                   </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3485,20 +3435,19 @@ th, td {
           <div class="specterm" id="SSNimplements" about="http://www.w3.org/ns/ssn/implements"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:implements</h3>
-            <em property="rdfs:label">implements</em> - <span property="rdfs:comment">Relation
-              between an entity that implements a method in some executable way
-              and the description of an algorithm, procedure or method. For
-              example, between a Sensor and the scientific measuring method that
-              the Sensor uses to observe a Property.</span> <br>
+            <em property="rdfs:label">implements</em> - <span class="pl-s"><span
+                class="pl-pds"></span>Relation
+              between an entity that implements a Procedure in some executable
+              way and the Procedure (an algorithm, procedure or method).</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Has inverse property</th>
-                  <td> <a href="#SSNimplementedBy">implemented by</a> </td>
+                  <td> <a href="#SSNimplementedBy">ssn:implementedBy</a> </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3513,16 +3462,19 @@ th, td {
           <div class="specterm" id="SSNinCondition" about="http://www.w3.org/ns/ssn/inCondition"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:inCondition</h3>
-            <em property="rdfs:label">in condition</em> - <span property="rdfs:comment">Describes
-              the prevailing environmental conditions for
-              MeasurementCapabilites, OperatingConditions and SurvivalRanges.
-              Used for example to say that a sensor has a particular accuracy in
-              particular conditions. See also MeasurementCapability.</span> <br>
+            <em property="rdfs:label">in condition</em> - <span class="pl-s">Describes
+              the prevailing environmental conditions for SystemCapabilites,
+              OperatingConditions and SurvivalRanges.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
+                  <th>skos:example</th>
+                  <td><span class="pl-s">Used for example to say that a sensor
+                      has a particular accuracy in particular conditions.</span></td>
+                </tr>
+                <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3537,21 +3489,24 @@ th, td {
           <div class="specterm" id="SSNinDeployment" about="http://www.w3.org/ns/ssn/inDeployment"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:inDeployment</h3>
-            <em property="rdfs:label">in deployment</em> - <span property="rdfs:comment">Relation
-              between a Platform and a Deployment, meaning that the subject was
-              used as a platform for a system or sensor in the particular
-              deployment. For example, between a buoy and a deployment
-              identifier. </span> <br>
+            <em property="rdfs:label">in deployment</em> - <span class="pl-s">Relation
+              between a Platform and a Deployment, meaning that the
+              deployedSystems of the Deployment are hosted on the Platform.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
+                  <th>skos:example</th>
+                  <td><span class="pl-s">For example, a relation between a buoy
+                      and a deployment of several Sensors.</span></td>
+                </tr>
+                <tr>
                   <th>Has inverse property</th>
-                  <td> <a href="#SSNdeployedOnPlatform">deployed on platform</a>
+                  <td> <a href="#SSNdeployedOnPlatform">ssn:deployedOnPlatform</a>
                   </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3563,43 +3518,20 @@ th, td {
               <!-- inDeployment --> [<a href="#ssn-specification">back to top</a>]</p>
             <br>
           </div>
-          <div class="specterm" id="SSNisProducedBy" about="http://www.w3.org/ns/ssn/isProducedBy"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:isProducedBy</h3>
-            <em property="rdfs:label">is produced by</em> - <span property="rdfs:comment">Relation
-              between a producer and a produced entity. For example, between a
-              sensor and the produced output.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNisProducedBy">#</a>]
-              <!-- isProducedBy --> [<a href="#ssn-specification">back to top</a>]</p>
-            <br>
-          </div>
           <div class="specterm" id="SSNisPropertyOf" about="http://www.w3.org/ns/ssn/isPropertyOf"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:isPropertyOf</h3>
-            <em property="rdfs:label">is property of</em> - <span property="rdfs:comment">Relation
-              between a FeatureOfInterest and a Property (a Quality observable
-              by a sensor) of that feature.</span> <br>
+            <em property="rdfs:label">is property of</em> - <span class="pl-s">Relation
+              between a Property and the FeatureOfInterest it belongs to.<span class="pl-pds"></span></span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Has inverse property</th>
-                  <td> <a href="#SSNhasProperty">has property</a> </td>
+                  <td> <a href="#SSNhasProperty">ssn:hasProperty</a> </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3614,17 +3546,22 @@ th, td {
           <div class="specterm" id="SSNisProxyFor" about="http://www.w3.org/ns/ssn/isProxyFor"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:isProxyFor</h3>
-            <em property="rdfs:label">isProxyFor</em> - <span property="rdfs:comment">A
+            <em property="rdfs:label">isProxyFor</em> - <span class="pl-s">A
               relation from a Stimulus to the Property that the Stimulus is
-              serving as a proxy for. For example, the expansion of quicksilver
-              is a stimulus that serves as a proxy for temperature. An increase
-              or decrease in the velocity of spinning cups on a wind sensor is
-              serving as a proxy for wind speed.</span> <br>
+              serving as a proxy for.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
+                  <th>skos:example</th>
+                  <td><span class="pl-s">For example, the expansion of
+                      quicksilver is a stimulus that serves as a proxy for some
+                      temperature property. An increase or decrease in the
+                      velocity of spinning cups on a wind sensor is serving as a
+                      proxy for the wind speed.</span></td>
+                </tr>
+                <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3636,129 +3573,9 @@ th, td {
               <!-- isProxyFor --> [<a href="#ssn-specification">back to top</a>]</p>
             <br>
           </div>
-          <div class="specterm" id="SSNmadeObservation" about="http://www.w3.org/ns/ssn/madeObservation"
+          <div class="specterm" id="SSNobserves" about="http://www.w3.org/ns/sosa/observes"
             typeof="owl:ObjectProperty">
-            <h3>Property: ssn:madeObservation</h3>
-            <em property="rdfs:label">made observation</em> - <span property="rdfs:comment">Relation
-              between a Sensor and Observations it has made.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNmadeObservation">#</a>]
-              <!-- madeObservation --> [<a href="#ssn-specification">back to top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SSNobservationResult" about="http://www.w3.org/ns/ssn/observationResult"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:observationResult</h3>
-            <em property="rdfs:label">observation result</em> - <span property="rdfs:comment">Relation
-              linking an Observation (i.e., a description of the context, the
-              Situation, in which the observatioin was made) and a Result, which
-              contains a value representing the value associated with the
-              observed Property.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNobservationResult">#</a>]
-              <!-- observationResult --> [<a href="#ssn-specification">back to
-                top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SSNobservationResultTime" about="http://www.w3.org/ns/ssn/observationResultTime"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:observationResultTime</h3>
-            <em property="rdfs:label">observation result time</em> - <span property="rdfs:comment">The
-              result time is the time when the procedure associated with the
-              observation act was applied.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNobservationResultTime">#</a>]
-              <!-- observationResultTime --> [<a href="#ssn-specification">back
-                to top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SSNobservationSamplingTime" about="http://www.w3.org/ns/ssn/observationSamplingTime"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:observationSamplingTime</h3>
-            <em property="rdfs:label">observation sampling time</em> - <span property="rdfs:comment">Rebadged
-              as phenomenon time in [O&amp;M]. The phenomenon time shall
-              describe the time that the result applies to the property of the
-              feature-of-interest. This is often the time of interaction by a
-              sampling procedure or observation procedure with a real-world
-              feature.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNobservationSamplingTime">#</a>]
-              <!-- observationSamplingTime --> [<a href="#ssn-specification">back
-                to top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SSNobservedProperty" about="http://www.w3.org/ns/ssn/observedProperty"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:observedProperty</h3>
-            <em property="rdfs:label">observed property</em> - <span property="rdfs:comment">Relation
-              linking an Observation to the Property that was observed. The
-              observedProperty should be a Property (hasProperty) of the
-              FeatureOfInterest (linked by featureOfInterest) of this
-              observation.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNobservedProperty">#</a>]
-              <!-- observedProperty --> [<a href="#ssn-specification">back to
-                top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SSNobserves" about="http://www.w3.org/ns/ssn/observes"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:observes</h3>
+            <h3>Property: sosa:observes</h3>
             <em property="rdfs:label">observes</em> - <span property="rdfs:comment">Relation
               between a Sensor and a Property that the sensor can observe. Note
               that, given the DUL modelling of Qualities, a sensor defined with
@@ -3767,26 +3584,19 @@ th, td {
               can't express concept-concept relations, only
               individual-individual. The property composition ensures that if an
               observation is made of a particular quality then one can infer
-              that the sensor observes that quality.</span> <br>
+              that the sensor observes that quality.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <th>Sub property of</th>
+                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNforProperty">ssn:forProperty</a></span>
                   </td>
                 </tr>
-                <!--BEGIN  HANDWRITTEN FOR OBSERVES ROLE COMPOSITION - KLT -->
-                <!-- INSERT  In "Property: ssn:observes" section, 
-AFTER "<td>  <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn"></a></span></td></tr>" -->
                 <tr>
-                  <th>has sub-property chains</th>
-                  <td><a href="#SSNmadeObservation" title="http://www.w3.org/ns/ssn/madeObservation">madeObservation</a>
-                    <span class="logic">o</span> <a href="#SSNobservedProperty"
-                      title="http://www.w3.org/ns/ssn/observedProperty">observedProperty</a><br>
-                    <a href="#SSNhasMeasurementCapability" title="http://www.w3.org/ns/ssn/hasMeasurementCapability">hasMeasurementCapability</a>
-                    <span class="logic">o</span> <a href="#SSNforProperty" title="http://www.w3.org/ns/ssn/forProperty">forProperty</a></td>
+                  <th>is Defined By</th>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/sosa/">http://www.w3.org/ns/sosa/</a></span>
+                  </td>
                 </tr>
-                <!--END HANDWRITTEN FOR OBSERVES ROLE COMPOSITION - KLT -->
                 <tr>
                   <th colspan="2">Object Property</th>
                 </tr>
@@ -3796,80 +3606,23 @@ AFTER "<td>  <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn"></a
               <!-- observes --> [<a href="#ssn-specification">back to top</a>]</p>
             <br>
           </div>
-          <div class="specterm" id="SSNofFeature" about="http://www.w3.org/ns/ssn/ofFeature"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:ofFeature</h3>
-            <em property="rdfs:label">of feature</em> - <span property="rdfs:comment">A
-              relation between some aspect of a sensing entity and a feature.
-              For example, from a sensor to the features it can observe
-              properties of, or from a deployment to the features it was
-              installed to observe. Also from a measurement capability to the
-              feature the capability is described for. (Used in conjunction with
-              forProperty).</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNofFeature">#</a>]
-              <!-- ofFeature --> [<a href="#ssn-specification">back to top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SSNonPlatform" about="http://www.w3.org/ns/ssn/onPlatform"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:onPlatform</h3>
-            <em property="rdfs:label">on platform</em> - <span property="rdfs:comment">Relation
-              between a System (e.g., a Sensor) and a Platform. The relation
-              locates the sensor relative to other described entities entities:
-              i.e., the Sensor s1's location is Platform p1. More precise
-              locations for sensors in space (relative to other entities, where
-              attached to another entity, or in 3D space) are made using Dolce's
-              Regions (SpaceRegion).</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>Has inverse property</th>
-                  <td> <a href="#SSNattachedSystem">attached system</a> </td>
-                </tr>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNonPlatform">#</a>]
-              <!-- onPlatform --> [<a href="#ssn-specification">back to top</a>]</p>
-            <br>
-          </div>
           <div class="specterm" id="SSNqualityOfObservation" about="http://www.w3.org/ns/ssn/qualityOfObservation"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:qualityOfObservation</h3>
-            <em property="rdfs:label">quality of observation</em> - <span property="rdfs:comment">Relation
-              linking an Observation to the adjudged quality of the result. This
-              is of course complimentary to the MeasurementCapability
-              information recorded for the Sensor that made the Observation.</span>
-            <br>
+            <em property="rdfs:label">quality of observation</em> - <span class="pl-s">Relation
+              linking an Observation to the adjudged quality of the Result. This
+              is complimentary to the MeasurementCapability information recorded
+              for the Sensor that made the Observation.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>Sub property of</th>
-                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">has
-                        property</a></span> </td>
+                  <td> <span rel="rdfs:subPropertyOf"><a href="#SSNhasProperty">ssn:hasProperty</a></span>
+                  </td>
                 </tr>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3882,80 +3635,16 @@ AFTER "<td>  <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn"></a
                 to top</a>]</p>
             <br>
           </div>
-          <div class="specterm" id="SSNsensingMethodUsed" about="http://www.w3.org/ns/ssn/sensingMethodUsed"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:sensingMethodUsed</h3>
-            <em property="rdfs:label">sensing method used</em> - <span property="rdfs:comment">A
-              (measurement) procedure is a detailed description of a measurement
-              according to one or more measurement principles and to a given
-              measurement method, based on a measurement model and including any
-              calculation to obtain a measurement result [VIM 2.6]</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNsensingMethodUsed">#</a>]
-              <!-- sensingMethodUsed --> [<a href="#ssn-specification">back to
-                top</a>]</p>
-            <br>
-          </div>
-          <!-- here -->
-          <div class="specterm" id="SSNobservedBy" about="http://www.w3.org/ns/ssn/observedBy"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:observedBy</h3>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNobservedBy">#</a>]
-              <!-- observedBy --> [<a href="#ssn-specification">back to top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SSNhasValue" about="http://www.w3.org/ns/ssn/hasValue"
-            typeof="owl:ObjectProperty">
-            <h3>Property: ssn:hasValue</h3>
-            <em property="rdfs:label">has value</em>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
-                  </td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SSNhasValue">#</a>]
-              <!-- hasValue --> [<a href="#ssn-specification">back to top</a>]</p>
-            <br>
-          </div>
           <div class="specterm" id="SSNhasInput" about="http://www.w3.org/ns/ssn/hasInput"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:hasInput</h3>
-            <em property="rdfs:label">has input</em>
+            <em property="rdfs:label">has input</em> - <span class="pl-s">Relation
+              between a Procedure and an Input to it.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3970,12 +3659,13 @@ AFTER "<td>  <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn"></a
           <div class="specterm" id="SSNhasOutput" about="http://www.w3.org/ns/ssn/hasOutput"
             typeof="owl:ObjectProperty">
             <h3>Property: ssn:hasOutput</h3>
-            <em property="rdfs:label">has output</em>
+            <em property="rdfs:label">has output</em> - <span class="pl-s">Relation
+              between a Procedure and an Output of it.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
                   <th>is Defined By</th>
-                  <td> <span rel="rdfs:isDefinedBy"></span> <br>
+                  <td> <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3987,424 +3677,21 @@ AFTER "<td>  <span rel="rdfs:isDefinedBy"><a href="http://www.w3.org/ns/ssn"></a
               <!-- hasOutput --> [<a href="#ssn-specification">back to top</a>]</p>
             <br>
           </div>
-          <!-- to here --> </div>
+        </div>
       </div>
     </section>
-    <!--End of SSN ontology autogenerated document-->
     <section id="SSNX_Alignment" class="normative">
       <h2>SSNX Alignment Module</h2>
-      <p class="issue" data-number="103">How should the alignment be formally
-        defined here? This presentation is experimental and rough at present.</p>
-      This section formally relates the SSN to the previous version of SSN that
-      was published by the SSN-XG ("old SSN"). This may be useful for
-      backward-compatibility and transition purposes. While the namespaces for
-      SSN and DUL have changed since the SSN-XG first published old SSN, every
-      class and property term of SSN here is equivalent to the corresponding
-      class and property term of old SSN with the only exceptions noted here.
-      <p style="text-align: center;">The namespace for SSN terms is <span class="repeated"
-          style="font-family: courier;">http://www.w3.org/ns/ssn/</span>
+      <p>This section formally relates the SSN to the previous version of SSN
+        that was published by the SSN-XG ("old SSN"). This may be useful for
+        backward-compatibility and transition purposes. While the namespaces for
+        SSN and DUL have changed since the SSN-XG first published the old SSN,
+        the SSN alignment, known as "SSN-SSNX" is available at <a href="http://www.w3.org/2017/01/ssn-ssnx/">http://www.w3.org/2017/01/ssn-ssnx/</a>.
       </p>
-      <p style="text-align: center;">There are no terms defined in the
-        alignment, so no prefix is recommended.</p>
-      <p style="text-align: center;">The SSN alignment, known as "ssn-ssnx" is
-        available at <a href="http://www.w3.org/2017/01/ssn-ssnx/">http://www.w3.org/2017/01/ssn-ssnx/</a>.</p>
-      The class ssn:Sensor has been redefined from the old SSN, so the assertion
-      below holds in pseudo-Turtle syntax. <code> <br>
-        @prefix old: &lt;http://purl.oclc.org/NET/ssnx/ssn#&gt; . <br>
-        @prefix ssn: &lt;http://www.w3.org/ns/ssn/&gt; .<br>
-        old:Sensor a owl:Class ;<br>
-        <span class="tab1">rdfs:subClassOf ssn:Sensor .</span> <br>
-      </code> All other SSN class and properties are declared to be equivalent.
-      Therefore, the following pattern also applies in pseudo-Turtle syntax. <code>
-        <br>
-        @prefix old: &lt;http://purl.oclc.org/NET/ssnx/ssn#&gt; . <br>
-        @prefix ssn: &lt;http://www.w3.org/ns/ssn/&gt; .<br>
-        For every owl:ObjectProperty <i>O</i> in old <br>
-        <span class="tab1">assert the fragment:</span> <span class="tab2">old:<i>O</i>
-          a owl:ObjectProperty ;</span> <span class="tab3">
-          owl:equivalentProperty ssn:<i>O</i> . </span> Endfor <br>
-        For every owl:Class <i>C</i> in old - {old:Sensor} <br>
-        <span class="tab1">assert the fragment:</span> <span class="tab2">old:<i>C</i>
-          a owl:Class ;</span> <span class="tab3"> owl:equivalentClass ssn:<i>C</i>.
-        </span> Endfor<br>
-        <br>
-      </code> </section>
-    <section id="DUL_Alignment" class="normative">
-      <h2>Dolce-Ultralite Alignment Module</h2>
-      <p>This section introduces the alignment of SSN to DUL. This serves to
-        axiomatically clarify the intended meaning of SSN terms and will assist
-        SSN users wishing to interoperate with other DUL-aligned ontologies.</p>
-      <p class="issue" data-number="104">How should the alignment be formally
-        defined here? </p>
-      <p style="text-align: center;">The namespace for SSN terms is <span class="repeated"
-          style="font-family: courier;">http://www.w3.org/ns/ssn/</span>
-      </p>
-      <p style="text-align: center;">There are no terms defined in the
-        alignment, so no prefix is recommended.</p>
-      <p style="text-align: center;">The Dolce-UltraLite alignment, known as
-        "ssn-dul" is available at <a href="http://www.w3.org/ns/ssn/dul/">http://www.w3.org/ns/ssn/dul/</a>.</p>
-      <section id="DULClasses" class="normative">
-        <h3>Classes of DUL Alignment</h3>
-        <pre class=""> <code>
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#DesignedArtifact
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#designedartifact=""&gt; rdf:type owl:Class .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Event
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#event=""&gt; rdf:type owl:Class .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#InformationObject
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#informationobject=""&gt; rdf:type owl:Class .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Method
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#method=""&gt; rdf:type owl:Class .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Object
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#object=""&gt; rdf:type owl:Class .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#PhysicalObject
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#physicalobject=""&gt; rdf:type owl:Class .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Process
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#process=""&gt; rdf:type owl:Class .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Quality
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#quality=""&gt; rdf:type owl:Class .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Region
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#region=""&gt; rdf:type owl:Class .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Situation
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#situation=""&gt; rdf:type owl:Class .
-
-
-###  http://www.w3.org/ns/ssn/DeploymentRelatedProcess
-&lt;http: www.w3.org="" ns="" ssn="" deploymentrelatedprocess=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#process=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/Device
-&lt;http: www.w3.org="" ns="" ssn="" device=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#designedartifact=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/FeatureOfInterest
-&lt;http: www.w3.org="" ns="" ssn="" featureofinterest=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf 
-    [ rdf:type owl:Class ;
-        owl:unionOf ( &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#event=""&gt;
-                      &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#object=""&gt;
-                    )
-    ] .
-
-
-###  http://www.w3.org/ns/ssn/Observation
-&lt;http: www.w3.org="" ns="" ssn="" observation=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#situation=""&gt; ,
-    [ rdf:type owl:Restriction ;
-            owl:onProperty &lt;http: www.ontologydesignpatterns.org="" ont="" dul=""
-dul.owl#includesevent=""&gt; ;
-            owl:someValuesFrom &lt;http: www.w3.org="" ns="" ssn="" stimulus=""&gt;
-    ] .
-
-
-###  http://www.w3.org/ns/ssn/ObservationValue
-&lt;http: www.w3.org="" ns="" ssn="" observationvalue=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#region=""&gt; ,
-    [ rdf:type owl:Restriction ;
-        owl:onProperty &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isregionfor=""&gt; ;
-        owl:someValuesFrom &lt;http: www.w3.org="" ns="" ssn="" sensoroutput=""&gt;
-    ] .
-
-
-###  http://www.w3.org/ns/ssn/Platform
-&lt;http: www.w3.org="" ns="" ssn="" platform=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#physicalobject=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/Process
-&lt;http: www.w3.org="" ns="" ssn="" process=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#method=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/Property
-&lt;http: www.w3.org="" ns="" ssn="" property=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#quality=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/Sensor
-&lt;http: www.w3.org="" ns="" ssn="" sensor=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#object=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/SensorDataSheet
-&lt;http: www.w3.org="" ns="" ssn="" sensordatasheet=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#informationobject=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/SensorInput
-&lt;http: www.w3.org="" ns="" ssn="" sensorinput=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#event=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/SensorOutput
-&lt;http: www.w3.org="" ns="" ssn="" sensoroutput=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#object=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/Stimulus
-&lt;http: www.w3.org="" ns="" ssn="" stimulus=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#event=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/System
-&lt;http: www.w3.org="" ns="" ssn="" system=""&gt; rdf:type owl:Class ;
-rdfs:subClassOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#physicalobject=""&gt; .
-
-
-</code>
-</pre> </section>
-      <section id="DULProperties" class="normative">
-        <h3>Object Properties of DUL Alignment</h3>
-        <pre class=""> <code>
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#describes
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#describes=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasLocation
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#haslocation=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasPart
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#haspart=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasParticipant
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasparticipant=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasQuality
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasquality=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasRegion
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasregion=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#includesEvent
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#includesevent=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#includesObject
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#includesobject=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isDescribedBy
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isdescribedby=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isLocationOf
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#islocationof=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isObjectIncludedIn
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isobjectincludedin=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isParticipantIn
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isparticipantin=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isQualityOf
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isqualityof=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isRegionFor
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isregionfor=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isSettingFor
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#issettingfor=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#satisfies
-&lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#satisfies=""&gt; rdf:type owl:ObjectProperty .
-
-
-###  http://www.w3.org/ns/ssn/attachedSystem
-&lt;http: www.w3.org="" ns="" ssn="" attachedsystem=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#islocationof=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/deployedOnPlatform
-&lt;http: www.w3.org="" ns="" ssn="" deployedonplatform=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasparticipant=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/deployedSystem
-&lt;http: www.w3.org="" ns="" ssn="" deployedsystem=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasparticipant=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/deploymentProcessPart
-&lt;http: www.w3.org="" ns="" ssn="" deploymentprocesspart=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#haspart=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/endTime
-&lt;http: www.w3.org="" ns="" ssn="" endtime=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasregion=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/featureOfInterest
-&lt;http: www.w3.org="" ns="" ssn="" featureofinterest=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#issettingfor=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/hasDeployment
-&lt;http: www.w3.org="" ns="" ssn="" hasdeployment=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isparticipantin=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/hasProperty
-&lt;http: www.w3.org="" ns="" ssn="" hasproperty=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasquality=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/hasSubSystem
-&lt;http: www.w3.org="" ns="" ssn="" hassubsystem=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#haspart=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/hasValue
-&lt;http: www.w3.org="" ns="" ssn="" hasvalue=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasregion=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/implementedBy
-&lt;http: www.w3.org="" ns="" ssn="" implementedby=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#describes=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/implements
-&lt;http: www.w3.org="" ns="" ssn="" implements=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isdescribedby=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/inDeployment
-&lt;http: www.w3.org="" ns="" ssn="" indeployment=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isparticipantin=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/isPropertyOf
-&lt;http: www.w3.org="" ns="" ssn="" ispropertyof=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isqualityof=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/madeObservation
-&lt;http: www.w3.org="" ns="" ssn="" madeobservation=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#isobjectincludedin=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/observationResult
-&lt;http: www.w3.org="" ns="" ssn="" observationresult=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#issettingfor=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/observationResultTime
-&lt;http: www.w3.org="" ns="" ssn="" observationresulttime=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasregion=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/observationSamplingTime
-&lt;http: www.w3.org="" ns="" ssn="" observationsamplingtime=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasregion=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/observedBy
-&lt;http: www.w3.org="" ns="" ssn="" observedby=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#includesobject=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/observedProperty
-&lt;http: www.w3.org="" ns="" ssn="" observedproperty=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#issettingfor=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/onPlatform
-&lt;http: www.w3.org="" ns="" ssn="" onplatform=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#haslocation=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/sensingMethodUsed
-&lt;http: www.w3.org="" ns="" ssn="" sensingmethodused=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#satisfies=""&gt; .
-
-
-###  http://www.w3.org/ns/ssn/startTime
-&lt;http: www.w3.org="" ns="" ssn="" starttime=""&gt; rdf:type owl:ObjectProperty ;
-rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul.owl#hasregion=""&gt; .
-
-</code>
-</pre> </section>
-    </section>
-    <section id="OM_Alignment" class="normative">
-      <h2>Observations and Measurements Alignment Module</h2>
-      <p>This section introduces the alignment of SOSA/SSN to OGC Observations
-        and Measurements [OandM] (also known as ISO 19156:2011).</p>
-      <p>The XML implementation of O&amp;M [OM-XML] is used for the payload for
-        SOS services, of which there are many operational deployments.
-        Integration of these with observation data formalized using SOSA and SSN
-        is highly desirable, and would be expected to significantly enrich the
-        set of resources represented using SOSA/SSN. The alignment presented
-        here provides a basis for transforming OM-XML data into RDF or OWL
-        individuals according to the SOSA/SSN ontologies. </p>
-      <section id="OM_Alignment_UML_URI" class="normative">
-        <h3>Identifying the UML elements</h3>
-        <p>O&amp;M is specified as a UML model, following the patterns specified
-          in ISO 19109 Geographic Information - Rules for Application Schema
-          [ISO-19109]. This means that the classes represent concepts from the
-          application domain, so can be approximately equated with classes in an
-          ontology. </p>
-        <p>An OWL implementation of O&amp;M may be generated by explicit
-          translation of the UML following rules specified in [ISO-19150-2] -
-          see [OM-Heavy]. This translation generates an RDF entity denoted by a
-          URI for every class, class attribute, and association-role from the
-          original O&amp;M UML model. The form of the URIs is also specified in
-          [ISO-19150-2], and appear explicitly in the <a href="https://github.com/ISO-TC211/GOM/tree/master/isotc211_GOM_harmonizedOntology/19156/2011">official
-            OWL implementation of ISO 19156 (O&amp;M) maintained by the ISO/TC
-            211 Group on Ontology Management</a>. These URIs are therefore
-          convenient identifiers for elements of the O&amp;M in a formal
-          alignment. </p>
-        <p>The explicit translation from the UML comes at a cost of a large set
-          of dependencies on similar OWL translations of other UML models from
-          ISO 19100 series standards. Furthermore, the ontology structure
-          reflects artefacts of the UML-style of modeling. This implementation <i>may</i>
-          introduce entailments that are inconsistent with SOSA/SSN (though no
-          inconsistencies have been identified yet) so it is important to
-          understand that use of these URIs here are principally intended to
-          denote the original UML classes and properties, rather than this OWL
-          implementation.</p>
-        <p>NOTE: In response to the complexity of the explicit translation, a
-          handcrafted version in more idiomatic OWL, without the dependencies,
-          is also available [OM-Lite]. </p>
-        <p>NOTE: At time of writing, the ISO-specified URIs do not de-reference,
-          however, ISO/TC 211 are currently developing a publication system to
-          enable this and thus the use of these URIs as Linked Data. </p>
-      </section>
-      <section id="OM_Alignment_ns" class="normative">
+      <section id="SSNX" class="non-normative">
         <h3>Namespaces</h3>
-        <p>The following namespace prefixes are used in the alignment to SOSA.</p>
+        <p>The following namespace prefixes are used in the alignment to SOSA
+          and SSN</p>
         <table>
           <tbody>
             <tr>
@@ -4417,245 +3704,614 @@ rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul
               </td>
             </tr>
             <tr>
-              <td> sosa-om: </td>
-              <td> <a href="http://www.w3.org/ns/sosa/om#">http://www.w3.org/ns/sosa/om#</a>
+              <td> ssn: </td>
+              <td> <a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a>
               </td>
             </tr>
             <tr>
-              <td> iso19156-gfi: </td>
-              <td> <a href="http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#">http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#</a>
-              </td>
-            </tr>
-            <tr>
-              <td> iso19156-om: </td>
-              <td> <a href="http://def.isotc211.org/iso19156/2011/Observation#">http://def.isotc211.org/iso19156/2011/Observation#</a>
-              </td>
-            </tr>
-            <tr>
-              <td> iso19156-sf: </td>
-              <td> <a href="http://def.isotc211.org/iso19156/2011/SamplingFeature#">http://def.isotc211.org/iso19156/2011/SamplingFeature#</a>
-              </td>
-            </tr>
-            <tr>
-              <td> iso19156-sfs: </td>
-              <td> <a href="http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#">http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#</a>
-              </td>
-            </tr>
-            <tr>
-              <td> iso19156-sp: </td>
-              <td> <a href="http://def.isotc211.org/iso19156/2011/Specimen#">http://def.isotc211.org/iso19156/2011/Specimen#</a>
+              <td> oldssn: </td>
+              <td> <a href="http://purl.oclc.org/NET/ssnx/ssn">http://purl.oclc.org/NET/ssnx/ssn#</a>
               </td>
             </tr>
           </tbody>
         </table>
       </section>
-      <section id="OM_Alignment_utility" class="normative">
-        <h3>Utility classes</h3>
-        <p>Three utility classes are defined locally to support the
-          formalization of the alignment.</p>
-        <table>
-          <tbody>
-            <tr>
-              <td> sosa-om:ActuationProcedure </td>
-              <td> Actuation procedures or recipes </td>
-            </tr>
-            <tr>
-              <td> sosa-om:ObservationProcedure </td>
-              <td> Observation procedures or recipes </td>
-            </tr>
-            <tr>
-              <td> sosa-om:SamplingProcedure </td>
-              <td> Sampling, sample preparation or processing procedures or
-                recipes </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section id="OM_Alignment_class" class="normative">
+      <section id="SSNX-Classes-Alignment" class="non-normative">
         <h3>Class alignments</h3>
-        <p>The primary classes from [OandM] have direct equivalents in SOSA
-          classes supplemented by the utility classes described above, as
-          follows: </p>
+        <p>The primary classes from SSN-XG have direct equivalent classes in
+          SOSA and SSN in below: </p>
         <table>
           <tbody>
             <tr>
-              <td> iso19156-om:OM_Observation </td>
+              <td> oldssn:FeatureOfInterest </td>
               <td> equivalent class </td>
-              <td> sosa:Observation </td>
+              <td> sosa:FeatureOfInterest </td>
             </tr>
             <tr>
-              <td> iso19156-om:OM_Process </td>
+              <td> oldssn:Property </td>
               <td> equivalent class </td>
-              <td> Union of ( sosa:Sensor or sosa-om:ObservationProcedure ) </td>
+              <td> ssn:Property </td>
             </tr>
             <tr>
-              <td> iso19156-sf:SF_SamplingFeature </td>
+              <td> oldssn:System </td>
               <td> equivalent class </td>
-              <td> sosa:Sample </td>
+              <td> ssn:System </td>
             </tr>
             <tr>
-              <td> iso19156-sf:SF_Process </td>
+              <td> oldssn:Platform </td>
               <td> equivalent class </td>
-              <td> Union of ( sosa:Sampler or sosa-om:SamplingProcedure ) </td>
+              <td> sosa:Platform </td>
+            </tr>
+            <tr>
+              <td> oldssn:Input</td>
+              <td> equivalent class </td>
+              <td> ssn:Input </td>
+            </tr>
+            <tr>
+              <td> oldssn:Output </td>
+              <td> equivalent class </td>
+              <td> ssn:Output </td>
+            </tr>
+            <tr>
+              <td> oldssn:Stimulus </td>
+              <td> equivalent class </td>
+              <td> ssn:Stimulus </td>
+            </tr>
+            <tr>
+              <td> oldssn:MeasurementRange </td>
+              <td> equivalent class </td>
+              <td> ssn:MeasurementRange </td>
+            </tr>
+            <tr>
+              <td> oldssn:Sensor </td>
+              <td> equivalent class </td>
+              <td> sosa:Sensor </td>
+            </tr>
+            <tr>
+              <td> oldssn:Condition </td>
+              <td> equivalent class </td>
+              <td> ssn:Condition </td>
+            </tr>
+            <tr>
+              <td> oldssn:Precision </td>
+              <td> equivalent class </td>
+              <td> ssn:Precision </td>
+            </tr>
+            <tr>
+              <td> oldssn:Sensitivity </td>
+              <td> equivalent class </td>
+              <td> ssn:Sensitivity </td>
+            </tr>
+            <tr>
+              <td> oldssn:Sensitivity </td>
+              <td> equivalent class </td>
+              <td> ssn:Sensitivity </td>
+            </tr>
+            <tr>
+              <td> oldssn:OperatingPowerRange</td>
+              <td> equivalent class </td>
+              <td> ssn:OperatingPowerRange </td>
+            </tr>
+            <tr>
+              <td> oldssn:BatteryLifetime </td>
+              <td> equivalent class </td>
+              <td> ssn:BatteryLifetime </td>
+            </tr>
+            <tr>
+              <td> oldssn:SystemLifetime </td>
+              <td> equivalent class </td>
+              <td> ssn:SystemLifetime </td>
             </tr>
           </tbody>
         </table>
-        <p>Additional alignments from SOSA/SSN classes to O&amp;M classes are as
+        <p> Following classes in SOSA and SSN, we interpret them as general
+          superclasses of the corresponding ones in SSN-XG. </p>
+        <table>
+          <tbody>
+            <tr>
+              <td> oldssn:Device </td>
+              <td> subclass of </td>
+              <td> sosa:Platform; ssn:System</td>
+            </tr>
+            <tr>
+              <td> oldssn:Sensing </td>
+              <td> subclass of </td>
+              <td> sosa:Procedure</td>
+            </tr>
+            <tr>
+              <td> oldssn:ObservationValue </td>
+              <td> subclass of </td>
+              <td> sosa:Result </td>
+            </tr>
+            <tr>
+              <td> oldssn:MeasurementProperty </td>
+              <td> subclass of </td>
+              <td> ssn:SystemProperty</td>
+            </tr>
+            <tr>
+              <td> oldssn:Accuracy</td>
+              <td> subclass of </td>
+              <td> ssn:Accuracy </td>
+            </tr>
+            <tr>
+              <td> oldssn:DetectionLimit</td>
+              <td> subclass of </td>
+              <td> ssn:DetectionLimit</td>
+            </tr>
+            <tr>
+              <td> oldssn:Drift</td>
+              <td> subclass of </td>
+              <td> ssn:Drift</td>
+            </tr>
+            <tr>
+              <td> oldssn:Frequency</td>
+              <td> subclass of </td>
+              <td> ssn:Frequency</td>
+            </tr>
+            <tr>
+              <td> oldssn:Latency</td>
+              <td> subclass of </td>
+              <td> ssn:Latency</td>
+            </tr>
+            <tr>
+              <td> oldssn:Resolution</td>
+              <td> subclass of </td>
+              <td> ssn:Resolution</td>
+            </tr>
+            <tr>
+              <td> oldssn:ResponseTime</td>
+              <td> subclass of </td>
+              <td> ssn:ResponseTime</td>
+            </tr>
+            <tr>
+              <td> oldssn:Selectivity</td>
+              <td> subclass of </td>
+              <td> ssn:Selectivity</td>
+            </tr>
+            <tr>
+              <td> oldssn:OperatingProperty</td>
+              <td> subclass of </td>
+              <td> ssn:OperatingProperty</td>
+            </tr>
+            <tr>
+              <td> oldssn:OperatingProperty</td>
+              <td> subclass of </td>
+              <td> ssn:OperatingProperty</td>
+            </tr>
+            <tr>
+              <td> oldssn:MaintenanceSchedule</td>
+              <td> subclass of </td>
+              <td> ssn:MaintenanceSchedule </td>
+            </tr>
+            <tr>
+              <td> oldssn:SurvivalProperty </td>
+              <td> subclass of </td>
+              <td> ssn:SurvivalProperty </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>with Axioms in Manchester syntaxes </p>
+        <dl>
+          <dt>&nbsp;</dt>
+          <dd><i>The class</i> </dd>
+        </dl>
+        <table>
+          <tbody>
+            <tr>
+              <td rowspan="4"> oldssn:Process </td>
+              <td> equivalent class </td>
+              <td> sosa:Procedure</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:hasOutput ;
+                owl:someValuesFrom oldssn:Output ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:hasInput ;
+                owl:allValuesFrom oldssn:Input ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:hasOutput ;
+                owl:allValuesFrom oldssn:Output ]</td>
+            </tr>
+            <tr>
+              <td rowspan="13"> oldssn:Observation </td>
+              <td> equivalent class </td>
+              <td> sosa:Observation</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:featureOfInterest
+                ; owl:allValuesFrom oldssn:FeatureOfInterest ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:observationResult
+                ; owl:allValuesFrom oldssn:SensorOutput ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:observedBy ;
+                owl:allValuesFrom oldssn:Sensor ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:observedProperty
+                ; owl:allValuesFrom oldssn:Property ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:sensingMethodUsed
+                ; owl:allValuesFrom oldssn:Sensing ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty
+                oldssn:observationResultTime ; owl:minCardinality
+                "0"^^xsd:nonNegativeInteger ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty
+                oldssn:observationSamplingTime ; owl:minCardinality
+                "0"^^xsd:nonNegativeInteger ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty
+                oldssn:qualityOfObservation ; owl:minCardinality
+                "0"^^xsd:nonNegativeInteger ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:featureOfInterest
+                ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onClass oldssn:FeatureOfInterest ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:observedBy ;
+                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onClass oldssn:Sensor ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:observedProperty
+                ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onClass oldssn:Property ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:sensingMethodUsed
+                ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                owl:onClass oldssn:Sensing ]</td>
+            </tr>
+            <tr>
+              <td rowspan="2"> oldssn:SensorInput </td>
+              <td> equivalent class </td>
+              <td> ssn:Stimulus</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:isProxyFor ;
+                owl:allValuesFrom oldssn:Property ]</td>
+            </tr>
+            <tr>
+              <td rowspan="3"> oldssn:SensorOutput </td>
+              <td> subclass of </td>
+              <td> sosa:Result</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:hasValue ;
+                owl:someValuesFrom oldssn:ObservationValue ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:isProducedBy ;
+                owl:someValuesFrom oldssn:Sensor ]</td>
+            </tr>
+            <tr>
+              <td rowspan="2"> oldssn:DeploymentRelatedProcess </td>
+              <td> equivalent class </td>
+              <td> ssn:DeploymentRelatedProcedure</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty
+                oldssn:deploymentProcessPart ; owl:allValuesFrom
+                oldssn:DeploymentRelatedProcess ]</td>
+            </tr>
+            <tr>
+              <td rowspan="3"> oldssn:Deployment </td>
+              <td> equivalent class </td>
+              <td> ssn:Deployment</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty
+                oldssn:deployedOnPlatform ; owl:allValuesFrom oldssn:Platform ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:deployedSystem ;
+                owl:allValuesFrom oldssn:System ]</td>
+            </tr>
+            <tr>
+              <td rowspan="4"> oldssn:MeasurementCapability </td>
+              <td> subclass of</td>
+              <td> ssn:SystemCapability</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:forProperty ;
+                owl:allValuesFrom oldssn:Property ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty
+                oldssn:hasMeasurementProperty ; owl:allValuesFrom
+                oldssn:MeasurementProperty ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:inCondition ;
+                owl:allValuesFrom oldssn:Condition ]</td>
+            </tr>
+            <tr>
+              <td rowspan="3"> oldssn:OperatingRange </td>
+              <td> equivalent class</td>
+              <td> ssn:OperatingRange</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty
+                oldssn:hasOperatingProperty ; owl:allValuesFrom
+                oldssn:OperatingProperty ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:inCondition ;
+                owl:allValuesFrom oldssn:Condition ]</td>
+            </tr>
+            <tr>
+              <td rowspan="3"> oldssn:SurvivalRange </td>
+              <td> equivalent class</td>
+              <td> ssn:SurvivalRange</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty
+                oldssn:hasSurvivalProperty ; owl:allValuesFrom
+                oldssn:SurvivalProperty ]</td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td> [ a owl:Restriction ; owl:onProperty oldssn:inCondition ;
+                owl:allValuesFrom oldssn:Condition ] </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="SSNX_Alignment_property" class="normative">
+        <h3>Property alignments</h3>
+        <p>The following properties from SSN-XG have direct equivalent
+          properties in SOSA and SSN: </p>
+        <table>
+          <tbody>
+            <tr>
+              <td> oldssn:hasProperty </td>
+              <td> equivalent property </td>
+              <td> ssn:hasProperty </td>
+            </tr>
+            <tr>
+              <td> oldssn:isPropertyOf </td>
+              <td> equivalent property </td>
+              <td> ssn:isPropertyOf </td>
+            </tr>
+            <tr>
+              <td> oldssn:attachedSystem </td>
+              <td> equivalent property </td>
+              <td> sosa:hosts </td>
+            </tr>
+            <tr>
+              <td> oldssn:onPlatform </td>
+              <td> equivalent property </td>
+              <td> sosa:isHostedBy </td>
+            </tr>
+            <tr>
+              <td> oldssn:hasInput </td>
+              <td> equivalent property </td>
+              <td> ssn:hasInput </td>
+            </tr>
+            <tr>
+              <td> oldssn:hasOutput </td>
+              <td> equivalent property </td>
+              <td> ssn:hasOutput </td>
+            </tr>
+            <tr>
+              <td> oldssn:implements </td>
+              <td> equivalent property </td>
+              <td> ssn:implements </td>
+            </tr>
+            <tr>
+              <td> oldssn:implementedBy </td>
+              <td> equivalent property </td>
+              <td> ssn:implementedBy </td>
+            </tr>
+            <tr>
+              <td> oldssn:sensingMethodUsed </td>
+              <td> equivalent property </td>
+              <td> sosa:usedProcedure </td>
+            </tr>
+            <tr>
+              <td> oldssn:featureOfInterest </td>
+              <td> equivalent property </td>
+              <td> sosa:hasFeatureOfInterest </td>
+            </tr>
+            <tr>
+              <td> oldssn:madeObservation </td>
+              <td> equivalent property </td>
+              <td> sosa:madeObservation</td>
+            </tr>
+            <tr>
+              <td> oldssn:observedBy </td>
+              <td> equivalent property </td>
+              <td> sosa:madeBySensor</td>
+            </tr>
+            <tr>
+              <td> oldssn:observedProperty </td>
+              <td> equivalent property </td>
+              <td> sosa:observedProperty</td>
+            </tr>
+            <tr>
+              <td> oldssn:hasValue </td>
+              <td> equivalent property </td>
+              <td> sosa:hasResult </td>
+            </tr>
+            <tr>
+              <td> oldssn:isProducedBy </td>
+              <td> equivalent property </td>
+              <td> sosa:isResultOf</td>
+            </tr>
+            <tr>
+              <td> oldssn:observationResult </td>
+              <td> equivalent property </td>
+              <td> sosa:resultTime</td>
+            </tr>
+            <tr>
+              <td> oldssn:observationSamplingTime </td>
+              <td> equivalent property </td>
+              <td> sosa:phenomenonTime</td>
+            </tr>
+            <tr>
+              <td> oldssn:observationSamplingTime </td>
+              <td> equivalent property </td>
+              <td> ssn:qualityOfObservation </td>
+            </tr>
+            <tr>
+              <td> oldssn:hasSubSystem </td>
+              <td> equivalent property </td>
+              <td> ssn:hasSubSystem </td>
+            </tr>
+            <tr>
+              <td> oldssn:deploymentProcessPart </td>
+              <td> equivalent property </td>
+              <td> ssn:deploymentProcedurePart </td>
+            </tr>
+            <tr>
+              <td> oldssn:deployedOnPlatform </td>
+              <td> equivalent property </td>
+              <td> ssn:deployedOnPlatform</td>
+            </tr>
+            <tr>
+              <td> oldssn:deployedSystem </td>
+              <td> equivalent property </td>
+              <td> ssn:deployedSystem </td>
+            </tr>
+            <tr>
+              <td> oldssn:hasDeployment </td>
+              <td> equivalent property </td>
+              <td> ssn:hasDeployment </td>
+            </tr>
+            <tr>
+              <td> oldssn:forProperty </td>
+              <td> equivalent property </td>
+              <td> ssn:forProperty </td>
+            </tr>
+            <tr>
+              <td> oldssn:ofFeature </td>
+              <td> equivalent property </td>
+              <td> ssn:ofFeature </td>
+            </tr>
+            <tr>
+              <td> oldssn:inCondition </td>
+              <td> equivalent property </td>
+              <td> ssn:inCondition </td>
+            </tr>
+            <tr>
+              <td> oldssn:hasSurvivalRange </td>
+              <td> equivalent property </td>
+              <td> ssn:hasSurvivalRange </td>
+            </tr>
+            <tr>
+              <td> oldssn:hasSurvivalProperty </td>
+              <td> equivalent property </td>
+              <td> ssn:hasSurvivalProperty </td>
+            </tr>
+            <tr>
+              <td> oldssn:hasOperatingRange </td>
+              <td> equivalent property </td>
+              <td> ssn:hasOperatingRange </td>
+            </tr>
+            <tr>
+              <td> oldssn:hasOperatingProperty </td>
+              <td> equivalent property </td>
+              <td> ssn:hasOperatingProperty </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Additional alignments from SSG-XG properties to SOSA and SSN are as
           follows. </p>
         <table>
           <tbody>
             <tr>
-              <td> iso19156_sp:PreparationStep </td>
-              <td> subclass of </td>
-              <td> sosa:Sampling </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>iso19156_sp:PreparationStep is a subclass since the act of Sampling
-          applies to all sample types, not only physical specimens. </p>
-        <table>
-          <tbody>
-            <tr>
-              <td> sosa:FeatureOfInterest </td>
-              <td> subclass of </td>
-              <td> iso19156_gfi:GFI_DomainFeature </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>where iso19156_gfi:GFI_DomainFeature has the definition: </p>
-        <dl>
-          <dt>&nbsp;</dt>
-          <dd><i>The class GFI_DomainFeature represents 'real-world' features
-              which are the ultimate subject of an observation campaign, i.e.
-              the features from an application domain that are not artefacts of
-              the observation process (sampling features).</i></dd>
-        </dl>
-        <p>sosa:FeatureOfInterest is a subclass of
-          iso19156_gfi:GFI_DomainFeature since not all domain features are
-          subjects of observation. </p>
-        <table>
-          <tbody>
-            <tr>
-              <td> sosa:Actuator </td>
-              <td> subclass of </td>
-              <td> iso19156_gfi:GFI_Feature </td>
-            </tr>
-            <tr>
-              <td> sosa:Platform </td>
-              <td> subclass of </td>
-              <td> iso19156_gfi:GFI_Feature </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>where iso19156_gfi:GFI_Feature has the definition </p>
-        <dl>
-          <dt>&nbsp;</dt>
-          <dd><i>The class GFI_Feature represents the set of all classes which
-              are feature types. In an implementation this abstract class shall
-              be substituted by a concrete class representing a feature type
-              from an application schema associated with a domain of discourse
-              (ISO 19109, ISO 19101).</i> </dd>
-        </dl>
-      </section>
-      <section id="OM_Alignment_property" class="normative">
-        <h3>Property alignments</h3>
-        <p>The following properties from [OandM] have direct equivalents in SOSA
-          properties: </p>
-        <table>
-          <tbody>
-            <tr>
-              <td> iso19156-om:OM_Observation.featureOfInterest </td>
-              <td> equivalent property </td>
-              <td> sosa:hasFeatureOfInterest </td>
-            </tr>
-            <tr>
-              <td> iso19156-om:OM_Observation.observedProperty </td>
-              <td> equivalent property </td>
-              <td> sosa:observedProperty </td>
-            </tr>
-            <tr>
-              <td> iso19156-om:OM_Observation.phenomenonTime </td>
-              <td> equivalent property </td>
-              <td> sosa:phenomenonTime </td>
-            </tr>
-            <tr>
-              <td> iso19156-sf:SF_SamplingFeature.sampledFeature </td>
-              <td> equivalent property </td>
-              <td> sosa:isSampleOf </td>
-            </tr>
-            <tr>
-              <td> iso19156-sp:SF_Specimen.processingDetails </td>
-              <td> equivalent property </td>
-              <td> sosa:isSamplingResultOf </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Additional alignments from O&amp;M properties to SOSA are as follows.
-        </p>
-        <table>
-          <tbody>
-            <tr>
-              <td> iso19156-om:OM_Observation.procedure </td>
+              <td> oldssn:hasMeasurementProperty </td>
               <td> sub-property of </td>
-              <td> sosa:usedProcedure </td>
+              <td>ssn:hasSystemProperty</td>
             </tr>
             <tr>
-              <td> iso19156-sp:SF_Specimen.samplingMethod </td>
+              <td> oldssn:hasMeasurementCapability </td>
               <td> sub-property of </td>
-              <td> sosa:usedProcedure </td>
+              <td> ssn:hasSystemCapability </td>
             </tr>
             <tr>
-              <td> iso19156-om:OM_Observation.result </td>
+              <td> oldssn:hasSurvivalRange </td>
               <td> sub-property of </td>
               <td> sosa:hasResult </td>
             </tr>
-            <tr>
-              <td> iso19156-om:OM_Observation.resultTime </td>
-              <td> sub-property of </td>
-              <td> sosa:resultTime </td>
-            </tr>
-            <tr>
-              <td> iso19156-sp:SF_Specimen.samplingTime </td>
-              <td> sub-property of </td>
-              <td> sosa:resultTime </td>
-            </tr>
-            <tr>
-              <td> iso19156-sp:PreparationStep.time </td>
-              <td> sub-property of </td>
-              <td> sosa:resultTime </td>
-            </tr>
           </tbody>
         </table>
-        <p>These are modeled as sub-properties because sosa:usedProcedure,
-          sosa:hasResult and sosa:resultTime applies to actuation, observation
-          or sampling activities. </p>
+        <p> property chain </p>
         <table>
           <tbody>
             <tr>
-              <td> iso19156-sfs:SF_SpatialSamplingFeature.hostedProcedure </td>
+              <td rowspan="3"> oldssn:observes </td>
+              <td> equivalent property </td>
+              <td> sosa:observes </td>
+            </tr>
+            <tr>
+              <td> property chain axiom </td>
+              <td>( oldssn:hasMeasurementCapability oldssn:forProperty )</td>
+            </tr>
+            <tr>
+              <td> property chain axiom </td>
+              <td> ( oldssn:madeObservation oldssn:observedProperty ) </td>
+            </tr>
+            <tr>
+              <td> oldssn:hasSurvivalRange </td>
               <td> sub-property of </td>
-              <td> sosa:hosts </td>
+              <td> sosa:hasResult </td>
             </tr>
           </tbody>
         </table>
-        <p>This is modeled as a sub-property because the domain of
-          iso19156-sfs:SF_SpatialSamplingFeature.hostedProcedure is a spatial
-          sampling feature, such as a station, rather than a more general
-          platform. </p>
-        <p>An RDF file containing a <a href="https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sosa-om-mapping.ttl">graph
-            corresponding to this alignment is available</a>. </p>
       </section>
     </section>
-    <section id="OBOE_Alignment" class="non-normative">
-      <h2>OBOE Alignment Module</h2>
-      <p>This section introduces the alignment of SOSA to <a href="https://github.com/NCEAS/oboe/">OBOE</a>.</p>
-      <p>OBOE: The Extensible Observation Ontology, is used within the
-        biodiversity community for semantic representation of observation data.
-        The ontology is composed of multiple modules. The core observation
-        elements are in the module OBOE-core. </p>
-      <section id="OBOE_Alignment_ns" class="non-normative">
+    <section id="DUL_Alignment" class="informative">
+      <h2>Dolce-Ultralite Alignment Module</h2>
+      <h2>Alignment to DOLCE+DNS Ultralite upper ontology (DUL)</h2>
+      <p>This section introduces the alignment of SSN to DUL. This serves to
+        axiomatically clarify the intended meaning of SSN terms and will assist
+        SSN users wishing to interoperate with other DUL-aligned ontologies.</p>
+      The Dolce alignment, known as "ssn-dul" is available at <a href="http://www.w3.org/ns/ssn/dul/">http://www.w3.org/ns/ssn/dul/</a>.
+      <p></p>
+      <section id="DULAlignment" class="informative">
         <h3>Namespaces</h3>
-        <p>The following namespace prefixes are used in the alignment to SOSA.</p>
+        <p>The following namespace prefixes are used in the alignment to SOSA
+          and SSN</p>
         <table>
           <tbody>
             <tr>
@@ -4668,487 +4324,969 @@ rdfs:subPropertyOf &lt;http: www.ontologydesignpatterns.org="" ont="" dul="" dul
               </td>
             </tr>
             <tr>
-              <td> oboe: </td>
-              <td> <a href="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#">http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#</a>
+              <td> ssn: </td>
+              <td> <a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a>
+              </td>
+            </tr>
+            <tr>
+              <td> dul: </td>
+              <td> <a href="http://purl.oclc.org/NET/ssnx/ssn">http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#</a>
               </td>
             </tr>
           </tbody>
         </table>
       </section>
-      <section id="OBOE_Alignment_class" class="non-normative">
+      <section id="DUL-Classes-Alignment" class="informative">
         <h3>Class alignments</h3>
-        <p>An oboe:Observation is composed of a collection of oboe:Measurements
-          with the same feature-of-interest. Each oboe:Measurement concerns a
-          distinct observed-property ("characteristic") and uses a distinct
-          procedure ("protocol"). We therefore choose to align sosa:Observation
-          with oboe:Measurement.</p>
-        <figure> <img alt="OBOE core classes" src="images/OBOE-core.png" height="400">
-          <img alt="SOSA Observation" src="images/SOSA-obs-core.png" height="300">
-          <figcaption>Core classes from the OBOE alongside the SOSA observation
-            model</figcaption></figure>
-        <p>The primary classes from [OBOE] are aligned with SOSA classes as
-          follows:</p>
+        <p>As DUL is the upper ontology used in SSN-XG, following classes in
+          SOSA and SSN can be aligned via the subclass relation in following: </p>
         <table>
           <tbody>
             <tr>
-              <td> oboe:Measurement </td>
+              <td> sosa:Platform </td>
               <td> subclass of </td>
-              <td> sosa:Observation </td>
+              <td> dul:Method</td>
             </tr>
             <tr>
-              <td> oboe:Characteristic </td>
-              <td> equivalent class </td>
-              <td> sosa:ObservableProperty </td>
+              <td> ssn:Property </td>
+              <td> subclass of </td>
+              <td> dul:Quality</td>
             </tr>
             <tr>
-              <td> oboe:Protocol </td>
-              <td> equivalent class </td>
-              <td> sosa:Procedure </td>
+              <td> ssn:Sensor </td>
+              <td> subclass of </td>
+              <td> dul:Object</td>
+            </tr>
+            <tr>
+              <td> ssn:Stimulus </td>
+              <td> subclass of </td>
+              <td> dul:Event</td>
+            </tr>
+            <tr>
+              <td> ssn:System </td>
+              <td> subclass of </td>
+              <td> dul:PhysicalObject</td>
             </tr>
           </tbody>
         </table>
-        <p>The class oboe:Entity appears in OBOE as the range of the
-          oboe:ofEntity and oboe:hasValue properties, so we interpret it as a
-          general superclass.</p>
+        <p>axiomatic alignments</p>
         <table>
           <tbody>
             <tr>
-              <td> sosa:FeatureOfInterest </td>
+              <td> ssn:FeatureOfInterest </td>
               <td> subclass of </td>
-              <td> oboe:Entity </td>
+              <td> owl:unionOf ( dul:Event dul:Object) </td>
             </tr>
             <tr>
-              <td> sosa:Result </td>
+              <td rowspan="2"> ssn:Observation </td>
               <td> subclass of </td>
-              <td> oboe:Entity </td>
+              <td> dul:Situation </td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td>[ rdf:type owl:Restriction ; owl:onProperty dul:includesEvent
+                ; owl:someValuesFrom dul:Stimulus ] </td>
+            </tr>
+            <tr>
+              <td rowspan="2"> ssn:ObservationValue </td>
+              <td> subclass of </td>
+              <td> dul:Region </td>
+            </tr>
+            <tr>
+              <td> subclass of </td>
+              <td>[ rdf:type owl:Restriction ; owl:onProperty dul:isRegionFor ;
+                owl:someValuesFrom ssn:SensorOutput ] </td>
             </tr>
           </tbody>
         </table>
+        <section id="DUL_Alignment_property" class="non-normative">
+          <h3>Property alignments</h3>
+          <p>Additional alignments from DUL properties to SOSA,SSN are as
+            follows. </p>
+          <table>
+            <tbody>
+              <tr>
+                <td> ssn:deployedOnPlatform </td>
+                <td> sub-property of </td>
+                <td> dul:hasParticipant</td>
+              </tr>
+              <tr>
+                <td> ssn:deployedSystem </td>
+                <td> sub-property of </td>
+                <td> ssn:hasParticipant</td>
+              </tr>
+              <tr>
+                <td> sosa:isFeatureOfInterestOf </td>
+                <td> sub-property of </td>
+                <td> dul:isSettingFor </td>
+              </tr>
+              <tr>
+                <td> sosa:isFeatureOfInterestOf </td>
+                <td> sub-property of </td>
+                <td> dul:isSettingFor </td>
+              </tr>
+              <tr>
+                <td> ssn:hasDeployment </td>
+                <td> sub-property of </td>
+                <td> dul:isParticipantIn </td>
+              </tr>
+              <tr>
+                <td> ssn:hasProperty </td>
+                <td> sub-property of </td>
+                <td> dul:hasQuality </td>
+              </tr>
+              <tr>
+                <td> ssn:hasSubSystem </td>
+                <td> sub-property of </td>
+                <td> dul:hasPart </td>
+              </tr>
+              <tr>
+                <td> ssn:implementedBy </td>
+                <td> sub-property of </td>
+                <td> dul:describes </td>
+              </tr>
+              <tr>
+                <td> ssn:implements </td>
+                <td> sub-property of </td>
+                <td> dul:isDescribedBy </td>
+              </tr>
+              <tr>
+                <td> ssn:inDeployment </td>
+                <td> sub-property of </td>
+                <td> dul:isParticipantIn </td>
+              </tr>
+              <tr>
+                <td> ssn:isPropertyOf </td>
+                <td> sub-property of </td>
+                <td> dul:isQualityOf </td>
+              </tr>
+              <tr>
+                <td> sosa:madeObservation </td>
+                <td> sub-property of </td>
+                <td> dul:isObjectIncludedIn </td>
+              </tr>
+              <tr>
+                <td> sosa:isObservedBy </td>
+                <td> sub-property of </td>
+                <td> dul:includesObject </td>
+              </tr>
+              <tr>
+                <td> sosa:observedProperty </td>
+                <td> sub-property of </td>
+                <td> dul:includesObject </td>
+              </tr>
+              <tr>
+                <td> sosa:deployedOnPlatform </td>
+                <td> sub-property of </td>
+                <td> dul:hasLocation </td>
+              </tr>
+              <tr>
+                <td> sosa:wasOriginatedBy </td>
+                <td> sub-property of </td>
+                <td> dul:includesEvent </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
       </section>
-      <section id="OBOE_Alignment_property" class="normative">
-        <h3>Property alignments</h3>
-        <p>The following properties from [OBOE] may be direct aligned with SOSA
-          properties: </p>
-        <table>
-          <tbody>
-            <tr>
-              <td> oboe:ofCharacteristic </td>
-              <td> equivalent property </td>
-              <td> sosa:observedProperty </td>
-            </tr>
-            <tr>
-              <td> oboe:hasValue </td>
-              <td> equivalent property </td>
-              <td> sosa:hasResult </td>
-            </tr>
-            <tr>
-              <td> oboe:usesProtocol </td>
-              <td> equivalent property </td>
-              <td> sosa:usedProcedure </td>
-            </tr>
-            <tr>
-              <td> oboe:usesMethod </td>
-              <td> equivalent property </td>
-              <td> sosa:usedProcedure </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>oboe:hasValue, oboe:usesProtocol and oboe:usesMethod are
-          sub-properties of the corresponding SOSA properties which apply to
-          actuation and sampling as well as observation.</p>
-        <p>The feature-of-interest is linked to the oboe:Observation that
-          contains a oboe:Measurement, rather than to the oboe:Measurement
-          directly, so a property-chain axiom is required to express the
-          alignment.</p>
-        <table>
-          <tbody>
-            <tr>
-              <td> sosa:hasFeatureOfInterest </td>
-              <td> property-chain axiom </td>
-              <td> [oboe:measurementFor, oboe:ofEntity] </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>The properties oboe:hasMeasurement and its inverse
-          oboe:measurementFor link an oboe:Observation to its member
-          oboe:Measurements. These could be modeled as sub-properties related to
-          rdfs:member and its inverse as follows:</p>
-        <table>
-          <tbody>
-            <tr>
-              <td> oboe:hasMeasurement </td>
-              <td> sub-property of </td>
-              <td> rdfs:member </td>
-            </tr>
-            <tr>
-              <td> oboe:measurementFor </td>
-              <td> sub-property of </td>
-              <td> [ owl:inverseOf rdfs:member ] </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>An RDF file containing a <a href="https://raw.githubusercontent.com/w3c/sdw/simon-sosa-om-oboe/ssn/rdf/sosa-oboe-mapping.ttl">graph
-            corresponding to this alignment is available</a>. </p>
+      <section id="OM_Alignment" class="normative">
+        <h2>Observations and Measurements Alignment Module</h2>
+        <p>This section introduces the alignment of SOSA/SSN to OGC Observations
+          and Measurements [OandM] (also known as ISO 19156:2011).</p>
+        <p>The XML implementation of O&amp;M [OM-XML] is used for the payload
+          for SOS services, of which there are many operational deployments.
+          Integration of these with observation data formalized using SOSA and
+          SSN is highly desirable, and would be expected to significantly enrich
+          the set of resources represented using SOSA/SSN. The alignment
+          presented here provides a basis for transforming OM-XML data into RDF
+          or OWL individuals according to the SOSA/SSN ontologies. </p>
+        <section id="OM_Alignment_UML_URI" class="normative">
+          <h3>Identifying the UML elements</h3>
+          <p>O&amp;M is specified as a UML model, following the patterns
+            specified in ISO 19109 Geographic Information - Rules for
+            Application Schema [ISO-19109]. This means that the classes
+            represent concepts from the application domain, so can be
+            approximately equated with classes in an ontology. </p>
+          <p>An OWL implementation of O&amp;M may be generated by explicit
+            translation of the UML following rules specified in [ISO-19150-2] -
+            see [OM-Heavy]. This translation generates an RDF entity denoted by
+            a URI for every class, class attribute, and association-role from
+            the original O&amp;M UML model. The form of the URIs is also
+            specified in [ISO-19150-2], and appear explicitly in the <a href="https://github.com/ISO-TC211/GOM/tree/master/isotc211_GOM_harmonizedOntology/19156/2011">official
+              OWL implementation of ISO 19156 (O&amp;M) maintained by the ISO/TC
+              211 Group on Ontology Management</a>. These URIs are therefore
+            convenient identifiers for elements of the O&amp;M in a formal
+            alignment. </p>
+          <p>The explicit translation from the UML comes at a cost of a large
+            set of dependencies on similar OWL translations of other UML models
+            from ISO 19100 series standards. Furthermore, the ontology structure
+            reflects artefacts of the UML-style of modeling. This implementation
+            <i>may</i> introduce entailments that are inconsistent with SOSA/SSN
+            (though no inconsistencies have been identified yet) so it is
+            important to understand that use of these URIs here are principally
+            intended to denote the original UML classes and properties, rather
+            than this OWL implementation.</p>
+          <p>NOTE: In response to the complexity of the explicit translation, a
+            handcrafted version in more idiomatic OWL, without the dependencies,
+            is also available [OM-Lite]. </p>
+          <p>NOTE: At time of writing, the ISO-specified URIs do not
+            de-reference, however, ISO/TC 211 are currently developing a
+            publication system to enable this and thus the use of these URIs as
+            Linked Data. </p>
+        </section>
+        <section id="OM_Alignment_ns" class="normative">
+          <h3>Namespaces</h3>
+          <p>The following namespace prefixes are used in the alignment to SOSA.</p>
+          <table>
+            <tbody>
+              <tr>
+                <th> Prefix </th>
+                <th> Namespace </th>
+              </tr>
+              <tr>
+                <td> sosa: </td>
+                <td> <a href="http://www.w3.org/ns/sosa/">http://www.w3.org/ns/sosa/</a>
+                </td>
+              </tr>
+              <tr>
+                <td> sosa-om: </td>
+                <td> <a href="http://www.w3.org/ns/sosa/om#">http://www.w3.org/ns/sosa/om#</a>
+                </td>
+              </tr>
+              <tr>
+                <td> iso19156-gfi: </td>
+                <td> <a href="http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#">http://def.isotc211.org/iso19156/2011/GeneralFeatureInstance#</a>
+                </td>
+              </tr>
+              <tr>
+                <td> iso19156-om: </td>
+                <td> <a href="http://def.isotc211.org/iso19156/2011/Observation#">http://def.isotc211.org/iso19156/2011/Observation#</a>
+                </td>
+              </tr>
+              <tr>
+                <td> iso19156-sf: </td>
+                <td> <a href="http://def.isotc211.org/iso19156/2011/SamplingFeature#">http://def.isotc211.org/iso19156/2011/SamplingFeature#</a>
+                </td>
+              </tr>
+              <tr>
+                <td> iso19156-sfs: </td>
+                <td> <a href="http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#">http://def.isotc211.org/iso19156/2011/SpatialSamplingFeature#</a>
+                </td>
+              </tr>
+              <tr>
+                <td> iso19156-sp: </td>
+                <td> <a href="http://def.isotc211.org/iso19156/2011/Specimen#">http://def.isotc211.org/iso19156/2011/Specimen#</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id="OM_Alignment_utility" class="normative">
+          <h3>Utility classes</h3>
+          <p>Three utility classes are defined locally to support the
+            formalization of the alignment.</p>
+          <table>
+            <tbody>
+              <tr>
+                <td> sosa-om:ActuationProcedure </td>
+                <td> Actuation procedures or recipes </td>
+              </tr>
+              <tr>
+                <td> sosa-om:ObservationProcedure </td>
+                <td> Observation procedures or recipes </td>
+              </tr>
+              <tr>
+                <td> sosa-om:SamplingProcedure </td>
+                <td> Sampling, sample preparation or processing procedures or
+                  recipes </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id="OM_Alignment_class" class="normative">
+          <h3>Class alignments</h3>
+          <p>The primary classes from [OandM] have direct equivalents in SOSA
+            classes supplemented by the utility classes described above, as
+            follows: </p>
+          <table>
+            <tbody>
+              <tr>
+                <td> iso19156-om:OM_Observation </td>
+                <td> equivalent class </td>
+                <td> sosa:Observation </td>
+              </tr>
+              <tr>
+                <td> iso19156-om:OM_Process </td>
+                <td> equivalent class </td>
+                <td> Union of ( sosa:Sensor or sosa-om:ObservationProcedure ) </td>
+              </tr>
+              <tr>
+                <td> iso19156-sf:SF_SamplingFeature </td>
+                <td> equivalent class </td>
+                <td> sosa:Sample </td>
+              </tr>
+              <tr>
+                <td> iso19156-sf:SF_Process </td>
+                <td> equivalent class </td>
+                <td> Union of ( sosa:Sampler or sosa-om:SamplingProcedure ) </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Additional alignments from SOSA/SSN classes to O&amp;M classes are
+            as follows. </p>
+          <table>
+            <tbody>
+              <tr>
+                <td> iso19156_sp:PreparationStep </td>
+                <td> subclass of </td>
+                <td> sosa:Sampling </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>iso19156_sp:PreparationStep is a subclass since the act of Sampling
+            applies to all sample types, not only physical specimens. </p>
+          <table>
+            <tbody>
+              <tr>
+                <td> sosa:FeatureOfInterest </td>
+                <td> subclass of </td>
+                <td> iso19156_gfi:GFI_DomainFeature </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>where iso19156_gfi:GFI_DomainFeature has the definition: </p>
+          <dl>
+            <dt>&nbsp;</dt>
+            <dd><i>The class GFI_DomainFeature represents 'real-world' features
+                which are the ultimate subject of an observation campaign, i.e.
+                the features from an application domain that are not artefacts
+                of the observation process (sampling features).</i></dd>
+          </dl>
+          <p>sosa:FeatureOfInterest is a subclass of
+            iso19156_gfi:GFI_DomainFeature since not all domain features are
+            subjects of observation. </p>
+          <table>
+            <tbody>
+              <tr>
+                <td> sosa:Actuator </td>
+                <td> subclass of </td>
+                <td> iso19156_gfi:GFI_Feature </td>
+              </tr>
+              <tr>
+                <td> sosa:Platform </td>
+                <td> subclass of </td>
+                <td> iso19156_gfi:GFI_Feature </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>where iso19156_gfi:GFI_Feature has the definition </p>
+          <dl>
+            <dt>&nbsp;</dt>
+            <dd><i>The class GFI_Feature represents the set of all classes which
+                are feature types. In an implementation this abstract class
+                shall be substituted by a concrete class representing a feature
+                type from an application schema associated with a domain of
+                discourse (ISO 19109, ISO 19101).</i> </dd>
+          </dl>
+        </section>
+        <section id="OM_Alignment_property" class="normative">
+          <h3>Property alignments</h3>
+          <p>The following properties from [OandM] have direct equivalents in
+            SOSA properties: </p>
+          <table>
+            <tbody>
+              <tr>
+                <td> iso19156-om:OM_Observation.featureOfInterest </td>
+                <td> equivalent property </td>
+                <td> sosa:hasFeatureOfInterest </td>
+              </tr>
+              <tr>
+                <td> iso19156-om:OM_Observation.observedProperty </td>
+                <td> equivalent property </td>
+                <td> sosa:observedProperty </td>
+              </tr>
+              <tr>
+                <td> iso19156-om:OM_Observation.phenomenonTime </td>
+                <td> equivalent property </td>
+                <td> sosa:phenomenonTime </td>
+              </tr>
+              <tr>
+                <td> iso19156-sf:SF_SamplingFeature.sampledFeature </td>
+                <td> equivalent property </td>
+                <td> sosa:isSampleOf </td>
+              </tr>
+              <tr>
+                <td> iso19156-sp:SF_Specimen.processingDetails </td>
+                <td> equivalent property </td>
+                <td> sosa:isSamplingResultOf </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Additional alignments from O&amp;M properties to SOSA are as
+            follows. </p>
+          <table>
+            <tbody>
+              <tr>
+                <td> iso19156-om:OM_Observation.procedure </td>
+                <td> sub-property of </td>
+                <td> sosa:usedProcedure </td>
+              </tr>
+              <tr>
+                <td> iso19156-sp:SF_Specimen.samplingMethod </td>
+                <td> sub-property of </td>
+                <td> sosa:usedProcedure </td>
+              </tr>
+              <tr>
+                <td> iso19156-om:OM_Observation.result </td>
+                <td> sub-property of </td>
+                <td> sosa:hasResult </td>
+              </tr>
+              <tr>
+                <td> iso19156-om:OM_Observation.resultTime </td>
+                <td> sub-property of </td>
+                <td> sosa:resultTime </td>
+              </tr>
+              <tr>
+                <td> iso19156-sp:SF_Specimen.samplingTime </td>
+                <td> sub-property of </td>
+                <td> sosa:resultTime </td>
+              </tr>
+              <tr>
+                <td> iso19156-sp:PreparationStep.time </td>
+                <td> sub-property of </td>
+                <td> sosa:resultTime </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>These are modeled as sub-properties because sosa:usedProcedure,
+            sosa:hasResult and sosa:resultTime applies to actuation, observation
+            or sampling activities. </p>
+          <table>
+            <tbody>
+              <tr>
+                <td> iso19156-sfs:SF_SpatialSamplingFeature.hostedProcedure </td>
+                <td> sub-property of </td>
+                <td> sosa:hosts </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>This is modeled as a sub-property because the domain of
+            iso19156-sfs:SF_SpatialSamplingFeature.hostedProcedure is a spatial
+            sampling feature, such as a station, rather than a more general
+            platform. </p>
+          <p>An RDF file containing a <a href="https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sosa-om-mapping.ttl">graph
+              corresponding to this alignment is available</a>. </p>
+        </section>
       </section>
-    </section>
-    <section id="sample_relationships" class="informative">
-      <h2>Sample Relations Module</h2>
-      <p>Samples are often related to other samples, by sub-sampling,
-        topological relationships (stations along a traverse, pixels within an
-        image, probe spots on a polished section, specimens retrieved withina
-        borehole) or as parts of sample processing chains (crushing, splitting,
-        dissecting, disolving). There are an essentially unlimited set of
-        relationships between samples, so the nature of the relationship has its
-        own class. This section describes a flexible model to describe such
-        relationships between samples. The model is based on the <a href="http://patterns.dataincubator.org/book/qualified-relation.html">QualifiedRelation
-          pattern</a>. </p>
-      <p style="text-align: center;">The namespace for Sample relationships
-        terms is <span class="repeated" style="font-family: courier;">http://www.w3.org/ns/sosa/sampling/</span>
-      </p>
-      <p style="text-align: center;">The suggested prefix for the sample
-        relationships namespace is <span class="repeated" style="font-family: courier;">sampling</span>
-      </p>
-      <p>An <a href="https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sampling.ttl">ontology
-          graph for this is available</a>. </p>
-      <figure><img alt="Sample relationships" src="images/sample-relationships.png">
-        <figcaption>Model of sample relationships</figcaption></figure>
-      <h3 id="SAMPglance">Sample relationships at a glance</h3>
-      <p>An a-z index of <em>sampling</em> terms, by class (categories or
-        types) and by property.</p>
-      <div class="SampAzlist">
-        <p>Classes: | <a href="#SAMPRelationshipNature">RelationshipNature</a>
-          | <a href="#SAMPSampleRelationship">SampleRelationship</a> | </p>
-        <p>Properties: | <a href="#SAMPhasSampleRelationship">hasSampleRelationship</a>
-          | <a href="#SAMPnatureOfRelationship">natureOfRelationship</a> | <a
-            href="#SAMPrelatedSample">relatedSample</a>
-          | </p>
-      </div>
-      <!-- The list of groups starts here -->
-      <!-- End of the groups -->
-      <!-- and this is the bulk of the vocab descriptions -->
-      <div class="termlist">
-        <h3>Classes and Properties</h3>
-        <div class="termdetails"><br>
-          <div class="specterm" id="SAMPRelationshipNature" about="http://www.w3.org/ns/sosa/sampling/RelationshipNature"
-            typeof="owl:Class">
-            <h3>Class: sampling:RelationshipNature</h3>
-            <em property="rdfs:label">Nature of relationship (between samples)</em>
-            - <span property="rdfs:comment">Members of this class indicate the
-              nature of a relationship between two samples.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>Status:</th>
-                  <td><span property="vs:status">unknown</span></td>
-                </tr>
-                <tr>
-                  <th colspan="2">OWL Class</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SAMPRelationshipNature">#</a>]
-              <!-- Actuation --> [<a href="#SAMPglance">back to top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SAMPSampleRelationship" about="http://www.w3.org/ns/sosa/sampling/SampleRelationship"
-            typeof="owl:Class">
-            <h3>Class: sampling:SampleRelationship</h3>
-            <em property="rdfs:label">Sample relationship</em> - <span property="rdfs:comment">Members
-              of this class represent a relationship between a sample and
-              another.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>Status:</th>
-                  <td><span property="vs:status">unknown</span></td>
-                </tr>
-                <tr>
-                  <th colspan="2">OWL Class</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SAMPSampleRelationship">#</a>]
-              <!-- SampleRelationship --> [<a href="#SAMPglance">back to top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SAMPhasSampleRelationship" about="http://www.w3.org/ns/sosa/sampling/hasSampleRelationship"
-            typeof="owl:ObjectProperty">
-            <h3>Property: sampling:hasSampleRelationship</h3>
-            <em property="rdfs:label">has sample relationship</em> - <span property="rdfs:comment">Links
-              a sample to a sample relationship (which links to a related
-              sample).</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>Status:</th>
-                  <td><span property="vs:status">unknown</span></td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SAMPhasSampleRelationship">#</a>]
-              <!-- hasSampleRelationship --> [<a href="#SAMPglance">back to top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SAMPnatureOfRelationship" about="http://www.w3.org/ns/sosa/sampling/natureOfRelationship"
-            typeof="owl:ObjectProperty">
-            <h3>Property: sampling:natureOfRelationship</h3>
-            <em property="rdfs:label">nature of (sample) relationship</em> - <span
-              property="rdfs:comment">Links
-              a SampleRelationship to an indication of the nature of the
-              relationship.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>Status:</th>
-                  <td><span property="vs:status">unknown</span></td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SAMPnatureOfRelationship">#</a>]
-              <!-- natureOfRelationship --> [<a href="#SAMPglance">back to top</a>]</p>
-            <br>
-          </div>
-          <div class="specterm" id="SAMPrelatedSample" about="http://www.w3.org/ns/sosa/sampling/relatedSample"
-            typeof="owl:ObjectProperty">
-            <h3>Property: sampling:relatedSample</h3>
-            <em property="rdfs:label">related sample</em> - <span property="rdfs:comment">Links
-              a sample relationship to the related sample.</span> <br>
-            <table style="th { float: top; }">
-              <tbody>
-                <tr>
-                  <th>Status:</th>
-                  <td><span property="vs:status">unknown</span></td>
-                </tr>
-                <tr>
-                  <th colspan="2">Object Property</th>
-                </tr>
-              </tbody>
-            </table>
-            <p style="float: right; font-size: small;">[<a href="#SAMPrelatedSample">#</a>]
-              <!-- relatedSample --> [<a href="#SAMPglance">back to top</a>]</p>
-            <br>
+      <section id="OBOE_Alignment" class="non-normative">
+        <h2>OBOE Alignment Module</h2>
+        <p>This section introduces the alignment of SOSA to <a href="https://github.com/NCEAS/oboe/">OBOE</a>.</p>
+        <p>OBOE: The Extensible Observation Ontology, is used within the
+          biodiversity community for semantic representation of observation
+          data. The ontology is composed of multiple modules. The core
+          observation elements are in the module OBOE-core. </p>
+        <section id="OBOE_Alignment_ns" class="non-normative">
+          <h3>Namespaces</h3>
+          <p>The following namespace prefixes are used in the alignment to SOSA.</p>
+          <table>
+            <tbody>
+              <tr>
+                <th> Prefix </th>
+                <th> Namespace </th>
+              </tr>
+              <tr>
+                <td> sosa: </td>
+                <td> <a href="http://www.w3.org/ns/sosa/">http://www.w3.org/ns/sosa/</a>
+                </td>
+              </tr>
+              <tr>
+                <td> oboe: </td>
+                <td> <a href="http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#">http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id="OBOE_Alignment_class" class="non-normative">
+          <h3>Class alignments</h3>
+          <p>An oboe:Observation is composed of a collection of
+            oboe:Measurements with the same feature-of-interest. Each
+            oboe:Measurement concerns a distinct observed-property
+            ("characteristic") and uses a distinct procedure ("protocol"). We
+            therefore choose to align sosa:Observation with oboe:Measurement.</p>
+          <figure> <img alt="OBOE core classes" src="images/OBOE-core.png" height="400">
+            <img alt="SOSA Observation" src="images/SOSA-obs-core.png" height="300">
+            <figcaption>Core classes from the OBOE alongside the SOSA
+              observation model</figcaption></figure>
+          <p>The primary classes from [OBOE] are aligned with SOSA classes as
+            follows:</p>
+          <table>
+            <tbody>
+              <tr>
+                <td> oboe:Measurement </td>
+                <td> subclass of </td>
+                <td> sosa:Observation </td>
+              </tr>
+              <tr>
+                <td> oboe:Characteristic </td>
+                <td> equivalent class </td>
+                <td> sosa:ObservableProperty </td>
+              </tr>
+              <tr>
+                <td> oboe:Protocol </td>
+                <td> equivalent class </td>
+                <td> sosa:Procedure </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>The class oboe:Entity appears in OBOE as the range of the
+            oboe:ofEntity and oboe:hasValue properties, so we interpret it as a
+            general superclass.</p>
+          <table>
+            <tbody>
+              <tr>
+                <td> sosa:FeatureOfInterest </td>
+                <td> subclass of </td>
+                <td> oboe:Entity </td>
+              </tr>
+              <tr>
+                <td> sosa:Result </td>
+                <td> subclass of </td>
+                <td> oboe:Entity </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id="OBOE_Alignment_property" class="normative">
+          <h3>Property alignments</h3>
+          <p>The following properties from [OBOE] may be direct aligned with
+            SOSA properties: </p>
+          <table>
+            <tbody>
+              <tr>
+                <td> oboe:ofCharacteristic </td>
+                <td> equivalent property </td>
+                <td> sosa:observedProperty </td>
+              </tr>
+              <tr>
+                <td> oboe:hasValue </td>
+                <td> equivalent property </td>
+                <td> sosa:hasResult </td>
+              </tr>
+              <tr>
+                <td> oboe:usesProtocol </td>
+                <td> equivalent property </td>
+                <td> sosa:usedProcedure </td>
+              </tr>
+              <tr>
+                <td> oboe:usesMethod </td>
+                <td> equivalent property </td>
+                <td> sosa:usedProcedure </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>oboe:hasValue, oboe:usesProtocol and oboe:usesMethod are
+            sub-properties of the corresponding SOSA properties which apply to
+            actuation and sampling as well as observation.</p>
+          <p>The feature-of-interest is linked to the oboe:Observation that
+            contains a oboe:Measurement, rather than to the oboe:Measurement
+            directly, so a property-chain axiom is required to express the
+            alignment.</p>
+          <table>
+            <tbody>
+              <tr>
+                <td> sosa:hasFeatureOfInterest </td>
+                <td> property-chain axiom </td>
+                <td> [oboe:measurementFor, oboe:ofEntity] </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>The properties oboe:hasMeasurement and its inverse
+            oboe:measurementFor link an oboe:Observation to its member
+            oboe:Measurements. These could be modeled as sub-properties related
+            to rdfs:member and its inverse as follows:</p>
+          <table>
+            <tbody>
+              <tr>
+                <td> oboe:hasMeasurement </td>
+                <td> sub-property of </td>
+                <td> rdfs:member </td>
+              </tr>
+              <tr>
+                <td> oboe:measurementFor </td>
+                <td> sub-property of </td>
+                <td> [ owl:inverseOf rdfs:member ] </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>An RDF file containing a <a href="https://raw.githubusercontent.com/w3c/sdw/simon-sosa-om-oboe/ssn/rdf/sosa-oboe-mapping.ttl">graph
+              corresponding to this alignment is available</a>. </p>
+        </section>
+      </section>
+      <section id="sample_relationships" class="informative">
+        <h2>Sample Relations Module</h2>
+        <p>Samples are often related to other samples, by sub-sampling,
+          topological relationships (stations along a traverse, pixels within an
+          image, probe spots on a polished section, specimens retrieved withina
+          borehole) or as parts of sample processing chains (crushing,
+          splitting, dissecting, disolving). There are an essentially unlimited
+          set of relationships between samples, so the nature of the
+          relationship has its own class. This section describes a flexible
+          model to describe such relationships between samples. The model is
+          based on the <a href="http://patterns.dataincubator.org/book/qualified-relation.html">QualifiedRelation
+            pattern</a>. </p>
+        <p style="text-align: center;">The namespace for Sample relationships
+          terms is <span class="repeated" style="font-family: courier;">http://www.w3.org/ns/sosa/sampling/</span>
+        </p>
+        <p style="text-align: center;">The suggested prefix for the sample
+          relationships namespace is <span class="repeated" style="font-family: courier;">sampling</span>
+        </p>
+        <p>An <a href="https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sampling.ttl">ontology
+            graph for this is available</a>. </p>
+        <figure><img alt="Sample relationships" src="images/sample-relationships.png">
+          <figcaption>Model of sample relationships</figcaption></figure>
+        <h3 id="SAMPglance">Sample relationships at a glance</h3>
+        <p>An a-z index of <em>sampling</em> terms, by class (categories or
+          types) and by property.</p>
+        <div class="SampAzlist">
+          <p>Classes: | <a href="#SAMPRelationshipNature">RelationshipNature</a>
+            | <a href="#SAMPSampleRelationship">SampleRelationship</a> | </p>
+          <p>Properties: | <a href="#SAMPhasSampleRelationship">hasSampleRelationship</a>
+            | <a href="#SAMPnatureOfRelationship">natureOfRelationship</a> | <a
+              href="#SAMPrelatedSample">relatedSample</a>
+            | </p>
+        </div>
+        <!-- The list of groups starts here -->
+        <!-- End of the groups -->
+        <!-- and this is the bulk of the vocab descriptions -->
+        <div class="termlist">
+          <h3>Classes and Properties</h3>
+          <div class="termdetails"><br>
+            <div class="specterm" id="SAMPRelationshipNature" about="http://www.w3.org/ns/sosa/sampling/RelationshipNature"
+              typeof="owl:Class">
+              <h3>Class: sampling:RelationshipNature</h3>
+              <em property="rdfs:label">Nature of relationship (between samples)</em>
+              - <span property="rdfs:comment">Members of this class indicate
+                the nature of a relationship between two samples.</span> <br>
+              <table style="th { float: top; }">
+                <tbody>
+                  <tr>
+                    <th>Status:</th>
+                    <td><span property="vs:status">unknown</span></td>
+                  </tr>
+                  <tr>
+                    <th colspan="2">OWL Class</th>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="float: right; font-size: small;">[<a href="#SAMPRelationshipNature">#</a>]
+                <!-- Actuation --> [<a href="#SAMPglance">back to top</a>]</p>
+              <br>
+            </div>
+            <div class="specterm" id="SAMPSampleRelationship" about="http://www.w3.org/ns/sosa/sampling/SampleRelationship"
+              typeof="owl:Class">
+              <h3>Class: sampling:SampleRelationship</h3>
+              <em property="rdfs:label">Sample relationship</em> - <span property="rdfs:comment">Members
+                of this class represent a relationship between a sample and
+                another.</span> <br>
+              <table style="th { float: top; }">
+                <tbody>
+                  <tr>
+                    <th>Status:</th>
+                    <td><span property="vs:status">unknown</span></td>
+                  </tr>
+                  <tr>
+                    <th colspan="2">OWL Class</th>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="float: right; font-size: small;">[<a href="#SAMPSampleRelationship">#</a>]
+                <!-- SampleRelationship --> [<a href="#SAMPglance">back to top</a>]</p>
+              <br>
+            </div>
+            <div class="specterm" id="SAMPhasSampleRelationship" about="http://www.w3.org/ns/sosa/sampling/hasSampleRelationship"
+              typeof="owl:ObjectProperty">
+              <h3>Property: sampling:hasSampleRelationship</h3>
+              <em property="rdfs:label">has sample relationship</em> - <span property="rdfs:comment">Links
+                a sample to a sample relationship (which links to a related
+                sample).</span> <br>
+              <table style="th { float: top; }">
+                <tbody>
+                  <tr>
+                    <th>Status:</th>
+                    <td><span property="vs:status">unknown</span></td>
+                  </tr>
+                  <tr>
+                    <th colspan="2">Object Property</th>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="float: right; font-size: small;">[<a href="#SAMPhasSampleRelationship">#</a>]
+                <!-- hasSampleRelationship --> [<a href="#SAMPglance">back to
+                  top</a>]</p>
+              <br>
+            </div>
+            <div class="specterm" id="SAMPnatureOfRelationship" about="http://www.w3.org/ns/sosa/sampling/natureOfRelationship"
+              typeof="owl:ObjectProperty">
+              <h3>Property: sampling:natureOfRelationship</h3>
+              <em property="rdfs:label">nature of (sample) relationship</em> - <span
+                property="rdfs:comment">Links
+                a SampleRelationship to an indication of the nature of the
+                relationship.</span> <br>
+              <table style="th { float: top; }">
+                <tbody>
+                  <tr>
+                    <th>Status:</th>
+                    <td><span property="vs:status">unknown</span></td>
+                  </tr>
+                  <tr>
+                    <th colspan="2">Object Property</th>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="float: right; font-size: small;">[<a href="#SAMPnatureOfRelationship">#</a>]
+                <!-- natureOfRelationship --> [<a href="#SAMPglance">back to top</a>]</p>
+              <br>
+            </div>
+            <div class="specterm" id="SAMPrelatedSample" about="http://www.w3.org/ns/sosa/sampling/relatedSample"
+              typeof="owl:ObjectProperty">
+              <h3>Property: sampling:relatedSample</h3>
+              <em property="rdfs:label">related sample</em> - <span property="rdfs:comment">Links
+                a sample relationship to the related sample.</span> <br>
+              <table style="th { float: top; }">
+                <tbody>
+                  <tr>
+                    <th>Status:</th>
+                    <td><span property="vs:status">unknown</span></td>
+                  </tr>
+                  <tr>
+                    <th colspan="2">Object Property</th>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="float: right; font-size: small;">[<a href="#SAMPrelatedSample">#</a>]
+                <!-- relatedSample --> [<a href="#SAMPglance">back to top</a>]</p>
+              <br>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-    <section id="Forecasts" class="informative">
-      <h2>Forecasts</h2>
-      <p class="issue" data-number="82">Are there additional properties needed
-        for ssn:observation to represent forecasts as observations.</p>
-      One may represent forecasts as observations if the value of <code>sosa:phenomenonTime</code>
-      is later in time than the <code>sosa:resultTime</code>. Given the
-      definition of these terms, it means that: <em>The time when the
-        Observation act was completed is before the time that the Result of the
-        observation applies to the FeatureOfInterest.</em>
-      <p class="note"> Other means to represent forecasts are reported, but not
-        in the scope of this specification. For example
-        [[Lefrancois-et-al-2017]] derives the SSN <code>Sensing/Sensor/Observation</code>
-        pattern and define <code>Forecasting/Forecaster/Forecast</code>
-        classes.</p>
-      <p class="note">Describing a plan for some actuation or observation in the
-        future is not covered by this specification.</p>
-    </section>
-    <section class="appendix" id="acknowledgments">
-      <h2>Acknowledgements</h2>
-      The Editors recognise the major contribution of the members of the
-      original W3C Semantic Sensor Networks Incubator Group. The editors also
-      gratefully acknowledge the contributions made to this document by all
-      members of the SSN subgroup of the Spatial Data on the Web working group.</section>
-    <section class="appendix" id="changes">
-      <h2>Change history</h2>
-      <p>A full change-log is available on <a href="%E2%80%9C%E2%80%9Dhttps://github.com/w3c/sdw/commits/gh-pages/ssn%E2%80%9D">GitHub</a></p>
-      <h3>Changes since Original <a href="https://www.w3.org/2005/Incubator/ssn/XGR-ssn-20110628/">
-          (https://www.w3.org/2005/Incubator/ssn/XGR-ssn-20110628/)</a></h3>
-      <ol>
-        <li>The Dolce-UltraLite ontology, that was imported in SSN, is no longer
-          imported and all axioms using terms from DUL have been removed from
-          SSN and collected in the DUL-SSN alignment module. </li>
-        <li>The namespace was changed to match the planned namespace for this
-          publication. </li>
-        <li>The modularization as presented here, including the core, is
-          entirely new. </li>
-      </ol>
-      <h3>Changes since 1st Public Working Draft <a href="http://www.w3.org/TR/2016/WD-vocab-ssn-20160531/">
-          (http://www.w3.org/TR/2016/WD-vocab-ssn-20160531/)</a></h3>
-      <ol>
-        <li>Correction to include some SSN terms that were unintentionally
-          dropped from the FPWD. Correction to remove an asserted subclass of
-          owl:Thing that was introduced into FPWD (these were both by-products
-          of the Dolce removal). </li>
-        <li>Correction to some https namespace usage that crept into the FPWD.</li>
-        <li>Transition to the new namespace used by the DUL module.</li>
-        <li>Inclusion of the DUL alignment and the old SSN (of the SSN-XG)
-          alignment. </li>
-        <li> ssn:Sensor has been changed to be a subclass of dul:Object instead
-          of dul:Physical Object.</li>
-        <li>Various typography and spelling errors and consistency of expression
-          in annotation properties have been improved. These do not induce any
-          changes in the intended meaning of the terms. </li>
-        <li>Specgen 6 has been used to generate the ontology documentation. The
-          popular sketch of SSN structure has been removed. </li>
-        <li>Object properties ssn:isValueOf, ssn:produces and
-          ssn:featureInObservation, along with a propertychain subproperty of
-          produces and another propertychain subproperty of hasProperty, were
-          introduced unintentionally in the FPWD.</li>
-      </ol>
-      <h3>Changes since 2nd Public Working Draft <a href="https://www.w3.org/TR/2017/WD-vocab-ssn-20170105/">
-          (https://www.w3.org/TR/2017/WD-vocab-ssn-20170105/)</a></h3>
-      <ol>
-        <li>Changed meta prefix declaration to schema</li>
-        <li>Added voaf:Vocabulary class to ontology instances</li>
-        <li>Added dcterms:license statements</li>
-        <li>Added vann:preferredNamespacePrefix and vann:preferredNamespaceUri
-          statements</li>
-        <li>Added SOSA and SSN alignment</li>
-        <li>Added SSN/SOSA alignments with O&amp;M</li>
-        <li>Consistently added Capitalization of all ontology terms in all
-          rdfs:comments</li>
-        <li>Addressed naming inconsistency with changes in name to
-          isObservedBy/observes, madeBySensor/madeObservation</li>
-        <li>Use skos:examples to describe examples of classes/properties</li>
-        <li>Removed history skos:historyNote</li>
-        <li>SOSA-specific changes:
-          <ul>
-            <li>Various typography and spelling errors and consistency of
-              expression in annotation properties have been improved</li>
-            <li>Added "sosa:hasResult meta:domainIncludes sosa:Actuation" and
-              "sosa:isResultOf meta:rangeIncludes sosa:Actuation"</li>
-            <li>Changed the defintion of FeatureofInterest to account for
-              actuators</li>
-            <li>Introduced sosa:actsOnProperty and its inverse property
-              sosa:isActedOnBy</li>
-            <li>Added madeBySensor property</li>
-            <li>Renamed invokes and invokedBy to madeActuation and
-              actuationMadeBy</li>
-            <li>Changed hostedBy to isHostedBy</li>
-            <li>Added Sampler (device) and Sampling (act) to SOSA</li>
-            <li>Added madeSampling and madeBySampler properties</li>
-            <li>Added hasResultingSample and its inverse property
-              isSamplingResultOf</li>
-            <li>Added hasSimpleResult and hasResult instead of hasValue</li>
-            <li>Added ObservableProperty and ActuatableProperty</li>
-            <li>Changed rdfs:comment and skos:definition of sosa:Platform</li>
-            <li>Refined sosa:Result</li>
-            <li>Changed sosa:madeByActuator to sosa:actuationMadeBy</li>
-            <li>Added schema:domainIncludes sosa:Sampling to
-              sosa:observedProperty</li>
-            <li>Added schema:rangeIncludes time:TemporalEntity and
-              schema:domainIncludes sosa:Sampling to sosa:phenomenonTime</li>
-          </ul>
-        </li>
-        <li>SSN-specific changes:
-          <ul>
-            <li>Changed syntax and layout in the alignment to SSN of the SSN-XG</li>
-            <li>Refine ssn:Property: ObservableProperty in sosa, Property in
-              ssn, old SSN Property equivalent with ssn:Property</li>
-            <li>Import sosa: "ssn: a owl:Ontology ; owl:imports sosa:."</li>
-            <li>Update prefix for featureOfInterest in ssn:Observation and
-              ssn:Property definition</li>
-            <li>Added skos:examples to several rdfs:comments</li>
-            <li>Changed sub class relation of Accuracy from
-              ssn:MeasurementProperty to ssn:SystemProperty</li>
-            <li>Changed sub class of ssn:Deployment from
-              DeploymentRelatedProcess to DeploymentRelatedProcedure</li>
-            <li>Changed DeploymentRelatedProcess Class to
-              DeploymentRelatedProcedure</li>
-            <li>Changed sub class of ssn:DetectionLimit from
-              ssn:MeasurementProperty to ssn:SystemProperty</li>
-            <li>Deprecated the ssn:Device class</li>
-            <li>Changed sub class of ssn:Drift from ssn:MeasurementProperty to
-              ssn:SystemProperty</li>
-            <li>Changed the rdfs:comment of ssn:Drift to include Actuators</li>
-            <li>Changed sub class of ssn:Frequency from ssn:MeasurementProperty
-              to ssn:SystemProperty</li>
-            <li>Changed sub class of ssn:Latency from ssn:MeasurementProperty to
-              ssn:SystemProperty</li>
-            <li>Changed the rdfs:comment of ssn:Latency to include Actuators</li>
-            <li>Changed the rdfs:comment of ssn:MaintenanceSchedule to reference
-              the System class only</li>
-            <li>Changed MeasurementCapability to SystemCapability and changed
-              its axiom from hasMeasurementProperty to hasSystemProperty</li>
-            <li>Changed MeasurementProperty to SystemProperty</li>
-            <li>Changed sub class of ssn:MeasurementRange from
-              ssn:MeasurementProperty to ssn:SystemProperty and changed its
-              rdfs:comment</li>
-            <li>Changed the Observation’s classes qualified property restriction
-              from ssn:featureOfInterest to sosa:hasFeatureOfInterest and
-              ssn:FeatureOfInterest to sosa:FeatureOfInterest</li>
-            <li>Changed the Observation’s class universal property restrictions
-              from ssn:observationResult to sosa:hasResult and ssn:SensorOutput
-              to sosa:Result</li>
-            <li>Changed the Observation’s class universal property restriction
-              from ssn:observedProperty to sosa:observedProperty and
-              ssn:ObservedProperty to sosa:ObservableProperty</li>
-            <li>Changed the Observation’s class qualified property restriction
-              from ssn:observedProperty to sosa:observedProperty and
-              ssn:ObservedProperty to sosa:ObservableProperty</li>
-            <li>Changed the Observation’s class qualified property restrictions
-              from ssn:observedBy to sosa:madeBySensor and ssn:Sensor to
-              sosa:Sensor</li>
-            <li>Changed the Observation’s class universal property restrictions
-              from ssn:sensingMethodUsed to sosa:usedProcedure and
-              sosa:usedProcedure</li>
-            <li>Changed the Observation’s class qualified property restrictions
-              from ssn:sensingMethodUsed to sosa:usedProcedure and
-              sosa:usedProcedure</li>
-            <li>Changed the minimum cardinality restriction on the Observation
-              class from ssn:observationSamplingTime to sosa:resultTime</li>
-            <li>Removed ssn:ObservationValue Class</li>
-            <li>Changed rdfs:comment of ssn:OperatingPowerRange</li>
-            <li>Changed rdfs:comment of ssn:OperatingProperty</li>
-            <li>Changed rdfs:comment of ssn:OperatingRange</li>
-            <li>Changed rdfs:comment of ssn:Output</li>
-            <li>Changed the Platform’s class universal property restrictions
-              from ssn:attachedSystem</li>
-            <li>Changed sub class of ssn:Precision from ssn:MeasurementProperty
-              to ssn:SystemProperty</li>
-            <li>Changed ssn:Process to sosa:Procedure</li>
-            <li>Changed rdfs:comment for ssn:Property</li>
-            <li>Changed the Property’s class existential property restrictions
-              class range from ssn:FeatureOfInterest to sosa:FeatureOfInterest</li>
-            <li>Changed rdfs:comment for ssn:Resolution</li>
-            <li>Changed sub class of ssn:Resolution from ssn:MeasurementProperty
-              to ssn:SystemProperty</li>
-            <li>Changed rdfs:comment for ssn:ResponseTime</li>
-            <li>Changed sub class of ssn:ResponseTime from
-              ssn:MeasurementProperty to ssn:SystemProperty</li>
-            <li>Changed rdfs:comment for ssn:Selectivity</li>
-            <li>Changed sub class of ssn:Selectivitye from
-              ssn:MeasurementProperty to ssn:SystemProperty</li>
-            <li>Removed ssn:Sensing Class</li>
-            <li>Removed ssn:SensingDevice Class</li>
-            <li>Changed the Sensor classes existential property restrictions
-              from ssn:hasMeasurementCapability to ssn:SystemCapability and
-              ssn:MeasurementCapability to ssn:SystemCapability</li>
-            <li>Changed the Sensor classes universal property restriction on
-              ssn:observes to sosa:observes</li>
-            <li>Changed the Sensor classes existential property restrictions
-              range class from ssn:Sensing to sosa:Procedure</li>
-            <li>Removed ssn:SensorDataSheet Class</li>
-            <li>Removed ssn:SensorInput Class</li>
-            <li>Removed ssn:SensorOutput Class</li>
-            <li>Changed rdfs:comment for ssn:Stimulus</li>
-            <li>Changed rdfs:comment for ssn:SurvivalProperty</li>
-            <li>Changed rdfs:comment for ssn:SurvivalRange</li>
-            <li>Changed rdfs:comment for ssn:System</li>
-            <li>Changed the System’s class universal property restriction from
-              ssn:onPlatform to sosa:isHostedBy and ssn:Platform to
-              sosa:Platform</li>
-            <li>Added a universal property restriction to the System’s class on
-              the hasSystemCapability property with a class range of
-              SystemCapability</li>
-            <li>Changed rdfs:comment for ssn:SystemLifetime</li>
-          </ul>
-        </li>
-      </ol>
-    </section>
-    <!--    <section class="appendix" id="references">
+      </section>
+      <section id="Forecasts" class="informative">
+        <h2>Forecasts</h2>
+        <p class="issue" data-number="82">Are there additional properties needed
+          for ssn:observation to represent forecasts as observations.</p>
+        One may represent forecasts as observations if the value of <code>sosa:phenomenonTime</code>
+        is later in time than the <code>sosa:resultTime</code>. Given the
+        definition of these terms, it means that: <em>The time when the
+          Observation act was completed is before the time that the Result of
+          the observation applies to the FeatureOfInterest.</em>
+        <p class="note"> Other means to represent forecasts are reported, but
+          not in the scope of this specification. For example
+          [[Lefrancois-et-al-2017]] derives the SSN <code>Sensing/Sensor/Observation</code>
+          pattern and define <code>Forecasting/Forecaster/Forecast</code>
+          classes.</p>
+        <p class="note">Describing a plan for some actuation or observation in
+          the future is not covered by this specification.</p>
+      </section>
+      <section class="appendix" id="acknowledgments">
+        <h2>Acknowledgements</h2>
+        The Editors recognise the major contribution of the members of the
+        original W3C Semantic Sensor Networks Incubator Group. The editors also
+        gratefully acknowledge the contributions made to this document by all
+        members of the SSN subgroup of the Spatial Data on the Web working
+        group.</section>
+      <section class="appendix" id="changes">
+        <h2>Change history</h2>
+        <p>A full change-log is available on <a href="%E2%80%9C%E2%80%9Dhttps://github.com/w3c/sdw/commits/gh-pages/ssn%E2%80%9D">GitHub</a></p>
+        <h3>Changes since Original <a href="https://www.w3.org/2005/Incubator/ssn/XGR-ssn-20110628/">
+            (https://www.w3.org/2005/Incubator/ssn/XGR-ssn-20110628/)</a></h3>
+        <ol>
+          <li>The Dolce-UltraLite ontology, that was imported in SSN, is no
+            longer imported and all axioms using terms from DUL have been
+            removed from SSN and collected in the DUL-SSN alignment module. </li>
+          <li>The namespace was changed to match the planned namespace for this
+            publication. </li>
+          <li>The modularization as presented here, including the core, is
+            entirely new. </li>
+        </ol>
+        <h3>Changes since 1st Public Working Draft <a href="http://www.w3.org/TR/2016/WD-vocab-ssn-20160531/">
+            (http://www.w3.org/TR/2016/WD-vocab-ssn-20160531/)</a></h3>
+        <ol>
+          <li>Correction to include some SSN terms that were unintentionally
+            dropped from the FPWD. Correction to remove an asserted subclass of
+            owl:Thing that was introduced into FPWD (these were both by-products
+            of the Dolce removal). </li>
+          <li>Correction to some https namespace usage that crept into the FPWD.</li>
+          <li>Transition to the new namespace used by the DUL module.</li>
+          <li>Inclusion of the DUL alignment and the old SSN (of the SSN-XG)
+            alignment. </li>
+          <li> ssn:Sensor has been changed to be a subclass of dul:Object
+            instead of dul:Physical Object.</li>
+          <li>Various typography and spelling errors and consistency of
+            expression in annotation properties have been improved. These do not
+            induce any changes in the intended meaning of the terms. </li>
+          <li>Specgen 6 has been used to generate the ontology documentation.
+            The popular sketch of SSN structure has been removed. </li>
+          <li>Object properties ssn:isValueOf, ssn:produces and
+            ssn:featureInObservation, along with a propertychain subproperty of
+            produces and another propertychain subproperty of hasProperty, were
+            introduced unintentionally in the FPWD.</li>
+        </ol>
+        <h3>Changes since 2nd Public Working Draft <a href="https://www.w3.org/TR/2017/WD-vocab-ssn-20170105/">
+            (https://www.w3.org/TR/2017/WD-vocab-ssn-20170105/)</a></h3>
+        <ol>
+          <li>Changed meta prefix declaration to schema</li>
+          <li>Added voaf:Vocabulary class to ontology instances</li>
+          <li>Added dcterms:license statements</li>
+          <li>Added vann:preferredNamespacePrefix and vann:preferredNamespaceUri
+            statements</li>
+          <li>Added SOSA and SSN alignment</li>
+          <li>Added SSN/SOSA alignments with O&amp;M</li>
+          <li>Consistently added Capitalization of all ontology terms in all
+            rdfs:comments</li>
+          <li>Addressed naming inconsistency with changes in name to
+            isObservedBy/observes, madeBySensor/madeObservation</li>
+          <li>Use skos:examples to describe examples of classes/properties</li>
+          <li>Removed history skos:historyNote</li>
+          <li>SOSA-specific changes:
+            <ul>
+              <li>Various typography and spelling errors and consistency of
+                expression in annotation properties have been improved</li>
+              <li>Added "sosa:hasResult meta:domainIncludes sosa:Actuation" and
+                "sosa:isResultOf meta:rangeIncludes sosa:Actuation"</li>
+              <li>Changed the defintion of FeatureofInterest to account for
+                actuators</li>
+              <li>Introduced sosa:actsOnProperty and its inverse property
+                sosa:isActedOnBy</li>
+              <li>Added madeBySensor property</li>
+              <li>Renamed invokes and invokedBy to madeActuation and
+                actuationMadeBy</li>
+              <li>Changed hostedBy to isHostedBy</li>
+              <li>Added Sampler (device) and Sampling (act) to SOSA</li>
+              <li>Added madeSampling and madeBySampler properties</li>
+              <li>Added hasResultingSample and its inverse property
+                isSamplingResultOf</li>
+              <li>Added hasSimpleResult and hasResult instead of hasValue</li>
+              <li>Added ObservableProperty and ActuatableProperty</li>
+              <li>Changed rdfs:comment and skos:definition of sosa:Platform</li>
+              <li>Refined sosa:Result</li>
+              <li>Changed sosa:madeByActuator to sosa:actuationMadeBy</li>
+              <li>Added schema:domainIncludes sosa:Sampling to
+                sosa:observedProperty</li>
+              <li>Added schema:rangeIncludes time:TemporalEntity and
+                schema:domainIncludes sosa:Sampling to sosa:phenomenonTime</li>
+            </ul>
+          </li>
+          <li>SSN-specific changes:
+            <ul>
+              <li>Changed syntax and layout in the alignment to SSN of the
+                SSN-XG</li>
+              <li>Refine ssn:Property: ObservableProperty in sosa, Property in
+                ssn, old SSN Property equivalent with ssn:Property</li>
+              <li>Import sosa: "ssn: a owl:Ontology ; owl:imports sosa:."</li>
+              <li>Update prefix for featureOfInterest in ssn:Observation and
+                ssn:Property definition</li>
+              <li>Added skos:examples to several rdfs:comments</li>
+              <li>Changed sub class relation of Accuracy from
+                ssn:MeasurementProperty to ssn:SystemProperty</li>
+              <li>Changed sub class of ssn:Deployment from
+                DeploymentRelatedProcess to DeploymentRelatedProcedure</li>
+              <li>Changed DeploymentRelatedProcess Class to
+                DeploymentRelatedProcedure</li>
+              <li>Changed sub class of ssn:DetectionLimit from
+                ssn:MeasurementProperty to ssn:SystemProperty</li>
+              <li>Deprecated the ssn:Device class</li>
+              <li>Changed sub class of ssn:Drift from ssn:MeasurementProperty to
+                ssn:SystemProperty</li>
+              <li>Changed the rdfs:comment of ssn:Drift to include Actuators</li>
+              <li>Changed sub class of ssn:Frequency from
+                ssn:MeasurementProperty to ssn:SystemProperty</li>
+              <li>Changed sub class of ssn:Latency from ssn:MeasurementProperty
+                to ssn:SystemProperty</li>
+              <li>Changed the rdfs:comment of ssn:Latency to include Actuators</li>
+              <li>Changed the rdfs:comment of ssn:MaintenanceSchedule to
+                reference the System class only</li>
+              <li>Changed MeasurementCapability to SystemCapability and changed
+                its axiom from hasMeasurementProperty to hasSystemProperty</li>
+              <li>Changed MeasurementProperty to SystemProperty</li>
+              <li>Changed sub class of ssn:MeasurementRange from
+                ssn:MeasurementProperty to ssn:SystemProperty and changed its
+                rdfs:comment</li>
+              <li>Changed the Observation’s classes qualified property
+                restriction from ssn:featureOfInterest to
+                sosa:hasFeatureOfInterest and ssn:FeatureOfInterest to
+                sosa:FeatureOfInterest</li>
+              <li>Changed the Observation’s class universal property
+                restrictions from ssn:observationResult to sosa:hasResult and
+                ssn:SensorOutput to sosa:Result</li>
+              <li>Changed the Observation’s class universal property restriction
+                from ssn:observedProperty to sosa:observedProperty and
+                ssn:ObservedProperty to sosa:ObservableProperty</li>
+              <li>Changed the Observation’s class qualified property restriction
+                from ssn:observedProperty to sosa:observedProperty and
+                ssn:ObservedProperty to sosa:ObservableProperty</li>
+              <li>Changed the Observation’s class qualified property
+                restrictions from ssn:observedBy to sosa:madeBySensor and
+                ssn:Sensor to sosa:Sensor</li>
+              <li>Changed the Observation’s class universal property
+                restrictions from ssn:sensingMethodUsed to sosa:usedProcedure
+                and sosa:usedProcedure</li>
+              <li>Changed the Observation’s class qualified property
+                restrictions from ssn:sensingMethodUsed to sosa:usedProcedure
+                and sosa:usedProcedure</li>
+              <li>Changed the minimum cardinality restriction on the Observation
+                class from ssn:observationSamplingTime to sosa:resultTime</li>
+              <li>Removed ssn:ObservationValue Class</li>
+              <li>Changed rdfs:comment of ssn:OperatingPowerRange</li>
+              <li>Changed rdfs:comment of ssn:OperatingProperty</li>
+              <li>Changed rdfs:comment of ssn:OperatingRange</li>
+              <li>Changed rdfs:comment of ssn:Output</li>
+              <li>Changed the Platform’s class universal property restrictions
+                from ssn:attachedSystem</li>
+              <li>Changed sub class of ssn:Precision from
+                ssn:MeasurementProperty to ssn:SystemProperty</li>
+              <li>Changed ssn:Process to sosa:Procedure</li>
+              <li>Changed rdfs:comment for ssn:Property</li>
+              <li>Changed the Property’s class existential property restrictions
+                class range from ssn:FeatureOfInterest to sosa:FeatureOfInterest</li>
+              <li>Changed rdfs:comment for ssn:Resolution</li>
+              <li>Changed sub class of ssn:Resolution from
+                ssn:MeasurementProperty to ssn:SystemProperty</li>
+              <li>Changed rdfs:comment for ssn:ResponseTime</li>
+              <li>Changed sub class of ssn:ResponseTime from
+                ssn:MeasurementProperty to ssn:SystemProperty</li>
+              <li>Changed rdfs:comment for ssn:Selectivity</li>
+              <li>Changed sub class of ssn:Selectivitye from
+                ssn:MeasurementProperty to ssn:SystemProperty</li>
+              <li>Removed ssn:Sensing Class</li>
+              <li>Removed ssn:SensingDevice Class</li>
+              <li>Changed the Sensor classes existential property restrictions
+                from ssn:hasMeasurementCapability to ssn:SystemCapability and
+                ssn:MeasurementCapability to ssn:SystemCapability</li>
+              <li>Changed the Sensor classes universal property restriction on
+                ssn:observes to sosa:observes</li>
+              <li>Changed the Sensor classes existential property restrictions
+                range class from ssn:Sensing to sosa:Procedure</li>
+              <li>Removed ssn:SensorDataSheet Class</li>
+              <li>Removed ssn:SensorInput Class</li>
+              <li>Removed ssn:SensorOutput Class</li>
+              <li>Changed rdfs:comment for ssn:Stimulus</li>
+              <li>Changed rdfs:comment for ssn:SurvivalProperty</li>
+              <li>Changed rdfs:comment for ssn:SurvivalRange</li>
+              <li>Changed rdfs:comment for ssn:System</li>
+              <li>Changed the System’s class universal property restriction from
+                ssn:onPlatform to sosa:isHostedBy and ssn:Platform to
+                sosa:Platform</li>
+              <li>Added a universal property restriction to the System’s class
+                on the hasSystemCapability property with a class range of
+                SystemCapability</li>
+              <li>Changed rdfs:comment for ssn:SystemLifetime</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+      <!--    <section class="appendix" id="references">
       <h2>References</h2>      <dl>        <dt id="bib-OM">[O&amp;M]</dt>        <dd> Simon Cox<a href="http://portal.opengeospatial.org/files/41579"><cite>Observations              and Measurements 2.0</cite></a>          Open Geospatial Consortium, Abstract specification - Topic 20, OGC          10-004r3, 2013. </dd>        <dt id="bib-OM-lite">[om-lite]</dt>        <dd> Simon Cox<a href="http://dx.doi.org/10.3233/SW-160214"><cite>Ontology              for observations and sampling features, with alignments to              existing models</cite></a>          Semantic Web, 8, 3, 453-470, 2017. </dd>        <dt id="bib-SensorML">[SensorML]</dt>        <dd> Mike Botts, Alex Robin<a href="http://portal.opengeospatial.org/files/55939"><cite>OGC              SensorML: Model and XML Encoding Standard 2.0</cite></a>          Open Geospatial Consortium, Encoding Standard, OGC 12-000, 2014. </dd>        <dt id="bib-SSN-ontology1"> [SSN short]</dt>        <dd>Kerry Taylor, Michael Compton, Laurent Lefort, <a href="https://eresearchau.files.wordpress.com/2012/06/74-semantically-enabling-the-web-of-things-the-w3c-semantic-sensor-network-ontology.pdf"><cite>Semantically-Enabling              the Web of Things: The W3C Semantic Sensor Network Ontology</cite>            5th Australasian eResearch Conference, Melbourne, 6-10 November            2011.</a> </dd>        <dt id="bib-SSN-ontology">[SSN Ontology]</dt>        <dd> Michael Compton, Payam Barnaghi, Luis Bermudez, Raúl García-Castro,          Oscar Corcho, Simon Cox, John Graybeal, Manfred Hauswirth, Cory          Henson, Arthur Herzog, Vincent Huang, Krzysztof Janowicz, W. David          Kelsey, Danh Le Phuoc, Laurent Lefort, Myriam Leggieri, Holger          Neuhaus, Andriy Nikolov, Kevin Page, Alexandre Passant, Amit Sheth,          Kerry Taylor <a href="http://www.sciencedirect.com/science/article/pii/S1570826812000571"><cite>TheSSN              ontology of the W3C semantic sensor network incubator group</cite></a>          Web Semantics: Science, Services and Agents on the World Wide Web,          17:25-32 December 2012. </dd>        <dt id="bib-SSN-ontology-SSO">[SSO Pattern]</dt>        <dd> Janowicz, Krzysztof, and Michael Compton. <a href="http://dl.acm.org/citation.cfm?id=2878794"><cite>The              stimulus-sensor-observation ontology              design pattern and its integration into the semantic sensor              network ontology.</cite></a> In          Proceedings of the 3rd International Conference on Semantic Sensor          Networks. Volume 668, pp. 64-78. CEUR-WS. org, 2010.</dd>        <dt id="bib-SSN-PROV">[SSN PROV]</dt>        <dd> Michael Compton, David Corsar, Kerry Taylor. <a href="http://ceur-ws.org/Vol-1401/paper-05.pdf"><cite>Sensor              Data Provenance: SSNO and PROV-O Together at Last</cite></a> In          Proceedings of the 7th International Conference on Semantic Sensor          Networks. Volume 1401, CEUR-WS.org, 2014.</dd>      </dl>    </section>-->
+    </section>
   </body>
 </html>
