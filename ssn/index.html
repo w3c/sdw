@@ -5335,7 +5335,6 @@ th, td {
         </table>
       </section>
     </section>
-   
       <section id="OM_Alignment" class="normative">
         <h2>Observations and Measurements Alignment Module</h2>
         <p>This section introduces the alignment of SOSA/SSN to OGC Observations
@@ -5625,7 +5624,7 @@ th, td {
               corresponding to this alignment is available</a>. </p>
         </section>
       </section>
-      <section id="OBOE_Alignment" class="non-normative">
+      <section id="OBOE_Alignment" class="informative">
         <h2>OBOE Alignment Module</h2>
         <p>This section introduces the alignment of SOSA to <a href="https://github.com/NCEAS/oboe/">OBOE</a>.</p>
         <p>OBOE: The Extensible Observation Ontology, is used within the
@@ -5654,7 +5653,7 @@ th, td {
             </tbody>
           </table>
         </section>
-        <section id="OBOE_Alignment_class" class="non-normative">
+        <section id="OBOE_Alignment_class" class="informative">
           <h3>Class alignments</h3>
           <p>An oboe:Observation is composed of a collection of
             oboe:Measurements with the same feature-of-interest. Each
@@ -5704,7 +5703,7 @@ th, td {
             </tbody>
           </table>
         </section>
-        <section id="OBOE_Alignment_property" class="normative">
+        <section id="OBOE_Alignment_property" class="informative">
           <h3>Property alignments</h3>
           <p>The following properties from [OBOE] may be direct aligned with
             SOSA properties: </p>
@@ -5770,6 +5769,180 @@ th, td {
               corresponding to this alignment is available</a>. </p>
         </section>
       </section>
+
+          <section id="PROV_Alignment" class="informative">
+      <h2>PROV Alignment Module</h2>
+      <p>This section introduces the alignment of SOSA to W3C <a href="https://www.w3.org/TR/prov-overview/">PROV</a>.</p>
+      <p>The underlying structure of <a href="https://www.w3.org/TR/prov-dm/">PROV</a> is based around a process-flow model, with three base classes: <a href="https://www.w3.org/TR/prov-o/#Entity">Entity</a> - which is the class of physical, digital, conceptual, or other kinds of things with some fixed aspects, <a href="https://www.w3.org/TR/prov-o/#Activity">Activity</a> - which is the class of things that occur over a period of time and act upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities, and <a href="https://www.w3.org/TR/prov-o/#Agent">Agent</a> - the class of things that bear some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity.</p>
+      <figure><img src="images/prov-o.png" width="350px"/> <img src="images/observation-prov.png" width="350px"/> <img src="images/actuation-prov.png" width="350px"/> <img src="images/sampling-prov.png" width="350px"/>
+          <figcaption>Core PROV classes and some of the properties that relate them, shown alongside the core SOSA structure for observation, actuation and sampling</figcaption>
+      </figure>
+
+      <p>The SOSA/SSN ontologies conceive observations, actuations, and acts of sampling as activities or events, that result in information being produced, or a change in the world, or the production or transformation of a sample. 
+      Thus, an alignment of SOSA to PROV is natural. 
+      Compton et al. [[SSN-PROV]] and Cox [[OM-Lite]] have previously described alignments of the SSN-X and O&amp;M models with PROV. 
+      The alignment here is based on that work, also extended to consider actuation. </p>
+  
+      <section id="PROV_Alignment_ns" class="informative">
+        <h3>Namespaces</h3>
+        <p>The following namespace prefixes are used in the alignment of SOSA to PROV.</p>
+        <table>
+          <tbody>
+            <tr>
+              <th> Prefix </th>
+              <th> Namespace </th>
+            </tr>
+            <tr>
+              <td> sosa: </td>
+              <td> <a href="http://www.w3.org/ns/sosa/">http://www.w3.org/ns/sosa/</a>
+              </td>
+            </tr>
+            <tr>
+              <td> prov: </td>
+              <td> <a href="http://www.w3.org/ns/prov-o">http://www.w3.org/ns/prov#</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="PROV_Alignment_class" class="informative">
+        <h3>Class alignments</h3>
+        <p>The primary classes from SOSA are aligned with the PROV classes as
+          follows. </p>
+          <p>1. Acts of Observation, Actuation and Sampling are each kinds of Activity, thus:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td> sosa:Observation </td>
+              <td rowspan="3"> subclass of </td>
+              <td rowspan="3"> prov:Activity </td>
+            </tr>
+            <tr>
+              <td> sosa:Actuation </td>
+            </tr>
+            <tr>
+              <td> sosa:Sampling </td>
+            </tr>
+          </tbody>
+        </table>
+          <p>2. Sensors, Actuators and Samplers are entities that are responsible for the corresponding activities, thus:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td> sosa:Sensor </td>
+              <td rowspan="3"> subclass of </td>
+              <td rowspan="3"> prov:Agent , prov:Entity </td>
+            </tr>
+            <tr>
+              <td> sosa:Actuator </td>
+            </tr>
+            <tr>
+              <td> sosa:Sampler </td>
+            </tr>
+          </tbody>
+        </table>        
+          <p>3. Procedures for observation, actuation or sampling are a kind of Plan, thus:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td> sosa:Procedure </td>
+              <td> subclass of </td>
+              <td> prov:Plan </td>
+            </tr>
+          </tbody>
+        </table>        
+          <p>4. The other classes from the core SOSA ontology represent either real or information resources, so are interpreted as kinds of prov:Entity, thus: </p>
+        <table>
+          <tbody>
+            <tr>
+              <td> sosa:FeatureOfInterest </td>
+              <td> subclass of </td>
+              <td> prov:Entity </td>
+            </tr>
+            <tr>
+              <td> sosa:ObservableProperty </td>
+              <td> subclass of </td>
+              <td> prov:Entity </td>
+            </tr>
+            <tr>
+              <td> sosa:Platform </td>
+              <td> subclass of </td>
+              <td> prov:Entity </td>
+            </tr>
+            <tr>
+              <td> sosa:Result </td>
+              <td> subclass of </td>
+              <td> prov:Entity </td>
+            </tr>
+            <tr>
+              <td> sosa:Sample </td>
+              <td> subclass of </td>
+              <td> prov:Entity </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="OBOE_Alignment_property" class="informative">
+        <h3>Property alignments</h3>
+        <p>The following properties from SOSA may be aligned with PROV properties: </p>
+        <table>
+          <tbody>
+            <tr>
+              <td> sosa:actuationMadeBy </td>
+              <td> subproperty of </td>
+              <td> prov:wasAssociatedWith </td>
+            </tr>
+            <tr>
+              <td> sosa:hasFeatureOfInterest </td>
+              <td> subproperty of </td>
+              <td> prov:used </td>
+            </tr>
+            <tr>
+              <td> sosa:hasResult </td>
+              <td> subproperty of </td>
+              <td> prov:generated </td>
+            </tr>
+            <tr>
+              <td> sosa:invokedBy </td>
+              <td> subproperty of </td>
+              <td> prov:wasAssociatedWith </td>
+            </tr>
+            <tr>
+              <td> sosa:isResultOf </td>
+              <td> subproperty of </td>
+              <td> prov:prov:wasGeneratedBy </td>
+            </tr>
+            <tr>
+              <td> sosa:isSampleOf </td>
+              <td> subproperty of </td>
+              <td> prov:prov:wasDerivedFrom </td>
+            </tr>
+            <tr>
+              <td> sosa:madeBySampler </td>
+              <td> subproperty of </td>
+              <td> prov:wasAssociatedWith </td>
+            </tr>
+            <tr>
+              <td> sosa:madeBySensor </td>
+              <td> subproperty of </td>
+              <td> prov:wasAssociatedWith </td>
+            </tr>
+             <tr>
+              <td> sosa:resultTime </td>
+              <td> subproperty of </td>
+              <td> prov:prov:endedAtTime </td>
+            </tr>
+            <tr>
+              <td> sosa:usedProcedure </td>
+              <td> subproperty of </td>
+              <td> property chain axiom [ prov:qualifiedAssociation , prov:hadPlan ] </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>An RDF file containing a <a href="https://raw.githubusercontent.com/w3c/sdw/simon-sosa-prov/ssn/rdf/sosa-prov-mapping.ttl">graph corresponding to this alignment is available</a>. </p>
+      </section>
+    </section>
+
       <section id="sample_relationships" class="informative">
         <h2>Sample Relations Module</h2>
         <p>Samples are often related to other samples, by sub-sampling,
@@ -5792,7 +5965,8 @@ th, td {
             graph for this is available</a>. </p>
         <figure><img alt="Sample relationships" src="images/sample-relationships.png">
           <figcaption>Model of sample relationships</figcaption></figure>
-        <h3 id="SAMPglance">Sample relationships at a glance</h3>
+        <section id="sample_relationships_def">
+        <h3 id="SAMPglance">Sample relationships specification</h3>
         <p>An a-z index of <em>sampling</em> terms, by class (categories or
           types) and by property.</p>
         <div class="SampAzlist">
@@ -5917,6 +6091,7 @@ th, td {
             </div>
           </div>
         </div>
+        </section>
       </section>
       <section id="Forecasts" class="informative">
         <h2>Forecasts</h2>
