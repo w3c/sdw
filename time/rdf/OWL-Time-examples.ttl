@@ -55,14 +55,113 @@ ex:AbbyBirthdayUnix
   :hasTRS <http://dbpedia.org/resource/Unix_time> ;
   :numericPosition "990577200"^^:Number ;
 .
+ex:DatabaseTimeStamp
+  rdf:type :Instant ;
+  rdfs:comment "A database timestamp with lots of fractiosn in the seconds" ;
+  :inDateTime [
+      rdf:type ex:GPSTime ;
+      :second 64696.102 ;
+      :week "1834"^^xsd:nonNegativeInteger ;
+    ] ;
+  :inDateTime [
+      rdf:type :DateTimeDescription ;
+      :day "---01"^^xsd:gDay ;
+      :hour "17"^^xsd:nonNegativeInteger ;
+      :minute "58"^^xsd:nonNegativeInteger ;
+      :month "--11"^^xsd:gMonth ;
+      :second 16.102 ;
+      :timeZone <http://dbpedia.org/page/Coordinated_Universal_Time> ;
+      :year "2015"^^xsd:gYear ;
+    ] ;
+  :inTimePosition [
+      rdf:type ex:UnixTime ;
+      :numericPosition 1446400696 ;
+    ] ;
+  :inXSDDateTimeStamp "2015-11-01T17:58:16.102Z"^^xsd:dateTimeStamp ;
+.
 ex:GPSTime
   rdf:type owl:Class ;
-  rdfs:subClassOf :TimePosition ;
+  rdfs:comment "GPS Time is the number of seconds since an epoch in 1980, encoded as the number of weeks + seconds into the week" ;
+  rdfs:subClassOf :GeneralDateTimeDescription ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
-      owl:hasValue <http://dbpedia.org/resource/GPS_time> ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :day ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :dayOfWeek ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :dayOfYear ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :hour ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :minute ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :month ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :monthOfYear ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :timeZone ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :year ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :second ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty :week ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue :unitSecond ;
+      owl:onProperty :unitType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue <https://en.wikipedia.org/wiki/Global_Positioning_System#Timekeeping> ;
       owl:onProperty :hasTRS ;
     ] ;
+.
+ex:Microseconds
+  rdf:type :TemporalEntity ;
+  rdfs:comment "A temporal entity with duration 0.37 microseconds" ;
+  :hasDuration [
+      rdf:type :Duration ;
+      :numericDuration 0.00000037 ;
+      :unitType :unitSecond ;
+    ] ;
+  :hasDurationDescription [
+      rdf:type :DurationDescription ;
+      :seconds 0.00000037 ;
+    ] ;
+  :hasXSDDuration "P0.00000037S"^^xsd:duration ;
 .
 ex:Sivan
   rdf:type :MonthOfYear ;
@@ -75,6 +174,16 @@ ex:Sivan
 ex:UnixTime
   rdf:type owl:Class ;
   rdfs:subClassOf :TimePosition ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:integer ;
+      owl:onProperty :numericPosition ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:nonNegativeInteger ;
+      owl:onProperty :nominalPosition ;
+    ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:hasValue <http://dbpedia.org/resource/Unix_time> ;
@@ -100,7 +209,7 @@ ex:meetingStartDescription
   :week 1 ;
   :year "2006"^^xsd:gYear ;
 .
-ex:validTIme
+ex:validTime
   rdf:type owl:ObjectProperty ;
   rdfs:subPropertyOf :hasTime ;
 .
