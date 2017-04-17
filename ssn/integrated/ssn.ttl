@@ -166,6 +166,7 @@ ssn:implements a owl:ObjectProperty ;
   skos:definition "Relation between an entity that implements a Procedure in some executable way and the Procedure (an algorithm, procedure or method)."@en ;
   rdfs:comment "Relation between an entity that implements a Procedure in some executable way and the Procedure (an algorithm, procedure or method)."@en ;
   skos:example "For example, the relationship between a sensor and the scientific measuring Procedure via which it senses."@en ;
+  owl:inverseOf ssn:implementedBy ;
   rdfs:isDefinedBy ssn: .
 
 ssn:implementedBy a owl:ObjectProperty ;
@@ -221,18 +222,18 @@ sosa:isFeatureOfInterestOf
 
 sosa:Observation a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySensor ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySensor ; owl:allValuesFrom sosa:Sensor ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:observedProperty ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:observedProperty ; owl:allValuesFrom sosa:ObservableProperty ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:wasOriginatedBy ; owl:cardinality "1"^^xsd:nonNegativeInteger] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:wasOriginatedBy ; owl:allValuesFrom ssn:Stimulus ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:phenomenonTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySensor ; owl:allValuesFrom sosa:Sensor ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:observedProperty ; owl:allValuesFrom sosa:ObservableProperty ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:wasOriginatedBy ; owl:allValuesFrom ssn:Stimulus ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:allValuesFrom sosa:Result ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:isDefinedBy sosa: .
 
   sosa:madeObservation
@@ -246,15 +247,15 @@ sosa:Observation a owl:Class ;
 
 sosa:Actuation a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actuationMadeBy ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actsOnProperty ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actuationMadeBy ; owl:allValuesFrom sosa:Actuator ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actsOnProperty ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actsOnProperty ; owl:allValuesFrom sosa:ActuatableProperty ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:allValuesFrom sosa:Result ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:isDefinedBy sosa: .
 
   sosa:madeActuation
@@ -272,14 +273,13 @@ sosa:Actuation a owl:Class ;
 
 sosa:Sampling a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySampler ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResultingSample ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySampler ; owl:allValuesFrom sosa:Sampler ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:allValuesFrom sosa:Result ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResultingSample ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResultingSample ; owl:allValuesFrom sosa:Sample ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:isDefinedBy sosa: .
 
   sosa:madeSampling 
@@ -351,8 +351,8 @@ sosa:Result
 
   ssn:qualityOfObservation a owl:ObjectProperty ;
     rdfs:label "quality of observation"@en ;
-    skos:definition "Relation linking an Observation to the adjudged quality of the Result. This is complimentary to the MeasurementCapability information recorded for the Sensor that made the Observation."@en ;
-    rdfs:comment "Relation linking an Observation to the adjudged quality of the Result. This is complimentary to the MeasurementCapability information recorded for the Sensor that made the Observation."@en ;
+    skos:definition "Relation linking an Observation to the adjudged quality of the Result. This is complimentary to the SystemCapability information recorded for the Sensor that made the Observation."@en ;
+    rdfs:comment "Relation linking an Observation to the adjudged quality of the Result. This is complimentary to the SystemCapability information recorded for the Sensor that made the Observation."@en ;
     rdfs:subPropertyOf ssn:hasProperty ;
     rdfs:isDefinedBy ssn: .
 
@@ -375,8 +375,8 @@ ssn:System a owl:Class ;
 
   ssn:hasSubSystem a owl:ObjectProperty ;
     rdfs:label "has subsystem"@en ;
-    skos:definition """Relation between a System and its component parts (has-part)."""@en ;
-    rdfs:comment """Relation between a System and its component parts (has-part)."""@en ;
+    skos:definition """Relation between a System and its component parts."""@en ;
+    rdfs:comment """Relation between a System and its component parts."""@en ;
     rdfs:isDefinedBy ssn: .
 
 
@@ -433,13 +433,15 @@ ssn:forProperty a owl:ObjectProperty ;
 
 ssn:inCondition a owl:ObjectProperty ;
   rdfs:label "in condition"@en ;
-  rdfs:comment "Describes the prevailing environmental conditions for SystemCapabilites, OperatingConditions and SurvivalRanges."@en ;
+  skos:definition "Describes the prevailing environmental conditions for SystemCapabilites, OperatingRanges and SurvivalRanges."@en ;
+  rdfs:comment "Describes the prevailing environmental conditions for SystemCapabilites, OperatingRanges and SurvivalRanges."@en ;
   skos:example "Used for example to say that a sensor has a particular accuracy in particular conditions."@en ;
   rdfs:isDefinedBy ssn: .
 
 ssn:Condition a owl:Class ;
   rdfs:label "Condition"@en ;
-  rdfs:comment "Used to specify ranges for qualities that act as conditions on a system/sensor's operation.  For example, wind speed of 10-60m/s is expressed as a condition linking a quality, wind speed, a unit of measurement, metres per second, and a set of values, 10-60, and may be used as the condition on a SystemProperty, for example, to state that a sensor has a particular accuracy in that condition."@en ;
+  skos:definition "Used to specify ranges for qualities that act as conditions on a system/sensor's operation.  For example, wind speed of 10-60m/s may be used as the condition on a SystemProperty, for example, to state that a sensor has a particular accuracy in that condition."@en ;
+  rdfs:comment "Used to specify ranges for qualities that act as conditions on a system/sensor's operation.  For example, wind speed of 10-60m/s may be used as the condition on a SystemProperty, for example, to state that a sensor has a particular accuracy in that condition."@en ;
   rdfs:subClassOf ssn:Property ;
   rdfs:isDefinedBy ssn: .
 
@@ -519,10 +521,10 @@ ssn:hasSystemCapability a owl:ObjectProperty ;
       rdfs:label "Drift"@en ;
       skos:definition """As a Sensor Property: a continuous or incremental change in the reported values of Observations over time for an unchanging Property under the defined Conditions.
 
-      As an Actuator Property: a continuous or incremental change in the true value of the acted on ActuatableProperty over time for an unchanging Command under the defined Conditions."""@en ;
+      As an Actuator Property: a continuous or incremental change in the true value of the acted on ActuatableProperty over time for an unchanging command under the defined Conditions."""@en ;
       rdfs:comment """As a Sensor Property: a continuous or incremental change in the reported values of Observations over time for an unchanging Property under the defined Conditions. 
 
-      As an Actuator Property: a continuous or incremental change in the true value of the acted on ActuatableProperty over time for an unchanging Command under the defined Conditions."""@en ;
+      As an Actuator Property: a continuous or incremental change in the true value of the acted on ActuatableProperty over time for an unchanging command under the defined Conditions."""@en ;
       rdfs:subClassOf ssn:SystemProperty ;
       rdfs:isDefinedBy ssn: .
 
@@ -550,10 +552,10 @@ ssn:hasSystemCapability a owl:ObjectProperty ;
 
     ssn:Resolution a owl:Class ;
       rdfs:label "Resolution"@en ;
-      skos:definition """As a Sensor Property: the smallest difference in the value of a Property being observed that would result in perceptably different values of Observation Results, under the defined Conditions.
+      skos:definition """As a Sensor Property: the smallest difference in the value of a ObservableProperty being observed that would result in perceptably different values of Observation Results, under the defined Conditions.
 
       As an Actuator Property: the smallest difference in the value of an Actuation command that would result in a value change of the ActuatableProperty being acted on, under the defined Conditions."""@en ;
-      rdfs:comment """As a Sensor Property: the smallest difference in the value of a Property being observed that would result in perceptably different values of Observation Results, under the defined Conditions. 
+      rdfs:comment """As a Sensor Property: the smallest difference in the value of a ObservableProperty being observed that would result in perceptably different values of Observation Results, under the defined Conditions. 
 
       As an Actuator Property: the smallest difference in the value of an Actuation command that would result in a value change of the ActuatableProperty being acted on, under the defined Conditions."""@en ;
       rdfs:subClassOf ssn:SystemProperty ;
@@ -561,8 +563,8 @@ ssn:hasSystemCapability a owl:ObjectProperty ;
 
     ssn:Repeatability a owl:Class ;
       rdfs:label "Repeatability"@en ;
-      skos:definition "The closeness of agreement between replicate Actuations for an unchanged or similar Command: i.e., a measure of an Actuator's ability to consistently reproduce an Actuation, under the defined Conditions."@en ;
-      rdfs:comment "The closeness of agreement between replicate Actuations for an unchanged or similar Command: i.e., a measure of an Actuator's ability to consistently reproduce an Actuation, under the defined Conditions."@en ;
+      skos:definition "The closeness of agreement between replicate Actuations for an unchanged or similar command: i.e., a measure of an Actuator's ability to consistently reproduce an Actuation, under the defined Conditions."@en ;
+      rdfs:comment "The closeness of agreement between replicate Actuations for an unchanged or similar command: i.e., a measure of an Actuator's ability to consistently reproduce an Actuation, under the defined Conditions."@en ;
       rdfs:subClassOf ssn:SystemProperty ;
       rdfs:subClassOf [ a owl:Restriction ; owl:onProperty [ owl:inverseOf ssn:hasSystemProperty ] ; owl:allValuesFrom [ a owl:Restriction ; owl:onProperty [ owl:inverseOf ssn:hasSystemCapability ] ; owl:allValuesFrom sosa:Actuator ] ] ; 
       rdfs:isDefinedBy ssn: .
@@ -571,10 +573,10 @@ ssn:hasSystemCapability a owl:ObjectProperty ;
       rdfs:label "Response Time"@en ;
       skos:definition """As a Sensor Property: the time between a (step) change in the value of an observed ObservableProperty and a Sensor (possibly with specified error) 'settling' on an observed value, under the defined Conditions.
 
-      As an Actuator property: the time between a (step) change in the Command of an Actuator and the 'settling' of the value of the acted on ActuatableProperty, under the defined Conditions."""@en ;
+      As an Actuator property: the time between a (step) change in the command of an Actuator and the 'settling' of the value of the acted on ActuatableProperty, under the defined Conditions."""@en ;
       rdfs:comment """As a Sensor Property: the time between a (step) change in the value of an observed ObservableProperty and a Sensor (possibly with specified error) 'settling' on an observed value, under the defined Conditions.
 
-      As an Actuator property: the time between a (step) change in the Command of an Actuator and the 'settling' of the value of the acted on ActuatableProperty, under the defined Conditions."""@en ;
+      As an Actuator property: the time between a (step) change in the command of an Actuator and the 'settling' of the value of the acted on ActuatableProperty, under the defined Conditions."""@en ;
       rdfs:subClassOf ssn:SystemProperty ;
       rdfs:isDefinedBy ssn: .
 
@@ -593,10 +595,10 @@ ssn:hasSystemCapability a owl:ObjectProperty ;
       rdfs:label "Sensitivity"@en ;
       skos:definition """As a Sensor Property: Sensitivity is the quotient of the change in a Result of Observation and the corresponding change in a value of an ObservableProperty being observed, under the defined Conditions.
 
-       As an Actuator Property: Sensitivity is the quotient of the change in a Command of Actuation and the corresponding change in a value of an ActuatableProperty being acted on, under the defined Conditions."""@en ;
+       As an Actuator Property: Sensitivity is the quotient of the change in a command of Actuation and the corresponding change in a value of an ActuatableProperty being acted on, under the defined Conditions."""@en ;
       rdfs:comment """As a Sensor Property: Sensitivity is the quotient of the change in a Result of Observation and the corresponding change in a value of an ObservableProperty being observed, under the defined Conditions.
 
-       As an Actuator Property: Sensitivity is the quotient of the change in a Command of Actuation and the corresponding change in a value of an ActuatableProperty being acted on, under the defined Conditions."""@en ;
+       As an Actuator Property: Sensitivity is the quotient of the change in a command of Actuation and the corresponding change in a value of an ActuatableProperty being acted on, under the defined Conditions."""@en ;
       rdfs:subClassOf ssn:SystemProperty ;
       rdfs:isDefinedBy ssn: .
 
@@ -680,12 +682,11 @@ ssn:hasSurvivalRange a owl:ObjectProperty ;
 
     In the absence of SurvivalProperties, simply describes the Conditions a System can be exposed to without damage. For example, the temperature range a System can withstand before being considered damaged.
 
-    The System continues to operate as defined using SystemCapability. If, however, the SurvivalRange is violated, the System is 'damaged' and SystemCapability specifications may no longer hold."""@en ;
+    The System continues to operate as defined using SystemCapability. If, however, the OperatingProperty is violated, the System is operating 'out of operating range' and SystemCapability specifications may no longer hold."""@en ;
     rdfs:subClassOf ssn:Property ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:inCondition ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSurvivalProperty ; owl:allValuesFrom ssn:SurvivalProperty ] ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:inCondition ; owl:allValuesFrom ssn:Condition ] ;
-    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasSurvivalProperty ; owl:allValuesFrom ssn:SurvivalProperty ] ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty [ owl:inverseOf ssn:hasSurvivalRange ] ; owl:allValuesFrom ssn:System ] ;
     rdfs:isDefinedBy ssn: .
 
@@ -698,8 +699,8 @@ ssn:hasSurvivalRange a owl:ObjectProperty ;
 
   ssn:SurvivalProperty a owl:Class ;
     rdfs:label "Survival Property"@en ;
-    skos:definition "An identifiable characteristic that represents the extent of the system's useful life under the specified Conditions. May describe for example total battery life or number of recharges, or, for Sensors that are used only a fixed number of times, the number of observations that can be made before the sensing capability is depleted."@en ;
-    rdfs:comment "An identifiable characteristic that represents the extent of the system's useful life under the specified Conditions. May describe for example total battery life or number of recharges, or, for Sensors that are used only a fixed number of times, the number of observations that can be made before the sensing capability is depleted."@en ;
+    skos:definition "An identifiable characteristic that represents the extent of the System's useful life under the specified Conditions. May describe for example total battery life or number of recharges, or, for Sensors that are used only a fixed number of times, the number of observations that can be made before the sensing capability is depleted."@en ;
+    rdfs:comment "An identifiable characteristic that represents the extent of the System's useful life under the specified Conditions. May describe for example total battery life or number of recharges, or, for Sensors that are used only a fixed number of times, the number of observations that can be made before the sensing capability is depleted."@en ;
     rdfs:subClassOf ssn:Property ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty [ owl:inverseOf ssn:hasSurvivalProperty ] ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty [ owl:inverseOf ssn:hasSurvivalProperty ] ; owl:allValuesFrom ssn:SurvivalRange ] ;
