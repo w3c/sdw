@@ -8,6 +8,7 @@
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix voaf: <http://purl.org/vocommons/voaf#> .
 @prefix time: <http://www.w3.org/2006/time#> .
+@prefix dul: <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#> .
 
 @prefix oldssn: <http://purl.oclc.org/NET/ssnx/ssn#>.
 @prefix ssn: <http://www.w3.org/ns/ssn/>.
@@ -27,6 +28,7 @@ dcterms:source a owl:AnnotationProperty .
 skos:definition a owl:AnnotationProperty .
 skos:example a owl:AnnotationProperty .
 skos:note a owl:AnnotationProperty .
+skos:changeNote a owl:AnnotationProperty .
 vann:preferredNamespacePrefix a owl:AnnotationProperty .
 vann:preferredNamespaceUri a owl:AnnotationProperty .
 time:TemporalEntity a owl:Class .
@@ -44,7 +46,9 @@ time:TemporalEntity a owl:Class .
   skos:note """Please report any errors to the Semantic Sensor Network Incubator Activity via the public W3C list public-xg-ssn@w3.org"""@en ;
   dcterms:source """This ontology is developed by the W3C Semantic Sensor Networks Incubator Group (SSN-XG). The concepts and structure of the ontology were discussed in the group's meetings and on the mailing list. For more information on the group's activities see: http://www.w3.org/2005/Incubator/ssn/"""@en ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/> ;
-  owl:imports ssn: .
+  owl:imports ssn: ;
+  owl:imports <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl> ;
+  owl:imports <https://www.w3.org/ns/ssn-dul/> .
 
 
 ## Features of interest and observable property
@@ -55,6 +59,7 @@ oldssn:FeatureOfInterest a owl:Class ;
   dcterms:source """skos:exactMatch 'feature' [O&M]
     http://www.opengeospatial.org/standards/om""" ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+  rdfs:subClassOf [ owl:unionOf ( dul:Event dul:Object ) ] ;
   owl:deprecated true ;
   owl:equivalentClass sosa:FeatureOfInterest ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -65,6 +70,7 @@ oldssn:Property a owl:Class ;
   dcterms:source """skos:exactMatch 'property' [O&M]
              http://www.opengeospatial.org/standards/om""" ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+  rdfs:subClassOf dul:Quality ;
   owl:deprecated true ;
   owl:equivalentClass ssn:Property ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -73,6 +79,7 @@ oldssn:Property a owl:Class ;
     rdfs:label "has property"@en ;
     skos:definition """Relation between a FeatureOfInterest and a Property of that feature."""@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+    rdfs:subPropertyOf dul:hasQuality ;
     owl:deprecated true ;
     owl:equivalentProperty ssn:hasProperty ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -81,6 +88,7 @@ oldssn:Property a owl:Class ;
     rdfs:label "is property of"@en ;
     skos:definition """Relation between a FeatureOfInterest and a Property (a Quality observable by a sensor) of that feature."""@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+    rdfs:subPropertyOf dul:isQualityOf ;
     owl:deprecated true ;
     owl:equivalentProperty ssn:isPropertyOf ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -94,6 +102,7 @@ oldssn:Platform a owl:Class ;
   dcterms:source """skos:exactMatch 'platform' [SensorML OGC-0700]
   http://www.opengeospatial.org/standards/sensorml""" ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#PlatformSite> ;
+  rdfs:subClassOf dul:PhysicalObject ;
   owl:deprecated true ;
   owl:equivalentClass sosa:Platform ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -102,6 +111,7 @@ oldssn:Platform a owl:Class ;
     rdfs:label "attached system"@en ;
     skos:definition """Relation between a Platform and any Systems (e.g., Sensors) that are attached to the Platform."""@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#PlatformSite> ;
+    rdfs:subPropertyOf dul:isLocationOf ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:hosts ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -110,6 +120,7 @@ oldssn:Platform a owl:Class ;
     rdfs:label "on platform"@en ;
     skos:definition """Relation between a System (e.g., a Sensor) and a Platform.  The relation locates the sensor relative to other described entities entities: i.e., the Sensor s1's location is Platform p1.  More precise locations for sensors in space (relative to other entities, where attached to another entity, or in 3D space) are made using DOLCE's Regions (SpaceRegion)."""@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#PlatformSite> ;
+    rdfs:subPropertyOf dul:hasLocation ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:isHostedBy ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -125,6 +136,7 @@ oldssn:Process a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:hasOutput ; owl:someValuesFrom oldssn:Output ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:hasInput ; owl:allValuesFrom oldssn:Input ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:hasOutput ; owl:allValuesFrom oldssn:Output ] ;
+  rdfs:subClassOf dul:Method ;
   owl:deprecated true ;
   owl:equivalentClass sosa:Procedure ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -182,6 +194,7 @@ oldssn:implements a owl:ObjectProperty ;
   skos:definition "Relation between an entity that implements a method in some executable way and the description of an algorithm, procedure or method.  For example, between a Sensor and the scientific measuring method that the Sensor uses to observe a Property."@en ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
   owl:inverseOf oldssn:implementedBy ;
+  rdfs:subPropertyOf dul:isDescribedBy ;
   owl:deprecated true ;
   owl:equivalentProperty ssn:implements ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -191,6 +204,7 @@ oldssn:implementedBy a owl:ObjectProperty ;
   skos:definition "Relation between the description of an algorithm, procedure or method and an entity that implements that method in some executable way.  For example, between a scientific measuring method and a sensor that senses via that method."@en ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
   owl:inverseOf oldssn:implements ;
+  rdfs:subPropertyOf dul:describes ;
   owl:deprecated true ;
   owl:equivalentProperty ssn:implementedBy ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -206,6 +220,7 @@ oldssn:Sensor a owl:Class ;
 
 O&M allows sensors, methods, instruments, systems, algorithms and process chains as the processUsed of an observation; this ontology allows a similar range of things (any thing that can do sensing), just they are all grouped under the term sensor (which is thus wider than the O&M concept).""" ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+  rdfs:subClassOf dul:Object ;
   owl:deprecated true ;
   owl:equivalentClass sosa:Sensor ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -216,7 +231,6 @@ O&M allows sensors, methods, instruments, systems, algorithms and process chains
 
   Note that, given the DUL modelling of Qualities, a sensor defined with 'observes only Windspeed' technically links the sensor to particular instances of Windspeed, not to the concept itself - OWL can't express concept-concept relations, only individual-individual.  The property composition ensures that if an observation is made of a particular quality then one can infer that the sensor observes that quality."""@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#Measuring> ;
-    owl:propertyChainAxiom ( oldssn:hasMeasurementCapability oldssn:forProperty ) ;
     owl:propertyChainAxiom ( oldssn:madeObservation oldssn:observedProperty ) ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:observes ;
@@ -230,6 +244,7 @@ oldssn:sensingMethodUsed a owl:ObjectProperty ;
   skos:definition "A (measurement) procedure is a detailed description of a measurement according to one or more measurement principles and to a given measurement method, based on a measurement model and including any calculation to obtain a measurement result [VIM 2.6]"@en ;
   dcterms:source <http://www.bipm.org/en/committees/jc/jcgm/wg2.html> ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+  rdfs:subPropertyOf dul:satisfies ;
   owl:deprecated true ;
   owl:equivalentProperty sosa:usedProcedure ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -256,6 +271,7 @@ Observation here records a Situation (the estimation of the value of a Property)
 skos:closeMatch 'measurement result' [VIM 2.9] http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf
 
 Measurement result in VIM is the measured value plus any other relevant information, which means that measurement result and observation will often be associated to the same data (a value, a time, a property, etc.).""" ;
+  skos:changeNote "The oldssn:Observation was a sub-class of dul:Situation. This raised several problems reported in literature. Furthermore, the O&M Observation class is defined as some kind of Event. Therefore, it has been decided that the  new sosa:Observation would be better aligned to dul:Event instead of dul:Situation. The Observation class in this ontology therefore does not contain any alignment to DUL, so as to help transitioning without harm."@en ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:featureOfInterest ; owl:allValuesFrom oldssn:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:observationResult ; owl:allValuesFrom oldssn:SensorOutput ] ;
@@ -268,7 +284,6 @@ Measurement result in VIM is the measured value plus any other relevant informat
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:featureOfInterest ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass oldssn:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:observedBy ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass oldssn:Sensor ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:observedProperty ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass oldssn:Property ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:sensingMethodUsed ; owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass oldssn:Sensing ] ;
   owl:deprecated true ;
   owl:equivalentClass sosa:Observation ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -278,6 +293,7 @@ Measurement result in VIM is the measured value plus any other relevant informat
     skos:definition "Relation between a Sensor and Observations it has made."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation> ;
     owl:inverseOf oldssn:observedBy ;
+    rdfs:subPropertyOf dul:associatedWith ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:madeObservation ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -286,6 +302,7 @@ Measurement result in VIM is the measured value plus any other relevant informat
     rdfs:label "observed by"@en ;
     skos:definition "Relation between an Observation and the Sensor that observed it. Inverse of madeObservation."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+    rdfs:subPropertyOf dul:associatedWith ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:madeBySensor ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -296,18 +313,20 @@ Measurement result in VIM is the measured value plus any other relevant informat
     dcterms:source """skos:exactMatch 'observedProperty' [O&M - ISO/DIS 19156] 
       http://portal.opengeospatial.org/files/?artifact_id=41579""" ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+    rdfs:subPropertyOf dul:associatedWith ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:observedProperty ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
 
-# Stimulus
+## Stimulus
 
 oldssn:Stimulus a owl:Class ;
   rdfs:label "Stimulus"@en ;
   skos:definition "An Event in the real world that 'triggers' the sensor.  The properties associated to the stimulus may be different to the eventual observed property.  It is the event, not the object, that triggers the sensor."@en ;
   dcterms:source <http://www.w3.org/2005/Incubator/ssn/> ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+  rdfs:subClassOf dul:Event ;
   owl:deprecated true ;
   owl:equivalentClass ssn:Stimulus ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -317,6 +336,7 @@ oldssn:SensorInput a owl:Class ;
   skos:definition "An Event in the real world that 'triggers' the sensor.  The properties associated to the stimulus may be different to eventual observed property.  The event, not the object, triggers the sensor."@en ;
   dcterms:source <http://www.w3.org/2005/Incubator/ssn/> ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+  rdfs:subClassOf dul:Event ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:isProxyFor ; owl:allValuesFrom oldssn:Property ] ;
   owl:equivalentClass oldssn:Stimulus ;
   owl:deprecated true ;
@@ -328,7 +348,7 @@ oldssn:SensorInput a owl:Class ;
   The Stimulus itself will be serving as a proxy for (see isProxyOf) some observable property."""@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
     owl:deprecated true ;
-    # TODO ALIGNMENT ?
+    owl:equivalentProperty ssn:detects ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
   oldssn:isProxyFor a owl:ObjectProperty ;
@@ -336,7 +356,7 @@ oldssn:SensorInput a owl:Class ;
     skos:definition "A relation from a Stimulus to the Property that the Stimulus is serving as a proxy for.  For example, the expansion of quicksilver is a stimulus that serves as a proxy for temperature. An increase or decrease in the velocity of spinning cups on a wind sensor is serving as a proxy for wind speed."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
     owl:deprecated true ;
-    # TODO ALIGNMENT ?
+    owl:equivalentProperty ssn:isProxyFor ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
 
@@ -356,6 +376,8 @@ oldssn:ObservationValue a owl:Class ;
   
   O&M conflates what we have as SensorOutput and ObservationValue into observation result, though the OGC standard does say \"result contains a value\" and \"a result which has a value\", which fits naturally with the model here.""" ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#Data> ;
+  rdfs:subClassOf dul:Region ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dul:isRegionFor ; owl:someValuesFrom oldssn:SensorOutput ] ;
   owl:deprecated true ;
   rdfs:subClassOf sosa:Result ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -372,6 +394,7 @@ oldssn:SensorOutput a owl:Class ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:hasValue ; owl:someValuesFrom oldssn:ObservationValue ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:isProducedBy ; owl:someValuesFrom oldssn:Sensor ] ;
+  rdfs:subClassOf dul:Object ;
   owl:deprecated true ;
   rdfs:subClassOf sosa:Result ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -380,6 +403,7 @@ oldssn:SensorOutput a owl:Class ;
     rdfs:label "has value"@en ;
     skos:definition "Relation between a Sensor Output and it's Observation Value."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#Data> ;
+    rdfs:subPropertyOf dul:hasRegion ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:hasResult ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -398,6 +422,7 @@ oldssn:SensorOutput a owl:Class ;
     dcterms:source """skos:closeMatch 'result' [O&M - ISO/DIS 19156] 
                           http://portal.opengeospatial.org/files/?artifact_id=41579""" ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Skeleton#Skeleton> ;
+    rdfs:subPropertyOf dul:isSettingFor ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:hasResult ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -408,8 +433,9 @@ oldssn:SensorOutput a owl:Class ;
     skos:definition "The result time shall describe the time when the result became available, typically when the procedure associated with the observation was completed For some observations this is identical to the phenomenonTime. However, there are important cases where they differ.[O&M]"@en ;
     dcterms:source <http://www.opengeospatial.org/standards/om> ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation> ;
+    rdfs:subPropertyOf dul:hasRegion ;
     owl:deprecated true ;
-    owl:equivalentProperty sosa:resultTime ;
+    rdfs:seeAlso sosa:resultTime ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
   oldssn:observationSamplingTime a owl:ObjectProperty ;
@@ -418,6 +444,7 @@ oldssn:SensorOutput a owl:Class ;
     skos:definition "The sampling time is the time that the result applies to the feature-of-interest. This is the time usually required for geospatial analysis of the result."@en ;
     dcterms:source <http://www.opengeospatial.org/standards/om> ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Observation#Observation> ;
+    rdfs:subPropertyOf dul:hasRegion ;
     owl:deprecated true ;
     owl:equivalentProperty sosa:phenomenonTime ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -439,6 +466,7 @@ oldssn:startTime a owl:ObjectProperty ;
   rdfs:label "start time"@en ;
   skos:definition "The start point of a time interval."@en ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#Time> ;
+  rdfs:subPropertyOf dul:hasRegion ;
   owl:deprecated true ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
@@ -446,17 +474,19 @@ oldssn:endTime a owl:ObjectProperty ;
   rdfs:label "end time"@en ;
   skos:definition "The end point of a time interval."@en ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#Time> ;
+  rdfs:subPropertyOf dul:hasRegion ;
   owl:deprecated true ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
 
-# System
+## System
 
 oldssn:System a owl:Class ;
   rdfs:label "System"@en ;
-  skos:definition """System is a unit of abstraction for pieces of infrastructure for sensing. A system has components, its subsystems, which are other systems."""@en ; # TODO: update with: "A system may have components" ? 
+  skos:definition """System is a unit of abstraction for pieces of infrastructure for sensing. A system has components, its subsystems, which are other systems."""@en ;
   dcterms:source "http://www.w3.org/2005/Incubator/ssn/" ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#System> ;
+  rdfs:subClassOf dul:PhysicalObject ;
   owl:deprecated true ;
   owl:equivalentClass ssn:System ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -465,6 +495,7 @@ oldssn:System a owl:Class ;
     rdfs:label "has subsystem"@en ;
     skos:definition """Relation between a system and its component parts (has-part)."""@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Model#System> ;
+    rdfs:subPropertyOf dul:hasPart ;
     owl:deprecated true ;
     owl:equivalentProperty ssn:hasSubSystem ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -474,6 +505,7 @@ oldssn:System a owl:Class ;
     skos:definition "A device is a physical piece of technology - a system in a box. Devices may of course be built of smaller devices and software components (i.e. systems have components)." ;
     dcterms:source "http://www.w3.org/2005/Incubator/ssn/" ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Device#Device> ;
+    rdfs:subClassOf dul:DesignedArtifact ;
     owl:deprecated true ;
     rdfs:subClassOf sosa:Platform ;
     rdfs:subClassOf ssn:System ;
@@ -490,7 +522,7 @@ oldssn:System a owl:Class ;
       rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
 
-# Deployment
+## Deployment
 
 oldssn:DeploymentRelatedProcess a owl:Class ;
   rdfs:label "Deployment-related Process"@en ;
@@ -498,16 +530,16 @@ oldssn:DeploymentRelatedProcess a owl:Class ;
   dcterms:source <http://www.w3.org/2005/Incubator/ssn/> ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty oldssn:deploymentProcessPart ; owl:allValuesFrom oldssn:DeploymentRelatedProcess ] ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+  rdfs:subClassOf dul:Process ;
   owl:deprecated true ;
-  owl:equivalentClass ssn:DeploymentRelatedProcedure ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
   oldssn:deploymentProcessPart a owl:ObjectProperty ;
     rdfs:label "deployment process part"@en ;
     skos:definition "Relation between a deployment process and its constituent processes (has-part)."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+    rdfs:subPropertyOf dul:hasPart ;
     owl:deprecated true ;
-    owl:equivalentProperty ssn:deploymentProcedurePart ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
 
 oldssn:Deployment a owl:Class ;
@@ -528,6 +560,7 @@ oldssn:Deployment a owl:Class ;
     skos:definition "Relation between a deployment and the platform on which the system is deployed."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
     owl:inverseOf oldssn:inDeployment ;
+    rdfs:subPropertyOf dul:hasParticipant ;
     owl:deprecated true ;
     owl:equivalentProperty ssn:deployedOnPlatform ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -537,6 +570,7 @@ oldssn:Deployment a owl:Class ;
     rdfs:label "deployed system"@en ;
     skos:definition "Relation between a deployment and the deployed system."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+    rdfs:subPropertyOf dul:hasParticipant ;
     owl:deprecated true ;
     owl:equivalentProperty ssn:deployedSystem ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -545,6 +579,7 @@ oldssn:Deployment a owl:Class ;
     rdfs:label "has deployment"@en ;
     skos:definition "Relation between a System and a Deployment, recording that the System or Sensor was deployed in that Deployment."@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+    rdfs:subPropertyOf dul:isParticipantIn ;
     owl:deprecated true ;
     owl:equivalentProperty ssn:hasDeployment ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -553,6 +588,7 @@ oldssn:Deployment a owl:Class ;
     rdfs:label "in deployment"@en ;
     skos:definition "Relation between a Platform and a Deployment, meaning that the subject was used as a platform for a system or sensor in the particular deployment. For example, between a buoy and a deployment identifier. "@en ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#Deployment> ;
+    rdfs:subPropertyOf dul:isParticipantIn ;
     owl:deprecated true ;
     owl:equivalentProperty ssn:inDeployment ;
     rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .
@@ -572,7 +608,6 @@ oldssn:ofFeature rdf:type owl:ObjectProperty ;
   rdfs:label "of feature"@en ;
   skos:definition "A relation between some aspect of a sensing entity and a feature.  For example, from a sensor to the features it can observe properties of, or from a deployment to the features it was installed to observe.  Also from a measurement capability to the feature the capability is described for.  (Used in conjunction with forProperty)."@en ;
   owl:deprecated true ;
-  owl:equivalentProperty ssn:ofFeature ;
   rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
 oldssn:inCondition a owl:ObjectProperty ;
@@ -588,8 +623,8 @@ oldssn:inCondition a owl:ObjectProperty ;
     skos:definition "Used to specify ranges for qualities that act as conditions on a system/sensor's operation.  For example, wind speed of 10-60m/s is expressed as a condition linking a quality, wind speed, a unit of measurement, metres per second, and a set of values, 10-60, and may be used as the condition on a MeasurementProperty, for example, to state that a sensor has a particular accuracy in that condition."@en ;
     rdfs:subClassOf oldssn:Property ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Base#ConstraintBlock> ;
-    owl:equivalentClass ssn:Condition ;
     owl:deprecated true ;
+    owl:equivalentClass ssn:Condition ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
 
@@ -802,7 +837,7 @@ oldssn:hasOperatingRange a owl:ObjectProperty ;
     rdfs:subClassOf oldssn:Property ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction> ;
     owl:deprecated true ;
-    rdfs:subClassOf ssn:OperatingProperty ;
+    owl:equivalentClass ssn:OperatingProperty ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:MaintenanceSchedule a owl:Class ;
@@ -811,7 +846,7 @@ oldssn:hasOperatingRange a owl:ObjectProperty ;
       rdfs:subClassOf oldssn:OperatingProperty ;
       rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction> ;
       owl:deprecated true ;
-      rdfs:subClassOf ssn:MaintenanceSchedule ;
+      owl:equivalentClass ssn:MaintenanceSchedule ;
       rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:OperatingPowerRange a owl:Class ;
@@ -845,7 +880,7 @@ oldssn:hasSurvivalRange a owl:ObjectProperty ;
     http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2008.pdf""" ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction> ;
     owl:deprecated true ;
-    rdfs:subClassOf ssn:SurvivalRange ;
+    owl:equivalentClass ssn:SurvivalRange ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
   oldssn:hasSurvivalProperty a owl:ObjectProperty ;
@@ -863,7 +898,7 @@ oldssn:hasSurvivalRange a owl:ObjectProperty ;
     rdfs:subClassOf oldssn:Property ;
     rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Deploy#OperatingRestriction> ;
     owl:deprecated true ;
-    rdfs:subClassOf ssn:SurvivalProperty ;
+    owl:equivalentClass ssn:SurvivalProperty ;
     rdfs:isDefinedBy <http://purl.oclc.org/NET/ssnx/ssn> .
 
     oldssn:SystemLifetime a owl:Class ;
@@ -894,5 +929,6 @@ oldssn:SensorDataSheet a owl:Class ;
 Generally a sensor's properties are recorded directly (with hasMeasurementCapability, for example), but the data sheet can be used for example to record the manufacturer's specifications versus observed capabilites, or if more is known than the manufacturer specifies, etc.  The data sheet is an information object about the sensor's properties, rather than a direct link to the actual properties themselves."""@en ;
   dcterms:source <http://www.w3.org/2005/Incubator/ssn/> ;
   rdfs:seeAlso <http://www.w3.org/2005/Incubator/ssn/wiki/SSN_Sensor#Measuring> ;
+  rdfs:subClassOf dul:InformationObject ;
   owl:deprecated true ;
   rdfs:isDefinedBy  <http://purl.oclc.org/NET/ssnx/ssn> .

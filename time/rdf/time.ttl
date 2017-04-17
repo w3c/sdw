@@ -66,11 +66,9 @@ Ontology engineering by Simon J D Cox"""@en ;
 .
 :DateTimeInterval
   rdf:type owl:Class ;
-  rdf:type owl:DeprecatedClass ;
   rdfs:comment "DateTimeInterval is a subclass of ProperInterval, defined using the multi-element DateTimeDescription."@en ;
   rdfs:label "Date-time interval"@en ;
   rdfs:subClassOf :ProperInterval ;
-  owl:deprecated "true"^^xsd:boolean ;
   skos:definition "DateTimeInterval is a subclass of ProperInterval, defined using the multi-element DateTimeDescription."@en ;
 .
 :DayOfWeek
@@ -96,7 +94,7 @@ In the original OWL-Time the following constraint appeared:
 :Duration
   rdf:type owl:Class ;
   rdfs:comment "Duration of a temporal extent expressed as a number scaled by a temporal unit"@en ;
-  rdfs:label "Temporal duration"@en ;
+  rdfs:label "Time duration"@en ;
   rdfs:subClassOf :TemporalDuration ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
@@ -383,21 +381,6 @@ In the original OWL-Time the following constraint appeared:
       owl:onProperty :unitType ;
     ] ;
   skos:definition "The month of the year"@en ;
-.
-:Number
-  rdf:type rdfs:Datatype ;
-  rdfs:comment "Generalized number"@en ;
-  rdfs:label "Number"@en ;
-  owl:equivalentClass [
-      rdf:type rdfs:Datatype ;
-      owl:unionOf (
-          xsd:double
-          xsd:float
-          xsd:decimal
-        ) ;
-    ] ;
-  skos:definition "Generalized number"@en ;
-  skos:note "Note: integer is a specialization of decimal"@en ;
 .
 :ProperInterval
   rdf:type owl:Class ;
@@ -733,24 +716,24 @@ The range of this property is not specified, so can be replaced by any specific 
 .
 :hasBeginning
   rdf:type owl:ObjectProperty ;
-  rdfs:comment "Beginning of a temporal entity, event or activity, or thing."@en ;
+  rdfs:comment "Beginning of a temporal entity"@en ;
+  rdfs:domain :TemporalEntity ;
   rdfs:label "has beginning"@en ;
   rdfs:range :Instant ;
-  skos:definition "Beginning of a temporal entity, event or activity, or thing."@en ;
+  rdfs:subPropertyOf :hasTime ;
+  skos:definition "Beginning of a temporal entity."@en ;
 .
 :hasDateTimeDescription
-  rdf:type owl:DeprecatedProperty ;
   rdf:type owl:ObjectProperty ;
-  rdfs:comment "Value of DateTimeInterval expressed as a structured value."@en ;
+  rdfs:comment "Value of DateTimeInterval expressed as a structured value. The beginning and end of the interval coincide with the limits of the shortest element in the description."@en ;
   rdfs:domain :DateTimeInterval ;
   rdfs:label "has Date-Time description"@en ;
   rdfs:range :GeneralDateTimeDescription ;
-  owl:deprecated "true"^^xsd:boolean ;
-  skos:definition "Value of DateTimeInterval expressed as a structured value."@en ;
+  skos:definition "Value of DateTimeInterval expressed as a structured value. The beginning and end of the interval coincide with the limits of the shortest element in the description."@en ;
 .
 :hasDuration
   rdf:type owl:ObjectProperty ;
-  rdfs:comment "Duration of a temporal entity, event or activity, or thing, expressed as a scaled value"@en ;
+  rdfs:comment "Duration of a temporal entity, expressed as a scaled value or nominal value"@en ;
   rdfs:label "has duration"@en ;
   rdfs:range :Duration ;
   rdfs:subPropertyOf :hasTemporalDuration ;
@@ -758,18 +741,20 @@ The range of this property is not specified, so can be replaced by any specific 
 .
 :hasDurationDescription
   rdf:type owl:ObjectProperty ;
-  rdfs:comment "Duration of a temporal entity, event or activity, or thing, expressed using a structured description"@en ;
+  rdfs:comment "Duration of a temporal entity, expressed using a structured description"@en ;
   rdfs:label "has duration description"@en ;
   rdfs:range :GeneralDurationDescription ;
   rdfs:subPropertyOf :hasTemporalDuration ;
-  skos:definition "Duration of a temporal entity, event or activity, or thing, expressed using a structured description"@en ;
+  skos:definition "Duration of a temporal entity, expressed using a structured description"@en ;
 .
 :hasEnd
   rdf:type owl:ObjectProperty ;
-  rdfs:comment "End of a temporal entity, event or activity, or thing."@en ;
+  rdfs:comment "End of a temporal entity."@en ;
+  rdfs:domain :TemporalEntity ;
   rdfs:label "has end"@en ;
   rdfs:range :Instant ;
-  skos:definition "End of a temporal entity, event or activity, or thing."@en ;
+  rdfs:subPropertyOf :hasTime ;
+  skos:definition "End of a temporal entity."@en ;
 .
 :hasTRS
   rdf:type owl:FunctionalProperty ;
@@ -788,17 +773,18 @@ The range of this property is not specified, so can be replaced by any specific 
 .
 :hasTemporalDuration
   rdf:type owl:ObjectProperty ;
-  rdfs:comment "Duration of a temporal entity, event or activity, or thing."@en ;
+  rdfs:comment "Duration of a temporal entity."@en ;
+  rdfs:domain :TemporalEntity ;
   rdfs:label "has temporal duration"@en ;
   rdfs:range :TemporalDuration ;
-  skos:definition "Duration of a temporal entity, event or activity, or thing."@en ;
+  skos:definition "Duration of a temporal entity."@en ;
 .
 :hasTime
   rdf:type owl:ObjectProperty ;
-  rdfs:comment "Supports the association of a temporal entity (instant or interval) to a temporal entity, event or activity, or thing"@en ;
+  rdfs:comment "Supports the association of a temporal entity (instant or interval) to any thing"@en ;
   rdfs:label "has time"@en ;
   rdfs:range :TemporalEntity ;
-  skos:definition "Supports the association of a temporal entity (instant or interval) to a temporal entity, event or activity, or thing"@en ;
+  skos:definition "Supports the association of a temporal entity (instant or interval) to any thing"@en ;
 .
 :hour
   rdf:type owl:DatatypeProperty ;
@@ -835,7 +821,7 @@ The range of this property is not specified, so can be replaced by any specific 
 .
 :inTimePosition
   rdf:type owl:ObjectProperty ;
-  rdfs:comment "Position of a time instant expressed as a TimePosition"@en ;
+  rdfs:comment "Position of an instant, expressed as a temporal coordinate or nominal value"@en ;
   rdfs:domain :Instant ;
   rdfs:label "Time position"@en ;
   rdfs:range :TimePosition ;
@@ -1088,18 +1074,18 @@ The range of this property is not specified, so can be replaced by any specific 
 .
 :numericDuration
   rdf:type owl:DatatypeProperty ;
-  rdfs:comment "Value of a temporal extent expressed as a number scaled by a temporal unit"@en ;
+  rdfs:comment "Value of a temporal extent expressed as a decimal number scaled by a temporal unit"@en ;
   rdfs:domain :Duration ;
   rdfs:label "Numeric value of temporal duration"@en ;
-  rdfs:range :Number ;
-  skos:definition "Value of a temporal extent expressed as a number scaled by a temporal unit"@en ;
+  rdfs:range xsd:decimal ;
+  skos:definition "Value of a temporal extent expressed as a decimal number scaled by a temporal unit"@en ;
 .
 :numericPosition
   rdf:type owl:DatatypeProperty ;
   rdfs:comment "The (numeric) value indicating position within a temporal coordinate system "@en ;
   rdfs:domain :TimePosition ;
   rdfs:label "Numeric value of temporal position"@en ;
-  rdfs:range :Number ;
+  rdfs:range xsd:decimal ;
   skos:definition "The (numeric) value indicating position within a temporal coordinate system "@en ;
 .
 :second
