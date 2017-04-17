@@ -3056,7 +3056,8 @@ ex:meetingStartDescription
 <p>It is much more concise to use the XML Schema datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. 
 However, using <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> more information can be included directly in a message, such as the "week", "day of week" and "day of year". 
 In the example we can also see that 12/04/2017 is a Wednesday, the month is April, it is the 102<sup>nd</sup> day of the year, and in the 15<sup>th</sup> week of the year. 
-Since each field of <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> is separate no computation is required to get the values of these fields for use in reasoning.</p>
+Since each field of <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> is separate no computation is required to get the values of these fields for use in reasoning.
+However, since some calendars, such as religious observationally-based ones, cannot be algorithmically calculated explicit assertion of values for elements of the calendar is required.</p>
 <p>The <code><a href="#time:timeZone">:timeZone</a></code> property points to a definition of Australian Eastern Standard Time. </p>
 </section>
 
@@ -3344,8 +3345,43 @@ the meeting is specified using the <code><a href="#time:DurationDescription">:Du
 <section id="time-prov">
 <h3>Alignment of PROV-O with OWL-Time</h3>
 
-<p>TBC .................. </p>
-</section>
+       <p><a href="https://www.w3.org/TR/prov-dm/">PROV</a> is based around a process-flow model. One of the base classes <a href="https://www.w3.org/TR/prov-o/#Activity">Activity</a> is the class of things that occur over a period of time and act upon or with entities. Thus, an alignment with OWL-Time is natural. </p>
+      <p>The PROV-O classes <code><a href="https://www.w3.org/TR/prov-o/#Activity">prov:Activity</a></code> and <code><a href="https://www.w3.org/TR/prov-o/#InstantaneousEvent">prov:InstantaneousEvent</a></code> may be conceived as sub-classes of <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> and <code><a href="#time:Instant">:Instant</a></code> repectively.</p>
+  
+      <pre>prov:Activity
+  rdfs:subClassOf time:TemporalEntity ;
+.
+prov:InstantaneousEvent
+  rdfs:subClassOf time:Instant ;
+.</pre>
+
+<p>The <code>prov:atTime</code> property is directly related to <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code>.</p>
+
+<pre>prov:atTime
+  rdfs:subPropertyOf time:inXSDDateTimeStamp ;
+.</pre>
+
+
+<p>However, the Activity start and end properties require a property chain axiom, because the beginning and end of a <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> are <code><a href="#time:Instant">:Instants</a></code> rather than compact <code>xsd:dateTimeStamps</code>.</p>
+
+
+<pre>prov:endedAtTime
+  owl:propertyChainAxiom (
+      time:hasEnd
+      time:inXSDDateTimeStamp
+    ) ;
+.
+prov:startedAtTime
+  owl:propertyChainAxiom (
+      time:hasBeginning
+      time:inXSDDateTimeStamp
+    ) ;
+.
+</pre>
+
+      </section>
+    </section>
+
 
 </section>
 
