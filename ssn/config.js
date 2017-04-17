@@ -130,14 +130,24 @@ var respecConfig = {
         title: "An explicit OWL representation of ISO/OGC Observations and Measurements ",
         publisher: "CEUR: 6th International Conference on Semantic Sensor Networks",
         date: "2013",
-        authors: ["Simon Cox"]
+        authors: ["S.J.D. Cox"]
       },
       "OM-Lite": {
         href: "http://content.iospress.com/articles/semantic-web/sw214",
+        doi: "10.3233/SW-160214",
         title: "Ontology for observations and sampling features, with alignments to existing models",
-        publisher: "IOS Press/Semantic Web",
-        date: "6 December 2016",
-        authors: ["Simon Cox"]
+        publisher: "Semantic Web",
+        date: "2017",
+        volume: "8",
+        page: "453-470",
+        authors: ["S.J.D. Cox"]
+      },
+      "OMXML": {
+        href: "http://portal.opengeospatial.org/files/?artifact_id=41510",
+        title: "Observations and Measurements - XML Implementation",
+        publisher: "Open Geospatial Consortium",
+        date: "2010",
+        authors: ["S.J.D. Cox"]
       },
        "ISO-19150-2":{
        href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=57466",
@@ -167,6 +177,7 @@ var respecConfig = {
       },
       "SSN-PROV" :{
        href:"http://ceur-ws.org/Vol-1401/paper-05.pdf",
+       title: "Sensor Data Provenance: SSNO and PROV-O Together at Last",
        date: "2014",
        authors:["Michael Compton", "David Corsar", "Kerry Taylor"],
        publisher: "CEUR: 7th International Conference on Semantic Sensor Networks"
