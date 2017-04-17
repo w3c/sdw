@@ -126,6 +126,10 @@ The substantial changes are listed in the <a href="#changes">change-log</a>.</p>
 <td><code>http://www.w3.org/2002/07/owl#</code></td>
 </tr>
 <tr>
+<td><code>prov</code></td>
+<td><code>http://www.w3.org/ns/prov#</code></td>
+</tr>
+<tr>
 <td><code>rdf</code></td>
 <td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code></td>
 </tr>
@@ -170,7 +174,7 @@ Instants are, intuitively, point-like in that they have no interior points, but 
 corresponds with the common understanding of intervals, in that the beginning and end are distinct, and whose
 membership is therefore disjoint from <code><a href="#time:Instant">:Instant</a></code>. </p>
 
-<figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes" src="./images/TemporalEntity.png" width="600px">
+<figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes" src="./images/TemporalEntity.png" width="600">
 <figcaption>Core model of temporal entities.</figcaption> </figure>
 
 <p>The class <code><a href="#time:ProperInterval">:ProperInterval</a></code> also has one subclass, <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code>.  
@@ -236,7 +240,7 @@ These provide for a compact representation of time positions using the conventio
 <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> has a set of properties to specify a date-time using calendar and clock elements. 
 Its subclass <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> fixes the temporal reference system to the Gregorian calendar.  </p>
 
-<figure> <img title="Temporal Position" alt="UML-style diagram of classes for temporal position" src="./images/TemporalPosition.png" width="600px">
+<figure> <img title="Temporal Position" alt="UML-style diagram of classes for temporal position" src="./images/TemporalPosition.png" width="600">
 <figcaption>Classes for temporal position.</figcaption> </figure>
 
 <p>Following Allen's first key idea described above, even a time position has a finite extent, corresponding to the precision or <em>temporal unit </em>used. Thus, a <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code>
@@ -257,7 +261,7 @@ given using multiple duration descriptions or individual durations (e.g., 2 days
 Its subclass <code><a href="#time:DurationDescription">:DurationDescription</a></code> fixes the temporal reference system to the Gregorian calendar, so the <code><a href="#time:hasTRS">:hasTRS</a></code> property may be omitted on individuals from this class. </p>
 <p><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a standard duration which is used to scale a length of time, and to capture its granularity or precision. </p>
 
-<figure> <img title="Temporal Duration" alt="UML representation of Temporal Duration and sub-classes" src="./images/TemporalDuration.png" width="600px"> 
+<figure> <img title="Temporal Duration" alt="UML representation of Temporal Duration and sub-classes" src="./images/TemporalDuration.png" width="600"> 
 <figcaption>Classes for temporal duration.</figcaption> </figure>
 
 <p>We use two different sets of properties for <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>,
@@ -3056,7 +3060,8 @@ ex:meetingStartDescription
 <p>It is much more concise to use the XML Schema datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. 
 However, using <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> more information can be included directly in a message, such as the "week", "day of week" and "day of year". 
 In the example we can also see that 12/04/2017 is a Wednesday, the month is April, it is the 102<sup>nd</sup> day of the year, and in the 15<sup>th</sup> week of the year. 
-Since each field of <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> is separate no computation is required to get the values of these fields for use in reasoning.</p>
+Since each field of <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> is separate no computation is required to get the values of these fields for use in reasoning.
+However, since some calendars, such as religious observationally-based ones, cannot be algorithmically calculated explicit assertion of values for elements of the calendar is required.</p>
 <p>The <code><a href="#time:timeZone">:timeZone</a></code> property points to a definition of Australian Eastern Standard Time. </p>
 </section>
 
@@ -3303,8 +3308,8 @@ described using the predicates defined in this ontology.</figcaption> </figure>
 <p>Note that the position of this <code><a href="#time:Instant">:Instant</a></code> is specified using a <code><a href="#time:TimePosition">:TimePosition</a></code>, which
 is a numeric value relative to the temporal coordinate system indicated as the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property.
 </p>
-<p>The RDF representation of this example is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/geologicTimeScale.ttl">here</a>.
-</p>
+<p>The RDF representation of this example is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/geologicTimeScale.ttl">here</a>. 
+The complete <a href="https://github.com/dr-shorthair/GeologicTimeScale/blob/master/ISC/isc2016-12-time.ttl">(2016) International Chronostratigraphic Chart</a> encoded using OWL-Time is available. </p>
 </section>
 
 <section id="scheduling">
@@ -3344,10 +3349,34 @@ the meeting is specified using the <code><a href="#time:DurationDescription">:Du
 <section id="time-prov">
 <h3>Alignment of PROV-O with OWL-Time</h3>
 
-<p>TBC .................. </p>
-</section>
+       <p><a href="https://www.w3.org/TR/prov-dm/">PROV</a> is a process-flow model. The base class <a href="https://www.w3.org/TR/prov-o/#Activity">Activity</a> denotes things that occur over a period of time, and act upon or with entities. Activities are ordered within a provenance trace. Thus, an alignment with OWL-Time is natural. </p>
+      <p>The PROV-O classes <code><a href="https://www.w3.org/TR/prov-o/#Activity">prov:Activity</a></code> and <code><a href="https://www.w3.org/TR/prov-o/#InstantaneousEvent">prov:InstantaneousEvent</a></code> may be conceived as sub-classes of <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> and <code><a href="#time:Instant">:Instant</a></code> respectively.</p>
+  
+      <pre>prov:Activity           rdfs:subClassOf    time:TemporalEntity .
+prov:InstantaneousEvent rdfs:subClassOf    time:Instant .</pre>
 
-</section>
+<p>The <code><a href="https://www.w3.org/TR/prov-o/#atTime">prov:atTime</a></code> property of an <code><a href="https://www.w3.org/TR/prov-o/#InstantaneousEvent">prov:InstantaneousEvent</a></code> is directly related to <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code>.</p>
+
+<pre>prov:atTime             rdfs:subPropertyOf time:inXSDDateTimeStamp .</pre>
+
+
+<p>However, the Activity start and end properties require a property chain axiom, because the beginning and end of a <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> are <code><a href="#time:Instant">:Instants</a></code> rather than compact <code>xsd:dateTimeStamps</code>.</p>
+
+
+<pre>prov:endedAtTime   owl:propertyChainAxiom (
+      time:hasEnd
+      time:inXSDDateTimeStamp
+    ) ;
+.
+prov:startedAtTime owl:propertyChainAxiom (
+      time:hasBeginning
+      time:inXSDDateTimeStamp
+    ) ;
+.
+</pre>
+
+      </section>
+    </section>
 
 <hr>
 
@@ -3440,6 +3469,11 @@ the meeting is specified using the <code><a href="#time:DurationDescription">:Du
       <td><code><a href="#time:hasDurationDescription">:hasDurationDescription</a></code></td>
       <td><code><a href="#time:TemporalEntity">:TemporalEntity</a></code></td>
       <td><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
+    </tr>
+    <tr>
+      <td><code><a href="#time:hasXSDDuration">:hasXSDDuration</a></code></td>
+      <td><code><a href="#time:TemporalEntity">:TemporalEntity</a></code></td>
+      <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#duration">xsd:duration</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:before">:before</a></code></td>
@@ -3580,11 +3614,6 @@ the meeting is specified using the <code><a href="#time:DurationDescription">:Du
       <td><code><a href="#time:inXSDgYear">:inXSDgYear</a></code></td>
       <td><code><a href="#time:Instant">:Instant</a></code></td>
       <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code></td>
-    </tr>
-    <tr>
-      <td><code><a href="#time:hasXSDDuration">:hasXSDDuration</a></code></td>
-      <td><code><a href="#time:TemporalDuration">:TemporalDuration</a></code></td>
-      <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#duration">xsd:duration</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:numericDuration">:numericDuration</a></code></td>
