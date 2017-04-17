@@ -173,11 +173,9 @@ membership is therefore disjoint from <code><a href="#time:Instant">:Instant</a>
 <figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes" src="./images/TemporalEntity.png">
 <figcaption>Core model of temporal entities.</figcaption> </figure>
 
-<!--
-<p>The class <code><a href="#time:ProperInterval">:ProperInterval</a></code> also has one
-subclass, <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code>, whose position and extent may be expressed using a single 
-<code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. </p>
--->
+<p>The class <code><a href="#time:ProperInterval">:ProperInterval</a></code> also has one subclass, <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code>.  
+The position and extent of a <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is an element in a 
+<code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code>. </p>
 
 <p>Relations between intervals are the critical logic provided by Allen's analysis, and implemented in the ontology. 
 These can be defined in a relatively straightforward fashion in terms of <code><a href="#time:before">:before</a></code> and identity on the beginning and end points. 
@@ -191,7 +189,7 @@ src="./images/IntervalRelations.png">
 
 <p>Two additional relations: <code>In</code> (the union of <code>During</code>, <code>Starts</code> and <code>Finishes</code>) and <code>Disjoint</code> (the union of <code>Before</code> and <code>After</code>) are not shown in the figure but are included in the ontology. </p>
 
-<p>The properties <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code>, together with a fourth generic property <code><a href="#time:hasTime">:hasTime</a></code>, support the association of temporal information with any activity or event, or other entity, including but not limited to temporal entities. 
+<p>The properties <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code>, together with a fourth generic property <code><a href="#time:hasTime">:hasTime</a></code>, support the association of temporal information with any temporal entity, such as an activity or event, or other entity. 
 These provide a standard way to attach time information to things, which may be used directly in applications if suitable, or specialized if needed. </p>
 
 </section>
@@ -362,25 +360,13 @@ multi-element <code><a href="#time:DateTimeDescription">time:DateTimeDescription
 <td>Subclass of:</td>
 <td><code><a href="#time:ProperInterval">time:ProperInterval</a></code></td></td>
 </tr>
-<td>Instance of of:</td>
-<td><code>owl:DeprecatedClass</code></td></td>
-</tr>
 </tbody>
 </table>
-<p>The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is a subclass of <code><a href="#time:ProperInterval">:ProperInterval</a></code>, being an interval whose boundaries fall on the limits of a date-time description with truncated precision. 
-The property <code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code> describes the interval.
-	<!--
-Two properties <code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code> and <code><a href="#time:xsdDateTime">:xsdDateTime</a></code> provide alternative representations of the description of the interval.
--->
-</p>
-<p>Any <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> has a duration, but only <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> can have <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>.
+<p>The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is a subclass of <code><a href="#time:ProperInterval">:ProperInterval</a></code>. It enables compact representation of an interval corresponding to a single element in a date-time description (i.e. a specified year, month, week, day, hour, minute, second). 
+The property <code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code> describes the interval.</p>
 
-For example, May 8 can be expressed as a <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>, but the interval from 1:30pm, May 8, to 1:30pm,
-May 9, cannot. Both have a duration of a day.</p>
-For example, May 8 can be expressed as a <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code>, 
-but the interval from 1:30pm, May 8, to 1:30pm, May 9, cannot. Both have a duration of a day.</p>
-
-<p class="note">The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> was designed to support the compact description of a proper interval whose limits coincide with the elements of the calendar-clock system in use ('clock ticks"). However, there is some ambiguity in usage, particularly for an interval whose duration is smaller than the next finest time unit relative to a boundary definition. Furthermore, its position in the hierarchy is a consequence of implementation details, rather than a semantic distinction. Therefore use of this class is not recommended. </p>
+<p class="note"><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> can only be used for an interval whose limits coincide with a date-time element aligned to the calendar and timezone indicated.
+For example, while both have a duration of one day, the 24-hour interval beginning at midnight at the beginning of 8 May in Central Europe can be expressed as a <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code>, but the 24-hour interval starting at 1:30pm cannot. </p>
 </section>
 
 <section>
@@ -417,7 +403,7 @@ days used in the Gregorian calendar, and using the English names <code><a href="
 </tr>
 <tr>
 <td>Definition:</td>
-<td>Duration of a temporal extent expressed as a number scaled by a temporal unit</td>
+<td>Duration of a temporal extent expressed as a decimal number scaled by a temporal unit</td>
 </tr>
 <tr>
 <td>Subclass of:</td>
@@ -1218,6 +1204,10 @@ The range of this property is not specified, so can be replaced by any specific 
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+<td>Domain:</td>
+<td><code><a href="#time:Instant">time:TemporalEntity</a></code></td>
+</tr>
+<tr>
 <td>Range:</td>
 <td><code><a href="#time:Instant">time:Instant</a></code></td>
 </tr>
@@ -1235,15 +1225,12 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Definition:</td>
-<td>Value of <code><a href="#time:DateTimeInterval">time:DateTimeInterval</a></code> expressed as a structured value. The beginning and end of the interval coincide with the limits of the shortest element of the description.</td>
+<td>Position and extent of <code><a href="#time:DateTimeInterval">time:DateTimeInterval</a></code> expressed as a structured value. 
+	The beginning and end of the interval coincide with the limits of the shortest element in the description.</td>
 </tr>
 <tr>
 <td>Instance of:</td>
 <td><code>owl:ObjectProperty</code></td>
-</tr>
-<tr>
-<td>Instance of:</td>
-<td><code>owl:DeprecatedProperty</code></td>
 </tr>
 <tr>
 <td>Domain:</td>
@@ -1255,10 +1242,8 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
-
-<p class="note">The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is not recommended, so this property is deprecated. </p>
 </section>
-  
+
 <section>
 <h4 id="time:hasDuration">has duration</h4>
 <table class="definition" style="width: 812px;">
@@ -1332,6 +1317,10 @@ The range of this property is not specified, so can be replaced by any specific 
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+<td>Domain:</td>
+<td><code><a href="#time:Instant">time:TemporalEntity</a></code></td>
+</tr>
+<tr>
 <td>Range:</td>
 <td><code><a href="#time:Instant">time:Instant</a></code></td>
 </tr>
@@ -1356,6 +1345,10 @@ The range of this property is not specified, so can be replaced by any specific 
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+<td>Domain:</td>
+<td><code><a href="#time:Instant">time:TemporalEntity</a></code></td>
+</tr>
+<tr>
 <td>Range:</td>
 <td><code><a href="#time:TemporalDuration">time:TemporalDuration</a></code></td>
 </tr>
@@ -1375,7 +1368,7 @@ The range of this property is not specified, so can be replaced by any specific 
 <tbody>
 <tr>
 <td>Definition:</td>
-<td>Supports the association of a temporal entity (instant or interval) to a temporal entity, event or activity, or thing.</td>
+<td>Supports the association of a temporal entity (instant or interval) to any thing.</td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -2455,7 +2448,7 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#time:Number">time:Number</a></code></td>
+<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2483,7 +2476,7 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#time:Number">time:Number</a></code></td>
+<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
 </tr>
 </tbody>
 </table>
@@ -2699,7 +2692,7 @@ time:TRS</a> which is handled this way.) </p> -->
 </tr>
 </tbody>
 </table>
-<p class="note">The class <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> is not recommended, so this property is deprecated. </p>
+<p class="note">The use of this property is ambiguous, particularly for intervals whose duration is more than one rank smaller than the starting time (e.g. the first minute of a day, the first week of a year), so this property is deprecated. </p>
 </section>
 
 <section>
@@ -2765,7 +2758,6 @@ The range of this property is not specified, so can be replaced by any specific 
 <code><a href="#time:generalDay">:generalDay</a></code> |
 <code><a href="#time:generalMonth">:generalMonth</a></code> |
 <code><a href="#time:generalYear">:generalYear</a></code> |
-<code><a href="#time:Number">:Number</a></code>
 </p>
 
 <section>
@@ -2861,33 +2853,6 @@ processor cannot compute ordering relationships of values of this type. </td>
 </tr>
 </tbody>
 </table>
-</section>
-
-<section>
-<h4 id="time:Number">Number</h4>
-<table class="definition" style="width: 812px;">
-<tbody>
-<tr>
-<th style="width: 120px;">RDFS Class:</th>
-<th><code><a href="#time:Number">time:Number</a></code></th>
-</tr>
-<tr>
-<td>Definition:</td>
-<td>Generalized number</td>
-</tr>
-<tr>
-<td>Instance of:</td>
-<td><code>rdfs:Datatype</code></td>
-</tr>
-<tr>
-<td>Equivalent class:</td>
-<td><code><a href="https://www.w3.org/TR/xmlschema11-2/#double">xsd:double</a> or <a href="https://www.w3.org/TR/xmlschema11-2/#float">xsd:float</a> or <a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
-</tr>
-</tbody>
-</table>
-<p>The datatype <code><a href="#time:Number">:Number</a></code> provides for numbers expressed using any of the XSD types <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code> (of
-which <code>xsd:integer</code> is a sub-type), <code><a href="https://www.w3.org/TR/xmlschema11-2/#float">xsd:float</a></code>, or <code><a href="https://www.w3.org/TR/xmlschema11-2/#double">xsd:double</a></code> (which allows
-exponential or scientific notation). </p>
 </section>
 
 </section>
@@ -3079,7 +3044,7 @@ Calendar are split out into separate properties: </p>
   :minute     	"20"^^xsd:nonNegativeInteger ;
   :month      	"--05"^^xsd:gMonth ;
   :monthOfYear 	greg:May ;
-  :timeZone   	&lt;<a href="https://www.timeanddate.com/time/zones/awst">https://www.timeanddate.com/time/zones/awst</a>&gt; ;
+  :timeZone   	&lt;https://www.timeanddate.com/time/zones/awst&gt; ;
   :unitType   	:unitMinute ;
   :year       	"2001"^^xsd:gYear ;
 .</pre>
@@ -3088,7 +3053,7 @@ calendar: </p>
 <pre>ex:AbbyBirthdayHebrew
   a         	:GeneralDateTimeDescription ;
   :day      	"---01"^^:generalDay ;
-  :hasTRS   	&lt;<a href="http://dbpedia.org/resource/Hebrew_calendar">http://dbpedia.org/resource/Hebrew_calendar</a>&gt; ;
+  :hasTRS   	&lt;http://dbpedia.org/resource/Hebrew_calendar&gt; ;
   :month    	"--03"^^:generalMonth ;
   :monthOfYear 	ex:Sivan ;
   :year     	"5761"^^:generalYear ;
@@ -3098,7 +3063,7 @@ calendar: </p>
 the number of seconds since the beginning of 1st January 1970): </p>
 <pre>ex:AbbyBirthdayUnix
   a                 :TimePosition ;
-  :hasTRS           &lt;<a href="http://dbpedia.org/resource/Unix_time">http://dbpedia.org/resource/Unix_time</a>&gt; ;
+  :hasTRS           &lt;http://dbpedia.org/resource/Unix_time&gt; ;
   :numericPosition  990577200 ;
   rdfs:label        "Abby's birthdate in Unix time"^^xsd:string ;
 .</pre>
@@ -3122,7 +3087,7 @@ three alternatives: </p>
   :inTimePosition [
     a :TimePosition ;
     :hasTRS &lt;<a href="http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime">http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime</a>&gt; ;
-    :numericPosition "0.0"^^:Number ;
+    :numericPosition "0.0"^^xsd:decimal ;
   ] ;
   :inXSDDateTime "1950-01-01T00:00:00Z"^^xsd:dateTimeStamp ;
   rdfs:label "The present"^^xsd:string ;
@@ -3195,12 +3160,12 @@ This may be represented in multiple ways using OWL-Time, including the following
     :inTimePosition [
       rdf:type :TimePosition ;
       :hasTRS &lt;http://dbpedia.org/resource/Unix_time&gt; ;
-      :numericPosition "1202752800"^^:Number ;
+      :numericPosition "1202752800"^^xsd:decimal ;
     ] ;
   ] ;
   :hasDuration [
     rdf:type :Duration ;
-    :numericDuration "1"^^:Number ;
+    :numericDuration "1"^^xsd:decimal ;
     :unitType :unitDay ;
   ] ;
   :hasEnd [
@@ -3208,7 +3173,7 @@ This may be represented in multiple ways using OWL-Time, including the following
     :inTimePosition [
       rdf:type :TimePosition ;
       :hasTRS &lt;http://dbpedia.org/resource/Unix_time&gt; ;
-      :numericPosition "1202839200"^^:Number ;
+      :numericPosition "1202839200"^^xsd:decimal ;
     ] ;
   ] ;
 .</pre>
@@ -3245,7 +3210,7 @@ described using the predicates defined in this ontology.</figcaption> </figure>
   :inTimePosition [
     rdf:type          :TimePosition ;
     :hasTRS           &lt;http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime&gt; ;
-    :numericPosition  "4000"^^:Number ;
+    :numericPosition  "4000"^^xsd:decimal ;
   ] ;
   rdfs:label "Base of Archean Eon"^^xsd:string ;
 . </pre>
@@ -3495,7 +3460,7 @@ OrdinaryMail) can be defined similarly.</p>
         <ul>
           <li><code><a href="#time:ProperInterval">:ProperInterval</a></code>
             <ul>
-              <li><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> (<i>deprecated</i>)</li>
+              <li><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code></li>
             </ul>
           </li>
         </ul>
@@ -3543,33 +3508,33 @@ OrdinaryMail) can be defined similarly.</p>
       <th>Range</th>
     </tr>
     <tr>
-      <td><code><a href="#time:hasBeginning">:hasBeginning</a></code></td>
-      <td></td>
-      <td><code><a href="#time:Instant">:Instant</a></code></td>
-    </tr>
-    <tr>
-      <td><code><a href="#time:hasEnd">:hasEnd</a></code></td>
-      <td></td>
-      <td><code><a href="#time:Instant">:Instant</a></code></td>
-    </tr>
-    <tr>
       <td><code><a href="#time:hasTime">:hasTime</a></code></td>
       <td></td>
       <td><code><a href="#time:TemporalEntity">:TemporalEntity</a></code></td>
     </tr>
     <tr>
+      <td><code><a href="#time:hasBeginning">:hasBeginning</a></code></td>
+      <td><code><a href="#time:TemporalEntity">:TemporalEntity</a></code></td>
+      <td><code><a href="#time:Instant">:Instant</a></code></td>
+    </tr>
+    <tr>
+      <td><code><a href="#time:hasEnd">:hasEnd</a></code></td>
+      <td><code><a href="#time:TemporalEntity">:TemporalEntity</a></code></td>
+      <td><code><a href="#time:Instant">:Instant</a></code></td>
+    </tr>
+    <tr>
       <td><code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code></td>
-      <td></td>
+      <td><code><a href="#time:TemporalEntity">:TemporalEntity</a></code></td>
       <td><code><a href="#time:TemporalDuration">:TemporalDuration</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:hasDuration">:hasDuration</a></code></td>
-      <td></td>
+      <td><code><a href="#time:TemporalEntity">:TemporalEntity</a></code></td>
       <td><code><a href="#time:Duration">:Duration</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:hasDurationDescription">:hasDurationDescription</a></code></td>
-      <td></td>
+      <td><code><a href="#time:TemporalEntity">:TemporalEntity</a></code></td>
       <td><code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code></td>
     </tr>
     <tr>
@@ -3663,7 +3628,7 @@ OrdinaryMail) can be defined similarly.</p>
       <td><code><a href="#time:ProperInterval">:ProperInterval</a></code></td>
     </tr>
     <tr>
-      <td><code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code> (<i>deprecated</i>)</td>
+      <td><code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code></td>
       <td><code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code></td>
       <td><code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code></td>
     </tr>
@@ -3715,7 +3680,7 @@ OrdinaryMail) can be defined similarly.</p>
     <tr>
       <td><code><a href="#time:numericDuration">:numericDuration</a></code></td>
       <td><code><a href="#time:Duration">:Duration</a></code></td>
-      <td><code><a href="#time:Number">:Number</a></code></td>
+	  <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:years">:years</a></code></td>
@@ -3755,7 +3720,7 @@ OrdinaryMail) can be defined similarly.</p>
     <tr>
       <td><code><a href="#time:numericPosition">:numericPosition</a></code></td>
       <td><code><a href="#time:TimePosition">:TimePosition</a></code></td>
-      <td><code><a href="#time:Number">:Number</a></code></td>
+	  <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code></td>
     </tr>
     <tr>
       <td><code><a href="#time:nominalPosition">:nominalPosition</a></code></td>
@@ -3838,7 +3803,6 @@ OrdinaryMail) can be defined similarly.</p>
   <li><code><a href="#time:generalDay">:generalDay</a></code></li>
   <li><code><a href="#time:generalMonth">:generalMonth</a></code></li>
   <li><code><a href="#time:generalYear">:generalYear</a></code></li>
-  <li><code><a href="#time:Number">:Number</a></code></li>
 </ul>
 </section>
 
@@ -3859,9 +3823,8 @@ The principal technical changes are as follows: </p>
   <li><code><a href="#time:TemporalUnit">:TemporalUnit</a></code> is a subclass of <code><a href="#time:TemporalDuration">:TemporalDuration</a></code></li>
   <li><code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code> added, and <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code> deprecated</li>
   <li><code><a href="#time:intervalIn">:intervalIn</a></code> and <code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> relations added</li>
-  <li>Remove universal domain constraints on <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code>, <code><a href="#time:hasBeginning">:hasBeginning</a></code>, <code><a href="#time:hasEnd">:hasEnd</a></code> so that temporal instants and durations can be associated to any resource (e.g. an activity or event, or anything else) and not just other temporal entities; introduce additional predicate <code><a href="#time:hasTime">:hasTime</a></code> for the general case </li>
-  <li><code>:xsdDateTime</code> deprecated - not practically useful.</li>
-  <li><code>:DateTimeInterval</code> and its properties <code>:hasDateTimeDescription</code> and <code>:xsdDateTime</code> deprecated - difficult/ambiguous encoding, no semantic distinction from <code>ProperInterval</code>.</li>
+  <li>introduce predicate <code><a href="#time:hasTime">:hasTime</a></code> to enable a <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> to be associated with anything </li>
+  <li>deprecate the property <code>:xsdDateTime</code> deprecated as used on <code><a href="#time:DateTimeInterval">:DateTimeInterval</a></code> - difficult/ambiguous encoding</li>
   <li><code>:Year</code> deprecated</li>
   <li><code>:January</code> deprecated</li>
   <li><code><a href="#time:MonthOfYear">:MonthOfYear</a></code> class and <code><a href="#time:monthOfYear">:monthOfYear</a></code> property added. greg:January-greg:December instances added in a separate graph and namespace.</li>
