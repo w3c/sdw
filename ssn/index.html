@@ -154,7 +154,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
     border: 1px dotted black;
 }
 </style> </head>
-  <body prefix="rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns# rdfs: http://www.w3.org/2000/01/rdf-schema# owl: http://www.w3.org/2002/07/owl# xsd: http://www.w3.org/2001/XMLSchema# skos: http://www.w3.org/2004/02/skos/core# dcterms: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/>. vann: http://purl.org/vocab/vann/ voaf: http://purl.org/vocommons/voaf# time: http://www.w3.org/2006/time# sosa: http://www.w3.org/ns/sosa/ ssn: http://www.w3.org/ns/ssn/">
+  <body prefix="rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns# rdfs: http://www.w3.org/2000/01/rdf-schema# owl: http://www.w3.org/2002/07/owl# xsd: http://www.w3.org/2001/XMLSchema# skos: http://www.w3.org/2004/02/skos/core# dcterms: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/>. vann: http://purl.org/vocab/vann/ voaf: http://purl.org/vocommons/voaf# time: http://www.w3.org/2006/time.rdf# sosa: http://www.w3.org/ns/sosa/ ssn: http://www.w3.org/ns/ssn/">
 
     <section id="abstract">
       <p>The Semantic Sensor Network Ontology (SSN) is an ontology for
@@ -383,18 +383,34 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
           inferential semantics of their OWL-2 counterparts. In line with the
           changes implemented for the new SSN, SOSA also drops the direct DUL
           alignment although an optional alignment can be achieved via the
-          SSN-DUL alignment provided in Section 7. SOSA is also more explicit in
+          SSN-DUL alignment provided in <a href="#DUL_Alignment">Section 5</a>. SOSA is also more explicit in
           its support for virtual sensors and human sensors than SSO. Finally,
           and most notably, SOSA extends SSO's original scope beyond sensors and
           their observations by including classes and properties for actuators
           and sampling. SOSA also distinguishes between phenomenonTime and
-          resultTime.</p>
+          resultTime. The following three figures provide an overview over the classes and properties that are specifically related to modelling Observations, Actuations and Sampling.</p>
         <figure><img alt="Observation" src="images/observation-activity.png"> <figcaption>Classes
             and relationships involved in Observation</figcaption></figure>
         <figure><img alt="Sampling and samples" src="images/sampling-activity.png">
           <figcaption>Classes and relationships involved in Sampling</figcaption></figure>
         <figure><img alt="Actuation" src="images/actuation-activity.png"> <figcaption>Classes
             and relationships involved in Actuation</figcaption></figure>
+
+    <aside class="example" id="forecasts" class="informative">
+      <div class="example-title marker"><h3>Forecasts</h3>
+        One may also represent Forecasts as Observations if the value of <code>sosa:phenomenonTime</code>
+        is later in time than the <code>sosa:resultTime</code>. Given the
+        definition of these terms, it means that: <em>The time when the
+          Observation act was completed is before the time that the Result of
+          the observation applies to the FeatureOfInterest.</em>
+        <p class="note"> Other means to represent forecasts are reported, but
+          not in the scope of this specification. For example
+          [[Lefrancois-et-al-2017]] derives the SSN <code>Sensing/Sensor/Observation</code>
+          pattern and define <code>Forecasting/Forecaster/Forecast</code>
+          classes.</p>
+        <p class="note">Describing a plan for some actuation or observation in
+          the future is not covered by this specification.</p></div>
+    </aside>
       </section>
       <section id="TheSOSAontologySpecification" class="normative">
       <h2>SOSA and SSN Ontologies Specifications</h2>
@@ -457,7 +473,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
             <span class="ssn">| <a href="#SSNPrecision">ssn:Precision</a> </span>
             <span class="ssn">| <a href="#SSNProperty">ssn:Property</a> </span>
             | <a href="#SOSAProcedure">sosa:Procedure</a>
-            | <a href="#SOSARepeatability">sosa:Repeatability</a>
+            |
             <span class="ssn">| <a href="#SSNResolution">ssn:Resolution</a></span>
             <span class="ssn">| <a href="#SSNResponseTime">ssn:ResponseTime</a> </span>
             | <a href="#SOSAResult">sosa:Result</a>
@@ -530,7 +546,6 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
         <div class="azlist">
           <p>Datatype Properties:
             | <a href="#SOSAhasSimpleResult">sosa:hasSimpleResult</a>
-            | <a href="#SOSAhasResultTime">sosa:hasResultTime</a>
             |
           </p>
         </div>
@@ -557,7 +572,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
                     <td>
                       <span about="sosa:FeatureOfInterest" rel="rdfs:subClassOf" resource="[_:FeatureOfInterest1]"></span>
                       <span about="[_:FeatureOfInterest1]" typeof="owl:Restriction" rel="owl:onProperty" resource="ssn:hasProperty"><a href="#SSNhasProperty">ssn:hasProperty</a></span>
-                      <span about="[_:FeatureOfInterest1]" property="owl:allValuesFrom" resource="ssn:Property"><em><b>must be</b></em><a href="#SSNProperty">ssn:Property</a></span>
+                      <span about="[_:FeatureOfInterest1]" property="owl:allValuesFrom" resource="ssn:Property"><em><b>must be</b></em> <a href="#SSNProperty">ssn:Property</a></span>
                       <br>
                       <span about="sosa:FeatureOfInterest" rel="rdfs:subClassOf" resource="[_:FeatureOfInterest2]"></span>
                       <span about="[_:FeatureOfInterest2]" typeof="owl:Restriction" rel="owl:onProperty" resource="ssn:hasProperty"><a href="#SSNhasProperty">ssn:hasProperty</a></span>
@@ -565,7 +580,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
                       <br>
                       <span about="sosa:FeatureOfInterest" rel="rdfs:subClassOf" resource="[_:FeatureOfInterest3]"></span>
                       <span about="[_:FeatureOfInterest3]" typeof="owl:Restriction" rel="owl:onProperty" resource="sosa:hasSample"><a href="#SOSAhasSample">sosa:hasSample</a></span>
-                      <span about="[_:FeatureOfInterest3]" rel="owl:allValuesFrom" resource="sosa:Sample"><em><b>must be</b></em><a href="#SOSASample">sosa:Sample</a></span>
+                      <span about="[_:FeatureOfInterest3]" rel="owl:allValuesFrom" resource="sosa:Sample"><em><b>must be</b></em> <a href="#SOSASample">sosa:Sample</a></span>
                       <br>
                     </td>
                 </tr>
@@ -608,7 +623,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div>
@@ -640,7 +655,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div>
@@ -671,7 +686,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div>
@@ -1066,7 +1081,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -1104,7 +1119,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -1126,7 +1141,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -1164,7 +1179,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -1197,7 +1212,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -1225,7 +1240,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -1616,7 +1631,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
                     <span about="sosa:Observation" rel="rdfs:subClassOf" resource="[_:SOSAObservation12]"></span>
                     <span about="[_:SOSAObservation12]" typeof="owl:Restriction"></span>
                     <span about="[_:SOSAObservation12]" rel="owl:onProperty" resource="sosa:hasResult"><a href="#SOSAhasResult">sosa:hasResult</a></span>
-                    <span about="[_:SOSAObservation12]" property="owl:allValuesFrom" resource="sosa:Result"><em><b>must be</b></em> <a href="#SSNResult">sosa:Result</a></span>
+                    <span about="[_:SOSAObservation12]" property="owl:allValuesFrom" resource="sosa:Result"><em><b>must be</b></em> <a href="#SOSAResult">sosa:Result</a></span>
                     <br>
                     <span about="sosa:Observation" rel="rdfs:subClassOf" resource="[_:SOSAObservation13]"></span>
                     <span about="[_:SOSAObservation13]" typeof="owl:Restriction"></span>
@@ -1862,7 +1877,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
                   </tr>
                   <tr>
                     <th>Domain Includes</th>
-                    <td><span rel="schema:domainIncludes" resource="sosa:Actuationn"><a href="#SOSAActuationn">sosa:Actuation</a></span></td>
+                    <td><span rel="schema:domainIncludes" resource="sosa:Actuationn"><a href="#SOSAActuation">sosa:Actuation</a></span></td>
                   </tr>
                   <tr>
                     <th>Range Includes</th>
@@ -1974,7 +1989,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
                       <span about="sosa:Sampling" rel="rdfs:subClassOf" resource="[_:SOSASampling12]"></span>
                       <span about="[_:SOSASampling12]" typeof="owl:Restriction"></span>
                       <span about="[_:SOSASampling12]" rel="owl:onProperty" resource="sosa:hasResultingSample"><a href="#SOSAhasResultingSample">sosa:hasResultingSample</a></span>
-                      <span about="[_:SOSASampling12]" property="owl:allValuesFrom" resource="sosa:Sample"><em><b>must be</b></em> <a href="#SSNSample">sosa:Sample</a></span>
+                      <span about="[_:SOSASampling12]" property="owl:allValuesFrom" resource="sosa:Sample"><em><b>must be</b></em> <a href="#SOSASample">sosa:Sample</a></span>
                       <br>
                       <span about="sosa:Sampling" rel="rdfs:subClassOf" resource="[_:SOSASampling13]"></span>
                       <span about="[_:SOSASampling13]" typeof="owl:Restriction"></span>
@@ -2058,7 +2073,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               <p class="crossreference"><strong>IRI:</strong> http://www.w3.org/ns/ssn/Stimulus</p>
 
             <em property="rdfs:label">Stimulus</em> -
-            <span property="rdfs:comment skos:definition">An event in the real world that 'triggers' the <a href="#SOSASensor"><code>Sensor</code></a>. The properties associated to the <a href="#SOSAStimulus"><code>Stimulus</code></a> may be different to the eventual observed <a href="#SOSAObservableProperty"><code>ObservableProperty</code></a>. It is the event, not the object, that triggers the <a href="#SOSASensor"><code>Sensor</code></a>.</span>
+            <span property="rdfs:comment skos:definition">An event in the real world that 'triggers' the <a href="#SOSASensor"><code>Sensor</code></a>. The properties associated to the <a href="#SNNStimulus"><code>Stimulus</code></a> may be different to the eventual observed <a href="#SOSAObservableProperty"><code>ObservableProperty</code></a>. It is the event, not the object, that triggers the <a href="#SOSASensor"><code>Sensor</code></a>.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
@@ -2090,7 +2105,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2112,7 +2127,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2122,7 +2137,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               <p class="crossreference"><strong>IRI:</strong> http://www.w3.org/ns/ssn/detects</p>
 
             <em property="rdfs:label">detects</em> -
-            <span property="rdfs:comment skos:definition">A relation from a <a href="#SOSASensor"><code>Sensor</code></a> to the <a href="#SSNStimulus"><code>Stimulus</code></a> that the <a href="#SOSASensor"><code>Sensor</code></a> can detect. The <a href="#SOSAStimulus"><code>Stimulus</code></a> itself will be serving as a proxy (<a href="#SSNIsProxyFor"><code>isProxyFor</code></a>) for some <a href="#SOSAObservableProperty"><code>ObservableProperty</code></a>.</span>
+            <span property="rdfs:comment skos:definition">A relation from a <a href="#SOSASensor"><code>Sensor</code></a> to the <a href="#SSNStimulus"><code>Stimulus</code></a> that the <a href="#SOSASensor"><code>Sensor</code></a> can detect. The <a href="#SOSAStimulus"><code>Stimulus</code></a> itself will be serving as a proxy (<a href="#SSNisProxyFor"><code>isProxyFor</code></a>) for some <a href="#SOSAObservableProperty"><code>ObservableProperty</code></a>.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
@@ -2134,7 +2149,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2161,7 +2176,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2405,7 +2420,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               <p class="crossreference"><strong>IRI:</strong> http://www.w3.org/ns/ssn/qualityOfObservation</p>
 
             <em property="rdfs:label">quality of observation</em> -
-            <span property="rdfs:comment skos:definition">Relation linking an <a href="#SOSAObservation"><code>Observation</code></a> to the adjudged quality of the <a href="#SOSAResult"><code>Result</code></a>. This is complimentary to the <a href="#SOSASystemCapability"><code>SystemCapability</code></a> information recorded for the <a href="#SOSASensor"><code>Sensor</code></a> that made the <a href="#SOSAObservation"><code>Observation</code></a>.</span>
+            <span property="rdfs:comment skos:definition">Relation linking an <a href="#SOSAObservation"><code>Observation</code></a> to the adjudged quality of the <a href="#SOSAResult"><code>Result</code></a>. This is complimentary to the <a href="#SNNSystemCapability"><code>SystemCapability</code></a> information recorded for the <a href="#SOSASensor"><code>Sensor</code></a> that made the <a href="#SOSAObservation"><code>Observation</code></a>.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
@@ -2423,7 +2438,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2494,7 +2509,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2516,7 +2531,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2566,7 +2581,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2594,7 +2609,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2622,7 +2637,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2650,7 +2665,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2683,7 +2698,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2715,7 +2730,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2725,7 +2740,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               <p class="crossreference"><strong>IRI:</strong> http://www.w3.org/ns/ssn/inCondition</p>
 
             <em property="rdfs:label">in condition</em> -
-            <span property="rdfs:comment skos:definition">Describes the prevailing environmental <a href="#SSNCondition"><code>Conditions</code></a> for <a href="#SSNSystemCapabilites"><code>SystemCapabilites</code></a>, <a href="#SSNOperatingRanges"><code>OperatingRanges</code></a> and <a href="#SSNSurvivalRanges"><code>SurvivalRanges</code></a>.</span>
+            <span property="rdfs:comment skos:definition">Describes the prevailing environmental <a href="#SSNCondition"><code>Conditions</code></a> for <a href="#SSNSystemCapability"><code>SystemCapabilites</code></a>, <a href="#SSNOperatingRange"><code>OperatingRanges</code></a> and <a href="#SSNSurvivalRange"><code>SurvivalRanges</code></a>.</span>
             <table style="th { float: top; }">
               <tbody>
                 <tr>
@@ -2742,7 +2757,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2774,7 +2789,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2808,7 +2823,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2868,7 +2883,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2896,7 +2911,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2939,7 +2954,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -2980,7 +2995,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3021,7 +3036,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3049,7 +3064,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3090,7 +3105,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3120,7 +3135,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3148,7 +3163,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3164,7 +3179,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
                 <tr>
                   <th>Sub class of</th>
                   <td>
-                    <span rel="rdfs:subClassOf" resource="ssn:MeasurementProperty"><a href="#SSNMeasurementProperty">ssn:SystemProperty</a></span>
+                    <span rel="rdfs:subClassOf" resource="ssn:MeasurementProperty"><a href="#SSNSystemProperty">ssn:SystemProperty</a></span>
                   </td>
                 </tr>
                 <tr>
@@ -3176,7 +3191,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3217,7 +3232,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3247,7 +3262,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3288,7 +3303,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3318,7 +3333,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3348,7 +3363,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3378,7 +3393,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3411,7 +3426,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3468,7 +3483,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3496,7 +3511,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3539,7 +3554,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3567,7 +3582,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3595,7 +3610,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3629,7 +3644,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3686,7 +3701,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3714,7 +3729,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3757,7 +3772,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3785,7 +3800,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -3813,7 +3828,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tbody>
             </table>
         <div class="buttonpanel">
-        <p style="float: right; font-size: small;">[<a href="#ssn-specification">back to top</a>]</p>
+        <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide SSN Terms and Axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show SSN Terms and Axioms</button>
         </div></div>
@@ -4629,7 +4644,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
       </section>
     </section>
       <section id="OM_Alignment" class="normative">
-        <h2>Observations and Measurements Alignment Module</h2>
+        <h2>O&amp;M Alignment Module</h2>
         <p>This section introduces the alignment of SOSA/SSN to OGC Observations
           and Measurements [OandM] (also known as ISO 19156:2011).</p>
         <p>The XML implementation of O&amp;M [OM-XML] is used for the payload
@@ -5058,7 +5073,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
               </tr>
             </tbody>
           </table>
-          <p>An RDF file containing a <a href="https://raw.githubusercontent.com/w3c/sdw/simon-sosa-om-oboe/ssn/rdf/sosa-oboe-mapping.ttl">graph
+          <p>An RDF file containing a <a href="https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sosa-oboe-mapping.ttl">graph
               corresponding to this alignment is available</a>. </p>
         </section>
       </section>
@@ -5232,7 +5247,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
             </tr>
           </tbody>
         </table>
-        <p>An RDF file containing a <a href="https://raw.githubusercontent.com/w3c/sdw/simon-sosa-prov/ssn/rdf/sosa-prov-mapping.ttl">graph corresponding to this alignment is available</a>. </p>
+        <p>An RDF file containing a <a href="https://github.com/w3c/sdw/blob/gh-pages/ssn/rdf/sosa-prov-mapping.ttl">graph corresponding to this alignment is available</a>. </p>
       </section>
     </section>
 
@@ -5386,23 +5401,6 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
         </div>
         </section>
       </section>
-      <section id="Forecasts" class="informative">
-        <h2>Forecasts</h2>
-        <p class="issue" data-number="82">Are there additional properties needed
-          for ssn:observation to represent forecasts as observations.</p>
-        One may represent forecasts as observations if the value of <code>sosa:phenomenonTime</code>
-        is later in time than the <code>sosa:resultTime</code>. Given the
-        definition of these terms, it means that: <em>The time when the
-          Observation act was completed is before the time that the Result of
-          the observation applies to the FeatureOfInterest.</em>
-        <p class="note"> Other means to represent forecasts are reported, but
-          not in the scope of this specification. For example
-          [[Lefrancois-et-al-2017]] derives the SSN <code>Sensing/Sensor/Observation</code>
-          pattern and define <code>Forecasting/Forecaster/Forecast</code>
-          classes.</p>
-        <p class="note">Describing a plan for some actuation or observation in
-          the future is not covered by this specification.</p>
-      </section>
       <section class="appendix" id="acknowledgments">
         <h2>Acknowledgements</h2>
         The Editors recognise the major contribution of the members of the
@@ -5412,7 +5410,7 @@ div.ssn, div.ssn th, tr.ssn, tr.ssn th {
         group.</section>
       <section class="appendix" id="changes">
         <h2>Change history</h2>
-        <p>A full change-log is available on <a href="%E2%80%9C%E2%80%9Dhttps://github.com/w3c/sdw/commits/gh-pages/ssn%E2%80%9D">GitHub</a></p>
+        <p>A full change-log is available on <a href="https://github.com/w3c/sdw/commits/gh-pages/ssn">GitHub</a></p>
         <h3>Changes since Original <a href="https://www.w3.org/2005/Incubator/ssn/XGR-ssn-20110628/">
             (https://www.w3.org/2005/Incubator/ssn/XGR-ssn-20110628/)</a></h3>
         <ol>
