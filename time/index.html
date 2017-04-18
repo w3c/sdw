@@ -94,6 +94,9 @@ A first-order logic axiomatization of the core of this ontology is provided in [
 The ontology is based on the draft by Hobbs and Pan, [<a href="#OWL-T">OWL-T</a>] incorporating modifications proposed by Cox [<a href="#CO-15">CO-15</a>] to support more general temporal positions along with other minor improvements. 
 The document has been completely re-written. 
 The substantial changes are listed in the <a href="#changes">change-log</a>.</p>
+
+<p class="note">Motivation to be revised to draw attention to the key capability of the OWL-Time ontology (i.e. support for reasoning about temporal ordering, using Allen's interval relations) and recognising the prior work in ISO 8601, and the XML Schema temporal datatypes. </p>
+
 </section>
 
 <section id="namespaces">
@@ -3186,22 +3189,47 @@ ex:GPSTime
   rdf:type owl:Class ;
   rdfs:comment "GPS Time is the number of seconds since an epoch in 1980, encoded as the number of weeks + seconds into the week" ;
   rdfs:subClassOf time:GeneralDateTimeDescription ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "0"^^xsd:nonNegativeInteger ; owl:onProperty :day ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "0"^^xsd:nonNegativeInteger ; owl:onProperty :dayOfWeek ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "0"^^xsd:nonNegativeInteger ; owl:onProperty :dayOfYear ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "0"^^xsd:nonNegativeInteger ; owl:onProperty :hour ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "0"^^xsd:nonNegativeInteger ; owl:onProperty :minute ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "0"^^xsd:nonNegativeInteger ; owl:onProperty :month ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "0"^^xsd:nonNegativeInteger ; owl:onProperty :monthOfYear ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "0"^^xsd:nonNegativeInteger ; owl:onProperty :timeZone ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "0"^^xsd:nonNegativeInteger ; owl:onProperty :year ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "1"^^xsd:nonNegativeInteger ; owl:onProperty :second ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:cardinality "1"^^xsd:nonNegativeInteger ; owl:onProperty :week ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:hasValue :unitSecond ; owl:onProperty :unitType ; ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:hasValue &lt;https://en.wikipedia.org/wiki/Global_Positioning_System#Timekeeping&gt; ; owl:onProperty :hasTRS ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "0"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :day ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "0"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :dayOfWeek ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "0"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :dayOfYear ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "0"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :hour ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "0"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :minute ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "0"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :month ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "0"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :monthOfYear ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "0"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :timeZone ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "0"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :year ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "1"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :second ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:cardinality "1"^^xsd:nonNegativeInteger ; 
+ 	owl:onProperty :week ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:hasValue :unitSecond ; 
+ 	owl:onProperty :unitType ; ] ;
+  rdfs:subClassOf [ a owl:Restriction ; 
+ 	owl:hasValue &lt;https://en.wikipedia.org/wiki/Global_Positioning_System#Timekeeping&gt; ; 
+ 	owl:onProperty :hasTRS ; ] ;
 .
 </pre>
-
 </section>
 
 <section id="iCal">
@@ -3375,8 +3403,79 @@ prov:startedAtTime owl:propertyChainAxiom (
 .
 </pre>
 
-      </section>
-    </section>
+</section>
+
+<section id="dcat-example">
+<h3>Legal interval</h3>
+<p>The <a href="https://www.w3.org/TR/vocab-dcat/#basic-example">basic example</a> in the [[DCAT]] specification described the 'temporal range' of a dataset with reference to the resource <a href="http://reference.data.gov.uk/id/quarter/2006-Q1">http://reference.data.gov.uk/id/quarter/2006-Q1</a> which is one of many available from <code>data.gov.uk</code>. This resource defines a specific legal period - the first quarter of 2006 - formalized using the <a href="http://reference.data.gov.uk/def/intervals/">interval ontology</a> which is (currently) based on the 2006 version of OWL-Time. The period can be fully described using OWL-Time, omitting all elements from the intervals ontology, as follows: </p>
+
+<pre>ex:i2006-Q1
+  rdf:type :ProperInterval ;
+  owl:sameAs &lt;http://reference.data.gov.uk/id/quarter/2006-Q1&gt; ;
+  rdfs:comment "The first quarter of the British calendar year 2006"@en ;
+  rdfs:label "British Quarter:2006-Q1"@en ;
+  skos:prefLabel "British Quarter:2006-Q1"@en ;
+  :hasBeginning &lt;http://reference.data.gov.uk/id/gregorian-instant/2006-01-01T00:00:00&gt; ;
+  :hasBeginning [
+      rdf:type :Instant ;
+      :inXSDDate "2006-01-01"^^xsd:date ;
+    ] ;
+  :hasDurationDescription interval:one-quarter ;
+  :hasEnd &lt;http://reference.data.gov.uk/id/gregorian-instant/2006-04-01T00:00:00&gt; ;
+  :hasEnd [
+      rdf:type :Instant ;
+      :inXSDDate "2006-03-31"^^xsd:date ;
+    ] ;
+  :hasXSDDuration "P3M"^^xsd:duration ;
+  :intervalContains &lt;http://reference.data.gov.uk/id/month/2006-02&gt; ;
+  :intervalDuring &lt;http://reference.data.gov.uk/id/half/2006-H1&gt; ;
+  :intervalDuring &lt;http://reference.data.gov.uk/id/year/2006&gt; ;
+  :intervalEquals &lt;http://reference.data.gov.uk/id/gregorian-interval/2006-01-01T00:00:00/P3M&gt; ;
+  :intervalFinishedBy &lt;http://reference.data.gov.uk/id/month/2006-03&gt; ;
+  :intervalMeets &lt;http://reference.data.gov.uk/id/quarter/2006-Q2&gt; ;
+  :intervalMetBy &lt;http://reference.data.gov.uk/id/quarter/2005-Q4&gt; ;
+  :intervalStartedBy &lt;http://reference.data.gov.uk/id/month/2006-01&gt; ;
+  foaf:isPrimaryTopicOf &lt;http://reference.data.gov.uk/doc/quarter/2006-Q1&gt; ;
+.</pre>
+
+</section>
+
+<section id="time-in-use">
+<h3>OWL-Time in use</h3>
+<p><b>To be completed.</b></p>
+<p>In this section we list some known applications of OWL-Time. </p>
+
+<p>Tabulation of classes and proeprties used in external applications, starting from: </p>
+
+https://goo.gl/3aLZbY 
+
+http://reference.data.gov.uk/def/intervals/
+
+http://reference.data.gov.uk/id/quarter/ 
+
+http://perio.do/technical-overview/#temporal-extent 
+
+http://purl.org/iot/ontology/fiesta-iot#
+
+http://bioportal.bioontology.org/search?query=Instant
+
+http://bioportal.bioontology.org/search?q=ProperInterval
+
+http://bioportal.bioontology.org/search?q=DurationDescription
+
+http://bioportal.bioontology.org/search?q=DateTimeDescription
+
+http://bioportal.bioontology.org/search?q=TemporalEntity
+
+http://linkedevents.org/ontology/ 
+
+http://ontology.eil.utoronto.ca/GCI/Foundation/GCI-Foundation.owl
+
+https://github.com/dr-shorthair/GeologicTimeScale/blob/master/ISC/isc2016-12-time.ttl 
+
+</section>
+
+</section>
 
 <hr>
 
