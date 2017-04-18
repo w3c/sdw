@@ -358,7 +358,7 @@ Content-Disposition: filename= sosa-om.ttl;
 ```
 
 
-## SOSA-O&M
+## SOSA-OBOE
 
 *URI:* http(s)://www.w3.org/ns/sosa/oboe
 
@@ -408,7 +408,7 @@ Content-Disposition: filename= sosa-oboe.ttl;
 ```
 
 
-## SOSA-O&M
+## SOSA-PROV
 
 *URI:* https://www.w3.org/ns/sosa-prov
 
