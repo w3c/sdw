@@ -1,19 +1,34 @@
 # baseURI: http://example.org/time
+# imports: http://purl.org/dc/elements/1.1/
+# imports: http://reference.data.gov.uk/def/intervals/
+# imports: http://reference.data.gov.uk/id/quarter/2006-Q1
 # imports: http://www.w3.org/2006/time
+# imports: http://www.w3.org/ns/dcat
 # imports: http://www.w3.org/ns/time-gregorian
 
 @prefix : <http://www.w3.org/2006/time#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dgu: <http://reference.data.gov.uk/def/reference/> .
 @prefix ex: <http://example.org/time/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix interval: <http://reference.data.gov.uk/def/intervals/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix scv: <http://purl.org/NET/scovo#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix tzont: <http://www.w3.org/2006/timezone#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <http://example.org/time>
   rdf:type owl:Ontology ;
+  owl:imports dc: ;
+  owl:imports interval: ;
+  owl:imports <http://reference.data.gov.uk/id/quarter/2006-Q1> ;
   owl:imports <http://www.w3.org/2006/time> ;
+  owl:imports <http://www.w3.org/ns/dcat> ;
   owl:imports <http://www.w3.org/ns/time-gregorian> ;
 .
 ex:AbbyBirthday
@@ -57,7 +72,7 @@ ex:AbbyBirthdayUnix
 .
 ex:DatabaseTimeStamp
   rdf:type :Instant ;
-  rdfs:comment "A database timestamp with lots of fractiosn in the seconds" ;
+  rdfs:comment "A database timestamp with lots of fractions in the seconds" ;
   :inDateTime [
       rdf:type ex:GPSTime ;
       :second 64696.102 ;
@@ -161,7 +176,6 @@ ex:Microseconds
       rdf:type :DurationDescription ;
       :seconds 0.00000037 ;
     ] ;
-  :hasXSDDuration "P0.00000037S"^^xsd:duration ;
 .
 ex:Sivan
   rdf:type :MonthOfYear ;
@@ -190,10 +204,26 @@ ex:UnixTime
       owl:onProperty :hasTRS ;
     ] ;
 .
+ex:dataset-001
+  rdf:type dcat:Dataset ;
+  dct:accrualPeriodicity <http://purl.org/linked-data/sdmx/2009/code#freq-W> ;
+  dct:issued "2011-12-05"^^xsd:date ;
+  dct:language <http://id.loc.gov/vocabulary/iso639-1/en> ;
+  dct:modified "2011-12-05"^^xsd:date ;
+  dct:publisher :finance-ministry ;
+  dct:spatial <http://www.geonames.org/6695072> ;
+  dct:temporal <http://reference.data.gov.uk/id/quarter/2006-Q1> ;
+  dct:title "Imaginary dataset" ;
+  dcat:contactPoint <http://example.org/transparency-office/contact> ;
+  dcat:distribution :dataset-001-csv ;
+  dcat:keyword "accountability" ;
+  dcat:keyword "payments" ;
+  dcat:keyword "transparency" ;
+.
 ex:meetingStart
   rdf:type :Instant ;
   :inDateTime ex:meetingStartDescription ;
-  :inXSDDateTimeStamp "2006-01-01T10:30:00-5:00"^^xsd:dateTimeStamp ;
+  :inXSDDateTimeStamp "2006-01-01T10:30:00-05:00"^^xsd:dateTimeStamp ;
 .
 ex:meetingStartDescription
   rdf:type :DateTimeDescription ;
@@ -212,6 +242,44 @@ ex:meetingStartDescription
 ex:validTime
   rdf:type owl:ObjectProperty ;
   rdfs:subPropertyOf :hasTime ;
+.
+<http://reference.data.gov.uk/id/quarter/2006-Q1>
+  rdf:type :ProperInterval ;
+  interval:ordinalHalfOfYear 1 ;
+  interval:ordinalQuarterOfYear 1 ;
+  interval:ordinalYear 2006 ;
+  dgu:uriSet <http://reference.data.gov.uk/id/quarter> ;
+  rdfs:comment "The first quarter of the British calendar year 2006"@en ;
+  rdfs:label "British Quarter:2006-Q1"@en ;
+  skos:prefLabel "British Quarter:2006-Q1"@en ;
+  :hasBeginning <http://reference.data.gov.uk/id/gregorian-instant/2006-01-01T00:00:00> ;
+  :hasBeginning [
+      rdf:type :Instant ;
+      :inXSDDate "2006-01-01"^^xsd:date ;
+    ] ;
+  :hasDurationDescription interval:one-quarter ;
+  :hasEnd <http://reference.data.gov.uk/id/gregorian-instant/2006-04-01T00:00:00> ;
+  :hasEnd [
+      rdf:type :Instant ;
+      :inXSDDate "2006-03-31"^^xsd:date ;
+    ] ;
+  :hasXSDDuration "P3M"^^xsd:duration ;
+  :intervalContains <http://reference.data.gov.uk/id/month/2006-02> ;
+  :intervalDuring <http://reference.data.gov.uk/id/half/2006-H1> ;
+  :intervalDuring <http://reference.data.gov.uk/id/year/2006> ;
+  :intervalEquals <http://reference.data.gov.uk/id/gregorian-interval/2006-01-01T00:00:00/P3M> ;
+  :intervalFinishedBy <http://reference.data.gov.uk/id/month/2006-03> ;
+  :intervalMeets <http://reference.data.gov.uk/id/quarter/2006-Q2> ;
+  :intervalMetBy <http://reference.data.gov.uk/id/quarter/2005-Q4> ;
+  :intervalStartedBy <http://reference.data.gov.uk/id/month/2006-01> ;
+  foaf:isPrimaryTopicOf <http://reference.data.gov.uk/doc/quarter/2006-Q1> ;
+.
+interval:one-quarter
+  rdf:type :DurationDescription ;
+  :hasXSDDuration "P3M"^^xsd:duration ;
+  rdfs:comment "A duration of one quarter, typically 3 months."@en ;
+  rdfs:label "1 quarter of a year" ;
+  :months "3"^^xsd:decimal ;
 .
 <http://www.w3.org/2006/time>
   rdf:type owl:Ontology ;
