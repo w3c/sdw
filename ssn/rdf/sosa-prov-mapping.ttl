@@ -9,6 +9,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix sp: <https://www.w3.org/ns/sosa/prov/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 sosa:Actuation
@@ -75,13 +76,10 @@ sosa:resultTime
   rdfs:subPropertyOf prov:endedAtTime ;
 .
 sosa:usedProcedure
-  rdfs:subPropertyOf [
-      rdf:type owl:ObjectProperty ;
-      owl:propertyChainAxiom (
-          prov:qualifiedAssociation
-          prov:hadPlan
-        ) ;
-    ] ;
+  owl:propertyChainAxiom (
+      sp:eventAssociation
+      sp:hadProcedure
+    ) ;
 .
 <https://www.w3.org/ns/sosa-prov>
   rdf:type owl:Ontology ;
@@ -92,4 +90,21 @@ sosa:usedProcedure
   rdfs:label "Alignment of SOSA with PROV-O"@en ;
   owl:imports <http://www.w3.org/ns/prov-o#> ;
   owl:imports sosa: ;
+.
+sp:eventAssociation
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Observation
+          sosa:Actuation
+          sosa:Sampling
+        ) ;
+    ] ;
+  rdfs:subPropertyOf prov:qualifiedAssociation ;
+.
+sp:hadProcedure
+  rdf:type owl:ObjectProperty ;
+  rdfs:range sosa:Procedure ;
+  rdfs:subPropertyOf prov:hadPlan ;
 .
