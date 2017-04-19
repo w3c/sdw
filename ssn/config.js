@@ -25,6 +25,14 @@ var respecConfig = {
 			name: "Armin Haller",
       company: "Australian National University",
       companyURL: "http://cbe.anu.edu.au/"
+		}, {
+			name: "Simon Cox",
+      company: "CSIRO",
+      companyURL: "http://csiro.au/"
+		}, {
+			name: "Maxime Lefrançois",
+      company: "Université de Lyon",
+      companyURL: "http://www.universite-lyon.fr/"
 		}],
     otherLinks: [
     {
