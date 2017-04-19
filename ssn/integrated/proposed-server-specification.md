@@ -258,7 +258,7 @@ Basic hash-based content-negotiation.
 
 ## SSN-DUL
 
-*URI:* https://www.w3.org/ns/ssn/dul/
+*URI:* http://www.w3.org/ns/ssn/dul
 
 *Version to use for publication:* http://w3c.github.io/sdw/ssn/integrated/ssn-dul.ttl
 
@@ -268,20 +268,20 @@ Basic hash-based content-negotiation.
 
 *HTML representation:* 
 
-When operating a GET at https://www.w3.org/ns/ssn/dul/ with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#DUL_Alignment
+When operating a GET at http://www.w3.org/ns/ssn/dul with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#DUL_Alignment
 
 
 *RDF/XML representation:* 
 
-When operating a GET at https://www.w3.org/ns/ssn/dul/ with a Accept header that is compatible with `application/rdf+xml`, serve ssn-dul.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/ssn/dul with a Accept header that is compatible with `application/rdf+xml`, serve ssn-dul.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
-Content-Location: https://www.w3.org/ns/ssn/dul/ssn-dul.rdf
+Content-Location: http://www.w3.org/ns/ssn/dul/ssn-dul.rdf
 Content-Disposition: filename= ssn-dul.rdf;
 ```
 
-When operating a GET at https://www.w3.org/ns/ssn/dul/ssn-dul.rdf with a Accept header that is compatible with `application/rdf+xml`, serve ssn-dul.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/ssn/dul/ssn-dul.rdf with a Accept header that is compatible with `application/rdf+xml`, serve ssn-dul.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
@@ -290,15 +290,15 @@ Content-Disposition: filename= ssn-dul.rdf;
 
 *Turtle representation:* 
 
-When operating a GET at https://www.w3.org/ns/ssn/dul/ with a Accept header that is compatible with `text/turtle`, serve ssn-dul.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/ssn/dul with a Accept header that is compatible with `text/turtle`, serve ssn-dul.ttl, with headers:
 
 ```
 Content-Type: text/turtle
-Content-Location: https://www.w3.org/ns/ssn/dul/ssn-dul.ttl
+Content-Location: http://www.w3.org/ns/ssn/dul/ssn-dul.ttl
 Content-Disposition: filename= ssn-dul.ttl;
 ```
 
-When operating a GET at https://www.w3.org/ns/ssn/dul/ssn-dul.ttl with a Accept header that is compatible with `text/turtle`, serve ssn.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/ssn/dul/ssn-dul.ttl with a Accept header that is compatible with `text/turtle`, serve ssn.ttl, with headers:
 
 ```
 Content-Type: text/turtle
@@ -320,20 +320,20 @@ Content-Disposition: filename= ssn-dul.ttl;
 
 *HTML representation:* 
 
-When operating a GET at https://www.w3.org/ns/sosa/om with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#OM_Alignment
+When operating a GET at http://www.w3.org/ns/sosa/om with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#OM_Alignment
 
 
 *RDF/XML representation:* 
 
-When operating a GET at https://www.w3.org/ns/sosa/om with a Accept header that is compatible with `application/rdf+xml`, serve sosa-om-mapping.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/om with a Accept header that is compatible with `application/rdf+xml`, serve sosa-om-mapping.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
-Content-Location: https://www.w3.org/ns/sosa/om.rdf
+Content-Location: http://www.w3.org/ns/sosa/om.rdf
 Content-Disposition: filename= sosa-om.rdf;
 ```
 
-When operating a GET at https://www.w3.org/ns/sosa/om.rdf with a Accept header that is compatible with `application/rdf+xml`, serve sosa-om-mapping.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/om.rdf with a Accept header that is compatible with `application/rdf+xml`, serve sosa-om-mapping.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
@@ -342,15 +342,15 @@ Content-Disposition: filename= sosa-om.rdf;
 
 *Turtle representation:* 
 
-When operating a GET at https://www.w3.org/ns/sosa/om with a Accept header that is compatible with `text/turtle`, serve sosa-om-mapping.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/om with a Accept header that is compatible with `text/turtle`, serve sosa-om-mapping.ttl, with headers:
 
 ```
 Content-Type: text/turtle
-Content-Location: https://www.w3.org/ns/sosa/om.ttl
+Content-Location: http://www.w3.org/ns/sosa/om.ttl
 Content-Disposition: filename= sosa-om.ttl;
 ```
 
-When operating a GET at https://www.w3.org/ns/sosa/om.ttl with a Accept header that is compatible with `text/turtle`, serve sosa-om-mapping.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/om.ttl with a Accept header that is compatible with `text/turtle`, serve sosa-om-mapping.ttl, with headers:
 
 ```
 Content-Type: text/turtle
@@ -370,20 +370,20 @@ Content-Disposition: filename= sosa-om.ttl;
 
 *HTML representation:* 
 
-When operating a GET at https://www.w3.org/ns/sosa/oboe with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment
+When operating a GET at http://www.w3.org/ns/sosa/oboe with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment
 
 
 *RDF/XML representation:* 
 
-When operating a GET at https://www.w3.org/ns/sosa/oboe with a Accept header that is compatible with `application/rdf+xml`, serve sosa-oboe-mapping.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/oboe with a Accept header that is compatible with `application/rdf+xml`, serve sosa-oboe-mapping.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
-Content-Location: https://www.w3.org/ns/sosa/oboe.rdf
+Content-Location: http://www.w3.org/ns/sosa/oboe.rdf
 Content-Disposition: filename= sosa-oboe.rdf;
 ```
 
-When operating a GET at https://www.w3.org/ns/sosa/oboe.rdf with a Accept header that is compatible with `application/rdf+xml`, serve sosa-oboe-mapping.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/oboe.rdf with a Accept header that is compatible with `application/rdf+xml`, serve sosa-oboe-mapping.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
@@ -392,15 +392,15 @@ Content-Disposition: filename= sosa-oboe.rdf;
 
 *Turtle representation:* 
 
-When operating a GET at https://www.w3.org/ns/sosa/oboe with a Accept header that is compatible with `text/turtle`, serve sosa-oboe-mapping.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/oboe with a Accept header that is compatible with `text/turtle`, serve sosa-oboe-mapping.ttl, with headers:
 
 ```
 Content-Type: text/turtle
-Content-Location: https://www.w3.org/ns/sosa/oboe.ttl
+Content-Location: http://www.w3.org/ns/sosa/oboe.ttl
 Content-Disposition: filename= sosa-oboe.ttl;
 ```
 
-When operating a GET at https://www.w3.org/ns/sosa/oboe.ttl with a Accept header that is compatible with `text/turtle`, serve sosa-oboe-mapping.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/oboe.ttl with a Accept header that is compatible with `text/turtle`, serve sosa-oboe-mapping.ttl, with headers:
 
 ```
 Content-Type: text/turtle
@@ -410,7 +410,7 @@ Content-Disposition: filename= sosa-oboe.ttl;
 
 ## SOSA-PROV
 
-*URI:* https://www.w3.org/ns/sosa-prov
+*URI:* http://www.w3.org/ns/sosa/prov
 
 *Version to use for publication:* http://w3c.github.io/sdw/ssn/rdf/sosa-prov-mapping.ttl
 
@@ -420,20 +420,20 @@ Content-Disposition: filename= sosa-oboe.ttl;
 
 *HTML representation:* 
 
-When operating a GET at https://www.w3.org/ns/sosa-prov with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#PROV_Alignment
+When operating a GET at http://www.w3.org/ns/sosa/prov with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#PROV_Alignment
 
 
 *RDF/XML representation:* 
 
-When operating a GET at https://www.w3.org/ns/sosa-prov with a Accept header that is compatible with `application/rdf+xml`, serve sosa-prov-mapping.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/prov with a Accept header that is compatible with `application/rdf+xml`, serve sosa-prov-mapping.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
-Content-Location: https://www.w3.org/ns/sosa-prov.rdf
+Content-Location: http://www.w3.org/ns/sosa/prov.rdf
 Content-Disposition: filename= sosa-prov.rdf;
 ```
 
-When operating a GET at https://www.w3.org/ns/sosa-prov.rdf with a Accept header that is compatible with `application/rdf+xml`, serve sosa-prov-mapping.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/prov.rdf with a Accept header that is compatible with `application/rdf+xml`, serve sosa-prov-mapping.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
@@ -442,15 +442,15 @@ Content-Disposition: filename= sosa-prov.rdf;
 
 *Turtle representation:* 
 
-When operating a GET at https://www.w3.org/ns/sosa-prov with a Accept header that is compatible with `text/turtle`, serve sosa-prov-mapping.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/prov with a Accept header that is compatible with `text/turtle`, serve sosa-prov-mapping.ttl, with headers:
 
 ```
 Content-Type: text/turtle
-Content-Location: https://www.w3.org/ns/sosa-prov.ttl
+Content-Location: http://www.w3.org/ns/sosa/prov.ttl
 Content-Disposition: filename= sosa-prov.ttl;
 ```
 
-When operating a GET at https://www.w3.org/ns/sosa-prov.ttl with a Accept header that is compatible with `text/turtle`, serve sosa-prov-mapping.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/sosa/prov.ttl with a Accept header that is compatible with `text/turtle`, serve sosa-prov-mapping.ttl, with headers:
 
 ```
 Content-Type: text/turtle
