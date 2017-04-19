@@ -1327,7 +1327,20 @@ their usage are given.</p>
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to index</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-        </div></div>
+        </div>
+            <pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix qudt-1.1: &lt;http://qudt.org/1.1/schema/qudt#&gt; .
+@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; /
+@base &lt;http://example.org/data/&gt; .
+
+# the window opening state is an ActuatableProperty.
+
+&lt;window/104#state&gt; rdf:type sosa:ActuatableProperty .
+            </pre>
+          </div>
 
         <div class="specterm sosa" id="SOSAActuation" about="sosa:Actuation" typeof="owl:Class rdfs:Class">
               <h4>OWL Class: <a href="http://www.w3.org/ns/sosa/Actuation">sosa:Actuation</a></h4>
@@ -1401,7 +1414,29 @@ their usage are given.</p>
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to index</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-        </div></div>
+        </div>
+            <pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix qudt-1.1: &lt;http://qudt.org/1.1/schema/qudt#&gt; .
+@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; /
+@base &lt;http://example.org/data/&gt; .
+
+# WindowCloser #987 is designed to automatically open and close window #104.
+
+&lt;windowCloser/987&gt; ssn:forProperty &lt;window/104#state&gt; .
+
+
+# Actuation #188 automatically closed the window.
+
+&lt;actuation/188&gt; rdf:type sosa:Actuation ;
+  sosa:actsOnProperty  &lt;window/104#state&gt; ;
+  sosa:madeBySensor &lt;windowCloser/987&gt; ; 
+  sosa:hasSimplResult true ;
+  sosa:resultTime "2017-04-18T17:24:00+02:00"^^xsd:dateTimeStamp .
+            </pre>
+          </div>
 
         <div class="specterm sosa" id="SOSAactsOnProperty" about="sosa:actsOnProperty" typeof="owl:ObjectProperty">
               <h4>OWL Object Property: <a href="http://www.w3.org/ns/sosa/actsOnProperty">sosa:actsOnProperty</a></h4>
@@ -1604,6 +1639,9 @@ their usage are given.</p>
         <figure><img alt="Sampling and samples" src="images/sampling-activity.png">
             <figcaption>Classes and relationships involved in Sampling</figcaption></figure>
 
+
+
+
         <div class="specterm sosa" id="SOSASample" about="sosa:Sample" typeof="owl:Class rdfs:Class">
               <h4>OWL Class: <a href="http://www.w3.org/ns/sosa/Sample">sosa:Sample</a></h4>
               <p class="crossreference"><strong>IRI:</strong> http://www.w3.org/ns/sosa/Sample</p>
@@ -1670,7 +1708,40 @@ their usage are given.</p>
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to index</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-        </div></div>
+        </div>
+<pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# The CO2 level observed in an ice core is 240 parts per million.
+# the ice core is a sample of the polar ice sheet of Antarctica. 
+
+&lt;http://dbpedia.org/resource/Antarctic_ice_sheet&gt; a sosa:FeatureOfInterest ;
+  sosa:hasSample &lt;iceCore/12&gt;, &lt;iceCore/13&gt;, &lt;iceCore/14&gt; ;
+
+&lt;iceCore/12&gt; rdf:type sosa:Sample ;
+  sosa:isSampleOf &lt;http://dbpedia.org/resource/Antarctic_ice_sheet&gt; ;
+  sosa:isSamplingResultOf &lt;WellDrilling/4578&gt; ;
+  sosa:madeBySampler &lt;thermalDrill/2&gt; .
+
+  &lt;WellDrilling/4578&gt; a sosa:Sampling ;
+    geo:lat -73.35 ; 
+    geo:long 9.32 ;
+    sosa:hasResultingSample &lt;iceCore/12&gt; ;
+    sosa:madeBySampler &lt;thermalDrill/2&gt; ;
+    sosa:resultTime "2017-04-03T11:12:00Z"^^xsd:dateTime ;
+    sosa:hasFeatureOfInterest &lt;http://dbpedia.org/resource/Antarctic_ice_sheet&gt; ;
+
+&lt;iceCore/12#CO2&gt; ssn:isPropertyOf &lt;iceCore/12&gt; .
+
+&lt;iceCore/12#observation&gt; a sosa:Observation ;
+  sosa:observedProperty &lt;iceCore/12#CO2&gt; ;
+  sosa:hasSimpleResult 240 .
+            </pre>
+        </div>
 
         <div class="specterm sosa" id="SOSAhasSample" about="sosa:hasSample" typeof="owl:ObjectProperty">
               <h4>OWL Object Property: <a href="http://www.w3.org/ns/sosa/hasSample">sosa:hasSample</a></h4>
@@ -1811,7 +1882,8 @@ their usage are given.</p>
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to index</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-        </div></div>
+        </div>
+          </div>
 
         <div class="specterm sosa" id="SOSASampler" about="sosa:Sampler" typeof="owl:Class rdfs:Class">
               <h4>OWL Class: <a href="http://www.w3.org/ns/sosa/Sampler">sosa:Sampler</a></h4>
