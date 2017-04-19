@@ -64,8 +64,8 @@ MARGIN: 0px 0px 10px
 <section id="abstract">
 <p>OWL-Time is an OWL-2 DL ontology of temporal concepts, for describing the temporal properties of
 resources in the world or described in Web pages. The ontology provides a vocabulary for expressing facts about
-topological relations among instants and intervals, together with information about durations, and about
-temporal position including date-time information. Time positions and durations may be expressed using either the conventional (Gregorian) calendar and clock, or using another temporal reference system such as Unix-time, geologic time or different calendars.</p>
+topological (ordering) relations among instants and intervals, together with information about durations, and about
+temporal position including date-time information. Time positions and durations may be expressed using either the conventional (Gregorian) calendar and clock, or using another temporal reference system such as Unix-time, geologic time, or different calendars.</p>
 <p style="text-align: center;">The namespace for OWL-Time terms is <code>http://www.w3.org/2006/time#</code></p>
 <p style="text-align: center;">The suggested prefix for the OWL-Time namespace is <code>time</code></p>
 <p style="text-align: center;">The OWL-Time ontology is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/time.ttl">here</a>.</p>
@@ -81,22 +81,26 @@ prepared following W3C conventions. The document is released at this time to sol
 
 <section id="motivation">
 <h2>Motivation and background</h2>
-<p>Temporal information is so common that it is hard to find real world applications without it. 
-For example, whenever you place an online order, the order date is always part of your order. 
-When you reserve a car at a car rental site, you have to specify the dates you need it. 
+<p>Temporal information is important in most real world applications. 
+For example, the date is always part of an online order. 
+When you rent a car it is for specific dates. 
+Events in the world occur at specific times and usually have a finite duration. 
+Transactions occur in a sequence, with the current state of a system depending on the exact history of all the transactions. 
+Knowledge of the temporal relationships between transactions, events, travel and orders is often critical. 
 OWL-Time has been developed in response to this need, 
 for describing the temporal properties of any resource denoted using a web identifier (URI), 
-including web-pages and real-world things if desired.</p>
-<p>This document presents the OWL encodings of the ontology. 
-A first-order logic axiomatization of the core of this ontology is provided in [<a href="#HP-04">HP-04</a>].</p>
-<p>This version of OWL-Time was developed in the Spatial Data on the Web Working Group 
-(a joint activity involving W3C and the Open Geospatial Consortium). 
-The ontology is based on the draft by Hobbs and Pan, [<a href="#OWL-T">OWL-T</a>] incorporating modifications proposed by Cox [<a href="#CO-15">CO-15</a>] to support more general temporal positions along with other minor improvements. 
-The document has been completely re-written. 
-The substantial changes are listed in the <a href="#changes">change-log</a>.</p>
-
-<p class="note">Motivation to be revised to draw attention to the key capability of the OWL-Time ontology (i.e. support for reasoning about temporal ordering, using Allen's interval relations) and recognising the prior work in ISO 8601, and a few sentences on why using the XSD datatypes for dates, times, and durations is not (good) enough. </p>
-
+including web-pages and real-world things if desired. </p>
+<p>ISO 8601 [[ISO-8601]] provides a basis for encoding time position and extent in a character string, using the most common modern calendar-clock system. 
+Datatypes in XML Schema [[XSD-D]] use a subset of the ISO 8601 format to pack multi-element values into a compact literal, and some of which are <a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes">built-in to OWL2</a>. 
+OWL-Time makes use of these encodings where appropriate, and also provides representations in which the elements of a date and time are put into separately addressable resources, which can help with queries and reasoning applications. 
+OWL-Time also supports other representations of temporal position and duration, including temporal coordinates (scaled position on a continuous temporal axis) and ordinal times (named positions or periods). 
+However, OWL-Time has a particular focus on ordering relations ("temporal topology"), which is not supported explicitly in any of the date-time encodings. </p>
+<p>A first-order logic axiomatization of the core of this ontology is available in [<a href="#HP-04">HP-04</a>].
+This document presents the OWL encodings of the ontology, with some additions. </p>
+<p>This version of OWL-Time was developed in the Spatial Data on the Web Working Group (a joint activity involving W3C and the Open Geospatial Consortium). 
+The ontology is based on the draft by Hobbs and Pan, [<a href="#OWL-T">OWL-T</a>] incorporating modifications proposed by Cox [<a href="#CO-15">CO-15</a>] to support more general temporal positions, along with other minor improvements. 
+The substantial changes are listed in the <a href="#changes">change-log</a>.
+The specification document has been completely re-written. </p>
 </section>
 
 <section id="namespaces">
@@ -206,11 +210,12 @@ These provide a standard way to attach time information to things, which may be 
 
 <p>The duration of a TemporalEntity may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#duration">xsd:duration</a></code> and the position of an Instant may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>, which is built in to OWL 2 [<a href="#OWL-2">OWL-2</a>]. 
 These both use the conventional notions of temporal periods (years, months, weeks ... seconds), the Gregorian calendar, and the 24-hour clock. 
-The lexical representations use [ISO-8601] style notation, but ignoring leap seconds, which are explicitly mandated by the international standard. </p>
+The lexical representations use [[ISO-8601]] style notation, but ignoring leap seconds, which are explicitly mandated by the international standard. </p>
 
 <p>While this satisfies most web applications, many other calendars and temporal reference systems are used in particular cultural and scholarly contexts. 
 For example, the Julian calendar was used throughout Europe until the 16<sup>th</sup> century, and is still used for computing key dates in some orthodox Christian communities. 
 Lunisolar (e.g. Hebrew) and lunar (e.g. Islamic) calendars are currently in use in some communities, and many similar have been used historically. 
+Ancient Chinese calendars as well as the French revolutionary calendar used 10-day weeks.  
 In scientific and technical applications, Julian date counts the number of days since the beginning of 4713 BCE, and Loran-C, Unix and GPS time are based on seconds counted from a specified origin in 1958, 1970 and 1980, respectively, with GPS time represented using a pair of numbers for week number plus seconds into week. 
 Archaeological and geological applications use chronometric scales based on years counted backwards from ‘the present’ (defined as 1950 for radiocarbon dating [<a href="#RC-14">RC-14</a>]), or using named periods associated with specified correlation markers [<a href="#CR-05">CR-05</a>, <a href="#CR-14">CR-14</a>, <a href="#MF-13">MF-13</a>].
 Dynastic calendars (counting years within eras defined by the reign of a monarch or dynasty) were used in many cultures. In order to support these more general applications, the representation of temporal position and duration must be flexible, and annotated with the <em>temporal reference system </em>in use. </p>
@@ -2673,7 +2678,10 @@ time:TRS</a> which is handled this way.) </p> -->
 </tbody>
 </table>
 
-<p class="note">According to ISO-8601, the first Monday in the year is the start of week number 1. </p>
+<div class="note">
+<p>Weeks are numbered differently depending on the calendar. </p>
+<p>According to ISO-8601 the first week of the year shall include at least four days. Since Monday is defined as the first day of the week, in practice the first week of the year is the one containing the first Thursday in the year. </p>
+</div>
 
 </section>
 
@@ -2739,7 +2747,7 @@ time:TRS</a> which is handled this way.) </p> -->
 </tr>
 </tbody>
 </table>
-<p class="note">The use of this property is ambiguous, particularly for intervals whose duration is more than one rank smaller than the starting time (e.g. the first minute of a day, the first week of a year), so this property is deprecated. </p>
+<p class="note">Using <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code> in this place means that the duration of the interval is implicit: it corresponds to the length of the smallest non-zero element of the date-time literal. However, this rule cannot be used for intervals whose duration is more than one rank smaller than the starting time - e.g. the first minute or second of a day, the first hour of a month, or the first day of a year. In these cases the desired interval cannot be distinguished from the interval corresponding to the next rank up. Because of this essential ambiguity, use of this property is not recommended and it is deprecated. </p>
 </section>
 
 <section>
@@ -3447,36 +3455,25 @@ prov:startedAtTime owl:propertyChainAxiom (
 
 <p>Tabulation of classes and proeprties used in external applications, starting from: </p>
 
-https://goo.gl/3aLZbY 
-
-http://reference.data.gov.uk/def/intervals/
-
-http://reference.data.gov.uk/id/quarter/ 
-
-http://data.archiveshub.ac.uk/sparql
-
-http://perio.do/technical-overview/#temporal-extent 
-
-http://purl.org/iot/ontology/fiesta-iot#
-
-http://bioportal.bioontology.org/search?query=Instant
-
-http://bioportal.bioontology.org/search?q=ProperInterval
-
-http://bioportal.bioontology.org/search?q=DurationDescription
-
-http://bioportal.bioontology.org/search?q=DateTimeDescription
-
-http://bioportal.bioontology.org/search?q=TemporalEntity
-
-http://linkedevents.org/ontology/ 
-
-http://ontology.eil.utoronto.ca/GCI/Foundation/GCI-Foundation.owl http://lov.okfn.org/dataset/lov/vocabs/gci
-
-https://github.com/dr-shorthair/GeologicTimeScale/blob/master/ISC/isc2016-12-time.ttl 
-
-RSCtx http://softeng.polito.it/rsctx/
-https://fedcsis.org/proceedings/2016/pliks/428.pdf
+<table>
+<tr><td>https://goo.gl/3aLZbY </td></tr>
+<tr><td>http://reference.data.gov.uk/def/intervals/</td></tr>
+<tr><td>http://reference.data.gov.uk/id/quarter/ </td></tr>
+<tr><td>http://data.archiveshub.ac.uk/sparql</td></tr>
+<tr><td>http://perio.do/technical-overview/#temporal-extent </td></tr>
+<tr><td>http://purl.org/iot/ontology/fiesta-iot#</td></tr>
+<tr><td>http://bioportal.bioontology.org/search?query=Instant</td></tr>
+<tr><td>http://bioportal.bioontology.org/search?q=ProperInterval</td></tr>
+<tr><td>http://bioportal.bioontology.org/search?q=DurationDescription</td></tr>
+<tr><td>http://bioportal.bioontology.org/search?q=DateTimeDescription</td></tr>
+<tr><td>http://bioportal.bioontology.org/search?q=TemporalEntity</td></tr>
+<tr><td>http://linkedevents.org/ontology/ </td></tr>
+<tr><td>http://ontology.eil.utoronto.ca/GCI/Foundation/GCI-Foundation.owl http://lov.okfn.org/dataset/lov/vocabs/gci</td></tr>
+<tr><td>https://github.com/dr-shorthair/GeologicTimeScale/blob/master/ISC/isc2016-12-time.ttl </td></tr>
+<tr><td>RSCtx http://softeng.polito.it/rsctx/ </td></tr>
+<tr><td>https://fedcsis.org/proceedings/2016/pliks/428.pdf</td></tr>
+<tr><td>http://data.press.net/ontology/stuff/</td></tr>
+</table>
 
 
 </section>
@@ -3896,6 +3893,7 @@ Data on the Web Use Cases &amp; Requirements</a>. This section provides brief de
 
 </section>
 
+<!--
 <section id="references">
 <h2>References</h2>
 <dl class="bibliography">
@@ -3977,17 +3975,12 @@ to Authors</cite></a>, Radiocarb. Mag. (2014). <a href="https://journals.uair.ar
     <dd>E. Prud'hommeaux, G. Carothers (2014) <a href="https://www.w3.org/TR/turtle/"><cite>RDF 1.1 Turtle -
 Terse RDF Triple Language</cite></a>. W3C Recommendation. <a href="https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/
 </a></dd> 
-<!-- <dt id="TZ-ON">[TZ-ON]</dt>
-    <dd><a href="http://www.w3.org/2006/timezone"><cite>The time zone ontology file</cite></a>. <a href="http://www.w3.org/2006/timezone">http://www.w3.org/2006/timezone</a></dd>
-  <dt id="TZ-US">[TZ-US]</dt>
-    <dd><a href="http://www.w3.org/2006/timezone-us"><cite>The US time zone instance file</cite></a>. <a href="http://www.w3.org/2006/timezone-us">http://www.w3.org/2006/timezone-us</a></dd>
-  <dt id="TZ-WO">[TZ-WO]</dt>
-    <dd><a href="http://www.w3.org/2006/timezone-world"><cite>The world time zone instance file</cite></a>. <a href="http://www.w3.org/2006/timezone-world">http://www.w3.org/2006/timezone-world</a></dd> -->
   <dt id="XSD-D">[XSD-D]</dt> 
     <dd><a href="https://www.w3.org/TR/xmlschema11-2/"><cite>XML Schema Definition Language (XSD) 1.1 Part 2:
 Datatypes</cite></a>. W3C Recommendation 5 April 2012 <a href="https://www.w3.org/TR/xmlschema11-2/">https://www.w3.org/TR/xmlschema11-2/</a></dd>
 </dl>
 </section>
+-->
 
 <section id="ack">
 <h2>Acknowledgements</h2>
