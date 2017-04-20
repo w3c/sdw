@@ -31,7 +31,7 @@ var respecConfig = {
       companyURL: "http://csiro.au/"
 		}, {
 			name: "Maxime Lefrançois",
-      company: "École Nationale des Mines de Saint-Étienne",
+      company: "École Nationale Supérieure des Mines de Saint-Étienne",
       companyURL: "http://www.mines-stetienne.fr/"
 		}],
     otherLinks: [
