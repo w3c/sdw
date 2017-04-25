@@ -12,7 +12,8 @@ var respecConfig = {
     {
         name: "Simon Cox",
         company: "CSIRO",
-        companyURL: "http://www.csiro.au/"
+        companyURL: "http://www.csiro.au/", 
+        w3cid: 1796
       },{
         name: "Chris Little",
         company: "Met Office",
@@ -243,12 +244,47 @@ title: "RDF 1.1 Turtle - Terse RDF Triple Language. W3C Recommendation. "
        },
   "XSD-D":{ 
 href: "https://www.w3.org/TR/xmlschema11-2/",
-title: "XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes. W3C Recommendation 5 April 2012 "
+title: "XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes",
+    publisher: "W3C",
+    specStatus: "recommendation",
+    editors: [ {
+      name: "David Peterson"
+      } , 
+      {
+      name: "Shudi (Sandy) Gao 高殊镝"
+      } , 
+      {
+      name: "Ashok Malhotra"
+      } , 
+      {
+      name: "C. M. Sperberg-McQueen"
+      } , 
+      {
+      name: "Henry S. Thompson"
+      }],
+    date: "5 April 2012"
+
        },
-/*       */
+  "XPXQ-functions":{
+    href: "https://www.w3.org/TR/xpath-functions-3/",
+    title: "XPath and XQuery Functions and Operators 3.1",
+    publisher: "W3C",
+    specStatus: "recommendation",
+    editors: [ {
+      name: "Michael Kay"
+      }],
+    date: "21 March 2017"
     },
+  "XSLT2":{
+    href: "https://www.w3.org/TR/xslt20/",
+    title: "XSL Transformations (XSLT) Version 2.0 ",
+    publisher: "W3C",
+    specStatus: "recommendation",
+    date: "23 January 2007",
+    editors: [ {
+      name: "Michael Kay"
+      }],
+    }
+  },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
-
-
-

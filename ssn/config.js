@@ -31,8 +31,8 @@ var respecConfig = {
       companyURL: "http://csiro.au/"
 		}, {
 			name: "Maxime Lefrançois",
-      company: "Université de Lyon",
-      companyURL: "http://www.universite-lyon.fr/"
+      company: "École Nationale Supérieure des Mines de Saint-Étienne",
+      companyURL: "http://www.mines-stetienne.fr/"
 		}],
     otherLinks: [
     {

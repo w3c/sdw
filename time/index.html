@@ -89,11 +89,17 @@ Transactions occur in a sequence, with the current state of a system depending o
 Knowledge of the temporal relationships between transactions, events, travel and orders is often critical. 
 OWL-Time has been developed in response to this need, 
 for describing the temporal properties of any resource denoted using a web identifier (URI), 
-including web-pages and real-world things if desired. </p>
-<p>ISO 8601 [[ISO-8601]] provides a basis for encoding time position and extent in a character string, using the most common modern calendar-clock system. 
-Datatypes in XML Schema [[XSD-D]] use a subset of the ISO 8601 format to pack multi-element values into a compact literal, and some of which are <a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes">built-in to OWL2</a>. 
-OWL-Time makes use of these encodings where appropriate, and also provides representations in which the elements of a date and time are put into separately addressable resources, which can help with queries and reasoning applications. 
-OWL-Time also supports other representations of temporal position and duration, including temporal coordinates (scaled position on a continuous temporal axis) and ordinal times (named positions or periods). 
+including web-pages and real-world things if desired. 
+It focusses particularly on temporal ordering relationships. 
+While these are implicit in all temporal descriptions, OWL-Time provides specific predicates underlain to support, or to make explicit the results of, reasoning over temporal entities. </p>
+<p>There is a great deal of relevant existing work, some very closely related. 
+ISO 8601 [[ISO-8601]] provides a basis for encoding time position and extent in a character string, using the most common modern calendar-clock system. 
+Datatypes in XML Schema [[XSD-D]] use a subset of the ISO 8601 format in order to pack multi-element values into a compact literal. 
+Functions and operators on durations, and on dates and times, encoded in these ways are available in XPath and XQuery [[XPXQ-functions]]. 
+XSLT [[XSLT2]] also provides formatting functions for times and dates, with <a href="https://www.w3.org/TR/xslt20/#format-date">explicit support for the specified language, calendar and country</a>.  
+Some of the XML Schema datatypes are <a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes">built-in to OWL2</a>, so the XPath and XQuery functions may be used on basic OWL data. </p>
+<p>OWL-Time makes use of these encodings, but also provides representations in which the elements of a date and time are put into separately addressable resources, which can help with queries and reasoning applications. 
+OWL-Time also supports other representations of temporal position and duration, including temporal coordinates (scaled position on a continuous temporal axis) and ordinal times (named positions or periods), as well as relaxing the expectation that dates use the Gregorian calendar. 
 However, OWL-Time has a particular focus on ordering relations ("temporal topology"), which is not supported explicitly in any of the date-time encodings. </p>
 <p>A first-order logic axiomatization of the core of this ontology is available in [<a href="#HP-04">HP-04</a>].
 This document presents the OWL encodings of the ontology, with some additions. </p>
@@ -101,6 +107,7 @@ This document presents the OWL encodings of the ontology, with some additions. <
 The ontology is based on the draft by Hobbs and Pan, [<a href="#OWL-T">OWL-T</a>] incorporating modifications proposed by Cox [<a href="#CO-15">CO-15</a>] to support more general temporal positions, along with other minor improvements. 
 The substantial changes are listed in the <a href="#changes">change-log</a>.
 The specification document has been completely re-written. </p>
+
 </section>
 
 <section id="namespaces">
@@ -126,7 +133,7 @@ The specification document has been completely re-written. </p>
 </tr>
 <tr>
 <td><code>greg</code></td>
-<td><code>http://www.w3.org/ns/time-gregorian#</code></td>
+<td><code>http://www.w3.org/ns/time/gregorian#</code></td>
 </tr>
 <tr>
 <td><code>owl</code></td>
@@ -714,7 +721,7 @@ provide alternative ways to describe the temporal position of an <code><a href="
 </tr>
 </tbody>
 </table>
-<p>Twelve individual members of <code><a href="#time:MonthOfYear">:MonthOfYear</a></code> are provided in <a href="#time-gregorian">separate namespace</a>, corresponding to the twelve months used in the Gregorian calendar 
+<p>Twelve individual members of <code><a href="#time:MonthOfYear">:MonthOfYear</a></code> are provided in a <a href="http://www.w3.org/ns/time/gregorian">separate namespace</a>, corresponding to the twelve months used in the Gregorian calendar 
 <code><a href="#greg:January">greg:January</a></code>, 
 <code><a href="#greg:February">greg:February</a></code>, 
 <code><a href="#greg:March">greg:March</a></code>, 
@@ -968,12 +975,12 @@ including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. nu
 <code><a href="#time:after">:after</a></code> |
 <code><a href="#time:before">:before</a></code> |
 <code><a href="#time:day">:day</a></code> |
-<code><a href="#time:days">:days</a></code> |
 <code><a href="#time:dayOfWeek">:dayOfWeek</a></code> |
 <code><a href="#time:dayOfYear">:dayOfYear</a></code> |
+<code><a href="#time:days">:days</a></code> |
 <code><a href="#time:hasBeginning">:hasBeginning</a></code> |
-<code><a href="#time:hasDuration">:hasDuration</a></code> |
 <code><a href="#time:hasDateTimeDescription">:hasDateTimeDescription</a></code> |
+<code><a href="#time:hasDuration">:hasDuration</a></code> |
 <code><a href="#time:hasDurationDescription">:hasDurationDescription</a></code> |
 <code><a href="#time:hasEnd">:hasEnd</a></code> |
 <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code> |
@@ -982,6 +989,7 @@ including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. nu
 <code><a href="#time:hasXSDDuration">:hasXSDDuration</a></code> |
 <code><a href="#time:hour">:hour</a></code> |
 <code><a href="#time:hours">:hours</a></code> |
+<code><a href="#time:inDateTime">:inDateTime</a></code> |
 <code><a href="#time:inside">:inside</a></code> |
 <code><a href="#time:inTemporalPosition">:inTemporalPosition</a></code> |
 <code><a href="#time:intervalAfter">:intervalAfter</a></code> |
@@ -1000,7 +1008,6 @@ including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. nu
 <code><a href="#time:intervalStartedBy">:intervalStartedBy</a></code> |
 <code><a href="#time:intervalStarts">:intervalStarts</a></code> |
 <code><a href="#time:inTimePosition">:inTimePosition</a></code> |
-<code><a href="#time:inDateTime">:inDateTime</a></code> |
 <code><a href="#time:inXSDDate">:inXSDDate</a></code> |
 <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code> |
 <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code> |
@@ -2679,7 +2686,7 @@ time:TRS</a> which is handled this way.) </p> -->
 </table>
 
 <div class="note">
-<p>Weeks are numbered differently depending on the calendar. </p>
+<p>Weeks are numbered differently depending on the calendar in use. </p>
 <p>According to ISO-8601 the first week of the year shall include at least four days. Since Monday is defined as the first day of the week, in practice the first week of the year is the one containing the first Thursday in the year. </p>
 </div>
 
@@ -3448,35 +3455,7 @@ prov:startedAtTime owl:propertyChainAxiom (
 
 </section>
 
-<section id="time-in-use">
-<h3>OWL-Time in use</h3>
-<p><b>To be completed.</b></p>
-<p>In this section we list some known applications of OWL-Time. </p>
 
-<p>Tabulation of classes and proeprties used in external applications, starting from: </p>
-
-<table>
-<tr><td>https://goo.gl/3aLZbY </td></tr>
-<tr><td>http://reference.data.gov.uk/def/intervals/</td></tr>
-<tr><td>http://reference.data.gov.uk/id/quarter/ </td></tr>
-<tr><td>http://data.archiveshub.ac.uk/sparql</td></tr>
-<tr><td>http://perio.do/technical-overview/#temporal-extent </td></tr>
-<tr><td>http://purl.org/iot/ontology/fiesta-iot#</td></tr>
-<tr><td>http://bioportal.bioontology.org/search?query=Instant</td></tr>
-<tr><td>http://bioportal.bioontology.org/search?q=ProperInterval</td></tr>
-<tr><td>http://bioportal.bioontology.org/search?q=DurationDescription</td></tr>
-<tr><td>http://bioportal.bioontology.org/search?q=DateTimeDescription</td></tr>
-<tr><td>http://bioportal.bioontology.org/search?q=TemporalEntity</td></tr>
-<tr><td>http://linkedevents.org/ontology/ </td></tr>
-<tr><td>http://ontology.eil.utoronto.ca/GCI/Foundation/GCI-Foundation.owl http://lov.okfn.org/dataset/lov/vocabs/gci</td></tr>
-<tr><td>https://github.com/dr-shorthair/GeologicTimeScale/blob/master/ISC/isc2016-12-time.ttl </td></tr>
-<tr><td>RSCtx http://softeng.polito.it/rsctx/ </td></tr>
-<tr><td>https://fedcsis.org/proceedings/2016/pliks/428.pdf</td></tr>
-<tr><td>http://data.press.net/ontology/stuff/</td></tr>
-</table>
-
-
-</section>
 
 </section>
 
@@ -3847,6 +3826,11 @@ prov:startedAtTime owl:propertyChainAxiom (
 
 </section>
 
+<section class="appendix" id="in-use">
+	<h3>Evidence of adoption</h3>
+	<p>OWL-Time has been put into use in a large number of applications. Some of these are <a href="https://www.w3.org/2015/spatial/wiki/OWL_Time_Ontology_adoption">summarized here</a>.</p>
+
+</section>
 
 <section class="appendix" id="changes">
 <h2>Changes from previous versions</h2>
@@ -3892,6 +3876,18 @@ Data on the Web Use Cases &amp; Requirements</a>. This section provides brief de
 </ul>
 
 </section>
+
+<section class="appendix" id="wide-review">
+	<h3>Wide review</h3>
+	<p>Results of wide review of OWL-Time is <a href="https://www.w3.org/2015/spatial/wiki/Wide_Review#OWL_Time">summarized here</a>.</p>
+
+</section>
+
+<section id="ack">
+<h2>Acknowledgements</h2>
+<p>The editors would like to thank the <a href="https://www.w3.org/2000/09/dbwg/details?group=75471">members of the W3C/OGC Spatial Data on the Web Working Group</a> for their contributions during the development of this document. </p>
+</section>
+
 
 <section id="references">
 <h2>References</h2>
@@ -3978,11 +3974,6 @@ Terse RDF Triple Language</cite></a>. W3C Recommendation. <a href="https://www.w
     <dd><a href="https://www.w3.org/TR/xmlschema11-2/"><cite>XML Schema Definition Language (XSD) 1.1 Part 2:
 Datatypes</cite></a>. W3C Recommendation 5 April 2012 <a href="https://www.w3.org/TR/xmlschema11-2/">https://www.w3.org/TR/xmlschema11-2/</a></dd>
 </dl>
-</section>
-
-<section id="ack">
-<h2>Acknowledgements</h2>
-<p>The editors would like to thank Jerry Hobbs and Feng Pan for producing the original draft. </p>
 </section>
 
 </body>
