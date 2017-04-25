@@ -93,18 +93,18 @@ including web-pages and real-world things if desired.
 It focusses particularly on temporal ordering relationships. 
 While these are implicit in all temporal descriptions, OWL-Time provides specific predicates underlain to support, or to make explicit the results of, reasoning over temporal entities. </p>
 <p>There is a great deal of relevant existing work, some very closely related. 
-ISO 8601 [[ISO-8601]] provides a basis for encoding time position and extent in a character string, using the most common modern calendar-clock system. 
-Datatypes in XML Schema [[XSD-D]] use a subset of the ISO 8601 format in order to pack multi-element values into a compact literal. 
-Functions and operators on durations, and on dates and times, encoded in these ways are available in XPath and XQuery [[XPXQ-functions]]. 
-XSLT [[XSLT2]] also provides formatting functions for times and dates, with <a href="https://www.w3.org/TR/xslt20/#format-date">explicit support for the specified language, calendar and country</a>.  
-Some of the XML Schema datatypes are <a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes">built-in to OWL2</a>, so the XPath and XQuery functions may be used on basic OWL data. </p>
+ISO 8601 [[ISO8601]] provides a basis for encoding time position and extent in a character string, using the most common modern calendar-clock system. 
+Datatypes in XML Schema [[xmlschema11-2]] use a subset of the ISO 8601 format in order to pack multi-element values into a compact literal. 
+Functions and operators on durations, and on dates and times, encoded in these ways are available in XPath and XQuery [[xpath-functions-31]]. 
+XSLT [[XSLT20]] also provides formatting functions for times and dates, with <a href="https://www.w3.org/TR/xslt20/#format-date">explicit support for the specified language, calendar and country</a>.  
+Some of the XML Schema datatypes are <a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes">built-in to OWL2</a> [[owl2-quick-reference]], so the XPath and XQuery functions may be used on basic OWL data. </p>
 <p>OWL-Time makes use of these encodings, but also provides representations in which the elements of a date and time are put into separately addressable resources, which can help with queries and reasoning applications. 
 OWL-Time also supports other representations of temporal position and duration, including temporal coordinates (scaled position on a continuous temporal axis) and ordinal times (named positions or periods), as well as relaxing the expectation that dates use the Gregorian calendar. 
 However, OWL-Time has a particular focus on ordering relations ("temporal topology"), which is not supported explicitly in any of the date-time encodings. </p>
-<p>A first-order logic axiomatization of the core of this ontology is available in [<a href="#HP-04">HP-04</a>].
+<p>A first-order logic axiomatization of the core of this ontology is available in [[HP-04]].
 This document presents the OWL encodings of the ontology, with some additions. </p>
 <p>This version of OWL-Time was developed in the Spatial Data on the Web Working Group (a joint activity involving W3C and the Open Geospatial Consortium). 
-The ontology is based on the draft by Hobbs and Pan, [<a href="#OWL-T">OWL-T</a>] incorporating modifications proposed by Cox [<a href="#CO-15">CO-15</a>] to support more general temporal positions, along with other minor improvements. 
+The ontology is based on the draft by Hobbs and Pan [[owl-time-20060927]], incorporating modifications proposed by Cox [[CO-15]] to support more general temporal positions, along with other minor improvements. 
 The substantial changes are listed in the <a href="#changes">change-log</a>.
 The specification document has been completely re-written. </p>
 
@@ -112,7 +112,7 @@ The specification document has been completely re-written. </p>
 
 <section id="namespaces">
 <h2>Notation and namespaces</h2>
-	<p>Classes and properties from the Time Ontology are denoted using <a href="https://www.w3.org/TR/curie/">Compact URIs</a>. </p>
+	<p>Classes and properties from the Time Ontology are denoted using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[curie]]. </p>
 <p>The namespace for OWL-Time is <code>http://www.w3.org/2006/time#</code>. OWL-Time does not re-use elements from any other vocabularies, but does use some built-in datatypes from OWL and some additional types from XML Schema Part 2. </p>
 <p>The table below indicates the full list of namespaces and prefixes used in this document.</p>
 <table id="namespacesTable">
@@ -163,9 +163,9 @@ The specification document has been completely re-written. </p>
 </tbody>
 </table>
 
-<p>Where class descriptions include local restrictions on properties, these are described using the <a href="https://www.w3.org/TR/owl2-manchester-syntax/#Descriptions">OWL 2 Manchester Syntax</a>. </p>
+<p>Where class descriptions include local restrictions on properties, these are described using the <a href="https://www.w3.org/TR/owl2-manchester-syntax/#Descriptions">OWL 2 Manchester Syntax</a> [[!owl2-manchester-syntax]]. </p>
 
-<p>Examples and other code fragments are serialized using <a href="https://www.w3.org/TR/turtle/">RDF 1.1 Turtle</a> notation.</p>
+<p>Examples and other code fragments are serialized using <a href="https://www.w3.org/TR/turtle/">RDF 1.1 Turtle</a> notation [[turtle]].</p>
 
 </section>
 
@@ -175,7 +175,7 @@ The specification document has been completely re-written. </p>
 <section id="topology">
 <h3>Topological Temporal Relations</h3>
 <p>The basic structure of the ontology is based on an algebra of binary relations on intervals 
-(e.g., meets, overlaps, during) developed by Allen [<a href="#AL-84">AL-84</a>, <a href="#AF-97">AF-97</a>] for
+(e.g., meets, overlaps, during) developed by Allen [[AL-84]], [[AF-97]] for
 representing qualitative temporal information, and to address the problem of reasoning about such information.
 </p>
 <p>The ontology starts with a class <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> with properties <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code> that link to the temporal instants that define its limits, and <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code> to describe its extent. 
@@ -203,7 +203,7 @@ Note that the standard interval calculus assumes all intervals are proper, so th
 
 <figure> <img style="width: 545px; height: 322px;" title="Allen's Interval Relations" alt="Schematic of Interval Relations"
 src="./images/IntervalRelations.png"> 
-<figcaption>Thirteen elementary possible relations between time periods [<a href="#AF-97">AF-97</a>].  </figcaption> </figure>
+<figcaption>Thirteen elementary possible relations between time periods [[AF-97]].  </figcaption> </figure>
 
 <p>Two additional relations: <code>In</code> (the union of <code>During</code>, <code>Starts</code> and <code>Finishes</code>) and <code>Disjoint</code> (the union of <code>Before</code> and <code>After</code>) are not shown in the figure but are included in the ontology. </p>
 
@@ -215,20 +215,20 @@ These provide a standard way to attach time information to things, which may be 
 <section id="trs-clock-calendar">
 <h3>Temporal reference systems, clocks, calendars</h3>
 
-<p>The duration of a TemporalEntity may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#duration">xsd:duration</a></code> and the position of an Instant may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>, which is built in to OWL 2 [<a href="#OWL-2">OWL-2</a>]. 
+<p>The duration of a TemporalEntity may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#duration">xsd:duration</a></code> and the position of an Instant may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>, which is built in to OWL 2 [[owl2-syntax]]. 
 These both use the conventional notions of temporal periods (years, months, weeks ... seconds), the Gregorian calendar, and the 24-hour clock. 
-The lexical representations use [[ISO-8601]] style notation, but ignoring leap seconds, which are explicitly mandated by the international standard. </p>
+The lexical representations use [[!ISO8601]] style notation, but ignoring leap seconds, which are explicitly mandated by the international standard. </p>
 
 <p>While this satisfies most web applications, many other calendars and temporal reference systems are used in particular cultural and scholarly contexts. 
 For example, the Julian calendar was used throughout Europe until the 16<sup>th</sup> century, and is still used for computing key dates in some orthodox Christian communities. 
 Lunisolar (e.g. Hebrew) and lunar (e.g. Islamic) calendars are currently in use in some communities, and many similar have been used historically. 
 Ancient Chinese calendars as well as the French revolutionary calendar used 10-day weeks.  
 In scientific and technical applications, Julian date counts the number of days since the beginning of 4713 BCE, and Loran-C, Unix and GPS time are based on seconds counted from a specified origin in 1958, 1970 and 1980, respectively, with GPS time represented using a pair of numbers for week number plus seconds into week. 
-Archaeological and geological applications use chronometric scales based on years counted backwards from ‘the present’ (defined as 1950 for radiocarbon dating [<a href="#RC-14">RC-14</a>]), or using named periods associated with specified correlation markers [<a href="#CR-05">CR-05</a>, <a href="#CR-14">CR-14</a>, <a href="#MF-13">MF-13</a>].
+Archaeological and geological applications use chronometric scales based on years counted backwards from ‘the present’ (defined as 1950 for radiocarbon dating [[RC-14]]), or using named periods associated with specified correlation markers ([[CR-05]], [[CR-14]], [[MF-13]]).
 Dynastic calendars (counting years within eras defined by the reign of a monarch or dynasty) were used in many cultures. In order to support these more general applications, the representation of temporal position and duration must be flexible, and annotated with the <em>temporal reference system </em>in use. </p>
 <p>A set of ordered intervals (e.g. named dynasties, geological periods, geomagnetic reversals, tree rings) can
 make a simple form of temporal reference system that supports logical reasoning, known as an <em>ordinal
-temporal reference system </em>[<a href="#ISO-19108">ISO-19108</a>]. </p>
+temporal reference system </em> [[ISO19108]]. </p>
 <p>Measurement of duration needs a <em>clock</em>. In its most general form a clock is just a regularly
 repeating physical event ('tick') and a counting mechanism for the 'ticks'. These counts may be used to
 logically relate two events and to calculate a duration between the events.</p>
@@ -236,7 +236,7 @@ logically relate two events and to calculate a duration between the events.</p>
 everyday dates and times related to the movement of astronomical bodies (day, month, year). </p>
 <p>For many purposes it is convenient to make temporal calculations in terms of clock durations that exceed
 everyday units such as days, weeks, months and years, using a representation of temporal position in a <em>temporal
-coordinate system</em> [<a href="#ISO-19108">ISO-19108</a>], i.e. on a number line with a specified origin,
+coordinate system</em> [[ISO19108]], i.e. on a number line with a specified origin,
 such as Julian date, or Unix time. This may be converted to calendar units when necessary for human
 consumption. </p>
 <p>Nevertheless, in practice much temporal information is not well-defined, in that there may be no clear
@@ -245,8 +245,7 @@ statement about the assumed underlying calendar and clock. </p>
 
 <section id="time-position">
 <h3>Time position</h3>
-<p>OWL 2 has two built-in datatypes relating to time: <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code> and <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> [<a
-href="#OWL-2">OWL-2</a>]. Other XSD types such as <code><a href="https://www.w3.org/TR/xmlschema11-2/#date">xsd:date</a></code>, <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code> and <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYearMonth">xsd:gYearMonth</a></code> [<a href="#XSD-D">XSD-D</a>] are also commonly used in OWL applications.
+<p>OWL 2 has two built-in datatypes relating to time: <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTime">xsd:dateTime</a></code> and <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> [[!owl2-syntax]]. Other XSD types such as <code><a href="https://www.w3.org/TR/xmlschema11-2/#date">xsd:date</a></code>, <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code> and <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYearMonth">xsd:gYearMonth</a></code> [[!xmlschema11-2]] are also commonly used in OWL applications.
 These provide for a compact representation of time positions using the conventional Gregorian calendar and
 24-hour clock, with timezone offset from UTC.</p>
 <p>Four classes in the ontology support an explicit description of temporal position. 
@@ -292,7 +291,7 @@ so that you can say "duration of 2.5 years".</p>
 <section id="vocabulary">
 <h2>Vocabulary specification</h2>
 
-<p>In this vocabulary specification, Manchester syntax [<a href="#OWL-M">OWL-M</a>] is used where the value of a field is not a simple term denoted by a URI or cURI.</p>
+<p>In this vocabulary specification, Manchester syntax [[!owl2-manchester-syntax]] is used where the value of a field is not a simple term denoted by a URI or cURI.</p>
 
 <section id="classes">
 <h3>Classes</h3>
@@ -564,8 +563,8 @@ calendar-clock system</td>
 <p>Six datatype properties <code><a href="#time:year">:year</a></code>, <code><a href="#time:month">:month</a></code>, <code><a href="#time:day">:day</a></code>, <code><a href="#time:hour">:hour</a></code>, <code><a href="#time:minute">:minute</a></code>,
 <code><a href="#time:second">:second</a></code>, together with <code><a href="#time:timeZone">:timeZone</a></code> support the description of
 components of a temporal position in a calendar-clock system. These correspond with the 'seven property
-model' described in ISO 8601 [<a href="#ISO-8601">ISO-8601</a>] and XML Schema Definition Language Part 2:
-Datatypes [<a href="#XSD-D">XSD-D</a>], except that the calendar is not specified in advance, but is provided
+model' described in ISO 8601 [[ISO8601]] and XML Schema Definition Language Part 2:
+Datatypes [[xmlschema11-2]], except that the calendar is not specified in advance, but is provided
 through the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property (defined above). </p>
 <p>Some combinations of properties are redundant. For example, within a specified :year if <code><a href="#time:dayOfYear">:dayOfYear</a></code> is provided then <code><a href="#time:day">:day</a></code> and <code><a href="#time:month">:month</a></code> can be computed, and vice versa. 
 Individual values SHOULD be consistent with each other and the calendar, indicated through the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property.</p>
@@ -771,7 +770,7 @@ are different</td>
 <code><a href="#time:intervalEquals">:intervalEquals</a></code> 
 <code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> 
 <code><a href="#time:intervalIn">:intervalIn</a></code> 
-support the set of interval relations defined by Allen [<a href="#AL-84">AL-84</a>] and Allen and Ferguson [<a href="#AF-97">AF-97</a>].</p>
+support the set of interval relations defined by Allen [[AL-84]] and Allen and Ferguson [[AF-97]].</p>
 </section>
 
 <section>
@@ -927,7 +926,7 @@ The region and offset are specified by the locally recognised governing authorit
 <p>No specific properties are provided for the class <code><a href="#time:TimeZone">:TimeZone</a></code>, the definition of which is beyond the
 scope of this ontology. The class specified here is a stub, effectively the superclass of all time zone classes. </p> 
 <div class="note">
-<p>An ontology for time zone descriptions was described in [<a href="#OWL-T">OWL-T</a>] and provided as RDF in a separate namespace <code>tzont:</code>.
+<p>An ontology for time zone descriptions was described in [[owl-time-20060927]] and provided as RDF in a separate namespace <code>tzont:</code>.
 However, that ontology was incomplete in scope, and the example datasets were selective. Furthermore, the use of a class from an external ontology as the range of an <code>ObjectProperty</code> in OWL-Time creates an undesirable dependency. Therefore, reference to the time zone class has been replaced with the 'stub' class in the normative part of this version of OWL-Time.</p>
 <p><a href="https://www.ietf.org/timezones/data/">IETF</a> and <a href="http://www.iana.org/time-zones">IANA</a> also provide databases. These are well maintained, but individual iems are not available at individual URIs, i.e. not as "Linked Data".</p>
 <p>The World Clock service provides a <a href="https://www.timeanddate.com/time/zones/">list of time zones</a>, with the description of each available as an individual webpage with a convenient individual URI (e.g. <a href="https://www.timeanddate.com/time/zones/acwst">https://www.timeanddate.com/time/zones/acwst</a>. Currently this appears to offer best practice. </p>
@@ -960,7 +959,7 @@ may be represented directly, using this ontology, as a set of <code><a href="#ti
 inter-relationships to support the necessary ordering relationships. See example below of <a href="#geologictimescale">Geologic
 Timescale</a>. </p>
 <div class="note">
-<p>A taxonomy of temporal reference systems is provided in ISO 19108:2002 [<a href="#ISO-19108">ISO-19108</a>],
+<p>A taxonomy of temporal reference systems is provided in ISO 19108:2002 [[ISO19108]],
 including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. numeric offset from an epoch); 
 (c) temporal ordinal reference systems (i.e. ordered sequence of named intervals, not necessarily of equal duration). </p>
 </div>
@@ -3146,7 +3145,7 @@ the number of seconds since the beginning of 1st January 1970): </p>
 <section id="temporal-precision">
 <h3>Temporal precision</h3>
 <p>For the purposes of radiocarbon dating (which is the technique used in geological age determination for
-materials up to around 60,000 years old) 'the Present' is conventionally fixed at 1950 [<a href="#RC-14">RC-14</a>].
+materials up to around 60,000 years old) 'the Present' is conventionally fixed at 1950 [[RC-14]].
 This can be described as an individual <code><a href="#time:Instant">:Instant</a></code>, with its position expressed using any of the
 three alternatives: </p>
 <pre>geol:Present
@@ -3249,7 +3248,7 @@ ex:GPSTime
 
 <section id="iCal">
 <h3>iCalendar</h3>
-<p>iCalendar [<a href="#DE-09">DE-09</a>] is a widely supported standard for personal data interchange. It provides
+<p>iCalendar [[RFC5545]] is a widely supported standard for personal data interchange. It provides
 the definition of a common format for openly exchanging calendaring and scheduling information across the
 Internet. The representation of temporal concepts in this time ontology can be straightforwardly mapped to
 iCalendar. For example, duration of 15 days, 5 hours and 20 seconds is represented in iCalendar as P15DT5H0M20S,
@@ -3319,7 +3318,7 @@ This may be represented in multiple ways using OWL-Time, including the following
 <h3>Geologic timescale</h3>
 <p>The geologic timescale is defined as a set of named intervals arranged in a hierarchy, such that there is
 only one subdivision of the intervals of each rank (e.g. 'Era') by a set of intervals of the next rank (in
-this case 'Period') [<a href="#CR-05">CR-05</a>]. Since the relative ordering is well-defined this graph can
+this case 'Period') [[CR-05]]. Since the relative ordering is well-defined this graph can
 therefore serve as an ordinal temporal reference system. Fig. 5 shows how the geologic timescale can be
 expressed as a set of <code><a href="#time:ProperInterval">:ProperInterval</a></code>s related to each other using only <code><a href="#time:intervalMetBy">:intervalMetBy</a></code>, <code><a href="#time:intervalStartedBy">:intervalStartedBy</a></code>,
 <code><a href="#time:intervalFinishedBy">:intervalFinishedBy</a></code>. Many other interval relationships follow logically from the ones shown (for
@@ -3357,7 +3356,7 @@ The complete <a href="https://github.com/dr-shorthair/GeologicTimeScale/blob/mas
 
 <section id="scheduling">
 <h3>A Use Case for Scheduling</h3>
-<!--        <p class="note">This example carried over from [<a href="#OWL-T">OWL-T</a>]. </p> -->
+<!--        <p class="note">This example carried over from [[OWL-T]]. </p> -->
 <p id="examples0">Suppose someone has a telecon scheduled for 6:00pm EST on November 5, 2006. You would like to
 make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45 minutes.
 Will there be an overlap? </p>
@@ -3422,7 +3421,7 @@ prov:startedAtTime owl:propertyChainAxiom (
 
 <section id="dcat-example">
 <h3>Legal interval</h3>
-<p>The <a href="https://www.w3.org/TR/vocab-dcat/#basic-example">basic example</a> in the [[DCAT]] specification described the 'temporal range' of a dataset with reference to the resource <a href="http://reference.data.gov.uk/id/quarter/2006-Q1">http://reference.data.gov.uk/id/quarter/2006-Q1</a> which is one of many available from <code>data.gov.uk</code>. This resource defines a specific legal period - the first quarter of 2006 - formalized using the <a href="http://reference.data.gov.uk/def/intervals/">interval ontology</a> which is (currently) based on the 2006 version of OWL-Time. The period can be fully described using OWL-Time, omitting all elements from the intervals ontology, as follows: </p>
+<p>The <a href="https://www.w3.org/TR/vocab-dcat/#basic-example">basic example</a> in the [[vocab-dcat]] specification described the 'temporal range' of a dataset with reference to the resource <a href="http://reference.data.gov.uk/id/quarter/2006-Q1">http://reference.data.gov.uk/id/quarter/2006-Q1</a> which is one of many available from <code>data.gov.uk</code>. This resource defines a specific legal period - the first quarter of 2006 - formalized using the <a href="http://reference.data.gov.uk/def/intervals/">interval ontology</a> which is (currently) based on the 2006 version of OWL-Time. The period can be fully described using OWL-Time, omitting all elements from the intervals ontology, as follows: </p>
 
 <pre>ex:i2006-Q1
   rdf:type :ProperInterval ;
@@ -3836,7 +3835,7 @@ prov:startedAtTime owl:propertyChainAxiom (
 <h2>Changes from previous versions</h2>
 <p>This version of OWL-Time was developed in the Spatial Data on the Web Working Group 
 (a joint activity involving W3C and the Open Geospatial Consortium). 
-The Ontology is derived from the one described in the 2006 Draft [<a href="#OWL-T">OWL-T</a>] though the document has been completely re-written.  
+The Ontology is derived from the one described in the 2006 Draft [[owl-time-20060927]] though the document has been completely re-written.  
 The principal technical changes are as follows: </p>
 <ul>
   <li><code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> and <code><a href="#time:GeneralDurationDescription">:GeneralDurationDescription</a></code> are generalizations of the corresponding classes from the 2006 draft, for cases which the temporal reference system is not fixed to the Gregorian Calendar in advance</li>
@@ -3859,7 +3858,7 @@ The principal technical changes are as follows: </p>
 <section class="appendix" id="requirements">
 <h2>Response to Requirements identified in working group analysis</h2>
 <p>A number of requirements relating to Time were identified in the <a href="https://www.w3.org/TR/sdw-ucr/#arTimeOntologyInOWL">Spatial
-Data on the Web Use Cases &amp; Requirements</a>. This section provides brief descriptions of how these requirements have been resolved. </p>
+Data on the Web Use Cases &amp; Requirements</a> [[sdw-ucr]]. This section provides brief descriptions of how these requirements have been resolved. </p>
 <ul>
   <li><a href="https://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7 Date, time and duration</a>: see <a href="#overview">overview</a>, <code><a href="#time:TemporalEntity">time:TemporalEntity</a></code>, <code><a href="#time:TemporalPosition">time:TemporalPosition</a></code>, <code><a href="#time:TemporalDuration">time:TemporalDuration</a></code></li>
   <li><a href="https://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.53 Update datatypes in OWL Time</a>: see <code><a href="#time:inXSDDateTimeStamp">time:inXSDDateTimeStamp</a></code> and <a href="#Datatypes">Datatypes</a></li>
@@ -3886,94 +3885,6 @@ Data on the Web Use Cases &amp; Requirements</a>. This section provides brief de
 <section id="ack">
 <h2>Acknowledgements</h2>
 <p>The editors would like to thank the <a href="https://www.w3.org/2000/09/dbwg/details?group=75471">members of the W3C/OGC Spatial Data on the Web Working Group</a> for their contributions during the development of this document. </p>
-</section>
-
-
-<section id="references">
-<h2>References</h2>
-<dl class="bibliography">
-  <dt id="AF-97">[AF-97]</dt>
-    <dd>J.F. Allen, G. Ferguson (1997) <a href="http://dx.doi.org/10.1007/978-0-585-28322-7_7"><cite>Actions
-and events in interval temporal logic</cite></a>. In: Spatial and Temporal Reasoning. O. Stock, ed.,
-Kluwer, Dordrecht, Netherlands, pp. 205-245. <a href="http://dx.doi.org/10.1007/978-0-585-28322-7_7">doi:10.1007/978-0-585-28322-7_7</a></dd>
-  <dt id="AL-84">[AL-84]</dt>
-    <dd>J.F. Allen (1984) <a href="http://dx.doi.org/10.1016/0004-3702%2884%2990008-0"><cite>Towards a general
-theory of action and time</cite></a>. Artificial Intelligence <strong>23</strong>, pp. 123-154. <a href="http://dx.doi.org/10.1016/0004-3702%2884%2990008-0">doi:10.1016/0004-3702(84)90008-0</a></dd>
-  <dt id="CO-15">[CO-15]</dt>
-    <dd>S.J.D. Cox (2015) <a href="http://dx.doi.org/10.3233/SW-150187"><cite>Time Ontology Extended for
-Non-Gregorian Calendar Applications</cite></a>. Semantic Web Journal <strong>7</strong>, pp. 201-209 <a
-href="http://dx.doi.org/10.3233/SW-150187">doi:10.3233/SW-150187</a></dd>
-  <dt id="CR-05">[CR-05]</dt>
-    <dd>S.J.D. Cox, S.M. Richard (2005) <a href="http://dx.doi.org/10.1130/GES00022.1"><cite>A formal model for the
-geologic time scale and global stratotype section and point, compatible with geospatial information
-transfer standards</cite></a>. Geosphere <strong>1</strong> 119. <a href="http://dx.doi.org/10.1130/GES00022.1">doi:10.1130/GES00022.1</a>.</dd>
-  <dt id="CR-14">[CR-14]</dt>
-    <dd>S.J.D. Cox, S.M. Richard (2014), <a href="http://dx.doi.org/10.1007/s12145-014-0166-2"><cite>A geologic timescale
-ontology and service</cite></a>, <em>Earth Sci. Informatics</em>. <strong>8</strong> 5–19. <a href="http://dx.doi.org/10.1007/s12145-014-0170-6">doi:10.1007/s12145-014-0170-6</a>.</dd>
-  <dt id="DE-09">[DE-09]</dt>
-    <dd>B. Desruisseaux (2009) <a href="http://www.ietf.org/rfc/rfc5545.txt"><cite>Internet Calendaring
-and Scheduling Core Object Specification (iCalendar), RFC5545</cite></a>. <a href="http://www.ietf.org/rfc/rfc5545.txt">http://www.ietf.org/rfc/rfc5545.txt</a></dd>
-  <dt id="FIPS">[FIPS]</dt>
-    <dd><a href="http://www.daml.org/2003/02/fips55/"><cite>FIPS 55 County instance file</cite></a>. <a href="http://www.daml.org/2003/02/fips55/">http://www.daml.org/2003/02/fips55/</a></dd>
-  <dt id="HP-04">[HP-04]</dt>
-    <dd>J. R. Hobbs, F. Pan (2004) <a href="http://dx.doi.org/10.1145/1017068.1017073"><cite>An Ontology of
-Time for the Semantic Web</cite></a>. <em>ACM Transactions on Asian Language Processing (TALIP): Special
-issue on Temporal Information Processing</em>, <strong>3</strong>, No. 1, March 2004, pp. 66-85. <a href="http://dx.doi.org/10.1145/1017068.1017073">doi:10.1145/1017068.1017073</a></dd>
-  <dt id="ISO-19108">[ISO-19108]</dt>
-    <dd><a href="http://www.iso.org/iso/iso_catalogue/catalogue_detail?csnumber=26013"><cite>ISO 19108:2002
-Geographic information -- Temporal schema</cite></a>. <a href="http://www.iso.org/iso/iso_catalogue/catalogue_detail?csnumber=26013">http://www.iso.org/iso/iso_catalogue/catalogue_detail?csnumber=26013</a></dd>
-  <dt id="ISO-8601">[ISO-8601]</dt>
-    <dd><a href="http://www.iso.org/iso/catalogue_detail?csnumber=40874"><cite>ISO 8601:2004 Data elements and
-interchange formats -- Information interchange -- Representation of dates and times</cite></a> <a href="http://www.iso.org/iso/catalogue_detail?csnumber=40874">http://www.iso.org/iso/catalogue_detail?csnumber=40874</a></dd>
-  <dt id="ISO-C">[ISO-C]</dt>
-    <dd><a href="http://www.daml.org/2001/09/countries/iso"><cite>ISO Country instance file</cite></a>. <a href="http://www.daml.org/2001/09/countries/iso">http://www.daml.org/2001/09/countries/iso</a></dd>
-  <dt id="MF-13">[MF-13]</dt>
-    <dd>X. Ma, P. Fox (2013) <a href="http://dx.doi.org/10.1007/s12145-013-0110-x"><cite>Recent progress on geologic time
-ontologies and considerations for future works</cite></a>, Earth Sci. Informatics. <strong>6</strong>
-31–46. <a href="http://dx.doi.org/10.1007/s12145-013-0110-x">doi:10.1007/s12145-013-0110-x</a>.</dd>
-  <dt id="OE-06">[OE-06]</dt>
-    <dd><a href="http://www.w3.org/2006/time-entry"><cite>OWL code of the entry sub-ontology of time</cite></a>. <a
-href="http://www.w3.org/2006/time-entry">http://www.w3.org/2006/time-entry</a></dd>
-  <dt id="OT-06">[OT-06]</dt>
-    <dd><a href="http://www.w3.org/2006/time"><cite>OWL code of the time ontology</cite></a>. <a href="http://www.w3.org/2006/time">http://www.w3.org/2006/time</a></dd>
-  <dt id="OWL-2">[OWL-2]</dt>
-    <dd><a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes"><cite>Owl2-quick-reference</cite></a>
-<a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes">https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes</a></dd>
-  <dt id="OWL-M">[OWL-M]</dt>
-    <dd>M. Horridge, P. Patel-Schneider (2012) <a href="https://www.w3.org/TR/owl2-manchester-syntax/"><cite>OWL 2 Web Ontology Language 
-Manchester Syntax (Second Edition)</cite></a>.  W3C Working Group Note <a href="https://www.w3.org/TR/owl2-manchester-syntax/">https://www.w3.org/TR/owl2-manchester-syntax/</a></dd>
-  <dt id="OWL-S">[OWL-S]</dt>
-    <dd><a href="http://www.daml.org/services/owl-s/"><cite>OWL-S homepage</cite></a>. <a href="http://www.daml.org/services/owl-s/">http://www.daml.org/services/owl-s/</a></dd>
-  <dt id="OWL-T">[OWL-T]</dt>
-    <dd>J.R. Hobbs, F. Pan (2006) <a href="https://www.w3.org/TR/2006/WD-owl-time-20060927/"><cite>Time Ontology in OWL</cite></a>.
-W3C Working Draft <a href="https://www.w3.org/TR/2006/WD-owl-time-20060927/">https://www.w3.org/TR/2006/WD-owl-time-20060927/</a></dd>
-  <dt id="PA-05">[PA-05]</dt>
-    <dd>F. Pan (2005) <a href="https://pdfs.semanticscholar.org/daf3/2ec8803b0749952ee89be3644303cb6b3ff2.pdf"><cite>A
-Temporal Aggregates Ontology in OWL for the Semantic Web</cite></a>. In: Proceedings of the AAAI Fall
-Symposium on Agents and the Semantic Web, Arlington, Virginia, pp. 30-37. <a href="https://pdfs.semanticscholar.org/daf3/2ec8803b0749952ee89be3644303cb6b3ff2.pdf">https://pdfs.semanticscholar.org/daf3/2ec8803b0749952ee89be3644303cb6b3ff2.pdf</a></dd>
-  <dt id="PH-04">[PH-04]</dt>
-    <dd>F. Pan, J.R. Hobbs (2004) <a href="http://www.isi.edu/%7Ehobbs/time/pub/pan-hobbs-AAAI-SSS04.pdf"><cite>Time
-in OWL-S</cite></a>. In: Proceedings of the AAAI Spring Symposium on Semantic Web Services, Stanford
-University, CA, pp. 29-36. <a href="http://www.isi.edu/%7Ehobbs/time/pub/pan-hobbs-AAAI-SSS04.pdf">http://www.isi.edu/~hobbs/time/pub/pan-hobbs-AAAI-SSS04.pdf</a></dd>
-  <dt id="PH-05">[PH-05]</dt>
-    <dd>F. Pan, J.R. Hobbs (2005) <a href="http://www.isi.edu/%7Ehobbs/FLAIRS-05.pdf"><cite>Temporal Aggregates
-in OWL-Time</cite></a>. In <em> Proceedings of the 18th International Florida Artificial Intelligence
-Research Society Conference (FLAIRS)</em>, Clearwater Beach, Florida, pp. 560-565, AAAI Press. <a href="http://www.isi.edu/%7Ehobbs/FLAIRS-05.pdf">http://www.isi.edu/~hobbs/FLAIRS-05.pdf</a></dd>
-  <dt id="PR-OS">[PR-OS]</dt>
-    <dd><a href="http://www.daml.org/services/owl-s/0.9/Process.owl"><cite>The process file of the OWL-S 0.9 release</cite></a>.
-<a href="http://www.daml.org/services/owl-s/0.9/Process.owl">http://www.daml.org/services/owl-s/0.9/Process.owl</a></dd>
-  <dt id="RC-14">[RC-14]</dt>
-    <dd><a href="https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissions#authorGuidelines"><cite>Guidelines
-to Authors</cite></a>, Radiocarb. Mag. (2014). <a href="https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissions#authorGuidelines">https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissions#authorGuidelines</a>
-(accessed September 9, 2014)</dd>
-  <dt id="TTL-14">[TTL-14]</dt>
-    <dd>E. Prud'hommeaux, G. Carothers (2014) <a href="https://www.w3.org/TR/turtle/"><cite>RDF 1.1 Turtle -
-Terse RDF Triple Language</cite></a>. W3C Recommendation. <a href="https://www.w3.org/TR/turtle/">https://www.w3.org/TR/turtle/
-</a></dd> 
-  <dt id="XSD-D">[XSD-D]</dt> 
-    <dd><a href="https://www.w3.org/TR/xmlschema11-2/"><cite>XML Schema Definition Language (XSD) 1.1 Part 2:
-Datatypes</cite></a>. W3C Recommendation 5 April 2012 <a href="https://www.w3.org/TR/xmlschema11-2/">https://www.w3.org/TR/xmlschema11-2/</a></dd>
-</dl>
 </section>
 
 </body>
