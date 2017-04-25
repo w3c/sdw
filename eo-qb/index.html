@@ -602,16 +602,23 @@ While the approach  may also be suitable for other forms of coverage, we leave t
             These simple optimizations can improve query time substantially.
             Consider the following SPARQL query, which fetches the intensity
             (<code>?val</code>) and URI (<code>?s</code>) associated with each
-            single-pixel observation in a satellite imagery database.
+            single-pixel observation in a satellite imagery database. Note the
+            use of custom <code>:latMin</code> and <code>:longMax</code> to
+            define the edges of a bounding box&mdash;we have included these in
+            our demonstration system for ease of implementation, but it is
+            expected that in a production system would use GeoSPARQL-style
+            <code>FILTER</code>s together with the WKT-formatted
+            <code>:bounds</code> predicate used elsewhere in this document.
         </p>
 
         <pre class="example">SELECT DISTINCT ?s ?val WHERE {
     ?s a :Pixel
         :etmBand "1"^^xsd:int ;
         :dggsLevelSquare "5"^^xsd:int ;
+        # See comment above on :latMin/:longMax
         :latMin ?latMin ;
         :longMax ?longMax ;
-        :value ?val .
+        :dataPixelValue ?val .
     # Everything north-west of Parliament House
     FILTER (?latMin > -35.3082
         &amp;&amp; ?longMax &lt; 149.1244)
