@@ -198,7 +198,7 @@ var respecConfig = {
       date:"November 2011"
       },
       "Lefrancois-et-al-2017": {
-         href:"http://www.maxime-lefrancois.info/docs/SEAS-D2_2-SEAS-Knowledge-Model.pdf",
+         href:"https://w3id.org/seas/SEAS-D2_2-SEAS-Knowledge-Model.pdf",
          authors: ["Maxime Lefrançois", "Jarmo Kalaoja", "Takoua Ghariani", "Antoine Zimmermann"],
          title: "The SEAS Knowledge Model",
          status:"Deliverable 2.2",
