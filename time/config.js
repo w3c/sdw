@@ -104,6 +104,7 @@ var respecConfig = {
         title: "An Ontology of Time for the Semantic Web. ACM Transactions on Asian Language Processing (TALIP): Special issue on Temporal Information Processing, 3, No. 1, March 2004, pp. 66-85. "
       },
       "ISO19108": {
+        date: "2002",
         href: "http://www.iso.org/iso/iso_catalogue/catalogue_detail?csnumber=26013",
         title: "ISO 19108:2002 Geographic information -- Temporal schema. "
       },
