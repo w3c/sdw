@@ -626,14 +626,14 @@ In the figures, and in the rest of the document, SOSA-related components and res
 @prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
 @prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix qudt-1.1: &lt;http://qudt.org/1.1/schema/qudt#&gt; .
-@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; /
+@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; .
 @base &lt;http://example.org/data/&gt; .
 
 # Observation #358 of seismograph VCAB DP1 BP 40 (Vineyard Canyon, Parkfield, Ca) measured
 # a earth displacement speed of 0.000500 cm/sec at 8:23 am on April 18, 2017, Pacific
 # Daylight Time.
 
-&lt;VCAB-DP1-BP-40?t=2017-04-18T08:23:00-07:00&gt; rdf:type sosa:Observation ;
+&lt;VCAB-DP1-BP-40?t=2017-04-18T08%3A23%3A00-07%3A00&gt; rdf:type sosa:Observation ;
   rdfs:seeAlso &lt;https://earthquake.usgs.gov/monitoring/seismograms/153/latest&gt; ;
   sosa:observedProperty  &lt;groundDisplacementSpeed&gt; ;
   sosa:madeBySensor &lt;VCAB-DP1-BP-40&gt; ; 
@@ -699,7 +699,7 @@ In the figures, and in the rest of the document, SOSA-related components and res
 @prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
 @prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix qudt-1.1: &lt;http://qudt.org/1.1/schema/qudt#&gt; .
-@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; /
+@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; .
 @base &lt;http://example.org/data/&gt; .
 
 # The electric consumption of appartment #134 on April 15 2017 was 22.4 kWh as 
@@ -806,7 +806,7 @@ In the figures, and in the rest of the document, SOSA-related components and res
 &lt;observation/1087#quality&gt; rdf:type qudt-1.1:Quantity ;
   qudt-1.1:quantityValue [
     rdf:type qudt-1.1:QuantityValue ;
-    qudt-1.1:numericValue "0.7"^^xsd:double ;
+    qudt-1.1:numericValue "98.4"^^xsd:double ;
     qudt-1.1:unit qudt-unit-1.1:Percent ] .
             </pre>
           </div>
@@ -871,6 +871,13 @@ In the figures, and in the rest of the document, SOSA-related components and res
 &lt;sensor/926&gt; rdf:type sosa:Sensor ;
   sosa:observes  &lt;Appartment/134/electricConsumption&gt; ;
   sosa:madeObservation &lt;Observation/235714&gt;, &lt;Observation/235715&gt;, &lt;Observation/235716&gt; .
+
+# mobile sensor tempSensor #23 observes the temperature in its surroundings, and we know 
+# that it made some observations. 
+
+&lt;tempSensor/23&gt; rdf:type sosa:Sensor ;
+  sosa:observes  &lt;tempSensor/23#temperature&gt; ;
+  sosa:madeObservation &lt;tempSensor/23/4572&gt;, &lt;tempSensor/23/4573&gt;, &lt;tempSensor/23/4574&gt; .
             </pre>
           </div>
 
@@ -918,7 +925,6 @@ In the figures, and in the rest of the document, SOSA-related components and res
 
 &lt;sensor/926&gt; rdf:type sosa:Sensor ;
   sosa:observes  &lt;Appartment/134/electricConsumption&gt; .
-
 
 # This is equivalent to saying that the electric consumption of appartment #134 is 
 # observed by Sensor #926
@@ -997,7 +1003,6 @@ In the figures, and in the rest of the document, SOSA-related components and res
 &lt;sensor/926&gt; rdf:type sosa:Sensor ;
   sosa:madeObservation &lt;Observation/235714&gt;, &lt;Observation/235715&gt; .
 
-
 # This is equivalent to saying that these observations have been made by sensor #926.
 
 &lt;Observation/235714&gt; rdf:type sosa:Observation ;
@@ -1006,7 +1011,6 @@ In the figures, and in the rest of the document, SOSA-related components and res
 &lt;Observation/235754&gt; rdf:type sosa:Observation ;
   sosa:madeBySensor &lt;sensor/926&gt; .
             </pre>
-          </div>
           </div>
 
           <div class="specterm sosa" id="SOSAmadeBySensor" about="sosa:madeBySensor" typeof="owl:ObjectProperty">
@@ -1078,7 +1082,39 @@ In the figures, and in the rest of the document, SOSA-related components and res
       <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
         <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
         <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-      </div></div>
+      </div>
+<pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# movements of spinning cups on wind sensor #14 serves as proxies for the wind speed
+# at the location of the wind sensor.
+
+&lt;windSensor/14&gt; rdf:type sosa:Sensor ;
+  sosa:observes &lt;location/4687#windSpeed&gt; .
+
+&lt;observation/147&gt; rdf:type sosa:Observation ;
+  sosa:observedProperty &lt;location/4687#windSpeed&gt; ;
+  sosa:madeBySensor &lt;windSensor/14&gt; ;
+  ssn:wasOriginatedBy &lt;observation/147#spinningCupsMovement&gt; ;
+  sosa:resultTime "2017-04-12T12:00:00Z"^^xsd:dateTime ;
+  sosa:hasSimpleResult "47 km/h"^^&lt;speed&gt; .
+
+&lt;observation/147#spinningCupsMovement&gt; rdf:type ssn:Stimulus ;
+  ssn:isProxyFor &lt;location/4687#windSpeed&gt; .
+
+&lt;observation/148&gt; rdf:type sosa:Observation ;
+  sosa:observedProperty &lt;location/4687#windSpeed&gt; ;
+  sosa:madeBySensor &lt;windSensor/14&gt; ;
+  ssn:wasOriginatedBy &lt;observation/148#spinningCupsMovement&gt; ;
+  sosa:resultTime "2017-04-12T12:01:00Z"^^xsd:dateTime ;
+  sosa:hasSimpleResult "43 km/h"^^&lt;speed&gt; .
+
+&lt;observation/148#spinningCupsMovement&gt; rdf:type ssn:Stimulus ;
+  ssn:isProxyFor &lt;location/4687#windSpeed&gt; .
+            </pre>
+          </div>
 
       <div class="specterm ssn" id="SSNisProxyFor" about="ssn:isProxyFor" typeof="owl:ObjectProperty">
           <h4>OWL Object Property: <a href="http://www.w3.org/ns/ssn/isProxyFor">ssn:isProxyFor</a></h4>
@@ -1105,7 +1141,19 @@ In the figures, and in the rest of the document, SOSA-related components and res
       <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
         <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
         <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-      </div></div>
+      </div>
+<pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# movements of spinning cups on wind sensor #14 serves as proxies for the wind speed
+# at the location of the wind sensor.
+
+&lt;observation/147#spinningCupsMovement&gt; rdf:type ssn:Stimulus ;
+  ssn:isProxyFor &lt;location/4687#windSpeed&gt; .
+            </pre>
+          </div>
 
       <div class="specterm ssn" id="SSNwasOriginatedBy" about="ssn:wasOriginatedBy" typeof="owl:ObjectProperty">
           <h4>OWL Object Property: <a href="http://www.w3.org/ns/ssn/wasOriginatedBy">ssn:wasOriginatedBy</a></h4>
@@ -1127,7 +1175,20 @@ In the figures, and in the rest of the document, SOSA-related components and res
       <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
         <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
         <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-      </div></div>
+      </div>
+<pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# observation #147 was originated by the movement of the spinning cups of sensor #14.
+
+&lt;observation/147&gt; rdf:type sosa:Observation ;
+  ssn:wasOriginatedBy &lt;observation/147#spinningCupsMovement&gt; .
+
+&lt;observation/147#spinningCupsMovement&gt; rdf:type ssn:Stimulus .
+            </pre>
+          </div>
 
           <div class="specterm ssn" id="SSNdetects" about="ssn:detects" typeof="owl:ObjectProperty">
               <h4>OWL Object Property: <a href="http://www.w3.org/ns/ssn/detects">ssn:detects</a></h4>
@@ -1149,7 +1210,19 @@ In the figures, and in the rest of the document, SOSA-related components and res
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to top</a>]</p>
             <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
             <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-          </div></div>
+          </div>
+<pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# wind sensor #14 detected some movement of spinning cups, from which originated the observations #147 and #148.
+
+&lt;windSensor/14&gt; rdf:type sosa:Sensor ;
+  sosa:madeObservation &lt;observation/147&gt; , &lt;observation/148&gt; ; 
+  ssn:detects &lt;observation/147#spinningCupsMovement&gt; , &lt;observation/148#spinningCupsMovement&gt; .
+            </pre>
+          </div>
 
         </section>
 
@@ -1224,10 +1297,6 @@ In the figures, and in the rest of the document, SOSA-related components and res
         </div>
             <pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
-@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
-@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
-@prefix qudt-1.1: &lt;http://qudt.org/1.1/schema/qudt#&gt; .
-@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; /
 @base &lt;http://example.org/data/&gt; .
 
 # the window opening state is an ActuatableProperty.
@@ -1314,19 +1383,20 @@ In the figures, and in the rest of the document, SOSA-related components and res
 @prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
 @prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix qudt-1.1: &lt;http://qudt.org/1.1/schema/qudt#&gt; .
-@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; /
+@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; .
 @base &lt;http://example.org/data/&gt; .
 
 # WindowCloser #987 is designed to automatically open and close window #104.
 
-&lt;windowCloser/987&gt; ssn:forProperty &lt;window/104#state&gt; .
+&lt;windowCloser/987&gt; rdf:type sosa:Actuator ;
+  ssn:forProperty &lt;window/104#state&gt; .
 
 
-# Actuation #188 automatically closed the window.
+# Actuation #188 acted on the state of window #104 and returned 'true'.
 
 &lt;actuation/188&gt; rdf:type sosa:Actuation ;
   sosa:actsOnProperty  &lt;window/104#state&gt; ;
-  sosa:madeBySensor &lt;windowCloser/987&gt; ; 
+  sosa:actuationMadeBy &lt;windowCloser/987&gt; ; 
   sosa:hasSimplResult true ;
   sosa:resultTime "2017-04-18T17:24:00+02:00"^^xsd:dateTimeStamp .
             </pre>
@@ -1363,7 +1433,19 @@ In the figures, and in the rest of the document, SOSA-related components and res
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to index</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-        </div></div>
+        </div>
+            <pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# Actuation #188 acted on the state of window #104.
+
+&lt;actuation/188&gt; rdf:type sosa:Actuation ;
+  sosa:actsOnProperty  &lt;window/104#state&gt; .
+            </pre>
+          </div>
 
         <div class="specterm sosa" id="SOSAisActedOnBy" about="sosa:isActedOnBy" typeof="owl:ObjectProperty">
               <h4>OWL Object Property: <a href="http://www.w3.org/ns/sosa/isActedOnBy">sosa:isActedOnBy</a></h4>
@@ -1396,7 +1478,25 @@ In the figures, and in the rest of the document, SOSA-related components and res
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to index</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-        </div></div>
+        </div>
+            <pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# Actuation #188 acted on the state of window #104.
+
+&lt;actuation/188&gt; rdf:type sosa:Actuation ;
+  sosa:actsOnProperty &lt;window/104#state&gt;  .
+
+# this is equivalent to saying that the state of window #104 is acted on by actuation #188.
+
+&lt;window/104#state&gt; rdf:type sosa:ActuatableProperty ;
+  sosa:isActedOnBy &lt;actuation/188&gt; .
+            </pre>
+          </div>
+
 
         <div class="specterm sosa" id="SOSAActuator" about="sosa:Actuator" typeof="owl:Class rdfs:Class">
               <h4>OWL Class: <a href="http://www.w3.org/ns/sosa/Actuator">sosa:Actuator</a></h4>
@@ -1441,7 +1541,19 @@ In the figures, and in the rest of the document, SOSA-related components and res
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to index</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-        </div></div>
+        </div>
+            <pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# WindowCloser #987 is designed to automatically open and close window #104.
+
+&lt;windowCloser/987&gt; rdf:type sosa:Actuator ;
+  ssn:forProperty &lt;window/104#state&gt; .
+            </pre>
+          </div>
 
         <div class="specterm sosa" id="SOSAmadeActuation" about="sosa:madeActuation" typeof="owl:ObjectProperty">
               <h4>OWL Object Property: <a href="http://www.w3.org/ns/sosa/madeActuation">sosa:madeActuation</a></h4>
@@ -1470,7 +1582,26 @@ In the figures, and in the rest of the document, SOSA-related components and res
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to index</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-        </div></div>
+        </div>
+            <pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix qudt-1.1: &lt;http://qudt.org/1.1/schema/qudt#&gt; .
+@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# WindowCloser #987 made actuation #188.
+
+&lt;windowCloser/987&gt; rdf:type sosa:Actuator ;
+  sosa:madeActuation &lt;actuation/188&gt; .
+
+# this is equivalent to saying that actuation #188 was made by WindowCloser #987
+
+&lt;actuation/188&gt; rdf:type sosa:Actuation ;
+  sosa:actuationMadeBy &lt;windowCloser/987&gt; .
+            </pre>
+          </div>
 
         <div class="specterm sosa" id="SOSAactuationMadeBy" about="sosa:actuationMadeBy" typeof="owl:ObjectProperty">
               <h4>OWL Object Property: <a href="http://www.w3.org/ns/sosa/actuationMadeBy">sosa:actuationMadeBy</a></h4>
@@ -1501,7 +1632,26 @@ In the figures, and in the rest of the document, SOSA-related components and res
           <p style="float: right; font-size: small;">[<a href="#index-of-classes-and-properties">back to index</a>]</p>
           <button type="button" class="hide-ssn" onclick="hide_ssn(true)">Hide additional SSN axioms</button>
           <button type="button" class="show-ssn" style="display: none" onclick="hide_ssn(false)">Show additional SSN axioms</button>
-        </div></div>
+        </div>
+            <pre class="example">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix ssn:  &lt;http://www.w3.org/ns/ssn/&gt; .
+@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix qudt-1.1: &lt;http://qudt.org/1.1/schema/qudt#&gt; .
+@prefix qudt-unit-1.1: &lt;http://qudt.org/1.1/vocab/unit#&gt; .
+@base &lt;http://example.org/data/&gt; .
+
+# WindowCloser #987 made actuation #188.
+
+&lt;windowCloser/987&gt; rdf:type sosa:Actuator ;
+  sosa:madeActuation &lt;actuation/188&gt; .
+
+# this is equivalent to saying that actuation #188 was made by WindowCloser #987
+
+&lt;actuation/188&gt; rdf:type sosa:Actuation ;
+  sosa:actuationMadeBy &lt;windowCloser/987&gt; .
+            </pre>
+          </div>
 
       </section>
 
