@@ -40,14 +40,14 @@ var respecConfig = {
         companyURL: "http://www.mines-stetienne.fr/"
 	}],
 	otherLinks: [
-    {
-      key: "Contributors (ordered alphabetically)",
+      {
+      key: "Contributors (ordered alphabetically",
       data: [
       {
-        value: "Rob Atkinson<br/> Raul Garcia Castro<br/> Josh Liebermann<br/> Claus Stadler"
-      }]
+        value: "Rob Atkinson, Raúl García Castro, Josh Liebermann, Claus Stadler"
+      }],
     },
-     {
+    {
       key: "OGC Document Number",
       data: [
       {
