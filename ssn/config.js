@@ -9,39 +9,51 @@ var respecConfig = {
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
+	{
+		name: "Armin Haller",
+        company: "Australian National University",
+        companyURL: "http://cbe.anu.edu.au/"
+	},
     {
-      name: "Kerry Taylor",
-      company: "Australian National University",
-      companyURL: "https://cecs.anu.edu.au/"
-    }, {
-			name: "Krzysztof Janowicz",
-			company: "University of California, Santa Barbara",
-			companyURL: "http://geog.ucsb.edu/"
-		}, {
-			name: "Danh Le Phuoc",
-			company: "Technical University of Berlin",
-			companyURL: "http://www.tu-berlin.de/"
-		}, {
-			name: "Armin Haller",
-      company: "Australian National University",
-      companyURL: "http://cbe.anu.edu.au/"
-		}, {
-			name: "Simon Cox",
-      company: "CSIRO",
-      companyURL: "http://csiro.au/"
-		}, {
-			name: "Maxime Lefrançois",
-      company: "École Nationale Supérieure des Mines de Saint-Étienne",
-      companyURL: "http://www.mines-stetienne.fr/"
-		}],
-    otherLinks: [
+		name: "Krzysztof Janowicz",
+		company: "University of California, Santa Barbara",
+		companyURL: "http://geog.ucsb.edu/"
+	},
+	{
+	    name: "Danh Le Phuoc",
+		company: "Technical University of Berlin",
+		companyURL: "http://www.tu-berlin.de/"
+	},
+	{
+        name: "Kerry Taylor",
+        company: "Australian National University",
+        companyURL: "https://cecs.anu.edu.au/"
+    },
+	{
+	    name: "Simon Cox",
+        company: "CSIRO",
+        companyURL: "http://csiro.au/"
+	},
+	{
+	    name: "Maxime Lefrançois",
+        company: "École Nationale Supérieure des Mines de Saint-Étienne",
+        companyURL: "http://www.mines-stetienne.fr/"
+	}],
+	otherLinks: [
     {
+      key: "Contributors (ordered alphabetically)",
+      data: [
+      {
+        value: "Rob Atkinson<br/> Raul Garcia Castro<br/> Josh Liebermann<br/> Claus Stadler"
+      }]
+    },
+     {
       key: "OGC Document Number",
       data: [
       {
         value: "OGC 16-079"
       }]
-      }],
+    }],
     wg: "Spatial Data on the Web Working Group",
     wgURI: "http://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
