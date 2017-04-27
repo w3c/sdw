@@ -364,6 +364,14 @@ var respecConfig = {
         "title": "QB4ST: RDF Data Cube extensions for spatio-temporal components",
         "publisher": "W3C and OGC",
         "date": "5 January 2017"
+      },
+	    
+      "GeoRSS": {
+        href:"https://www.w3.org/2005/Incubator/geo/XGR-geo/",
+        title:"W3C Geospatial Vocabulary",
+        authors:["Joshua Lieberman", "Raj Singh", "Chris Goad"],
+        publisher:"W3C Geospatial Incubator Group",
+        date:"23 October 2007"
       }
       
     },
