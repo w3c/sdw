@@ -20,6 +20,11 @@ var respecConfig = {
 		companyURL: "http://geog.ucsb.edu/"
 	},
 	{
+	    name: "Simon Cox",
+        company: "CSIRO",
+        companyURL: "http://csiro.au/"
+	},
+	{
 	    name: "Danh Le Phuoc",
 		company: "Technical University of Berlin",
 		companyURL: "http://www.tu-berlin.de/"
@@ -30,11 +35,6 @@ var respecConfig = {
         companyURL: "https://cecs.anu.edu.au/"
     },
 	{
-	    name: "Simon Cox",
-        company: "CSIRO",
-        companyURL: "http://csiro.au/"
-	},
-	{
 	    name: "Maxime Lefrançois",
         company: "École Nationale Supérieure des Mines de Saint-Étienne",
         companyURL: "http://www.mines-stetienne.fr/"
@@ -44,10 +44,16 @@ var respecConfig = {
       key: "Contributors (ordered alphabetically",
       data: [
       {
-        value: "Rob Atkinson, Raúl García Castro, Josh Liebermann, Claus Stadler"
-      }],
-    },
-    {
+        value: "Rob Atkinson"
+      },{
+        value: "Raúl García Castro"
+      },{
+        value: "Josh Liebermann"
+      },{
+        value: "Claus Stadler"
+      }]
+      },
+      {
       key: "OGC Document Number",
       data: [
       {
