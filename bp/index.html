@@ -6,71 +6,6 @@
     <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
     <script class="remove" src="bpconfig.js"></script>
     <script>
-    window.onload=init;
-
-    function bpObject(t, id, reqs) {
-      this.title = t;
-      this.id = id;
-      reqsList = new Array();
-      for (var i = 0; i < reqs.length; i++) {
-        reqsList.push(reqs[i].hash.substring(1));
-      }
-      this.requirements = reqsList;
-    }
-
-    function createRequirementsTable(BPlist) {
-      var reqs = new Array();
-      var requirmentsTable = document.getElementById('x-ref_ucrVbp');
-      var tbody = requirmentsTable.getElementsByTagName('tbody')[0];
-      BPlist.forEach(function(bp){
-        bp.requirements.forEach(function(req){
-          if (reqs[req] !== undefined) {
-            reqs[req].push(bp);
-          }
-          else {
-            reqs.push(req);
-            reqs[req] = new Array();
-            reqs[req].push(bp);
-          }
-
-        });
-      });
-      reqs.forEach(function(req){
-        var row = tbody.insertRow(tbody.rows.length); // new row for the table
-        var cellReq = row.insertCell(0);              // cell for requirement
-        var cellBps = row.insertCell(1);              // cell for BPs
-        var reqLink = document.createElement('a');
-        reqLink.setAttribute('href', 'https://www.w3.org/TR/sdw-ucr/#'+req);
-        reqLink.appendChild(document.createTextNode(req));
-        cellReq.appendChild(reqLink);
-
-        reqs[req].forEach(function(bp){
-          var p = document.createElement('p');
-          var bpLink = document.createElement('a');
-          bpLink.setAttribute('href', '#'+bp.id);
-          bpLink.appendChild(document.createTextNode(bp.title));
-          p.appendChild(bpLink);
-          cellBps.appendChild(p);
-        });
-      });
-    }
-
-
-    function init() {
-      var BPlist = new Array (); // This will be our array of BPs from the document
-      var BPdivs = new Array ();
-      BPdivs = document.getElementsByClassName('practice'); // This is the info we have effectively scraped from the page
-      for (var i = 0; i < BPdivs.length; i++) {
-        var t; var id; var b; var reqs;
-        var BPtop = BPdivs[i].getElementsByClassName('practicelab');
-        t = BPtop[0].textContent; // There should only be values in BPtop[0]
-        id = BPtop[0].id;
-        reqs = BPdivs[i].getElementsByClassName('ucr')[0].getElementsByTagName('a');
-        BPlist.push(new bpObject(t, id, reqs));
-      }
-      createRequirementsTable(BPlist); // Call function to create Requirements Table
-    }
-
 // @andrea-perego
 function popCrossRefs() {
   $('a[href^="#"]').each( function () {
@@ -133,14 +68,14 @@ function createBenefitsTable(BPList) {
     var row = tbody.insertRow(tbody.rows.length); // new row for the table
     var cellBp = row.insertCell(0);               // cell for BP title
     var cellBenefits = row.insertCell(1);         // cell for benefits
-    var bpTitle = document.createTextNode(bp.title);
+    var bpTitle = document.createTextNode(bp.title.replace(/^(?:Best Practice \d*: )/g, ""));
     var bpLink = document.createElement('a');
     bpLink.setAttribute('href', '#'+bp.id);
     bpLink.appendChild(bpTitle);
-    cellBp.appendChild(bpLink);  // put BP link on the cell
+    cellBp.appendChild(bpLink);                   // put BP link on the cell
     var ul = document.createElement('ul');
-    ul.setAttribute('class', 'benefitsList');  // create a new ul for benefitsList
-    bp.benefits.forEach(function(benefit){  // iterate over benefits of the BP
+    ul.setAttribute('class', 'benefitsList');     // create a new ul for benefitsList
+    bp.benefits.forEach(function(benefit){        // iterate over benefits of the BP
       var li = document.createElement('li');
       var benefitText = document.createTextNode(benefit);
       li.appendChild(benefitText);
@@ -159,8 +94,8 @@ function updateBenefitListReuse() {
 }
 function createRequirementsTable(BPlist) {
 	var reqs = new Array();
-  var requirmentsTable = document.getElementById('requirementsbpstable');
-  var tbody = requirmentsTable.getElementsByTagName('tbody')[0];
+  var requirementsTable = document.getElementById('requirementsbpstable');
+  var tbody = requirementsTable.getElementsByTagName('tbody')[0];
 	BPlist.forEach(function(bp){
 		bp.requirements.forEach(function(req){
 			if (reqs[req] !== undefined) {
@@ -175,17 +110,17 @@ function createRequirementsTable(BPlist) {
 	});
   reqs.forEach(function(req){
     var row = tbody.insertRow(tbody.rows.length); // new row for the table
-    var cellReq = row.insertCell(0);         // cell for requirement
-    var cellBps = row.insertCell(1);               // cell for BPs
+    var cellReq = row.insertCell(0);              // cell for requirement
+    var cellBps = row.insertCell(1);              // cell for BPs
     var reqLink = document.createElement('a');
-    reqLink.setAttribute('href', 'https://www.w3.org/TR/dwbp-ucr/#'+req);
+    reqLink.setAttribute('href', 'https://www.w3.org/TR/sdw-ucr/#'+req);
     reqLink.appendChild(document.createTextNode(req));
     cellReq.appendChild(reqLink);
     reqs[req].forEach(function(bp){
       var p = document.createElement('p');
       var bpLink = document.createElement('a');
       bpLink.setAttribute('href', '#'+bp.id);
-      bpLink.appendChild(document.createTextNode(bp.title));
+      bpLink.appendChild(document.createTextNode(bp.title.replace(/^(?:Best Practice \d*: )/g, "")));
       p.appendChild(bpLink);
       cellBps.appendChild(p);
     });
@@ -203,9 +138,9 @@ function init() {
   theBenefits.push(new benefitObject('Linkability')) ;
   theBenefits.push(new benefitObject('Comprehension')) ;
   // Get list of our BPs and put them in an array of objects
-  var BPlist = new Array (); // This will be our array of BPs from the document
+  var BPlist = new Array ();                                      // This will be our array of BPs from the document
   var BPdivs = new Array ();
-  BPdivs = document.getElementsByClassName('practice'); // This is the info we have effectively scraped from the page
+  BPdivs = document.getElementsByClassName('practice');           // This is the info we have effectively scraped from the page
   // Need the title and id of each one
   for (var i = 0; i < BPdivs.length; i++) {
     var t; var id; var b; var reqs;
@@ -223,12 +158,12 @@ function init() {
 		reqs = BPrequirementsList;
     BPlist.push(new bpObject(t, id, b, reqs)) ;
   }
-  createBenefitsTable(BPlist); // Call function to create Benefits Table
-  createRequirementsTable(BPlist); // Call function to create Requirements Table
+  createBenefitsTable(BPlist);                                    // Call function to create Benefits Table
+  createRequirementsTable(BPlist);                                // Call function to create Requirements Table
   // Now create the panels
   var r;
-  for (var i = 0; i < theBenefits.length; i++) {               // Working through the list of benefits
-    r = document.createElement('div');                         // Need to create the div, ready to add the list items for this benefit
+  for (var i = 0; i < theBenefits.length; i++) {                  // Working through the list of benefits
+    r = document.createElement('div');                            // Need to create the div, ready to add the list items for this benefit
     r.classList.add('benefit-list-panel');
     r.id = 'benefitList' + theBenefits[i].name;
 /*    var img = document.createElement('img');                    // Put the icon at the top
@@ -238,37 +173,37 @@ function init() {
     r.appendChild(img); */
     var h = document.createElement('p');
     h.classList.add('benefitsPanelTitle');
-    var ht = document.createTextNode(theBenefits[i].name);      // Create the heading for the div which is the benefit
+    var ht = document.createTextNode(theBenefits[i].name);        // Create the heading for the div which is the benefit
     h.appendChild(ht);
     r.appendChild(h);
     // And add a UL
-    var ul = document.createElement('ul');                      // Create the ul element that we're going to add each relevant BP to
+    var ul = document.createElement('ul');                        // Create the ul element that we're going to add each relevant BP to
     ul.id = theBenefits[i].id + 'BPs';
-    for (var j = 0; j < BPlist.length; j++) {                   // Go through list of BPs in the doc
-      if (typeof BPlist[j].benefits == 'object') {              // Do we have a list of benefits for this BP?
-        for (var k = 0; k < BPlist[j].benefits.length; k++) {   // We need to look at the benefits the BP offers
-          if (theBenefits[i].name == BPlist[j].benefits[k]) {   // We're looking at the i benefit in the list of possibles and the k benefit of BP j
-            var li = document.createElement('li');              // If there's a match, create the li with the hyperlink
+    for (var j = 0; j < BPlist.length; j++) {                     // Go through list of BPs in the doc
+      if (typeof BPlist[j].benefits == 'object') {                // Do we have a list of benefits for this BP?
+        for (var k = 0; k < BPlist[j].benefits.length; k++) {     // We need to look at the benefits the BP offers
+          if (theBenefits[i].name == BPlist[j].benefits[k]) {     // We're looking at the i benefit in the list of possibles and the k benefit of BP j
+            var li = document.createElement('li');                // If there's a match, create the li with the hyperlink
             var a = document.createElement('a');
             a.href = '#' + BPlist[j].id;
-            var t = document.createTextNode(BPlist[j].title);
+            var t = document.createTextNode(BPlist[j].title.replace(/^(?:Best Practice \d*: )/g, ""));
             a.appendChild(t);
             li.appendChild(a);
-            ul.appendChild(li);                                 // Add this BP to the benefit div's list
+            ul.appendChild(li);                                   // Add this BP to the benefit div's list
           }
         }
       }
     }
-    r.appendChild(ul);                                          // Add the ul with all its li elements to the div
-    document.getElementById('benefitsTables').appendChild(r);   // Add the div to the doc
+    r.appendChild(ul);                                            // Add the ul with all its li elements to the div
+    document.getElementById('benefitsTables').appendChild(r);     // Add the div to the doc
   }
   // Next we want to replace all text benefits with the relevant icon
-  var bList = document.getElementsByClassName('benefitsList');  // get the set of ul elements we need to process
+  var bList = document.getElementsByClassName('benefitsList');    // get the set of ul elements we need to process
   for (var i = 0; i < bList.length; i++) {
     var listElements = bList[i].getElementsByTagName('li');       // Get the li elements within this ul
     for (var j = 0; j < listElements.length; j++) {
       for (var k = 0; k < theBenefits.length; k++) {              // Go through the benefits
-        if (listElements[j].textContent == theBenefits[k].name) {  // The text in the current li element matches the current benefit, so we can make the swap
+        if (listElements[j].textContent == theBenefits[k].name) { // The text in the current li element matches the current benefit, so we can make the swap
 //          bList[i].removeChild(listElements[j]);                // This works but it destroys things as they're created. Should rearrange the loop but for now...
           listElements[j].classList.add('hidden');                // Hide the original li
           var l = document.createElement('li');                   // Create a new li
@@ -278,7 +213,7 @@ function init() {
           img.alt= theBenefits[k].name;
           img.classList.add('benefitIcon');
           img.classList.add(theBenefits[k].id + 'Icon');
-          l.appendChild(img);                      // Add the img element from the current benefit
+          l.appendChild(img);                                     // Add the img element from the current benefit
           bList[i].appendChild(l);                                // Add the li back into the current ul
         }
       }
@@ -303,14 +238,136 @@ function init() {
           background-color: #FCFAEE;
       }
 
-      @media screen and (min-width : 600px){
-          #bp-summary ul{
-              column-count: 2;
-              -moz-column-count: 2;
-              -webkit-column-count: 2;
-              column-gap: 1em;
-          }
+      .hidden {display:none}
+
+      ul.benefitsList li.icon {
+        display:inline;
+        list-style-type: none;
       }
+
+      ul.benefitsList li.icon img {
+        padding:0;
+        margin-right:1em;
+        max-width:60px;
+        max-height: 70px;
+      }
+
+      ul.benefitsList li.icon img.comprehensionIcon, ul.benefitsList li.icon img.discoverabilityIcon, ul.benefitsList li.icon img.interoperabilityIcon, ul.benefitsList li.icon img.processabilityIcon {
+        max-width:80px;
+      }
+
+      ul.benefitsList li.icon img.discoverabilityIcon, ul.benefitsList li.icon img.interoperabilityIcon, ul.benefitsList li.icon img.processabilityIcon {
+        max-width:73px;
+      }
+
+      /* *************************************************************
+      These styles are for the lists of benefits
+      ************************************************************** */
+      #benefitsTables {
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .benefit-list-panel {
+        border-radius: 1em; /*(padrão)*/
+        -moz-border-radius: 1em; /*(navegadores Flock e Firefox)*/
+        -webkit-border-radius: 1em; /*(navegadores Chrome e Safari)*/
+        padding: 0.2em 1em;
+      }
+
+      .benefit-list-panel ul {
+        list-style-type:none;
+        padding-left:0;
+      }
+
+      .benefit-list-panel ul li {
+        font-size:smaller;
+        line-height:1.4em;
+      }
+
+      .benefit-list-panel p.benefitsPanelTitle {
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      #benefitListReuse {
+        background: #B0CC9B;
+        border: 1px solid #387F05;
+      }
+
+      #benefitListAccess {
+        background: #E8F1FA;
+        border: 1px solid #81B3E0;
+      }
+
+      #benefitListTrust {
+        background: #E6BE9F;
+        border: 1px solid #BF5B0E;
+      }
+
+      #benefitListDiscoverability {
+        background: #CCBEB5;
+        border: 1px solid #7F5C46;
+      }
+
+      #benefitListProcessability {
+        background: #C5B5DE;
+        border: 1px solid #6E46AD;
+      }
+
+      #benefitListInteroperability {
+        background: #F3E09A;
+        border: 1px solid #E0B200;
+      }
+
+      #benefitListLinkability {
+        background: #B9C1CC;
+        border: 1px solid #50637F;
+      }
+
+      #benefitListComprehension {
+        background: #B3B3B3;
+        border: 1px solid #404040;
+      }
+
+      /* *******************************************
+      We reuse the 2 column style (for screens > 600 wide) from the list of BPs
+      to create the columns for the lists of benefits
+      ********************************************** */
+
+      @media screen and (min-width: 600px) {
+        #bp-summary ul, #benefitsTables {
+          column-count:2;
+          -moz-column-count:2;
+          -webkit-column-count:2;
+          column-gap: 1em;
+        }
+
+      /* We need to re-set the column number to 1 so that within each panel there is only 1 column */
+
+        #benefitsTables .benefit-list-panel {
+          column-count:1;
+          -moz-column-count:1;
+          -webkit-column-count:1;
+          margin:.1em;
+          display:inline-block;   /* This prevents single lists spanning multiple columns, thank you http://stackoverflow.com/questions/6682501/css3-columns-widows-orphans */
+          width:90%; /* For somr reason some of the panels are wider than others, this stops that heppening */
+        }
+      }
+
+      /* And we can go to three columns for bigger screens */
+
+      @media screen and (min-width: 850px) {
+        #benefitsTables {
+          column-count:3;
+          -moz-column-count:3;
+          -webkit-column-count:3;
+          column-gap: 1em;
+        }
+      }
+
+    /* Styles for the BPs themsevles */
 
       .practice,
       #tempPractice{
@@ -340,6 +397,21 @@ function init() {
           font-weight: bold;
       }
 
+
+      .benefits .stamp {
+        height: 52px;
+        width: 52px;
+        margin-right: 4px;
+        margin-bottom: 4px;
+      }
+
+      .benefits .stamp-template {
+        height: 82px;
+        width: 82px;
+        margin-right: 4px;
+        margin-bottom: 4px;
+      }
+
       .practice dl dt #tempPractice dl dt{
           font-weight: normal;
       }
@@ -358,15 +430,18 @@ function init() {
           font-style: italic;
       }
 
-      table#x-ref_ucrVbp,
+      table.bptable {
+        border-collapse: collapse;
+        caption-side:bottom;
+      }
       table#x-ref_formatVbp,
       table#detailed-format-matrix{
           border-collapse: collapse;
           caption-side: bottom;
       }
 
-      table#x-ref_ucrVbp th,
-      table#x-ref_ucrVbp td,
+      table.bptable th,
+      table.bptable td,
       table#x-ref_formatVbp th,
       table#x-ref_formatVbp td,
       table#detailed-format-matrix th,
@@ -375,7 +450,7 @@ function init() {
           padding: 0.3em;
       }
 
-      table#x-ref_ucrVbp caption,
+      table.bptable,
       table#x-ref_formatVbp caption,
       table#detailed-format-matrix caption{
           margin: 0.5em;
@@ -414,7 +489,89 @@ function init() {
       }
       .expand + input:checked + *{
           display: block;
-      }</style>
+      }
+
+      .benefits-items {
+          width: 100%;
+          margin: 0 auto;
+      }
+
+      .benefits-items .item {
+        border-radius: 22px; /*(padrão)*/
+        -moz-border-radius: 22px; /*(navegadores Flock e Firefox)*/
+        -webkit-border-radius: 22px; /*(navegadores Chrome e Safari)*/
+        width: 28%;
+        padding: 20px;
+        margin: 2px;
+        font-size: 13px;
+        line-height: 150%;
+        float: left;
+      }
+
+      .benefits-items .item .title {
+        font-size: 16px;
+        font-weight: 800;
+        text-transform: uppercase;
+        text-align: center;
+      }
+      .benefits-items .reuse {
+        background: #B0CC9B;
+        border: 1px solid #387F05;
+      }
+
+      .benefits-items .access {
+        background: #E8F1FA;
+        border: 1px solid #81B3E0;
+      }
+
+      .benefits-items .trust {
+        background: #E6BE9F;
+        border: 1px solid #BF5B0E;
+        float: right;
+      }
+
+      .benefits-items .discoverability {
+        background: #CCBEB5;
+        border: 1px solid #7F5C46;
+      }
+
+      .benefits-items .processability {
+        background: #C5B5DE;
+        border: 1px solid #6E46AD;
+      }
+
+      .benefits-items .interoperability {
+        background: #F3E09A;
+        border: 1px solid #E0B200;
+        float: right;
+      }
+
+      .benefits-items .linkability {
+        background: #B9C1CC;
+        border: 1px solid #50637F;
+      }
+
+      .benefits-items .comprehension {
+        background: #B3B3B3;
+        border: 1px solid #404040;
+        float: right;
+      }
+
+      @media screen and (min-width: 1024px) {
+        .benefits-items .item {
+            margin-left: 1.6%;
+          }
+      }
+
+      @media screen and (max-width: 900px) {
+        .benefits-items .item {
+              clear: both;
+              display: inline-block;
+              float: left !important;
+              width: 90%;
+          }
+      }
+    </style>
   </head>
   <body>
     <section id="abstract">
@@ -1030,7 +1187,7 @@ function init() {
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
             <ul class="benefitsList">
-              <li>Discoverability </li>
+              <li>Discoverability</li>
               <li>Reuse</li>
               <li>Linkability</li>
             </ul>
@@ -3524,49 +3681,6 @@ a:Dataset a dcat:Dataset ;
       <!-- end best practices -->
     </section>
     
-    <section id="BP_Benefits" class="informative">
-      <h2>Best Practices Benefits</h2>
-      <p>The list below describes the main benefits of applying the Spatial Data on the Web Best Practice. The benefits are taken from [DWBP]. Each benefit represents an improvement in the way how datasets are available on the Web.</p>
-      <ul>
-        <li>Comprehension: humans will have a better understanding about the
-          data structure, the data meaning, the metadata and the nature of the
-          dataset. </li>
-        <li>Processability: machines will be able to automatically process and
-          manipulate the data within a dataset.</li>
-        <li>Discoverability machines will be able to automatically discover a
-          dataset or data within a dataset.</li>
-        <li>Reuse: the chances of dataset reuse by different groups of data
-          consumers will increase.</li>
-        <li>Trust: the confidence that consumers have in the dataset will
-          improve.</li>
-        <li>Linkability: it will be possible to create links between data
-          resources (datasets and data items).</li>
-        <li>Access: humans and machines will be able to access up to date data
-          in a variety of forms.</li>
-        <li>Interoperability: it will be easier to reach consensus among data
-          publishers and consumers.</li>
-      </ul>
-      
-      <p>The following table relates Best Practices and Benefits.</p>
-      <table id="bpbenefitstable" class="bptable">
-        <caption>Best Practices and Benefits </caption>
-        <thead>
-          <tr>
-            <th>Best Practice</th>
-            <th>Benefits</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- this part is auto-generated by script -->
-        </tbody>
-      </table>
-      
-      <p>The figure below shows the benefits that data publishers will gain
-        with adoption of the Best Practices.</p>
-      <div id="benefitsTables"></div>
-      <!-- This section is auto-generated -->
-      
-    </section>
     <section id="conclusions">
       <h2>Conclusions</h2>
     </section>
@@ -3913,20 +4027,57 @@ a:Dataset a dcat:Dataset ;
           <td> used for sharing spatial data in tiles, mainly for display in maps </td>
         </tr>
       </table>
-    </section>
-    <section class="appendix" id="auth-id-sources">
-      <h2>Authoritative sources of geographic identifiers</h2>
-      <div style="background-color:yellow">
-        <p>Content from Appendix B has been integrated into <a href="#entity-level-links">Best Practice 14: Publish links between spatial things and related resources</a>. This <em>stub</em> appendix has been left so that sequential ordering of the appendices does not change in this draft.</p>
-      </div>
+    </section>    
+    <section class="appendix" id="BP_Benefits" class="informative">
+      <h2>Best Practices Benefits</h2>
+      <p>The list below describes the main benefits of applying the Spatial Data on the Web Best Practice. The benefits are taken from [DWBP]. Each benefit represents an improvement in the way how datasets are available on the Web.</p>
+      <ul>
+        <li>Comprehension: humans will have a better understanding about the
+          data structure, the data meaning, the metadata and the nature of the
+          dataset. </li>
+        <li>Processability: machines will be able to automatically process and
+          manipulate the data within a dataset.</li>
+        <li>Discoverability machines will be able to automatically discover a
+          dataset or data within a dataset.</li>
+        <li>Reuse: the chances of dataset reuse by different groups of data
+          consumers will increase.</li>
+        <li>Trust: the confidence that consumers have in the dataset will
+          improve.</li>
+        <li>Linkability: it will be possible to create links between data
+          resources (datasets and data items).</li>
+        <li>Access: humans and machines will be able to access up to date data
+          in a variety of forms.</li>
+        <li>Interoperability: it will be easier to reach consensus among data
+          publishers and consumers.</li>
+      </ul>
+      
+      <p>The following table relates Best Practices and Benefits.</p>
+      <table id="bpbenefitstable" class="bptable">
+        <caption>Best Practices and Benefits </caption>
+        <thead>
+          <tr>
+            <th>Best Practice</th>
+            <th>Benefits</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- this part is auto-generated by script -->
+        </tbody>
+      </table>
+      
+      <p>The figure below shows the benefits that data publishers will gain
+        with adoption of the Best Practices.</p>
+      <div id="benefitsTables"></div>
+      <!-- This section is auto-generated -->
+      
     </section>
     <section class="appendix" id="requirements">
       <h2>Cross reference of use case requirements against best practices</h2>
-      <table id="x-ref_ucrVbp">
+      <table id="requirementsbpstable" class="bptable">
         <caption>Cross reference of requirements against best practices</caption>
         <thead>
           <tr>
-            <th>UC Requirements</th>
+            <th>Requirements</th>
             <th>Best Practice</th>
           </tr>
         </thead>
