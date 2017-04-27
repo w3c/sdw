@@ -72,7 +72,7 @@ The list of SOSA resource URLs is:
 - http://www.w3.org/ns/sosa/Sampling
 - http://www.w3.org/ns/sosa/Sensor
 - http://www.w3.org/ns/sosa/actsOnProperty
-- http://www.w3.org/ns/sosa/actuationMadeBy
+- http://www.w3.org/ns/sosa/madeByActuator
 - http://www.w3.org/ns/sosa/hasFeatureOfInterest
 - http://www.w3.org/ns/sosa/hasResult
 - http://www.w3.org/ns/sosa/hasResultingSample
