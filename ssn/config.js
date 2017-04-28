@@ -41,7 +41,7 @@ var respecConfig = {
 	}],
 	otherLinks: [
       {
-      key: "Contributors (ordered alphabetically",
+      key: "Contributors (ordered alphabetically)",
       data: [
       {
         value: "Rob Atkinson"
