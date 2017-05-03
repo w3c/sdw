@@ -204,14 +204,6 @@ var respecConfig = {
 		  title:"Sensor Observation Service Interface Standard",
         status:"OpenGIS Implementation Standard"
       },
-      "SensorThings":{
-        href:"http://www.opengeospatial.org/standards/sensorthings",
-        publisher:"OGC",
-		  authors:["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
-        date:"26 July 2012",
-		  title:"SensorThings API Part 1: Sensing",
-        status:"OpenGIS Implementation Standard"
-      },
       "WCS":{
         href:"http://www.opengeospatial.org/standards/wcs",
         publisher:"OGC",
@@ -291,7 +283,8 @@ var respecConfig = {
         publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/sensorthings",
         "title": "OGC \u00AE SensorThings API Part 1: Sensing",
-        "date": "26 July 2016"
+        "date": "26 July 2016",
+        status:"OpenGIS Implementation Standard"
       },
       "COVERAGE-JSON": {
         "authors":["Jon Blower", "Maik Riechert", "Bill Roberts"],
