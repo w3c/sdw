@@ -197,23 +197,15 @@ var respecConfig = {
         date:"15 December 2015"
       },
       "SOS":{
-        href:"https://portal.opengeospatial.org/files/?artifact_id=47599",
+        href:"http://www.opengeospatial.org/standards/sos",
         publisher:"OGC",
 		  authors:["Arne Bröring", "Christoph Stasch", "Johannes Echterhoff"],
         date:"20 April 2012",
 		  title:"Sensor Observation Service Interface Standard",
         status:"OpenGIS Implementation Standard"
       },
-      "SensorThings":{
-        href:"http://docs.opengeospatial.org/is/15-078r6/15-078r6.html",
-        publisher:"OGC",
-		  authors:["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
-        date:"26 July 2012",
-		  title:"SensorThings API Part 1: Sensing",
-        status:"OpenGIS Implementation Standard"
-      },
       "WCS":{
-        href:"http://www.opengis.net/doc/IS/wcs-core-2.0.1",
+        href:"http://www.opengeospatial.org/standards/wcs",
         publisher:"OGC",
         authors:["Peter Baumann"],
         date:"12 July 2012",
@@ -221,7 +213,7 @@ var respecConfig = {
         status:"OGC Interface Standard"
       },
       "WFS":{
-        href:"http://www.opengis.net/doc/IS/wfs/2.0.2",
+        href:"http://www.opengeospatial.org/standards/wfs",
         publisher:"OGC",
         authors:["Panagiotis (Peter) A. Vretanos"],
         date:"10 July 2014",
@@ -229,7 +221,7 @@ var respecConfig = {
         status:"OGC Interface Standard"
       },
       "WMS":{
-        href:"http://portal.opengeospatial.org/files/?artifact_id=14416",
+        href:"http://www.opengeospatial.org/standards/wms",
         publisher:"OGC",
         authors:["Jeff de la Beaujardiere"],
         date:"15 March 2006",
@@ -237,7 +229,7 @@ var respecConfig = {
         status:"OpenGIS Implementation Standard"
       },
       "WMTS":{
-        href:"http://portal.opengeospatial.org/files/?artifact_id=35326",
+        href:"http://www.opengeospatial.org/standards/wmts",
         publisher:"OGC",
         authors:["Joan Masó", "Keith Pomakis", "Núria Julià"],
         date:"6 April 2010",
@@ -245,7 +237,7 @@ var respecConfig = {
         status:"OpenGIS Implementation Standard"
       },
       "WPS":{
-        href:"http://docs.opengeospatial.org/is/14-065/14-065.html",
+        href:"http://www.opengeospatial.org/standards/wps",
         publisher:"OGC",
         authors:["Matthias Mueller", "Benjamin Pross"],
         date:"5 October 2015",
@@ -291,7 +283,8 @@ var respecConfig = {
         publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/sensorthings",
         "title": "OGC \u00AE SensorThings API Part 1: Sensing",
-        "date": "26 July 2016"
+        "date": "26 July 2016",
+        status:"OpenGIS Implementation Standard"
       },
       "COVERAGE-JSON": {
         "authors":["Jon Blower", "Maik Riechert", "Bill Roberts"],
