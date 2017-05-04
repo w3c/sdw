@@ -74,6 +74,7 @@ The list of SOSA resource URLs is:
 - http://www.w3.org/ns/sosa/actsOnProperty
 - http://www.w3.org/ns/sosa/madeByActuator
 - http://www.w3.org/ns/sosa/hasFeatureOfInterest
+- http://www.w3.org/ns/sosa/hasProperty
 - http://www.w3.org/ns/sosa/hasResult
 - http://www.w3.org/ns/sosa/hasResultingSample
 - http://www.w3.org/ns/sosa/hasSample
@@ -82,6 +83,7 @@ The list of SOSA resource URLs is:
 - http://www.w3.org/ns/sosa/isFeatureOfInterestOf
 - http://www.w3.org/ns/sosa/isHostedBy
 - http://www.w3.org/ns/sosa/isObservedBy
+- http://www.w3.org/ns/sosa/isPropertyOf
 - http://www.w3.org/ns/sosa/isResultOf
 - http://www.w3.org/ns/sosa/isSampleOf
 - http://www.w3.org/ns/sosa/isSamplingResultOf
@@ -208,7 +210,6 @@ The list of SSN resource URLs is:
 - http://www.w3.org/ns/ssn/hasOutput
 - http://www.w3.org/ns/ssn/hasOperatingProperty
 - http://www.w3.org/ns/ssn/hasOperatingRange
-- http://www.w3.org/ns/ssn/hasProperty
 - http://www.w3.org/ns/ssn/hasSubSystem
 - http://www.w3.org/ns/ssn/hasSurvivalProperty
 - http://www.w3.org/ns/ssn/hasSurvivalRange
@@ -218,7 +219,6 @@ The list of SSN resource URLs is:
 - http://www.w3.org/ns/ssn/implements
 - http://www.w3.org/ns/ssn/inCondition
 - http://www.w3.org/ns/ssn/inDeployment
-- http://www.w3.org/ns/ssn/isPropertyOf
 - http://www.w3.org/ns/ssn/isProxyFor
 - http://www.w3.org/ns/ssn/qualityOfObservation
 - http://www.w3.org/ns/ssn/wasOriginatedBy
