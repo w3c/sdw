@@ -913,6 +913,8 @@ function init() {
 
       <p>We say that the <a>spatial thing</a> is disjoint from the geometry object. The <a>spatial thing</a>, Eddystone Lighthouse (<a href="https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/eddystone-lighthouse"><code>https://www.trinityhouse.co.uk/lighthouses-and-lightvessels/eddystone-lighthouse</code></a>), is the “real world phenomenon” about which we want to state facts (such as the height of its light is 41 meters above sea level) and link to other real world phenomena (for example, that it is located at Eddystone Rocks, Cornwall; another <a>spatial thing</a> identified as <a href="http://sws.geonames.org/2650253/"><code>http://sws.geonames.org/2650253/</code></a> by <a href="http://www.geonames.org">GeoNames</a>).</p>
 
+      <p>Sometimes <a>spatial things</a>, such as <a href="http://sws.geonames.org/2212709/">The Sahara</a>, have imprecisely defined locations. These are still considered to <a>spatial things</a> as they have spatial extent &mdash; it's just that we can't define a crisp vector boundary for them because there's no consensus about where there edges are. In such cases, often a single point is given that provides the notional centre-point of the spatial thing.</p>
+
       <div class="note">
         <p>Although we have borrowed the description of <a>spatial thing</a> from [[W3C-BASIC-GEO]], the formal RDFS definition of <a href="http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"><code>w3cgeo:SpatialThing</code></a> doesn't quite suit our purpose as there is the potential for confusion about whether it is <em>disjoint</em> from geometry. The definition of <a href="http://www.opengis.net/ont/geosparql#Feature"><code>geosparql:Feature</code></a>, which is derived from the [[ISO-19109]] definition of <a>Feature</a>, is a better semantic fit for <a>spatial thing</a> as it is explicity specified as being disjoint from <a href="http://www.opengis.net/ont/geosparql#Geometry"><code>geosparql:Geometry</code></a>.</p>
 
@@ -944,7 +946,9 @@ function init() {
         <p>Sometimes you’ll hear the word “coverage” used synonymously with “gridded data” or “raster data” but this isn’t really accurate. You can see from the above paragraph that non-gridded data (like a river gauge measurement) can also be modelled as coverages. Nevertheless, you will often find a bias toward gridded data in discussions (and software) that concern coverages.</p>
       </div>
 
-      <p>A coverage is not itself a <a>spatial thing</a>. The definition above presents a coverage as a data construct - in which case, it does not exist in the real world. Accordingly, we might say in the hydrology example, where a river gauge measures flow values at regular sampling times, that the “river segment” (a spatial thing) has a property “flow rate” that is expressed as coverage data.</p>
+      <p>Although the definition above presents a coverage as a data structure, conceptually it still has spatial extent. For example, the distribution of rainfall measured by a weather radar can be thought of as a coverage &mdash; the spatial extent is defined by the limit of the weather radar's range. Similarly, we might say in the hydrology example, where a river gauge measures flow values at regular sampling times, the spatial extent would be the monitoring point where the river guage is positioned.</p>
+
+      <p>We say that a coverage is really just a special type of <a>spatial thing</a> with some particular properties. Often, a coverage can be a property of another <a>spatial thing</a>; referring back to hydrology, a "river segment" may have a property “flow rate” that is expressed as a coverage.</p>
 
       <p><a>Spatial things</a> and <a>coverages</a> may be related in several ways:</p>
       <ul>
@@ -3272,15 +3276,15 @@ Content-type: application/geo+json
                 see for example <a href="https://www.w3.org/TR/ldp-paging/">W3C Linked 
                 Data Platform Paging</a> or <a 
                   href="https://www.w3.org/community/hydra/wiki/Pagination">Hydra
-                pagination</a>.<br/>
-                For geometries with many coordinates, simplifying the geometries for display
+                pagination</a>.</li>
+              <li>For geometries with many coordinates, simplifying the geometries for display
                 at large map scales - think about all administrative boundaries of Europe on a 
                 map display with scale 1:30,000,000 - is another option; the simplification may be 
                 controlled by the client using a query parameter indicating the target scale; geometry
                 simplification including its caveats are discussed in <a href="#describe-geometry" 
                 class="sectionRef">Best Practice 5: Provide geometries on the Web in a 
-                usable way</a>.<br/>
-                At the other end of the spectrum, overly small pieces of
+                usable way</a>.</li>
+              <li>At the other end of the spectrum, overly small pieces of
                 data are inconvenient to use, too. Data should be packaged in lumps that 
                 are convenient to work with. An approach where very small, fine-grained 
                 units of information are published that require further HTTP requests 
