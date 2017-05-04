@@ -314,7 +314,7 @@ var respecConfig = {
       },
       "ISO-19107": {
         "href":"https://www.iso.org/standard/26012.html",
-        "title":"ISO 19107:2003 Geographic information -- Geographic information -- Spatial schema",
+        "title":"ISO 19107:2003 Geographic information -- Spatial schema",
         "authors":["ISO/TC 211"],
         "publisher":"ISO",
         "date":"May 2003"
