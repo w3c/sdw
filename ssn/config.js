@@ -44,13 +44,13 @@ var respecConfig = {
       key: "Contributors (ordered alphabetically)",
       data: [
       {
-        value: "Rob Atkinson"
+        value: "Rob Atkinson, Metalinkage"
       },{
-        value: "Raúl García Castro"
+        value: "Raúl García-Castro, Universidad Politécnica de Madrid"
       },{
-        value: "Josh Liebermann"
+        value: "Joshua Lieberman, Tumbling Walls"
       },{
-        value: "Claus Stadler"
+        value: "Claus Stadler, Universität Leipzig"
       }]
       },
       {
