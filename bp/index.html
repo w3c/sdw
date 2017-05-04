@@ -1137,12 +1137,7 @@ function init() {
           too. And the data is typically available in formats that are not easy to process for
           non-expert users.</li>
       </ul>
-      <p>However, <a>spatial data infrastructures</a> are a key component of the broader <a>spatial
-          data</a> ecosystem. Such infrastructures typically include workflows and tools related to
-        the management and curation of spatial datasets, and provide mechanism to support the rich
-        set of capabilities required by the expert community. Our goal is to help spatial data
-        publishers build on these foundations to enable the spatial data from SDIs to be fully
-        integrated with the Web of data.</p>
+      <p>However, <a>spatial data infrastructures</a> are a key component of the broader <a>spatial data</a> ecosystem. Such infrastructures typically include policies, workflows and tools related to the management and curation of spatial datasets, and provide mechanism to support the rich set of capabilities required by the expert community. Our goal is to help spatial data publishers build on these foundations to enable the spatial data from SDIs to be fully integrated with the Web of data.</p>
       <p>When your starting point is a <a>spatial data infrastructure</a>, you should at least read the following best practices. These provide the most important extra steps that should be taken to bring spatial data from <a>spatial data infrastructures</a> to the Web: </p>
       <ul>
         <li><a href="#globally-unique-ids">Best Practice 1: Use globally unique persistent HTTP URIs for spatial things</a></li>
@@ -1495,22 +1490,86 @@ function init() {
         </section>
         <div class="practice">
           <!-- BP14 will be refactored into two parts, the first of which is this one, BP14a - general linking (not spatial at all - but DWBP didn't mention this stuff)-->
-          <p><span id="linking" class="practicelab">General linking (better title tbd)</span></p>
-          <p class="practicedesc"></p>
+          <p><span id="linking" class="practicelab">Link resources together to create the Web of data</span></p>
+          <p class="practicedesc">Bind spatial things into the Web of data using links to other resources, providing sufficient information for a user to determine whether the target resource specified in a link will be of use.</p>
           <section class="axioms">
             <h4 class="subhead">Why</h4>
+            <p>The <a href="http://5stardata.info">5&#9733; rating for Linked Open Data</a> asserts that to achieve the fifth star you must "link your data to other data to provide context". The benefits for consumers and publishers of linking to other data are <a href="http://5stardata.info/en/#addendum5">listed</a> as:</p>
+            <ul>
+              <li>You can discover more (related) data while consuming the data.</li>
+              <li>You can directly learn about the data schema.</li>
+              <li>You make your data discoverable.</li>
+              <li>You increase the value of your data.</li>
+              <li>Your own organization will gain the same benefits from the links as the [other] consumers.</li>
+            </ul>
+            <p>There is always a cost to traversal of a link, even if it is just a few milliseconds delay and the need to parse a few hundred or thousand bytes returned in response to an HTTP request. In many cases, such as when dealing with large datasets and complex queries, the costs incurred from traversing a link may be significant in terms of time and data volumes. Before a user or software agent decides to traverse a link, they should be able to determine whether acquisition of the target resource, or data <em>about</em> the target resource, will support their application goals. For example, what format can one expect the response in, what type of resource is the target and how is that target related to the source resource?</p>
           </section>
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
+            <p>Links can be identified and traversed by humans and software agents.</p>
+            <p>Sufficient information is provided to help humans and software agents determine whether traversal of a given link meets their goals.</p>
           </section>
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
+            <p>The ground-rules for linking spatial data are the same as for <em>any</em> type of data.</p>
+            <ol>
+              <li>
+                <p>Use formats that support Web linking (as defined in [[WEBARCH]] <a href="https://www.w3.org/TR/webarch/#hypertext">section 4.4 Hypertext</a>)</p>
+                <p>Earlier in this document (<a href="#linked-data" class="sectionRef"></a>) we explained that Linked Data requires only that the formats used to publish data support Web linking. In other words, linking spatial data does not automatically mean the use of RDF; links can also be created, for example, using [[GML]], HTML or JSON-LD. The two key points from [[WEBARCH]] are:</p>
+                <ul>
+                  <li><strong><em>Good practice: Link identification</em></strong> &mdash; A [data format] specification SHOULD provide ways to identify links to other resources [...].</li>
+                  <li><strong><em>Good practice: Web linking</em></strong> &mdash; A [data format] specification SHOULD allow Web-wide linking, not just internal document linking.</li>
+                </ul>
+                <p>The examples used in this best practice illustrate some of the data formats and mechanisms that support Web linking.</p>
+              </li>
+              <li>
+                <p>Follow the principles for <strong>4&#9733; &mdash; Linked</strong> [[WEB-DATA]]</p>
+                <ul>
+                  <li>
+                    <p>Always use global identifiers when linking between documents, so that link identifiers can be taken out of context and shared globally.</p>
+                    <div class="note">
+                      <p>Obviously, this principle is predicated on the use of global identifiers for resources. As such, we consider <a href="#globally-unique-ids" class="sectionRef">Best Practice 1: Use globally unique persistent HTTP URIs for spatial things</a> as a prerequisite for linking.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <p>Links should be typed (explicitly or implicitly), so that clients can decide which link to follow when they are traversing a web of interlinked resources to reach application goals.</p>
+                    <pre class="example" id="ex-webdata2-typed-links" title="HTTP response Link header with IANA Link Relation types">
+HTTP/1.1 200 OK
+Link: &lt;http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam/2014&gt;; rel="predecessor-version"
+Content-type: application/geo+json
+Connection: close
+
+{...}
+                    </pre>
+                    <p>This example, using HTTP Link headers (as defined in [[RFC5988]]), illustrates the use of IANA [[LINK-RELATION-TYPES]] to define the link type. According to the IANA registry, <code>predecessor-version</code> <em>points to a resource containing the predecessor version in the version history</em> (as defined in [[RFC5829]] "Link Relation Types for Simple Version Navigation between Web Resources").</p>
+                    <div class="note">
+                      <p>In simple links involving only two resources, the <em>role</em>, or type, of each resource are implicit and can be inferred from the link relation type. It can be useful to include other information to help users judge whether to follow a link such as human-readable labels and hints about the target resource type. Of course, often target resources and the links that refer to them are maintained by different parties, so such hints should be assumed as prescriptive; they may or may not turn out to be true. For example, [[RFC5988]] "Web Linking" defines several additional attributes including: <code>hreflang</code> &mdash; hints at the language or languages that the target resource is available in; <code>type</code> &mdash; indicates the media-type expected; and <code>title</code> &mdash; labels the link target such that it can be used as a human-readable identifier etc.</p>
+                      <p>Also note that [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#Conneg">Best Practice 19: Use content negotiation for serving data available in multiple formats</a> recommends the use of <a href="https://www.w3.org/DesignIssues/Conneg">content negotiation</a> to help ensure that a user or software agent is provided with useful content when they traverse a link and resolve the target resource. <span style="background-color:yellow">However, HTTP Request headers are limited to specifying media-type, character set, encoding (e.g. for compression) and language. There is no mechanism to request that data is provided according to a particular data model or 'profile' (see [[RFC6906]] "profile" Link Relation Type), nor request data in a particular coordinate reference system.</span> </p>
+                    </div>
+                    
+                  </li>
+                  <li>
+                    <p>Make links as specific as possible. If the linked resource supports fragment identification, and the link logically should be to a fragment of the resource (and not just the resource as a whole), try to use fragment identifiers when possible.</p>
+                    <div class="note">
+                      <p>Being as specific as possible with links is important; e.g. refer to a particular <a>spatial thing</a> rather than the dataset in which that spatial thing is described. That said, we encourage publication of data about spatial things as independently resolvable resources (e.g. so that they can be accessed by search engine's Web crawlers, see <a href="#indexable-by-search-engines" class="sectionRef">Best Practice 2: Make your spatial data indexable by search engines</a>) which means that fragment identifiers are usually not required.</p>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ol>
           </section>
           <section class="test">
             <h4 class="subhead">How to Test</h4>
+            <p>Check that hyperlinks are distinguishable within the data &mdash; a string-literal that happens to contain a URL is insufficient.</p>
+            <p>Check that hyperlinks use global identifiers, preferrably HTTP URIs, to identify the link target.</p>
+            <p>Check that hyperlinks use typed relationships, and that the definition of the link relation type can be located in order to determine how to interpret the hyperlink.</p>
+            <p></p>
           </section>
           <section class="ucr">
             <h4 class="subhead">Evidence</h4>
+              <p><span>Relevant requirements</span>: 
+                <a href="https://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>, 
+                <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>.
           </section>
           <section class="benefits">
             <h4 class="subhead">Benefits</h4>
@@ -2469,90 +2528,26 @@ Content-type: application/geo+json
           <h4>Spatial links</h4>
           <p>Introduction... </p>
           <div class="practice">
-            <p><span id="entity-level-links" class="practicelab">Publish links between spatial things and related resources</span></p>
-            <p class="practicedesc">Bind spatial things into the Web of data using links to other resources, providing sufficient information for a user to determine whether the target resource specified in a link will be of use.</p>
+            <p><span id="entity-level-links" class="practicelab">Use appropriate relation types to link spatial things</span></p>
+            <p class="practicedesc">Ensure that hyperlinks between spatial things and related resources use appropriate sematics.</p>
             <section class="axioms">
               <h4 class="subhead">Why</h4>
-              <p>The <a href="http://5stardata.info">5&#9733; rating for Linked Open Data</a> asserts that to achieve the fifth star you must "link your data to other data to provide context". The benefits for consumers and publishers of linking to other data are <a href="http://5stardata.info/en/#addendum5">listed</a> as:</p>
-              <ul>
-                <li>You can discover more (related) data while consuming the data.</li>
-                <li>You can directly learn about the data schema.</li>
-                <li>You make your data discoverable.</li>
-                <li>You increase the value of your data.</li>
-                <li>Your own organization will gain the same benefits from the links as the [other] consumers.</li>
-              </ul>
-  
               <p>Geography is often described as the "glue that binds Linked Data"; the links between <a>spatial things</a> - and between other resources and spatial things - describe how the world around us is structured and interrelated and form an important facet of the Web of Data.</p>
   
               <p><a>Spatial relationships</a> can often be derived mathematically based on geometry - but this can be computationally expensive. <em>Topological</em> relationships such as these can be asserted, thereby removing the need to do geometry-based calculations. A useful secondary benefit is that these relationships are easier for humans to understand!</p>
   
               <p>One issue that spatial data is more prone to than other domains is the non-unique naming. Different authorities and agencies seek to describe the world around them by publishing spatial data, and in doing so, each minting their own URIs (as recommended in <a href="#globally-unique-ids" class="sectionRef">Best Practice 1: Use globally unique persistent HTTP URIs for spatial things</a>). Where spatial things are of common interest to multiple agents, it is almost inevitable that a given spatial thing will end up being identified with several URIs. Given necessary due diligence, multiple identifiers may be linked, thereby supporting conflation of multiple sets of information and yielding new perspectives on spatial things. </p>
-  
-              <p>There is always a cost to traversal of a link, even if it is just a few milliseconds delay and the need to parse a few hundred or thousand bytes returned in response to an HTTP request. In many cases, such as when dealing with large datasets and complex queries, the costs incurred from traversing a link may be significant in terms of time and data volumes. Before a user or software agent decides to traverse a link, they should be able to determine whether acquisition of the target resource, or data <em>about</em> the target resource, will support their application goals. For example, what format can one expect the response in, what type of resource is the target and how is that target related to the source resource?</p>
-  
-              <p>Links by their nature are a directional relationship between source and target. Most often, a link is published within the dataset that describes the source resource specified in the link, enabling users to browse through information; traversing the links they find in documents (i.e. <em>outbound</em> links). While many links specify source and target resources that are described in the same dataset, it is commonplace, and encouraged as per the 5&#9733; rating, to link <em>between</em> datasets, thereby 'stitching' together the Web of data. In these situations, a link refers to some remote target resource. A dataset access API may interpret such links to enable a user to specify a well-known URI of a spatial thing they are interested in (for example from popular data repositories such as <a href="http://www.geonames.org/">GeoNames</a>, <a href="https://www.wikidata.org/">Wikidata</a> or <a href="http://dbpedia.org/">DBpedia</a>) in order to search for related information (see <a href="#convenience-apis" class="sectionRef">Best Practice 12: Expose spatial data through 'convenience APIs'</a> for more on APIs and search). But how does a user know of the existence of a link referring <em>to</em> their target spatial thing (and potentially identifying a related resource that is useful for their intended goal) when that link is published within a remote dataset resource (i.e. an <em>inbound</em> link)?</p>
-  
-              <p>Making these inbound links discoverable makes the Web of data symmetric; e.g. where both inbound and outbound links are visible to data users who may then choose to traverse them. However, links provide a secondary benefit in terms of a citation; indicating some subjective trustworthiness of the data (e.g. "it's good enough quality for me to use"). Not only do such link-based citations convey the value of the dataset in a way that the original publisher can objectively quantify (and hence continue to publish and maintain those datasets), but they can provide a subjective indication of quality; like a search engine’s page ranking algorithm, the larger the number of sources of inbound links, the greater the likelihood that a given dataset is of high quality.</p>
+    
             </section>
   
             <section class="outcome">
               <h4 class="subhead">Intended Outcome</h4>
               <p>Spatial things are related to other resources in the Web of data using links with appropriate semantics.</p>
-              <p>Links can be identified and traversed by humans and software agents.</p>
-              <p>Sufficient information is provided to help humans and software agents determine whether traversal of a given link meets their goals.</p>
-              <p>Humans and software agents can find resources that link <em>to</em> and <em>from</em> a given spatial thing.</p>
             </section>
             <section class="how">
               <h4 class="subhead">Possible Approach to Implementation</h4>
   
-              <p>Before we get into the details of linking spatial data it's worth stating some ground-rules that should be followed when linking any types of resource in the Web of data.</p>
-              <ol>
-                <li>
-                  <p>Use formats that support Web linking (as defined in [[WEBARCH]] <a href="https://www.w3.org/TR/webarch/#hypertext">section 4.4 Hypertext</a>)</p>
-                  <p>Earlier in this document (<a href="#linked-data" class="sectionRef"></a>) we explained that Linked Data requires only that the formats used to publish data support Web linking. In other words, linking spatial data does not automatically mean the use of RDF; links can also be created, for example, using [[GML]], HTML or JSON-LD. The two key points from [[WEBARCH]] are:</p>
-                  <ul>
-                    <li><strong><em>Good practice: Link identification</em></strong> &mdash; A [data format] specification SHOULD provide ways to identify links to other resources [...].</li>
-                    <li><strong><em>Good practice: Web linking</em></strong> &mdash; A [data format] specification SHOULD allow Web-wide linking, not just internal document linking.</li>
-                  </ul>
-                  <p>The examples used in this best practice illustrate some of the data formats and mechanisms that support Web linking.</p>
-                </li>
-                <li>
-                  <p>Follow the principles for <strong>4&#9733; &mdash; Linked</strong> [[WEB-DATA]]</p>
-                  <ul>
-                    <li>
-                      <p>Always use global identifiers when linking between documents, so that link identifiers can be taken out of context and shared globally.</p>
-                      <div class="note">
-                        <p>Obviously, this principle is predicated on the use of global identifiers for resources. As such, we consider <a href="#globally-unique-ids" class="sectionRef">Best Practice 1: Use globally unique persistent HTTP URIs for spatial things</a> as a prerequisite for linking.</p>
-                      </div>
-                    </li>
-                    <li>
-                      <p>Links should be typed (explicitly or implicitly), so that clients can decide which link to follow when they are traversing a web of interlinked resources to reach application goals.</p>
-                      <pre class="example" id="ex-webdata2-typed-links" title="HTTP response Link header with IANA Link Relation types">
-  HTTP/1.1 200 OK
-  Link: &lt;http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam/2014&gt;; rel="predecessor-version"
-  Content-type: application/geo+json
-  Connection: close
-  
-  {...}
-                      </pre>
-                      <p>This example, using HTTP Link headers (as defined in [[RFC5988]]), illustrates the use of IANA [[LINK-RELATION-TYPES]] to define the link type. According to the IANA registry, <code>predecessor-version</code> <em>points to a resource containing the predecessor version in the version history</em> (as defined in [[RFC5829]] "Link Relation Types for Simple Version Navigation between Web Resources").</p>
-                      <div class="note">
-                        <p>In simple links involving only two resources, the <em>role</em>, or type, of each resource are implicit and can be inferred from the link relation type. It can be useful to include other information to help users judge whether to follow a link such as human-readable labels and hints about the target resource type. Of course, often target resources and the links that refer to them are maintained by different parties, so such hints should be assumed as prescriptive; they may or may not turn out to be true. For example, [[RFC5988]] "Web Linking" defines several additional attributes including: <code>hreflang</code> &mdash; hints at the language or languages that the target resource is available in; <code>type</code> &mdash; indicates the media-type expected; and <code>title</code> &mdash; labels the link target such that it can be used as a human-readable identifier etc.</p>
-                        <p>Also note that [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#Conneg">Best Practice 19: Use content negotiation for serving data available in multiple formats</a> recommends the use of <a href="https://www.w3.org/DesignIssues/Conneg">content negotiation</a> to help ensure that a user or software agent is provided with useful content when they traverse a link and resolve the target resource. <span style="background-color:yellow">However, HTTP Request headers are limited to specifying media-type, character set, encoding (e.g. for compression) and language. There is no mechanism to request that data is provided according to a particular data model or 'profile' (see [[RFC6906]] "profile" Link Relation Type), nor request data in a particular coordinate reference system.</span> </p>
-                      </div>
-                      
-                    </li>
-                    <li>
-                      <p>Make links as specific as possible. If the linked resource supports fragment identification, and the link logically should be to a fragment of the resource (and not just the resource as a whole), try to use fragment identifiers when possible.</p>
-                      <div class="note">
-                        <p>Being as specific as possible with links is important; e.g. refer to a particular <a>spatial thing</a> rather than the dataset in which that spatial thing is described. That said, we encourage publication of data about spatial things as independently resolvable resources (e.g. so that they can be accessed by search engine's Web crawlers, see <a href="#indexable-by-search-engines" class="sectionRef">Best Practice 2: Make your spatial data indexable by search engines</a>) which means that fragment identifiers are usually not required.</p>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-              </ol>
-  
-              <p>Now that we've set some ground rules for Web linking, we need to consider the types of relationship that might be used in spatial data.</p>            
+              <p>There are a number of categories of relationship that might be used in spatial data:</p>
               <ol>
                 <li>
                   <p>Synonyms and equality</p>
@@ -2886,74 +2881,11 @@ Content-type: application/geo+json
                 </li>
               </ol>
   
-              <p>Finally, we need to consider how to bring symmetry to discovery of links. It's easy for a user to discover links when they are embedded in the document or data record they are working with &mdash; whether they are <em>inbound</em> or <em>outbound</em> links, all the information they need to decide whether to traverse them should be available. However, we need to consider the situation where another party publishes a dataset that refers to <em>your</em> <a>spatial things</a>. Or perhaps, a set of relationships between <a>spatial things</a> in two (or more) datasets has been developed by an agent that owns neither of the source datasets. How would a client application know that these links existed? To finish this best practice, we describe several mechanisms that might be used to help a user discover remotely published links.</p>
-  
-              <ol>
-                <li>
-                  <p>Help search engines find your links.</p>
-                  <p>Discovery is the staple of search engines. As with the document Web, links in the Web of data will be used to support and refine search algorithms.</p>
-                  <p>If your spatial data is indexable by the search engines, the links defined therein will be visible to them. Please refer to <a href="#indexable-by-search-engines" class="sectionRef">Best Practice 2: Make your spatial data indexable by search engines</a>.</p>
-                </li>
-                <li>
-                  <p>Publish your links to a third-party service.</p>
-                  <p>Because the links we define use global identifiers for both the source and target resources, they do not need any context to be useful (e.g. one doesn't need any prior knowledge to determine that the URI <a href="http://dbpedia.org/resource/Anne_Frank_House"><code>http://dbpedia.org/resource/Anne_Frank_House</code></a> identifies Anne Frank's House). This means that our links can be published independently from the datasets where they were originally defined.</p>
-                  <p>The service <a href="http://sameas.org">&lt;sameAs&gt;</a> provides an example of this in practice &mdash; albeit only for links using the <code>owl:sameAs</code> relation type. The HTTP GET request <a href="http://sameas.org/store/freebase/n3?uri=%3Chttp%3A%2F%2Frdf.freebase.com%2Fns%2Fm.02s5hd%3E"><code>http://sameas.org/store/freebase/n3?uri=&lt;http://rdf.freebase.com/ns/m.02s5hd&gt;</code></a> produces the following result in [[N-TRIPLES]] format:</p>
-                  <pre class="example" id="ex-linking-sameas-service" title="Discovering links from the &amp;lt;sameAs> service ([N-TRIPLES] format)">
-  HTTP/1.1 200 OK
-  Connection:close
-  Content-Length:864
-  Content-Type:text/n3
-  Date:Mon, 13 Mar 2017 16:12:04 GMT
-  
-  @prefix owl:  &lt;http://www.w3.org/2002/07/owl#&gt; .
-  @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-  @prefix dc:   &lt;http://purl.org/dc/elements/1.1/&gt; .
-  @prefix dct:  &lt;http://purl.org/dc/terms/&gt; .
-  @prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
-  
-  &lt;http://sameas.org/rdf?uri=http%3A%2F%2Frdf.freebase.com%2Fns%2Fm.02s5hd&gt;
-    dc:creator "sameAs.org/store/freebase" ;
-    dc:title "Co-references from sameAs.org/store/freebase for http://rdf.freebase.com/ns/m.02s5hd" ;
-    foaf:primaryTopic "http://rdf.freebase.com/ns/m.02s5hd" ;
-    dct:license &lt;http://creativecommons.org/publicdomain/zero/1.0/&gt; .
-  
-  &lt;http://rdf.freebase.com/ns/m.02s5hd&gt; owl:sameAs
-      &lt;http://dbpedia.org/resource/Anne_Frank_House&gt; ,
-      &lt;http://rdf.freebase.com/ns/m.02s5hd&gt; ,
-      &lt;http://rdf.freebase.com/ns/en.the_annexe&gt; ,
-      &lt;http://rdf.freebase.com/ns/guid.9202a8c04000641f80000000002c15ec&gt; .
-                  </pre>
-                  <p>Sets of links can be published in any of the data formats that support Web linking. However, it is worth noting that tabular data, as described in [[TABULAR-DATA-PRIMER]], may provide a reasonably compact form while retaining the semantics associated with each of the link relation types used.</p>
-                  <p>While this is an example of a convenient mechanism to discover alternate identifiers for a given resource, it is ad-hoc. A client application would need to be configured to query an arbitrary number of known service end-points to discover links published across all the domains deemed of interest. As such, this kind of approach is only likely to be useful where one can alert the user community which services they should refer to.</p>
-                </li>
-                <li>
-                  <p>Publish metadata about collections of links in a standard way.</p>
-                  <p>A data publisher may consider publishing summary information about their datasets and the links defined in them using the Vocabulary of Interlinked Datasets [[VoID]].</p>
-                  <p>In [[VoID]], <a href="https://www.w3.org/TR/void/#linkset" class="externalDFN">Linksets</a> provide summary description of the relationships between two datasets; identifying the source and target datasets, the link relation type(s) used plus optional metadata such as URI templates for identifying participating resources and the number of links specified for each relation type, and may describe <em>technical features</em> such as APIs through which the participating datasets can be accessed.</p>
-                  <p>[[VoID]] dataset and linkset descriptions may be published at <code>/.well-known/void</code> on each domain (using the <code>.well-known</code> pattern defined in [[RFC5758]]) making them easy to find. Applications could be configured to harvest [[VoID]] descriptions from the Internet domains of data publishers in their community, enabling them to build a searchable graph of relationships between datasets &mdash; a <em>Data Network</em>. Because this information is summarized at the set level, the data network graph is convenient to work with, allowing simple discovery of numbers and relation types of both <em>inbound</em> and <em>outbound</em> links within a given dataset. Once the presence of interesting links within a dataset has been identified, the user would then work directly with the dataset in question (or the API through which it is accessed) to acquire the detailed information about specific links defined in that dataset.</p>
-                  <p>Interactions such as those described above would be quite intensive for a human using a browser. However, the [[VoID]] descriptions could be used to drive a software agent that hides much of the complexity from the user; for example, automatically harvesting individual links once a set-level relationship is considered interesting, and then allowing the user to traverse those links either forwards or backwards.</p>
-                  <aside class="example">
-                    <p><a href="https://www.osi.ie/">Ordnance Survey Ireland</a> (OSi) publish Ireland's authoritative geospatial information as <a>Linked Data</a> from their <a href="http://data.geohive.ie/">data.geohive.ie</a> platform. In addition to offering a human-browsable interface and downloadable data dumps, they use <a href="http://linkeddatafragments.org/">Linked Data Fragments</a>, and specifically a [[TRIPLE-PATTERN-FRAGMENTS]] <a href="http://vma01.adaptcentre.ie/">server</a> which uses [[VoID]] descriptions, to enable users to explore the datasets via a SPARQL endpoint. For example, <a href="http://vma01.adaptcentre.ie/boundaries-links">Boundaries &mdash; links with the LOD cloud</a> provides a starting point to find links between the authoritative spatial things published by OSi and <em>similar</em> spatial things from <a href="http://dbpedia.org">DBpedia</a>; e.g.</p>
-                    <pre id="ex-linking-osi-similarto">
-  @prefix ov:       &lt;http://open.vocab.org/terms/&gt; .
-  
-  &lt;http://data.geohive.ie/resource/county/2AE19629143D13A3E055000000000001&gt;
-        ov:similarTo &lt;http://dbpedia.org/resource/County_Carlow&gt; .
-                    </pre>
-                  </aside>
-                  <aside class="example">
-                    <p>This was the aim of the <a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference Framework</a> (SIRF), developed by <a href="http://csiro.au">CSIRO</a>. The project team describe SIRF as "a <em>Linked Data bridge</em> between Spatial Data Infrastructures and the general information Web". In summary, when a spatial dataset was registered with SIRF, URIs would be automatically created for each of the <a>spatial things</a> described in that dataset. Where identifiers in the collection of datasets were deemed to refer to the same <a>spatial thing</a> a <em>crosswalk</em> (such as <code>owl:sameAs</code>) would be created to link those identifiers and bind together different representations of the same <a>spatial thing</a>, and thereby enable users to browse information from multiple sources as a coherent whole. The SIRF application is driven by the [[VoID]] descriptions it creates for each registered dataset.</p>
-                  </aside>
-                  <div class="issue" data-number="36">
-                    <p>The use of [[VoID]] needs further discussion; is there enough evidence of its adoption in the wild? Also, the Triple Pattern Fragments server needs a bit more investigation to determine exactly how much the [[VoID]] descriptions are used.</p>
-                  </div>
-                </li>
-              </ol>
-  
             </section>
             <section class="test">
               <h4 class="subhead">How to Test</h4>
-              <p>...</p>
+              <p>Check that hyperlinks use typed relationships, and that link relation type can be located in order to determine how to interpret the hyperlink.</p>
+              <p>Check that the source and target of the hyperlink are spatial things, unless the link relation type definition indicates that this should be otherwise (e.g. when relating a spatial thing to its geometry).</p>
             </section>
             <section class="ucr">
               <h4 class="subhead">Evidence</h4>
@@ -2961,15 +2893,13 @@ Content-type: application/geo+json
                 <a href="https://www.w3.org/TR/sdw-ucr/#Linkability">R-Linkability</a>, 
                 <a href="https://www.w3.org/TR/sdw-ucr/#MachineToMachine">R-MachineToMachine</a>, 
                 <a href="https://www.w3.org/TR/sdw-ucr/#SpatialRelationships">R-SpatialRelationships</a>, 
-                <a href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">R-SpatialOperators</a>, 
-                <a href="https://www.w3.org/TR/sdw-ucr/#Discoverability">R-Discoverability</a>.</p>
+                <a href="https://www.w3.org/TR/sdw-ucr/#SpatialOperators">R-SpatialOperators</a>.</p>
             </section>
             <section class="benefits">
               <h4 class="subhead">Benefits</h4>
               <ul class="benefitsList">
                 <li>Comprehension</li>
                 <li>Processability</li>
-                <li>Discoverability</li>
                 <li>Linkability</li>
                 <li>Interoperability</li>
               </ul>
@@ -3749,6 +3679,30 @@ a:Dataset a dcat:Dataset ;
         <p>Large, complex datasets are common in the information processing world, and commonly organised in “hypercubes” - where “data dimensions” are used to locate values holding results. A standard based on this dimensional model of data  is the RDF Data Cube vocabulary [[vocab-data-cube]]. It has been used to publish sensor data, but RDF Data Cube is lacking in possibilities for describing spatio-temporal aspects of data, which are very important for observations. One of the work items in the Spatial Data on the Web working group has been to extend the existing RDF Data Cube ontology to support specification of key metadata required to interpret spatio-temporal data, called [[QB4ST]].</p> 
         <p>QB4ST is an extension to RDF Data Cube  to provide mechanisms for defining spatio-temporal aspects of dimension and measure descriptions. It is intended to enable the development of semantic descriptions of specific spatio-temporal data elements by appropriate communities of interest, rather than to enumerate a static list of such definitions. It provides a minimal ontology of spatio-temporal properties and defines abstract classes for data cube components (i.e. dimensions and measures) that use these, to allow classification and discovery of specialized component definitions using general terms.</p>
         <p>QB4ST is designed to support the publication of consistently described re-usable and comparable definitions of spatial and temporal data elements by appropriate communities of practice. One obvious such case is the use of GPS coordinates described as decimal latitude and longitude measures. Another example is the intended publication of a register of <a>Discrete Global Grid Systems</a> (DGGS) by the <a href="http://www.opengeospatial.org/projects/groups/dggsswg">OGC DGGS Working Group</a>. QB4ST is intended to support publication of descriptions of such data using a common set of attributes that can be attached to a property description (extending the available RDF-QB mechanisms for attributes of observations).</p>
+      </section>
+      <section id="c-inboundlinks">
+        <h3>Discovering what refers <em>to</em> a spatial thing</h3>
+        <p>Links by their nature are a directional relationship between source and target. Most often, a link is published within the dataset that describes the source resource specified in the link, enabling users to browse through information; traversing the links they find in documents (i.e. <em>outbound</em> links). While many links specify source and target resources that are described in the same dataset, it is commonplace, and encouraged as per the 5&#9733; rating, to link <em>between</em> datasets, thereby 'stitching' together the Web of data. In these situations, a link refers to some remote target resource. A dataset access API may interpret such links to enable a user to specify a well-known URI of a spatial thing they are interested in (for example from popular data repositories such as <a href="http://www.geonames.org/">GeoNames</a>, <a href="https://www.wikidata.org/">Wikidata</a> or <a href="http://dbpedia.org/">DBpedia</a>) in order to search for related information (see <a href="#convenience-apis" class="sectionRef">Best Practice 12: Expose spatial data through 'convenience APIs'</a> for more on APIs and search). But how does a user know of the existence of a link referring <em>to</em> their target spatial thing (and potentially identifying a related resource that is useful for their intended goal) when that link is published within a remote dataset resource (i.e. an <em>inbound</em> link)?</p>
+        <p>Making these inbound links discoverable makes the Web of data symmetric; e.g. where both inbound and outbound links are visible to data users who may then choose to traverse them. However, links provide a secondary benefit in terms of a citation; indicating some subjective trustworthiness of the data (e.g. "it's good enough quality for me to use"). Not only do such link-based citations convey the value of the dataset in a way that the original publisher can objectively quantify (and hence continue to publish and maintain those datasets), but they can provide a subjective indication of quality; like a search engine’s page ranking algorithm, the larger the number of sources of inbound links, the greater the likelihood that a given dataset is of high quality.</p>
+        <p>Search engines play an important role in the Web ecosystem; if spatial data is published in a way that is indexable by search engines (see <a href="#indexable-by-search-engines" class="sectionRef">Best Practice 2: Make your spatial data indexable by search engines</a>) then it should be possible to find the relationships between spatial things. However, the internals of search engines are opaque to most users, and the necessary query-patterns may not be offered.</p>
+        <p>An alternative is to publish or harvest links into a common repository that can be queried. For example, the <a href="http://sameas.org">&lt;sameAs&gt;</a> service exposes a collection of links defined using the <code>owl:sameAs</code> relation type that can be queried to find related resources. As an illustration, the HTTP GET request <a href="http://sameas.org/store/freebase/n3?uri=%3Chttp%3A%2F%2Frdf.freebase.com%2Fns%2Fm.02s5hd%3E"><code>http://sameas.org/store/freebase/n3?uri=&lt;http://rdf.freebase.com/ns/m.02s5hd&gt;</code></a> finds four matches, all of which identify Anne Frank's House. The problem with this ad-hoc approach is that a client application would need to be configured to query an arbitrary number of known service end-points to discover links published across all the domains deemed of interest. As such, this kind of approach is only likely to be useful where one can alert the user community which services they should refer to.</p>
+        <p>Publishing summary information about datasets and the links defined in them using the Vocabulary of Interlinked Datasets [[VoID]] may provide a workable approach &mdash; but is yet to be widely adopted.</p>
+        <p>In [[VoID]], <a href="https://www.w3.org/TR/void/#linkset" class="externalDFN">Linksets</a> provide summary description of the relationships between two datasets; identifying the source and target datasets, the link relation type(s) used plus optional metadata such as URI templates for identifying participating resources and the number of links specified for each relation type, and may describe <em>technical features</em> such as APIs through which the participating datasets can be accessed.</p>
+        <p>Applications could be configured to harvest [[VoID]] descriptions from data publishers in their community, enabling them to build a searchable graph of relationships between datasets &mdash; a <em>Data Network</em>. Because this information is summarized at the set level, the data network graph is convenient to work with, allowing simple discovery of numbers and relation types of both <em>inbound</em> and <em>outbound</em> links within a given dataset. Once the presence of interesting links within a dataset has been identified, the user would then work directly with the dataset in question (or the API through which it is accessed) to acquire the detailed information about specific links defined in that dataset.</p>
+        <p>Interactions such as those described above would be quite intensive for a human using a browser. However, the [[VoID]] descriptions could be used to drive a software agent that hides much of the complexity from the user; for example, automatically harvesting individual links once a set-level relationship is considered interesting, and then allowing the user to traverse those links either forwards or backwards.</p>
+        <aside class="example">
+          <p><a href="https://www.osi.ie/">Ordnance Survey Ireland</a> (OSi) publish Ireland's authoritative geospatial information as <a>Linked Data</a> from their <a href="http://data.geohive.ie/">data.geohive.ie</a> platform. In addition to offering a human-browsable interface and downloadable data dumps, they use <a href="http://linkeddatafragments.org/">Linked Data Fragments</a>, and specifically a [[TRIPLE-PATTERN-FRAGMENTS]] <a href="http://vma01.adaptcentre.ie/">server</a> which uses [[VoID]] descriptions, to enable users to explore the datasets via a SPARQL endpoint. For example, <a href="http://vma01.adaptcentre.ie/boundaries-links">Boundaries &mdash; links with the LOD cloud</a> provides a starting point to find links between the authoritative spatial things published by OSi and <em>similar</em> spatial things from <a href="http://dbpedia.org">DBpedia</a>; e.g.</p>
+          <pre id="ex-linking-osi-similarto">
+  @prefix ov:       &lt;http://open.vocab.org/terms/&gt; .
+  
+  &lt;http://data.geohive.ie/resource/county/2AE19629143D13A3E055000000000001&gt;
+        ov:similarTo &lt;http://dbpedia.org/resource/County_Carlow&gt; .
+          </pre>
+        </aside>
+        <aside class="example">
+          <p>The <a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference Framework</a> (SIRF), developed by <a href="http://csiro.au">CSIRO</a> was designed as "a <em>Linked Data bridge</em> between Spatial Data Infrastructures and the general information Web". In summary, when a spatial dataset was registered with SIRF, URIs would be automatically created for each of the <a>spatial things</a> described in that dataset. Where identifiers in the collection of datasets were deemed to refer to the same <a>spatial thing</a> a <em>crosswalk</em> (such as <code>owl:sameAs</code>) would be created to link those identifiers and bind together different representations of the same <a>spatial thing</a>, and thereby enable users to browse information from multiple sources as a coherent whole. The SIRF application is driven by the [[VoID]] descriptions it creates for each registered dataset.</p>
+        </aside>
+        <p>As the use of [[VoID]] becomes more widespread, best practices regarding its use in building a searchable <em>data network</em> may emerge.</p>
       </section>
     </section>
     <section class="appendix" id="applicability-formatVbp">
