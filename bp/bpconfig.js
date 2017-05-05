@@ -373,6 +373,14 @@ var respecConfig = {
         "authors":["ISO/TC 211"],
         "publisher":"ISO",
         "date":"April 2016"
+      }, 
+      
+      "ISO-19162": {
+        "href":"https://www.iso.org/standard/63094.html",
+        "title":"ISO 19162:2015 Geographic information -- Well-known text representation of coordinate reference systems",
+        "authors":["ISO/TC 211"],
+        "publisher":"ISO",
+        "date":"August 2015"
       }
       
     },
