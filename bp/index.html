@@ -1982,34 +1982,138 @@ Connection: close
             </ul>
           </section>
         </div>
-        <div class="practice">
-          <!-- Text from BP8 about multiple geometries goes here. We agreed to refactor BP8 into two parts:
-BP8a :: general geometry publication
-BP8b :: multiple geometries -->
-          <p><span id="multiplegeometries" class="practicelab">Multiple geometries (better title tbd)</span></p>
-          <p class="practicedesc"></p>
-          <section class="axioms">
-            <h4 class="subhead">Why</h4>
-          </section>
-          <section class="outcome">
-            <h4 class="subhead">Intended Outcome</h4>
-          </section>
-          <section class="how">
-            <h4 class="subhead">Possible Approach to Implementation</h4>
-          </section>
-          <section class="test">
-            <h4 class="subhead">How to Test</h4>
-          </section>
-          <section class="ucr">
-            <h4 class="subhead">Evidence</h4>
-          </section>
-          <section class="benefits">
-            <h4 class="subhead">Benefits</h4>
-            <ul class="benefitsList">
-              <li>Access</li>
-            </ul>
-          </section>
-        </div>
+		
+<div class="practice">
+<p><span id="multiplegeometries" class="practicelab">Provide geometries at the right level of accuracy, precision, and size</span></p>
+<p class="practicedesc">Geometry data should be provided at levels of accuracy, precision, and size fit for their use on the Web.</p>
+<section class="axioms">
+<h4 class="subhead">Why</h4>
+<p>Geometry data always provide an approximate description of the shape and extent of <a>spatial things</a>, which is fit for specific uses. For instance, portraying a geometry on a Web map would typically not require the level of detail that is needed for using the same geometry for spatial analysis. Moreover, although a 3D description of a geometry of a building might be available, a Web map would be typically capable of portraying just its 2-dimensional footprint.</p>
+<p>Other issues to be taken into account are network bandwidth and the processing capabilities of the target tools. For instance, a geometry of a total size of 1GB or more, could be more efficiently transmitted after being compressed. On the other hand, a tool with limited processing capabilities (as a Web browser) may not be able to efficiently handle such geometry (e.g., for displaying it on a Web map).</p>
+<p>This best practice complements <a href="#describe-geometry"></a> by outlining some of the approaches that can be used to publish alternative versions of geometry data, with respect to the level of accuracy, precision, and size, fit for the most general use cases and the reference target communities.</p>
+<div class="note">
+<p>This best practice is not meant to provide detailed guidelines on (a) which is the right level of accuracy and precision for different use cases, or (b) how to generate and publish alternative geometries for <a>spatial things</a>. On these specific topics, we refer the reader to, respectively, <a href="#convenience-apis"></a> and <a href="#desc-accuracy"></a>.</p>
+</div>
+</section>
+<section class="outcome">
+<h4 class="subhead">Intended Outcome</h4>
+<p>Geometry data should be made available at (possibly different) levels of accuracy, precision, and size, taking into account:</p>
+<ul>
+<li>The required level of precision and accuracy of the intended use case(s).</li>
+<li>The processing capabilities of the target tools.</li>
+<li>Optimization in terms of network bandwidth consumption</li>
+</ul>
+<p>As said in <a href="#describe-geometry"></a>, the requirements of the geospatial, Linked Data and Web communities should be ideally taken into account also with respect to the accuracy, precision, and size of geometry data. Whenever this is not feasible, Web consumption requirements should at least be addressed.</p>
+</section>
+<section class="how">
+<h4 class="subhead">Possible Approach to Implementation</h4>
+<p>A number of techniques can be used to deliver representations of geometries at an accuracy, precision, and size fitting the requirements of a given use case.</p>
+<p>The following list, although not exhaustive, outlines the approaches most widely used, especially for the Web delivery and consumption of geometry data.</p>
+<p>Choosing the right technique requires taking primarily into account whether the derived geometry is fit for the target use case. Technical limits - as network bandwith and processing capabilities - are of course important, but secondary. Of course, the ideal situation is when you are able to find the technique offering the right trade-off between these two types of requirements.</p>
+<p>Whatever option is used, the key requirement is that the derived geometry data are not replacing the original ones, but are made available as alternative representations.</p>
+<p><a href="#describe-geometry"></a>, <a href="#desc-accuracy"></a> and <a href="#convenience-apis"></a> provide general guidelines that can be used for the publication of alternative representations of geometries, providing at the same time information on their characteristics. These include, but are not limited to, the use of different URIs for different representations, and HTTP content negotiation. Moreover, whenever geometry data are made available in RDF, specific properties can be used to specify the geometry type and the level of accuracy and precision. More specific examples are included in the approaches described below.</p>
+<ol>
+<li>
+<p>Compress geometry data</p>
+<p>Using standard compression algorithms, as <a href="https://en.wikipedia.org/wiki/Zip_%28file_format%29">zip</a> and <a href="https://en.wikipedia.org/wiki/Gzip">gzip</a>, addresses the issue of efficient transmission of geometry data, without information loss. Notably, some formats come with alternative compressed encodings - e.g., <a href="https://developers.google.com/kml/documentation/kmzarchives">KMZ</a> is used to deliver compressed [[KML]] data.</p>
+<p>Compression can be easily carried out on the fly, and it is also supported by the HTTP protocol via content negotiation - see [[RFC2616]], <a href="https://tools.ietf.org/html/rfc2616#section-3.5">&sect;&nbsp;3.5: Content codings</a>.</p>
+</li>
+<li>
+<p>Use formats optimizing access to and processing of geometry data</p>
+<p>Some formats support a more compact description of geometry data, which potentially results in reducing network bandwidth consumption and/or more efficient client-side processing.</p>
+<p>This is for instance the case of <a href="https://github.com/topojson/topojson">TopoJSON</a>, an extension to GeoJSON which reduces redundancy in the description of a geometry, by splitting it into segments (referred to as "arcs") that can be re-used.</p>
+<p>To achieve the same results, other formats are designed to enable the stream-based delivery of geometry data. For instance, GeoJSON Text Sequences [[RFC8142]] is a format designed to optimize access and processing of GeoJSON data, by enabling a client application to use the received data even before the transmission is completed.</p>
+<p>Another approach, focused on efficient client-side processing, is <a href="https://github.com/mapbox/geojson-vt">GeoJSON-VT</a>, a library which enables a client to create on the fly vector tiles from GeoJSON data.</p>
+<p>Finally, <a>Geohash</a> provides a compact way of encoding 0-dimensional geometries (points), which, at the same time, can be used for spatial indexing.</p>
+<aside class="example" id="ex-anne-frank-address-geohash">
+<p>The point coordinates of the address of Anne Frank's House (see <a href="#ex-schemaorg-dataset-and-place"></a>) can be encoded with <a>Geohash</a> as <a href="http://geohash.org/u173zns7thy"><code>u173zns7thy</code></a> (corresponding to the following lat/long coordinates: <code>52.37520</code> <code>4.88399</code>).</p>
+</aside>
+</li>
+<li>
+<p>Provide geometries at different levels of generalization</p>
+<p>Generalization is a traditional technique used in geospatial data - first of all, in cartography - to reduce the precision and/or accuracy of a geometry for specific purposes. A typical example is provided by how geometries are portrayed in maps of different scales: for instance, a large-scale map can depict the width of a road (2-dimensional geometry), whereas, at lower scales, the same road can be shown as a widthless line (1-dimensional geometry).</p>
+<p>Providing geometries at different scales or resolutions is actually one of the first criteria to be considered for addressing different use cases. This is common practice in the geospatial domain, especially, but not only, for reference data. For instance, the dataset of the <a href="http://ec.europa.eu/eurostat/web/nuts/">Nomenclature of Territorial Units for Statistics</a> (NUTS) of the European Union is made available at five different scales - ranging from 1:1,000,000 to 1:60,000,000.</p>
+<aside class="example" id="ex-admin-areas-at-different-resolution" title="">
+<p>The <a href="http://gadm.geovocab.org/">GADM-RDF project</a> provides access to geometries of administrative areas at a resolution of 100m, 1km, 10km, and 100km. Each of these variants is associated with a different HTTP URI, and geometry data are made available in different formats. For instance, the geometry of Germany at 100m resolution is denoted by the following URI <a href="http://gadm.geovocab.org/id/0/60/geometry_100m"><code>http://gadm.geovocab.org/id/0/60/geometry_100m</code></a>, whereas the variant at 100km resolution is available from the following URI: <a href="http://gadm.geovocab.org/id/0/60/geometry_100km"><code>http://gadm.geovocab.org/id/0/60/geometry_100km</code></a> (see also <a href="#ex-http-uris-for-geometries"></a>).</p>
+</aside>
+<p>Scale reduction uses a number of generalization techniques that can be used also outside this specific use case in order to provide geometries at different levels of accuracy and precision.</p>
+<p>These techniques include the following:</p>
+<dl>
+<dt>Reducing precision</dt>
+<dd>It boils down to reducing the number of decimals in point coordinates of a geometry. This feature is widely supported in geospatial tools and Web libraries, and it provides a way to effectively reduce the size of geometry data without loosing too much information about its shape.</dd>
+<dt>Simplification</dt>
+<dd>This basically consists in reducing the number of point coordinates of a geometry. Examples of algorithms used for this purpose are <a href="https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm">Ramer-Douglas-Peucker</a> (RDP) and <a href="https://hydra.hull.ac.uk/resources/hull:8338">Visvalingam-Whyatt</a>.</dd>
+<dt>Conversion of geometry dimensions</dt>
+<dd>One of the cases is the example mentioned earlier in this section, where the geometry of a road, originally, 2-dimensional, is converted into a 1-dimensional object (a line). This can also apply to conversion from 3-dimensional geometries into 2-dimensional ones (e.g., the 3D representation of a building is converted into its 2D footprint), and to converasion of an <var>n</var>-dimensional geometry into a point.</dd>
+</dl>
+</li>
+<li>
+<p>Provide the centroid and bounding box of a geometry</p>
+<p>Centroids and bounding boxes are another example of how a geometry can be generalized, but serving different purposes. More precisely, a centroid is meant to specify the position of a <a>spatial thing</a> by converting its actual geometry to a point, corresponding to its center. On the other hand, a bounding box provides a simplified description of the maximum extent of a <a>spatial thing</a>.</p>
+<p>Although both these generalization methodologies result in a high-level information loss with respect to the original geometry, they play an important role in spatial analysis because of the topological information they provide. Moreover, centroids and bounding boxes could provide an accurate enough description of a geometry for those use cases where, respectively, the extent or precise shape of a <a>spatial thing</a> is not relevant. Finally, they are widely used also outside the geospatial domain.</p>
+<p>Computation of centroids and bounding boxes is supported by all <a>GIS</a> tools and Web mapping libraries, which makes it possible to be carried out on the fly. However, performing this operation client-side can be extremely inefficient if the target tool has limited processing capabilities.</p>
+<p>This issue can be addressed by providing access to centroids and bounding boxes as alternative representations of a given geometry.</p>
+<aside class="example" id="ex-anne-frank-building-centroid-and-bbox">
+<p>In the following [[TURTLE]] snippet, [[W3C-BASIC-GEO]] and [[GeoRSS]] are used to specify, respectively, the centroid (<code>w3cgeo:lat</code> and <code>w3cgeo:long</code>) and bounding box (<code>georss:box</code>) of the 2-dimensional footprint of the building hosting Anne Frank's Museum (see <a href="#ex-anne-frank-building-rdf"></a>).</p>
+<pre>
+@prefix bag:       &lt;http://bag.basisregistraties.overheid.nl/def/bag#&gt; .
+@prefix georss:    &lt;http://www.georss.org/georss/&gt; .
+@prefix geosparql: &lt;http://www.opengis.net/ont/geosparql#&gt; .
+@prefix rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix w3cgeo:    &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt; .
+
+&lt;http://bag.basisregistraties.overheid.nl/bag/id/pand/0363100012169587&gt; 
+  a geosparql:Feature, bag:Pand ;
+  rdfs:label "Pand 0363100012169587"@nl;
+  
+# Detailed geometry  
+  
+  geosparql:hasGeometry &lt;http://bag.basisregistraties.overheid.nl/bag/id/geometry/5C1F8F11324717378B437B2CD12871FF&gt; ;
+  bag:geometriePand     &lt;http://bag.basisregistraties.overheid.nl/bag/id/geometry/5C1F8F11324717378B437B2CD12871FF&gt; ;
+  
+# Centroid
+  w3cgeo:lat  "52.37509"^^xsd:float ;
+  w3cgeo:long "4.88412"^^xsd:float ;
+  
+# Bounding box
+  georss:box "52.3749,4.8838 52.3753,4.8845"^^xsd:string .
+.
+</pre>
+</aside>
+</li>
+</ol>
+</section>
+<section class="test">
+<h4 class="subhead">How to Test</h4>
+<p>Check if:</p>
+<ul>
+<li>The original and most detailed version of geometry data is available.</li>
+<li>Compressed version of geometry data can be obtained via HTTP content negotiation or other mechanisms.</li>
+<li>Centroids and bounding boxes are made available, without the need of downloading and processing the relevant geometry data.</li>
+<li>It is possible to get a 2-dimensional representation of a 3-dimensional geometry.</li>
+<li>Geometry data are available at different levels of precision, e.g., by allowing users to specify the maximum number of decimals in point coordinates.</li>
+<li>Geometry data are available at different scales / spatial resolutions.</li>
+</ul>
+</section>
+<section class="ucr">
+<h4 class="subhead">Evidence</h4>
+<p><span>Relevant requirements</span>: 
+<a href="https://www.w3.org/TR/sdw-ucr/#BoundingBoxCentroid">R-BoundingBoxCentroid</a>, 
+<a href="https://www.w3.org/TR/sdw-ucr/#Compatibility">R-Compatibility</a>, 
+<a href="https://www.w3.org/TR/sdw-ucr/#Compressible">R-Compressible</a>, 
+<a href="https://www.w3.org/TR/sdw-ucr/#CoordinatePrecision">R-CoordinatePrecision</a>, 
+</p>
+</section>
+<section class="benefits">
+<h4 class="subhead">Benefits</h4>
+<ul class="benefitsList">
+<li>Processability</li>
+<li>Reuse</li>
+<li>Access</li>
+</ul>
+</section>
+</div>
+		
         <div class="practice">
           <p><span id="bp-crs-choice" class="practicelab">Choose coordinate reference systems to suit your user's applications</span></p>
           <p class="practicedesc">Consider your user's intended application when choosing the coordinate reference system(s) used to publish spatial data. </p>
