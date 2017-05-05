@@ -365,6 +365,14 @@ var respecConfig = {
         authors:["Joshua Lieberman", "Raj Singh", "Chris Goad"],
         publisher:"W3C Geospatial Incubator Group",
         date:"23 October 2007"
+      }, 
+      
+      "ISO-19159-2": {
+        "href":"https://www.iso.org/standard/64768.html",
+        "title":"ISO/TS 19159-2:2016 Geographic information -- Calibration and validation of remote sensing imagery sensors and data -- Part 2: Lidar",
+        "authors":["ISO/TC 211"],
+        "publisher":"ISO",
+        "date":"April 2016"
       }
       
     },
