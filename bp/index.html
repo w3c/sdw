@@ -2641,7 +2641,9 @@ Content-type: application/geo+json
   
               <p><a>Spatial relationships</a> can often be derived mathematically based on <a>geometry</a> - but this can be computationally expensive. <em>Topological</em> relationships such as these can be asserted, thereby removing the need to do geometry-based calculations. A useful secondary benefit is that these relationships are easier for humans to understand!</p>
   
-              <p>One issue that <a>spatial data</a> is more prone to than other domains is the non-unique naming. Different authorities and agencies seek to describe the world around them by publishing spatial data, and in doing so, each minting their own URIs (as recommended in <a href="#globally-unique-ids" class="sectionRef">Best Practice 1: Use globally unique persistent HTTP URIs for spatial things</a>). Where <a>spatial things</a> are of common interest to multiple agents, it is almost inevitable that a given spatial thing will end up being identified with several URIs. Given necessary due diligence, multiple identifiers may be linked, thereby supporting conflation of multiple sets of information and yielding new perspectives on spatial things. </p>
+              <p>Different authorities and agencies seek to describe the world around them by publishing spatial data, and in doing so, each minting their own URIs (as recommended in <a href="#globally-unique-ids" class="sectionRef">Best Practice 1: Use globally unique persistent HTTP URIs for spatial things</a>). Where <a>spatial things</a> are of common interest to multiple agents, it is almost inevitable that a given <a>spatial thing</a> will end up being identified with several URIs. Given necessary due diligence, multiple identifiers may be linked, thereby supporting combination of multiple sets of information and yielding new perspectives on spatial things. </p>
+
+              <p>Application domains often require spatial things to be related; to convey the correct meaning, specific link relation types need to be used.</p>
     
             </section>
   
@@ -2652,67 +2654,62 @@ Content-type: application/geo+json
             <section class="how">
               <h4 class="subhead">Possible Approach to Implementation</h4>
   
-              <p>There are a number of categories of relationship that might be used in <a>spatial data</a>:</p>
+              <p>Before examining the link relation types that might be used in spatial data, let's to consider <em>what</em> we should link to.</p>
+  
               <ol>
                 <li>
-                  <p>Synonyms and equality</p>
-                  <p>As described above, it is not uncommon for a <a>spatial thing</a> to be identified using more than one URI (also known as the "non-unique naming problem"). If you think that this is the case, the property <code>owl:sameAs</code> may be used to express this. However, caution is advised as <code>owl:sameAs</code> is an extremely strong statement; literally "these two URIs identify the same resource". As there is only <em>one</em> spatial thing, all the properties and attributes returned when resolving any of the equated URIs are considered to apply to that spatial thing. Given that spatial data is often published by different parties, each concerned with their own perspective, the spatial thing equality is often difficult to determine and depends heavily on the semantics involved.</p>
-                  <p>So, the advice is: if in doubt, don't use <code>owl:sameAs</code>.</p>
+                  <p>Link to the <a>spatial thing</a>.</p>
+                  <p>The <a>geometry</a> description or <a>extent</a> of a <a>spatial thing</a> may be expressed using an object with its own URI. For example:</p>
+                  <pre class="example" id="ex-linking-geometry-edinburgh" title="Independently identified geometry extent for the City of Edinburgh Council Area (TTL format)">
+  @prefix rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+  @prefix admingeo:  &lt;http://data.ordnancesurvey.co.uk/ontology/admingeo/&gt; .
+  @prefix geom:      &lt;http://data.ordnancesurvey.co.uk/ontology/geometry/&gt;
   
-                  <p>By way of example, let's explore some data for Edinburgh.</p> 
+  &lt;http://data.ordnancesurvey.co.uk/id/7000000000030505&gt;
+    a admingeo:District ;
+    rdfs:label "City of Edinburgh" ;
+    geom:extent &lt;http://data.ordnancesurvey.co.uk/id/geometry/30505-11&gt; .
   
-                  <p>The <em>City of Edinburgh Council Area</em> (e.g. the geographical area that Edinburgh City Council is responsible for) is identified by the <a href="https://www.ons.gov.uk">Office for National Statistics</a> (the recognized national statistical institute of the UK) using their GSS code (a 9 character alpha numeric identifier) <code>S12000036</code> and the URI <a href="http://statistics.data.gov.uk/id/statistical-geography/S12000036"><code>http://statistics.data.gov.uk/id/statistical-geography/S12000036</code></a>. At the same time, the devolved government in Scotland, operating under its own jurisdiction, retains the GSS code but uses the URI <a href="http://statistics.gov.scot/id/statistical-geography/S12000036"><code>http://statistics.gov.scot/id/statistical-geography/S12000036</code></a>. Furthermore, the <a href="https://www.ordnancesurvey.co.uk">Ordnance Survey</a> maintain yet another URI for the City of Edinburgh Council Area as part of its 'Boundary Line' service that contains administrative and statistical geography areas in the UK: <a href="http://data.ordnancesurvey.co.uk/id/7000000000030505"><code>http://data.ordnancesurvey.co.uk/id/7000000000030505</code></a>. Similarly, Geonames identifies Edinburgh, a <em>second-order administrative division</em>, as <a href="http://sws.geonames.org/2650225/"><code>http://sws.geonames.org/2650225/</code></a>. All of these URIs refer to the same <a>spatial thing</a> and are equated using <code>owl:sameAs</code>.</p>
-  
-                  <pre class="example" id="ex-linking-equality-edinburgh" title="Asserting equality between URIs for the City of Edinburgh Council Area (TTL format)">
-  @prefix owl:          &lt;http://www.w3.org/2002/07/owl#&gt; .
-  @prefix scotgov-stat: &lt;http://statistics.gov.scot/id/statistical-geography/&gt; .
-  @prefix ukgov-stat:   &lt;http://statistics.data.gov.uk/id/statistical-geography/&gt; .
-  @prefix osuk:         &lt;http://data.ordnancesurvey.co.uk/id/&gt; .
-  @prefix geonames:     &lt;http://sws.geonames.org/&gt; .
-  
-  scotgov-stat:S12000036 owl:sameAs ukgov-stat:S12000036 .
-  osuk:7000000000030505 owl:sameAs ukgov-stat:S12000036 .
-  geonames:2650225 owl:sameAs ukgov-stat:S12000036 .
+  &lt;http://data.ordnancesurvey.co.uk/id/geometry/30505-11&gt;
+    a geom:AbstractGeometry ;
+    geom:asGML "&lt;gml:MultiPolygon&gt;...&lt;/gml:MultiPolygon&gt;"^^rdf:XMLLiteral ;
+    geom:hectares 27300.411 .
                   </pre>
   
-                  <p>Also note that in this [[TURTLE]] snippet one could easily include additional properties to help users determine whether the <a>link</a> is worth traversing, such as providing human-readable labels and specifying the <em>type</em> designated by each data publisher.</p>
-  
-                  <p>In contrast, the resource identified by <a href="http://data.os.uk/id/4000000074558316"><code>http://data.os.uk/id/4000000074558316</code></a> defines the <a href="http://data.ordnancesurvey.co.uk/ontology/OpenNames/namedPlace">Named Place</a> Edinburgh - a colloquial definition for the city itself. This is not the same as the <em>City of Edinburgh Area</em> and therefore use of the <code>owl:sameAs</code> relationship is inappropriate. Ordnance Survey uses the <a href="http://data.ordnancesurvey.co.uk/ontology/spatialrelations/within"><code>within</code></a> <a>link</a> relation type to relate the <a href="http://data.ordnancesurvey.co.uk/ontology/OpenNames/namedPlace">Named Place</a> <a href="http://data.os.uk/id/4000000074558316">Edinburgh</a> and the <a href="http://data.ordnancesurvey.co.uk/id/7000000000030505">City of Edinburgh</a> administrative area.</p>
-  
-                  <div class="note">
-                    <p>The mechanics of determining whether the information provided when resolving two or more URIs does indeed describe the same <a>spatial thing</a> is a complex topic all in its own right and way beyond the scope of best practice document. Tools such as <a href="http://openrefine.org">Open Refine</a> and the <a href="http://silkframework.org">Silk Linked Data Integration Framework</a> are designed to work with, transform and integrate heterogeneous data sources. Their documentation may provide further insight regarding these challenges.</p>
-                  </div>
-  
-                  <div class="note">
-                    <p>The very strong semantics of the <code>owl:sameAs</code> property has led to several similar sounding, but semantically weaker, properties being defined. These include:</p>
-                    <ul>
-                      <li>
-                        <p><a href="http://www.bbc.co.uk/ontologies/coreconcepts#terms_sameAs">http://www.bbc.co.uk/ontologies/coreconcepts/sameAs</a>, defined by the BBC, whose description states that the property:</p>
-                        <p style="margin-left: 40px"><em>Indicates that something is the same as something else, but in a way that is slightly weaker than owl:sameAs. Its purpose is to connect separate identities of the same thing, whilst keeping separation between the original statements of each.</em></p>
-                      </li>
-                      <li>
-                        <p>and the widely used <a href="https://schema.org/sameAs">schema:sameAs</a> defined by [[SCHEMA-ORG]] whose description states:</p>
-                        <p style="margin-left: 40px"><em>URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Freebase page, or official website.</em></p>
-                      </li>
-                    </ul>
-                  </div>
-  
-                  <p>The lack of equality between the <em>City of Edinburgh [Administrative] Area</em> and the <a href="http://data.ordnancesurvey.co.uk/ontology/OpenNames/namedPlace">Named Place</a> <em>Edinburgh</em> illustrates a gap in best practice. Clearly, these two resources are strongly related, but it is not clear which property one would use to assert that relationship. Unlike administrative areas that have clearly defined boundaries, places often have ill-defined, fuzzy boundaries that are based on human perception of ‘place’; you can’t always define a boundary for a place. For example, <a href="http://data.os.uk/id/4000000074558316">Edinburgh</a> the <a href="http://data.ordnancesurvey.co.uk/ontology/OpenNames/namedPlace">Named Place</a>, published by <a href="https://www.ordnancesurvey.co.uk/">Ordnance Survey</a>, is described using only a notional point <a>geometry</a>; information is not provided about the geometric <a>extent</a>. Other examples of places with ill-defined, fuzzy <a>geometries</a> include the <em>American West</em> and <em>Renaissance Italy</em>. The relationships between places, with their ill-defined (or even absent) geometrical extents, defy description using the topological relationships, such as those described below, which are computed mathematically from geometry.</p> 
-  
-                  <p>We propose the use of a <em>qualitative</em> assertion based on human perceptions to relate places that are deemed to be the same: <strong>samePlaceAs</strong>. The <span style="background-color:yellow">proposed definition to be published in [[SCHEMA-ORG]]</span> is:</p>
-  
-                  <div style="margin-left: 40px">
-                    <p><a href="http://schema.org/Thing"><code>Thing</code></a> &gt; <a href="http://schema.org/Property"><code>Property</code></a> &gt; <span style="background-color:yellow"><code>samePlaceAs</code></span></p>
-                    <p>Used to relate two places that are perceived to be the same; the physical <a>extent</a> of the two places should be broadly comparable but do not need to be equal in a topological or geometric sense.</p>
-                    <p><strong>Values expected to be one of these types:</strong> <a href="http://schema.org/Place"><code>Place</code></a></p>
-                    <p><strong>Used on these types:</strong> <a href="http://schema.org/Place"><code>Place</code></a></p>
-                  </div>
-  
-                  <p>Given that the notion of <em>place</em> concerns a social perspective, we consider it to be distinct from <em>location</em> which is based on <a>geometry</a>. As a result, <code>samePlaceAs</code> can be used to assert the imprecise, social perceptions about the equality of places. <code>samePlaceAs</code> does not overlap with the topological relationships described later in this best practice document that can be computed from geometry.</p>
-  
-                  <p>As with all assertions of an imprecise nature that lack formal semantics, <code>samePlaceAs</code> may have limited value for semantic reasoning. Exactly what constitutes the ‘same place’ will always be somewhat debatable. For example, is <a href="http://dbpedia.org/resource/Byzantium">ancient Byzantium</a> the same place as <a href="http://dbpedia.org/resource/Istanbul">modern Istanbul</a>? Is a historical hotel that was moved across the street to save it from demolition in a redevelopment scheme that same place that it used to be?</p>
+                  <p>As can be seen in the example above, the <a>geometry</a> <a href="http://data.ordnancesurvey.co.uk/id/geometry/30505-11"><code>30505-11</code></a> is an <em>attribute</em> of the <a href="http://data.ordnancesurvey.co.uk/id/7000000000030505">City of Edinburgh</a>. If your intent is to make a statement about, or refer to, the real-world entity then make sure you link to the <a>spatial thing</a> rather than the <a>geometry</a>. Furthermore, note that the geometry record may be updated and re-published with a new identifier, for example, if the city boundary was resurveyed and would then result in a broken <a>link</a>.</p>
+                  <p>Data publishers should also be aware of a common pattern used in the publication of <a>Linked Data</a>, where the <a>spatial thing</a> and the information resource that describes it are identified separately &mdash; often, but not always, using <code>/id</code> as part of the URI for <a>spatial thing</a>, and <code>/doc</code> for the corresponding page/document/record. When the URI for the spatial thing is resolved, a <code>HTTP 303 (see other)</code> response is used to redirect the browser to the page/document/record URL. For example:</p>
+                  <ul>
+                    <li><a href="http://statistics.gov.scot/id/statistical-geography/S12000036"><code>http://statistics.gov.scot<span style="text-decoration: underline;">/id</span>/statistical-geography/S12000036</code></a> redirects to <a href="http://statistics.gov.scot/doc/statistical-geography/S12000036"><code>http://statistics.gov.scot<span style="text-decoration: underline;">/doc</span>/statistical-geography/S12000036</code></a></li>
+                    <li><a href="http://dbpedia.org/resource/Anne_Frank_House"><code>http://dbpedia.org<span style="text-decoration: underline;">/resource</span>/Anne_Frank_House</code></a> redirects to <a href="http://dbpedia.org/page/Anne_Frank_House"><code>http://dbpedia.org<span style="text-decoration: underline;">/page</span>/Anne_Frank_House</code></a></li>
+                  </ul>
+                  <p>While this disambiguation has its advantages, it often seems to confuse users (and even some experts). Be aware of this <em>redirect</em> pattern, and make sure you use the correct URI i.e. the identifying one &mdash; especially if you're copying the URI from a browser's address bar which usually ends up showing the page/document/record URL.</p>
                 </li>
                 <li>
+                  <p>Link to <a>spatial things</a> from popular repositories.</p>
+                  <p>Linking with URIs from popular repositories may improve discoverability of your data. Not only does this provide users with better context by enabling them to browse the information published by the popular repository, it also helps relate your data with datasets from other parties who have also used those URIs as points of reference.</p>
+                  <p>There are many popular repositories containing sets of identifiers for <a>spatial things</a>; the following list suggests the primary sources worth checking:</p>
+                  <ul>
+                    <li><a href="http://www.geonames.org">GeoNames</a></li>
+                    <li><a href="https://www.wikidata.org/">Wikidata</a></li>
+                    <li><a href="http://dbpedia.org">DBpedia</a></li>
+                    <li>National open spatial datasets such as are made available by for example the UK and Dutch governments.</li>
+                  </ul>
+                  <p>Finding out which national open spatial datasets are available, and how they can be accessed, currently requires some insider knowledge &mdash; in most cases because these datasets are often not easily discoverable. Look for national data portals / geoportals such as <a href="http://nationaalgeoregister.nl/geonetwork/srv/dut/catalog.search">Nationaal Georegister</a> (Dutch national register of spatial datasets) or <a href="https://data.overheid.nl">Dataportaal van de Nederlandse overheid</a> (Dutch national governmental data portal).</p>
+                  <p>Once you've found well-known URIs for <a>spatial things</a> that you want to link to, proceed to create <a>links</a> using properties such as those described above &mdash; <code>owl:sameAs</code> (if you're careful!) and <a href="http://www.opengis.net/ont/geosparql#sfWithin"><code>geosparql:sfWithin</code></a>, or perhaps qualitative relationships like <a href="http://www.geonames.org/ontology#nearby"><code>geonames:nearby</code></a> or the <em>proposed</em> <code>schema:samePlaceAs</code>.</p>
+                  <p>However, don't try to make <a>links</a> to <em>everything</em>. It is not always feasible to link your <a>spatial things</a> to well-known resources. For example, if you were maintaining a registry of cultural heritage in Amsterdam, it would be reasonably simple to look up identifiers for the city's 50 or so museums and map these to your spatial things. But it would be a huge task for, say, a topographic mapping agency to cross-reference their entire catalogue of named places containing tens of thousands of spatial things with third-party resources (although in the spirit of crowd-sourcing, if someone else found those links useful, they may take on the task of relating the spatial things and publishing those relationships to the Web as a complementary resource!). In essence, you should only create the data that you have the resources to maintain.</p>
+                </li>
+              </ol>
+
+              <p>Now, let's take a look at link relation types that may be applicable to spatial data. These fall in to three broad categories: spatial relations, equality relations and domain-specific relations.</p> 
+
+              <p>In this best practice document, we cannot cover all the possible vocabularies and ontologies that provide link relation types for spatial data. Other than a few areas of specific guidance, we are not recommending specific vocabularies for spatial linking. Instead, we hope to have introduced patterns that show the types of spatial linking that might be used and leave it to spatial data publishers to determine which specific vocabulary best suits their purpose. In this regard, [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVocabularies">section 8.9 Data Vocabularies</a> and, in particular, [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ReuseVocabularies">Best Practice 15: Reuse vocabularies, preferably standardized ones</a> are highly relevant.</p> 
+
+              <p>Also, readers should note that in many cases, there will often be value in linking <a>spatial things</a> with multiple relationships &mdash; each of which provides different semantics. Having identified your intended user communities and the vocabularies that they commonly use, choose those <a>link</a> relation types that meet their specific needs, and then add more generalized <a>link</a> relation types to support broader reuse of your data.</p>
+
+              <p>However, data publishers should only assert those relationships that they know about and that they think will be of interest to their user community. Don't try to cover all possible requirements! That said, publishers should try to avoid making assumptions about what the user may or may not know. For example, users may lack the expertise or resources to calculate a topological relationship, or lack the domain knowledge to determine how two <a>spatial things</a> are related, if at all. As the data publisher, you are likely to be in a better position to make these judgements than the user &mdash; so help them out by making these relationships clear.</p>
+
+              <ol>
+                <li id="link-type-spatial-rels">
                   <p>Spatial relationships</p>
                   <p>Topological relationships between <a>spatial things</a> can be computed based on assessment of their <a>geometry</a>. [[GeoSPARQL]] defines families of topological relationships (based on the <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a> pattern) that, in mathematical terms, specify the spatial dimension of the intersections of the interiors, boundaries and exteriors of two geometric objects that may be 2-dimensional (e.g. area), 1-dimensional (e.g. linear) or 0-dimensional (e.g. point).</p>
                   <p>Most commonly used are the simple feature relationship family, described in [[SIMPLE-FEATURES]] section <span style="text-decoration: underline;">6.1.15.3 Named spatial relationship predicates based on the DE-9IM</span>. The set of seven named relationships, or <em>spatial predicates</em>, and their associated [[GeoSPARQL]] properties are listed below:</p>
@@ -2777,7 +2774,7 @@ Content-type: application/geo+json
                   <p>Two notable examples of distance relations are:</p>
                   <ul>
                     <li><a href="http://xmlns.com/foaf/spec/#term_based_near"><code>foaf:based_near</code></a> which states "<em>We do not say much about what 'near' means in this context; it is a 'rough and ready' concept.</em>"; and</li>
-                    <li><a href="http://www.geonames.org/ontology#nearby"><code>geonames:nearby</code></a> which simply states, "<em>A <a>feature</a> close to the reference feature</em>".</li>
+                    <li><a href="http://www.geonames.org/ontology#nearby"><code>geonames:nearby</code></a> which simply states, "<em>A <a>feature</a> close to the reference <a>feature</a></em>".</li>
                   </ul>
   
                   <pre class="example" id="ex-linking-geonames-nearby" title="Asserting distance spatial relationship using GeoNames ontology (GeoJSON [RFC7946] format)">
@@ -2808,6 +2805,58 @@ Content-type: application/geo+json
                     <p>To mitigate this, details about object types etc. included in data payload should be provided in the documentation for the API or service end-point from which the data is accessed. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#documentYourAPI">Best Practice 25: Provide complete documentation for your API</a> for further details.</p>
                   </div>
   
+                </li>
+                <li>
+                  <p>Synonyms and equality</p>
+                  <p>As described above, it is not uncommon for a <a>spatial thing</a> to be identified using more than one URI (also known as the "non-unique naming problem"). If you think that this is the case, the property <code>owl:sameAs</code> may be used to express this. However, caution is advised as <code>owl:sameAs</code> is an extremely strong statement; literally "these two URIs identify the same resource". As there is only <em>one</em> <a>spatial thing</a>, all the properties and attributes returned when resolving any of the equated URIs are considered to apply to that <a>spatial thing</a>. Given that spatial data is often published by different parties, each concerned with their own perspective, the <a>spatial thing</a> equality is often difficult to determine and depends heavily on the semantics involved.</p>
+                  <p>So, the advice is: if in doubt, don't use <code>owl:sameAs</code>.</p>
+  
+                  <p>By way of example, let's explore some data for Edinburgh.</p> 
+  
+                  <p>The <em>City of Edinburgh Council Area</em> (e.g. the geographical area that Edinburgh City Council is responsible for) is identified by the <a href="https://www.ons.gov.uk">Office for National Statistics</a> (the recognized national statistical institute of the UK) using their GSS code (a 9 character alpha numeric identifier) <code>S12000036</code> and the URI <a href="http://statistics.data.gov.uk/id/statistical-geography/S12000036"><code>http://statistics.data.gov.uk/id/statistical-geography/S12000036</code></a>. At the same time, the devolved government in Scotland, operating under its own jurisdiction, retains the GSS code but uses the URI <a href="http://statistics.gov.scot/id/statistical-geography/S12000036"><code>http://statistics.gov.scot/id/statistical-geography/S12000036</code></a>. Furthermore, the <a href="https://www.ordnancesurvey.co.uk">Ordnance Survey</a> maintain yet another URI for the City of Edinburgh Council Area as part of its 'Boundary Line' service that contains administrative and statistical geography areas in the UK: <a href="http://data.ordnancesurvey.co.uk/id/7000000000030505"><code>http://data.ordnancesurvey.co.uk/id/7000000000030505</code></a>. Similarly, Geonames identifies Edinburgh, a <em>second-order administrative division</em>, as <a href="http://sws.geonames.org/2650225/"><code>http://sws.geonames.org/2650225/</code></a>. All of these URIs refer to the same <a>spatial thing</a> and are equated using <code>owl:sameAs</code>.</p>
+  
+                  <pre class="example" id="ex-linking-equality-edinburgh" title="Asserting equality between URIs for the City of Edinburgh Council Area (TTL format)">
+  @prefix owl:          &lt;http://www.w3.org/2002/07/owl#&gt; .
+  @prefix scotgov-stat: &lt;http://statistics.gov.scot/id/statistical-geography/&gt; .
+  @prefix ukgov-stat:   &lt;http://statistics.data.gov.uk/id/statistical-geography/&gt; .
+  @prefix osuk:         &lt;http://data.ordnancesurvey.co.uk/id/&gt; .
+  @prefix geonames:     &lt;http://sws.geonames.org/&gt; .
+  
+  scotgov-stat:S12000036 owl:sameAs ukgov-stat:S12000036 .
+  osuk:7000000000030505 owl:sameAs ukgov-stat:S12000036 .
+  geonames:2650225 owl:sameAs ukgov-stat:S12000036 .
+                  </pre>
+  
+                  <p>Also note that in this [[TURTLE]] snippet one could easily include additional properties to help users determine whether the <a>link</a> is worth traversing, such as providing human-readable labels and specifying the <em>type</em> designated by each data publisher.</p>
+  
+                  <p>In contrast, the resource identified by <a href="http://data.os.uk/id/4000000074558316"><code>http://data.os.uk/id/4000000074558316</code></a> defines the <a href="http://data.ordnancesurvey.co.uk/ontology/OpenNames/namedPlace">Named Place</a> Edinburgh - a colloquial definition for the city itself. This is not the same as the <em>City of Edinburgh Area</em> and therefore use of the <code>owl:sameAs</code> relationship is inappropriate.</p>
+  
+                  <div class="note">
+                    <p>The mechanics of determining whether the information provided when resolving two or more URIs does indeed describe the same <a>spatial thing</a> is a complex topic all in its own right and way beyond the scope of best practice document. Tools such as <a href="http://openrefine.org">Open Refine</a> and the <a href="http://silkframework.org">Silk Linked Data Integration Framework</a> are designed to work with, transform and integrate heterogeneous data sources. Their documentation may provide further insight regarding these challenges.</p>
+                  </div>
+
+                  <p>Given the very strong semantics of the <code>owl:sameAs</code> property, alternative properties with weaker semantics are commonly used. Examples include:</p>
+                  <ul>
+                    <li>
+                      <p><a href="https://schema.org/sameAs">schema:sameAs</a> defined by [[SCHEMA-ORG]] whose description states:</p>
+                      <p style="margin-left: 40px"><em>URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Freebase page, or official website.</em></p>
+                    </li>
+                    <li>
+                      <p><a href="http://open.vocab.org/terms/similarTo">ov:similarTo</a> defined by <a href="http://vocab.org/open/">Open.vocab.org</a>, with the description:</p>
+                      <p style="margin-left: 40px"><em>Having two things that are not the owl:sameAs but are similar to a certain extent. It is thought of being used where owl:sameAs is too strong but rdfs:seeAlso is too loose.</em></p>
+                    </li>
+                    <li>
+                      <p><a href="http://www.bbc.co.uk/ontologies/coreconcepts#terms_sameAs">http://www.bbc.co.uk/ontologies/coreconcepts/sameAs</a>, defined by the <a href="http://www.bbc.co.uk/">BBC</a>, whose description states that the property:</p>
+                      <p style="margin-left: 40px"><em>Indicates that something is the same as something else, but in a way that is slightly weaker than owl:sameAs. Its purpose is to connect separate identities of the same thing, whilst keeping separation between the original statements of each.</em></p>
+                    </li>
+                  </ul>
+
+                  <p>All of the properties list above, are concerned with equality or similarity about resources themselves. However, we often want to talk about the similarity of spatial things in terms of location or <em>place</em>. Spatial relations (see <a href="#link-type-spatial-rels" class="sectionRef">above</a>) can be used to describe how locations are related &mdash; either using rigorous topological relationships derived from geometry, such as <a href="http://www.opengis.net/ont/geosparql#sfEquals"><code>geosparql:sfEquals</code></a>, or ones without formal mathematical underpinning, such as <a href="http://www.geonames.org/ontology#nearby"><code>geonames:nearby</code></a>. But <em>place</em> is a social concept that reflect how we humans perceive the space around us, often with a vague or imprecise notion of location; you can’t always define a boundary for a place like <a href="http://sws.geonames.org/2212709/">The Sahara</a> because not everyone agrees where its edge lies!</p>
+
+                  <p>Talking of places, the <em>City of Edinburgh [Administrative] Area</em> and the <a href="http://data.ordnancesurvey.co.uk/ontology/OpenNames/namedPlace">Named Place</a> <em>Edinburgh</em> are strongly related; you might say that they are the <em>same place</em> if that makes sense for your application. This also provides an example where it is worthwhile to provide multiple relationships between spatial things: Ordnance Survey uses the <a href="http://data.ordnancesurvey.co.uk/ontology/spatialrelations/within"><code>within</code></a> <a>link</a> relation type to relate the <a href="http://data.ordnancesurvey.co.uk/ontology/OpenNames/namedPlace">Named Place</a> <a href="http://data.os.uk/id/4000000074558316">Edinburgh</a> and the <a href="http://data.ordnancesurvey.co.uk/id/7000000000030505">City of Edinburgh</a> administrative area. <a href="http://data.ordnancesurvey.co.uk/ontology/spatialrelations/within"><code>within</code></a> complements a qualitative <em>same-place-as</em> relation between two places.</p> 
+
+                  <p>However, while we see people wanting to assert such qualitative <em>same-place-as</em> relatonships based on human perception of place, there is no evidence of a best practice in how to achieve this; see <a href="#c-sameplaceas" class="sectionRef"></a> for more details about possible approaches that could be adopted.</p>
+
                 </li>
                 <li>
                   <p>Domain-specific relationships involving <a>spatial things</a></p>
@@ -2928,61 +2977,6 @@ Content-type: application/geo+json
   }
   &lt;/script&gt;
                   </pre>
-                </li>
-              </ol>
-  
-              <p>Other than the specific guidance above about use of <code>owl:sameAs</code>, <code style="background-color:yellow">schema:samePlaceAs</code> and the [[GeoSPARQL]] simple features relations, we are not recommending specific vocabularies for spatial linking. Instead, we hope to have introduced patterns that show the types of spatial linking that might be used and leave it to <a>spatial data</a> publishers to determine which specific vocabulary best suits their purpose. In this regard, [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVocabularies">section 8.9 Data Vocabularies</a> and, in particular, [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ReuseVocabularies">Best Practice 15: Reuse vocabularies, preferably standardized ones</a> are highly relevant.</p>
-  
-              <p>Now that we know how to link and the relation types that might be used, it's time to consider <em>what</em> we should link to.</p>
-  
-              <ol>
-                <li>
-                  <p>Describe what you know &mdash; but stop there.</p>
-                  <p>Data publishers should assert the relationships that they know about and that they think will be of interest to their user community; through equality statements, <a>spatial relations</a> or domain-specific relations etc.</p>
-                  <p>Publishers should try to avoid making assumptions about what the user may or may not know. For example, they may lack the expertise or resources to calculate a topological relationship, or lack the domain knowledge to determine how two <a>spatial things</a> are related, if at all. As the data publisher, you are likely to be in a better position to make these judgements than the user &mdash; so help them out by making these relationships clear.</p>
-                </li>
-                <li>
-                  <p>Link to the <a>spatial thing</a>.</p>
-                  <p>The <a>geometry</a> description or <a>extent</a> of a <a>spatial thing</a> may be expressed using an object with its own URI. For example:</p>
-                  <pre class="example" id="ex-linking-geometry-edinburgh" title="Independently identified geometry extent for the City of Edinburgh Council Area (TTL format)">
-  @prefix rdfs:      &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-  @prefix admingeo:  &lt;http://data.ordnancesurvey.co.uk/ontology/admingeo/&gt; .
-  @prefix geom:      &lt;http://data.ordnancesurvey.co.uk/ontology/geometry/&gt;
-  
-  &lt;http://data.ordnancesurvey.co.uk/id/7000000000030505&gt;
-    a admingeo:District ;
-    rdfs:label "City of Edinburgh" ;
-    geom:extent &lt;http://data.ordnancesurvey.co.uk/id/geometry/30505-11&gt; .
-  
-  &lt;http://data.ordnancesurvey.co.uk/id/geometry/30505-11&gt;
-    a geom:AbstractGeometry ;
-    geom:asGML "&lt;gml:MultiPolygon&gt;...&lt;/gml:MultiPolygon&gt;"^^rdf:XMLLiteral ;
-    geom:hectares 27300.411 .
-                  </pre>
-  
-                  <p>As can be seen in the example above, the <a>geometry</a> <a href="http://data.ordnancesurvey.co.uk/id/geometry/30505-11"><code>30505-11</code></a> is an <em>attribute</em> of the <a href="http://data.ordnancesurvey.co.uk/id/7000000000030505">City of Edinburgh</a>. If your intent is to make a statement about, or refer to, the real-world entity then make sure you link to the <a>spatial thing</a> rather than the geometry. Furthermore, note that the geometry record may be updated and re-published with a new identifier, for example, if the city boundary was resurveyed and would then result in a broken <a>link</a>.</p>
-                  <p>Data publishers should also be aware of a common pattern used in the publication of <a>Linked Data</a>, where the <a>spatial thing</a> and the information resource that describes it are identified separately &mdash; often, but not always, using <code>/id</code> as part of the URI for <a>spatial thing</a>, and <code>/doc</code> for the corresponding page/document/record. When the URI for the spatial thing is resolved, a <code>HTTP 303 (see other)</code> response is used to redirect the browser to the page/document/record URL. For example:</p>
-                  <ul>
-                    <li><a href="http://statistics.gov.scot/id/statistical-geography/S12000036"><code>http://statistics.gov.scot<span style="text-decoration: underline;">/id</span>/statistical-geography/S12000036</code></a> redirects to <a href="http://statistics.gov.scot/doc/statistical-geography/S12000036"><code>http://statistics.gov.scot<span style="text-decoration: underline;">/doc</span>/statistical-geography/S12000036</code></a></li>
-                    <li><a href="http://dbpedia.org/resource/Anne_Frank_House"><code>http://dbpedia.org<span style="text-decoration: underline;">/resource</span>/Anne_Frank_House</code></a> redirects to <a href="http://dbpedia.org/page/Anne_Frank_House"><code>http://dbpedia.org<span style="text-decoration: underline;">/page</span>/Anne_Frank_House</code></a></li>
-                  </ul>
-                  <p>While this disambiguation has its advantages, it often seems to confuse users (and even some experts). Be aware of this <em>redirect</em> pattern, and make sure you use the correct URI i.e. the identifying one &mdash; especially if you're copying the URI from a browser's address bar which usually ends up showing the page/document/record URL.</p>
-                </li>
-                <li>
-                  <p>Link to <a>spatial things</a> from popular repositories.</p>
-                  <p>Linking with URIs from popular repositories may improve discoverability of your data. Not only does this provide users with better context by enabling them to browse the information published by the popular repository, it also helps relate your data with datasets from other parties who have also used those URIs as points of reference.</p>
-                  <p>There are many popular repositories containing sets of identifiers for <a>spatial things</a>; the following list suggests the primary sources worth checking:</p>
-                  <ul>
-                    <li><a href="http://www.geonames.org">GeoNames</a></li>
-                    <li><a href="https://www.wikidata.org/">Wikidata</a></li>
-                    <li><a href="http://dbpedia.org">DBpedia</a></li>
-                    <li>
-                      <p>National open spatial datasets such as are made available by for example the UK and Dutch governments.</p>
-                      <p>Finding out which national open spatial datasets are available, and how they can be accessed, currently requires some insider knowledge &mdash; in most cases because these datasets are often not easily discoverable. Look for national data portals / geoportals such as <a href="http://nationaalgeoregister.nl/geonetwork/srv/dut/catalog.search">Nationaal Georegister</a> (Dutch national register of spatial datasets) or <a href="https://data.overheid.nl">Dataportaal van de Nederlandse overheid</a> (Dutch national governmental data portal).</p>
-                    </li>
-                  </ul>
-                  <p>Once you've found well-known URIs for <a>spatial things</a> that you want to link to, proceed to create <a>links</a> using properties such as those described above &mdash; <code>owl:sameAs</code> (if you're careful!) and <a href="http://www.opengis.net/ont/geosparql#sfWithin"><code>geosparql:sfWithin</code></a>, or perhaps qualitative relationships like <a href="http://www.geonames.org/ontology#nearby"><code>geonames:nearby</code></a> or the <em>proposed</em> <code>schema:samePlaceAs</code>.</p>
-                  <p>However, don't try to make <a>links</a> to <em>everything</em>. It is not always feasible to link your <a>spatial things</a> to well-known resources. For example, if you were maintaining a registry of cultural heritage in Amsterdam, it would be reasonably simple to look up identifiers for the city's 50 or so museums and map these to your spatial things. But it would be a huge task for, say, a topographic mapping agency to cross-reference their entire catalogue of named places containing tens of thousands of spatial things with third-party resources (although in the spirit of crowd-sourcing, if someone else found those links useful, they may take on the task of relating the spatial things and publishing those relationships to the Web as a complementary resource!). In essence, you should only create the data that you have the resources to maintain.</p>
                 </li>
               </ol>
   
@@ -3803,6 +3797,30 @@ a:Dataset a dcat:Dataset ;
         <p>Large, complex datasets are common in the information processing world, and commonly organised in “hypercubes” - where “data dimensions” are used to locate values holding results. A standard based on this dimensional model of data  is the RDF Data Cube vocabulary [[VOCAB-DATA-CUBE]]. It has been used to publish sensor data, but RDF Data Cube is lacking in possibilities for describing spatio-temporal aspects of data, which are very important for observations. One of the work items in the Spatial Data on the Web working group has been to extend the existing RDF Data Cube ontology to support specification of key metadata required to interpret spatio-temporal data, called [[QB4ST]].</p> 
         <p>QB4ST is an extension to RDF Data Cube  to provide mechanisms for defining spatio-temporal aspects of dimension and measure descriptions. It is intended to enable the development of semantic descriptions of specific spatio-temporal data elements by appropriate communities of interest, rather than to enumerate a static list of such definitions. It provides a minimal ontology of spatio-temporal properties and defines abstract classes for data cube components (i.e. dimensions and measures) that use these, to allow classification and discovery of specialized component definitions using general terms.</p>
         <p>QB4ST is designed to support the publication of consistently described re-usable and comparable definitions of spatial and temporal data elements by appropriate communities of practice. One obvious such case is the use of GPS coordinates described as decimal <a>latitude</a> and <a>longitude</a> measures. Another example is the intended publication of a register of <a>Discrete Global Grid Systems</a> (DGGS) by the <a href="http://www.opengeospatial.org/projects/groups/dggsswg">OGC DGGS Working Group</a>. QB4ST is intended to support publication of descriptions of such data using a common set of attributes that can be attached to a property description (extending the available RDF-QB mechanisms for attributes of observations).</p>
+      </section>
+      <section id="c-sameplaceas">
+        <h3>Defining that two places are the same</h3>
+        <p>Unlike administrative areas and other topographic features that have clearly defined boundaries, places often have ill-defined, fuzzy boundaries that are based on human perception of ‘place’; you can’t always define a boundary for a place. For example, <a href="http://data.os.uk/id/4000000074558316">Edinburgh</a> the <a href="http://data.ordnancesurvey.co.uk/ontology/OpenNames/namedPlace">Named Place</a>, published by <a href="https://www.ordnancesurvey.co.uk/">Ordnance Survey</a>, is described using only a notional point <a>geometry</a>; information is not provided about the geometric <a>extent</a>. Other examples of places with ill-defined, fuzzy <a>geometries</a> include <a href="http://sws.geonames.org/2212709/"><em>The Sahara</em></a>, the <em>American West</em> and <em>Renaissance Italy</em>. The relationships between places, with their ill-defined (or even absent) geometrical extents, defy description using the topological relationships which are computed mathematically from geometry.</p> 
+
+        <p>Given the lack of existing best practice, we propose the use of a <em>qualitative</em> assertion based on human perceptions to relate places that are deemed to be the same: <strong>samePlaceAs</strong>.</p> 
+
+        <p>Given that the notion of <em>place</em> concerns a social perspective, we consider it to be distinct from <em>location</em> which is based on <a>geometry</a>. As a result, <code>samePlaceAs</code> can be used to assert the imprecise, social perceptions about the equality of places. <code>samePlaceAs</code> does not overlap with the topological relationships described later in this best practice document that can be computed from geometry.</p>
+  
+        <p>As with all assertions of an imprecise nature that lack formal semantics, <code>samePlaceAs</code> may have limited value for semantic reasoning. Exactly what constitutes the ‘same place’ will always be somewhat debatable. For example, is <a href="http://dbpedia.org/resource/Byzantium">ancient Byzantium</a> the same place as <a href="http://dbpedia.org/resource/Istanbul">modern Istanbul</a>? Is a historical hotel that was moved across the street to save it from demolition in a redevelopment scheme that same place that it used to be?</p>
+
+        <p>[[SCHEMA-ORG]] would be a good home for this link relation type. The definition would be something as follows:</p>
+  
+        <div style="margin-left: 40px">
+          <p><a href="http://schema.org/Thing"><code>Thing</code></a> &gt; <a href="http://schema.org/Property"><code>Property</code></a> &gt; <code>samePlaceAs</code></p>
+          <p>Used to relate two places that are perceived to be the same; the physical <a>extent</a> of the two places should be broadly comparable but do not need to be equal in a topological or geometric sense.</p>
+          <p><strong>Values expected to be one of these types:</strong> <a href="http://schema.org/Place"><code>Place</code></a></p>
+          <p><strong>Used on these types:</strong> <a href="http://schema.org/Place"><code>Place</code></a></p>
+        </div>
+
+        <p>However, the current definition of <a href="http://schema.org/Place"><code>schema:Place</code></a> is a little too general:</p>
+        <p style="margin-left: 40px"><em>Entities that have a somewhat fixed, physical extension.</em></p>
+        <p>This definition includes <em>anything</em> with spatial extent (i.e. all <a>spatial things</a>); we would consider "my car keys" to be a spatial thing, but not a place.</p>
+        <p>A continuation of the <a href="http://www.opengeospatial.org/projects/groups/sdwwg">SDW WG</a> intends to formally define <code>samePlaceAs</code>.</p>
       </section>
       <section id="c-inboundlinks">
         <h3>Discovering what refers <em>to</em> a spatial thing</h3>
