@@ -1443,7 +1443,7 @@ function init() {
             <p>Search engines may also index resource representations in other formats than HTML.</p>
             
             <aside class="example">
-              <p>At the time of writing, Google is indexing KML documents and supporting advanced searches that are restricted to KML documents. [[GML]] files are also indexed, but only like any other XML documents. <a>JSON</a> [[RFC7159]], including GeoJSON, is currently not indexed.</p>
+              <p>At the time of writing, Google is indexing KML documents and supporting advanced searches that are restricted to KML documents. [[GML]] files are also indexed, but only like any other XML documents. <a>JSON</a> [[RFC7159]], including GeoJSON [[RFC7946]], is currently not indexed.</p>
             </aside>
             
             <div class="note">
@@ -1649,7 +1649,7 @@ Connection: close
               </aside>
               <h5>2. Web mapping or visualization applications</h5>
               <p>A common application of spatial data on the Web is delivering map data in a tiled form, suitable for display in zoomable 'slippy maps'.  The OGC's Web Map Tile Service [[WMTS]] is an established standard for doing this.  Other approaches in common use include <a href="https://github.com/mapbox/mbtiles-spec">MBTiles</a> or 'Tile layers' in <a href="https://developers.google.com/maps/">Google Maps APIs</a></p>
-              <p>Another frequent requirement is to draw markers or polygons on top of a Web map. A typical approach is for the browser to display a base map, then separately retrieve data about the <a>spatial things</a> of interest, typically as GeoJSON or [[KML]] files, then to combine the two using appropriate Javascript libraries.  For applications involving boundary polygons of geographical areas, a common consideration is how to make this process efficient at different zoom levels. A high level of detail is appropriate when zoomed in, but many areas may be visible when zoomed out, and delivering boundaries of all of those at full detail can lead to very large amounts of data and hence poor performance, so simplified lower resolution versions of polygons may be required.</p>
+              <p>Another frequent requirement is to draw markers or polygons on top of a Web map. A typical approach is for the browser to display a base map, then separately retrieve data about the <a>spatial things</a> of interest, typically as GeoJSON [[RFC7946]] or [[KML]] files, then to combine the two using appropriate Javascript libraries.  For applications involving boundary polygons of geographical areas, a common consideration is how to make this process efficient at different zoom levels. A high level of detail is appropriate when zoomed in, but many areas may be visible when zoomed out, and delivering boundaries of all of those at full detail can lead to very large amounts of data and hence poor performance, so simplified lower resolution versions of polygons may be required.</p>
               <aside class="example">
                 <p>TO DO: Mapping/visualization example...</p>
               </aside>
@@ -1742,7 +1742,7 @@ Connection: close
               </li>
               <li>Where multiple representations are required, consider offering as many as you can - balancing the benefit of ease of use against the cost of the additional storage or additional processing if converting on-the-fly. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#Conneg">Best Practice 19: Use content negotiation for serving data available in multiple formats</a> for more information.
                 <div class="note">
-                  <p>HTTP content negotiation only works for media-type, character set, encoding and language. Consequently, it is not possible to select one representation that conforms to a given "profile" (e.g. data model, complexity level, <a>CRS</a>) from several that all share the same media-type; e.g. asking for the GeoJSON features with "simple" <a>geometries</a> (compacted polygons or just points) not the "complex" geometries; or asking for the representation that uses CRS84 not Amersfoort-RD.</p>
+                  <p>HTTP content negotiation only works for media-type, character set, encoding and language. Consequently, it is not possible to select one representation that conforms to a given "profile" (e.g. data model, complexity level, <a>CRS</a>) from several that all share the same media-type; e.g. asking for the GeoJSON [[RFC7946]] features with "simple" <a>geometries</a> (compacted polygons or just points) not the "complex" geometries; or asking for the representation that uses CRS84 not Amersfoort-RD.</p>
                 </div>
               </li>
             </ul>
@@ -1760,8 +1760,8 @@ Connection: close
             </div>
             <p>Currently, there are two reference <a>geometry</a> formats widely used in the geospatial and Web communities, respectively, [[GML]] and GeoJSON [[RFC7946]].</p>
             <p>[[GML]] provides the ability to express any type of <a>geometry</a>, in any <a>coordinate reference system</a>, and up to 3 <a>dimensions</a> (from points to volumes).</p>
-            <p>On the other hand, GeoJSON supports only one <a>coordinate reference system</a> (CRS84 - i.e., WGS84 longitude/latitude), and <a>geometries</a> up to 2 dimensions (points, lines, surfaces).</p>
-            <p>To facilitate the use of <a>geometry</a> data on the Web, it is therefore desirable that [[GML]]-encoded geometries are made available also in GeoJSON, by applying not only the required <a>coordinate reference system</a> transformation, but, if needed, by simplifying the original geometry (e.g., by transforming a 3D geometry in a 2D one).</p>
+            <p>On the other hand, GeoJSON [[RFC7946]] supports only one <a>coordinate reference system</a> (CRS84 - i.e., WGS84 longitude/latitude), and <a>geometries</a> up to 2 dimensions (points, lines, surfaces).</p>
+            <p>To facilitate the use of <a>geometry</a> data on the Web, it is therefore desirable that [[GML]]-encoded geometries are made available also in GeoJSON [[RFC7946]], by applying not only the required <a>coordinate reference system</a> transformation, but, if needed, by simplifying the original geometry (e.g., by transforming a 3D geometry in a 2D one).</p>
             <div class="note">
               <p>Another approach to publishing <a>geometries</a> on the Web is to embed them directly in Web pages. This is, for instance, the approach used by [[SCHEMA-ORG]], which defines several terms to specify them (see <a href="#indexable-by-search-engines"></a> for more information).</p>
               <p>Typically, this is used just for 0D-2D <a>geometries</a> (points, lines, surfaces). Detailed and complex geometries cannot be published with this methodology, so also in this case only a very simplified representation of the original <a>geometry</a> can be published - e.g., the centroid and/or 2D bounding box.</p>
@@ -1769,7 +1769,7 @@ Connection: close
             <p>Finally, RDF-based representations of <a>geometries</a> are used in the Linked Data community. This is achieved by using specific vocabularies, as [[W3C-BASIC-GEO]] (only for points) or [[GeoSPARQL]] (for points, lines, surfaces) - see <a href="#semantic-thing" class="sectionRef">Best Practice 4: Encoding spatial data</a> for more information.</p>
             <p>These <a>geometry</a> representations are either stored with the related data, or are maintained separately, and possibly denoted with HTTP URIs (see <a href="#ex-http-uris-for-geometries"></a>).</p>
             <p>RDF representations of <a>geometries</a> can support most <a>geometry</a> types and <a>dimensions</a> (at least, up to 2 dimensions), with any level of complexity, in any <a>coordinate reference system</a>. On the other hand, existing Semantic Web tools, as triple stores, are currently not efficient enough to perform spatial queries which are complex and/or on complex geometries. In the latter case, it is therefore preferable to maintain geometries separately, in software platforms designed for these specific tasks.</p>
-            <p>It is nonetheless desirable to make available these <a>geometries</a> for Web consumption as said before for [[GML]]-encoded geometries - i.e., by publishing also simplified version of them, either in GeoJSON or embedded in Web pages.</p>
+            <p>It is nonetheless desirable to make available these <a>geometries</a> for Web consumption as said before for [[GML]]-encoded geometries - i.e., by publishing also simplified version of them, either in GeoJSON [[RFC7946]] or embedded in Web pages.</p>
             <p>The following Turtle snippet shows the [[GeoDCAT-AP]] representation of the dataset in <a href="#ex-schemaorg-dataset-and-place"></a>. Here the bounding box is provided in multiple literal encodings (<a>WKT</a>, [[GML]], GeoJSON), by using property <code>locn:geometry</code> [[LOCN]].</p>
             <aside class="example" id="ex-geodcat-ap-bag-addresses" title="GeoDCAT-AP representation of dataset spatial coverage (bounding box) in multiple encodings">
               <pre>
@@ -1803,8 +1803,8 @@ Connection: close
   ] .
 </pre>
             </aside>
-            <p>In the above example, the <a>coordinate reference system</a> used for the bounding box is CRS84 (equivalent to WGS84, but with coordinate axis-order longitude/latitude), which is explicitly specified in the [[GML]] encoding via attribute <code>@srsName</code>, and by using the relevant HTTP URI from the <a href="http://www.opengis.net/def/crs/EPSG/0">OGC CRS registry</a>. The <a>coordinate reference system</a> is not specified for the <a>WKT</a> encoding, since CRS84 is the default <a>coordinate reference system</a> for <a>WKT</a> in [[GeoSPARQL]], and therefore it can be omitted. The <a>coordinate reference system</a> is also not specified in the GeoJSON encoding, since CRS84 is the only supported <a>coordinate reference system</a> in GeoJSON [[RFC7946]].</p>
-            <p>Always with reference to <a href="#ex-schemaorg-dataset-and-place" class="exampleRef"></a>, the following snippet shows the [[GML]] and the RDF representations of the entry in the BAG Dutch register concerning the building where Anne Frank's house is located. For the corresponding GeoJSON representation, see the relevant <a href="#ex-crs-geojson">example</a> in <a href="#bp-crs"></a>.</p>
+            <p>In the above example, the <a>coordinate reference system</a> used for the bounding box is CRS84 (equivalent to WGS84, but with coordinate axis-order longitude/latitude), which is explicitly specified in the [[GML]] encoding via attribute <code>@srsName</code>, and by using the relevant HTTP URI from the <a href="http://www.opengis.net/def/crs/EPSG/0">OGC CRS registry</a>. The <a>coordinate reference system</a> is not specified for the <a>WKT</a> encoding, since CRS84 is the default <a>coordinate reference system</a> for <a>WKT</a> in [[GeoSPARQL]], and therefore it can be omitted. The <a>coordinate reference system</a> is also not specified in the GeoJSON [[RFC7946]] encoding, since CRS84 is the only supported <a>coordinate reference system</a> in GeoJSON [[RFC7946]].</p>
+            <p>Always with reference to <a href="#ex-schemaorg-dataset-and-place" class="exampleRef"></a>, the following snippet shows the [[GML]] and the RDF representations of the entry in the BAG Dutch register concerning the building where Anne Frank's house is located. For the corresponding GeoJSON [[RFC7946]] representation, see the relevant <a href="#ex-crs-geojson">example</a> in <a href="#bp-crs"></a>.</p>
             <aside class="example" id="ex-anne-frank-building-gml" title="GML description of a building, with detailed geometry">
               <p>The [[GML]] representation of Anne Frank's house building (taken from the <a href="http://geodata.nationaalgeoregister.nl/bag/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;typeName=pand&amp;cql_filter=bag:identificatie=363100012169587">BAG WFS endpoint</a>):</p>
               <pre>
@@ -1924,7 +1924,7 @@ Connection: close
             </ul>
             <p>The different <a>WKT</a> encodings in the example show alternative ways of specifying the <a>coordinate reference system</a> used.</p>
             <p>The two instances of property <code>geosparql:asWKT</code> follow the syntax recommended in [[GeoSPARQL]], where the specification of the <a>coordinate reference system</a> is required only if different from CRS84. By contrast, property <code>pdok:asWKT-RD</code> implies the use of a specific <a>coordinate reference system</a>, namely, <a href="http://epsg-registry.org/?display=entity&urn=urn:ogc:def:crs:EPSG::28992">EPSG:28992</a> ("Amersfoort / RD New"). The coordinate axis-order used is determined here by the <a>coordinate reference system</a>, and in both cases, it is longitude / latitude (more precisely, east/north for EPSG:28992). By contrast, the coordinates for the bounding box and centroid use WGS84, with coordinate axis-order latitude / longitude.</p>
-            <p><a href="#ex-anne-frank-building-rdf"></a> shows also how <a>geometries</a> for <a>spatial things</a> can be published as separate Web resources. This approach can be particularly suitable for giving access to huge geometries, consisting of hundreds of vertices (as the detailed <a>geometry</a> of the boundaries of a geographical region), without attaching them to the relevant spatial things. Moreover, this allows the same geometry to be linked from (i.e., re-used by) different spatial things. Finally, it is possible to use mechanisms (including HTTP content negotiation) to provide access to different representations / encodings of the geometry ([[GML]], <a>WKT</a>, GeoJSON, etc.), thus addressing different use cases. (On this topic, see also <a href="#entity-level-links"></a>).</p>
+            <p><a href="#ex-anne-frank-building-rdf"></a> shows also how <a>geometries</a> for <a>spatial things</a> can be published as separate Web resources. This approach can be particularly suitable for giving access to huge geometries, consisting of hundreds of vertices (as the detailed <a>geometry</a> of the boundaries of a geographical region), without attaching them to the relevant spatial things. Moreover, this allows the same geometry to be linked from (i.e., re-used by) different spatial things. Finally, it is possible to use mechanisms (including HTTP content negotiation) to provide access to different representations / encodings of the geometry ([[GML]], <a>WKT</a>, GeoJSON [[RFC7946]], etc.), thus addressing different use cases. (On this topic, see also <a href="#entity-level-links"></a>).</p>
             <aside class="example" id="ex-http-uris-for-geometries" title="HTTP URIs for geometries">
               <p>As shown in <a href="#ex-amsterdam-station-uri" class="exampleRef"></a>, the following URI:</p>
               <p><code>https://brt.basisregistraties.overheid.nl/top10nl/id/gebouw/102625209</code></p>
@@ -1935,7 +1935,7 @@ Connection: close
               <p>whereas its <a>geometry</a> is denoted by:</p>
               <p><code>http://data.ordnancesurvey.co.uk/id/geometry/22933-4</code></p>
               <p>An additional example is the API of the <a href="http://gadm.geovocab.org/">GADM-RDF project</a>, providing access to spatial linked data concerning administrative areas. For instance, the following URI <a href="http://gadm.geovocab.org/id/0/60"><code>http://gadm.geovocab.org/id/0/60</code></a> returns a description of administrative area "Germany", which links to the geometry of Germany's boundaries, provided via a separate URI: <a href="http://gadm.geovocab.org/id/0/60/geometry"><code>http://gadm.geovocab.org/id/0/60/geometry</code></a>.</p>
-              <p>The <a>geometry</a> URIs operated by the GADM-RDF API resolve to different geometry representations / encodings (SVG included), that can be accessed via HTTP content negotiation or by appending the format extension to the URI. For instance, URI <a href="http://gadm.geovocab.org/id/0/60/geometry.geojson"><code>http://gadm.geovocab.org/id/0/60/geometry.geojson</code></a> returns the GeoJSON representation of the geometry. Direct links to the supported geometry representations / encodings are specified in the RDF and HTML representations of the geometry.</p>
+              <p>The <a>geometry</a> URIs operated by the GADM-RDF API resolve to different geometry representations / encodings (SVG included), that can be accessed via HTTP content negotiation or by appending the format extension to the URI. For instance, URI <a href="http://gadm.geovocab.org/id/0/60/geometry.geojson"><code>http://gadm.geovocab.org/id/0/60/geometry.geojson</code></a> returns the GeoJSON [[RFC7946]] representation of the geometry. Direct links to the supported geometry representations / encodings are specified in the RDF and HTML representations of the geometry.</p>
             </aside>
             <div class="note">
               <p>This section needs to be completed with:</p>
@@ -1944,7 +1944,7 @@ Connection: close
                 <li>More details about how WKT is used.</li>
                 <li>An RDF example with embedded <a>geometry</a></li>
                 <li>Clarification on the differences between “coordinate positions” as a literal and the “geometry” as literal; the latter includes additional metadata</li>
-                <li>Clarification on "formats" for geometries only (e.g., WKT) and those used also for <a>spatial things</a> (e.g., GML, GeoJSON)</li>
+                <li>Clarification on "formats" for geometries only (e.g., WKT) and those used also for <a>spatial things</a> (e.g., GML, GeoJSON [[RFC7946]])</li>
               </ul>
             </div>
           </section>
@@ -2021,9 +2021,9 @@ Connection: close
 <li>
 <p>Use formats optimizing access to and processing of <a>geometry</a> data</p>
 <p>Some formats support a more compact description of <a>geometry</a> data, which potentially results in reducing network bandwidth consumption and/or more efficient client-side processing.</p>
-<p>This is for instance the case of <a href="https://github.com/topojson/topojson">TopoJSON</a>, an extension to GeoJSON which reduces redundancy in the description of a geometry, by splitting it into segments (referred to as "arcs") that can be re-used.</p>
-<p>To achieve the same results, other formats are designed to enable the stream-based delivery of geometry data. For instance, GeoJSON Text Sequences [[RFC8142]] is a format designed to optimize access and processing of GeoJSON data, by enabling a client application to use the received data even before the transmission is completed.</p>
-<p>Another approach, focused on efficient client-side processing, is <a href="https://github.com/mapbox/geojson-vt">GeoJSON-VT</a>, a library which enables a client to create on the fly vector tiles from GeoJSON data.</p>
+  <p>This is for instance the case of <a href="https://github.com/topojson/topojson">TopoJSON</a>, an extension to GeoJSON [[RFC7946]] which reduces redundancy in the description of a geometry, by splitting it into segments (referred to as "arcs") that can be re-used.</p>
+  <p>To achieve the same results, other formats are designed to enable the stream-based delivery of geometry data. For instance, GeoJSON Text Sequences [[RFC8142]] is a format designed to optimize access and processing of GeoJSON [[RFC7946]] data, by enabling a client application to use the received data even before the transmission is completed.</p>
+  <p>Another approach, focused on efficient client-side processing, is <a href="https://github.com/mapbox/geojson-vt">GeoJSON-VT</a>, a library which enables a client to create on the fly vector tiles from GeoJSON [[RFC7946]] data.</p>
 <p>Finally, <a>Geohash</a> provides a compact way of encoding 0-dimensional <a>geometries</a> (points), which, at the same time, can be used for spatial indexing.</p>
 <aside class="example" id="ex-anne-frank-address-geohash">
 <p>The point coordinates of the address of Anne Frank's House (see <a href="#ex-schemaorg-dataset-and-place"></a>) can be encoded with <a>Geohash</a> as <a href="http://geohash.org/u173zns7thy"><code>u173zns7thy</code></a> (corresponding to the following WGS84 lat/long coordinates: <code>52.37520</code> <code>4.88399</code>).</p>
@@ -2404,9 +2404,9 @@ Content-type: application/geo+json
   }
 }
                 </pre>
-                <p>The media type <code>application/geo+json</code> is used to designate that content is provided in GeoJSON format, as specified in [[RFC7946]].</p>
+                <p>The media type <code>application/geo+json</code> is used to designate that content is provided in GeoJSON [[RFC7946]] format, as specified in [[RFC7946]].</p>
                 <p>[[RFC7946]] <a href="https://tools.ietf.org/html/rfc7946#section-4">Section 4. Coordinate Reference System</a> provides all the necessary information to interpret the coordindates, stating that:</p>
-                <p style="margin-left: 40px"><em>The <a>coordinate reference system</a> for all GeoJSON coordinates is a geographic coordinate reference system, using the World Geodetic System 1984 (WGS 84) [WGS84] <a>datum</a>, with longitude and latitude units of decimal degrees.  This is equivalent to the coordinate reference system identified by the Open Geospatial Consortium (OGC) URN urn:ogc:def:crs:OGC::CRS84.  An OPTIONAL third-position element SHALL be the height in meters above or below the WGS 84 reference <a>ellipsoid</a>.  In the absence of elevation values, applications sensitive to height or depth SHOULD interpret positions as being at local ground or sea level.</em></p>
+                <p style="margin-left: 40px"><em>The <a>coordinate reference system</a> for all GeoJSON [[RFC7946]] coordinates is a geographic coordinate reference system, using the World Geodetic System 1984 (WGS 84) [WGS84] <a>datum</a>, with longitude and latitude units of decimal degrees.  This is equivalent to the coordinate reference system identified by the Open Geospatial Consortium (OGC) URN urn:ogc:def:crs:OGC::CRS84.  An OPTIONAL third-position element SHALL be the height in meters above or below the WGS 84 reference <a>ellipsoid</a>.  In the absence of elevation values, applications sensitive to height or depth SHOULD interpret positions as being at local ground or sea level.</em></p>
 
                 <pre class="example" id="ex-crs-schema-geoshape" title="Coordinate position provided using JSON-LD and [SCHEMA-ORG]">
 &lt;script type="application/ld+json"&gt;
@@ -2800,10 +2800,10 @@ Content-type: application/geo+json
   &lt;/script&gt;
                   </pre>
   
-                  <p>This example snippet, adapted to use [[RFC7946]] GeoJSON format, shows a list of <a>spatial things</a> (e.g. Westerkerk, Homomonument and Westertoren) that are deemed '<a href="http://sws.geonames.org/6618987/nearby.rdf">nearby</a>' Anne Frank's House according to <a href="http://www.geonames.org">GeoNames</a>.</p>
+                  <p>This example snippet, adapted to use [[RFC7946]] GeoJSON [[RFC7946]] format, shows a list of <a>spatial things</a> (e.g. Westerkerk, Homomonument and Westertoren) that are deemed '<a href="http://sws.geonames.org/6618987/nearby.rdf">nearby</a>' Anne Frank's House according to <a href="http://www.geonames.org">GeoNames</a>.</p>
   
                   <div class="note">
-                    <p>The [[RFC7159]] <a>JSON</a> format provides only simple primitive types; string, number, boolean etc. The lack of a datatype for URIs means that they must be encoded as strings. As such, conventions (such as those defined in <a href="http://stateless.co/hal_specification.html">HAL</a>) are required to tell applications that a given string value is a URI. However, [[RFC7946]] GeoJSON does not define any conventions for describing URIs and forbids any extension of the data format specification.</p>
+                    <p>The [[RFC7159]] <a>JSON</a> format provides only simple primitive types; string, number, boolean etc. The lack of a datatype for URIs means that they must be encoded as strings. As such, conventions (such as those defined in <a href="http://stateless.co/hal_specification.html">HAL</a>) are required to tell applications that a given string value is a URI. However, [[RFC7946]] GeoJSON [[RFC7946]] does not define any conventions for describing URIs and forbids any extension of the data format specification.</p>
                     <p>To mitigate this, details about object types etc. included in data payload should be provided in the documentation for the API or service end-point from which the data is accessed. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#documentYourAPI">Best Practice 25: Provide complete documentation for your API</a> for further details.</p>
                   </div>
   
@@ -3055,7 +3055,7 @@ Content-type: application/geo+json
             <p>The URI for the spatial thing, the <em>base</em> URI, should resolve to provide the current information and a link to its version history of snapshots. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a> describes how a version history may be implemented. Each snapshot resource within the version history must be uniquely identified; a common approach is to append a date/time stamp to the base URI as a version indicator. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a> provides relevant guidance.</p>
             
             <aside class="example" id="ex-municp-history" title="Changing boundary of Amsterdam">
-              <p>The <a>extent</a> of the City of Amsterdam has changed during the last 200 years. This example, based on <a href="http://www.gemeentegeschiedenis.nl">Gemeentegeschiedenis.nl</a> ("Municipality history") (condensed and changed to reflect the recommendations in this best practice), shows how the version history of Amsterdam's boundary can be provided as a series of immutable snapshots in GeoJSON. </p> 
+              <p>The <a>extent</a> of the City of Amsterdam has changed during the last 200 years. This example, based on <a href="http://www.gemeentegeschiedenis.nl">Gemeentegeschiedenis.nl</a> ("Municipality history") (condensed and changed to reflect the recommendations in this best practice), shows how the version history of Amsterdam's boundary can be provided as a series of immutable snapshots in GeoJSON [[RFC7946]]. </p> 
               
               <p>The current information on Amsterdam including the current boundary: </p>
               <pre>
@@ -3391,7 +3391,7 @@ Content-type: application/geo+json
                   data and metadata to schema.org according to a provided mapping scheme; 
                   assigns URIs to all resources based on a pattern; supports filtering 
                   based on a property; makes each resource available in HTML, XML, JSON-LD, 
-                  [[GML]], GeoJSON; and generates links to data in other datasets managed in triple 
+                  [[GML]], GeoJSON [[RFC7946]]; and generates links to data in other datasets managed in triple 
                   stores using SPARQL queries. The API is documented and published using 
                   Swagger.</p>
               </aside> 
@@ -3757,7 +3757,7 @@ a:Dataset a dcat:Dataset ;
       <section id="c-geometrycrs">
         <h3>Requesting different representations of geometries</h3>
         <p>There are several aspects to representing <a>geometries</a> on the web. First, there is the question of different serialization formats to choose from. The different formats are described in <a href="#describe-geometry" class="sectionRef"></a>, but the Best Practice does not make a definitive choice as to which format is best. Although having only one format for geometries on the web would reduce complexity, the currently available formats reflect different requirements with respect to data complexity and manipulation.  </p>
-        <p>A second, related aspect is whether to publish <a>geometries</a> on the web in self contained files such as GML or GeoJSON, or rather to embed geometries as structured data markup in HTML, or in an RDF based way i.e. as Linked Data. Choosing between these approaches - or not choosing but rather offering a combination of these - depends largely on the intended audience.</p>
+        <p>A second, related aspect is whether to publish <a>geometries</a> on the web in self contained files such as GML or GeoJSON [[RFC7946]], or rather to embed geometries as structured data markup in HTML, or in an RDF based way i.e. as Linked Data. Choosing between these approaches - or not choosing but rather offering a combination of these - depends largely on the intended audience.</p>
         <p>Third, there is a question of how to make <a>geometries</a> available in different <a>CRS</a>s. <a href="#bp-crs-choice" class="sectionRef"></a> describes why this is a good idea as well as how to decide which CRSs to provide. <a href="#bp-crs" class="sectionRef"></a> explains how the CRS of geometries should be made known. It follows that users should be able to find out which CRSs are available and access geometries in the CRS of their choice. In an OGC <a>WFS</a> request, users can specify the CRS they wish to use by specifying the srsName parameter. In [[GeoSPARQL]] the getSRID function returns the spatial reference system of a <a>geometry</a>, thus making it possible to request a specific CRS at a (Geo)SPARQL endpoint. However, these options require the user to be proficient in either Geospatial web services or Linked Data. A best practice for requesting and returning geometries in a specific requested CRS has not yet emerged. Many options can be found in current practice, including  creating CRS-specific geometry properties (for example, the Dutch Land Registry does this), and supporting an option for requesting a specific CRS in a convenience API; but one best practice cannot yet be identified. </p>
         <p>An option we considered was the use of content negotiation i.e. negotiate <a>CRS</a> as part of the content format for the geometry. A <a href="https://github.com/w3c/sdw/issues/757">concrete proposal</a> for this suggests the following:</p>
         <ul>
@@ -3886,12 +3886,12 @@ a:Dataset a dcat:Dataset ;
 <th>Tool support</th>
 <td>
 <p>Widely supported in <a>GIS</a> tools</p>
-<p>Supported by some Web libraries, usually converted in GeoJSON</p>
+  <p>Supported by some Web libraries, usually converted in GeoJSON [[RFC7946]]</p>
 <p>Supported by most triple stores</p>
 </td>
 <td>
 <p>Widely supported in <a>GIS</a> tools</p>
-<p>Supported by some Web libraries, usually converted in GeoJSON, but not when the <a>geometry</a> is 3-dimensional (volumes)</p>
+  <p>Supported by some Web libraries, usually converted in GeoJSON [[RFC7946]], but not when the <a>geometry</a> is 3-dimensional (volumes)</p>
 <p>Supported only by triple stores supporting [[GeoSPARQL]]</p>
 </td>
 <td>
@@ -4164,7 +4164,7 @@ a:Dataset a dcat:Dataset ;
 <td>lat/long coordinate pair</td>
 <td>lat/long coordinate pair</td>
 <td>[[GML]], <a>WKT</a></td>
-<td>[[GML]], <a>WKT</a>, GeoJSON, <code>geo</code> URI scheme [[RFC5870]], <a>Geohash</a></td>
+  <td>[[GML]], <a>WKT</a>, GeoJSON [[RFC7946]], <code>geo</code> URI scheme [[RFC5870]], <a>Geohash</a></td>
 </tr>
 <!--
 <tr>
@@ -4196,7 +4196,7 @@ a:Dataset a dcat:Dataset ;
 <td>lat/long coordinate pairs, separated by a comma</td>
 <td>lat/long coordinate pairs, separated by a comma or a space</td>
 <td>[[GML]], <a>WKT</a></td>
-<td>[[GML]], <a>WKT</a>, GeoJSON</td>
+  <td>[[GML]], <a>WKT</a>, GeoJSON [[RFC7946]]</td>
 </tr>
 <tr>
 <th>3D support</th>
