@@ -27,6 +27,7 @@ var respecConfig = {
       key: "Contributors",
       data: [
         { value: "Phil Archer" },
+        { value: "Jon Blower" },
         { value: "Newton Calgari" },
         { value: "Byron Cochrane" },
         { value: "Simon Cox" },
