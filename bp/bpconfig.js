@@ -381,8 +381,15 @@ var respecConfig = {
         "authors":["ISO/TC 211"],
         "publisher":"ISO",
         "date":"August 2015"
-      }
+      },
       
+      "ISO-19133": {
+        "href":"https://www.iso.org/standard/32551.html",
+        "title":"ISO 19133:2005 Geographic information -- Location-based services -- Tracking and navigation",
+        "authors":["ISO/TC 211"],
+        "publisher":"ISO",
+        "date":"October 2005"
+      }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
 };
