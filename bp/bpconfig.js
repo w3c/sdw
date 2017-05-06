@@ -24,12 +24,6 @@ var respecConfig = {
 		}],
     otherLinks: [
     {
-      key: "OGC Document Number",
-      data: [
-      {
-        value: "OGC 15-107"
-      }]
-    }, {
       key: "Contributors",
       data: [
         { value: "Phil Archer" },
@@ -49,6 +43,12 @@ var respecConfig = {
         { value: "Kerry Taylor" },
         { value: "Erik Wilde" }
       ]
+    }, {
+      key: "OGC Document Number",
+      data: [
+      {
+        value: "OGC 15-107"
+      }]
     }],
     wg: "Spatial Data on the Web Working Group",
     wgURI: "https://www.w3.org/2015/spatial/",
