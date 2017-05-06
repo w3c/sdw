@@ -29,7 +29,27 @@ var respecConfig = {
       {
         value: "OGC 15-107"
       }]
-      }],
+    }, {
+      key: "Contributors",
+      data: [
+        { value: "Phil Archer" },
+        { value: "Newton Calgari" },
+        { value: "Byron Cochrane" },
+        { value: "Simon Cox" },
+        { value: "François Daoust" },
+        { value: "Bart van Leeuwen" },
+        { value: "Josh Lieberman" },
+        { value: "Chris Little" },
+        { value: "Peter Parslow" },
+        { value: "Ed Parsons" },
+        { value: "Andrea Perego" },
+        { value: "Clemens Portele" },
+        { value: "Bill Roberts" },
+        { value: "Lars Svensson" },
+        { value: "Kerry Taylor" },
+        { value: "Erik Wilde" }
+      ]
+    }],
     wg: "Spatial Data on the Web Working Group",
     wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
