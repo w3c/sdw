@@ -691,7 +691,7 @@ function init() {
         The best practices are intended for practitioners, including Web developers and geospatial
         experts, and are compiled based on evidence of real-world application. These best practices
         suggest a significant change of emphasis from traditional <a>Spatial Data Infrastructures</a> by
-        adopting an approach based on general web standards. As location is often the common factor across multiple
+        adopting an approach based on general Web standards. As location is often the common factor across multiple
         datasets, <a>spatial data</a> is an especially useful addition to the Web of data.</p>
     </section>
     <section id="sotd">
@@ -766,21 +766,10 @@ function init() {
         the technologies used herein; rather that readers can identify with the activities being
         undertaken in the various examples and, in doing so, find relevant technologies that they
         are already aware of or discover technologies that are new them.</p>
-      <p>In this document, we focus on the needs of data publishers and the developers that provide
-        tools for them. That said, we recognize that value can only be gained from
-          <em>publishing</em> the <a>spatial data</a> when people <em>use</em> it! Although we do not
-        directly address the needs of those users, we ask that data publishers and developers
-        reading this document do not forget about them; moreover, that they always consider the
-        needs of users when publishing spatial data or developing the supporting tools. All our
-        best practices are intended to provide guidance about the publishing <a>spatial data</a> to improve
-        ease of use. As we said above: the key problems we are trying to solve in this document are
-        discoverability, accessibility and interoperability. We hope that the examples included in
-        the urban flooding scenario will help illustrate how users may benefit from the application
-        of these best practices.</p>
     </section>
     <section id="scope" class="informative">
       <h2>Scope</h2>
-      <section>
+      <section id="scope-spatialdata">
         <h3>Spatial data</h3>
         <p>All the best practices described in [[DWBP]] are relevant to publication of <a>spatial data</a>
         on the Web. Some, such as [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#DataLicense">Best Practice 4: Provide data license information</a> 
@@ -803,16 +792,25 @@ function init() {
       <p>We extend [[DWBP]] to cover aspects specifically relating to <a>spatial data</a>,
         introducing new best practices only where necessary. In particular, we consider the
         individual resources, or <a>Spatial Things</a>, that are described within a dataset.</p>
-      <p>We consider a ‘programmable web’, formed by a network of connected services, products, data
-        and devices, each doing what it is good at, to be the future of the Web. So, whether we are
-        talking about Big, Crawlable, Linked, Open, Closed, Small, Spatial or Structured Data; our
-        starting point is that it needs to be machine-friendly and developer-friendly: making it as
-        programmable as possible.</p>
+      </section>
+      <section id="scope-datapub">
+        <h3>Data publication</h3>
+        <p>In this document, we focus on the needs of data publishers and the developers that provide tools for them. That said, we recognize that value can only be gained from <em>publishing</em> the <a>spatial data</a> when people <em>use</em> it! Although we do not directly address the needs of those users, we ask that data publishers and developers reading this document do not forget about them; moreover, that they always consider the needs of users when publishing spatial data or developing the supporting tools. All our best practices are intended to provide guidance about the publishing <a>spatial data</a> to improve ease of use.</p>
+        <p>Neither the wider topic of spatial data <em>management</em> nor <a>Spatial Data Infrastructures</a> are covered. We assume that your spatial data already exists and will be available from one of the following places:</p>
+        <ol>
+          <li>plain text documents; e.g. historical texts, government reports, blog posts etc.</li>
+          <li>data files containing structured content or markup; e.g. geospatial vector data in Shapefile or [[GML]] format, statistical data in tabular <a>CSV</a> format or a spreadsheet, as GPX data with “waypoints” and “tracks”, satellite imagery in GeoTIFF, climate simulations in CF-NetCDF etc.</li>
+          <li>a data repository; e.g. PostGIS (a spatially enabled relational database), Elasticsearch (a document-oriented noSQL repository based on Apache Lucene), Apache Jena’s TDB (an RDF <a>triple store</a>)</li>
+          <li>exposed via an existing API; including OGC-compliant Web services such as <a>WFS</a> [[WFS]] and <a>WCS</a> [[WCS]]</li>
+        </ol>
+        <p>If your <a>spatial data</a> is managed within a software system it is likely that you will be able to access that data through one or more of the methods identified above; as structured data from a bulk extract (e.g. a “data dump”), via direct access to the underpinning data repository or through a bespoke or standards-compliant API provided by the system.</p>
+
+        <p>Each of the four starting points outlined above have their own challenges, but working with plain text documents can be particularly tricky as you will need to parse the natural language to identify the <a>spatial things</a> and their properties before you can proceed any further. Natural Language Processing (NLP) is a complex topic in its own right and is beyond the scope of this best practice document. We will assume that you’ve already completed this step and have parsed any plain documents into structured data records of some kind.</p>
       </section>
       <section id="best-practice-criteria">
         <h3>Best practice criteria</h3>
         <p>The best practices described in this document are compiled based on evidence of real-world
-          application in production environments. By ‘production environment’ we mean a case where <a>spatial data</a> has been delivered on the web with the intention of being used by end users and with a quality level expected from such data. In contract, a “testing environment” is published with the intent of being tested so that bugs can be discovered and fixed, and an experimental publication of spatial data on the web is published with the intent of, for example, exploring possibilities, learning about the technology, or other goals besides publishing with the intent of serious use of the data. Where the <a href="http://www.opengeospatial.org/projects/groups/sdwwg">Working
+          application in production environments. By ‘production environment’ we mean a case where <a>spatial data</a> has been delivered on the Web with the intention of being used by end users and with a quality level expected from such data. In contract, a “testing environment” is published with the intent of being tested so that bugs can be discovered and fixed, and an experimental publication of spatial data on the Web is published with the intent of, for example, exploring possibilities, learning about the technology, or other goals besides publishing with the intent of serious use of the data. Where the <a href="http://www.opengeospatial.org/projects/groups/sdwwg">Working
           Group</a> have identified issues that inhibit the use or interoperability of spatial data
         on the Web, yet no evidence of real-world application is available, the editors present
         these issues to the reader for consideration, along with any approaches recommended by the
@@ -829,7 +827,7 @@ function init() {
         practices can be implemented. We expect that readers will continue to be able to derive
         insight from the examples even when those specifically mentioned technologies are no longer
         in common usage, understanding that technology ‘y’ has replaced technology ‘x’.</p></section>
-      <section>
+      <section id="scope-privacy">
         <h3>Privacy considerations</h3>
         <p>There are many situations where the location of a person is very useful; from using a taxi hailing service to <a>geocoding</a> a selfie. Technology makes this location information easy to collect and share. However, <a>spatial data</a> has particular characteristics which makes its use potentially more complex. For example, a single location of an anonymous tracked mobile phone may cause few privacy concerns, however the same phone tracked over a few days could provide enough information to make the identification of its user possible. Like all personally identifiable information, great care must be taken as the collection, management and security of such information is the subject of legal frameworks. We do not attempt to provide guidance as to legal aspects of storing potentially personally identifiable spatial information, expert legal advice should be obtained. In summary: legal and privacy considerations relating to spatial data are out of scope.</p>
       </section>
@@ -1137,7 +1135,7 @@ function init() {
     <section id="CRS-background">
       <h2>Coordinate Reference Systems (CRS)</h2>
 
-      <p>One of the most fundamental aspects of publishing <a>spatial data</a>, data about location, is how to express and share the location in a consistent way. In many cases where you are publishing data for use by the wider web community the use of <a>latitude</a> and <a>longitude</a> coordinates (Lat and Long) is most appropriate. As Latitude and longitude coordinates are global they are well suited to many applications: perfect for locating your favorite coffee shop, <a>geocoding</a> a photograph or capturing an augmented reality Pokemon hiding in your local park. Of course, the accuracy is dependent on the equipment used measure that position; GPS-enabled consumer devices are accurate to within a few meters.</p>
+      <p>One of the most fundamental aspects of publishing <a>spatial data</a>, data about location, is how to express and share the location in a consistent way. In many cases where you are publishing data for use by the wider Web community the use of <a>latitude</a> and <a>longitude</a> coordinates (Lat and Long) is most appropriate. As Latitude and longitude coordinates are global they are well suited to many applications: perfect for locating your favorite coffee shop, <a>geocoding</a> a photograph or capturing an augmented reality Pokemon hiding in your local park. Of course, the accuracy is dependent on the equipment used measure that position; GPS-enabled consumer devices are accurate to within a few meters.</p>
 
       <p>It is worth noting that the precision with which coordinate positions are reported often do not reflect the accuracy of the measurement. For example, <a>latitude</a> and <a>longitude</a> reported to six decimal places corresponds to a precision of around 1cm on the ground. Such accuracy can only be achieved with professional equipment, yet a lot of software defaults to use of six, seven or even more decimal places when expressing coordinate positions which may mislead users to thinking that the data is more accurate than it actually is!</p>
       
@@ -1188,7 +1186,7 @@ function init() {
 
       <div class="note">
         <p>It is common for a <a>CRS</a> to be described by its EPSG code. For example, 2-dimensional WGS 84 (Lat/Long) is <a href="http://epsg-registry.org/?display=entity&urn=urn:ogc:def:crs:EPSG::4326">EPSG:4326</a>, 3-dimensional WGS 84 (Lat/Long/Elevation) <a href="http://epsg-registry.org/?display=entity&urn=urn:ogc:def:crs:EPSG::4979">EPSG:4979</a> and OSGB 1936 / British National Grid (a national projected CRS, based on the OSGB 1936 <a>datum</a>) is <a href="http://epsg-registry.org/?display=entity&urn=urn:ogc:def:crs:EPSG::27700">EPSG:27700</a>.</p>
-        <p>The authoritative source of <a>CRS</a> definitions is the <a href="http://epsg-registry.org/">EPSG registry</a>. Those definitions are also available from the <a href="http://www.opengis.net/def/crs/">Open Geospatial Consortium CRS Register</a>. Other web services like <a href="http://spatialreference.org/">Spatial Reference</a> and <a href="http://epsg.io/">EPSG.io</a> also provide definitions as used in popular software, but those definitions &mdash; especially the ones published in <a>Well Known Text</a> (WKT) version 1 format &mdash; sometime differ from official EPSG definitions in <a>axis order</a> and units of measurement.</p>
+        <p>The authoritative source of <a>CRS</a> definitions is the <a href="http://epsg-registry.org/">EPSG registry</a>. Those definitions are also available from the <a href="http://www.opengis.net/def/crs/">Open Geospatial Consortium CRS Register</a>. Other Web services like <a href="http://spatialreference.org/">Spatial Reference</a> and <a href="http://epsg.io/">EPSG.io</a> also provide definitions as used in popular software, but those definitions &mdash; especially the ones published in <a>Well Known Text</a> (WKT) version 1 format &mdash; sometime differ from official EPSG definitions in <a>axis order</a> and units of measurement.</p>
       </div>  
       
       <p>You can re-project your coordinates to WGS 84 using many available tools online. So, for example, the location at <code>516076, 170953</code> in British National Grid (<a href="http://epsg-registry.org/?display=entity&urn=urn:ogc:def:crs:EPSG::27700">EPSG:27700</a>) coordinates is <code>-0.331841, 51.425708</code> in WGS 84 Long/Lat. This conversion is a useful step as it makes you data more accessible to global users. So, if you can do so, it is helpful to publish data in both local (projected) and global coordinates.</p>      
@@ -1217,8 +1215,8 @@ function init() {
       <p>The term ‘<a>Linked Data</a>’ refers to an approach to publishing data that puts linking at
         the heart of the notion of data, and uses the linking technologies provided by the Web to
         enable the weaving of a global distributed database. By naming real world entities - be they
-        web resources, physical objects such as the Eiffel Tower, or even more abstract things such
-        as relations or concepts - with URLs data can be published and linked in the same way web
+        Web resources, physical objects such as the Eiffel Tower, or even more abstract things such
+        as relations or concepts - with URLs data can be published and linked in the same way Web
         pages can. [[LDP-PRIMER]]</p>
       <p>The 5-star scheme at <a href="http://5stardata.info">5 Star Data</a> states:</p>
       <p style="text-indent:80px">&#9733; make your stuff available on the Web (whatever format)
@@ -1269,12 +1267,12 @@ function init() {
     <section id="why-are-traditional-sdi-not-enough">
       <h2>Why are traditional Spatial Data Infrastructures not enough?</h2>
       <p>Finding, accessing and using data disseminated through <a>spatial data infrastructures</a>
-        (SDI) based on <abbr title="Open Geospatial Consortium">OGC</abbr> web services is difficult
+        (SDI) based on <abbr title="Open Geospatial Consortium">OGC</abbr> Web services is difficult
         for non-expert users. There are several reasons, including:</p>
       <ul>
         <li>In <a>spatial data infrastructures</a>, catalog services are intended to be used for
           discovering spatial assets, not the general-purpose search engines of the Web. <abbr
-            title="Open Geospatial Consortium">OGC</abbr> web services do not address indexing of
+            title="Open Geospatial Consortium">OGC</abbr> Web services do not address indexing of
           their content by those search engines.</li>
         <li>By design, the catalog services only provide access to metadata - and in general
           metadata that is focused on the needs of expert users - not the data itself.</li>
@@ -1299,76 +1297,23 @@ function init() {
       </ul>
       <p>The rest of the best practices provide more detail on specific aspects of publishing <a>spatial data</a> on the Web, such as metadata, <a>geometries</a>, <a>CRS</a> information, versioned data, and so on.</p>
     </section>
-    <section id="how-to-use">
-      <h2>How to use these best practices</h2>
-      <div class="issue" data-number="381">
-        <p>Section <a href="#how-to-use"></a> is incomplete.</p>
-        <p>Estimate that this covers only a quarter of the "spatial data publication pathway" that we are trying to help would-be spatial data publishers navigate. More material to be added describing the full range of considerations when publishing <a>spatial data</a> on the Web in the next public draft.</p>
-      </div>
-      <section id="starting-points">
-        <h3>What are the starting points?</h3>
-        <p>Preparations for publishing <a>spatial data</a> on the Web need to start somewhere. Typically, your spatial data will be in the following places:</p>
-        <ol>
-          <li>plain text documents; e.g. historical texts, government reports, blog posts etc.</li>
-          <li>data files containing structured content or markup; e.g. geospatial vector data in Shapefile or [[GML]] format, statistical data in tabular <a>CSV</a> format or a spreadsheet, as GPX data with “waypoints” and “tracks”, satellite imagery in GeoTIFF, climate simulations in CF-NetCDF etc.</li>
-          <li>a data repository; e.g. PostGIS (a spatially enabled relational database), Elasticsearch (a document-oriented noSQL repository based on Apache Lucene), Apache Jena’s TDB (an RDF <a>triple store</a>)</li>
-          <li>exposed via an existing API; including OGC-compliant web services such as <a>WFS</a> [[WFS]] and <a>WCS</a> [[WCS]]</li>
-        </ol>
-        <p>If your <a>spatial data</a> is managed within a software system it is likely that you will be able to access that data through one or more of the methods identified above; as structured data from a bulk extract (e.g. a “data dump”), via direct access to the underpinning data repository or through a bespoke or standards-compliant API provided by the system.</p>
-        <p>As working with specific <a>spatial data</a> management systems is beyond the scope of this best practice document we will assume that one of the four methods identified above is your starting point.</p>
-        <p>Each of these starting points have their own challenges, but working with plain text documents can be particularly tricky as you will need to parse the natural language to identify the <a>spatial things</a> and their properties before you can proceed any further. Natural Language Processing (NLP) is also beyond the scope of this best practice document - so we will assume that you’ve already completed this step and have parsed any plain documents into structured data records of some kind.</p>
-      </section>
-      <section id="what-r-u-talking-about">
-        <h3>What are you talking about?</h3>
-        <p>The Web is an information space in which the items of interest, referred to as resources, are identified by URIs ([[WEBARCH]] <a href="https://www.w3.org/TR/webarch/#intro">§1. Introduction</a>). The <a>spatial data</a> you want to publish is one such <strong>resource</strong>. Depending on the nature of your spatial data, it may be a single <strong>dataset</strong> or a collection of datasets. [[VOCAB-DCAT]] provides a useful definition of dataset: “A collection of data, published or curated by a single agent, and available for access or download in one or more formats.”</p>
-
-        <p>Deciding whether your <a>spatial data</a> is a single dataset or not is somewhat arbitrary. To decide this, it is often useful to consider attributes such as the license under which the data will be made available, the refresh or publication schedules, the quality of the data and the governance regime applied in managing the data. Typically, all of these attributes should be consistent within a single dataset.</p>
-
-        <p>As a first step in publishing your <a>spatial data</a> on the Web, we need to stitch your data into the Web’s information space by assigning a URI to each dataset (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 9: Use persistent URIs as identifiers of datasets</a>). Furthermore, if you anticipate your data changing over time and you want users to be able to refer to a particular version of your dataset you should also consider assigning a URI to each version of the dataset (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionIdentifiers">Best Practice 11: Assign URIs to dataset versions and series</a>).</p>
-
-        <div class="note">
-          <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVersioning">section 8.6 Data Versioning</a> provides further guidance on working with versioned resources: providing metadata to indicate the particular version of a given dataset resource (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a>) and enabling users to browse the history of your dataset (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a>).</p>
-        </div>
-
-        <p>We also need to look inside the datasets at the resources described within your data. If you want these resources to be visible within the Web’s information space, by which we mean that others can refer to or talk about those resources, then they must also be assigned URIs (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a>). These URIs are like 'Web-scale foreign keys' that enable information from different sources to be stitched together.</p>
-
-        <p>In <a>spatial data</a>, our primary concern is always the <a>spatial things</a>; these are the things with spatial <a>extent</a> (i.e. size, shape, or position) that we talk about in our data - anything from physical things like people, places and post boxes to abstractions such as administrative areas. Spatial things should always be assigned URIs (see <a href="#globally-unique-ids">Best Practice 1: Use globally unique persistent HTTP URIs for spatial things</a>) - potentially reusing existing URIs that are already in common usage. A common pattern used when assigning URIs to spatial things is append the locally-scoped identifiers used within the dataset to a URI path within an internet DNS domain where one has administrative rights to publish content.</p>
-
-        <p>Depending on how you organize your data, it may also be helpful to give your <a>geometry</a> objects URIs. For example, you may want to reuse a line string when describing the boundaries of adjacent administrative areas, or you may need to serve geometry data from an alternate URL because property data and geometry data are managed in different systems. Essentially, if you want to refer to a resource on the Web, you need to assign a URI to it.</p>
-      </section>
-      <section id="who-is-your-audience">
-        <h3>Who is your audience?</h3>
-        <p>Once you have determined the subjects of your <a>spatial data</a>, you should then consider your users - and the software tools, applications and capabilities they might have at their disposal.</p>
-
-        <p>Your objective should be to reduce the “friction” created for users to work with your data by providing it in a form that is closest to what their chosen software environment supports.</p>
-
-        <p>It is likely that you will be able to identify your intended “community of use” - and on that basis, discern how best to publish data for them. However, increasingly data is being repurposed to derive insight in ways that the original publisher had never foreseen. This “unanticipated re-use” can add significant value to your data (e.g. because you didn’t know that your data could be used that way!) but this introduces the challenge of working with a large set of unknown users, developers and devices.</p>
-
-        <p>So, while you should always prioritize your known users when publishing <a>spatial data</a> on the Web (often, because they are your stakeholders and their happiness can lead to continued funding!), it will often reap dividends to “design for the masses”: providing your <a>spatial data</a> in a way that is most readily usable with the (geo)spatial JavaScript libraries commonly employed across the Web.</p>
-
-        <p>Things that you should consider when choosing how to publish your <a>spatial data</a> on the Web are described next …</p>
-      </section>
-      <section id="parse-that">
-        <h3>Parse that!</h3>
-        <p>For users to work with your data, software agents (a.k.a. the “machines”) need to be able to parse it - to resolve the serialized data into its component parts. You should make your data available in machine-readable, standardized data formats (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#MachineReadableStandardizedFormat">Best Practice 12: Use machine-readable standardized data formats</a>); e.g. <a>JSON</a> [[RFC7159]], <a>XML</a> [[XML11]], <a>CSV</a> [[RFC4180]] and other tabular data formats, YAML [[YAML]], protocol-buffers [[PROTO3]] etc. According to the 5 Star Data [[5STAR-LOD]] scheme, using open and non-proprietary structured data formats yields a 3-star rating (&#9733;&#9733;&#9733;), so you’re well on your way to good practice.</p>
-
-        <p>Consider that Web applications are most often written in JavaScript, probably the most “frictionless” data format for Web developers is <a>JSON</a>. That said, it is reasonably simple to parse other formats for use in JavaScript using widely available libraries. In some cases, there are even standards to define how this should be done (for example: [[CSV2JSON]])</p>
-
-        <p>You should also consider whether there are any attributes of these machine-readable standardized data formats that offset a little inconvenience for your data user. For example, protocol-buffers [[PROTO3]] and <abbr title="Concise Binary Object Representation">CBOR</abbr> [[RFC7049]] (“Concise Binary Object Representation”) provide a significantly more compact encoding than <a>JSON</a>. The inconvenience of having to use additional libraries to parse these binary formats is offset by the convenience of much faster load times.</p>
-
-        <p>Imagery formats JPEG [[JPEG2000]] and PNG [[PNG]] can also be coerced to carry data; providing 3 or 4 channels of 8-bit data values. This can be an attractive way to encode gridded <a>coverage</a> data values as it is highly compact. So long as you don’t apply compression algorithms to the “image”; while compression retains visual integrity, it can ruin your data integrity. Experience indicates that network providers often do apply compression to image formats - even if you don’t want that. The key point is to ensure that you choose formats that are unaffected by the transport network.</p>
-
-        <p>When selecting the data format, make sure that your community of use have access to libraries or other software components required to work with that format. Let’s take [[GeoTIFF]] as an “anti-example”: it’s the <i>de facto</i> format for encoding geo-referenced imagery data - such as that available from satellites - but the lack of widely available libraries for working with it in a JavaScript application make it unsuitable for publishing <a>spatial data</a> on the Web. Although a developer could write a byte-level parser, it puts an additional burden on any re-use.</p>
-      </section>
-    </section>
     <section id="bestPractices">
       <h2>The Best Practices</h2>
       <section id="bp-webprinciples">
         <h3>Web principles for spatial data</h3>
-        <p><a>Spatial data</a>, like any other data, should be published on the web. By this we mean more than providing spatial data file downloads or services; for data to be <em>on the Web</em>, the resources it describes need to be identified using HTTP URIs, be published in such a way that they are indexable by search engines, and be connected, or linked, to other resources. This makes the data easy to find and easy to access for non-specialist users: the spatial data becomes integrated within the wider Web of data. </p>
+        <p><a>Spatial data</a>, like any other data, should be published on the Web. By this we mean more than providing spatial data file downloads or services; for data to be <em>on the Web</em>, the resources it describes need to be identified using HTTP URIs, be published in such a way that they are indexable by search engines, and be connected, or linked, to other resources. This makes the data easy to find and easy to access for non-specialist users: the spatial data becomes integrated within the wider Web of data. </p>
         <section id="bp-identifiers">
           <h4>Spatial data identifiers</h4>
-          <p>The primary topics of any spatial dataset are <a>spatial things</a>, each described by a set of attributes and usually at least one <a>geometry</a>. How your <a>spatial data</a> is structured will depend on the vocabulary or data model you use (see <a href="#bp-expressing-spatial" class="sectionRef"></a> for further details on vocabulary choice). This will determine the types of entities that, along with the <a>spatial things</a> themselves, are important enough to be given identifiers so that statements can be made about them. Geometry objects are an example of an entity that is often assigned a unique identifier so that they can be referenced or reused.</p>
+          <p>As a first step in publishing your <a>spatial data</a> on the Web, you should assign a URI to each of your datasets (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 9: Use persistent URIs as identifiers of datasets</a>).</p>
+
+          <div class="note">
+            <p>Deciding whether your <a>spatial data</a> is a single dataset or not is somewhat arbitrary. To decide this, it is often useful to consider attributes such as the license under which the data will be made available, the refresh or publication schedules, the quality of the data and the governance regime applied in managing the data. Typically, all of these attributes should be consistent within a single dataset.</p>
+            <p>[[VOCAB-DCAT]] provides a useful definition of dataset that supports this approach: “A collection of data, published or curated by a single agent, and available for access or download in one or more formats.”</p>
+          </div>
+
+          <p>However, we need to look inside the datasets at the resources described within your data. If you want these resources to be visible within the Web’s information space, by which we mean that others can refer to or talk about those resources, then they must also be assigned URIs (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a>). These URIs are like 'Web-scale foreign keys' that enable information from different sources to be stitched together.</p>
+
+          <p>The primary topics of any spatial dataset are <a>spatial things</a> &mdash; anything from physical things like people, places and post boxes to abstractions such as administrative areas. Each <a>spatial thing</a> will be described by a set of attributes and usually at least one <a>geometry</a>. How your <a>spatial data</a> is structured will depend on the vocabulary or data model you use (see <a href="#bp-expressing-spatial" class="sectionRef"></a> for further details on vocabulary choice). This will determine the types of entities that, along with the <a>spatial things</a> themselves, are important enough to be given identifiers so that statements can be made about them. Geometry objects are an example of an entity that is often assigned a unique identifier so that they can be referenced or reused.</p>
           
           <p>Given the widespread use of the Hyper Text Transfer Protocol (HTTP) on the Web, we SHOULD use HTTP URIs to identify resources in <a>spatial data</a>.</p>
           
@@ -1468,7 +1413,7 @@ function init() {
         </div>
         <section id="bp-indexable">
           <h4>Indexable data</h4>
-          <p>Search engines are the common starting point for people looking for content on the web. However, as far as search engines are concerned, something is only 'on the web' if it has an HTTP URI and when this URI is dereferenced, information is returned (usually in the form of a web page).  </p>
+          <p>Search engines are the common starting point for people looking for content on the Web. However, as far as search engines are concerned, something is only 'on the Web' if it has an HTTP URI and when this URI is dereferenced, information is returned (usually in the form of a Web page).  </p>
           <div class="practice">
           <p><span id="indexable-by-search-engines" class="practicelab">Make your spatial data indexable by search engines</span></p>
           <p class="practicedesc">Search engines should be able to crawl spatial data on the Web and index spatial things for direct discovery by users.</p>
@@ -1518,7 +1463,7 @@ function init() {
             <p>Each Web-page, and the hyperlinks used to relate the <a>spatial things</a> to the dataset landing page, can likely be generated programmatically from the data you hold about the spatial thing, either directly from the data or by using an API that makes the data available on the Web.</p>
             
             <aside class="example">
-              <p>Possible implementation approaches for addressing this best practice in the context of an existing <a>SDI</a> are discussed in more detail in <a href="#convenience-apis">Best Practice 12: Expose spatial data through 'convenience APIs'</a> for additional information. For example, by using a proxy tool like <a href="https://github.com/interactive-instruments/ldproxy">ldproxy</a> or by mapping the data in the SDI dynamically to crawlable resources on the web using the [[R2RML]] standard and Linked Data Publication tools. Both approaches generate crawlable data from <a>spatial things</a> in your spatial datasets at query time and allow to enrich the data on the Web with additional information and <a>links</a>.</p>
+              <p>Possible implementation approaches for addressing this best practice in the context of an existing <a>SDI</a> are discussed in more detail in <a href="#convenience-apis">Best Practice 12: Expose spatial data through 'convenience APIs'</a> for additional information. For example, by using a proxy tool like <a href="https://github.com/interactive-instruments/ldproxy">ldproxy</a> or by mapping the data in the SDI dynamically to crawlable resources on the Web using the [[R2RML]] standard and Linked Data Publication tools. Both approaches generate crawlable data from <a>spatial things</a> in your spatial datasets at query time and allow to enrich the data on the Web with additional information and <a>links</a>.</p>
             </aside>
             
             <p>It is important to keep in mind that the HTML representations should not mainly be designed for the search engines, but they should present the data in a clear and understandable way to human users. The page about the <a>spatial thing</a> should be useful to a user and encourage others to link to the page when they share other information about the spatial thing. This typically will also improve the ranking of these pages in search results.</p>
@@ -1530,7 +1475,7 @@ function init() {
               <p>The property Web-pages in Nanaimo also use [[MICRODATA]] annotations using [[SCHEMA-ORG]], which is discussed below.</p>
             </aside>
             
-            <p>In addition to exposing the <a>spatial data</a> as linked HTML Web-pages, indexing by web-engines can be further enhanced by incorporating a description of the <a>spatial thing</a> as structured markup (in particular [[MICRODATA]] or [[JSON-LD]] annotations using [[SCHEMA-ORG]]) as this enables the search engines to make more detailed assumptions about your resource. It is important to note that this is not only helpful to search engines, but also to other tools that want to understand more about the semantics of the resource, for example, its location.</p>
+            <p>In addition to exposing the <a>spatial data</a> as linked HTML Web-pages, indexing by Web-engines can be further enhanced by incorporating a description of the <a>spatial thing</a> as structured markup (in particular [[MICRODATA]] or [[JSON-LD]] annotations using [[SCHEMA-ORG]]) as this enables the search engines to make more detailed assumptions about your resource. It is important to note that this is not only helpful to search engines, but also to other tools that want to understand more about the semantics of the resource, for example, its location.</p>
             
             <p>In [[SCHEMA-ORG]], a spatial dataset is a <a href="http://schema.org/Dataset">Dataset</a> and a <a>spatial thing</a> is in general a <a href="http://schema.org/Place">Place</a> or an <a href="http://schema.org/Event">Event</a>. For some types of spatial things, more specific sub-types exist, for example <a href="http://schema.org/City">City</a> or <a href="http://schema.org/Mountain">Mountain</a>.</p> 
             
@@ -1632,11 +1577,11 @@ function init() {
         <section id="bp-linking">
           <h4>Linking data</h4>
           
-          <p><a>Links</a>, in whatever machine-readable form, are important. In the wider Web, it is links that enable the discovery of web pages: from user-agents following a hyperlink to find related information to search engines using links to prioritize and refine search results. This section is concerned with the creation and use of those links to support discovery of the <a>SpatialThings</a> described in spatial datasets.</p>
+          <p><a>Links</a>, in whatever machine-readable form, are important. In the wider Web, it is links that enable the discovery of Web pages: from user-agents following a hyperlink to find related information to search engines using links to prioritize and refine search results. This section is concerned with the creation and use of those links to support discovery of the <a>SpatialThings</a> described in spatial datasets.</p>
           
           <p>For data to be <em>on the Web</em>, the resources it describes need to be connected, or <em>linked</em>, to other resources. The <em>connectedness</em> of data is one of the fundamentals of the <a>Linked Data</a> approach that these best practices build upon.</p> 
           
-          <p>Just like any type of data, <a>spatial data</a> benefits massively from linking when publishing on the web. The widespread use of <a>links</a> within data is regarded as one of the most significant departures from contemporary practices used within <a>SDIs</a>. That's why this topic is included in this Best Practice.</p>
+          <p>Just like any type of data, <a>spatial data</a> benefits massively from linking when publishing on the Web. The widespread use of <a>links</a> within data is regarded as one of the most significant departures from contemporary practices used within <a>SDIs</a>. That's why this topic is included in this Best Practice.</p>
           
           <p>[[DWBP]] identifies <em>Linkability</em> as one of the <a href="https://www.w3.org/TR/dwbp/#BP_Benefits">benefits</a> gained from implementing the Data on the Web best practices (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#DataIdentifiers">section 8.7 Data Identifiers</a> <a href="https://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 9: Use persistent URIs as identifiers of datasets</a> and <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a>). However, no discussion is provided about how to create the <a>links</a> that the use those persistent URIs. This section of the document extends [[DWBP]] by providing a best practice about <em>creating</em> links between the resources described inside spatial datasets.</p>
           
@@ -1688,7 +1633,7 @@ function init() {
                     </div>
                   </li>
                   <li>
-                    <p><a>Links</a> should be typed (explicitly or implicitly), so that clients can decide which link to follow when they are traversing a web of interlinked resources to reach application goals.</p>
+                    <p><a>Links</a> should be typed (explicitly or implicitly), so that clients can decide which link to follow when they are traversing a Web of interlinked resources to reach application goals.</p>
                     <pre class="example" id="ex-webdata2-typed-links" title="HTTP response Link header with IANA Link Relation types">
 HTTP/1.1 200 OK
 Link: &lt;http://www.gemeentegeschiedenis.nl/gemeentenaam/Amsterdam/2014&gt;; rel="predecessor-version"
@@ -1797,7 +1742,7 @@ Connection: close
               </ul>
               
               <h5>1. Web pages for people to read about spatial things</h5>
-              <p>In <a href="#globally-unique-ids" class="sectionRef">Best Practice 1</a> we recommend use of HTTP URIs as a way of assigning identifiers to <a>spatial things</a>. The data publisher should offer the ability to look up ('dereference') such a URI to find out useful information about that <a>spatial thing</a> in human readable form (as well as machine readable formats - see the discussion below on data integration).  Each <a>spatial thing</a> therefore gets its own Web page - in addition it might be useful to have web pages about groups of <a>spatial things</a>, but the 'page per thing' approach enables fine-grained linking of information.</p>
+              <p>In <a href="#globally-unique-ids" class="sectionRef">Best Practice 1</a> we recommend use of HTTP URIs as a way of assigning identifiers to <a>spatial things</a>. The data publisher should offer the ability to look up ('dereference') such a URI to find out useful information about that <a>spatial thing</a> in human readable form (as well as machine readable formats - see the discussion below on data integration).  Each <a>spatial thing</a> therefore gets its own Web page - in addition it might be useful to have Web pages about groups of <a>spatial things</a>, but the 'page per thing' approach enables fine-grained linking of information.</p>
               <p>To promote discovery of such Web pages in search engines, each page should contain a clear text description of what it is, ideally in a way that distinguishes it from pages about other similar <a>spatial things</a>. Including metadata using the [[SCHEMA-ORG]] vocabulary, embedded as [[MICRODATA]], [[HTML-RDFa] or as [[JSON-LD]] in the <em>&lt;head&gt;</em> section of the page can provide additional information to search engines to support more precise indexing.  See <a href="#indexable-by-search-engines" class="sectionRef">Best Practice 2: Making data indexable by search engines</a> for a more detailed discussion.</p>
               <p>It is also very useful in such Web pages to include <a>links</a> to descriptions of the <a>spatial thing</a> in other formats (typically machine-readable formats) as well as linking to related <a>spatial things</a>.</p>
               <aside class="example">
@@ -3198,9 +3143,10 @@ Content-type: application/geo+json
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
             
-            <p>When publishing information about a <a>spatial thing</a> that is subject to change there are three main approaches to consider:</p>
+            <p>When publishing information about a <a>spatial thing</a> that is subject to change there are four approaches to consider in response to a change:</p>
             <ol>
-              <li>simply updating the description of the spatial thing in response to a change;</li>
+              <li>simply updating the description of the spatial thing;</li>
+              <li>republish the entire dataset with a new URI;</li>
               <li>providing a series of immutable snapshots that describe the spatial thing at various points in its lifecycle; and</li>
               <li>capturing a time-series of data values within an attribute of the spatial thing.</li>
             </ol>
@@ -3211,9 +3157,11 @@ Content-type: application/geo+json
             
             <p>Approach (1) is lightweight and should only be used where there are no user requirements that require access to older descriptions of the <a>spatial things</a>. Data publishers simply replace the old description of the spatial thing with the amended description and keep users informed about updates by providing the appropriate metadata (e.g. when the data was changed). This may be achieved using dataset metadata (as outlined above) or by including the metadata attributes in the description of each spatial thing.</p>
             
-            <p>Where users are anticipated to need to understand <em>how</em> a <a>spatial thing</a> has changed over time, approaches (2) and (3) must be considered.</p>
+            <p>Where users are anticipated to need to understand <em>how</em> a <a>spatial thing</a> has changed over time, approaches (2), (3) and (4) should be considered.</p>
             
-            <p>Approach (2) requires the data publisher to publish immutable resources that describe the <a>spatial thing</a> at specific points in time (i.e. "snapshots") and provide a mechanism for users to browse between those snapshots. Given that each snapshot of the spatial thing is published as a separate resource, this approach is suited to infrequent changes so that the number of snapshots does not become unwieldy.</p>
+            <p>Approach (2) is a simple variant on approach (1); the difference being that the entire dataset is assigned a new URI when changes are made, thereby enabling older versions of the dataset to be addressed separately. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionIdentifiers">Best Practice 11: Assign URIs to dataset versions and series</a> for further details. Using this approach, a user should be able to compare two versions of the dataset to determine what has changed. Although simple for data publishers, the downside of this approach is that the effort is passed on to the users.</p>
+
+            <p>Approach (3) requires the data publisher to publish immutable resources that describe the <a>spatial thing</a> at specific points in time (i.e. "snapshots") and provide a mechanism for users to browse between those snapshots. Effectively, the dataset becomes an accumulation of these snapshots that users can browse through. However, given that each snapshot of the spatial thing is published as a separate resource, this approach is suited to infrequent changes so that the number of snapshots does not become unwieldy.</p>
             
             <p>The URI for the <a>spatial thing</a>, the <em>base</em> URI, should dereference to provide the current information and a <a>link</a> to its version history of snapshots. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a> describes how a version history may be implemented. Each snapshot resource within the version history must be uniquely identified; a common approach is to append a date/time stamp to the base URI as a version indicator. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a> provides relevant guidance.</p>
             
@@ -3258,7 +3206,7 @@ Content-type: application/geo+json
               </pre>
             </aside>
             
-            <p>Approach (3) is suitable where a <a>spatial thing</a> has a small number of attributes that are frequently updated. For example, the GPS-position of a runner or when streaming data from a sensor, such as the water level from a stream gauge.</p>
+            <p>Approach (4) is suitable where a <a>spatial thing</a> has a small number of attributes that are frequently updated. For example, the GPS-position of a runner or when streaming data from a sensor, such as the water level from a stream gauge.</p>
             
             <p>With this approach, the description of the <a>spatial thing</a> must include a property that contains a sequentially-ordered set of data-points, each of which defines a time-stamp and the values for the time-varying attribute(s). By definition, this property can be considered as a time-series <a>coverage</a>. Standard data encodings are available for time-series data, including: [[TIMESERIESML]] for [[GML]], plus [[COVERAGE-JSON]] and the <a>SensorThings</a> API [[SENSORTHINGS]] for <a>JSON</a> [[RFC7159]]. [[VOCAB-DATA-CUBE]] provides a generic mechanism to express well-structured data, such as timeseries, in <a>RDF</a> [[RDF11-PRIMER]]. Although not yet widely used enough to be considered <em>best practices</em>, [[EO-QB]] and [[QB4ST]] (developed alongside this best practice Note within the <a href="http://www.opengeospatial.org/projects/groups/sdwwg">Spatial Data on the Web Working Group</a>) illustrate how [[VOCAB-DATA-CUBE]] may be used in this way.</p>
             
@@ -3350,7 +3298,7 @@ Content-type: application/geo+json
             negotiation for serving data available in multiple formats</a>.</li>
         </ul>
 		  <p>Providing bulk-download or streaming access to data is useful in any case and
-		    is relatively inexpensive to support as it relies on standard capabilities of web servers 
+		    is relatively inexpensive to support as it relies on standard capabilities of Web servers 
 		    for datasets that may be published as downloadable files stored on a server.
 		    However, this option is more complex for frequently changing datasets or real-time data.</p>
 		  <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#ProvideSubsets">Best Practice 18: 
@@ -3382,7 +3330,7 @@ Content-type: application/geo+json
 		      Avoid Breaking Changes to Your API</a></li>
 		  </ul>
         <p>For <a>spatial data</a>, <a>SDIs</a> have long been used to provide generalized access to 
-          spatial data via web services, typically using open standard specifications from the 
+          spatial data via Web services, typically using open standard specifications from the 
           <a href="http://www.opengeospatial.org/">Open Geospatial Consortium</a> (OGC). 
           The main examples are <a>Web Feature Service</a> [[WFS]], <a>Web Coverage Service</a> [[WCS]], <a>Sensor 
           Observation Service</a>, <a>SensorThings</a> [[SENSORTHINGS]] or [[GeoSPARQL]] for access to data, or <a>Web Map Service</a> [[WMS]] 
@@ -3391,7 +3339,7 @@ Content-type: application/geo+json
           beyond the geospatial expert community.</p>
         <p>In addition, commercial offerings for publishing <a>spatial data</a> on the Web often provide
           access via product-specific APIs, too. These APIs are typically not restricted to 
-          HTTP-based web service APIs in the sense of [[DWBP]] <a 
+          HTTP-based Web service APIs in the sense of [[DWBP]] <a 
             href="https://www.w3.org/TR/dwbp/#APIHttpVerbs">Best Practice 24: Use Web Standards 
           as the foundation of APIs</a>, but include APIs targeted at a specific programming 
           language, for example, JavaScript.</p>
@@ -3503,7 +3451,7 @@ Content-type: application/geo+json
                   href="https://github.com/UKGovLD/linked-data-api/blob/wiki/Specification.md"
                     >Linked Data API</a> and enables configured queries against (general) <a>SPARQL</a> [[SPARQL11-OVERVIEW]]
                 
-                endpoints to be exposed as RESTful web services.</p>
+                endpoints to be exposed as RESTful Web services.</p>
             </aside>
 
             <aside class="example">
@@ -3580,7 +3528,7 @@ Content-type: application/geo+json
               </li>  
               
               <li>
-              <p>Provide parallel web-friendly access to the data as an alternative</p>
+              <p>Provide parallel Web-friendly access to the data as an alternative</p>
               <p>A more effective route may be to provide an alternative 'Web friendly' 
                 access path to the <a>spatial data</a> is to create a new, complementary service
                 endpoint on top of the native storage of the dataset. This limits the 
@@ -3652,15 +3600,15 @@ Content-type: application/geo+json
         <p>This section includes best practices for including the spatial <a>extent</a>, <a>CRS</a>, and other spatial details of the
           dataset in the metadata. These are the extra metadata items needed to make spatial
           datasets both discoverable and usable. A third best practice in this section goes a
-          step further in granularity: exposing <a>spatial data</a> on the web in such a way that individual entities or "granules"
+          step further in granularity: exposing <a>spatial data</a> on the Web in such a way that individual entities or "granules"
           within a dataset can be discovered, evaluated, and utilized. </p>
-        <p>Quality information is also an important part of spatial metadata, especially for asserting if data is fit for a certain purpose. [[DWBP]] provides a best practice discussing how the quality of data on the web should be
+        <p>Quality information is also an important part of spatial metadata, especially for asserting if data is fit for a certain purpose. [[DWBP]] provides a best practice discussing how the quality of data on the Web should be
           described (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#quality">section 8.5 Data Quality</a> for
           more details). This section is based on the Data Quality section from [[DWBP]] and adds a
           best practice specific for spatial data, which concentrates on the accuracy of the positions in the data
           - how close are they to the actual positions of the real world things?</p>
         <p>In the Spatial Metadata section, we provided a <a href="#bp-crs-choice" class="sectionRef">Best Practice</a> on how
-          to deal with <a>CRS</a> in <a>spatial data</a> on the web. There is also a clear link between CRS and
+          to deal with <a>CRS</a> in <a>spatial data</a> on the Web. There is also a clear link between CRS and
           data quality, because the accuracy of spatial data depends for a large part on the CRS
           used. This can be seen as conformance of data with a "standard" - in this case, a (spatial
           or temporal) reference system. This is how you can describe spatial data quality using
@@ -3929,13 +3877,13 @@ another:Dataset a dcat:Dataset ;
     
     <section id="conclusions">
       <h2>Gaps in current practice</h2>
-      <p>The best practices described in the Spatial Data on the Web Best Practice are compiled based on evidence of real-world application, as described in <a href="#best-practice-criteria" class="sectionRef"></a>. However, there are several issues that inhibit the use or interoperability of <a>spatial data</a> on the Web, for which no evidence of real-world applied solutions is available. These issues are denoted “gaps in current practice”. In the case of gaps, there might be emerging practice i.e. a solution that has been theorized for a certain issue and has possibly been experimented on in beta settings, but not in production environments. Gaps and emerging practices in the area of publishing spatial data on the web are discussed in this section. 
+      <p>The best practices described in the Spatial Data on the Web Best Practice are compiled based on evidence of real-world application, as described in <a href="#best-practice-criteria" class="sectionRef"></a>. However, there are several issues that inhibit the use or interoperability of <a>spatial data</a> on the Web, for which no evidence of real-world applied solutions is available. These issues are denoted “gaps in current practice”. In the case of gaps, there might be emerging practice i.e. a solution that has been theorized for a certain issue and has possibly been experimented on in beta settings, but not in production environments. Gaps and emerging practices in the area of publishing spatial data on the Web are discussed in this section. 
       </p>
       <section id="c-geometrycrs">
         <h3>Requesting different representations of geometries</h3>
-        <p>There are several aspects to representing <a>geometries</a> on the web. First, there is the question of different serialization formats to choose from. The different formats are described in <a href="#describe-geometry" class="sectionRef"></a>, but the Best Practice does not make a definitive choice as to which format is best. Although having only one format for geometries on the web would reduce complexity, the currently available formats reflect different requirements with respect to data complexity and manipulation.  </p>
-        <p>A second, related aspect is whether to publish <a>geometries</a> on the web in self contained files such as [[GML]] or GeoJSON [[RFC7946]], or rather to embed geometries as structured data markup in HTML, or in an <a>RDF</a> [[RDF11-PRIMER]] based way i.e. as <a>Linked Data</a>. Choosing between these approaches - or not choosing but rather offering a combination of these - depends largely on the intended audience.</p>
-        <p>Third, there is a question of how to make <a>geometries</a> available in different <a>CRS</a>s. <a href="#bp-crs-choice" class="sectionRef"></a> describes why this is a good idea as well as how to decide which CRSs to provide. <a href="#bp-crs" class="sectionRef"></a> explains how the CRS of geometries should be made known. It follows that users should be able to find out which CRSs are available and access geometries in the CRS of their choice. In an OGC <a>WFS</a> [[WFS]] request, users can specify the CRS they wish to use by specifying the srsName parameter. In [[GeoSPARQL]] the getSRID function returns the spatial reference system of a <a>geometry</a>, thus making it possible to request a specific CRS at a (Geo)SPARQL endpoint. However, these options require the user to be proficient in either Geospatial web services or <a>Linked Data</a>. A best practice for requesting and returning geometries in a specific requested CRS has not yet emerged. Many options can be found in current practice, including  creating CRS-specific geometry properties (for example, the Dutch Land Registry does this), and supporting an option for requesting a specific CRS in a convenience API; but one best practice cannot yet be identified. </p>
+        <p>There are several aspects to representing <a>geometries</a> on the Web. First, there is the question of different serialization formats to choose from. The different formats are described in <a href="#describe-geometry" class="sectionRef"></a>, but the Best Practice does not make a definitive choice as to which format is best. Although having only one format for geometries on the Web would reduce complexity, the currently available formats reflect different requirements with respect to data complexity and manipulation.  </p>
+        <p>A second, related aspect is whether to publish <a>geometries</a> on the Web in self contained files such as [[GML]] or GeoJSON [[RFC7946]], or rather to embed geometries as structured data markup in HTML, or in an <a>RDF</a> [[RDF11-PRIMER]] based way i.e. as <a>Linked Data</a>. Choosing between these approaches - or not choosing but rather offering a combination of these - depends largely on the intended audience.</p>
+        <p>Third, there is a question of how to make <a>geometries</a> available in different <a>CRS</a>s. <a href="#bp-crs-choice" class="sectionRef"></a> describes why this is a good idea as well as how to decide which CRSs to provide. <a href="#bp-crs" class="sectionRef"></a> explains how the CRS of geometries should be made known. It follows that users should be able to find out which CRSs are available and access geometries in the CRS of their choice. In an OGC <a>WFS</a> [[WFS]] request, users can specify the CRS they wish to use by specifying the srsName parameter. In [[GeoSPARQL]] the getSRID function returns the spatial reference system of a <a>geometry</a>, thus making it possible to request a specific CRS at a (Geo)SPARQL endpoint. However, these options require the user to be proficient in either Geospatial Web services or <a>Linked Data</a>. A best practice for requesting and returning geometries in a specific requested CRS has not yet emerged. Many options can be found in current practice, including  creating CRS-specific geometry properties (for example, the Dutch Land Registry does this), and supporting an option for requesting a specific CRS in a convenience API; but one best practice cannot yet be identified. </p>
         <p>An option we considered was the use of content negotiation i.e. negotiate <a>CRS</a> as part of the content format for the geometry. A <a href="https://github.com/w3c/sdw/issues/757">concrete proposal</a> for this suggests the following:</p>
         <ul>
           <li>Servers can tell clients which CRS is used in the response using a new Content-Crs response header.</li>
@@ -3960,7 +3908,7 @@ another:Dataset a dcat:Dataset ;
          <p>The next step is evolution towards a single standard for metadata as it is used in data portals, without loss of relevant metadata, while still understandable and not too complicated. A working group in the Open Geospatial Consortium is currently working on this.</p>
       </section>
       <section id="c-dynamicdata">
-        <h3>Publishing dynamic and large datasets on the web</h3>
+        <h3>Publishing dynamic and large datasets on the Web</h3>
         <p>Large and complex datasets, for example data gathered using automated sensors, may be impossible to download in its entirety due to its dynamic nature and potential volumes. It is therefore necessary in these cases to be able to adequately describe the structure of such data and how services interact to expose subsets of it - even individual records in a Linked Data context. Currently, there is no established Best Practice for dealing with this, especially when taking the spatial and temporal dimensions into account.</p>
         <p>Large, complex datasets are common in the information processing world, and commonly organised in “hypercubes” - where “data dimensions” are used to locate values holding results. A standard based on this dimensional model of data  is the RDF Data Cube vocabulary [[VOCAB-DATA-CUBE]]. It has been used to publish sensor data, but RDF Data Cube is lacking in possibilities for describing spatio-temporal aspects of data, which are very important for observations. One of the work items in the Spatial Data on the Web working group has been to extend the existing RDF Data Cube ontology to support specification of key metadata required to interpret spatio-temporal data, called [[QB4ST]].</p> 
         <p>QB4ST is an extension to RDF Data Cube  to provide mechanisms for defining spatio-temporal aspects of dimension and measure descriptions. It is intended to enable the development of semantic descriptions of specific spatio-temporal data elements by appropriate communities of interest, rather than to enumerate a static list of such definitions. It provides a minimal ontology of spatio-temporal properties and defines abstract classes for data cube components (i.e. dimensions and measures) that use these, to allow classification and discovery of specialized component definitions using general terms.</p>
@@ -4911,9 +4859,9 @@ another:Dataset a dcat:Dataset ;
       <p><dfn data-lt="Open-world assumption|open world assumption|OWA">Open-world assumption (OWA)</dfn>: In a formal system of logic used for knowledge representation, the open-world assumption asserts that the truth value of a statement may be true irrespective of whether or not it is known to be true. This assumption codifies the informal notion that in general no single agent or observer has complete knowledge. In essence, from the absence of a statement alone, a deductive reasoner cannot (and must not) infer that the statement is false. That is, a valid response to a logical query may be: true, false or unknown.</p>
       <p><dfn data-lt="Projected CRS|Projected Coordinate Reference Systems">Projected Coordinate Reference System</dfn>: A <a>coordinate reference system</a> derived from a two-dimensional geodetic coordinate reference system by applying a <a>map projection</a>.</p>
       <p><dfn data-lt="Resource description framework|RDF">Resource Description Framework (RDF)</dfn>: A directed, labeled graph data model for representing information in the Web. It may be serialized in several data formats such as N-Triples [[N-TRIPLES]], XML [[RDF-SYNTAX-GRAMMAR]], Terse Triple Language (“turtle” or TTL) [[TURTLE]] and [[JSON-LD]].</p>
-      <p><dfn>Semantic web</dfn>: The term “Semantic Web” refers to World Wide Web Consortium's vision of the Web of <a>linked data</a>. Semantic Web technologies enable people to create data stores on the Web, build vocabularies, and write rules for handling data.</p>
+      <p><dfn>Semantic Web</dfn>: The term “Semantic Web” refers to World Wide Web Consortium's vision of the Web of <a>linked data</a>. Semantic Web technologies enable people to create data stores on the Web, build vocabularies, and write rules for handling data.</p>
       <p><dfn data-lt="SensorThings">SensorThings API</dfn>: An open, geospatial-enabled and unified  way to interconnect the <a>Internet of Things</a> (IoT) devices, data, and applications over the Web. [[SENSORTHINGS]].</p>
-      <p><dfn data-lt="SOS|Sensor Observation Service">Sensor Observation Service (SOS)</dfn>: A standardized HTTP interface allowing requests for observations across the web using platform-independent calls. Sensor Observation Service [[SOS]].</p>
+      <p><dfn data-lt="SOS|Sensor Observation Service">Sensor Observation Service (SOS)</dfn>: A standardized HTTP interface allowing requests for observations across the Web using platform-independent calls. Sensor Observation Service [[SOS]].</p>
       <p><dfn>SPARQL</dfn>: A query language for <a>RDF</a>; it can be used to express queries across diverse data sources [[SPARQL11-OVERVIEW]].</p>
       <p><dfn>Spatial data</dfn>: Data describing anything with spatial <a>extent</a>; i.e. size, shape or position. In addition to describing things that are positioned relative to the Earth (also see <a>geospatial data</a>), spatial data may also describe things using other coordinate systems that are not related to position on the Earth, such as the size, shape and positions of cellular and sub-cellular <a>spatial things</a> described using the 2D or 3D Cartesian coordinate system of a specific tissue sample.</p>
       <p><dfn>Spatial database</dfn>: A spatial database, or geodatabase, is a database that is optimized to store and query data that represents objects defined in a geometric space. Most spatial databases allow representation of simple geometric objects such as points, lines and polygons and provide <a>spatial query functions</a> to determine <a>spatial relationships</a> (overlaps, touches, etc.).</p>
@@ -4926,7 +4874,7 @@ another:Dataset a dcat:Dataset ;
       <p><dfn data-lt="triple-store|triple store|triple stores|quad-store|quadstore">Triple-store (or quadstore)</dfn>: A triple-store or <a>RDF</a> store is a purpose-built database for the storage and retrieval of RDF subject-predicate-object “triples” through semantic queries. Many implementations are actually “quad-stores” as they also hold the name of the graph within which a triple is stored.</p>
       <p><dfn>Universe of discourse</dfn>: view of the real or hypothetical world that includes everything of interest (source: <a href="http://registry.it.csiro.au/sandbox/iso-tc211/terms/486">ISO definition</a> [[ISO-19101]]).</p>
       <p><dfn data-lt="WCS|Web Coverage Service">Web Coverage Service (WCS)</dfn>: A service offering multi-dimensional coverage data for access over the Internet. [[WCS]]</p>
-      <p><dfn data-lt="WFS|Web Feature Service">Web Feature Service (WFS)</dfn>: A standardized HTTP interface allowing requests for geographical <a>features</a> across the web using platform-independent calls. [[WFS]].</p>
+      <p><dfn data-lt="WFS|Web Feature Service">Web Feature Service (WFS)</dfn>: A standardized HTTP interface allowing requests for geographical <a>features</a> across the Web using platform-independent calls. [[WFS]].</p>
       <p><dfn data-lt="WMS|Web Map Service">Web Map Service (WMS)</dfn>: A standardized HTTP interface for requesting geo-registered map images from one or more distributed spatial databases. [[WMS]]</p>
       <p><dfn data-lt="WMTS|Web Map Tile Service">Web Map Tile Service (WMTS)</dfn>: A standardized HTTP interface for requesting tiled, geo-referenced map images from one or more distributed spatial databases. [[WMTS]]</p>
       <p><dfn data-lt="WPS|Web Processing Service">Web Processing Service (WPS)</dfn>: An interface standard which provides rules for standardizing inputs and outputs (requests and responses) for invoking spatial processing services, such as polygon overlay, as a Web service. [[WPS]]</p>
