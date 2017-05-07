@@ -32,6 +32,7 @@ var respecConfig = {
         { value: "Byron Cochrane" },
         { value: "Simon Cox" },
         { value: "François Daoust" },
+        { value: "Andreas Harth" },
         { value: "Bart van Leeuwen" },
         { value: "Josh Lieberman" },
         { value: "Chris Little" },
