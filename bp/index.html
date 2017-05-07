@@ -1297,68 +1297,6 @@ function init() {
       </ul>
       <p>The rest of the best practices provide more detail on specific aspects of publishing <a>spatial data</a> on the Web, such as metadata, <a>geometries</a>, <a>CRS</a> information, versioned data, and so on.</p>
     </section>
-    <section id="how-to-use">
-      <h2>How to use these best practices</h2>
-      <div class="issue" data-number="381">
-        <p>Section <a href="#how-to-use"></a> is incomplete.</p>
-        <p>Estimate that this covers only a quarter of the "spatial data publication pathway" that we are trying to help would-be spatial data publishers navigate. More material to be added describing the full range of considerations when publishing <a>spatial data</a> on the Web in the next public draft.</p>
-      </div>
-      <section id="starting-points">
-        <h3>What are the starting points?</h3>
-        <p>Preparations for publishing <a>spatial data</a> on the Web need to start somewhere. Typically, your spatial data will be in the following places:</p>
-        <ol>
-          <li>plain text documents; e.g. historical texts, government reports, blog posts etc.</li>
-          <li>data files containing structured content or markup; e.g. geospatial vector data in Shapefile or [[GML]] format, statistical data in tabular <a>CSV</a> format or a spreadsheet, as GPX data with “waypoints” and “tracks”, satellite imagery in GeoTIFF, climate simulations in CF-NetCDF etc.</li>
-          <li>a data repository; e.g. PostGIS (a spatially enabled relational database), Elasticsearch (a document-oriented noSQL repository based on Apache Lucene), Apache Jena’s TDB (an RDF <a>triple store</a>)</li>
-          <li>exposed via an existing API; including OGC-compliant Web services such as <a>WFS</a> [[WFS]] and <a>WCS</a> [[WCS]]</li>
-        </ol>
-        <p>If your <a>spatial data</a> is managed within a software system it is likely that you will be able to access that data through one or more of the methods identified above; as structured data from a bulk extract (e.g. a “data dump”), via direct access to the underpinning data repository or through a bespoke or standards-compliant API provided by the system.</p>
-        <p>As working with specific <a>spatial data</a> management systems is beyond the scope of this best practice document we will assume that one of the four methods identified above is your starting point.</p>
-        <p>Each of these starting points have their own challenges, but working with plain text documents can be particularly tricky as you will need to parse the natural language to identify the <a>spatial things</a> and their properties before you can proceed any further. Natural Language Processing (NLP) is also beyond the scope of this best practice document - so we will assume that you’ve already completed this step and have parsed any plain documents into structured data records of some kind.</p>
-      </section>
-      <section id="what-r-u-talking-about">
-        <h3>What are you talking about?</h3>
-        <p>The Web is an information space in which the items of interest, referred to as resources, are identified by URIs ([[WEBARCH]] <a href="https://www.w3.org/TR/webarch/#intro">§1. Introduction</a>). The <a>spatial data</a> you want to publish is one such <strong>resource</strong>. Depending on the nature of your spatial data, it may be a single <strong>dataset</strong> or a collection of datasets. [[VOCAB-DCAT]] provides a useful definition of dataset: “A collection of data, published or curated by a single agent, and available for access or download in one or more formats.”</p>
-
-        <p>Deciding whether your <a>spatial data</a> is a single dataset or not is somewhat arbitrary. To decide this, it is often useful to consider attributes such as the license under which the data will be made available, the refresh or publication schedules, the quality of the data and the governance regime applied in managing the data. Typically, all of these attributes should be consistent within a single dataset.</p>
-
-        <p>As a first step in publishing your <a>spatial data</a> on the Web, we need to stitch your data into the Web’s information space by assigning a URI to each dataset (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#UniqueIdentifiers">Best Practice 9: Use persistent URIs as identifiers of datasets</a>). Furthermore, if you anticipate your data changing over time and you want users to be able to refer to a particular version of your dataset you should also consider assigning a URI to each version of the dataset (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionIdentifiers">Best Practice 11: Assign URIs to dataset versions and series</a>).</p>
-
-        <div class="note">
-          <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#dataVersioning">section 8.6 Data Versioning</a> provides further guidance on working with versioned resources: providing metadata to indicate the particular version of a given dataset resource (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a>) and enabling users to browse the history of your dataset (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a>).</p>
-        </div>
-
-        <p>We also need to look inside the datasets at the resources described within your data. If you want these resources to be visible within the Web’s information space, by which we mean that others can refer to or talk about those resources, then they must also be assigned URIs (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a>). These URIs are like 'Web-scale foreign keys' that enable information from different sources to be stitched together.</p>
-
-        <p>In <a>spatial data</a>, our primary concern is always the <a>spatial things</a>; these are the things with spatial <a>extent</a> (i.e. size, shape, or position) that we talk about in our data - anything from physical things like people, places and post boxes to abstractions such as administrative areas. Spatial things should always be assigned URIs (see <a href="#globally-unique-ids">Best Practice 1: Use globally unique persistent HTTP URIs for spatial things</a>) - potentially reusing existing URIs that are already in common usage. A common pattern used when assigning URIs to spatial things is append the locally-scoped identifiers used within the dataset to a URI path within an internet DNS domain where one has administrative rights to publish content.</p>
-
-        <p>Depending on how you organize your data, it may also be helpful to give your <a>geometry</a> objects URIs. For example, you may want to reuse a line string when describing the boundaries of adjacent administrative areas, or you may need to serve geometry data from an alternate URL because property data and geometry data are managed in different systems. Essentially, if you want to refer to a resource on the Web, you need to assign a URI to it.</p>
-      </section>
-      <section id="who-is-your-audience">
-        <h3>Who is your audience?</h3>
-        <p>Once you have determined the subjects of your <a>spatial data</a>, you should then consider your users - and the software tools, applications and capabilities they might have at their disposal.</p>
-
-        <p>Your objective should be to reduce the “friction” created for users to work with your data by providing it in a form that is closest to what their chosen software environment supports.</p>
-
-        <p>It is likely that you will be able to identify your intended “community of use” - and on that basis, discern how best to publish data for them. However, increasingly data is being repurposed to derive insight in ways that the original publisher had never foreseen. This “unanticipated re-use” can add significant value to your data (e.g. because you didn’t know that your data could be used that way!) but this introduces the challenge of working with a large set of unknown users, developers and devices.</p>
-
-        <p>So, while you should always prioritize your known users when publishing <a>spatial data</a> on the Web (often, because they are your stakeholders and their happiness can lead to continued funding!), it will often reap dividends to “design for the masses”: providing your <a>spatial data</a> in a way that is most readily usable with the (geo)spatial JavaScript libraries commonly employed across the Web.</p>
-
-        <p>Things that you should consider when choosing how to publish your <a>spatial data</a> on the Web are described next …</p>
-      </section>
-      <section id="parse-that">
-        <h3>Parse that!</h3>
-        <p>For users to work with your data, software agents (a.k.a. the “machines”) need to be able to parse it - to resolve the serialized data into its component parts. You should make your data available in machine-readable, standardized data formats (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#MachineReadableStandardizedFormat">Best Practice 12: Use machine-readable standardized data formats</a>); e.g. <a>JSON</a> [[RFC7159]], <a>XML</a> [[XML11]], <a>CSV</a> [[RFC4180]] and other tabular data formats, YAML [[YAML]], protocol-buffers [[PROTO3]] etc. According to the 5 Star Data [[5STAR-LOD]] scheme, using open and non-proprietary structured data formats yields a 3-star rating (&#9733;&#9733;&#9733;), so you’re well on your way to good practice.</p>
-
-        <p>Consider that Web applications are most often written in JavaScript, probably the most “frictionless” data format for Web developers is <a>JSON</a>. That said, it is reasonably simple to parse other formats for use in JavaScript using widely available libraries. In some cases, there are even standards to define how this should be done (for example: [[CSV2JSON]])</p>
-
-        <p>You should also consider whether there are any attributes of these machine-readable standardized data formats that offset a little inconvenience for your data user. For example, protocol-buffers [[PROTO3]] and <abbr title="Concise Binary Object Representation">CBOR</abbr> [[RFC7049]] (“Concise Binary Object Representation”) provide a significantly more compact encoding than <a>JSON</a>. The inconvenience of having to use additional libraries to parse these binary formats is offset by the convenience of much faster load times.</p>
-
-        <p>Imagery formats JPEG [[JPEG2000]] and PNG [[PNG]] can also be coerced to carry data; providing 3 or 4 channels of 8-bit data values. This can be an attractive way to encode gridded <a>coverage</a> data values as it is highly compact. So long as you don’t apply compression algorithms to the “image”; while compression retains visual integrity, it can ruin your data integrity. Experience indicates that network providers often do apply compression to image formats - even if you don’t want that. The key point is to ensure that you choose formats that are unaffected by the transport network.</p>
-
-        <p>When selecting the data format, make sure that your community of use have access to libraries or other software components required to work with that format. Let’s take [[GeoTIFF]] as an “anti-example”: it’s the <i>de facto</i> format for encoding geo-referenced imagery data - such as that available from satellites - but the lack of widely available libraries for working with it in a JavaScript application make it unsuitable for publishing <a>spatial data</a> on the Web. Although a developer could write a byte-level parser, it puts an additional burden on any re-use.</p>
-      </section>
-    </section>
     <section id="bestPractices">
       <h2>The Best Practices</h2>
       <section id="bp-webprinciples">
