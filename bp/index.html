@@ -3205,9 +3205,10 @@ Content-type: application/geo+json
           <section class="how">
             <h4 class="subhead">Possible Approach to Implementation</h4>
             
-            <p>When publishing information about a <a>spatial thing</a> that is subject to change there are three main approaches to consider:</p>
+            <p>When publishing information about a <a>spatial thing</a> that is subject to change there are four approaches to consider in response to a change:</p>
             <ol>
-              <li>simply updating the description of the spatial thing in response to a change;</li>
+              <li>simply updating the description of the spatial thing;</li>
+              <li>republish the entire dataset with a new URI;</li>
               <li>providing a series of immutable snapshots that describe the spatial thing at various points in its lifecycle; and</li>
               <li>capturing a time-series of data values within an attribute of the spatial thing.</li>
             </ol>
@@ -3218,9 +3219,11 @@ Content-type: application/geo+json
             
             <p>Approach (1) is lightweight and should only be used where there are no user requirements that require access to older descriptions of the <a>spatial things</a>. Data publishers simply replace the old description of the spatial thing with the amended description and keep users informed about updates by providing the appropriate metadata (e.g. when the data was changed). This may be achieved using dataset metadata (as outlined above) or by including the metadata attributes in the description of each spatial thing.</p>
             
-            <p>Where users are anticipated to need to understand <em>how</em> a <a>spatial thing</a> has changed over time, approaches (2) and (3) must be considered.</p>
+            <p>Where users are anticipated to need to understand <em>how</em> a <a>spatial thing</a> has changed over time, approaches (2), (3) and (4) should be considered.</p>
             
-            <p>Approach (2) requires the data publisher to publish immutable resources that describe the <a>spatial thing</a> at specific points in time (i.e. "snapshots") and provide a mechanism for users to browse between those snapshots. Given that each snapshot of the spatial thing is published as a separate resource, this approach is suited to infrequent changes so that the number of snapshots does not become unwieldy.</p>
+            <p>Approach (2) is a simple variant on approach (1); the difference being that the entire dataset is assigned a new URI when changes are made, thereby enabling older versions of the dataset to be addressed separately. See [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionIdentifiers">Best Practice 11: Assign URIs to dataset versions and series</a> for further details. Using this approach, a user should be able to compare two versions of the dataset to determine what has changed. Although simple for data publishers, the downside of this approach is that the effort is passed on to the users.</p>
+
+            <p>Approach (3) requires the data publisher to publish immutable resources that describe the <a>spatial thing</a> at specific points in time (i.e. "snapshots") and provide a mechanism for users to browse between those snapshots. Effectively, the dataset becomes an accumulation of these snapshots that users can browse through. However, given that each snapshot of the spatial thing is published as a separate resource, this approach is suited to infrequent changes so that the number of snapshots does not become unwieldy.</p>
             
             <p>The URI for the <a>spatial thing</a>, the <em>base</em> URI, should dereference to provide the current information and a <a>link</a> to its version history of snapshots. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersionHistory">Best Practice 8: Provide version history</a> describes how a version history may be implemented. Each snapshot resource within the version history must be uniquely identified; a common approach is to append a date/time stamp to the base URI as a version indicator. [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#VersioningInfo">Best Practice 7: Provide a version indicator</a> provides relevant guidance.</p>
             
@@ -3265,7 +3268,7 @@ Content-type: application/geo+json
               </pre>
             </aside>
             
-            <p>Approach (3) is suitable where a <a>spatial thing</a> has a small number of attributes that are frequently updated. For example, the GPS-position of a runner or when streaming data from a sensor, such as the water level from a stream gauge.</p>
+            <p>Approach (4) is suitable where a <a>spatial thing</a> has a small number of attributes that are frequently updated. For example, the GPS-position of a runner or when streaming data from a sensor, such as the water level from a stream gauge.</p>
             
             <p>With this approach, the description of the <a>spatial thing</a> must include a property that contains a sequentially-ordered set of data-points, each of which defines a time-stamp and the values for the time-varying attribute(s). By definition, this property can be considered as a time-series <a>coverage</a>. Standard data encodings are available for time-series data, including: [[TIMESERIESML]] for [[GML]], plus [[COVERAGE-JSON]] and the <a>SensorThings</a> API [[SENSORTHINGS]] for <a>JSON</a> [[RFC7159]]. [[VOCAB-DATA-CUBE]] provides a generic mechanism to express well-structured data, such as timeseries, in <a>RDF</a> [[RDF11-PRIMER]]. Although not yet widely used enough to be considered <em>best practices</em>, [[EO-QB]] and [[QB4ST]] (developed alongside this best practice Note within the <a href="http://www.opengeospatial.org/projects/groups/sdwwg">Spatial Data on the Web Working Group</a>) illustrate how [[VOCAB-DATA-CUBE]] may be used in this way.</p>
             
