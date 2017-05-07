@@ -3518,7 +3518,7 @@ Content-type: application/geo+json
                   assigns URIs to all resources based on a pattern; supports filtering 
                   based on a property; makes each resource available in HTML, <a>XML</a> [[XML11]], [[JSON-LD]], 
                   [[GML]], GeoJSON [[RFC7946]]; and generates <a>links</a> to data in other datasets managed in triple 
-                  stores using <a>SPARQL</a> [SPARQL11-OVERVIEW] queries. The API is documented and published using 
+                  stores using <a>SPARQL</a> [[SPARQL11-OVERVIEW]] queries. The API is documented and published using 
                   Swagger.</p>
               </aside> 
               <aside class="example">
@@ -3897,7 +3897,10 @@ another:Dataset a dcat:Dataset ;
         <h3>Requesting different representations of geometries</h3>
         <p>There are several aspects to representing <a>geometries</a> on the Web. First, there is the question of different serialization formats to choose from. The different formats are described in <a href="#describe-geometry" class="sectionRef"></a>, but the Best Practice does not make a definitive choice as to which format is best. Although having only one format for geometries on the Web would reduce complexity, the currently available formats reflect different requirements with respect to data complexity and manipulation.  </p>
         <p>A second, related aspect is whether to publish <a>geometries</a> on the Web in self contained files such as [[GML]] or GeoJSON [[RFC7946]], or rather to embed geometries as structured data markup in HTML, or in an <a>RDF</a> [[RDF11-PRIMER]] based way i.e. as <a>Linked Data</a>. Choosing between these approaches - or not choosing but rather offering a combination of these - depends largely on the intended audience.</p>
-        <p>Third, there is a question of how to make <a>geometries</a> available in different <a>CRS</a>s. <a href="#bp-crs-choice" class="sectionRef"></a> describes why this is a good idea as well as how to decide which CRSs to provide. <a href="#bp-crs" class="sectionRef"></a> explains how the CRS of geometries should be made known. It follows that users should be able to find out which CRSs are available and access geometries in the CRS of their choice. In an OGC <a>WFS</a> [[WFS]] request, users can specify the CRS they wish to use by specifying the srsName parameter. In [[GeoSPARQL]] the getSRID function returns the spatial reference system of a <a>geometry</a>, thus making it possible to request a specific CRS at a (Geo)SPARQL endpoint. However, these options require the user to be proficient in either Geospatial Web services or <a>Linked Data</a>. A best practice for requesting and returning geometries in a specific requested CRS has not yet emerged. Many options can be found in current practice, including  creating CRS-specific geometry properties (for example, the Dutch Land Registry does this), and supporting an option for requesting a specific CRS in a convenience API; but one best practice cannot yet be identified. </p>
+        
+        <p>Another issue is about the fact that different use cases may require geometries at different levels of accuracy, precision, and size. <a href="#multiplegeometries" class="sectionRef"></a> outlines some of the approaches to address this requirement, considering general application scenarios and providing guidance on the criteria to be taken into account for choosing the appropriate technique (e.g., compress geometry data, use compact formats, apply geometry generalization mechanisms). The overall recommendation is to make available multiple representations of geometry data, and to give data consumers the ability to identify those most fit for purpose. A variety of mechanisms can be used to achieve this, as publishing different geometry representations at different URIs, and accompanying them with a human- and/or machine-readable description of their characteristics (e.g., format, spatial resolution, scale, level of generalization). However, the lack of common practices in this area makes it difficult to provide consistent guidelines on how to publish and access different geometry representations.</p>        
+        
+        <p>Finally, there is a question of how to make <a>geometries</a> available in different <a>CRS</a>s. <a href="#bp-crs-choice" class="sectionRef"></a> describes why this is a good idea as well as how to decide which CRSs to provide. <a href="#bp-crs" class="sectionRef"></a> explains how the CRS of geometries should be made known. It follows that users should be able to find out which CRSs are available and access geometries in the CRS of their choice. In an OGC <a>WFS</a> [[WFS]] request, users can specify the CRS they wish to use by specifying the srsName parameter. In [[GeoSPARQL]] the getSRID function returns the spatial reference system of a <a>geometry</a>, thus making it possible to request a specific CRS at a (Geo)SPARQL endpoint. However, these options require the user to be proficient in either Geospatial Web services or <a>Linked Data</a>. A best practice for requesting and returning geometries in a specific requested CRS has not yet emerged. Many options can be found in current practice, including  creating CRS-specific geometry properties (for example, the Dutch Land Registry does this), and supporting an option for requesting a specific CRS in a convenience API; but one best practice cannot yet be identified. </p>
         <p>An option we considered was the use of content negotiation i.e. negotiate <a>CRS</a> as part of the content format for the geometry. A <a href="https://github.com/w3c/sdw/issues/757">concrete proposal</a> for this suggests the following:</p>
         <ul>
           <li>Servers can tell clients which CRS is used in the response using a new Content-Crs response header.</li>
@@ -4076,8 +4079,8 @@ another:Dataset a dcat:Dataset ;
 <tr>
 <th>Based on</th>
 <td><a>WKT</a></td>
-<td>XML</td>
-<td>XML</td>
+<td><a>XML</a></td>
+<td><a>XML</a></td>
 <td><a>JSON</a></td>
 <td>HTML</td>
 </tr>
