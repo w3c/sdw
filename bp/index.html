@@ -942,6 +942,11 @@ function init() {
             <td><a href="https://data.pdok.nl/def/pdok">PDOK Data Platform</a></td>
           </tr>
           <tr>
+            <td><code>qudt</code></td>
+            <td>http://qudt.org/schema/qudt#</td>
+            <td><a href="http://qudt.org/">Quantities, Units, Dimensions and Data Types Ontologies (QUDT)</a></td>
+          </tr>
+          <tr>
             <td><code>rdf</code></td>
             <td>http://www.w3.org/1999/02/22-rdf-syntax-ns#</td>
             <td>Resource Description Framework (RDF)</td>
@@ -2856,7 +2861,7 @@ Content-type: application/geo+json
                     <li>National open spatial datasets such as are made available by for example the UK and Dutch governments.</li>
                   </ul>
                   <p>Finding out which national open spatial datasets are available, and how they can be accessed, currently requires some insider knowledge &mdash; in most cases because these datasets are often not easily discoverable. Look for national data portals / geoportals such as <a href="http://nationaalgeoregister.nl/geonetwork/srv/dut/catalog.search">Nationaal Georegister</a> (Dutch national register of spatial datasets) or <a href="https://data.overheid.nl">Dataportaal van de Nederlandse overheid</a> (Dutch national governmental data portal).</p>
-                  <p>Once you've found well-known URIs for <a>spatial things</a> that you want to link to, proceed to create <a>links</a> using properties such as those described above &mdash; <code>owl:sameAs</code> (if you're careful!) and <a href="http://www.opengis.net/ont/geosparql#sfWithin"><code>geosparql:sfWithin</code></a>, or perhaps qualitative relationships like <a href="http://www.geonames.org/ontology#nearby"><code>geonames:nearby</code></a> or the <em>proposed</em> <code>schema:samePlaceAs</code>.</p>
+                  <p>Once you've found well-known URIs for <a>spatial things</a> that you want to link to, proceed to create <a>links</a> using properties such as those described above &mdash; <code>owl:sameAs</code> (if you're careful!) and <a href="http://www.opengis.net/ont/geosparql#sfWithin"><code>geosparql:sfWithin</code></a>, or perhaps qualitative relationships like <a href="http://www.geonames.org/ontology#nearby"><code>geonames:nearby</code></a> or the <em>proposed</em> <code>schema:samePlaceAs</code> (see related discussion in <a href="#c-sameplaceas" class="sectionRef"></a>).</p>
                   <p>However, don't try to make <a>links</a> to <em>everything</em>. It is not always feasible to link your <a>spatial things</a> to well-known resources. For example, if you were maintaining a registry of cultural heritage in Amsterdam, it would be reasonably simple to look up identifiers for the city's 50 or so museums and map these to your spatial things. But it would be a huge task for, say, a topographic mapping agency to cross-reference their entire catalogue of named places containing tens of thousands of spatial things with third-party resources (although in the spirit of crowd-sourcing, if someone else found those links useful, they may take on the task of relating the spatial things and publishing those relationships to the Web as a complementary resource!). In essence, you should only create the data that you have the resources to maintain.</p>
                 </li>
               </ol>
@@ -3958,6 +3963,76 @@ another:Dataset a dcat:Dataset ;
         <p>Large, complex datasets are common in the information processing world, and commonly organised in “hypercubes” - where “data dimensions” are used to locate values holding results. A standard based on this dimensional model of data  is the RDF Data Cube vocabulary [[VOCAB-DATA-CUBE]]. It has been used to publish sensor data, but RDF Data Cube is lacking in possibilities for describing spatio-temporal aspects of data, which are very important for observations. One of the work items in the Spatial Data on the Web working group has been to extend the existing RDF Data Cube ontology to support specification of key metadata required to interpret spatio-temporal data, called [[QB4ST]].</p> 
         <p>QB4ST is an extension to RDF Data Cube  to provide mechanisms for defining spatio-temporal aspects of dimension and measure descriptions. It is intended to enable the development of semantic descriptions of specific spatio-temporal data elements by appropriate communities of interest, rather than to enumerate a static list of such definitions. It provides a minimal ontology of spatio-temporal properties and defines abstract classes for data cube components (i.e. dimensions and measures) that use these, to allow classification and discovery of specialized component definitions using general terms.</p>
         <p>QB4ST is designed to support the publication of consistently described re-usable and comparable definitions of spatial and temporal data elements by appropriate communities of practice. One obvious such case is the use of GPS coordinates described as decimal <a>latitude</a> and <a>longitude</a> measures. Another example is the intended publication of a register of <a>Discrete Global Grid Systems</a> (DGGS) by the <a href="http://www.opengeospatial.org/projects/groups/dggsswg">OGC DGGS Working Group</a>. QB4ST is intended to support publication of descriptions of such data using a common set of attributes that can be attached to a property description (extending the available RDF-QB mechanisms for attributes of observations).</p>
+      </section>
+      <section id="c-unitofmeasure">
+        <h3>Helping software understand units of measure</h3>
+        <p>Spatial data is often concerned with measurements (distance, angles etc.) &mdash; for example, when specifying the position of a feature according to a <a>Coordinate Reference System</a> or the accuracy of that position.</p>
+
+        <p>For measurement values to be correctly interpreted, a <em>unit of measurement</em> must also be specified. The challenge here is specifying units of measurement in a way that can be widely understood.</p>
+
+        <p>As humans, we’re usually quite good at guessing. For example, given a discussion about the accuracy of a position, the assertion <code>&plusmn;3.1 m</code> probably means 3.1 <em>meters</em>. That seems reasonable &mdash; but it might also be 3.1 <em>miles</em>. Unfortunately, software systems mostly lack the human ability to guess. So we need to unambiguously express which unit of measure is being used &mdash; and this is where the problems exist.</p>
+
+        <p>There are essentially two mechanisms that can be used:</p>
+        <ol>
+          <li>
+            <p>Use a named serialization scheme that provides string-literal notation for both base units and derived units. Given that there are an infinite number of derived units, such a serialization should specify a formal grammar that software applications use to interpret those strings; enabling automated conversion between units and other useful functions like verifying that two measured quantities can be combined based on the dimensionality of those measurements (e.g. you can’t combine a length with an area and get a sensible answer!).</p>
+          </li>
+          <li>
+            <p>Use a URI; such as those provided by <a href="http://www.qudt.org/release2/qudt-catalog.html">Quantities, Units, Dimensions and Data Types Ontologies (QUDT)</a> and <a href="https://github.com/HajoRijgersberg/OM/blob/master/README.md">Ontology of units of Measure (OM)</a>. For example, the unit of measure <em>meter</em> has the URIs <code>http://qudt.org/vocab/unit/M</code> and <code>http://www.ontology-of-units-of-measure.org/resource/om-2/metre</code>.</p>
+          </li>
+        </ol> 
+
+        <p>Earlier versions of [[GML]] required that every unit was specified using a URI. But, in practice, many were using symbols like "<code>m</code>" instead of a URI anyway, as they are shorter and often better understood. As a result, [[GML]] <a href="http://www.opengeospatial.org/standards/gml v3.2.1 clause 8.2.3.6">clause 8.2.3.6 MeasureType, UomIdentifier</a> now allows the <a href="http://unitsofmeasure.org/ucum.html">Unified Code for Units of Measure (UCUM)</a> unit of measure serialization in addition to URIs.</p>
+
+        <p>If you choose to use a serialization scheme for expressing units of measure, you should select one that is well-known among your community of users.</p>
+
+        <p>It’s also worth noting that, if your format or vocabulary allows, you should include a human readable label. For the simple case of displaying the data on a Web page, this removes the need to look up this information from the serialization scheme specification or vocabulary.</p>
+
+        <p>The trouble with the use of serialization schemes is that we can’t assume client applications understand the notation. We need some mechanism to indicate which serialization is being used &mdash; either so that application developers can find the specification and source some software (e.g. the <a href="https://github.com/jmandel/ucum.js">ucum.js</a> library) to process the unit strings, or so that the client application can map the notation to a well-known URI whose definition conforms to a data model that the application can understand.</p>
+
+        <p>There is no evidence of best practice here &mdash; nor is there consensus on which data model is best for describing units of measure. Possible approaches to identify the serialization scheme used include:</p>
+        <ul>
+          <li>
+            <p>Provide this information in the data itself, e.g. </p>
+            <aside class="example" id="ex-uom-def-in-data" title="Definiting use of UCUM named serialization scheme for units of measure">
+              <pre>
+{   
+  "@context": {
+    "type": "@type",
+    "value": "@value",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "qudt": "http://qudt.org/schema/qudt#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "measurement": "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#hasDataValue",
+    "unit": "qudt:unit",
+    "label": {"@id": "skos:prefLabel", "@container": "@language"},
+    "symbol": "qudt:symbol",
+    "UCUM": "http://www.opengis.net/def/uom/UCUM/"   
+  },
+  "measurement": 3.1,
+  "unit": {
+    "label": { "en": "meters" },
+    "symbol": {
+      "type": "UCUM",
+      "value": "m"
+    }
+  }
+ }
+              </pre>
+            </aside>
+          </li>
+          <li>
+            <p>Provide this information in the description of the API that provides access to your data; see [[DWBP]] <a href= [https://www.w3.org/TR/dwbp/#documentYourAPI] >Best Practice 25: Provide complete documentation for your API</a>.</p>
+          </li>
+          <li>
+            <p>Convey this information in the HTTP response headers; e.g. using the <em>profile</em> Link Relation Type [[RFC6906]].</p>
+          </li>
+        </ul>  
+
+        <p>In summary, if you think that your users will need to support automated processing of units of measure, then, in lieu of widespread best practice, it will likely be worth engaging with your user community to determine how best to meet their needs.</p>
+
+        <p>Looking to the future, the <a href="https://www.w3.org/WoT/IG/"><abbr title="World Wide Web Consortium">W3C</abbr> Web of Things Interest Group</a> has created a task force to address the challenges of semantic interoperability relating to units of measure, which may lead to emergence of best practices can be adopted by spatial data publishers.</p>
+
       </section>
       <section id="c-sameplaceas">
         <h3>Defining that two places are the same</h3>
