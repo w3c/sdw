@@ -28,7 +28,7 @@ var respecConfig = {
       data: [
         { value: "Phil Archer" },
         { value: "Jon Blower" },
-        { value: "Newton Calgari" },
+        { value: "Newton Calegari" },
         { value: "Byron Cochrane" },
         { value: "Simon Cox" },
         { value: "François Daoust" },
