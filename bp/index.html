@@ -1160,9 +1160,9 @@ function init() {
     <section id="CRS-background">
       <h2>Coordinate Reference Systems (CRS)</h2>
 
-      <p>One of the most fundamental aspects of publishing <a>spatial data</a>, data about location, is how to express and share the location in a consistent way. In many cases where you are publishing data for use by the wider Web community the use of <a>latitude</a> and <a>longitude</a> coordinates (Lat and Long) is most appropriate. As latitude and longitude coordinates are global they are well suited to many applications: perfect for locating your favorite coffee shop, <a>geocoding</a> a photograph or capturing an augmented reality Pokemon hiding in your local park. Of course, the accuracy is dependent on the equipment used measure that position; GPS-enabled consumer devices are accurate to within a few meters.</p>
+      <p>One of the most fundamental aspects of publishing <a>spatial data</a>, data about location, is how to express and share the location in a consistent way. In many cases where you are publishing data for use by the wider Web community the use of <a>latitude</a> and <a>longitude</a> coordinates (Lat and Long) is most appropriate. As latitude and longitude coordinates are global they are well suited to many applications: perfect for locating your favorite coffee shop, <a>geocoding</a> a photograph or capturing an augmented reality Pokemon hiding in your local park.</p>
 
-      <p>It is worth noting that the precision with which coordinate positions are reported often do not reflect the accuracy of the measurement. For example, <a>latitude</a> and <a>longitude</a> reported to six decimal places corresponds to a precision of around 1cm on the ground. Such accuracy can only be achieved with professional equipment, yet a lot of software defaults to use of six, seven or even more decimal places when expressing coordinate positions which may mislead users to thinking that the data is more accurate than it actually is!</p>
+      <p>Users of <a>spatial data</a> are often interested in the third <a>dimension</a> too: vertical elevation (or altitude). For most situations, we can consider elevation to be the vertical distance above (or below) mean sea level. The elevation is most often expressed in meters (but this can vary between <a>CRS</a> definitions) and is provided as a third value in a coordinate position.</p>
       
       <p>As with everything to do with <a>spatial data</a>, things can get more complicated. One of the most common problems occurs because not all <a>Coordinate Reference Systems</a> (CRS) agree how to express <a>latitude</a> and <a>longitude</a> coordinates. Some CRS order the coordinates <em>Lat/Long</em> while others use <em>Long/Lat</em>; some use <em>decimal degrees</em> while others use <em>degrees, minutes and seconds</em> (<em>dms</em>). <a>Axis order</a> mistakes can mean the difference between, say, a position in the Netherlands or somewhere in Somalia, while encoding coordinates in <em>decimal degrees</em> when <em>dms</em> is expected can lead to positional errors on the kilometer scale.  </p>
       
@@ -1191,15 +1191,13 @@ function init() {
       
       <p>Other mechanisms include using a data format that specifies how the coordinates are included (such as GeoJSON [[RFC7946]] where section <a href="https://tools.ietf.org/html/rfc7946#section-4">4. Coordinate Reference System</a> specifies coordinate order of <a>longitude</a> and <a>latitude</a> using units of decimal degrees) or by having your data explicitly reference the <a>CRS</a> definition you're using. See <a href="#bp-crs" class="sectionRef">Best Practice 8: State how coordinate values are encoded</a> for more information.</p>
 
-      <p>Users of <a>spatial data</a> are often interested in the third <a>dimension</a> too: vertical elevation (or altitude). For most situations, we can consider elevation to be the vertical distance above (or below) mean sea level. The elevation is most often expressed in meters (but this can vary between <a>CRS</a> definitions) and is provided as a third value in a coordinate position.</p>
-
-      <p>The following is a little more technical; and in most cases this should only be for information.</p> 
+      <p>Now let's get a little more technical and discuss coordinate reference systems themselves.</p> 
       
       <p><a>Latitude</a>, <a>longitude</a> and elevation measurements express a position on the surface of the Earth. But to define this position we need to state where we are making the measurements from (e.g. the equator, the prime meridian and the approximated surface of the Earth, or <a>geoid</a>) and consider the shape of the earth (a flattened sphere with lumps and bumps, but for convenient mathematical operations, usually approximated to an <a>ellipsoid</a>). This information is used to define the geodetic <a>datum</a> which provides the basis of every <a>coordinate reference system</a>.</p>
 
       <p>Where your <a>geospatial data</a> has <a>geometries</a> defined as points, lines and polygons (i.e. <em>vector</em> data), publishing in the <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">World Geodetic System 1984</a> (<strong>WGS 84</strong>) Coordinate Reference System will help people to integrate data with mass-market Web applications, tools and libraries, thereby increasing the usefulness of that data for a large community of potential users. Also, since WGS 84 is also used by the GPS system, it's handy for all those mobile Apps!</p>
 
-      <p>Most people can stop reading now, but of course there are going to be a few cases where WGS 84 is not appropriate.</p>
+      <p>Most people can stop reading now, but of course there are cases where WGS 84 is not appropriate &mdash; for example, when working with geo-referenced imagery.</p>
       
       <p>In many parts of the world location data has been collected using local coordinate systems that are specific to particular countries or regions. These local coordinate systems may use projected measurements defined on a flat, two-dimensional surface (which are easier to use for calculating distances than angular measurements and are essential when making topographic maps).</p>
 
@@ -2191,6 +2189,10 @@ Connection: close
 <dl>
 <dt>Reducing precision</dt>
 <dd>It boils down to reducing the number of decimals in point coordinates of a <a>geometry</a>. This feature is widely supported in geospatial tools and Web libraries, and it provides a way to effectively reduce the size of geometry data without loosing too much information about its shape.</dd>
+<div class="note">
+  <p>The precision with which coordinate positions are reported often do not reflect the accuracy of the measurement. For example, <a>latitude</a> and <a>longitude</a> reported to six decimal places corresponds to a precision of around 1cm on the ground. GPS-enabled consumer devices are accurate to within a few meters: centimeter-accuracy can only be achieved with professional equipment. Yet a lot of software defaults to use of six, seven or even more decimal places when expressing coordinate positions which may mislead users to thinking that the data is more accurate than it actually is!</p>
+  <p><a href="#desc-accuracy" class="sectionRef">Best Practice 14: Describe the positional accuracy of spatial data</a> for a discussion on precision and accuracy.</p>
+</div>
 <dt>Simplification</dt>
 <dd>This basically consists in reducing the number of point coordinates of a <a>geometry</a>. Examples of algorithms used for this purpose are <a href="https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm">Ramer-Douglas-Peucker</a> (RDP) and <a href="https://hydra.hull.ac.uk/resources/hull:8338">Visvalingam-Whyatt</a>.</dd>
 <dt>Conversion of geometry <a>dimensions</a></dt>
