@@ -1613,7 +1613,6 @@ function init() {
           </div>
         </section>
         <div class="practice">
-          <!-- BP14 will be refactored into two parts, the first of which is this one, BP14a - general linking (not spatial at all - but DWBP didn't mention this stuff)-->
           <p><span id="linking" class="practicelab">Link resources together to create the Web of data</span></p>
           <p class="practicedesc">Bind Spatial Things into the Web of data using <a>links</a> to other resources, providing sufficient information for a user to determine whether the target resource specified in a link will be of use.</p>
           <section class="axioms">
@@ -1849,10 +1848,7 @@ Connection: close
             <p>This best practice helps with choosing the right format for describing <a>geometries</a>, based on aspects like intended use(s), performance, and tool support. It also helps with deciding when encoding geometries as literals rather than as structured objects is a useful simplification.</p>
             <div class="note">
               <p>This best practice is strictly correlated to <a href="#multiplegeometries" class="sectionRef"></a>, <a href="#bp-crs-choice" class="sectionRef"></a>, and <a href="#bp-crs" class="sectionRef"></a>, to which we refer the reader for more information.</p>
-<!--
-              <p>Since <a>coordinate reference system</a> and coordinate <a>axis order</a> are two of the factors determining how a <a>geometry</a> is described, this best practice is strictly correlated to <a href="#bp-crs-choice"></a> and <a href="#bp-crs"></a>, to which we refer the reader for more information.</p>
--->              
-            </div>
+          </div>
           </section>
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
@@ -1982,10 +1978,7 @@ Connection: close
 &lt;/bag:pand&gt;
 </pre>
             </aside>
-<!--            
-            <p>It is worth noting that the [[GML]] snippet above also includes the explicit specification of the axis order (via attribute <code>@axisLabels</code>) and the number of dimension of the geometry (via attribute <code>@srsDimension</code>).</p>
--->            
-            <p>The corresponding <a>RDF</a> representation is provided in the following [[TURTLE]] snippet (taken from the <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2016083000000000%2Fpand%2F0363100012169587">BAG Linked Data service</a>). NB: The RDF representation below has been complemented with additional properties (marked with <code># Added</code>) for demonstration purposes.</p>
+          <p>The corresponding <a>RDF</a> representation is provided in the following [[TURTLE]] snippet (taken from the <a href="https://bag.basisregistraties.overheid.nl/resource?subject=http%3A%2F%2Fbag.basisregistraties.overheid.nl%2Fbag%2Fdoc%2F2016083000000000%2Fpand%2F0363100012169587">BAG Linked Data service</a>). NB: The RDF representation below has been complemented with additional properties (marked with <code># Added</code>) for demonstration purposes.</p>
             <aside class="example" id="ex-anne-frank-building-rdf" title="[RDF] description of a building, with detailed geometry">
               <pre>
 @prefix bag:       &lt;http://bag.basisregistraties.overheid.nl/def/bag#&gt; .
@@ -2010,14 +2003,7 @@ Connection: close
 # Added
   dct:created "1635"^^xsd:gYear ;
 # Added
-  locn:address &lt;http://www.ldproxy.net/bag/inspireadressen/inspireadressen.3329155&gt; ;<!--  
-# Added
-  w3cgeo:lat  "52.37509"^^xsd:float ;
-# Added
-  w3cgeo:long "4.88412"^^xsd:float ;
-# Added
-  schema:box "52.3749,4.8838 52.3753,4.8845"^^xsd:string .
--->  
+  locn:address &lt;http://www.ldproxy.net/bag/inspireadressen/inspireadressen.3329155&gt; ;
   geosparql:hasGeometry &lt;http://bag.basisregistraties.overheid.nl/bag/id/geometry/5C1F8F11324717378B437B2CD12871FF&gt; ;
   bag:geometriePand &lt;http://bag.basisregistraties.overheid.nl/bag/id/geometry/5C1F8F11324717378B437B2CD12871FF&gt;
 .
@@ -2061,13 +2047,6 @@ Connection: close
 .
 </pre>
             </aside>
-<!--
-            <p>The <a>RDF</a> representation above includes:</p>
-            <ul>
-              <li>The detailed <a>geometry</a> of the building (<code>geosparql:asWKT</code> / <code>pdok:asWKT-RD</code>), in <a>WKT</a> and using multiple reference systems.</li>
-              <li>The bounding box (<code>schema:box</code>) and centroid (<code>w3cgeo:lat</code> and <code>w3cgeo:long</code>).</li>
-            </ul>
--->            
             <p>The different <a>WKT</a> encodings in the example show alternative ways of specifying the <a>coordinate reference system</a> used.</p>
             <p>The two instances of property <code>geosparql:asWKT</code> follow the syntax recommended in [[GeoSPARQL]], where the specification of the <a>coordinate reference system</a> is required only if different from CRS84. By contrast, property <code>pdok:asWKT-RD</code> implies the use of a specific <a>coordinate reference system</a>, namely, <a href="http://epsg-registry.org/?display=entity&urn=urn:ogc:def:crs:EPSG::28992">EPSG:28992</a> ("Amersfoort / RD New"). The coordinate axis-order used is determined here by the <a>coordinate reference system</a>, and in both cases, it is longitude / latitude (more precisely, east/north for EPSG:28992).<!-- By contrast, the coordinates for the bounding box and centroid use WGS 84, with coordinate axis-order latitude / longitude.--></p>
             <p><a href="#ex-anne-frank-building-rdf"></a> shows also how <a>geometries</a> for <a>Spatial Things</a> can be published as separate Web resources. This approach can be particularly suitable for giving access to huge geometries, consisting of hundreds of vertex positions (as the detailed <a>geometry</a> of the boundaries of a geographical region), without attaching them to the relevant <a>Spatial Things</a>. Moreover, this allows the same geometry to be linked from (i.e., re-used by) different Spatial Things. Finally, it is possible to use mechanisms (including HTTP content negotiation) to provide access to different representations / encodings of the geometry ([[GML]], <a>WKT</a>, GeoJSON [[RFC7946]], etc.) as media types, thus addressing different use cases. (On this topic, see also <a href="#entity-level-links"></a>).</p>
@@ -2083,18 +2062,6 @@ Connection: close
               <p>An additional example is the API of the <a href="http://gadm.geovocab.org/">GADM-RDF project</a>, providing access to spatial <a>linked data</a> concerning administrative areas. For instance, the following URI <a href="http://gadm.geovocab.org/id/0/60"><code>http://gadm.geovocab.org/id/0/60</code></a> returns a description of administrative area "Germany", which links to the geometry of Germany's boundaries, provided via a separate URI: <a href="http://gadm.geovocab.org/id/0/60/geometry"><code>http://gadm.geovocab.org/id/0/60/geometry</code></a>.</p>
               <p>Dereferencing the <a>geometry</a> URIs operated by the GADM-RDF API returns different geometry representations / encodings (SVG included), that can be accessed via HTTP content negotiation or by appending the format extension to the URI. For instance, URI <a href="http://gadm.geovocab.org/id/0/60/geometry.geojson"><code>http://gadm.geovocab.org/id/0/60/geometry.geojson</code></a> returns the GeoJSON [[RFC7946]] representation of the geometry. Direct <a>links</a> to the supported geometry representations / encodings are specified in the <a>RDF</a> and HTML representations of the geometry.</p>
             </aside>
-<!--              
-            <div class="note">            
-              <p>This section needs to be completed with:</p>
-              <ul>
-                <li>Guidelines on how to provide <a>geometries</a> at different levels of <em>precision</em> and <em>complexity</em>, highlighting issues to be considered when simplifying geometries.</li>
-                <li>More details about how <a>WKT</a> is used.</li>
-                <li>An <a>RDF</a> example with embedded <a>geometry</a></li>
-                <li>Clarification on the differences between “coordinate positions” as a literal and the “geometry” as literal; the latter includes additional metadata</li>
-                <li>Clarification on "formats" for geometries only (e.g., WKT) and those used also for <a>Spatial Things</a> (e.g., [[GML]], GeoJSON [[RFC7946]])</li>
-              </ul>
-            </div>
--->                
           </section>
           <section class="test">
             <h4 class="subhead">How to Test</h4>
@@ -2650,10 +2617,8 @@ Content-type: application/geo+json
                 </div>
                 
                 <div class="note">
-<!-- @andrea-perego -->                
-<p>It is worth noting that, in the [[SIMPLE-FEATURES]] definition of <a>WKT</a>, the coordinate axis-order is by default longitude / latitude, irrespective of the <a>coordinate reference system</a> used. The same applies to <a href="http://www.postgis.net/docs/ST_AsEWKT.html">EWKT</a> (<em>Extended WKT</em>) - a PostGIS extension to <a>WKT</a> supported also by other <a>GIS</a> tools -, which includes a parameter (<code>SRID</code>) for specifying the coordinate reference system.</p>
-<p>For this reason, whenever using <a>WKT</a> to encode <a>geometries</a>, it is important that the reference <a>WKT</a> specification can be unambiguously determined.</p>
-<!-- @andrea-perego -->
+                  <p>It is worth noting that, in the [[SIMPLE-FEATURES]] definition of <a>WKT</a>, the coordinate axis-order is by default longitude / latitude, irrespective of the <a>coordinate reference system</a> used. The same applies to <a href="http://www.postgis.net/docs/ST_AsEWKT.html">EWKT</a> (<em>Extended WKT</em>) - a PostGIS extension to <a>WKT</a> supported also by other <a>GIS</a> tools -, which includes a parameter (<code>SRID</code>) for specifying the coordinate reference system.</p>
+                  <p>For this reason, whenever using <a>WKT</a> to encode <a>geometries</a>, it is important that the reference <a>WKT</a> specification can be unambiguously determined.</p>
                 </div>
               </li>
             </ol>
@@ -3168,7 +3133,7 @@ Content-type: application/geo+json
           
         </section>
         <div class="practice">
-          <p><span id="desc-changing-properties" class="practicelab">Describe properties that change over time</span></p>
+          <p><span id="desc-changing-properties" class="practicelab">Provide information on the changing nature of spatial things</span></p>
           <p class="practicedesc">Spatial data should include metadata that allows a user to determine when it is valid for.</p>
           <section class="axioms">
             <h4 class="subhead">Why</h4>
@@ -4118,24 +4083,6 @@ another:Dataset a dcat:Dataset ;
 <td><a href="https://www.iana.org/assignments/media-types/application/geo+json"><code>application/geo+json</code></a></td>
 <td><a href="https://www.iana.org/assignments/media-types/text/html"><code>text/html</code></a></td>
 </tr>
-<!--
-<tr>
-<th>Openness</th>
-<td>Open</td>
-<td>Open</td>
-<td>Open</td>
-<td>Open</td>
-<td>Open</td>
-</tr>
-<tr>
-<th>Binary/text</th>
-<td>Text</td>
-<td>Text</td>
-<td>Text</td>
-<td>Text</td>
-<td>Text</td>
-</tr>
--->
 <tr>
 <th>Usage</th>
 <td>Representation of 0D-2D geometries, CRS and CRS transformation</td>
@@ -4175,16 +4122,6 @@ another:Dataset a dcat:Dataset ;
 <td>Low</td>
 <td>Good</td>
 </tr>
-<!--
-<tr>
-<th>Granular links ??</th>
-<td>In Theory ?</td>
-<td>In Theory ?</td>
-<td>No</td>
-<td>In Theory?</td>
-<td>Yes</td>
-</tr>
--->
 <tr>
 <th><a>Link</a> support</th>
 <td>No</td>
@@ -4193,59 +4130,9 @@ another:Dataset a dcat:Dataset ;
 <td>No</td>
 <td>Yes</td>
 </tr>
-<!--
-<tr>
-<th>Verbosity</th>
-<td>Lightweight</td>
-<td>Verbose</td>
-<td>Medium</td>
-<td>Medium</td>
-<td>Depends on the vocabulary used</td>
-</tr>
--->
-<!--
-<tr>
-<th>Semantics vocab?</th>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-</tr>
--->
-<!--
-<tr>
-<th>Streamable</th>
-<td>No</td>
-<td>Yes?</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-</tr>
--->
-<!--
-<tr>
-<th>Remarks</th>
-<td>Format widely supported in GIS tools, as well as in most Linked Data tools (even in triple stores not supporting [[GeoSPARQL]])</td>
-<td>Format widely supported in GIS tools, and in some Linked Data tools (i.e., only in triple stores supporting [[GeoSPARQL]]). Comprehensive and supporting many use cases, but requires strong XML skills.</td>
-<td>Focussed on visualization of and interaction with spatial data, typically in Earth browsers, like Google Earth</td>
-<td>Supported by many mapping APIs and Web libraries</td>
-<td>Optimal for Web publication and discovery</td>
-</tr>
--->
 <tr>
 <th colspan="6">Geometry specification</th>
 </tr>
-<!--
-<tr>
-<th>Default CRS</th>
-<td>Depends on the flavor - e.g., [[GeoSPARQL]]'s WKT defaults to WGS 84 long/lat (CRS84)</td>
-<td>Yes</td>
-<td>No</td>
-<td>WGS 84 long/lat (CRS84)</td>
-<td>Depends on the vocabulary used</td>
-</tr>
--->
 <tr>
 <th><a>CRS</a> support</th>
 <td>Depends on the flavor - e.g., <a href="http://www.postgis.net/docs/ST_AsEWKT.html">EWKT</a> and [[GeoSPARQL]]'s WKT support arbitrary CRSs, and the latter defaults to WGS 84 long/lat (CRS84)</td>
@@ -4254,16 +4141,6 @@ another:Dataset a dcat:Dataset ;
 <td>WGS 84 long/lat (CRS84) only</td>
 <td>Depends on the vocabulary used - e.g., [[SCHEMA-ORG]] supports WGS 84 only</td>
 </tr>
-<!--
-<tr>
-<th>Default axis order</th>
-<td>Any, but it cannot be explicitly specified - e.g., in <a href="http://www.postgis.net/docs/ST_AsEWKT.html">EWKT</a> it defaults to longitude/latitude, whereas in [[GeoSPARQL]]'s WKT it is determined by the CRS used</td>
-<td>Yes</td>
-<td>No</td>
-<td>Long/lat</td>
-<td>Depends on the vocabulary used</td>
-</tr>
--->
 <tr>
 <th><a>Axis order</a> support</th>
 <td>Any, but it cannot be explicitly specified - e.g., in [[SIMPLE-FEATURES]]'s <a>WKT</a> and <a href="http://www.postgis.net/docs/ST_AsEWKT.html">EWKT</a> it defaults to longitude/latitude, whereas in [[GeoSPARQL]]'s WKT it is determined by the CRS used</td>
@@ -4307,20 +4184,6 @@ another:Dataset a dcat:Dataset ;
 <th>[[LOCN]]</th>
 </tr>
 </thead>
-<!--
-<tfoot>
-<tr>
-<th></th>
-<th>[[DCTERMS]]</th>
-<th>[[W3C-BASIC-GEO]]</th>
-<th>[[VCARD-RDF]]</th>
-<th>[[GeoRSS]]</th>
-<th>[[SCHEMA-ORG]]</th>
-<th>[[GeoSPARQL]]</th>
-<th>[[LOCN]]</th>
-</tr>
-</tfoot>
--->
 <tbody>
 <tr>
   <th>Description</th>
@@ -4372,32 +4235,9 @@ another:Dataset a dcat:Dataset ;
 <td><code>geosparql:Geometry</code>, and its subclasses (<code>sf:Point</code>, <code>sf:Polygon</code>, etc.)</td>
 <td><a href="http://www.w3.org/ns/locn#locn:Geometry"><code>locn:Geometry</code></a> (it denotes either a structured object or a literal)</td>
 </tr>
-<!--
-<tr>
-<th>Properties to specify coordinates</th>
-<td>-</td>
-<td><code>w3cgeo:lat_long</code>, <code>w3cgeo:lat</code>, <code>w3cgeo:long</code>, <code>w3cgeo:alt</code></td>
-<td><a href="https://www.w3.org/TR/vcard-rdf/#d4e239"><code>vcard:hasGeo</code></a></td>
-<td><a href="https://www.w3.org/2005/Incubator/geo/XGR-geo-20071023/#where"><code>georss:where</code></a>, <a href="https://www.w3.org/2005/Incubator/geo/XGR-geo-20071023/#point"><code>georss:point</code></a>, <a href="https://www.w3.org/2005/Incubator/geo/XGR-geo-20071023/#line"><code>georss:line</code></a>, <a href="https://www.w3.org/2005/Incubator/geo/XGR-geo-20071023/#polygon"><code>georss:polygon</code></a>, <a href="https://www.w3.org/2005/Incubator/geo/XGR-geo-20071023/#box"><code>georss:box</code></a></td>
-<td>
-<ul>
-<li><a href="http://schema.org/latitude"><code>schema:latitude</code></a>, <a href="http://schema.org/longitude"><code>schema:longitude</code></a>, <a href="http://schema.org/elevation"><code>schema:elevation</code></a></li>
-<li><a href="http://schema.org/box"><code>schema:box</code></a>, <a href="http://schema.org/elevation"><code>schema:elevation</code></a>, <a href="http://schema.org/line"><code>schema:line</code></a>, <a href="http://schema.org/polygon"><code>schema:polygon</code></a>, <a href="http://schema.org/circle"><code>schema:circle</code></a></li>
-<li><a href="http://schema.org/geoMidpoint"><code>schema:geoMidpoint</code></a>, <a href="http://schema.org/geoRadius"><code>schema:geoRadius</code></a></li>
-</ul>
-</td>
-<td><code>geosparql:hasSerialization</code>, <code>geosparql:asGML</code>, <code>geosparql:asWKT</code></td>
-<td><a href="http://www.w3.org/ns/locn#locn:geometry"><code>locn:geometry</code></a></td>
-</tr>
--->
 <tr>
 <th colspan="8">Geometry specification</th>
 </tr>
-<!--
-<tr>
-<th rowspan="7">Coordinate specification</th>
-</tr>
--->
 <tr>
 <th><a>CRS</a> support</th>
 <td>-</td>
@@ -4428,28 +4268,6 @@ another:Dataset a dcat:Dataset ;
 <td>[[GML]], <a>WKT</a></td>
   <td>[[GML]], <a>WKT</a>, GeoJSON [[RFC7946]], <code>geo</code> URI scheme [[RFC5870]], <a>Geohash</a></td>
 </tr>
-<!--
-<tr>
-<th>1D (lines)</th>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>lat/long coordinate pairs, separated by a comma</td>
-<td>lat/long coordinate pairs, separated by a comma or a space</td>
-<td>[[GML]], <a>WKT</a></td>
-<td>[[GML]], <a>WKT</a>, GeoJSON</td>
-</tr>
-<tr>
-<td>2D (surfaces)</td>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>lat/long coordinate pairs, separated by a comma</td>
-<td>lat/long coordinate pairs, separated by a comma or a space</td>
-<td>[[GML]], <a>WKT</a></td>
-<td>[[GML]], <a>WKT</a>, GeoJSON</td>
-</tr>
--->
 <tr>
 <th>1D and 2D support</th>
 <td>-</td>
@@ -4472,345 +4290,6 @@ another:Dataset a dcat:Dataset ;
 </tr>
 </tbody>
 </table>
-
-<!-- @andrea-perego -->        
-        
-<!--        
-      <table id="x-ref_formatVbp">
-        <caption>An attempt at matrix of the common formats (GeoJSON, [[GML]], RDF, JSON-LD) and what
-          you can or can't achieve with it. (<span style="background-color:yellow">source:
-            @eparsons</span>)</caption>
-        <tr>
-          <th>Format</th>
-          <th>Openness</th>
-          <th>Binary/text</th>
-          <th>Usage</th>
-          <th>Discoverability</th>
-          <th>Granular links</th>
-          <th>CRS Support</th>
-          <th>Verbosity</th>
-          <th>Semantics vocab?</th>
-          <th>Streamable</th>
-          <th>3D Support</th>
-        </tr>
-        <tr>
-          <td><a href="https://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">ESRI
-            Shape</a></td>
-          <td>Open'ish</td>
-          <td>Binary</td>
-          <td>Geometry only attributes and metadata in linked DB files</td>
-          <td>Poor</td>
-          <td>In Theory?</td>
-          <td>Yes</td>
-          <td>Lightweight</td>
-          <td>No</td>
-          <td>No</td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td>GeoJSON [[RFC7946]]</td>
-          <td>Open</td>
-          <td>Text</td>
-          <td>Geometry and attributes inline array</td>
-          <td>Good ?</td>
-          <td>In Theory?</td>
-          <td>No</td>
-          <td>Lightweight</td>
-          <td>No</td>
-          <td>No</td>
-          <td>No</td>
-        </tr>
-        <tr>
-          <td><a
-              href="http://www.autodesk.com/techpubs/autocad/acadr14/dxf/ascii_dxf_file_format_al_u05_b.htm"
-              >DXF</a></td>
-          <td>Proprietary</td>
-          <td>Binary</td>
-          <td>Geometry only attributes and metadata in linked DB files</td>
-          <td>Poor</td>
-          <td>Poor</td>
-          <td>No</td>
-          <td>Lightweight</td>
-          <td>No</td>
-          <td>No</td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td>[[GML]]</td>
-          <td>Open</td>
-          <td>Text</td>
-          <td>Geometry and attributes inline or xlinked</td>
-          <td>Good ?</td>
-          <td>In Theory ?</td>
-          <td>Yes</td>
-          <td>Verbose</td>
-          <td>No</td>
-          <td>No</td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td><a href="http://www.opengeospatial.org/standards/kml">KML</a></td>
-          <td>Open</td>
-          <td>Text</td>
-          <td>Geometry and attributes inline or xlinked</td>
-          <td>Good ?</td>
-          <td>In Theory ?</td>
-          <td>No</td>
-          <td>Lightweight</td>
-          <td>No</td>
-          <td>Yes?</td>
-          <td>Yes</td>
-        </tr>
-      </table>
-      <p>The second table is much more detailed, listing the currently much-used formats for spatial
-        data, and scoring each format on a lot of detailed aspects.</p>
-      <table id="detailed-format-matrix">
-        <caption>An attempt at a matrix of the formats for spatial data in current use and detailed
-          aspects. (<span style="background-color:yellow">source: @portele</span>)</caption>
-        <tr>
-          <th> </th>
-          <th> GML </th>
-          <th> GML-SF0 </th>
-          <th> JSON-LD </th>
-          <th> GeoSPARQL (vocabulary) </th>
-          <th> schema.org </th>
-          <th> GeoJSON </th>
-          <th> KML </th>
-          <th> GeoPackage </th>
-          <th> Shapefile </th>
-          <th> GeoServices / Esri JSON </th>
-          <th> Mapbox Vector Tiles </th>
-        </tr>
-        <tr>
-          <td> Governing Body </td>
-          <td> OGC, ISO </td>
-          <td> OGC </td>
-          <td> W3C </td>
-          <td> OGC </td>
-          <td> Google, Microsoft, Yahoo, Yandex </td>
-          <td> Authors (now in IETF process) </td>
-          <td> OGC </td>
-          <td> OGC </td>
-          <td> Esri </td>
-          <td> Esri </td>
-          <td> Mapbox </td>
-        </tr>
-        <tr>
-          <td> Based on </td>
-          <td> XML </td>
-          <td> GML </td>
-          <td> JSON </td>
-          <td> RDF </td>
-          <td> HTML with RDFa, Microdata, JSON-LD </td>
-          <td> JSON </td>
-          <td> XML </td>
-          <td> SQLite, SF SQL </td>
-          <td> dBASE </td>
-          <td> JSON </td>
-          <td> Google protocol buffers </td>
-        </tr>
-        <tr>
-          <td> Requires authoring of a vocabulary/schema for my data (or use of existing ones) </td>
-          <td> Yes (using XML Schema) </td>
-          <td> Yes (using XML Schema) </td>
-          <td> Yes (using @context) </td>
-          <td> Yes (using RDF schema) </td>
-          <td> No, schema.org specifies a vocabulary that should be used </td>
-          <td> No </td>
-          <td> No </td>
-          <td> Implicitly (SQLite tables) </td>
-          <td> Implicitly (dBASE table) </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Supports reuse of third party vocabularies for features and properties </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Supports extensions (geometry types, metadata, etc.) </td>
-          <td> Yes </td>
-          <td> No </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> No (under discussion in IETF) </td>
-          <td> Yes (rarely used except by Google) </td>
-          <td> Yes </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Supports non-simple property values </td>
-          <td> Yes </td>
-          <td> No </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes (in practice: not used) </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Supports multiple values per property </td>
-          <td> Yes </td>
-          <td> No </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes (in practice: not used) </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Supports multiple geometries per feature </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> n/a </td>
-          <td> Yes </td>
-          <td> Yes (but probably not in practice?) </td>
-          <td> No </td>
-          <td> Yes </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Support for Coordinate Reference Systems </td>
-          <td> any </td>
-          <td> any </td>
-          <td> n/a </td>
-          <td> many </td>
-          <td> WGS 84 latitude, longitude </td>
-          <td> WGS 84 longitude, latitude with optional elevation </td>
-          <td> WGS 84 longitude, latitude with optional elevation </td>
-          <td> many </td>
-          <td> many </td>
-          <td> many </td>
-          <td> WGS 84 spherical mercator projection </td>
-        </tr>
-        <tr>
-          <td> Support for non-linear interpolations in curves </td>
-          <td> Yes </td>
-          <td> Only arcs </td>
-          <td> n/a </td>
-          <td> Yes (using GML) </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> Yes, in an extension </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Support for non-planar interpolations in surfaces </td>
-          <td> Yes </td>
-          <td> No </td>
-          <td> n/a </td>
-          <td> Yes (using GML) </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Support for solids (3D) </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> n/a </td>
-          <td> Yes (using GML) </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Feature in a feature collection document has URI (required for ★★★★) </td>
-          <td> Yes, via XML ID </td>
-          <td> Yes, via XML ID </td>
-          <td> Yes, via @id keyword </td>
-          <td> Yes </td>
-          <td> Yes, via HTML ID </td>
-          <td> No </td>
-          <td> Yes, via XML ID </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Support for hyperlinks (required for ★★★★★) </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> Yes </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-          <td> No </td>
-        </tr>
-        <tr>
-          <td> Media type </td>
-          <td> application/gml+xml </td>
-          <td> application/gml+xml with profile parameter </td>
-          <td> application/ld+json </td>
-          <td> application/rdf+xml, application/ld+json, etc. </td>
-          <td> text/html </td>
-          <td> application/vnd.geo+json </td>
-          <td> application/vnd.google-earth.kml+xml, application/vnd.google-earth.kmz </td>
-          <td> - </td>
-          <td> - </td>
-          <td> - </td>
-          <td> - </td>
-        </tr>
-        <tr>
-          <td> Remarks </td>
-          <td> comprehensive and supporting many use cases, but requires strong XML skills </td>
-          <td> simplified profile of GML </td>
-          <td> no support for spatial data, a GeoJSON-LD is under discussion </td>
-          <td> GeoSPARQL also specifies related extension functions for SPARQL; other spatial
-            vocabularies exist, see&#160;??? </td>
-          <td> schema.org markup is indexed by major search engines </td>
-          <td> supported by many mapping APIs </td>
-          <td> focussed on visualisation of and interaction with spatial data, typically in Earth
-            browsers liek Google Earth </td>
-          <td> used to support "native" access to spatial data across all enterprise and personal
-            computing environments, including mobile devices </td>
-          <td> supported by almost all GIS </td>
-          <td> mainly used via the GeoServices REST API </td>
-          <td> used for sharing spatial data in tiles, mainly for display in maps </td>
-        </tr>
-      </table>
-      
--->      
         <aside class="note">
           <p>An update to [[GeoSPARQL]] is in progress to divide the vocabulary into several modules for distinct levels of functionality and ease of use.</p>
         </aside>      
