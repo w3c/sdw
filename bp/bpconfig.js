@@ -42,7 +42,7 @@ var respecConfig = {
         { value: "Andrea Perego" },
         { value: "Clemens Portele" },
         { value: "Bill Roberts" },
-        { value: "Lars Svensson" },
+        { value: "Lars G. Svensson" },
         { value: "Kerry Taylor" },
         { value: "Erik Wilde" }
       ]
