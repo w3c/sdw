@@ -1442,7 +1442,7 @@ function init() {
             <p>However, in most cases using a single URI for both <a>Spatial Thing</a> and the page/document is simpler to implement and meets the expectations of most end-users. As stated in [[WEBARCH]] <a href="https://www.w3.org/TR/2004/REC-webarch-20041215/#indirect-identification">section 2.2.3 Indirect Identification</a>, identifiers are commonly used in this way. There is no obligation to distinguish between the Spatial Thing and the page/document unless your application requires this.</p> 
             
             <div class="note">
-              <p>While there is a cost to this conflation, problems can be mitigated by avoiding making statements that confuse <a>Spatial Thing</a> and the page/document, such as “Uluru is available in KML format”; e.g. <code>&lt;</code><a href="http://sws.geonames.org/7645281/"><code>http://sws.geonames.org/7645281/</code></a><code>&gt; dct:hasFormat &lt;</code><a href="http://www.geonames.org/kml/-25.34434_131.03282_15.kml"><code>http://www.geonames.org/kml/-25.34434_131.03282_15.kml</code></a><code>&gt; .</code></p>
+              <p>While there is a cost to this conflation, problems can be mitigated by avoiding making statements that confuse <a>Spatial Thing</a> and the page/document, such as “Uluru is available in KML format”; e.g. <code>&lt;</code><a href="http://sws.geonames.org/7645281/"><code>http://sws.geonames.org/7645281/</code></a><code>&gt; dcterms:hasFormat &lt;</code><a href="http://www.geonames.org/kml/-25.34434_131.03282_15.kml"><code>http://www.geonames.org/kml/-25.34434_131.03282_15.kml</code></a><code>&gt; .</code></p>
               <p>This statement is clearly not true; an ancient monolith covering more than 3 km<sup>2</sup> cannot be provided in <a>XML</a> [[XML11]]!</p>
             </div>
             
@@ -1956,21 +1956,21 @@ Connection: close
             <p>The following [[TURTLE]] snippet shows the [[GeoDCAT-AP]] representation of the dataset in <a href="#ex-schemaorg-dataset-and-place"></a>. Here the bounding box is provided in multiple literal encodings (<a>WKT</a>, [[GML]], GeoJSON [[RFC7946]]), by using property <code>locn:geometry</code> [[LOCN]].</p>
             <aside class="example" id="ex-geodcat-ap-bag-addresses" title="[GeoDCAT-AP] representation of dataset spatial coverage (bounding box) in multiple encodings">
               <pre>
-@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .
-@prefix dct:  &lt;http://purl.org/dc/terms/&gt; .
-@prefix locn: &lt;http://www.w3.org/ns/locn#&gt; .
+@prefix dcat:    &lt;http://www.w3.org/ns/dcat#&gt; .
+@prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
+@prefix locn:    &lt;http://www.w3.org/ns/locn#&gt; .
 
 &lt;http://www.ldproxy.net/bag/inspireadressen/&gt; a dcat:Dataset ;
-  dct:title "Adressen"@nl ;
-  dct:title "Addresses"@en ;
-  dct:description "INSPIRE Adressen afkomstig uit de basisregistratie Adressen,
+  dcterms:title "Adressen"@nl ;
+  dcterms:title "Addresses"@en ;
+  dcterms:description "INSPIRE Adressen afkomstig uit de basisregistratie Adressen,
                    beschikbaar voor heel Nederland"@nl ;
-  dct:description "INSPIRE addresses derived from the Addresses base registry,
+  dcterms:description "INSPIRE addresses derived from the Addresses base registry,
                    available for the Netherlands"@en ;
-  dct:isPartOf &lt;http://www.ldproxy.net/bag/&gt; ;
+  dcterms:isPartOf &lt;http://www.ldproxy.net/bag/&gt; ;
   dcat:theme &lt;http://inspire.ec.europa.eu/theme/ad&gt; ;
-  dct:spatial [
-    a dct:Location ;
+  dcterms:spatial [
+    a dcterms:Location ;
     locn:geometry
 # Bounding box in WKT
       "POLYGON((3.053 47.975,7.24 47.975,7.24 53.504,3.053 53.504,3.053 47.975))"^^geosparql:wktLiteral ,
@@ -2026,7 +2026,7 @@ Connection: close
             <aside class="example" id="ex-anne-frank-building-rdf" title="[RDF] description of a building, with detailed geometry">
               <pre>
 @prefix bag:       &lt;http://bag.basisregistraties.overheid.nl/def/bag#&gt; .
-@prefix dct:       &lt;http://purl.org/dc/terms/&gt; .
+@prefix dcterms:   &lt;http://purl.org/dc/terms/&gt; .
 @prefix geosparql: &lt;http://www.opengis.net/ont/geosparql#&gt; .
 @prefix gml-ont:   &lt;http://www.opengis.net/ont/gml#&gt; .
 @prefix locn:      &lt;http://www.w3.org/ns/locn#&gt; .
@@ -2041,11 +2041,11 @@ Connection: close
   rdfs:isDefinedBy &lt;http://bag.basisregistraties.overheid.nl/bag/doc/2016083000000000/pand/0363100012169587&gt; ;
   bag:identificatiecode "0363100012169587"^^xsd:string;
 # Added
-  dct:identifier "363100012169587"^^xsd:string ;
+  dcterms:identifier "363100012169587"^^xsd:string ;
   bag:status &lt;http://bag.basisregistraties.overheid.nl/id/begrip/PandInGebruik_nietIngemeten&gt; ;
   bag:oorspronkelijkBouwjaar "1635"^^xsd:gYear;
 # Added
-  dct:created "1635"^^xsd:gYear ;
+  dcterms:created "1635"^^xsd:gYear ;
 # Added
   locn:address &lt;http://www.ldproxy.net/bag/inspireadressen/inspireadressen.3329155&gt; ;
   geosparql:hasGeometry &lt;http://bag.basisregistraties.overheid.nl/bag/id/geometry/5C1F8F11324717378B437B2CD12871FF&gt; ;
@@ -2490,7 +2490,7 @@ GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,C
   "@context": ["http://www.w3.org/ns/csvw", {"@language": "en"}],
   "@id": "http://example.org/tree-ops-db",
   "url": "tree-ops-db.csv",
-  "dc:title": "Tree Operations",
+  "dcterms:title": "Tree Operations",
   ...
   "tableSchema": {
     "columns": [{
@@ -2499,19 +2499,19 @@ GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,C
         "GID",
         "Generic Identifier"
       ],
-      "dc:description": "An identifier for the operation on a tree.",
+      "dcterms:description": "An identifier for the operation on a tree.",
       "datatype": "string",
       "required": true, 
       "suppressOutput": true
     }, {
       "name": "on_street",
       "titles": "On Street",
-      "dc:description": "The street that the tree is on.",
+      "dcterms:description": "The street that the tree is on.",
       "datatype": "string"
     }, {
       "name": "Long",
       "titles": "Longitude",
-      "dc:description": "The WGS 84 longitude of the tree (decimal degrees).",
+      "dcterms:description": "The WGS 84 longitude of the tree (decimal degrees).",
       "propertyUrl": "http://www.w3.org/2003/01/geo/wgs84_pos#long"
       "datatype": {
         "base": "number",
@@ -2522,7 +2522,7 @@ GID,On Street,Long,Lat,Species,Trim Cycle,Diameter at Breast Ht,Inventory Date,C
       "name": "Lat",
       "titles": "Latitude",
       "propertyUrl": "http://www.w3.org/2003/01/geo/wgs84_pos#lat"
-      "dc:description": "The WGS 84 latitude of the tree (decimal degrees).",
+      "dcterms:description": "The WGS 84 latitude of the tree (decimal degrees).",
       "datatype": {
         "base": "number",
         "minimum": "-90",
@@ -3664,14 +3664,14 @@ Content-type: application/geo+json
           different vocabularies. We will provide an example in this section. </p>
         <p>For some uses, it may be sufficient to simply state conformance to a published specification:</p>
         <pre class="example" id="ex-geodcat-ap-dataset-conformance-with-specification" title="GeoDCAT-AP specification of a dataset conformance with the INSPIRE Regulation on spatial data and services interoperability">a:Dataset a dcat:Dataset ;
-  dct:conformsTo &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; .
+  dcterms:conformsTo &lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; .
 
-&lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; a dct:Standard , foaf:Document ;
-  dct:title "COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010
+&lt;<a href="http://data.europa.eu/eli/reg/2010/1089/oj">http://data.europa.eu/eli/reg/2010/1089/oj</a>&gt; a dcterms:Standard , foaf:Document ;
+  dcterms:title "COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010
              implementing Directive 2007/2/EC of the European Parliament
              and of the Council as regards interoperability of spatial
              data sets and services"@en ;
-  dct:issued "2010-12-08"^^xsd:date .</pre>
+  dcterms:issued "2010-12-08"^^xsd:date .</pre>
         <p>However, that specification makes no statement about the positional accuracy of the data, 
           so on its own, it is only a useful quality statement for users to whom positional accuracy is not that important.</p>
 
@@ -3870,11 +3870,11 @@ another:Dataset a dcat:Dataset ;
             </aside>
             <p>The following example shows how [[VOCAB-DQV]] can express conformance to a specified positional accuracy</p>
             <pre class="example" id="ex-geodcat-ap-dataset-conformance-with-specification2" title="GeoDCAT-AP specification of a dataset conformance with IHO's S44">a:Dataset a dcat:Dataset ;
-  dct:conformsTo &lt;<a href="https://www.iho.int/iho_pubs/standard/S-44_5E.pdf">https://www.iho.int/iho_pubs/standard/S-44_5E.pdf#Special</a>&gt; .
+  dcterms:conformsTo &lt;<a href="https://www.iho.int/iho_pubs/standard/S-44_5E.pdf">https://www.iho.int/iho_pubs/standard/S-44_5E.pdf#Special</a>&gt; .
 
-&lt;<a href="https://www.iho.int/iho_pubs/standard/S-44_5E.pdf">https://www.iho.int/iho_pubs/standard/S-44_5E.pdf</a>&gt; a dct:Standard , foaf:Document ;
-  dct:title "IHO Standards for Hydrographic Surveys"@en ;
-  dct:issued "2008-02-01"^^xsd:date.</pre>
+&lt;<a href="https://www.iho.int/iho_pubs/standard/S-44_5E.pdf">https://www.iho.int/iho_pubs/standard/S-44_5E.pdf</a>&gt; a dcterms:Standard , foaf:Document ;
+  dcterms:title "IHO Standards for Hydrographic Surveys"@en ;
+  dcterms:issued "2008-02-01"^^xsd:date.</pre>
             <p>The following example shows how [[VOCAB-DQV]] can express the amount of detail in a <a>coverage</a> dataset: </p>
             <pre class="example" id="ex-dqv-dataset-quality" title="[VOCAB-DQV] specification of data quality">
 :myDataset a dcat:Dataset ;
@@ -4231,7 +4231,7 @@ another:Dataset a dcat:Dataset ;
 <tbody>
 <tr>
   <th>Description</th>
-  <td>includes terms for describing location and temporal information, as classes <a href="http://purl.org/dc/terms/Location"><code>dct:Location</code></a>, <a href="http://purl.org/dc/terms/PeriodOfTime"><code>dct:PeriodOfTime</code></a>, and properties <a href="http://purl.org/dc/terms/spatial"><code>dct:spatial</code></a>, <a href="http://purl.org/dc/terms/temporal"><code>dct:temporal</code></a>, and <a href="http://purl.org/dc/terms/coverage"><code>dct:coverage</code></a>.</td>
+  <td>includes terms for describing location and temporal information, as classes <a href="http://purl.org/dc/terms/Location"><code>dcterms:Location</code></a>, <a href="http://purl.org/dc/terms/PeriodOfTime"><code>dcterms:PeriodOfTime</code></a>, and properties <a href="http://purl.org/dc/terms/spatial"><code>dcterms:spatial</code></a>, <a href="http://purl.org/dc/terms/temporal"><code>dcterms:temporal</code></a>, and <a href="http://purl.org/dc/terms/coverage"><code>dcterms:coverage</code></a>.</td>
   <td>A widely used vocabulary, although not an official standard, for specifying point coordinates in the WGS 84 <a>datum</a>.</td>
   <td>Includes terms for describing <a href="https://www.w3.org/TR/vcard-rdf/#Delivery_Addressing_Properties">postal addresses</a> and <a href="https://www.w3.org/TR/vcard-rdf/#Geographical_Properties">0D geometries</a> (points).</td>
   <td>
@@ -4244,13 +4244,13 @@ another:Dataset a dcat:Dataset ;
   
 <tr>
 <th>Spatial things</th>
-<td><a href="http://purl.org/dc/terms/Location"><code>dct:Location</code></a></td>
+<td><a href="http://purl.org/dc/terms/Location"><code>dcterms:Location</code></a></td>
 <td><code>w3cgeo:SpatialThing</code></td>
 <td><a href="https://www.w3.org/TR/vcard-rdf/#d4e1819"><code>vcard:Kind</code></a>, and its subclasses; <a href="https://www.w3.org/TR/vcard-rdf/#d4e1292"><code>vcard:Address</code></a></td>
 <td><code>georss:_Feature</code> is placeholder for <a>Spatial Thing</a></td>
 <td><a href="http://schema.org/Place"><code>schema:Place</code></a>, and its subclasses; <a href="http://schema.org/PostalAddress"><code>schema:PostalAddress</code></a></td>
 <td><code>geosparql:Feature</code></td>
-<td><a href="http://www.w3.org/ns/locn#dcterms:Location"><code>dct:Location</code></a>, <a href="http://www.w3.org/ns/locn#locn:Address"><code>locn:Address</code></a></td>
+<td><a href="http://www.w3.org/ns/locn#dcterms:Location"><code>dcterms:Location</code></a>, <a href="http://www.w3.org/ns/locn#locn:Address"><code>locn:Address</code></a></td>
 
 </tr>
 <tr>
