@@ -20,7 +20,7 @@ var respecConfig = {
     }, {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
-			companyURL: "http://www.surrey.ac.uk/"
+			companyURL: "https://www.surrey.ac.uk/"
 		}],
     otherLinks: [
     {
@@ -76,7 +76,7 @@ var respecConfig = {
         url: "http://www.opengeospatial.org/"
       }],
     noRecTrack: true,
-    overrideCopyright: "<p class='copyright'><a href='https://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2017 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='http://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='http://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
+    overrideCopyright: "<p class='copyright'><a href='https://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2017 <a href='http://www.opengeospatial.org/'><abbr title='Open Geospatial Consortium'>OGC</abbr></a> &amp; <a href='https://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='https://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='https://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='https://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='https://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
 
 
     localBiblio: {
@@ -169,7 +169,7 @@ var respecConfig = {
         date: "10 June 2016"
       },
       "INSPIRE-MD":{
-        href:"http://inspire.jrc.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
+        href:"http://inspire.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
         title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
         publisher: "European Commission",
         date: "29 October 2013"
@@ -228,7 +228,7 @@ var respecConfig = {
       "SOS":{
         href:"http://www.opengeospatial.org/standards/sos",
         publisher:"OGC",
-		  authors:["Arne Bröring", "Christoph Stasch", "Johannes Echterhoff"],
+		  authors:["Arne Bröring", "Christoph Stasch", "Johannes Echterhoff"],
         date:"20 April 2012",
 		  title:"Sensor Observation Service Interface Standard",
         status:"OpenGIS Implementation Standard"
@@ -260,7 +260,7 @@ var respecConfig = {
       "WMTS":{
         href:"http://www.opengeospatial.org/standards/wmts",
         publisher:"OGC",
-        authors:["Joan Masó", "Keith Pomakis", "Núria Julià"],
+        authors:["Joan Masó", "Keith Pomakis", "Núria Julià"],
         date:"6 April 2010",
 		  title:"Web Map Tile Service Implementation Standard",
         status:"OpenGIS Implementation Standard"
