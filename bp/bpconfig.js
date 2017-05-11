@@ -20,16 +20,39 @@ var respecConfig = {
     }, {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
-			companyURL: "http://www.surrey.ac.uk/"
+			companyURL: "https://www.surrey.ac.uk/"
 		}],
     otherLinks: [
     {
+      key: "Contributors",
+      data: [
+        { value: "Phil Archer" },
+        { value: "Jon Blower" },
+        { value: "Newton Calegari" },
+        { value: "Byron Cochrane" },
+        { value: "Simon Cox" },
+        { value: "François Daoust" },
+        { value: "Andreas Harth" },
+        { value: "Bart van Leeuwen" },
+        { value: "Josh Lieberman" },
+        { value: "Chris Little" },
+        { value: "Andy Mabbett" },
+        { value: "Peter Parslow" },
+        { value: "Ed Parsons" },
+        { value: "Andrea Perego" },
+        { value: "Clemens Portele" },
+        { value: "Bill Roberts" },
+        { value: "Lars G. Svensson" },
+        { value: "Kerry Taylor" },
+        { value: "Erik Wilde" }
+      ]
+    }, {
       key: "OGC Document Number",
       data: [
       {
         value: "OGC 15-107"
       }]
-      }],
+    }],
     wg: "Spatial Data on the Web Working Group",
     wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
@@ -53,7 +76,7 @@ var respecConfig = {
         url: "http://www.opengeospatial.org/"
       }],
     noRecTrack: true,
-    overrideCopyright: "<p class='copyright'><a href='https://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2017 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='http://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='http://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
+    overrideCopyright: "<p class='copyright'><a href='https://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2017 <a href='http://www.opengeospatial.org/'><abbr title='Open Geospatial Consortium'>OGC</abbr></a> &amp; <a href='https://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='https://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='https://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='https://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='https://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
 
 
     localBiblio: {
@@ -80,6 +103,12 @@ var respecConfig = {
         title:"Simple Feature Access - Part 1: Common Architecture",
         authors: ["John Herring"],
         date: "28 May 2011"
+      },
+      "GML-SF":{
+        href:"http://www.opengeospatial.org/standards/gml",
+        title:"Geography Markup Language (GML) simple features profile",
+		  authors: ["Linda van den Brink", "Clemens Portele", "Panagiotis (Peter) A. Vretanos"],
+        date: "5 April 2012"
       },
       "Veregin":{
         href:"http://www.geos.ed.ac.uk/~gisteac/gis_book_abridged/files/ch12.pdf",
@@ -140,7 +169,7 @@ var respecConfig = {
         date: "10 June 2016"
       },
       "INSPIRE-MD":{
-        href:"http://inspire.jrc.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
+        href:"http://inspire.ec.europa.eu/documents/Metadata/MD_IR_and_ISO_20131029.pdf",
         title:"INSPIRE Metadata Implementing Rules: Technical Guidelines based on EN ISO 19115 and EN ISO 19119",
         publisher: "European Commission",
         date: "29 October 2013"
@@ -197,23 +226,15 @@ var respecConfig = {
         date:"15 December 2015"
       },
       "SOS":{
-        href:"https://portal.opengeospatial.org/files/?artifact_id=47599",
+        href:"http://www.opengeospatial.org/standards/sos",
         publisher:"OGC",
-		  authors:["Arne Bröring", "Christoph Stasch", "Johannes Echterhoff"],
+		  authors:["Arne Bröring", "Christoph Stasch", "Johannes Echterhoff"],
         date:"20 April 2012",
 		  title:"Sensor Observation Service Interface Standard",
         status:"OpenGIS Implementation Standard"
       },
-      "SensorThings":{
-        href:"http://docs.opengeospatial.org/is/15-078r6/15-078r6.html",
-        publisher:"OGC",
-		  authors:["Steve Liang", "Chih-Yuan Huang", "Tania Khalafbeigi"],
-        date:"26 July 2012",
-		  title:"SensorThings API Part 1: Sensing",
-        status:"OpenGIS Implementation Standard"
-      },
       "WCS":{
-        href:"http://www.opengis.net/doc/IS/wcs-core-2.0.1",
+        href:"http://www.opengeospatial.org/standards/wcs",
         publisher:"OGC",
         authors:["Peter Baumann"],
         date:"12 July 2012",
@@ -221,7 +242,7 @@ var respecConfig = {
         status:"OGC Interface Standard"
       },
       "WFS":{
-        href:"http://www.opengis.net/doc/IS/wfs/2.0.2",
+        href:"http://www.opengeospatial.org/standards/wfs",
         publisher:"OGC",
         authors:["Panagiotis (Peter) A. Vretanos"],
         date:"10 July 2014",
@@ -229,7 +250,7 @@ var respecConfig = {
         status:"OGC Interface Standard"
       },
       "WMS":{
-        href:"http://portal.opengeospatial.org/files/?artifact_id=14416",
+        href:"http://www.opengeospatial.org/standards/wms",
         publisher:"OGC",
         authors:["Jeff de la Beaujardiere"],
         date:"15 March 2006",
@@ -237,15 +258,15 @@ var respecConfig = {
         status:"OpenGIS Implementation Standard"
       },
       "WMTS":{
-        href:"http://portal.opengeospatial.org/files/?artifact_id=35326",
+        href:"http://www.opengeospatial.org/standards/wmts",
         publisher:"OGC",
-        authors:["Joan Masó", "Keith Pomakis", "Núria Julià"],
+        authors:["Joan Masó", "Keith Pomakis", "Núria Julià"],
         date:"6 April 2010",
 		  title:"Web Map Tile Service Implementation Standard",
         status:"OpenGIS Implementation Standard"
       },
       "WPS":{
-        href:"http://docs.opengeospatial.org/is/14-065/14-065.html",
+        href:"http://www.opengeospatial.org/standards/wps",
         publisher:"OGC",
         authors:["Matthias Mueller", "Benjamin Pross"],
         date:"5 October 2015",
@@ -291,7 +312,8 @@ var respecConfig = {
         publisher:"OGC",
         "href": "http://www.opengeospatial.org/standards/sensorthings",
         "title": "OGC \u00AE SensorThings API Part 1: Sensing",
-        "date": "26 July 2016"
+        "date": "26 July 2016",
+        status:"OpenGIS Implementation Standard"
       },
       "COVERAGE-JSON": {
         "authors":["Jon Blower", "Maik Riechert", "Bill Roberts"],
@@ -321,7 +343,7 @@ var respecConfig = {
       },
       "ISO-19107": {
         "href":"https://www.iso.org/standard/26012.html",
-        "title":"ISO 19107:2003 Geographic information -- Geographic information -- Spatial schema",
+        "title":"ISO 19107:2003 Geographic information -- Spatial schema",
         "authors":["ISO/TC 211"],
         "publisher":"ISO",
         "date":"May 2003"
@@ -372,8 +394,31 @@ var respecConfig = {
         authors:["Joshua Lieberman", "Raj Singh", "Chris Goad"],
         publisher:"W3C Geospatial Incubator Group",
         date:"23 October 2007"
-      }
+      }, 
       
+      "ISO-19159-2": {
+        "href":"https://www.iso.org/standard/64768.html",
+        "title":"ISO/TS 19159-2:2016 Geographic information -- Calibration and validation of remote sensing imagery sensors and data -- Part 2: Lidar",
+        "authors":["ISO/TC 211"],
+        "publisher":"ISO",
+        "date":"April 2016"
+      }, 
+      
+      "ISO-19162": {
+        "href":"https://www.iso.org/standard/63094.html",
+        "title":"ISO 19162:2015 Geographic information -- Well-known text representation of coordinate reference systems",
+        "authors":["ISO/TC 211"],
+        "publisher":"ISO",
+        "date":"August 2015"
+      },
+      
+      "ISO-19133": {
+        "href":"https://www.iso.org/standard/32551.html",
+        "title":"ISO 19133:2005 Geographic information -- Location-based services -- Tracking and navigation",
+        "authors":["ISO/TC 211"],
+        "publisher":"ISO",
+        "date":"October 2005"
+      }
     },
     issueBase: "https://github.com/w3c/sdw/issues/"
 };
