@@ -1,0 +1,41 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn:  <http://www.w3.org/ns/ssn/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@base <http://example.org/data/> .
+
+# movements of spinning cups on wind sensor #14 serves as proxies for the wind speed
+# at the location of the wind sensor.
+
+<windSensor/14> rdf:type sosa:Sensor ;
+  sosa:observes <location/4687#windSpeed> .
+
+# wind sensor #14 detected some movement of spinning cups, from which originated the
+# observations #147 and #148.
+
+<windSensor/14> rdf:type sosa:Sensor ;
+  sosa:madeObservation <observation/147> , <observation/148> ; 
+  ssn:detects <observation/147#spinningCupsMovement> , <observation/148#spinningCupsMovement> .
+
+# observation #147 was originated by the movement of the spinning cups of sensor #14.
+# the result of observations #147 and #148 is using some custom datatype that encodes the unit of measure.
+
+<observation/147> rdf:type sosa:Observation ;
+  sosa:observedProperty <location/4687#windSpeed> ;
+  sosa:madeBySensor <windSensor/14> ;
+  ssn:wasOriginatedBy <observation/147#spinningCupsMovement> ;
+  sosa:resultTime "2017-04-12T12:00:00Z"^^xsd:dateTime ;
+  sosa:hasSimpleResult "47 km/h"^^<speed> .
+
+<observation/147#spinningCupsMovement> rdf:type ssn:Stimulus ;
+  ssn:isProxyFor <location/4687#windSpeed> .
+
+<observation/148> rdf:type sosa:Observation ;
+  sosa:observedProperty <location/4687#windSpeed> ;
+  sosa:madeBySensor <windSensor/14> ;
+  ssn:wasOriginatedBy <observation/148#spinningCupsMovement> ;
+  sosa:resultTime "2017-04-12T12:01:00Z"^^xsd:dateTime ;
+  sosa:hasSimpleResult "43 km/h"^^<speed> .
+
+<observation/148#spinningCupsMovement> rdf:type ssn:Stimulus ;
+  ssn:isProxyFor <location/4687#windSpeed> .
