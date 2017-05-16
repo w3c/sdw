@@ -1,0 +1,97 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn:  <http://www.w3.org/ns/ssn/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix qudt-1-1: <http://qudt.org/1.1/schema/qudt#> .
+@prefix qudt-unit-1-1: <http://qudt.org/1.1/vocab/unit#> .
+@base <http://example.org/data/> .
+
+# The electric consumption of appartment #134 on April 15 2017 was 22.4 kWh as 
+# observed by sensor #926. The result was available 12 seconds later.
+
+<Observation/235714> rdf:type sosa:Observation ;
+  sosa:observedProperty  <Appartment/134/electricConsumption> ;
+  sosa:madeBySensor <sensor/926> ; 
+  sosa:hasResult [
+     rdf:type qudt-1-1:QuantityValue ;
+     qudt-1-1:numericValue "22.4"^^xsd:double ;
+     qudt-1-1:unit qudt-unit-1-1:Kilowatthour ] ;
+  sosa:phenomenonTime [
+    rdf:type time:Interval ;
+    time:hasBeginning [ 
+      rdf:type time:Instant ;
+      time:inXSDDateTimeStamp "2017-04-15T00:00:00+00:00"^^xsd:dateTimeStamp ] ;
+    time:hasEnd [ 
+      rdf:type time:Instant ;
+      time:inXSDDateTimeStamp "2017-04-16T00:00:00+00:00"^^xsd:dateTimeStamp ] ] ;
+  sosa:resultTime "2017-04-16T00:00:12+00:00"^^xsd:dateTimeStamp .
+
+
+# Sensor #926 observes the electric consumption of appartment #134, and we know that 
+# it made some observations.
+
+<sensor/926> rdf:type sosa:Sensor ;
+  sosa:observes  <Appartment/134/electricConsumption> ;
+  sosa:madeObservation <Observation/235714>, <Observation/235715>, <Observation/235716> .
+
+# mobile sensor tempSensor #23 observes the temperature in its surroundings, and we know 
+# that it made some observations. 
+
+<tempSensor/23> rdf:type sosa:Sensor ;
+  sosa:observes  <tempSensor/23#temperature> ;
+  sosa:madeObservation <tempSensor/23/4572>, <tempSensor/23/4573>, <tempSensor/23/4574> .
+
+
+# Sensor #926 observes the electric consumption of appartment #134
+
+<sensor/926> rdf:type sosa:Sensor ;
+  sosa:observes  <Appartment/134/electricConsumption> .
+
+# This is equivalent to saying that the electric consumption of appartment #134 is 
+# observed by Sensor #926
+
+<Appartment/134/electricConsumption> rdf:type sosa:ObservableProperty ;
+  sosa:isObservedBy <sensor/926>  .
+
+
+# Sensor #926 made observations identified by <Observation/235714> and <Observation/235715>.
+
+<sensor/926> rdf:type sosa:Sensor ;
+  sosa:madeObservation <Observation/235714>, <Observation/235715> .
+
+# This is equivalent to saying that these observations have been made by sensor #926.
+
+<Observation/235714> rdf:type sosa:Observation ;
+  sosa:madeBySensor <sensor/926> .
+
+<Observation/235754> rdf:type sosa:Observation ;
+  sosa:madeBySensor <sensor/926> .
+
+
+# the window opening state is an ActuatableProperty.
+# SSN allows to explicitly say that <window/104#state> is a property of <window>
+
+<window> rdf:type sosa:FeatureOfInterest ;
+  ssn:hasProperty <window/104#state> .
+
+<window/104#state> rdf:type sosa:ActuatableProperty ;
+  sosa:isActedOnBy <actuation/188> .
+
+
+# WindowCloser #987 made actuation #188
+# SSN allows to explicitly say that <windowCloser/987> is designed to automatically open and close window #104.
+
+<windowCloser/987> rdf:type sosa:Actuator ;
+  sosa:madeActuation <actuation/188> ;
+  ssn:forProperty <window/104#state> .
+
+
+# Actuation #188 acted on the state of window #104 and returned 'true'.
+
+<actuation/188> rdf:type sosa:Actuation ;
+  sosa:actsOnProperty  <window/104#state> ;
+  sosa:actuationMadeBy <windowCloser/987> ; 
+  sosa:hasSimplResult true ;
+  sosa:resultTime "2017-04-18T17:24:00+02:00"^^xsd:dateTimeStamp .
+
