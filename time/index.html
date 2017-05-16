@@ -490,6 +490,7 @@ each of the numeric properties is restricted to <a href="https://www.w3.org/TR/x
 </tr>
 </tbody>
 </table>
+<p class="note">In the Gregorian calendar the length of the month is not fixed. Therefore, a value like "2.5 months" cannot be exactly compared with a similar duration expressed in terms of weeks or days.</p>
 <!--
 <p>Other duration concepts can be straightforwardly defined - see <a href="#specialization">examples below</a>.</p>
 -->
@@ -628,6 +629,7 @@ calendar-clock system. </td>
 </table>
 <p>Seven datatype properties <code><a href="#time:years">:years</a></code>, <code><a href="#time:months">:months</a></code>, <code><a href="#time:weeks">:weeks</a></code>, <code><a href="#time:days">:days</a></code>, <code><a href="#time:hours">:hours</a></code>, <code><a href="#time:minutes">:minutes</a></code>, and <code><a href="#time:seconds">:seconds</a></code> support the description of components of a temporal extent in a calendar-clock system. </p>
 <p>The property <code><a href="#time:hasTRS">time:hasTRS</a></code> indicates the temporal reference system applicable for the duration components. </p>
+<p class="note">The exact duration of a duration expressed as a GeneralDurationDescription depends on the Temporal Reference System. In some calendars the length of the week or month is not constant within the year. Therefore, a value like "2.5 months" may not necessarily be exactly compared with a similar duration expressed in terms of weeks or days. When non-earth-based calendars are considered even more care must be taken in comparing durations.</p>
 </section>
 
 <section>
@@ -921,8 +923,9 @@ descriptions of position or extent. One of these is expected to be present. </p>
 </tr>
 <tr>
 <td>Definition:</td>
-<td>A Time Zone is a geographic region that uses a clock with a specified offset from UTC. 
-The region and offset are specified by the locally recognised governing authority. </td>
+<td>A Time Zone specifies the amount by which the local time is offset from UTC. 
+	A time zone is usually denoted geographically (e.g. Australian Eastern Daylight Time), with a constant value in a given region. 
+The region where it applies and the offset from UTC are specified by a locally recognised governing authority. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -934,10 +937,9 @@ The region and offset are specified by the locally recognised governing authorit
 scope of this ontology. The class specified here is a stub, effectively the superclass of all time zone classes. </p> 
 <div class="note">
 <p>An ontology for time zone descriptions was described in [[owl-time-20060927]] and provided as RDF in a separate namespace <code>tzont:</code>.
-However, that ontology was incomplete in scope, and the example datasets were selective. Furthermore, the use of a class from an external ontology as the range of an <code>ObjectProperty</code> in OWL-Time creates an undesirable dependency. Therefore, reference to the time zone class has been replaced with the 'stub' class in the normative part of this version of OWL-Time.</p>
-<p><a href="https://www.ietf.org/timezones/data/">IETF</a> and <a href="http://www.iana.org/time-zones">IANA</a> also provide databases. These are well maintained, but individual iems are not available at individual URIs, i.e. not as "Linked Data".</p>
-<p>The World Clock service provides a <a href="https://www.timeanddate.com/time/zones/">list of time zones</a>, with the description of each available as an individual webpage with a convenient individual URI (e.g. <a href="https://www.timeanddate.com/time/zones/acwst">https://www.timeanddate.com/time/zones/acwst</a>. Currently this appears to offer best practice. </p>
+However, that ontology was incomplete in scope, and the example datasets were selective. Furthermore, since the use of a class from an external ontology as the range of an <code>ObjectProperty</code> in OWL-Time creates a dependency, reference to the time zone class has been replaced with the 'stub' class in the normative part of this version of OWL-Time.</p>
 </div>
+	<p class="note">A designated timezone is associated with a geographic region. However, for a particular region the offset from UTC often varies seasonally, and the dates of the changes may vary from year to year. The timezone designation usually changes for the different seasons (e.g. Australian Eastern Standard Time vs. Australian Eastern Daylight Time). Furthermore, the offset for a timezone may change over longer timescales, though its designation might not.</p>
 </section>
 
 <section>
@@ -2641,6 +2643,11 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 </tbody>
 </table>
+<div class="note">
+<p><a href="https://www.ietf.org/timezones/data/">IETF</a> and <a href="http://www.iana.org/time-zones">IANA</a> each provide a database of timezones. These are well maintained an authoritative, but individual items are not available at individual URIs, i.e. not as "Linked Data", so cannot be used directly in data expressed using OWL-Time. </p>
+<p>DBPedia provides a <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">set of resources corresponding to the IANA timezones</a>, with a URI for each (e.g. <a href="https://en.wikipedia.org/wiki/Australia/Eucla">https://en.wikipedia.org/wiki/Australia/Eucla</a>). The World Clock service also provides a <a href="https://www.timeanddate.com/time/zones/">list of time zones</a> with the description of each available as an individual webpage with a convenient individual URI (e.g. <a href="https://www.timeanddate.com/time/zones/acwst">https://www.timeanddate.com/time/zones/acwst</a>). Any of these can be used as the value of the <code><a href="#time:timeZone">time:timeZone</a></code> property. </p>
+</div>
+
 <!--        <p>An ontology for time zone descriptions is provided <a href="#timezone">below</a>.</p>
 <p class="issue" data-number="996">(Was local Issue 10) The time zone ontology provided in the Annex is immature and incomplete. Use of a <code>tzont:TimeZone</code> from that ontology as the range of an ObjectProperty in OWL-Time creates an implied dependency which
 is not ideal. We propose adding a stub class <code><a href="#time:TimeZone">:TimeZone</a></code> into the the main namespace (i.e. no
@@ -2704,8 +2711,8 @@ time:TRS</a> which is handled this way.) </p> -->
 </table>
 
 <div class="note">
-<p>Weeks are numbered differently depending on the calendar in use. </p>
-<p>According to ISO-8601 the first week of the year shall include at least four days. Since Monday is defined as the first day of the week, in practice the first week of the year is the one containing the first Thursday in the year. </p>
+<p>Weeks are numbered differently depending on the calendar in use, and locale. </p>
+<p>ISO-8601 specifies that the first week of the year shall include at least four days. Hence, in a locale where Monday is the first day of the week, week 1 contains the first Thursday in the year. </p>
 </div>
 
 </section>
@@ -2850,10 +2857,9 @@ The range of this property is not specified, so can be replaced by any specific 
 </tr>
 <tr>
 <td>Definition:</td>
-<td>Day of month - generalization of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gDay">xsd:gDay</a></code>, formulated as a text string with a pattern constraint to
-reproduce the <a href="https://www.w3.org/TR/xmlschema11-2/#nt-gDayRep">same lexical form as <code>xsd:gDay</code></a>, except that values up to 99 are permitted, in order to support
-calendars with more than 31 days in a month. Note that the value-space is not defined, so a generic OWL2
-processor cannot compute ordering relationships of values of this type. </td>
+<td>Day of month - formulated as a text string with a pattern constraint to reproduce the <a href="https://www.w3.org/TR/xmlschema11-2/#nt-gDayRep">same lexical form as <code>xsd:gDay</code></a>, 
+	except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. 
+	Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -2882,10 +2888,9 @@ processor cannot compute ordering relationships of values of this type. </td>
 </tr>
 <tr>
 <td>Definition:</td>
-<td>Month of year - generalization of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gMonth">xsd:gMonth</a></code>, formulated as a text string with a pattern constraint to
-reproduce the <a href="https://www.w3.org/TR/xmlschema11-2/#nt-gMonthRep">same lexical form as <code>xsd:gMonth</code></a>, except that values up to 20 are permitted, in order to
-support calendars with more than 12 months in the year. Note that the value-space is not defined, so a
-generic OWL2 processor cannot compute ordering relationships of values of this type. </td>
+<td>Month of year - formulated as a text string with a pattern constraint to reproduce the <a href="https://www.w3.org/TR/xmlschema11-2/#nt-gMonthRep">same lexical form as <code>xsd:gMonth</code></a>, 
+	except that values up to 20 are permitted, in order to support calendars with more than 12 months in the year. 
+	Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -2914,9 +2919,8 @@ generic OWL2 processor cannot compute ordering relationships of values of this t
 </tr>
 <tr>
 <td>Definition:</td>
-<td>Year number - generalization of <code><a href="https://www.w3.org/TR/xmlschema11-2/#gYear">xsd:gYear</a></code>, formulated as a text string with a pattern constraint to
-reproduce the <a href="https://www.w3.org/TR/xmlschema11-2/#nt-gYearRep">same lexical form as <code>xsd:gYear</code></a>. Note that the value-space is not defined, so a generic OWL2
-processor cannot compute ordering relationships of values of this type. </td>
+<td>Year number - formulated as a text string with a pattern constraint to reproduce the <a href="https://www.w3.org/TR/xmlschema11-2/#nt-gYearRep">same lexical form as <code>xsd:gYear</code></a>, but not restricted to values from the Gregorian calendar. 
+	Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type. </td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -3072,7 +3076,7 @@ processor cannot compute ordering relationships of values of this type. </td>
 <h3>DateTimeDescription vs dateTime</h3>
 <p>The following example illustrates the difference between using <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> and using
 the XML datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. An instant that represents the start of a meeting, called <code>ex:meetingStart</code>,
-happens at 10:30am AEST on 12/04/2017 can be expressed using both <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code> and <code><a href="#time:inDateTime">:inDateTime</a></code>
+happens at 10:30am AEST on 12 Apr 2017 can be expressed using both <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code> and <code><a href="#time:inDateTime">:inDateTime</a></code>
 in OWL as:</p>
 <pre>ex:meetingStart
   a                    :Instant ;

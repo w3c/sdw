@@ -72,6 +72,7 @@ Ontology engineering by Simon J D Cox"""@en ;
   rdfs:label "Date-time interval"@en ;
   rdfs:subClassOf :ProperInterval ;
   skos:definition "DateTimeInterval is a subclass of ProperInterval, defined using the multi-element DateTimeDescription."@en ;
+  skos:note ":DateTimeInterval can only be used for an interval whose limits coincide with a date-time element aligned to the calendar and timezone indicated. For example, while both have a duration of one day, the 24-hour interval beginning at midnight at the beginning of 8 May in Central Europe can be expressed as a :DateTimeInterval, but the 24-hour interval starting at 1:30pm cannot."@en ;
 .
 :DayOfWeek
   rdf:type owl:Class ;
@@ -92,6 +93,7 @@ In the original OWL-Time the following constraint appeared:
       time:Sunday
     ) ;"""@en ;
   skos:definition "The day of week"@en ;
+  skos:note "Membership of the class :DayOfWeek is open, to allow for alternative week lengths and different day names."@en ;
 .
 :Duration
   rdf:type owl:Class ;
@@ -157,6 +159,7 @@ In the original OWL-Time the following constraint appeared:
       owl:onProperty :hasTRS ;
     ] ;
   skos:definition "Description of temporal extent structured with separate values for the various elements of a calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of each of the numeric properties is restricted to xsd:decimal"@en ;
+  skos:note "In the Gregorian calendar the length of the month is not fixed. Therefore, a value like \"2.5 months\" cannot be exactly compared with a similar duration expressed in terms of weeks or days."@en ;
 .
 :Friday
   rdf:type :DayOfWeek ;
@@ -288,6 +291,7 @@ In the original OWL-Time the following constraint appeared:
       owl:onProperty :years ;
     ] ;
   skos:definition "Description of temporal extent structured with separate values for the various elements of a calendar-clock system."@en ;
+  skos:note "The exact duration of a duration expressed as a GeneralDurationDescription depends on the Temporal Reference System. In some calendars the length of the week or month is not constant within the year. Therefore, a value like \"2.5 months\" may not necessarily be exactly compared with a similar duration expressed in terms of weeks or days. When non-earth-based calendars are considered even more care must be taken in comparing durations."@en ;
 .
 :Instant
   rdf:type owl:Class ;
@@ -384,6 +388,7 @@ In the original OWL-Time the following constraint appeared:
     ] ;
   skos:definition "The month of the year"@en ;
   skos:editorialNote "Feature at risk - added in 2017 revision, and not yet widely used. "@en ;
+  skos:note "Membership of the class :MonthOfYear is open, to allow for alternative annual calendars and different month names."@en ;
 .
 :ProperInterval
   rdf:type owl:Class ;
@@ -434,6 +439,7 @@ This is a stub class, representing the set of all temporal reference systems."""
   skos:definition """A temporal reference system, such as a temporal coordinate system (with an origin, direction, and scale), a calendar-clock combination, or a (possibly hierarchical) ordinal system. 
 
 This is a stub class, representing the set of all temporal reference systems."""@en ;
+  skos:note "A taxonomy of temporal reference systems is provided in ISO 19108:2002 [ISO19108], including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. numeric offset from an epoch); (c) temporal ordinal reference systems (i.e. ordered sequence of named intervals, not necessarily of equal duration)."@en ;
 .
 :TemporalDuration
   rdf:type owl:Class ;
@@ -482,6 +488,7 @@ In the original OWL-Time the following constraint appeared:
       time:unitYear
     ) ;"""@en ;
   skos:definition "A standard duration, which provides a scale factor for a time extent, or the granularity or precision for a time position."@en ;
+  skos:note "Membership of the class TemporalUnit is open, to allow for other temporal units used in some technical applications (e.g. millions of years, Baha'i month)."@en ;
 .
 :Thursday
   rdf:type :DayOfWeek ;
@@ -523,9 +530,13 @@ In the original OWL-Time the following constraint appeared:
 .
 :TimeZone
   rdf:type owl:Class ;
-  rdfs:comment "A Time Zone is a geographic region that uses a clock with a specified offset from UTC. The region and offset are specified by the locally recognised governing authority. " ;
+  rdfs:comment """A Time Zone specifies the amount by which the local time is offset from UTC. 
+	A time zone is usually denoted geographically (e.g. Australian Eastern Daylight Time), with a constant value in a given region. 
+The region where it applies and the offset from UTC are specified by a locally recognised governing authority."""@en ;
   rdfs:label "Time Zone"@en ;
-  skos:definition "A Time Zone is a geographic region that uses a clock with a specified offset from UTC. The region and offset are specified by the locally recognised governing authority. " ;
+  skos:definition """A Time Zone specifies the amount by which the local time is offset from UTC. 
+	A time zone is usually denoted geographically (e.g. Australian Eastern Daylight Time), with a constant value in a given region. 
+The region where it applies and the offset from UTC are specified by a locally recognised governing authority."""@en ;
   skos:historyNote """In the original 2006 version of OWL-Time, the TimeZone class, with several properties corresponding to a specific model of time-zones, was defined in a separate namespace \"http://www.w3.org/2006/timezone#\". 
 
 In the current version a class with same local name is put into the main OWL-Time namespace, removing the dependency on the external namespace. 
@@ -533,6 +544,8 @@ In the current version a class with same local name is put into the main OWL-Tim
 An alignment axiom 
 	tzont:TimeZone rdfs:subClassOf time:TimeZone . 
 allows data encoded according to the previous version to be consistent with the updated ontology. """ ;
+  skos:note "A designated timezone is associated with a geographic region. However, for a particular region the offset from UTC often varies seasonally, and the dates of the changes may vary from year to year. The timezone designation usually changes for the different seasons (e.g. Australian Eastern Standard Time vs. Australian Eastern Daylight Time). Furthermore, the offset for a timezone may change over longer timescales, though its designation might not."@en ;
+  skos:note "An ontology for time zone descriptions was described in [owl-time-20060927] and provided as RDF in a separate namespace tzont:. However, that ontology was incomplete in scope, and the example datasets were selective. Furthermore, since the use of a class from an external ontology as the range of an ObjectProperty in OWL-Time creates a dependency, reference to the time zone class has been replaced with the 'stub' class in the normative part of this version of OWL-Time."@en ;
   skos:scopeNote "In this implementation TimeZone has no properties defined. It should be thought of as an 'abstract' superclass of all specific timezone implementations." ;
 .
 :Tuesday
@@ -682,7 +695,8 @@ The range of this property is not specified, so can be replaced by any specific 
 .
 :generalDay
   rdf:type rdfs:Datatype ;
-  rdfs:comment "Day of month - generalization of xsd:gDay, formulated as a text string with a pattern constraint to reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type. "@en ;
+  rdfs:comment """Day of month - formulated as a text string with a pattern constraint to reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. 
+Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."""@en ;
   rdfs:label "Generalized day"@en ;
   owl:onDatatype xsd:string ;
   owl:withRestrictions (
@@ -694,7 +708,8 @@ The range of this property is not specified, so can be replaced by any specific 
 .
 :generalMonth
   rdf:type rdfs:Datatype ;
-  rdfs:comment "Month of year - generalization of xsd:gMonth, formulated as a text string with a pattern constraint to reproduce the same lexical form as gMonth, except that values up to 20 are permitted, in order to support calendars with more than 12 months in the year. Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en ;
+  rdfs:comment """Month of year - formulated as a text string with a pattern constraint to reproduce the same lexical form as gMonth, except that values up to 20 are permitted, in order to support calendars with more than 12 months in the year. 
+Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."""@en ;
   rdfs:label "Generalized month"@en ;
   owl:onDatatype xsd:string ;
   owl:withRestrictions (
@@ -706,7 +721,8 @@ The range of this property is not specified, so can be replaced by any specific 
 .
 :generalYear
   rdf:type rdfs:Datatype ;
-  rdfs:comment "Year number - generalization of xsd:gYear, formulated as a text string with a pattern constraint to reproduce the same lexical form as gYear. Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en ;
+  rdfs:comment """Year number - formulated as a text string with a pattern constraint to reproduce the same lexical form as gYear, but not restricted to values from the Gregorian calendar. 
+Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."""@en ;
   rdfs:label "Generalized year"@en ;
   rdfs:subClassOf rdfs:Resource ;
   owl:onDatatype xsd:string ;
@@ -858,6 +874,7 @@ The range of this property is not specified, so can be replaced by any specific 
   rdfs:range xsd:dateTime ;
   owl:deprecated "true"^^xsd:boolean ;
   skos:definition "Position of an instant, expressed using xsd:dateTime"@en ;
+  skos:note "The property :inXSDDateTime is replaced by :inXSDDateTimeStamp which makes the time-zone field mandatory."@en ;
 .
 :inXSDDateTimeStamp
   rdf:type owl:DatatypeProperty ;
@@ -1127,6 +1144,9 @@ The range of this property is not specified, so can be replaced by any specific 
 An alignment axiom 
 	tzont:TimeZone rdfs:subClassOf time:TimeZone . 
 allows data encoded according to the previous version to be consistent with the updated ontology. """ ;
+  skos:note """IETF and IANA each provide a database of timezones. These are well maintained an authoritative, but individual items are not available at individual URIs, i.e. not as \"Linked Data\", so cannot be used directly in data expressed using OWL-Time.
+
+DBPedia provides a set of resources corresponding to the IANA timezones, with a URI for each (e.g. https://en.wikipedia.org/wiki/Australia/Eucla). The World Clock service also provides a list of time zones with the description of each available as an individual webpage with a convenient individual URI (e.g. https://www.timeanddate.com/time/zones/acwst). Any of these can be used as the value of the time:timeZone property.""" ;
 .
 :unitDay
   rdf:type :TemporalUnit ;
@@ -1312,7 +1332,9 @@ allows data encoded according to the previous version to be consistent with the 
   rdfs:domain :GeneralDateTimeDescription ;
   rdfs:label "week"@en ;
   rdfs:range xsd:nonNegativeInteger ;
-  skos:note "According to ISO-8601, the first Monday in the year is the start of week number 1."@en ;
+  skos:note """Weeks are numbered differently depending on the calendar in use, and locale. 
+
+ISO-8601 specifies that the first week of the year shall include at least four days. Hence, in a locale where Monday is the first day of the week, week 1 contains the first Thursday in the year."""@en ;
 .
 :weeks
   rdf:type owl:DatatypeProperty ;
@@ -1329,6 +1351,7 @@ allows data encoded according to the previous version to be consistent with the 
   rdfs:label "has XSD date-time"@en ;
   rdfs:range xsd:dateTime ;
   owl:deprecated "true"^^xsd:boolean ;
+  skos:note "Using xsd:dateTime in this place means that the duration of the interval is implicit: it corresponds to the length of the smallest non-zero element of the date-time literal. However, this rule cannot be used for intervals whose duration is more than one rank smaller than the starting time - e.g. the first minute or second of a day, the first hour of a month, or the first day of a year. In these cases the desired interval cannot be distinguished from the interval corresponding to the next rank up. Because of this essential ambiguity, use of this property is not recommended and it is deprecated."@en ;
 .
 :year
   rdf:type owl:DatatypeProperty ;
