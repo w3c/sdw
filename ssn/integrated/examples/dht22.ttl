@@ -1,0 +1,127 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix qudt-1-1: <http://qudt.org/1.1/schema/qudt#> .
+@prefix qudt-unit-1-1: <http://qudt.org/1.1/vocab/unit#> .
+@prefix schema: <http://schema.org/>.
+
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix ssn-system: <http://www.w3.org/ns/ssn/systems#> .
+
+@prefix rdfp: <https://w3id.org/rdfp/>.
+
+@base <http://example.org/data/> .
+
+
+<DHT22#Procedure> a sosa:Procedure ;
+  ssn:hasOutput <DHT22#output> .
+
+<DHT22#output> a ssn:Output , rdfp:GraphDescription ;
+  rdfs:comment "The output is a RDF Graph that describes both the temperature and the humidity. It can be validated by a SHACL shapes graph."@en ;
+  rdfp:presentedBy [
+    a rdfp:GraphDescription ;
+    rdfp:validationRule <shacl_shapes_graph> ;
+  ] .
+
+
+<DHT22/4578> a ssn:System ;
+  rdfs:comment "DHT22 sensor #4578 contains a humidity and a temperature sensor."@en ;
+  rdfs:seeAlso <https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf> ;
+  ssn:hasSubSystem <DHT22/4578#TemperatureSensor>, <DHT22/4578#HumiditySensor> .
+
+
+
+<DHT22/4578#TemperatureSensor> a sosa:Sensor , ssn:System ;
+  rdfs:comment "The embedded temperature sensor, a specific instance of temperature sensor."@en ;
+  ssn-system:hasOperatingRange <DHT22/4578#TemperatureSensorOperatingRange> ; 
+  ssn-system:hasSystemCapability <DHT22/4578#TemperatureSensorCapability> ;
+  ssn:implements <DHT22#Procedure> .
+
+<DHT22/4578#HumiditySensor> a sosa:Sensor , ssn:System ;
+  rdfs:comment "The embedded humidity sensor, a specific instance of humidity sensor."@en ;
+  ssn-system:hasOperatingRange <DHT22/4578#HumiditySensorOperatingRange> ;
+  ssn:implements <DHT22#Procedure> .
+
+
+
+<DHT22/4578#TemperatureSensorOperatingRange> a ssn-system:OperatingRange ;
+  rdfs:comment "The conditions in which the DHT22 temperature sensor is expected to operate."@en ;
+  ssn-system:inCondition <NormalTemperatureCondition> , <NormalHumidityCondition> .
+
+<DHT22/4578#HumiditySensorOperatingRange> a ssn-system:OperatingRange ;
+  rdfs:comment "The conditions in which the DHT22 humidity sensor is expected to operate."@en ;
+  ssn-system:inCondition <NormalTemperatureCondition> , <NormalHumidityCondition> .
+
+
+
+<NormalOperatingCondition> a ssn-system:Condition , schema:PropertyValue ;
+  rdfs:comment "A temperature range of -40 to 80 Celsius."@en ;
+  schema:minValue -40.0 ;
+  schema:maxValue 80.0 ;
+  schema:unitCode qudt-unit-1-1:DegreeCelsius .
+
+<NormalHumidityCondition> a ssn-system:Condition , schema:PropertyValue ;
+  rdfs:comment "A relative humidity range of 5 to 85 %."@en ;
+  schema:minValue 5.0 ;
+  schema:maxValue 85.0 ;
+  schema:unitCode qudt-unit-1-1:Percent .
+
+
+
+<DHT22/4578#TemperatureSensorCapability> a ssn:Property , ssn-system:SystemCapability , schema:PropertyValue ;
+  rdfs:comment "The capabilities of the temperature sensor in normal temperature and humidity conditions." ;
+  ssn-system:inCondition <NormalTemperatureCondition> , <NormalHumidityCondition> ;
+  ssn-system:hasSystemProperty <DHT22/4578#TemperatureSensorAccuracy> , <DHT22/4578#TemperatureSensorSensitivity> , <DHT22/4578#TemperatureSensorRepeatability> , <DHT22/4578#TemperatureSensorFrequency> .
+
+<DHT22/4578#TemperatureSensorAccuracy> a ssn:Property , ssn-system:Accuracy , schema:PropertyValue ;
+  rdfs:comment "The accuracy of the temperature sensor is +-0.5 °C in normal temperature and humidity conditions."@en ;
+  schema:minValue -0.5 ;
+  schema:maxValue 0.5 ;
+  schema:unitCode qudt-unit-1-1:DegreeCelsius .
+
+<DHT22/4578#TemperatureSensorSensitivity> a ssn:Property , ssn-system:Sensitivity , ssn-system:Resolution , schema:PropertyValue ;
+  rdfs:comment "The sensitivity and resolution of the temperature sensor is 0.1 °C in normal temperature and humidity conditions."@en ;
+  schema:value 0.1 ;
+  schema:unitCode qudt-unit-1-1:DegreeCelsius .
+
+<DHT22/4578#TemperatureSensorPrecision> a ssn:Property , ssn-system:Precision , schema:PropertyValue ;
+  rdfs:comment "The precision (= repeatability) of the temperature sensor is +-0.2 °C in normal temperature and humidity conditions."@en ;
+  schema:minValue 0.2 ;
+  schema:maxValue 0.2 ;
+  schema:unitCode qudt-unit-1-1:DegreeCelsius .
+
+<DHT22/4578#TemperatureSensorFrequency> a ssn:Property , ssn-system:Frequency , schema:PropertyValue ;
+  rdfs:comment "The smallest possible time between one observation and the next is 2 s on average."@en ;
+  schema:value 2 ;
+  schema:unitCode qudt-unit-1-1:Second .
+
+
+<observation/1087> rdf:type sosa:Observation ;
+  sosa:madeBySensor <DHT22/4578#TemperatureSensor> ;
+  sosa:usedProcedure <DHT22#Procedure> ;
+  ssn-system:qualityOfObservation <observation/1087#quality> ;
+
+
+# one may classify the quality of observation using some class:
+
+<observation/1087#quality> rdf:type ex:FairQuality .
+
+
+# one may use some other ontology to further qualify this quality.
+
+<observation/1087#quality>
+  ex:evaluatedBy <Tom> ;
+  ex:confidenceValue "6"^^xsd:integer;
+  rdfs:comment """Tom gave a confidence value of 6 out of 10 on this observation."""@en .
+
+# one may use some quantity ontology.
+
+@prefix qudt-1-1: <http://qudt.org/1.1/schema/qudt#> .
+@prefix qudt-unit-1-1: <http://qudt.org/1.1/vocab/unit#> .
+
+<observation/1087#quality> rdf:type qudt-1-1:Quantity ;
+  qudt-1-1:quantityValue [
+    rdf:type qudt-1-1:QuantityValue ;
+    qudt-1-1:numericValue "98.4"^^xsd:double ;
+    qudt-1-1:unit qudt-unit-1-1:Percent ] .

@@ -1,0 +1,41 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix qudt-1-1: <http://qudt.org/1.1/schema/qudt#> .
+@prefix qudt-unit-1-1: <http://qudt.org/1.1/vocab/unit#> .
+@base <http://example.org/data/> .
+
+# Observation #358 of seismograph VCAB DP1 BP 40 (Vineyard Canyon, Parkfield, Ca) measured
+# a earth displacement speed of 0.000500 cm/sec at 8:23 am on April 18, 2017, Pacific
+# Daylight Time.
+
+<earth>  rdf:type    sosa:FeatureOfInterest ;
+  rdfs:label "earth"@en .
+
+<VCAB-DP1-BP-40> rdf:type sosa:Sensor ;
+  rdfs:label "seismograph VCAB DP1 BP 40 (Vineyard Canyon, Parkfield, Ca)"@en ;
+  rdfs:seeAlso <https://earthquake.usgs.gov/monitoring/seismograms/153> ;
+  sosa:observes <VCAB-DP1-BP-40#groundDisplacementSpeed> .
+
+<VCAB-DP1-BP-40#location> rdf:type sosa:FeatureOfInterest ;
+  rdfs:label "location of VCAB-DP1-BP-40"@en ;
+  geo:lat 35.8648067 ;
+  geo:long -120.6195831 ;
+  geo:alt 12.75 ;
+  sosa:isSampleOf <earth> .
+
+<VCAB-DP1-BP-40#groundDisplacementSpeed>  rdf:type    sosa:ObservableProperty , ssn:Property ;
+  rdfs:label "the ground displacement speed at location of VCAB-DP1-BP-40"@en ;
+  sosa:isObservedBy <VCAB-DP1-BP-40> .
+
+<VCAB-DP1-BP-40?t=2017-04-18T08%3A23%3A00-07%3A00> rdf:type sosa:Observation ;
+  sosa:madeBySensor <VCAB-DP1-BP-40> ; 
+  sosa:hasFeatureOfInterest  <VCAB-DP1-BP-40#location> ;
+  sosa:observedProperty  <VCAB-DP1-BP-40#groundDisplacementSpeed> ;
+  sosa:hasResult [
+     rdf:type qudt-1-1:QuantityValue ;
+     qudt-1-1:numericValue "5e-4"^^xsd:double ;
+     qudt-1-1:unit qudt-unit-1-1:CentimeterPerSecond ] ;
+  sosa:resultTime "2017-04-18T08:23:00-07:00"^^xsd:dateTimeStamp .

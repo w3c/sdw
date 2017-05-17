@@ -458,3 +458,52 @@ Content-Disposition: filename= sosa-prov.ttl;
 ```
 
 
+
+## SSN-System
+
+*URI:* http://www.w3.org/ns/ssn/systems
+
+*Version to use for publication:* http://w3c.github.io/sdw/ssn/integrated/ssn-system.ttl
+
+
+### The ontology document:
+
+
+*HTML representation:* 
+
+When operating a GET at http://www.w3.org/ns/ssn/systems with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#System-capabilities
+
+
+*RDF/XML representation:* 
+
+When operating a GET at http://www.w3.org/ns/ssn/systems with a Accept header that is compatible with `application/rdf+xml`, serve ssn-system.rdf, with headers:
+
+```
+Content-Type: application/rdf+xml
+Content-Location: http://www.w3.org/ns/ssn/systems.rdf
+Content-Disposition: filename= ssn-system.rdf;
+```
+
+When operating a GET at http://www.w3.org/ns/ssn/systems.rdf with a Accept header that is compatible with `application/rdf+xml`, serve ssn-system.rdf, with headers:
+
+```
+Content-Type: application/rdf+xml
+Content-Disposition: filename= ssn-system.rdf;
+```
+
+*Turtle representation:* 
+
+When operating a GET at http://www.w3.org/ns/ssn/systems with a Accept header that is compatible with `text/turtle`, serve ssn-system.ttl, with headers:
+
+```
+Content-Type: text/turtle
+Content-Location: http://www.w3.org/ns/ssn/systems.ttl
+Content-Disposition: filename= ssn-system.ttl;
+```
+
+When operating a GET at http://www.w3.org/ns/ssn/systems.ttl with a Accept header that is compatible with `text/turtle`, serve ssn-system.ttl, with headers:
+
+```
+Content-Type: text/turtle
+Content-Disposition: filename= ssn-system.ttl;
+```

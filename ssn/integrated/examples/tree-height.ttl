@@ -1,0 +1,57 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix qudt-1-1: <http://qudt.org/1.1/schema/qudt#> .
+@prefix qudt-unit-1-1: <http://qudt.org/1.1/vocab/unit#> .
+@base <http://example.org/data/> .
+
+# rangefinder #30 is a laser range finder sensor that was used 
+# to observe the height of tree #124 and #125.
+
+<rangefinder/30>        rdf:type           sosa:Sensor ;
+  rdfs:label "rangefinder #30"@en ;
+  rdfs:comment "rangefinder #30 is a laser range finder sensor."@en .
+
+# rangefinder #30 made observation #1087 of the height of tree #124.
+
+<observation/1087>  rdf:type               sosa:Observation ;
+  rdfs:label "observation #1087"@en ;
+  sosa:hasFeatureOfInterest  <tree/124> ;
+  sosa:observedProperty  <tree/124/height> ;
+  sosa:madeBySensor <rangefinder/30> ;
+  sosa:hasResult [ 
+    qudt-1-1:unit qudt-unit-1-1:Meter ; 
+    qudt-1-1:numericalValue "15.3"^^xsd:double ] .
+
+# using SSN, one can explicitly link a property and its feature of interest.
+ 
+<tree/124>  rdf:type    sosa:FeatureOfInterest ;
+  rdfs:label "tree #124"@en ;
+  ssn:hasProperty <tree/124#height> .
+
+<tree/124#height>  rdf:type    sosa:ObservableProperty , ssn:Property ;
+  rdfs:label "the height of tree #124"@en ;
+  ssn:isPropertyOf <tree/124> .
+
+# rangefinder #30 made observation #1088 of the height of tree #125.
+
+<observation/1088>  rdf:type               sosa:Observation ;
+  rdfs:label "observation #1088"@en ;
+  sosa:hasFeatureOfInterest  <tree/125> ;
+  sosa:observedProperty  <tree/125/height> ;
+  sosa:madeBySensor <rangefinder/30> ;
+  sosa:hasResult [ 
+    qudt-1-1:numericValue "23.0"^^xsd:double ;
+    qudt-1-1:unit qudt-unit-1-1:Meter ] .
+
+# using SSN, one can explicitly link a property and its feature of interest.
+ 
+<tree/125>  rdf:type    sosa:FeatureOfInterest ;
+  rdfs:label "tree #125"@en ;
+  ssn:hasProperty <tree/125#height> .
+
+<tree/125#height>  rdf:type    sosa:ObservableProperty , ssn:Property ;
+  rdfs:label "the height of tree #125"@en ;
+  ssn:isPropertyOf <tree/124> .
