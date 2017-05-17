@@ -95,18 +95,18 @@ including web-pages and real-world things if desired.
 It focusses particularly on temporal ordering relationships. 
 While these are implicit in all temporal descriptions, OWL-Time provides specific predicates to support, or to make explicit the results of, reasoning over the order or sequence of temporal entities. </p>
 <p>There is a great deal of relevant existing work, some very closely related. 
-ISO 8601 [[ISO8601]] provides a basis for encoding time position and extent in a character string, using the most common modern calendar-clock system. 
+ISO 8601 [[iso8601]] provides a basis for encoding time position and extent in a character string, using the most common modern calendar-clock system. 
 Datatypes in XML Schema [[xmlschema11-2]] use a subset of the ISO 8601 format in order to pack multi-element values into a compact literal. 
 Functions and operators on durations, and on dates and times, encoded in these ways are available in XPath and XQuery [[xpath-functions-31]]. 
-XSLT [[XSLT20]] also provides formatting functions for times and dates, with <a href="https://www.w3.org/TR/xslt20/#format-date">explicit support for the specified language, calendar and country</a>.  
+XSLT [[xslt20]] also provides formatting functions for times and dates, with <a href="https://www.w3.org/TR/xslt20/#format-date">explicit support for the specified language, calendar and country</a>.  
 Some of the XML Schema datatypes are <a href="https://www.w3.org/TR/owl2-quick-reference/#Built-in_Datatypes">built-in to OWL2</a> [[!owl2-quick-reference]], so the XPath and XQuery functions may be used on basic OWL data. </p>
 <p>OWL-Time makes use of these encodings, but also provides representations in which the elements of a date and time are put into separately addressable resources, which can help with queries and reasoning applications. 
 OWL-Time also supports other representations of temporal position and duration, including temporal coordinates (scaled position on a continuous temporal axis) and ordinal times (named positions or periods), as well as relaxing the expectation from the original version that dates must use the Gregorian calendar. 
 However, OWL-Time has a particular focus on ordering relations ("temporal topology"), which is not supported explicitly in any of the date-time encodings. </p>
-<p>A first-order logic axiomatization of the core of this ontology is available in [[HP-04]].
+<p>A first-order logic axiomatization of the core of this ontology is available in [[hp-04]].
 This document presents the OWL encodings of the ontology, with some additions. </p>
 <p>This version of OWL-Time was developed in the Spatial Data on the Web Working Group (a joint activity involving W3C and the Open Geospatial Consortium). 
-The ontology is based on the draft by Hobbs and Pan [[owl-time-20060927]], incorporating modifications proposed by Cox [[CO-15]] to support more general temporal positions, along with other minor improvements. 
+The ontology is based on the draft by Hobbs and Pan [[owl-time-20060927]], incorporating modifications proposed by Cox [[co-15]] to support more general temporal positions, along with other minor improvements. 
 The substantial changes are listed in the <a href="#changes">change-log</a>.
 The specification document has been completely re-written. </p>
 
@@ -177,7 +177,7 @@ The specification document has been completely re-written. </p>
 <section id="topology">
 <h3>Topological Temporal Relations</h3>
 <p>The basic structure of the ontology is based on an algebra of binary relations on intervals 
-(e.g., meets, overlaps, during) developed by Allen [[AL-84]], [[AF-97]] for
+(e.g., meets, overlaps, during) developed by Allen [[al-84]], [[af-97]] for
 representing qualitative temporal information, and to address the problem of reasoning about such information.
 </p>
 <p>The ontology starts with a class <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> with properties <code><a href="#time:hasBeginning">:hasBeginning</a></code> and <code><a href="#time:hasEnd">:hasEnd</a></code> that link to the temporal instants that define its limits, and <code><a href="#time:hasTemporalDuration">:hasTemporalDuration</a></code> to describe its extent. 
@@ -205,7 +205,7 @@ Note that the standard interval calculus assumes all intervals are proper, so th
 
 <figure> <img style="width: 545px; height: 322px;" title="Allen's Interval Relations" alt="Schematic of Interval Relations"
 src="./images/IntervalRelations.png"> 
-<figcaption>Thirteen elementary possible relations between time periods [[AF-97]].  </figcaption> </figure>
+<figcaption>Thirteen elementary possible relations between time periods [[af-97]].  </figcaption> </figure>
 
 <p>Two additional relations: <code>In</code> (the union of <code>During</code>, <code>Starts</code> and <code>Finishes</code>) and <code>Disjoint</code> (the union of <code>Before</code> and <code>After</code>) are not shown in the figure but are included in the ontology. </p>
 
@@ -219,18 +219,18 @@ These provide a standard way to attach time information to things, which may be 
 
 <p>The duration of a TemporalEntity may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#duration">xsd:duration</a></code> and the position of an Instant may be given using the datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>, which is built in to OWL 2 [[!owl2-syntax]]. 
 These both use the conventional notions of temporal periods (years, months, weeks ... seconds), the Gregorian calendar, and the 24-hour clock. 
-The lexical representations use [[!ISO8601]] style notation, but ignoring leap seconds, which are explicitly mandated by the international standard. </p>
+The lexical representations use [[!iso8601]] style notation, but ignoring leap seconds, which are explicitly mandated by the international standard. </p>
 
 <p>While this satisfies most web applications, many other calendars and temporal reference systems are used in particular cultural and scholarly contexts. 
 For example, the Julian calendar was used throughout Europe until the 16<sup>th</sup> century, and is still used for computing key dates in some orthodox Christian communities. 
 Lunisolar (e.g. Hebrew) and lunar (e.g. Islamic) calendars are currently in use in some communities, and many similar have been used historically. 
 Ancient Chinese calendars as well as the French revolutionary calendar used 10-day weeks.  
 In scientific and technical applications, Julian date counts the number of days since the beginning of 4713 BCE, and Loran-C, Unix and GPS time are based on seconds counted from a specified origin in 1958, 1970 and 1980, respectively, with GPS time represented using a pair of numbers for week number plus seconds into week. 
-Archaeological and geological applications use chronometric scales based on years counted backwards from ‘the present’ (defined as 1950 for radiocarbon dating [[RC-14]]), or using named periods associated with specified correlation markers ([[CR-05]], [[CR-14]], [[MF-13]]).
+Archaeological and geological applications use chronometric scales based on years counted backwards from ‘the present’ (defined as 1950 for radiocarbon dating [[rc-14]]), or using named periods associated with specified correlation markers ([[cr-05]], [[cr-14]], [[mf-13]]).
 Dynastic calendars (counting years within eras defined by the reign of a monarch or dynasty) were used in many cultures. In order to support these more general applications, the representation of temporal position and duration must be flexible, and annotated with the <em>temporal reference system </em>in use. </p>
 <p>A set of ordered intervals (e.g. named dynasties, geological periods, geomagnetic reversals, tree rings) can
 make a simple form of temporal reference system that supports logical reasoning, known as an <em>ordinal
-temporal reference system </em> [[ISO19108]]. </p>
+temporal reference system </em> [[iso19108]]. </p>
 <p>Measurement of duration needs a <em>clock</em>. In its most general form a clock is just a regularly
 repeating physical event ('tick') and a counting mechanism for the 'ticks'. These counts may be used to
 logically relate two events and to calculate a duration between the events.</p>
@@ -239,7 +239,7 @@ everyday dates and times related to the movement of astronomical bodies (day, mo
 <p class="note">As astronomically based calendars try to fit inconvenient durations into a usable regular system of counting cycles, 'intercalations' are often used to re-align the calendar's repeating patterns with astronomical events. These intercalations may be of different durations depending on the calendar, such as leap seconds, leap days, or even a group of days. Leap days are explicit and leap seconds implicit in the Gregorian calendar, which underlies the model used in several classes in OWL-Time. A general treatment of intercalations is beyond the scope of this ontology. </p>
 <p>For many purposes it is convenient to make temporal calculations in terms of clock durations that exceed
 everyday units such as days, weeks, months and years, using a representation of temporal position in a <em>temporal
-coordinate system</em> [[ISO19108]], i.e. on a number line with a specified origin,
+coordinate system</em> [[iso19108]], i.e. on a number line with a specified origin,
 such as Julian date, or Unix time. This may be converted to calendar units when necessary for human
 consumption. </p>
 <p>Nevertheless, in practice much temporal information is not well-defined, in that there may be no clear
@@ -357,7 +357,7 @@ xsd:gDay, respectively. </td>
 </tr>
 </tbody>
 </table>
-<p>Other datetime concepts can be defined by specialization of <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> - see <a href="#specialization">examples below</a>.</p>
+<p>Other datetime concepts can be defined by specialization of <code><a href="#time:GeneralDateTimeDescription">:GeneralDateTimeDescription</a></code> or <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> - see <a href="#temporal-precision">examples below</a>.</p>
 </section>
 
 <section>
@@ -567,7 +567,7 @@ calendar-clock system</td>
 <p>Six datatype properties <code><a href="#time:year">:year</a></code>, <code><a href="#time:month">:month</a></code>, <code><a href="#time:day">:day</a></code>, <code><a href="#time:hour">:hour</a></code>, <code><a href="#time:minute">:minute</a></code>,
 <code><a href="#time:second">:second</a></code>, together with <code><a href="#time:timeZone">:timeZone</a></code> support the description of
 components of a temporal position in a calendar-clock system. These correspond with the 'seven property
-model' described in ISO 8601 [[ISO8601]] and XML Schema Definition Language Part 2:
+model' described in ISO 8601 [[iso8601]] and XML Schema Definition Language Part 2:
 Datatypes [[xmlschema11-2]], except that the calendar is not specified in advance, but is provided
 through the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property (defined above). </p>
 <p>Some combinations of properties are redundant. For example, within a specified :year if <code><a href="#time:dayOfYear">:dayOfYear</a></code> is provided then <code><a href="#time:day">:day</a></code> and <code><a href="#time:month">:month</a></code> can be computed, and vice versa. 
@@ -779,7 +779,7 @@ are different</td>
 <code><a href="#time:intervalEquals">:intervalEquals</a></code> 
 <code><a href="#time:intervalDisjoint">:intervalDisjoint</a></code> 
 <code><a href="#time:intervalIn">:intervalIn</a></code> 
-support the set of interval relations defined by Allen [[AL-84]] and Allen and Ferguson [[AF-97]].</p>
+support the set of interval relations defined by Allen [[al-84]] and Allen and Ferguson [[af-97]].</p>
 </section>
 
 <section>
@@ -941,7 +941,7 @@ However, that ontology was incomplete in scope, and the example datasets were se
 </div>
 <div class="note">
 	<p>A designated timezone is associated with a geographic region. However, for a particular region the offset from UTC often varies seasonally, and the dates of the changes may vary from year to year. The timezone designation usually changes for the different seasons (e.g. Australian Eastern Standard Time vs. Australian Eastern Daylight Time). Furthermore, the offset for a timezone may change over longer timescales, though its designation might not. </p>
-	<p>Detailed guidance about working with time zones is given in [[TZ-Note]].</p>
+	<p>Detailed guidance about working with time zones is given in [[timezone]].</p>
 </div>
 </section>
 
@@ -971,7 +971,7 @@ may be represented directly, using this ontology, as a set of <code><a href="#ti
 inter-relationships to support the necessary ordering relationships. See example below of <a href="#geologictimescale">Geologic
 Timescale</a>. </p>
 <div class="note">
-<p>A taxonomy of temporal reference systems is provided in ISO 19108:2002 [[ISO19108]],
+<p>A taxonomy of temporal reference systems is provided in ISO 19108:2002 [[iso19108]],
 including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. numeric offset from an epoch); 
 (c) temporal ordinal reference systems (i.e. ordered sequence of named intervals, not necessarily of equal duration). </p>
 </div>
@@ -3170,7 +3170,7 @@ the number of seconds since the beginning of 1st January 1970): </p>
 <section id="temporal-precision">
 <h3>Temporal precision</h3>
 <p>For the purposes of radiocarbon dating (which is the technique used in geological age determination for
-materials up to around 60,000 years old) 'the Present' is conventionally fixed at 1950 [[RC-14]].
+materials up to around 60,000 years old) 'the Present' is conventionally fixed at 1950 [[rc-14]].
 This can be described as an individual <code><a href="#time:Instant">:Instant</a></code>, with its position expressed using any of the
 three alternatives: </p>
 <pre>geol:Present
@@ -3273,7 +3273,7 @@ ex:GPSTime
 
 <section id="iCal">
 <h3>iCalendar</h3>
-<p>iCalendar [[RFC5545]] is a widely supported standard for personal data interchange. It provides
+<p>iCalendar [[rfc5545]] is a widely supported standard for personal data interchange. It provides
 the definition of a common format for openly exchanging calendaring and scheduling information across the
 Internet. The representation of temporal concepts in this time ontology can be straightforwardly mapped to
 iCalendar. For example, duration of 15 days, 5 hours and 20 seconds is represented in iCalendar as P15DT5H0M20S,
@@ -3343,7 +3343,7 @@ This may be represented in multiple ways using OWL-Time, including the following
 <h3>Geologic timescale</h3>
 <p>The geologic timescale is defined as a set of named intervals arranged in a hierarchy, such that there is
 only one subdivision of the intervals of each rank (e.g. 'Era') by a set of intervals of the next rank (in
-this case 'Period') [[CR-05]]. Since the relative ordering is well-defined this graph can
+this case 'Period') [[cr-05]]. Since the relative ordering is well-defined this graph can
 therefore serve as an ordinal temporal reference system. Fig. 5 shows how the geologic timescale can be
 expressed as a set of <code><a href="#time:ProperInterval">:ProperInterval</a></code>s related to each other using only <code><a href="#time:intervalMetBy">:intervalMetBy</a></code>, <code><a href="#time:intervalStartedBy">:intervalStartedBy</a></code>,
 <code><a href="#time:intervalFinishedBy">:intervalFinishedBy</a></code>. Many other interval relationships follow logically from the ones shown (for
