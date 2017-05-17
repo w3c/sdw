@@ -156,7 +156,13 @@ var respecConfig = {
         href: "https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissionsauthorGuidelines",
         title: "Guidelines to Authors, Radiocarb. Mag. ",
         date: "2014"
-      }
+      },
+      "TZ-Note": {
+        editors: ["A. Phillips"], 
+        date: "2011", 
+        href: "http://www.w3.org/TR/timezone/",
+        title: "Working with Time Zones - W3C Working Group Note 5 July 2011"
+      },
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
