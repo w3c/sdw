@@ -222,6 +222,13 @@ var respecConfig = {
          status:"Deliverable 2.2",
          publisher: "ITEA2 12004 Smart Energy Aware Systems",
          date: "2017"
+      },
+      "Rijgersberg-et-al-2013": {
+         href:"http://www.semantic-web-journal.net/content/ontology-units-measure-and-related-concepts",
+         authors: ["Hajo Rijgersberg", "Mark van Assem", "Jan Top"],
+         title: "Ontology of Units of Measure and Related Concepts",
+         publisher: "Semantic Web journal, IOS Press",
+         date: "2013"
       }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
