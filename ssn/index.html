@@ -4193,7 +4193,7 @@ their usage are given.</p>
         <figcaption>Core PROV classes and some of the properties that relate them, shown alongside the core SOSA structure for observation, actuation and sampling. Classes generally aligned with prov:Entity in yellow ellipses; with prov:Activity in purple boxes; with prov:Agent in orange boxes.</figcaption>
       </figure>
 
-      <p>The SOSA/SSN ontologies conceive observations, actuations, and acts of sampling as activities or events, that result in information being produced, or a change in the world, or the production or transformation of a sample. 
+      <p>The SOSA/SSN ontologies conceive observations, actuations, and acts of sampling as activities or events, that results in information being produced, or a change in the world, or the production or transformation of a sample. 
       Thus, an alignment of SOSA to PROV is natural. 
       Compton et al. [[SSN-PROV]] and Cox [[OM-Lite]] have previously described alignments of the SSNX and O&amp;M models with PROV.
       The alignment here is based on that work, also extended to consider actuation. </p>
@@ -4400,7 +4400,7 @@ their usage are given.</p>
       <section id="HorizontalSegmentation">
         <h2>Horizontal Segmentation</h2>
         This section provides details on the currently available 
-        horizontal segmentation modules and the handling of forecasts and locations.
+        horizontal segmentation modules.
         <section id="System-capabilities">
           <h3>System Capabilities Module</h3>
           <p>The terms defined in this section are marked <em><a href="#at-risk">at risk</a></em>.</p>
@@ -5801,7 +5801,12 @@ their usage are given.</p>
 
         </section>
     </section>
-    <section id="location" class="informative">
+     </section>
+      <section  class="informative" id="common-modeling-questions">
+        <h2>Common Modeling Questions</h2>
+    This section informally discusses how to handle common modeling questions such as locations, forecasts, and quantity values with a unit of measure.
+    
+    <section id="location">
       <h3>Location</h3>
       <p>Many of the key classes provided by SOSA and SSN represent entities that can be located in space 
       such as sensors, features of interest, actuators, samples, and so forth, or activities that can be 
@@ -5831,6 +5836,79 @@ their usage are given.</p>
         <p class="note">Describing a plan for some actuation or observation in
           the future is not covered by this specification.</p>
      </section>
+
+     <section id="quantity-values-and-unit-of-measures" class="informative">
+     <h3>Quantity Values and Unit of Measures</h3>
+        <p>The result of an <a href="#SOSAObservation"><code>sosa:Observation</code></a> or an <a href="#SOSAActuation"><code>sosa:Actuation</code></a> can be a quantity value with a numeric value and a unit of measure.
+
+        <p class="note">It is not in the scope of this specification to recommend any particular way of modeling results as quantity values. 
+        There exists external vocabularies that are specifically designed for modeling quantity values as OWL individuals. Examples 
+        include the Quantities, Units, Dimensions and Data Types Ontologies (QUDT, [[QUDT]]) and the Ontology of Units of Measure (OM, [[Rijgersberg-et-al-2013]]). <br/>
+        With QUDT 1.1, a <a href="#SOSAResult"><code>sosa:Result</code></a> would be a <a href="http://qudt.org/"><code>qudt:QuantityValue</code></a>.<br/>
+        With OM 2, a <a href="#SOSAResult"><code>sosa:Result</code></a> would be a <a href="http://www.wurvoc.org/vocabularies/"><code>om:Measure</code> or <code>om:Point</code></a>.</p>
+        <pre class="example">
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;.
+@prefix qudt-1-1: &lt;http://qudt.org/1.1/schema/qudt#&gt; .
+@prefix qudt-unit-1-1: &lt;http://qudt.org/1.1/vocab/unit#&gt; .
+
+&lt;Observation/234534&gt; a sosa:Observation ;
+   rdfs:comment "Observation of the difference between 
+                    the outside temperature and the inside temperature."@en ;
+   sosa:hasFeatureOfInterest &lt;Appartment/134&gt; ;
+   sosa:hasResult [
+      a qudt-1-1:QuantityValue ;
+      qudt-1-1:unit qudt-unit-1-1:DegreeCelsius ;
+      qudt-1-1:numericValue "-29.9"^^xsd:double ] .
+
+&lt;Observation/83985&gt; a sosa:Observation ;
+   rdfs:comment "Observation of the temperature inside Appartment #134."@en ;
+   sosa:hasFeatureOfInterest &lt;Appartment/134&gt; ;
+   sosa:hasResult [
+      a qudt-1-1:QuantityValue ;
+      qudt-1-1:unit qudt-unit-1-1:DegreeCelsius ;
+      qudt-1-1:numericValue "22.4"^^xsd:double ] .
+        </pre>
+        <pre class="example">
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;.
+@prefix om: &lt;http://www.ontology-of-units-of-measure.org/resource/om-2/&gt; .
+
+&lt;Observation/234534&gt; a sosa:Observation ;
+   rdfs:comment "Observation of the difference between
+                    the outside temperature and the inside temperature."@en ;
+   sosa:hasFeatureOfInterest &lt;Appartment/134&gt; ;
+   sosa:hasResult [
+      a om:Measure ;
+      om:hasUnit om:degreeCelsius ;
+      om:hasNumericalValue "-29.9"^^xsd:double ] .
+
+&lt;Observation/83985&gt; a sosa:Observation ;
+   rdfs:comment "Observation of the temperature inside Appartment #134."@en ;
+   sosa:hasFeatureOfInterest &lt;Appartment/134&gt; ;
+   sosa:hasResult [
+      a om:Point ;
+      om:hasScale om:CelsiusScale ;
+      om:hasNumericalValue "22.4"^^xsd:double ] .
+        </pre>
+
+       <p class="note"> Other means to represent quantity values as literals are reported, but
+          not in the scope of this specification. This solution would require the use of some custom datatype 
+          whose value space is some set of quantity values. Such a datatype should be supported 
+          by RDF and SPARQL engines to support the comparison of quantity values. 
+          On the other hand, this approach is not compatible with the OWL specifications, that 
+          restrict the set of datatypes that can be used. See sec. 5.2 in [[owl2-syntax]] for more details.</p>
+
+        <pre class="example">
+@prefix cdt: &lt;http://w3id.org/lindt/custom_datatypes#&gt; .
+@prefix sosa: &lt;http://www.w3.org/ns/sosa/&gt; .
+
+&lt;observation/123&gt; a sosa:Observation ;
+  sosa:hasSimpleResult "12.4 m"^^cdt:length .
+        </pre>
+        
+     </section>
+ 
      </section>
       <section class="appendix" id="examples">
         <h2>Complete Examples</h2>
