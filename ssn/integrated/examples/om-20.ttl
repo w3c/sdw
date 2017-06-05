@@ -1,0 +1,85 @@
+# baseURI: http://example.org/om-20
+# imports: http://qudt.org/2.0/schema/qudt
+# imports: http://www.w3.org/2006/time
+# imports: http://www.w3.org/ns/prov-o#
+# imports: http://www.w3.org/ns/ssn/
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix om-20: <http://example.org/om-20/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/om-20>
+  rdf:type owl:Ontology ;
+  dcterms:created "2017-06-06"^^xsd:date ;
+  dcterms:creator <http://people.csiro.au/Simon-Cox> ;
+  rdfs:comment "SOSA/SSN examples matching the ones found in Annex C of OMXML 2.0" ;
+  rdfs:seeAlso <http://portal.opengeospatial.org/files/?artifact_id=41510> ;
+  owl:imports <http://qudt.org/2.0/schema/qudt> ;
+  owl:imports <http://www.w3.org/2006/time> ;
+  owl:imports <http://www.w3.org/ns/prov-o#> ;
+  owl:imports <http://www.w3.org/ns/ssn/> ;
+.
+om-20:OPTest1
+  rdf:type sosa:Observation ;
+  rdfs:comment "Observation instance with remote result" ;
+  rdfs:label "Observation Pointer 1" ;
+  sosa:hasFeatureOfInterest <http://my.example.org/wfs%26request=getFeature%26;featureid=789002> ;
+  sosa:hasResult <http://my.example.org/results%3f798002%26property=RH> ;
+  sosa:observedProperty <urn:example:RelativeHumidity> ;
+  sosa:phenomenonTime om-20:op1t ;
+  sosa:resultTime "2005-01-11T18:22:25.00+10:00"^^xsd:dateTime ;
+.
+om-20:obsTest1
+  rdf:type sosa:Observation ;
+  rdfs:comment "Observation test instance: fruit mass" ;
+  rdfs:label "Observation test 1" ;
+  sosa:hasFeatureOfInterest <http://wfs.example.org?request=getFeature&amp;featureid=fruit37f> ;
+  sosa:hasResult [
+      rdf:type qudt:QuantityValue ;
+      rdf:type sosa:Result ;
+      qudt:numericValue "0.28"^^<http://www.linkedmodel.org/schema/dtype#numericUnion> ;
+      qudt:unit <http://qudt.org/vocab/unit#Kilogram> ;
+    ] ;
+  sosa:madeBySensor <http://www.example.org/register/process/scales34.xml> ;
+  sosa:observedProperty <http://sweet.jpl.nasa.gov/2.0/phys.owl#Mass> ;
+  sosa:phenomenonTime om-20:ot1t ;
+  sosa:resultTime "2005-01-11T16:22:25.00+10:00"^^xsd:dateTimeStamp ;
+.
+om-20:obsTest2
+  rdf:type sosa:Observation ;
+  rdfs:comment "Observation test instance: fruit identification" ;
+  rdfs:label "Observation test 2" ;
+  sosa:hasFeatureOfInterest <http://wfs.example.org?request=getFeature&amp;featureid=fruit37f> ;
+  sosa:hasResult <http://en.wikipedia.org/wiki/List_of_fruits#Banana> ;
+  sosa:madeBySensor <http://www.example.org/party/individual/abc123> ;
+  sosa:observedProperty <http://sweet.jpl.nasa.gov/2.0/biol.owl#Species> ;
+  sosa:phenomenonTime om-20:ot2t ;
+  sosa:resultTime "2005-01-11T17:22:25.00+10:00"^^xsd:dateTime ;
+  sosa:usedProcedure <http://www.example.org/party/role/field_worker> ;
+.
+om-20:op1t
+  rdf:type time:ProperInterval ;
+  time:hasBeginning [
+      rdf:type time:Instant ;
+      time:inXSDDateTimeStamp "2005-01-11T17:22:25.00+10:00"^^xsd:dateTimeStamp ;
+    ] ;
+  time:hasEnd [
+      rdf:type time:Instant ;
+      time:inXSDDateTimeStamp "2005-01-11T18:22:25.00+10:00"^^xsd:dateTimeStamp ;
+    ] ;
+.
+om-20:ot1t
+  rdf:type time:Instant ;
+  time:inXSDDateTimeStamp "2005-01-11T16:22:25.00+10:00"^^xsd:dateTimeStamp ;
+.
+om-20:ot2t
+  rdf:type time:Instant ;
+  time:inXSDDateTimeStamp "2005-01-11T17:22:25.00+10:00"^^xsd:dateTimeStamp ;
+.
