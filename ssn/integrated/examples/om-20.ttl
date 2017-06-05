@@ -1,16 +1,21 @@
 # baseURI: http://example.org/om-20
+# imports: http://example.org/geosparql
 # imports: http://qudt.org/2.0/schema/qudt
 # imports: http://www.w3.org/2006/time
 # imports: http://www.w3.org/ns/prov-o#
+# imports: http://www.w3.org/ns/sosa/sampling
 # imports: http://www.w3.org/ns/ssn/
 
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix geosparql: <http://www.opengis.net/ont/geosparql#> .
 @prefix om-20: <http://example.org/om-20/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sampling: <http://www.w3.org/ns/sosa/sampling/> .
+@prefix sf: <http://www.opengis.net/ont/sf#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -21,10 +26,20 @@
   dcterms:creator <http://people.csiro.au/Simon-Cox> ;
   rdfs:comment "SOSA/SSN examples matching the ones found in Annex C of OMXML 2.0" ;
   rdfs:seeAlso <http://portal.opengeospatial.org/files/?artifact_id=41510> ;
+  owl:imports <http://example.org/geosparql> ;
   owl:imports <http://qudt.org/2.0/schema/qudt> ;
   owl:imports <http://www.w3.org/2006/time> ;
   owl:imports <http://www.w3.org/ns/prov-o#> ;
+  owl:imports sosa:sampling ;
   owl:imports <http://www.w3.org/ns/ssn/> ;
+.
+om-20:COTest3
+  rdf:type sosa:Observation ;
+  rdfs:comment "Complex Observation test instance" ;
+.
+om-20:O35235
+  rdf:type sosa:Observation ;
+  rdfs:label "Weather Data" ;
 .
 om-20:OPTest1
   rdf:type sosa:Observation ;
@@ -35,6 +50,11 @@ om-20:OPTest1
   sosa:observedProperty <urn:example:RelativeHumidity> ;
   sosa:phenomenonTime om-20:op1t ;
   sosa:resultTime "2005-01-11T18:22:25.00+10:00"^^xsd:dateTime ;
+.
+om-20:b1
+  rdf:type sosa:Sample ;
+  rdfs:comment "Geology borehole Encoded as a SamplingCurve With three logs encoded as the results of relatedObservations" ;
+  rdfs:label "b1" ;
 .
 om-20:obsTest1
   rdf:type sosa:Observation ;
@@ -52,6 +72,11 @@ om-20:obsTest1
   sosa:phenomenonTime om-20:ot1t ;
   sosa:resultTime "2005-01-11T16:22:25.00+10:00"^^xsd:dateTimeStamp ;
 .
+om-20:obsTest1s
+  rdf:type sosa:Observation ;
+  rdfs:comment "Spatial observation test instance: water level" ;
+  rdfs:label "Spatial observation test 1" ;
+.
 om-20:obsTest2
   rdf:type sosa:Observation ;
   rdfs:comment "Observation test instance: fruit identification" ;
@@ -63,6 +88,11 @@ om-20:obsTest2
   sosa:phenomenonTime om-20:ot2t ;
   sosa:resultTime "2005-01-11T17:22:25.00+10:00"^^xsd:dateTime ;
   sosa:usedProcedure <http://www.example.org/party/role/field_worker> ;
+.
+om-20:obsTest4
+  rdf:type sosa:Observation ;
+  rdfs:comment "Observation test instance - multi-element featureOfInterest" ;
+  rdfs:label "Multi-element 1" ;
 .
 om-20:op1t
   rdf:type time:ProperInterval ;
@@ -82,4 +112,32 @@ om-20:ot1t
 om-20:ot2t
   rdf:type time:Instant ;
   time:inXSDDateTimeStamp "2005-01-11T17:22:25.00+10:00"^^xsd:dateTimeStamp ;
+.
+om-20:pr1
+  rdf:type sosa:Sample ;
+  rdfs:comment "Geology traverse" ;
+  rdfs:label "pr1" ;
+.
+om-20:pr1_s2
+  rdf:type sosa:Sample ;
+  <http://schema.org/material> <http://www.opengis.net/def/material/OGC-OM/2.0/rock> ;
+  geosparql:defaultGeometry [
+      rdf:type sf:Point ;
+      geosparql:asWKT "<http://www.opengis.net/def/crs/EPSG/0/4347> Point(-30.706 134.196 272.)"^^geosparql:wktLiteral ;
+    ] ;
+  rdfs:comment "Rock sample collected on traverse" ;
+  rdfs:label "pr1_s2" ;
+  prov:generatedAtTime "2007-01-29T12:19:55.00+09:00"^^xsd:dateTime ;
+  sosa:isSampleOf <http://my.geology.example.org/unit/g345> ;
+  sampling:hasSampleRelationship [
+      rdf:type sampling:SampleRelationship ;
+      sampling:natureOfRelationship <http://www/example/org/sampling/parentSpecimen> ;
+      sampling:relatedSample <http://my.geology.example.org/projects/2007/pr1_s1> ;
+    ] ;
+  sosa:usedProcedure <http://geochemistry.example.org/splits/biased/density/greaterThan/2.9> ;
+.
+om-20:st2
+  rdf:type sosa:Sample ;
+  rdfs:comment "Hydrology sampling station" ;
+  rdfs:label "st2" ;
 .
