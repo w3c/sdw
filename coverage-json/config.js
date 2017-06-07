@@ -100,7 +100,30 @@ var respecConfig = {
          href:"http://ontologydesignpatterns.org/wiki/Ontology:DOLCE+DnS_Ultralite",
          authors: ["Aldo Gangemi"],
          title: "DOLCE+DnS Ultralite (DUL)"
+      },
+      "ISO19123":{
+	     href:"https://www.iso.org/standard/40121.html",
+	     title:"Geographic information -- Schema for coverage geometry and functions",
+	     publisher:"ISO/TC 211"
+      },
+      "NetCDF":{
+	     href:"http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/ncml/",
+	     title:"The NetCDF Markup Language (NcML)", 
+	     publisher:"UCAR Community Programs",
+	     authors: ["John Caron", "Luca Cinquini", "Ethan Davis", "Bob Drach", "Stefano Nativi", "Russ Rew"]
+      },
+      "OGC-CIS":{
+	     href:"https://portal.opengeospatial.org/files/?artifact_id=48553",
+	     title:"OGC Coverage Implementation Schema, Version 1.0.1",
+	     authors:["Peter Baumann"],
+         publisher: "Open Geospatial Consortium"
+      },
+      "TimeseriesML":{
+	     href:"http://www.opengeospatial.org/standards/tsml",
+	     title:"TimeseriesML (TSML)",
+         publisher: "Open Geospatial Consortium"
       }
+
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
