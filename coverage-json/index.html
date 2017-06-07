@@ -98,13 +98,13 @@ table, th, td {
       <h2>Introduction</h2>
       <section  id="coverage">
         <h3>What is a Coverage?</h3>
-        <p>The term "coverage" is defined in ISO19123 (REF) as a "feature that acts as a function to return values from its range for any direct position within its spatial, temporal or spatiotemporal domain". In other words, a coverage maps points in space and time to data values. For example, an aerial photograph can be modelled as a coverage that maps positions on the ground to colours. A river gauge maps points in time to flow values. A weather forecast maps points in space and time to values of temperature, wind speed, humidity and so forth.</p>
+        <p>The term "coverage" is defined in [[ISO19123]] as a "feature that acts as a function to return values from its range for any direct position within its spatial, temporal or spatiotemporal domain". In other words, a coverage maps points in space and time to data values. For example, an aerial photograph can be modelled as a coverage that maps positions on the ground to colours. A river gauge maps points in time to flow values. A weather forecast maps points in space and time to values of temperature, wind speed, humidity and so forth.</p>
         <p class="note">Sometimes we see the word “coverage” used synonymously with “gridded data” or “raster data” but this isn’t really accurate. One can see from the above paragraph that non-gridded data (like a river gauge measurement) can also be modelled as coverages. Nevertheless, we often observe a bias toward gridded data in discussions (and software) that concern coverages.)</p>
       </section>
 
       <section id="existingmodels">
         <h3>Existing Coverage representations</h3>
-        <p>The ISO19123 specification defines an <em>abstract</em> data model for representing the data and metadata needed to encode coverage data. This abstract model can be instantiated in many different concrete formats. The OGC Coverage Implementation Schema (CIS) specification (REF) describes a <em>concrete</em>, directly instantiable data model and XML serialisation based on the Geography Markup Language (GML). Other serialisations have been defined, sometimes by retrospectively mapping existing binary data formats to the ISO19123 abstract data model (e.g. NetCDF, REF Nativi et al). Version 1.1 (<strong>TODO check this</strong>) of the CIS specification supports a JSON serialization, which is created through a direct translation from GML types to JSON objects. (We provide a brief comparison of CIS-JSON with CoverageJSON <a href="#cis">below</a>.)</p>
+        <p>The [[ISO19123]] specification defines an <em>abstract</em> data model for representing the data and metadata needed to encode coverage data. This abstract model can be instantiated in many different concrete formats. The OGC Coverage Implementation Schema (CIS) specification ([[OGC-CIS]]) describes a <em>concrete</em>, directly instantiable data model and XML serialisation based on the Geography Markup Language (GML). Other serialisations have been defined, sometimes by retrospectively mapping existing binary data formats to the ISO19123 abstract data model (e.g. [[NetCDF]]). Version 1.1 (<strong>TODO check this</strong>) of the CIS specification supports a JSON serialization, which is created through a direct translation from GML types to JSON objects. (We provide a brief comparison of CIS-JSON with CoverageJSON <a href="#cis">below</a>.)</p>
       </section>
 
       <section id="motivation">
@@ -198,7 +198,7 @@ table, th, td {
       </pre>
       <p>Note that difference CRSs can be associated with different combinations of axes, providing a very flexible model that allows complex data to be encoded without the need to create composite CRSs. Axis values can also be categorical in nature (instead of numeric), enabling data values to be associated with entities that are not spatiotemporal coordinates.</p>
 
-      <p class="note">This closely mirrors the structure of the <a href="https://www.w3.org/TR/vocab-data-cube/">RDF Data Cube</a>, in which orthogonal <dfn>dimensions</dfn> are combined to form the domain of the data cube. (A "dimension" in the data cube corresponds with an "axis" in CoverageJSON.) Therefore, although a formal mapping process has yet to be performed, we expect that interoperability between the RDF Data Cube and CoverageJSON is achievable. The RDF Data Cube specification does not explicitly support spatiotemporal dimensions, but this is addressed in the <a href="https://w3c.github.io/sdw/qb4st/">QB4ST</a> extensions. <strong>TODO: is there a better way of citing QB and QB4ST?</strong></p>
+      <p class="note">This closely mirrors the structure of the RDF Data Cube Vocabulary [[VOCAB-DATA-CUBE]], in which orthogonal <dfn>dimensions</dfn> are combined to form the domain of the data cube. (A "dimension" in the data cube corresponds with an "axis" in CoverageJSON.) Therefore, although a formal mapping process has yet to be performed, we expect that interoperability between the RDF Data Cube and CoverageJSON is achievable. The RDF Data Cube specification does not explicitly support spatiotemporal dimensions, but this is addressed in the [[QB4ST]] extensions.</p>
 
       <p>This mechanism allows for a huge variety of domain structures to be encoded, from multidimensional grids to one-dimensional trajectories through four-dimensional space. To ease the burden on clients, CoverageJSON allows an optional <dfn>domain type</dfn> property to be defined (see the example above). If the data provider specifies that the domain is of a known type, the client then knows in more detail what to expect when the domain is inspected. For example, if the domain type is "Grid", the client knows that the domain MUST have axes that are called <code>"x"</code> and <code>"y"</code> (corresponding to the two horizontal spatial dimensions) and MAY have axes called <code>"z"</code> and <code>"t"</code> (corresponding respectively to the vertical and temporal dimensions). A number of <a href="https://covjson.org/domain-types/">common domain types</a> are specified and there is a <a href="https://covjson.org/spec/#custom-types">mechanism for data providers to define and register their own types</a>. Note that in a typical document, short names (<code>"Grid"</code>, <code>"PointSeries"</code>, <code>"Trajectory"</code>, etc.) are used to indicate the domain type, but in fact these are full URIs in disguise - this becomes apparent when viewing CoverageJSON document as RDF using the JSON-LD context (see <a href="#rdf">below</a>).</p>
     </section>
@@ -212,7 +212,7 @@ table, th, td {
           <em>one-dimensional</em> array, with a <code>shape</code> property that defines how to "unwrap" the one-dimensional array into
           a multi-dimensional one.</li>
         <li>A <dfn>TiledNdArray</dfn> object splits up a multi-dimensional array into several parts and links to
-         those parts via URI templates (RFC 6570) where each part is an NdArray object.
+         those parts via URI templates ([[RFC6570]]) where each part is an NdArray object.
          A single TiledNdArray may define several ways of splitting up the array (each way is a <em>tileset</em>), to cater for different access scenarios.</li>
       </ul>
       <p class="note">Readers may wonder why multi-dimensional arrays are not encoded as nested arrays in CoverageJSON. Nested arrays
@@ -373,13 +373,13 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
 
       <section id="netcdf">
       <h3>NetCDF and CF-NetCDF</h3>
-      <p class="note">NetCDF (REF) is a binary, platform-independent data format for multidimensional data, which is independent of any community of practice. Essentially, a NetCDF file is a collection of multidimensional arrays, plus metadata provided as key-value pairs. Metadata conventions are required to specialise NetCDF for particular communities. The <a href="http://cfconventions.org">Climate and Forecast</a> conventions are the pre-eminent conventions for geospatial data. NetCDF files that conform to these conventions are known as "CF-NetCDF files".)</p>
-      <p>The overall structure of CoverageJSON is quite close to that of NetCDF (REF), consisting essentially of a set of orthogonal domain axes that can be combined in different ways. One major difference is that in CoverageJSON, there is an explicit Domain object, whereas in NetCDF the domain is specified implicitly by linking data variables with coordinate variables. One consequence of this is that NetCDF files can contain several domains and hence several Coverages. A NetCDF file could therefore be converted to a single Coverage or a Coverage Collection in CoverageJSON.</p>
+      <p class="note">[[NetCDF]] is a binary, platform-independent data format for multidimensional data, which is independent of any community of practice. Essentially, a NetCDF file is a collection of multidimensional arrays, plus metadata provided as key-value pairs. Metadata conventions are required to specialise NetCDF for particular communities. The <a href="http://cfconventions.org">Climate and Forecast</a> conventions are the pre-eminent conventions for geospatial data. NetCDF files that conform to these conventions are known as "CF-NetCDF files".)</p>
+      <p>The overall structure of CoverageJSON is quite close to that of [[NetCDF]], consisting essentially of a set of orthogonal domain axes that can be combined in different ways. One major difference is that in CoverageJSON, there is an explicit Domain object, whereas in NetCDF the domain is specified implicitly by linking data variables with coordinate variables. One consequence of this is that NetCDF files can contain several domains and hence several Coverages. A NetCDF file could therefore be converted to a single Coverage or a Coverage Collection in CoverageJSON.</p>
     </section>
 
       <section id="cis">
       <h3>OGC Coverage Implementation Schema (CIS)</h3>
-      <p>The overall concepts of CoverageJSON are close to those of the ISO19123 standard (REF) and the OGC standard Coverage Implementation Schema (CIS, REF), which specialises ISO19123. The main points of difference are:</p>
+      <p>The overall concepts of CoverageJSON are close to those of the [[ISO19123]] standard and the OGC standard Coverage Implementation Schema ([[OGC-CIS]]), which specialises ISO19123. The main points of difference are:</p>
       <ul>
         <li>CIS uses a different set of rules for gridded and non-gridded data, whereas CoverageJSON uses a single consistent set.</li>
         <li>CIS allows each Coverage to have exactly one CRS, whereas CoverageJSON allows different CRSs to be applied to different sets of coordinates in the domain (e.g. one CRS for x and y, and another CRS for z).</li>
@@ -390,7 +390,7 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
     <section>
       <h3>TimeseriesML</h3>
       <div  class="issue"  data-number="101">Describe relationship to other data models, such as TimeseriesML.</div>
-      <p><strong>TODO expand this</strong>, but the main difference is probably that TimeseriesML allows for a number of ways to associate values of time to data values: a data value may represent an accumulation or average of a quantity over time, and the time values in the domain may mark the start, end or middle of the time period in question.</p>
+      <p><strong>TODO expand this</strong>, but the main difference is probably that [[TimeseriesML]] allows for a number of ways to associate values of time to data values: a data value may represent an accumulation or average of a quantity over time, and the time values in the domain may mark the start, end or middle of the time period in question.</p>
     </section>
     </section>
 
@@ -406,7 +406,7 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
 		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#4DModelSpaceTime">4D model of space-time</td><td>Domains in CoverageJSON can have any number of dimensions. Many of the defined <a href="https://covjson.org/domain-types/">domain types</a> support 4D domains, including <a href="https://covjson.org/domain-types/#grid">grids</a> and <a href="https://covjson.org/domain-types/#trajectory">trajectories</a>.</td>
 		  </tr>
 		  <tr>
-		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Compatibility">Compatibility with existing practices</td><td>CoverageJSON incorporates the same overall concepts (domain, range, and metadata) as other coverage data models OGC Coverage Implementation Schema standard (OGC document OGC 09-146r2. <strong>Is there a web link to this?</strong>).  It <a href="https://covjson.org/spec/#differences-to-ogc-coverage-implementation-schema-cis">differs in some respects</a> from this standard.</td>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Compatibility">Compatibility with existing practices</td><td>CoverageJSON incorporates the same overall concepts (domain, range, and metadata) as other coverage data models (see [[OGC-CIS]]). It <a href="https://covjson.org/spec/#differences-to-ogc-coverage-implementation-schema-cis">differs in some respects</a> from this standard.</td>
 		  </tr>
 		  <tr>
 		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Compressible">Compressibility</a></td><td>CoverageJSON consists of JSON objects, which can be compressed using standard approaches, for example by enabling gzip and the corresponding Content-Encoding in a web server.</td>
