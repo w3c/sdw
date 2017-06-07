@@ -170,35 +170,12 @@ Content-Disposition: filename= ssn.ttl;
 
 The list of SSN resource URLs is:
 
-- http://www.w3.org/ns/ssn/Accuracy
-- http://www.w3.org/ns/ssn/ActuationRange
-- http://www.w3.org/ns/ssn/BatteryLifetime
-- http://www.w3.org/ns/ssn/Condition
 - http://www.w3.org/ns/ssn/Deployment
-- http://www.w3.org/ns/ssn/DetectionLimit
-- http://www.w3.org/ns/ssn/Drift
-- http://www.w3.org/ns/ssn/Frequency
 - http://www.w3.org/ns/ssn/Input
-- http://www.w3.org/ns/ssn/Latency
-- http://www.w3.org/ns/ssn/MaintenanceSchedule
-- http://www.w3.org/ns/ssn/MeasurementRange
-- http://www.w3.org/ns/ssn/OperatingPowerRange
-- http://www.w3.org/ns/ssn/OperatingProperty
-- http://www.w3.org/ns/ssn/OperatingRange
 - http://www.w3.org/ns/ssn/Output
-- http://www.w3.org/ns/ssn/Precision
 - http://www.w3.org/ns/ssn/Property
-- http://www.w3.org/ns/ssn/Resolution
-- http://www.w3.org/ns/ssn/ResponseTime
-- http://www.w3.org/ns/ssn/SystemCapability
-- http://www.w3.org/ns/ssn/SystemProperty
-- http://www.w3.org/ns/ssn/Selectivity
-- http://www.w3.org/ns/ssn/Sensitivity
 - http://www.w3.org/ns/ssn/Stimulus
-- http://www.w3.org/ns/ssn/SurvivalProperty
-- http://www.w3.org/ns/ssn/SurvivalRange
 - http://www.w3.org/ns/ssn/System
-- http://www.w3.org/ns/ssn/SystemLifetime
 - http://www.w3.org/ns/ssn/deployedOnPlatform
 - http://www.w3.org/ns/ssn/deployedSystem
 - http://www.w3.org/ns/ssn/detects
@@ -206,21 +183,13 @@ The list of SSN resource URLs is:
 - http://www.w3.org/ns/ssn/hasDeployment
 - http://www.w3.org/ns/ssn/hasInput
 - http://www.w3.org/ns/ssn/hasOutput
-- http://www.w3.org/ns/ssn/hasOperatingProperty
-- http://www.w3.org/ns/ssn/hasOperatingRange
 - http://www.w3.org/ns/ssn/hasProperty
 - http://www.w3.org/ns/ssn/hasSubSystem
-- http://www.w3.org/ns/ssn/hasSurvivalProperty
-- http://www.w3.org/ns/ssn/hasSurvivalRange
-- http://www.w3.org/ns/ssn/hasSystemCapability
-- http://www.w3.org/ns/ssn/hasSystemProperty
 - http://www.w3.org/ns/ssn/implementedBy
 - http://www.w3.org/ns/ssn/implements
-- http://www.w3.org/ns/ssn/inCondition
 - http://www.w3.org/ns/ssn/inDeployment
 - http://www.w3.org/ns/ssn/isPropertyOf
 - http://www.w3.org/ns/ssn/isProxyFor
-- http://www.w3.org/ns/ssn/qualityOfObservation
 - http://www.w3.org/ns/ssn/wasOriginatedBy
 
 
@@ -507,3 +476,55 @@ When operating a GET at http://www.w3.org/ns/ssn/systems.ttl with a Accept heade
 Content-Type: text/turtle
 Content-Disposition: filename= ssn-system.ttl;
 ```
+
+### The ontology resources:
+
+The list of SSN resource URLs is:
+
+
+- http://www.w3.org/ns/ssn/systems/Accuracy
+- http://www.w3.org/ns/ssn/systems/ActuationRange
+- http://www.w3.org/ns/ssn/systems/BatteryLifetime
+- http://www.w3.org/ns/ssn/systems/Condition
+- http://www.w3.org/ns/ssn/systems/DetectionLimit
+- http://www.w3.org/ns/ssn/systems/Drift
+- http://www.w3.org/ns/ssn/systems/Frequency
+- http://www.w3.org/ns/ssn/systems/inCondition
+- http://www.w3.org/ns/ssn/systems/Latency
+- http://www.w3.org/ns/ssn/systems/MaintenanceSchedule
+- http://www.w3.org/ns/ssn/systems/MeasurementRange
+- http://www.w3.org/ns/ssn/systems/OperatingPowerRange
+- http://www.w3.org/ns/ssn/systems/OperatingProperty
+- http://www.w3.org/ns/ssn/systems/OperatingRange
+- http://www.w3.org/ns/ssn/systems/Precision
+- http://www.w3.org/ns/ssn/systems/Resolution
+- http://www.w3.org/ns/ssn/systems/ResponseTime
+- http://www.w3.org/ns/ssn/systems/SystemCapability
+- http://www.w3.org/ns/ssn/systems/SystemProperty
+- http://www.w3.org/ns/ssn/systems/Selectivity
+- http://www.w3.org/ns/ssn/systems/Sensitivity
+- http://www.w3.org/ns/ssn/systems/SurvivalProperty
+- http://www.w3.org/ns/ssn/systems/SurvivalRange
+- http://www.w3.org/ns/ssn/systems/SystemLifetime
+- http://www.w3.org/ns/ssn/systems/hasOperatingProperty
+- http://www.w3.org/ns/ssn/systems/hasOperatingRange
+- http://www.w3.org/ns/ssn/systems/hasSurvivalProperty
+- http://www.w3.org/ns/ssn/systems/hasSurvivalRange
+- http://www.w3.org/ns/ssn/systems/hasSystemCapability
+- http://www.w3.org/ns/ssn/systems/hasSystemProperty
+- http://www.w3.org/ns/ssn/systems/qualityOfObservation
+
+*HTML representation:* 
+
+When operating a GET at http://www.w3.org/ns/ssn/systems/xyz with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#SSNSYSTEMxyz
+
+
+*RDF/XML representation:* 
+
+When operating a GET at http://www.w3.org/ns/ssn/systems/xyz with a Accept header that is compatible with `application/rdf+xml`, 303 redirect to http://www.w3.org/ns/ssn/systems.rdf
+
+
+*Turtle representation:* 
+
+When operating a GET at http://www.w3.org/ns/ssn/systems/xyz with a Accept header that is compatible with `text/turtle`, 303 redirect to http://www.w3.org/ns/ssn/systems.ttl
+
