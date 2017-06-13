@@ -1,7 +1,7 @@
 sdw
 ===
 
-This is the repository for the <a href="http://www.w3.org/2015/sdw/">Spatial Data on the Web Working Group</a>, a collaborative project between <a href="http://www.w3.org/">W3C</a> and <a href="http://www.opengeospatial.org/">OGC</a>.
+This is the repository for the <a href="https://www.w3.org/2015/spatial/">Spatial Data on the Web Working Group</a>, a collaborative project between <a href="http://www.w3.org/">W3C</a> and <a href="http://www.opengeospatial.org/">OGC</a>.
 
 The repo is used for developing editors drafts of the working group's <a href="http://www.w3.org/2015/spatial/charter#deliverables">deliverables</a> and related resources.
 
