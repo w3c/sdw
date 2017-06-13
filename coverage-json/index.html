@@ -89,8 +89,8 @@ table, th, td {
     <section>
       <h2>Known issues with this document</h2>
       <ul>
-        <li>References need to be added</li>
-        <li>Need to add more illustrations?</li>
+        <li>Need to tidy up and check references (e.g link to DW-BP)</li>
+        <li>TimeseriesML section requires fact-checking/expansion by a TimeseriesML expert</li>
       </ul>
     </section>
 
@@ -98,18 +98,21 @@ table, th, td {
       <h2>Introduction</h2>
       <section  id="coverage">
         <h3>What is a Coverage?</h3>
-        <p>The term "coverage" is defined in [[ISO19123]] as a "feature that acts as a function to return values from its range for any direct position within its spatial, temporal or spatiotemporal domain". In other words, a coverage maps points in space and time to data values. For example, an aerial photograph can be modelled as a coverage that maps positions on the ground to colours. A river gauge maps points in time to flow values. A weather forecast maps points in space and time to values of temperature, wind speed, humidity and so forth.</p>
-        <p class="note">Sometimes we see the word “coverage” used synonymously with “gridded data” or “raster data” but this isn’t really accurate. One can see from the above paragraph that non-gridded data (like a river gauge measurement) can also be modelled as coverages. Nevertheless, we often observe a bias toward gridded data in discussions (and software) that concern coverages.)</p>
+        <p>The term "coverage" is defined in [[ISO19123]] as a "feature that acts as a function to return values from its range for any direct position within its spatial, temporal or spatiotemporal domain". In other words, a coverage maps points in space and time to data values. For example, an aerial photograph can be modelled as a coverage that maps positions on the ground to colours. A river gauge maps points in time to flow values. A weather forecast maps points in space and time to values of temperature, wind speed, humidity and so forth. The image below illustrates three different kinds of coverage: a gridded temperature field from a numerical simulation, a set of point measurements and a vertical profile.</p>
+
+        <img src="coverages.png" width="600px" alt="Illustration of different types of coverage" />
+
+        <p class="note">Sometimes we see the word “coverage” used synonymously with “gridded data”, “raster data” or "imagery" but this isn’t really accurate. One can see from the above paragraph that non-gridded data (like a river gauge measurement) can also be modelled as coverages. Nevertheless, we often observe a bias toward gridded data in discussions (and software) that concern coverages.)</p>
       </section>
 
       <section id="existingmodels">
         <h3>Existing Coverage representations</h3>
-        <p>The [[ISO19123]] specification defines an <em>abstract</em> data model for representing the data and metadata needed to encode coverage data. This abstract model can be instantiated in many different concrete formats. The OGC Coverage Implementation Schema (CIS) specification ([[OGC-CIS]]) describes a <em>concrete</em>, directly instantiable data model and XML serialisation based on the Geography Markup Language (GML). Other serialisations have been defined, sometimes by retrospectively mapping existing binary data formats to the ISO19123 abstract data model (e.g. [[NetCDF]]). Version 1.1 (<strong>TODO check this</strong>) of the CIS specification supports a JSON serialization, which is created through a direct translation from GML types to JSON objects. (We provide a brief comparison of CIS-JSON with CoverageJSON <a href="#cis">below</a>.)</p>
+        <p>The [[ISO19123]] specification defines an <em>abstract</em> data model for representing the data and metadata needed to encode coverage data. This abstract model can be instantiated in many different concrete formats. The OGC Coverage Implementation Schema (CIS) specification ([[OGC-CIS]]) describes a <em>concrete</em>, directly instantiable data model and XML serialisation based on the Geography Markup Language (GML). Other serialisations have been defined, sometimes by retrospectively mapping existing binary data formats to the ISO19123 abstract data model (e.g. [[NetCDF]]). Version 1.1 of the CIS specification supports a JSON serialization, which is created through a direct translation from GML types to JSON objects. (We provide a brief comparison of CIS-JSON with CoverageJSON <a href="#cis">below</a>.)</p>
       </section>
 
       <section id="motivation">
         <h3>Motivation and objectives</h3>
-        <p>This document describes the CoverageJSON format and explains how it is well-suited to representation of spatial data on the Web: with a number of advantages for use in a web context, in comparison to alternative established approaches for serialisation of coverage data. It is a good match to the Use Case Requirements  [[SDW-UCR]] and Best Practices [[SDW-BP]] of the Spatial Data on the Web working group.</p>  
+        <p>This document describes the CoverageJSON format and explains how it is well-suited to representation of spatial data on the Web: with a number of advantages for use in a web context, in comparison to alternative established approaches for serialisation of coverage data. It is a good match to the Use Case Requirements  [[SDW-UCR]] and Best Practices [[SDW-BP]] of the Spatial Data on the Web working group. It has been informed also by the Data on the Web Best Practices [[DW-BP]]."</p>
 <p>Serialisations (i.e. data formats) based upon community-specific binary formats and complex XML schemas provide usability challenges for the development of web applications. Javascript libraries do not always exist for these formats, and the formats are complex, requiring specialist knowledge on the part of the web developer. Our overall aim is to <strong>make it easier for web developers to consume coverage data in their applications</strong>, minimising the need for prior knowledge about community-specific data formats.</p>
         <p>Therefore our objective in this work was to develop a well-structured, consistent and easy-to-use JSON format for coverage data that fulfils the following criteria:</p>
         <ul>
@@ -118,7 +121,7 @@ table, th, td {
           <li>Able to encode geospatial data using a variety of coordinate reference systems.</li>
           <li>Able to encode both scalar data (e.g. temperature) and vector data (e.g. velocities).</li>
           <li>Able to encode data with quality information, e.g. numerical uncertainties and quality flags.</li>
-          <li>Clear and readable, using idiomatic JSON concepts.</li>
+          <li>Clear and readable, focusing on common practices in the JSON community.</li>
           <li>Use a minimal set of encoding rules, to avoid complicating the development of client code.</li>
         </ul>
       </section>
@@ -196,9 +199,9 @@ table, th, td {
   }]
 }
       </pre>
-      <p>Note that difference CRSs can be associated with different combinations of axes, providing a very flexible model that allows complex data to be encoded without the need to create composite CRSs. Axis values can also be categorical in nature (instead of numeric), enabling data values to be associated with entities that are not spatiotemporal coordinates.</p>
+      <p>Note that different CRSs can be associated with different combinations of axes, providing a very flexible model that allows complex data to be encoded without the need to create composite CRSs. Axis values can also be categorical in nature (instead of numeric), enabling data values to be associated with entities that are not spatiotemporal coordinates.</p>
 
-      <p class="note">This closely mirrors the structure of the RDF Data Cube Vocabulary [[VOCAB-DATA-CUBE]], in which orthogonal <dfn>dimensions</dfn> are combined to form the domain of the data cube. (A "dimension" in the data cube corresponds with an "axis" in CoverageJSON.) Therefore, although a formal mapping process has yet to be performed, we expect that interoperability between the RDF Data Cube and CoverageJSON is achievable. The RDF Data Cube specification does not explicitly support spatiotemporal dimensions, but this is addressed in the [[QB4ST]] extensions.</p>
+      <p class="note">This closely mirrors the structure of the RDF Data Cube Vocabulary [[VOCAB-DATA-CUBE]], in which orthogonal <dfn>dimensions</dfn> are combined to form the domain of the data cube. (A "dimension" in the data cube corresponds with an "axis" in CoverageJSON.) Therefore, although a formal mapping process has yet to be performed, we expect that interoperability between the RDF Data Cube and CoverageJSON is achievable. Some RDF Data Cube dimensions may be categorical or enumerated types rather than potentially continuous dimensions. The RDF Data Cube specification does not explicitly support spatiotemporal dimensions, but this is addressed in the [[QB4ST]] extensions. </p>
 
       <p>This mechanism allows for a huge variety of domain structures to be encoded, from multidimensional grids to one-dimensional trajectories through four-dimensional space. To ease the burden on clients, CoverageJSON allows an optional <dfn>domain type</dfn> property to be defined (see the example above). If the data provider specifies that the domain is of a known type, the client then knows in more detail what to expect when the domain is inspected. For example, if the domain type is "Grid", the client knows that the domain MUST have axes that are called <code>"x"</code> and <code>"y"</code> (corresponding to the two horizontal spatial dimensions) and MAY have axes called <code>"z"</code> and <code>"t"</code> (corresponding respectively to the vertical and temporal dimensions). A number of <a href="https://covjson.org/domain-types/">common domain types</a> are specified and there is a <a href="https://covjson.org/spec/#custom-types">mechanism for data providers to define and register their own types</a>. Note that in a typical document, short names (<code>"Grid"</code>, <code>"PointSeries"</code>, <code>"Trajectory"</code>, etc.) are used to indicate the domain type, but in fact these are full URIs in disguise - this becomes apparent when viewing CoverageJSON document as RDF using the JSON-LD context (see <a href="#rdf">below</a>).</p>
     </section>
@@ -254,7 +257,7 @@ table, th, td {
 }
       </pre>
 
-      <p>Each tile is an NdArray, encoded as above.</p>
+      <p>This is a 3 dimensional data set with dimensions (x, y, t) divided into two dimensional tiles for each t value: 4 along the X axis, 2 along the y axis and 3 along the t axis. Each tile is an NdArray, encoded as above.</p>
 
     </section>
 
@@ -305,15 +308,16 @@ table, th, td {
         <li>A single Coverage</li>
         <li>A collection of Coverages</li>
         <li>A standalone Domain</li>
-        <li>An NdArray (or TiledNdArray? <strong>TODO</strong> check this)</li>
+        <li>An NdArray</li>
+        <li>A TiledNdArray</li>
       </ul>
       <p>The top-level object within a document contains a “type” property that identifies the type of the object that it contains. Documents may be linked to other documents; in this way data providers can ensure that each individual document is of a manageable size, with large datasets being partitioned among a number of linked documents. (See "Support for large datasets" above.)</p>
     </section>
 
     <section id="rdf">
       <h3>CoverageJSON, JSON-LD and RDF</h3>
-      <p>To a limited extent, a CoverageJSON document can be converted into RDF through the use of a JSON-LD context header. The extent to which this is possible is discussed in REF (<strong>TODO:</strong> insert link to Montreal paper).</p>
-      <p>We did not consider that coversion to RDF should be a primary goal: we focused mainly on simplicity and readability of the format, under the assumption that few of the target users (web developers) would require a pure RDF representation of the data. Enabling a full conversion to RDF would require complicating the format (mainly for technical reasons including limitations of JSON-LD). Also, RDF is an unsuitable format for large arrays of data and so the Domain and Range would not convert efficiently.</p>
+      <p>To a limited extent, a CoverageJSON document can be converted into RDF through the use of a JSON-LD context header. The extent to which this is possible is discussed in [[COV-JSONLD-RDF]].</p>
+      <p>We did not consider that conversion to RDF should be a primary goal: we focused mainly on simplicity and readability of the format, under the assumption that few of the target users (web developers) would require a pure RDF representation of the data. Enabling a full conversion to RDF would require complicating the format (mainly for technical reasons including limitations of JSON-LD). Also, RDF is an unsuitable format for large arrays of data and so the Domain and Range would not convert efficiently.</p>
       <p>Nevertheless, CoverageJSON makes frequent use of URIs to denote key concepts, such as units, observed properties, coordinate reference systems, domain types and links to other CoverageJSON documents. Clients can make use of these to detect these concepts unambiguously, whether or not they perform a translation to RDF.</p>
 
       <p>By using the <a href="https://covjson.org/context.jsonld">canonical CoverageJSON JSON-LD context</a>,
@@ -335,14 +339,14 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
 
   <section id="extensions">
       <h3>Extension points</h3>
-      <p>CoverageJSON allows data providers to extend the format in a controlled manner. The possible extensions that can be defined by users include:</p>
+      <p>CoverageJSON allows data providers to extend the format in a controlled manner to enable capabilities that are not supported by the core specification. The possible extensions that can be defined by users include:</p>
       <ul>
         <li><a href="https://covjson.org/spec/#custom-members">Custom properties</a> (e.g. high-level metadata such as licence information)</li>
-        <li><a href="https://covjson.org/spec/#custom-types">Custom domain types</a></li>
+        <li><a href="https://covjson.org/spec/#custom-types">Custom domain types</a> (enabling support for coverage types that are not foreseen in the existing domain types, e.g. rain radar measurements)</li>
         <li><a href="https://covjson.org/spec/#custom-types">Custom data types</a> for axes</li>
         <li><a href="https://covjson.org/spec/#custom-types">Custom referencing system types</a> (e.g. <a href="http://healpix.jpl.nasa.gov">HEALPix</a> grids)</li>
-        <li><a href="https://covjson.org/spec/#custom-types">Different grammars for encoding unit symbols</a> (e.g. UDUNITS, REF)</li>
-        <li><a href="https://covjson.org/spec/#coverage-objects">Alternative encodings for range values</a></li>
+        <li><a href="https://covjson.org/spec/#custom-types">Different grammars for encoding unit symbols</a> (e.g. <a href="http://www.unidata.ucar.edu/software/udunits/">UDUNITS</a>)</li>
+        <li><a href="https://covjson.org/spec/#coverage-objects">Alternative encodings for range values</a> (e.g. compressed encodings)</li>
       </ul>
       <p>In each case we recommend that URIs be used to denote these extensions (and to point to definitions), to avoid the possibility of clashes between extensions.</p>
     </section>
@@ -359,11 +363,11 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
       <p>We have developed a number of tools and libraries to help users produce, use and debug CoverageJSON documents. These are all published on the <a href="https://covjson.org/tools/">project website</a> and include:
       <ul>
         <li>A JavaScript API for reading CoverageJSON documents, intended for use by developers of web applications.</li>
-        <li>A Plugin for the Leaflet web mapping library (REF).</li>
+        <li>A Plugin for the <a href="http://leafletjs.com">Leaflet</a> web mapping library.</li>
         <li>A “Playground” web application, in which users can paste and edit CoverageJSON documents, and view a live visualization.</li>
         <li>Online “Cookbook” documentation, with live examples linked to this playground. (We recommend that new users start here.)</li>
         <li>A Python library for converting to and from common scientific data formats (e.g. NetCDF)</li>
-        <li>A Java library for converting data in a number of file formats (including NetCDF and GRIB) to CoverageJSON, implemented as an EDAL (REF) module.</li>
+        <li>A Java library for converting data in a number of file formats (including NetCDF and GRIB) to CoverageJSON, implemented as an <a href="https://github.com/Reading-eScience-Centre/edal-java">EDAL</a> module.</li>
       </ul>
     </section>
 
@@ -373,7 +377,7 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
 
       <section id="netcdf">
       <h3>NetCDF and CF-NetCDF</h3>
-      <p class="note">[[NetCDF]] is a binary, platform-independent data format for multidimensional data, which is independent of any community of practice. Essentially, a NetCDF file is a collection of multidimensional arrays, plus metadata provided as key-value pairs. Metadata conventions are required to specialise NetCDF for particular communities. The <a href="http://cfconventions.org">Climate and Forecast</a> conventions are the pre-eminent conventions for geospatial data. NetCDF files that conform to these conventions are known as "CF-NetCDF files".)</p>
+      <p class="note">[[NetCDF]] is a binary, platform-independent data format for multidimensional data, which is independent of any community of practice. Essentially, a NetCDF file is a collection of multidimensional arrays, plus metadata provided as key-value pairs. Metadata conventions are required to specialise NetCDF for particular communities. The <a href="http://cfconventions.org">Climate and Forecast</a> conventions are the pre-eminent conventions for geospatial NetCDF data. NetCDF files that conform to these conventions are known as "CF-NetCDF files".) Note that there are different varieties of the NetCDF format and data model. Here we are concerned with the <a href="http://www.unidata.ucar.edu/software/netcdf/docs/netcdf_data_model.html#classic_model">"classic"</a> NetCDF data model. The <a href="http://www.unidata.ucar.edu/software/netcdf/docs/netcdf_data_model.html#enhanced_model">"enhanced"</a> data model is not supported by the CF conventions and is much less widely used in practice.</p>
       <p>The overall structure of CoverageJSON is quite close to that of [[NetCDF]], consisting essentially of a set of orthogonal domain axes that can be combined in different ways. One major difference is that in CoverageJSON, there is an explicit Domain object, whereas in NetCDF the domain is specified implicitly by linking data variables with coordinate variables. One consequence of this is that NetCDF files can contain several domains and hence several Coverages. A NetCDF file could therefore be converted to a single Coverage or a Coverage Collection in CoverageJSON.</p>
     </section>
 
@@ -383,14 +387,13 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
       <ul>
         <li>CIS uses a different set of rules for gridded and non-gridded data, whereas CoverageJSON uses a single consistent set.</li>
         <li>CIS allows each Coverage to have exactly one CRS, whereas CoverageJSON allows different CRSs to be applied to different sets of coordinates in the domain (e.g. one CRS for x and y, and another CRS for z).</li>
-        <li>The most recent version of CIS defines a JSON encoding that uses a near-literal translation of GML structures into JSON. CoverageJSON does not use GML as its starting point.</li>
+        <li>Version 1.1 of CIS defines a JSON encoding that uses a near-literal translation of GML structures into JSON. CoverageJSON does not use GML as its starting point.</li>
       </ul>
     </section>
 
     <section>
-      <h3>TimeseriesML</h3>
-      <div  class="issue"  data-number="101">Describe relationship to other data models, such as TimeseriesML.</div>
-      <p><strong>TODO expand this</strong>, but the main difference is probably that [[TimeseriesML]] allows for a number of ways to associate values of time to data values: a data value may represent an accumulation or average of a quantity over time, and the time values in the domain may mark the start, end or middle of the time period in question.</p>
+      <h3>OGC TimeseriesML</h3>
+      <p>CoverageJSON can be used to record data that take the form of timeseries, for example measurements of flow rate in in a river, or average London rainfall over time. [[TimeseriesML]] specializes in recording such data and provides features over and above the capabilities of CoverageJSON. For example, in TimeseriesML, richer metadata can be added to better describe the data values being measured (the range) and their relationship to time (the domain). For example, a data value in the range may be defined to represent an accumulation or average of a quantity over time, and the time values in the domain may be defined to mark the start, end or middle of the time period in question. In CoverageJSON, this level of description is not yet possible.</p>
     </section>
     </section>
 
@@ -427,7 +430,7 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
 		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#DifferentTimeModels">Different time models</a></td><td>CoverageJSON supports a range of <a href="https://covjson.org/spec/#temporal-reference-systems">temporal reference systems</a>, defaulting to the Gregorian calendar.</td>
 		  </tr>
 		  <tr>
-		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Discoverability">Discoverability</a></td><td>CoverageJSON does not define how to include discovery metadata at the level of a CoverageJSON document. It is usually assumed that this metadata is contained elsewhere, e.g. in a catalogue. However, CoverageJSON does provide an <a href="https://covjson.org/spec/#custom-members">extension mechanism</a> for adding custom metadata to a document. This could be used to add discovery metadata, for example from the DCAT vocabulary (REF). See <a href="https://github.com/covjson/specification/issues/71">this discussion</a>.</td>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Discoverability">Discoverability</a></td><td>CoverageJSON does not define how to include discovery metadata at the level of a CoverageJSON document. It is usually assumed that this metadata is contained elsewhere, e.g. in a catalogue. However, CoverageJSON does provide an <a href="https://covjson.org/spec/#custom-members">extension mechanism</a> for adding custom metadata to a document. This could be used to add discovery metadata, for example from the DCAT vocabulary [[DCAT]]. See <a href="https://github.com/covjson/specification/issues/71">this discussion</a>.</td>
 		  </tr>
 		  <tr>
 		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Georectification">Georectification</a></td><td>Coverage JSON has a flexible and extensible <a href="https://covjson.org/spec/#reference-system-objects">approach to specifying reference systems</a>, in which data can be referenced to any grid.</td>
@@ -451,7 +454,7 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
 		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#Provenance">Provenance</a></td><td>CoverageJSON is intended primarily to describe the result of a procedure and does not provide a specific mechanism to describe the provenance or the procedure itself. The <a href="https://covjson.org/spec/#custom-members">extension mechanism</a> could be used to include relevant properties.</td>
 		  </tr>
 		  <tr>
-		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#QualityPerSample">Quality per sample</a></td><td>Quality information can be incorporated as additional parameters of a coverage. For example, quality flags can be encoded as categorical parameters, and numerical erros can be described as continuous parameters. <a href="https://covjson.org/spec/#parametergroup-objects">Parameter Group objects</a> provide a mechanism to associate parameters with each other to provide internal links between data values and their associated quality information.</td>
+		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#QualityPerSample">Quality per sample</a></td><td>Quality information can be incorporated as additional parameters of a coverage. For example, quality flags can be encoded as categorical parameters, and numerical errors can be described as continuous parameters. <a href="https://covjson.org/spec/#parametergroup-objects">Parameter Group objects</a> provide a mechanism to associate parameters with each other to provide internal links between data values and their associated quality information.</td>
 		  </tr>
 		  <tr>
 		  	 <td><a href="https://www.w3.org/TR/sdw-ucr/#ReferenceDataChunks">Reference data chunks</a></td><td>There are two main approaches in CoverageJSON to dividing a large coverage into chunks.
@@ -483,7 +486,55 @@ _:SST &lt;http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#observedProperty&gt; &lt
     </section>
     <section id="best-practices">
 	  <h2>Relationship to Best Practices</h2>
-	  <p>TODO: add section explain which of the Best Practices are followed by CoverageJSON, and how.</p>
+	  <p>The Spatial Data on the Web Working Group has created a set of Best Practices for spatial data on the Web [[SDW-BP]]. A subset of these Best Practices are relevant to Coverage data. This section lists the Best Practices and describes how or whether CoverageJSON relates to each.</p>
+	  <table id="table_covjson_ucr_xref">
+	     <caption>How CoverageJSON relates to the Spatial Data on the Web Best Practices</caption>
+	     <tr>
+	     	<th>Best Practice</th><th>CoverageJSON approach</th>
+	     </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#globally-unique-ids">Best Practice 1:</a> Use globally unique persistent HTTP URIs for Spatial Things</td><td>A coverage may itself be considered as a Spatial Thing, and its corresponding CoverageJSON document can be identified by an HTTP URI. This URI may be used in a CoverageCollection, or indeed any other document, such as a [[DCAT]] catalog./td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#indexable-by-search-engines">Best Practice 2:</a> Make your spatial data indexable by search engines</td><td>This is largely outside the scope of CoverageJSON, and is more likely to be relevant when publishing data catalogs, rather than individual Coverages.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#linking">Best Practice 3:</a> Link resources together to create the Web of data</td><td>Coverages, and parts of coverages, are assigned URIs and can be linked to. URIs are used in the definition of coordinate reference systems and to point to definitions of observed properties and units.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#semantic-thing">Best Practice 4:</a> Use spatial data encodings that match your target audience</td><td>CoverageJSON has a particular target audience in mind: web developers who like working with JSON representations of data, a group that is often unfamiliar with the more established OGC approaches to coverage data. Therefore CoverageJSON is a good solution when that group is the target audience.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#describe-geometry">Best Practice 5:</a> Provide geometries on the Web in a usable way</td><td>CoverageJSON reuses [[GeoJSON]]'s syntax for encoding geometries, which is widely used and understood.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#multiplegeometries">Best Practice 6:</a> Provide geometries at the right level of accuracy, precision, and size</td><td>CoverageJSON does not provide a means to specify the accuracy or precision of coordinate values. However, when publishing geometries the publisher can decide how many points are needed to adequately describe the geometry.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#bp-crs-choice">Best Practice 7:</a> Choose coordinate reference systems to suit your user's applications</td><td>The coordinate reference system used is specified in the domain of the coverage: so the most important CRS can be used to suit the application.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#bp-crs">Best Practice 8:</a> State how coordinate values are encoded</td><td>CoverageJSON has a clear specification of how coordinate values are encoded.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#relative-position">Best Practice 9:</a> Describe relative positioning</td><td>CoverageJSON enables CRSs to be specified in a range of ways, many of which (e.g. identifier-based systems) could support relative positioning.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#entity-level-links">Best Practice 10:</a> Use appropriate relation types to link Spatial Things</td><td>This Best Practice is outside of the scope of CoverageJSON.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#desc-changing-properties">Best Practice 11:</a> Provide information on the changing nature of spatial things</td><td>Most aspects of this Best Practice are outside of the scope of CoverageJSON, except in the sense that coverages are well suited to describing spatially referenced properties that change over time.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#convenience-apis">Best Practice 12:</a> Expose spatial data through 'convenience APIs'</td><td>CoverageJSON is designed to make coverage data available in a form suitable for processing by Javascript in web pages (as well as other possible applications). It can return entire coverage files, or smaller parts (tiles) of coverages as required. The choice of API is, however, outside the scope of CoverageJSON.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#spatial-info-dataset-metadata">Best Practice 13:</a> Include spatial metadata in dataset metadata</td><td>The domain of a CoverageJSON object contains machine readable specifications of the area (and time) covered by the dataset, as well as the coordinate reference system used.  CoverageJSON provides an extensibility mechanism allowing arbitrary additional metadata items to be added.</td>
+		  </tr>
+		  <tr>
+		  	 <td><a href="https://www.w3.org/TR/sdw-bp/#desc-accuracy">Best Practice 14:</a> Describe the positional accuracy of spatial data</td><td>The positional accuracy and precision of coverage data depends in a complex way on the method by which the data was collected.  CoverageJSON itself does not incorporate detailed provenance metadata, though provides the possibility to link to external documentation or specifications of data collection methods and associated accuracy considerations.</td>
+		  </tr>
+		</table>
 	</section>
    </body>
 </html>
