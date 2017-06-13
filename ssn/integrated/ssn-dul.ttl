@@ -19,7 +19,7 @@
 ## Features of interest and observable property
 
 sosa:FeatureOfInterest
-  rdfs:subClassOf [ owl:unionOf ( dul:Event dul:Object dul:Quality ) ] ;
+  rdfs:subClassOf [ owl:unionOf ( dul:Event dul:Object dul:InformationEntity ) ] ;
   rdfs:isDefinedBy sosa: .
 
 ssn:Property 
@@ -38,7 +38,7 @@ ssn:Property
 ## Platform
 
 sosa:Platform
-  rdfs:subClassOf dul:PhysicalObject ;
+  rdfs:subClassOf dul:Object ;
   rdfs:isDefinedBy sosa: .
 
   sosa:hosts
@@ -75,12 +75,20 @@ sosa:Sensor
 ## ProcedureExecutions
 
 sosa:usedProcedure
-  rdfs:subPropertyOf dul:satisfies ;
+  rdfs:subPropertyOf dul:hasParticipant ;
   rdfs:isDefinedBy sosa: .
 
 sosa:Observation
   rdfs:subClassOf dul:Event ;
   rdfs:isDefinedBy sosa: .
+
+ [ owl:intersectionOf  ( not(old-ssn:Observation)
+   [
+   rdf:type            owl:Restriction ;
+   owl:onProperty      old-ssn:observationResult ;
+   owl:someValuesFrom  owl:Thing
+ ]) 
+ ] rdfs:subClassOf sosa:Observation.
 
 sosa:madeObservation
   rdfs:subPropertyOf dul:associatedWith ;
@@ -124,14 +132,14 @@ ssn:hasSubSystem
   rdfs:isDefinedBy ssn: .
 
 sosa:Platform 
-  rdfs:subClassOf dul:PhysicalObject ;
+  rdfs:subClassOf dul:Object ;
   rdfs:isDefinedBy sosa: .
 
 
 ## Deployment
 
 ssn:Deployment
-  rdfs:subClassOf [ owl:unionOf ( dul:Situation dul:Process ) ] ;
+  rdfs:subClassOf dul:Event ;
   rdfs:isDefinedBy ssn: .
 
 ssn:deployedOnPlatform
