@@ -182,8 +182,7 @@ var respecConfig = {
        date: "July 2015"
       },
        "ISO-19109":{
-       href: "https://www.iso.org/standard/59193.html
-       ",
+       href: "https://www.iso.org/standard/59193.html",
        title: "Geographic information -- Rules for application schema",
        publisher: "ISO",
        date: "December 2015"
