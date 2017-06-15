@@ -12,7 +12,7 @@ var respecConfig = {
     {
         name: "Simon Cox",
         company: "CSIRO",
-        companyURL: "http://www.csiro.au/", 
+        companyURL: "https://www.csiro.au/",
         w3cid: 1796
       },{
         name: "Chris Little",
@@ -90,7 +90,7 @@ var respecConfig = {
       "cr-14": {
         authors: ["S.J.D. Cox" , "S.M. Richard"], 
         date: "2014", 
-        href: "http://dx.doi.org/10.1007/s12145-014-0166-2",
+        href: "http://doi.org/10.1007/s12145-014-0170-6",
         title: "A geologic timescale ontology and service. Earth Sci. Informatics.. 8 5–19. "
       },
       "fips": {
@@ -153,9 +153,10 @@ var respecConfig = {
         title: "The process file of the OWL-S 0.9 release"
       },
       "rc-14": {
-        href: "https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissionsauthorGuidelines",
-        title: "Guidelines to Authors, Radiocarb. Mag. ",
-        date: "2014"
+        href: "http://nvlpubs.nist.gov/nistpubs/jres/109/2/j92cur.pdf",
+        title: "The Remarkable Metrological History of Radiocarbon Dating [II]",
+        date: "March-April 2004",
+        authors: ["Journal of Research of the National Institute of Standards and Technology"]
       }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
