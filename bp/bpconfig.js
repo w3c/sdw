@@ -148,7 +148,7 @@ var respecConfig = {
         date: "2007"
       },
       "OGC-TOPIC-2":{
-        href:"http://portal.opengeospatial.org/files/?artifact_id=39049",
+        href:"http://portal.opengeospatial.org/files/39049",
         title:"OGC Abstract Specification Topic 2 - Spatial referencing by coordinates",
         authors:["Roger Lott"],
         publisher:"OGC",
