@@ -169,26 +169,27 @@ var respecConfig = {
         authors: ["S.J.D. Cox"]
       },
       "OMXML": {
-        href: "http://portal.opengeospatial.org/files/?artifact_id=41510",
+        href: "http://portal.opengeospatial.org/files/41510",
         title: "Observations and Measurements - XML Implementation",
         publisher: "Open Geospatial Consortium",
         date: "2010",
         authors: ["S.J.D. Cox"]
       },
        "ISO-19150-2":{
-       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=57466",
+       href: "https://www.iso.org/standard/57466.html",
        title: "Geographic information -- Ontology -- Part 2: Rules for developing ontologies in the Web Ontology Language (OWL)",
        publisher: "ISO",
        date: "July 2015"
       },
        "ISO-19109":{
-       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=59193",
+       href: "https://www.iso.org/standard/59193.html
+       ",
        title: "Geographic information -- Rules for application schema",
        publisher: "ISO",
        date: "December 2015"
       },
        "ISO-19156":{
-       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=32574",
+       href: "https://www.iso.org/standard/32574.html",
        title: "Geographic information -- Observations and measurements",
        publisher: "ISO",
        date: "December 2011"
