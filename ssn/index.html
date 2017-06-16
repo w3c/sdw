@@ -1951,9 +1951,6 @@ their usage are given.</p>
             <table>
               <tbody>
                 <tr>
-                <th colspan="2"><span about="ssn:hasProperty" typeof="owl:InverseFunctionalProperty">is <a href="https://www.w3.org/TR/owl2-syntax/#Inverse-Functional_Object_Properties">Inverse-Functional</a></span></th>
-                </tr>
-                <tr>
                   <th>Inverse property of</th>
                   <td>
                     <span rel="owl:inverseOf" resource="ssn:isPropertyOf"><a href="#SSNisPropertyOf">ssn:isPropertyOf</a></span>
@@ -1981,9 +1978,6 @@ their usage are given.</p>
             <span property="rdfs:comment skos:definition">Relation between a <a href="#SSNProperty"><code>Property</code></a> and the entity it belongs to.</span>
             <table>
               <tbody>
-                <tr>
-                <th colspan="2"><span about="ssn:isPropertyOf" typeof="owl:FunctionalProperty">is <a href="https://www.w3.org/TR/owl2-syntax/#Functional_Object_Properties">Functional</a></span></th>
-                </tr>
                 <tr>
                   <th>Inverse property of</th>
                   <td>
@@ -5931,7 +5925,122 @@ their usage are given.</p>
         </pre>
         
      </section>
- 
+         
+     <section id="SSNProperty-instances" class="informative">
+     <h3>Generic or Specific Instances of ssn:Property</h3>
+        <p>This specification does not specify whether an instance of <a href="#SSNProperty"><code>ssn:Property</code></a> should be generic to all features of interest (e.g., <code>ex:Temperature</code>,
+         <code>ex:OnOffStatus</code>), or specific to a single feature of interest (e.g., <code>&lt;myBodyTemperature&gt;</code>, <code>&lt;LightStatus&gt;</code>).
+         Implementers are free to choose one way of modeling things or the other.
+         </p>
+         <p>On the other hand, one SHOULD NOT use <a href="https://www.w3.org/TR/owl2-new-features/#F12:_Punning">OWL punning</a> to make <code>ex:Temperature</code> denote both a subclass of 
+         <a href="#SSNProperty"><code>ssn:Property</code></a> and an instance of <a href="#SSNProperty"><code>ssn:Property</code></a>. In fact, merging the 
+         two examples below in a single RDF Graph would make an OWL reasoner infer that <code>ex:Temperature</code>, <code>&lt;office/1/temperature&gt;</code>, and
+         <code>&lt;office/2/temperature&gt;</code>, denote the same individual.</p>
+         <p>This also holds for subclasses of <a href="#SSNProperty"><code>ssn:Property</code></a>: <a href="#SOSAObservableProperty"><code>sosa:ObservableProperty</code></a>, and <a href="#SOSAActuatableProperty"><code>sosa:ActuatableProperty</code></a>.</p>
+         <p>This first example is modeling instances of <a href="#SSNProperty"><code>ssn:Property</code></a> as generic to all features of interest:</p>
+         <pre class="example">
+ex:Temperature a ssn:Property .
+
+&lt;office/1&gt; a sosa:FeatureOfInterest;
+  ssn:hasProperty ex:Temperature . 
+
+&lt;Observation/1&gt; a sosa:Observation ;
+  sosa:observedProperty ex:Temperature ;
+  sosa:hasFeatureOfInterest &lt;office/1&gt; .
+
+&lt;office/2&gt; a sosa:FeatureOfInterest;
+  ssn:hasProperty ex:Temperature . 
+
+&lt;Observation/1&gt; a sosa:Observation ;
+  sosa:observedProperty ex:Temperature ;
+  sosa:hasFeatureOfInterest &lt;office/2&gt; .
+         </pre>
+         <p>This second example is modeling instances of <a href="#SSNProperty"><code>ssn:Property</code></a> as specific to a features of interest:</p>
+         <pre class="example">
+ex:Temperature a owl:Class ;
+  rdfs:subClassOf ssn:Property .
+
+&lt;office/1&gt; a sosa:FeatureOfInterest;
+  ssn:hasProperty &lt;office/1/temperature&gt; . 
+
+&lt;office/1/temperature&gt; a ex:Temperature , ssn:Property .
+
+&lt;Observation/1&gt; a sosa:Observation ;
+  sosa:observedProperty &lt;office/1/temperature&gt; ;
+  sosa:hasFeatureOfInterest &lt;office/1&gt; .
+
+&lt;office/2&gt; a sosa:FeatureOfInterest;
+  ssn:hasProperty &lt;office/2/temperature&gt; . 
+
+&lt;office/2/temperature&gt; a ex:Temperature , ssn:Property .
+
+&lt;Observation/1&gt; a sosa:Observation ;
+  sosa:observedProperty &lt;office/2/temperature&gt; ;
+  sosa:hasFeatureOfInterest &lt;office/2&gt; .
+         </pre>
+     </section>
+
+
+     <section id="SSNSystem-instances" class="informative">
+     <h3>Generic or Specific Instances of ssn:System</h3>
+        <p>This specification does not specify whether an instance of <a href="#SSNSystem"><code>ssn:System</code></a> should be generic (e.g., <code>ex:TemperatureSensor</code>,
+         <code>ex:LightActuator</code>), or specific to a single feature of interest (e.g., <code>&lt;temperatureSensor/84&gt;</code>, <code>&lt;light/112&gt;</code>).
+         Implementers are free to choose one way of modeling things or the other.
+         </p>
+         <p>On the other hand, one SHOULD NOT use <a href="https://www.w3.org/TR/owl2-new-features/#F12:_Punning">OWL punning</a> to make <code>ex:Temperature</code> denote both a subclass of 
+         <a href="#SSNProperty"><code>ssn:Property</code></a> and an instance of ssn:Property. In fact, merging the two examples below in a 
+         single RDF Graph would make an OWL reasoner infer that <code>ex:TemperatureSensor</code>, <code>&lt;TemperatureSensor/1&gt;</code>, and
+         <code>&lt;TemperatureSensor/2&gt;</code>, denote the same individual.</p>
+         <p>This also holds for subclasses of <a href="#SSNSystem"><code>ssn:System</code></a>: <a href="#SOSASensor"><code>sosa:Sensor</code></a>, <a href="#SOSAActuator"><code>sosa:Actuator</code></a>, and <a href="#SOSASampler"><code>sosa:Sampler</code></a>.</p>
+         <p>This first example is modeling instances of <a href="#SSNSystem"><code>ssn:System</code></a> as generic:</p>
+         <pre class="example">
+ex:TemperatureSensor a ssn:System .
+
+&lt;Observation/1&gt; a sosa:Observation ;
+  sosa:madeBySensor ex:TemperatureSensor .
+
+&lt;Observation/2&gt; a sosa:Observation ;
+  sosa:madeBySensor ex:TemperatureSensor .
+
+# describing the system capabilities and operating/survival range can be done generically 
+# with this modeling choice:
+
+ex:TemperatureSensor ssn-system:hasOperatingRange ex:TemperatureSensorOperatingRange .
+
+ex:TemperatureSensorOperatingRange a ssn-system:OperatingRange ;
+  ssn-system:inCondition ex:NormalTemperatureCondition , ex:NormalHumidityCondition .
+           </pre>
+         <p>This second example is modeling instances of <a href="#SSNSystem"><code>ssn:System</code></a> as specific:</p>
+         <pre class="example">
+ex:TemperatureSensor a owl:Class ;
+  rdfs:subClassOf ssn:System .
+
+&lt;TemperatureSensor/1&gt; a ex:TemperatureSensor , ssn:System .
+
+&lt;Observation/1&gt; a sosa:Observation ;
+  sosa:madeBySensor &lt;TemperatureSensor/1&gt; .
+
+&lt;TemperatureSensor/2&gt; a ex:TemperatureSensor , ssn:System .
+
+&lt;Observation/2&gt; a sosa:Observation ;
+  sosa:madeBySensor &lt;TemperatureSensor/2&gt; .
+
+# describing the system capabilities and operating/survival range can be done at the level of 
+# the class or at the level of each instance with this modeling choice:
+
+ex:TemperatureSensor  rdfs:subClassOf [
+    owl:onProperty ssn-system:hasOperatingRange ;
+    owl:hasValue ex:TemperatureSensorOperatingRange ] .
+
+&lt;TemperatureSensor/1&gt; 
+  ssn-system:hasOperatingRange ex:TemperatureSensorOperatingRange ; # this axiom can be inferred
+  ssn-system:hasOperatingRange &lt;moreSpecificTemperatureSensorOperatingRange&gt; .
+
+&lt;moreSpecificTemperatureSensorOperatingRange&gt; a ssn-system:OperatingRange ;
+  ssn-system:inCondition &lt;modeSpecificTemperatureCondition&gt; , &lt;modeSpecificHumidityCondition&gt; .
+         </pre>
+     </section>
+
      </section>
 
     <section class="appendix" id="wide-review">
@@ -7303,6 +7412,7 @@ their usage are given.</p>
               <li>Removed ssn:sensingMethodUsed property</li>
               <li>Added rdfs:comment for ssn:hasInput</li>
               <li>Changed sosa:Platform subclass of dul:PhysicalObject </li>
+              <li>Removed axiom FunctionalProperty(ssn:isPropertyOf) to account for generic modeling of ssn:Property such as ex:Temperature</li>
             </ul>
           </li>
         </ol>
