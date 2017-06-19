@@ -14,6 +14,10 @@ var respecConfig = {
       company: "Ontology Engineering Group, Universidad Politécnica de Madrid",
       companyURL: "http://www.oeg-upm.net/"
     }, {
+      name: "Armin Haller",
+      company: "Australian National University",
+      companyURL: "http://cbe.anu.edu.au/"
+    }, {
 			name: "Nandana Mihindukulasooriya",
 			company: "Ontology Engineering Group, Universidad Politécnica de Madrid",
 			companyURL: "http://www.oeg-upm.net/"
