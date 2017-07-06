@@ -1,0 +1,103 @@
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix schema: <http://schema.org/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix ssn-system: <http://www.w3.org/ns/ssn/systems/> .
+@prefix qudt-unit-1-1: <http://qudt.org/vocab/unit#> .
+@prefix prov: <http://www.w3.org/ns/prov#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix seas: <https://w3id.org/seas/>.
+@prefix cdt: <http://w3id.org/lindt/custom_datatypes#>.
+
+@base <https://data.grandlyon.com/> .
+
+<Organization/1> a org:Organization ;
+    owl:sameAs <http://dbpedia.org/page/Metropolis_of_Lyon> .
+
+<Air> a sosa:FeatureOfInterest ;
+  rdfs:label "The air."@en .
+
+<IP68_Outdoor_Temperature_Sensor> a owl:Class , gr:ProductOrServiceModel ;
+  gr:name "IP68 Outdoor Temperature Sensor"@en ;
+  rdfs:label "IP68 Outdoor Temperature Sensor"@en ;
+  rdfs:subClassOf [
+    owl:onProperty ssn-system:hasOperatingRange ;
+    owl:hasValue <IP68_Outdoor_Temperature_Sensor#operatingRange> ] ;
+  rdfs:subClassOf [
+    owl:onProperty ssn-system:hasSystemCapability ;
+    owl:hasValue <IP68_Outdoor_Temperature_Sensor#systemCapability> ] .
+
+<IP68_Outdoor_Temperature_Sensor#operatingRange> a ssn-system:OperatingRange , ssn:Property ;
+  ssn-system:inCondition <IP68_Outdoor_Temperature_Sensor#normalOperatingCondition> .
+
+<IP68_Outdoor_Temperature_Sensor#normalOperatingCondition> a ssn-system:Condition , schema:PropertyValue ;
+  rdfs:comment "A temperature range of -20 to 70 Celsius."@en ;
+  schema:minValue -20.0 ;
+  schema:maxValue 70.0 ;
+  schema:unitCode qudt-unit-1-1:DegreeCelsius .
+
+<IP68_Outdoor_Temperature_Sensor#systemCapability> a ssn:Property , ssn-system:SystemCapability ;
+  rdfs:comment "The sensor capability in normal operating conditions."@en ;
+  ssn-system:hasSystemProperty <IP68_Outdoor_Temperature_Sensor#RFSensitivity> , <IP68_Outdoor_Temperature_Sensor#TemperatureAccuracy> , <IP68_Outdoor_Temperature_Sensor#TemperatureResolution> , <IP68_Outdoor_Temperature_Sensor#BatteryAccuracy> , <IP68_Outdoor_Temperature_Sensor#BatteryResolution> ;
+  ssn-system:inCondition <IP68_Outdoor_Temperature_Sensor#normalOperatingCondition> .
+
+<IP68_Outdoor_Temperature_Sensor#RFSensitivity> a ssn:Property , ssn-system:Sensitivity , schema:PropertyValue ;
+  schema:value -137 ;
+  schema:unitCode qudt-unit-1-1:DecibelReferredToOneMilliwatt .
+
+<IP68_Outdoor_Temperature_Sensor#TemperatureAccuracy> a ssn:Property , ssn-system:Accuracy , schema:PropertyValue ;
+  ssn:forProperty <Air?lat=45.75&long=4.85#temperature> ;
+  schema:minValue -0.2 ;
+  schema:maxValue 0.2 ;
+  schema:unitCode qudt-unit-1-1:DegreeCelsius .
+
+<IP68_Outdoor_Temperature_Sensor#TemperatureResolution> a ssn:Property , ssn-system:Resolution , schema:PropertyValue ;
+  ssn:forProperty <Air?lat=45.75&long=4.85#temperature> ;
+  schema:value 0.0625 ;
+  schema:unitCode qudt-unit-1-1:DegreeCelsius .
+
+<IP68_Outdoor_Temperature_Sensor#BatteryResolution> a ssn:Property , ssn-system:Resolution , schema:PropertyValue ;
+  ssn:forProperty <Sensor/SL-T-P1#battery> ;
+  schema:value 3.937e-3 ;
+  schema:unitCode qudt-unit-1-1:Percent .
+
+<Air?lat=45.75&long=4.85> a sosa:Sample ;
+  rdfs:label "The air at lat 45.75 and long 4.85."@en ;
+  sosa:isSampleOf <Air> ;
+  ssn:hasProperty <Air?lat=45.75&long=4.85#temperature> .
+
+<Air?lat=45.75&long=4.85#temperature> a ssn:Property , sosa:ObservableProperty ;
+  ssn:isPropertyOf <Air?lat=45.75&long=4.85> .
+
+<Sensor/SL-T-P1> a gr:ProductOrService, sosa:Sensor , seas:LoRaCommunicationDevice , <IP68_Outdoor_Temperature_Sensor> ;
+    gr:hasBrand [ a gr:Brand ; gr:name "Sensing Labs"@en ] ;
+    geo:alt 100.0 ;
+    geo:lat 45.75 ;
+    geo:lon 4.85 ;
+    ssn:implements <IP68_Outdoor_Temperature_Sensor#temperatureSensingProcedure> ;
+    ssn:implements <IP68_Outdoor_Temperature_Sensor#batterySensingProcedure> ;
+    ssn:observes <Sensor/SL-T-P1#battery> ;
+    ssn:observes <Air?lat=45.75&long=4.85#temperature> .
+
+<Deployment/SL-T-P1/2017-06-06> a ssn:Deployment ;
+  ssn:deployedSystem <Sensor/SL-T-P1> ;
+  prov:startedAtTime "2017-06-06"^^xsd:date ;
+  prov:wasAssociatedWith <Organization/1> ;
+  ssn:deployedOnPlatform <Tree/1> .
+
+<Observation/5872357#temperature> a sosa:Observation ;
+    sosa:hasSimpleResult "64.5244681928429 Cel"^^cdt:ucum ;
+    sosa:madeBySensor <Sensor/SL-T-P1> ;
+    sosa:hasFeatureOfInterest <Air?lat=45.75&long=4.85> ;
+    sosa:observedProperty <Air?lat=45.75&long=4.85#temperature> ;
+    sosa:resultTime "2017-06-20T21:49:18+00:00"^^xsd:dateTime .
+
+<Observation/5872357#battery> a sosa:Observation ;
+    sosa:hasSimpleResult "73.2 %"^^cdt:ucum ;
+    sosa:madeBySensor <Sensor/SL-T-P1> ;
+    sosa:hasFeatureOfInterest <Sensor/SL-T-P1> ;
+    sosa:observedProperty <Sensor/SL-T-P1#battery> ;
+    sosa:resultTime "2017-06-20T21:49:18+00:00"^^xsd:dateTime .
+
