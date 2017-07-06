@@ -5,7 +5,7 @@ var respecConfig = {
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-    edDraftURI: "http://w3c.github.io/sdw/coverage-json/",
+    edDraftURI: "https://w3c.github.io/sdw/coverage-json/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
