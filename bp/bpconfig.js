@@ -44,7 +44,8 @@ var respecConfig = {
         { value: "Bill Roberts" },
         { value: "Lars G. Svensson" },
         { value: "Kerry Taylor" },
-        { value: "Erik Wilde" }
+        { value: "Erik Wilde" },
+	{ value: "Rob Atkinson" }
       ]
     }, {
       key: "OGC Document Number",
