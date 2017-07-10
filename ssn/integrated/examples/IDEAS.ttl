@@ -1,0 +1,54 @@
+ @prefix owl: <http://www.w3.org/2002/07/owl#> .
+ @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+ @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+ @prefix sosa: <http://www.w3.org/ns/sosa#> .
+ @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+ @prefix cdt: <http://w3id.org/lindt/custom_datatypes#>.
+
+@base <http://example.org/data/> .
+
+<IDEA> a owl:Ontology ;
+   owl:imports <http://www.w3.org/ns/sosa> .
+ 
+ <COPR> a sosa:FeatureOfInterest ;
+   sosa:hasSample <COPR_SL> ;
+   rdfs:comment "Coal Oil Point Reserve: UC Santa Barbara Natural Reserve System"@en ;
+   rdfs:label "Coal Oil Point Reserve"@en .
+
+ <COPR_Station_Location> a sosa:Sample ;
+   rdfs:comment "."@en ;
+   rdfs:label "Air around COPR Station"@en ;
+   sosa:isSampleOf <COPR> .
+ 
+ <COPR_Station> a sosa:Platform ;
+   rdfs:comment "Station at Coal Oil Point Reserve, CA (see http://www.geog.ucsb.edu/ideas/COPR.html for details)"@en ;
+   rdfs:label "Coal Oil Point Reserve Wx Station"@en ;
+   rdfs:seeAlso <http://www.geog.ucsb.edu/ideas/COPR.html> ;
+   sosa:hosts <COPR-HMP45C-L> .
+ 
+ <COPR-HMP45C-L> a sosa:Platform ;
+   rdfs:label "HMP45C-L Temperature and Relative Humidity Probe at Coal Oil Point, UCSB, CA"@en ;
+   sosa:hosts <HUMICAP-H> ;
+   sosa:isHostedBy <COPR_Station> .
+
+ <HUMICAP-H> a sosa:Sensor ;
+   rdfs:label "Vaisala HUMICAP H-chip"@en ;
+   sosa:isHostedBy <COPR-HMP45C-L> .
+
+ <RelativeHumidity> a sosa:ObservableProperty ;
+   rdfs:comment "Humidity is a measure of the moisture content of air."@en ;
+   rdfs:label "Relative Humidity"@en .
+
+ <MeasuringRelativeHumidity> a sosa:Procedure ;
+   rdfs:comment "Instructions for measuring relative humidity"@en .
+  
+ <RH_avg_1_COPR_15min_201706020300PM> a sosa:Observation ;
+   rdfs:comment "Relative humidity as averaged over 15min at COPR."@en ;
+   rdfs:label "Relative humidity, AVG, 15min, COPR, 06.02.2017, 3:00 PM"@en ;
+   sosa:madeBySensor <HUMICAP-H> ;
+   sosa:hasFeatureOfInterest <COPR_Station_Location> ;
+   sosa:hasSimpleResult "92.5 %"^^cdt:ucum ;
+   sosa:resultTime "2017-06-02-T03:00:00-7:00"^^xsd:dateTime ;
+   sosa:observedProperty <RelativeHumidity> ;
+   sosa:usedProcedure <MeasuringRelativeHumidity> .
+
