@@ -255,7 +255,7 @@ var respecConfig = {
         publisher:"OGC",
         authors:["Jeff de la Beaujardiere"],
         date:"15 March 2006",
-        title:"Web Map Server Implementation Specification",
+        title:"Web Map Service Implementation Specification",
         status:"OpenGIS Implementation Standard"
       },
       "WMTS":{
