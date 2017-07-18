@@ -942,7 +942,7 @@ $(document).ready( function() {
       
       <p>Therefore, it is very important to provide explicit information to your users about how coordinates are encoded. For example, this snippet of results from the <a href="https://developers.google.com/maps/documentation/geocoding/intro">Google Geocoding API</a> makes explicit which is the <a>latitude</a> and which is the <a>longitude</a> coordinate. </p>
 
-      <pre class="example" title="A Google Geocoding API result snippet">
+      <pre class="example" title="A Google Geocoding API result snippet" id="ex-google-geocoding-api">
  "formatted_address" : "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
          "geometry" : {
             "location" : {
@@ -1251,7 +1251,7 @@ $(document).ready( function() {
             
             <p>For very large datasets paging through thousands of pages is not useful for a human either. Consider supporting filtering and/or organize the <a>Spatial Things</a> into subsets, as described in <a href="#bp-exposing-via-api" class="sectionRef"></a>.</p>
             
-            <aside class="example">
+            <aside class="example" id="ex-address-org">
               <p>In case of an address dataset, you could organize the <a>Spatial Things</a> (the addresses) by municipality, post code and street name to support a human user to get to a building with a few clicks.</p>
             </aside>
             
@@ -1259,13 +1259,13 @@ $(document).ready( function() {
             
             <p>Each Web-page, and the hyperlinks used to relate the <a>Spatial Things</a> to the dataset landing page, can likely be generated programmatically from the data you hold about the Spatial Thing, either directly from the data or by using an API that makes the data available on the Web.</p>
             
-            <aside class="example">
+            <aside class="example" id="ex-proxy">
               <p>Possible implementation approaches for addressing this best practice in the context of an existing <a>SDI</a> are discussed in more detail in <a href="#convenience-apis">Best Practice 12: Expose spatial data through 'convenience APIs'</a> for additional information. For example, by using a proxy tool like <a href="https://github.com/interactive-instruments/ldproxy">ldproxy</a> or by mapping the data in the SDI dynamically to crawlable resources on the Web using the [[R2RML]] standard and Linked Data Publication tools. Both approaches generate crawlable data from <a>Spatial Things</a> in your spatial datasets at query time and allow to enrich the data on the Web with additional information and <a>links</a>.</p>
             </aside>
             
             <p>It is important to keep in mind that the HTML representations should not mainly be designed for the search engines, but they should present the data in a clear and understandable way to human users. The page about the <a>Spatial Thing</a> should be useful to a user and encourage others to link to the page when they share other information about the Spatial Thing. This typically will also improve the ranking of these pages in search results.</p>
             
-            <aside class="example">
+            <aside class="example" id="ex-landing-pages">
               <p>The <a href="http://maps.nanaimo.ca/data/property/">Property Search in the City of Nanaimo, Canada</a> provides a landing page and one page per property. The landing page offers a search capability and the option to browse by street. This data is indexed; a search for, for example, "2100 AARON WAY, NANAIMO, BC" in a popular search engine returns the Nanaimo data for this <a>Spatial Thing</a> as one of the first results.</p>
               <p>The <a href="http://environment.data.gov.uk/bwq/profiles/">Bathing Water Quality Explorer for England</a> provides a landing page and one page per site. Sites can be searched, selected from a list or in a map.</p>
               <p>In both cases, the pages of the <a>Spatial Things</a> are generated from the underlying data at request time.</p>
@@ -1340,7 +1340,7 @@ $(document).ready( function() {
             
             <p>Search engines may also index resource representations in other formats than HTML.</p>
             
-            <aside class="example">
+            <aside class="example" id="ex-format-indexing">
               <p>At the time of writing, Google is indexing [[KML]] documents and supporting advanced searches that are restricted to KML documents. [[GML]] files are also indexed, but only like any other <a>XML</a> [[XML11]] documents. <a>JSON</a> [[RFC7159]], including GeoJSON [[RFC7946]], is currently not indexed.</p>
             </aside>
             
@@ -1548,14 +1548,14 @@ Connection: close
 	              <p>A common way of specifying the location of a building is to use its postal address. Most spatial applications require an address to be turned into spatial coordinates, so that its location can be marked on a map, or compared with locations of other things, a process known as <a>geocoding</a>.  Although a publisher could leave this process of geocoding to the data user, ideally the publisher should take responsibility for this as they are in a better position to check the accuracy of the results.  Different ways of specifying addresses can sometimes lead to errors in the geocoding process.</p>
 
 	              <p>Other approaches can be taken to specifying location. <a href="https://what3words.com/">What3words</a> is an example of a service that assigns an alternative kind of address to a location - in this case a sequence of three common words associated with a 3m by 3m square on the ground.  It allows every location to be given such an address and what3words also provides a means to relate the address to <a>latitude</a> and <a>longitude</a> coordinates.  Like conventional addresses, converting to coordinates is necessary for many spatial data applications (e.g. to calculate the distance between points or whether a point is inside a region), but the process of conversion is more reliable and precise.</p>
-              <aside class="example">
+              <aside class="example" id="ex-wiki-spatial-things">
                 <p>Wikipedia includes web pages about many Spatial Things, for example <a href="https://en.wikipedia.org/wiki/Florence_Cathedral">Florence Cathedral</a>.  This page provides latitude and longitude coordinates for the cathedral, as well as linking to other pages about the city of Florence and the region of Tuscany.  It would be better if typical Wikipedia pages about Spatial Things were explicit about the coordinate reference system used. However, a link is also provided to the 'Geohack' service which provides detailed location information, including the CRS.</p>
               </aside>
               <h5>2. Web mapping or visualization applications</h5>
               <p>A common application of <a>spatial data</a> on the Web is delivering map data in a tiled form, suitable for display in zoomable 'slippy maps'.  The OGC's <a>Web Map Tile Service</a> [[WMTS]] is an established standard for doing this.  Other approaches in common use include <a href="https://github.com/mapbox/mbtiles-spec">MBTiles</a> or 'Tile layers' in <a href="https://developers.google.com/maps/">Google Maps APIs</a></p>
               <p>Another frequent requirement is to draw markers or polygons on top of a Web map. A typical approach is for the browser to display a base map, then separately retrieve data about <a>Spatial Things</a> of interest, typically as GeoJSON [[RFC7946]], [[GeoRSS]] feeds, [[GML]] using the Simple Features profile [[GML-SF]] or [[KML]] files, then combine the two using appropriate JavaScript libraries.  For applications involving boundary polygons of geographical areas, a common consideration is how to make this process efficient at different zoom levels. A high level of detail is appropriate when zoomed in, but many areas may be visible when zoomed out, and delivering boundaries of all of those at full detail can lead to very large amounts of data and hence poor performance, so simplified lower resolution versions of polygons may be required.</p>
 <p>See this <a href="#table-formats-matrix">comparison of different spatial data formats</a> to help guide the choice of which approach is best suited to your purpose.</p>
-              <aside class="example">
+              <aside class="example" id="ex-d3-js">
                 <p><a href="https://d3js.org/">d3.js</a> is a widely used JavaScript library for creating visualizations in web pages. This <a href="https://medium.com/@mbostock/command-line-cartography-part-1-897aa8f8ca2c">tutorial by Mike Bostock</a> describes how to use D3 to work with geometrical data and display it in a web page.</p>
               </aside>
               <h5>3. Data integration - combining spatial data with other data</h5>
@@ -1568,14 +1568,14 @@ Connection: close
 	              <p>Common vocabularies for describing the address or location of a <a>Spatial Thing</a> include: [[SCHEMA-ORG]], [[VCARD-RDF]] and [[LOCN]]. See this <a href="#table-vocabs-matrix">comparison of different vocabularies for describing Spatial Things</a> to help decide which is best for your application.</p> 
 	              <p>Publishing explicit relationships between the Spatial Thing of interest and other related Spatial Things helps support data integration applications: for example providing hierarchical relationships between different kinds of administrative area.</p>
 
-              <aside class="example">
+              <aside class="example" id="ex-scottish-statistical-data">
                 <p>The Scottish Government makes a lot of statistical data available via their website <a href="http://statistics.gov.scot">Statistics.gov.scot</a>. Every statistical data point is referred to a geographical area, identified by an HTTP URI, making it easy to compare different datasets about an area of interest.  See for example this page about the <a href="http://statistics.gov.scot/id/statistical-geography/S12000036">City of Edinburgh Council Area</a>.</p>
               </aside>
               <h5>4. Spatial analytics - discover meaningful patterns in spatial data</h5>
 				  <p>Spatial analytics (or spatial analysis) is about deriving new insights by applying formal techniques to study <a>Spatial Things</a> using their topological or geometric properties. Combining <a>spatial data</a> with other data (see item 3 above) is a typical preparatory step before analyzing the one or more datasets using <a>spatial operators</a>, statistical algorithms, etc.</p>
               <p>For spatial analytics on the Web, the data should be accessible via an API as described in <a href="#bp-exposing-via-api" class="sectionRef"></a> and results should be shared using the best practices described in this document. Current <a>spatial data infrastructures</a> have some limitations with respect to sharing spatial data on the Web (as discussed in <a href="#why-are-traditional-sdi-not-enough" class="sectionRef"></a>). Nonetheless this approach is a well-established and powerful way of distributing <a>spatial data</a>, based on open standards and suited to a community of expert users. It is thus one of the options a data publisher should consider when deciding how to encode their <a>spatial data</a>.</p>
               <p>In addition to publishing the data that represents the results of the analysis, maps and other forms of visualization (see item 2 above) are typically used to communicate the results.</p>
-              <aside class="example">
+              <aside class="example" id="ex-cbs">
                 <p>Statistics Netherlands (CBS) publishes their <a href="https://www.cbs.nl/nl-nl/onze-diensten/methoden/onderzoeksomschrijvingen/korte-onderzoeksbeschrijvingen/kerncijfers-wijken-en-buurten">Neighborhoods statistics data</a> as a [[WFS]] service. The capabilities of that service can be requested in the following way:</p>
                 <code>https://geodata.nationaalgeoregister.nl/wijkenbuurten2016/wfs?request=GetCapabilities</code>
                 <p>For example, the following request returns the data for neighborhoods within the specified bounding box. The bounding box is specified using <a href="http://epsg-registry.org/?display=entity&urn=urn:ogc:def:crs:EPSG::28992">EPSG:28992</a> ("Amersfoort / RD New") and indicates an areay of 100 square meters.</p>
@@ -2494,19 +2494,19 @@ Content-type: application/geo+json
               <li>Semantic descriptions of the target entities and type of positioning.</li>
               <li>Encodings of the specific entity relations or the relative coordinate positions in the case of engineering <a>CRS</a>'</li>
             </ul>
-            <aside class="example">
+            <aside class="example" id="ex-metes-bounds">
               <p>"Metes and Bounds" are a widely-used system for defining land parcel boundary edges as cardinal directions and distances 
                 relative to survey markers or other landmarks. This would be considered allocentric quantitative relation type of relative positioning</p>
             </aside>
-            <aside class="example">
+            <aside class="example" id="ex-pixel-position">
               <p>The positions of pixels an image captured by a satellite or other camera sensor are originally recorded relative to the field of view of the sensor.
                 A model of the sensor optics, and platform position and orientation, together with transmission path effects (if available), may be used later to derive geocentric pixel positions.</p>
             </aside>
-            <aside class="example">
+            <aside class="example" id="ex-distance-along-stream">
               <p>In hydrology, positions of river features and/or observations such as water depth are often recorded as distance along a stream relative to a well-known 
                 origin point such as a stream confluence. This provides a reproducible form of positioning even if the <a>geometry</a> of the stream has not been precisely determined.</p>
             </aside>
-            <aside class="example">
+            <aside class="example" id="ex-ar">
               <p>Augmented or mixed reality content is presented to the viewer in positions both relative to the real-world entities that it augments and relative the viewer's
                 visual perspective on those entities. For example, an informational callout needs to be juxtaposed with its target but also occupy the user's field of view in a meaningful fashion.</p>
             </aside>
@@ -3246,14 +3246,14 @@ Content-type: application/geo+json
                 endpoints to be exposed as RESTful Web services.</p>
             </aside>
 
-            <aside class="example">
+            <aside class="example" id="ex-opensearch">
               <p>Use of <a href="http://www.opensearch.org/Home">OpenSearch</a> to find 
                 <a>SpatialThings</a>. For spatial or temporal searches use the <a
                   href="http://www.opengeospatial.org/standards/opensearchgeo">OGC Geo and
                 Temporal extensions</a>.</p>
             </aside>
 
-            <aside class="example">
+            <aside class="example" id="ex-data-ordnancesurvey">
 				      <p>The APIs of <a href="http://data.ordnancesurvey.co.uk/docs">data.ordnancesurvey.co.uk</a> support both textual and spatial searches.</p>
             </aside>
 
@@ -3284,7 +3284,7 @@ Content-type: application/geo+json
                 This approach is like the use of Z39.50 in 
                 the library community; that protocol is still used but 'modern' Web sites 
                 and Web services are wrapped around it.</p>
-              <aside class="example">
+              <aside class="example" id="ex-ldproxy">
                 <p>An example of this approach of creating a convenience API that works 
                   dynamically on top of <a>WFS</a> is the experimental <a 
                   href="https://github.com/interactive-instruments/ldproxy">ldproxy</a>. 
@@ -3299,7 +3299,7 @@ Content-type: application/geo+json
                   stores using <a>SPARQL</a> [[SPARQL11-OVERVIEW]] queries. The API is documented and published using 
                   Swagger.</p>
               </aside> 
-              <aside class="example">
+              <aside class="example" id="ex-uri-template">
                 <p>Mapping a URI template (as specified in [[RFC6570]]) to a <a>WFS</a>, <a>WCS</a> or <a
                     href="https://www.opendap.org/">OPeNDAP</a> end-point is a very simple
                   way of specifying a set of resources in the existing infrastructure.
@@ -3327,7 +3327,7 @@ Content-type: application/geo+json
                 load on your <a>SDI</a> compared to the first option, which may matter as the 
                 data access APIs of the SDI will continue to be used by expert users
                 and their complex data management tasks.</p>
-              <aside class="example">
+              <aside class="example" id="ex-r2rml">
                 <p>Expose the underpinning relational database via a <a>SPARQL</a> endpoint (using
                 something like <a href="https://www.melodiesproject.eu/content/ontop-spatial"
                   >ontop-spatial</a>) and Linked Data API. The data may be mapped dynamically 
@@ -3606,7 +3606,7 @@ another:Dataset a dcat:Dataset ;
               Sometimes, this is expressed as if it were a statement of positional accuracy.</p>
             <p>These can be expressed in the same way as for non-spatial data; for example using the <code>QualityAnnotation</code>,
               <code>Standard</code>, and <code>QualityPolicy</code> statements of [[VOCAB-DQV]].</p>
-            <aside class="example">
+            <aside class="example" id="ex-sampling-quality">
               <p>examples:</p>
               <ul>
                 <li>the ends of a 'sampling traverse' could be known in a national/global <a>CRS</a> to
@@ -3818,7 +3818,7 @@ another:Dataset a dcat:Dataset ;
         <p>In [[VoID]], <a href="https://www.w3.org/TR/void/#linkset" class="externalDFN">Linksets</a> provide summary description of the relationships between two datasets; identifying the source and target datasets, the link relation type(s) used plus optional metadata such as URI templates for identifying participating resources and the number of <a>links</a> specified for each relation type, and may describe <em>technical features</em> such as APIs through which the participating datasets can be accessed.</p>
         <p>Applications could be configured to harvest [[VoID]] descriptions from data publishers in their community, enabling them to build a searchable graph of relationships between datasets &mdash; a <em>Data Network</em>. Because this information is summarized at the set level, the data network graph is convenient to work with, allowing simple discovery of numbers and relation types of both <em>inbound</em> and <em>outbound</em> <a>links</a> within a given dataset. Once the presence of interesting links within a dataset has been identified, the user would then work directly with the dataset in question (or the API through which it is accessed) to acquire the detailed information about specific links defined in that dataset.</p>
         <p>Interactions such as those described above would be quite intensive for a human using a browser. However, the [[VoID]] descriptions could be used to drive a software agent that hides much of the complexity from the user; for example, automatically harvesting individual <a>links</a> once a set-level relationship is considered interesting, and then allowing the user to traverse those links either forwards or backwards.</p>
-        <aside class="example">
+        <aside class="example" id="ex-osi">
           <p><a href="https://www.osi.ie/">Ordnance Survey Ireland</a> (OSi) publish Ireland's authoritative geospatial information as <a>Linked Data</a> from their <a href="http://data.geohive.ie/">data.geohive.ie</a> platform. In addition to offering a human-browsable interface and downloadable data dumps, they use <a href="http://linkeddatafragments.org/">Linked Data Fragments</a>, and specifically a [[TRIPLE-PATTERN-FRAGMENTS]] <a href="http://vma01.adaptcentre.ie/">server</a> which uses [[VoID]] descriptions, to enable users to explore the datasets via a <a>SPARQL</a>  [[SPARQL11-OVERVIEW]] endpoint. For example, <a href="http://vma01.adaptcentre.ie/boundaries-links">Boundaries &mdash; links with the LOD cloud</a> provides a starting point to find <a>links</a> between the authoritative <a>Spatial Things</a> published by OSi and <em>similar</em> Spatial Things from <a href="http://dbpedia.org">DBpedia</a>; e.g.</p>
           <pre id="ex-linking-osi-similarto">
   @prefix ov:       &lt;http://open.vocab.org/terms/&gt; .
@@ -3827,7 +3827,7 @@ another:Dataset a dcat:Dataset ;
         ov:similarTo &lt;http://dbpedia.org/resource/County_Carlow&gt; .
           </pre>
         </aside>
-        <aside class="example">
+        <aside class="example" id="ex-sirf">
           <p>The <a href="http://portal.sirf.net/about-sirf">Spatial Identifier Reference Framework</a> (SIRF), developed by <a href="https://www.csiro.au">CSIRO</a> was designed as "a <em>Linked Data bridge</em> between <a>Spatial Data Infrastructures</a> and the general information Web". In summary, when a spatial dataset was registered with SIRF, URIs would be automatically created for each of the <a>Spatial Things</a> described in that dataset. Where identifiers in the collection of datasets were deemed to refer to the same <a>Spatial Thing</a> a <em>crosswalk</em> (such as <code>owl:sameAs</code>) would be created to link those identifiers and bind together different representations of the same <a>Spatial Thing</a>, and thereby enable users to browse information from multiple sources as a coherent whole. The SIRF application is driven by the [[VoID]] descriptions it creates for each registered dataset.</p>
         </aside>
         <p>As the use of [[VoID]] becomes more widespread, best practices regarding its use in building a searchable <em>data network</em> may emerge.</p>
