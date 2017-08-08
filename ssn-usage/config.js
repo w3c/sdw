@@ -57,6 +57,13 @@ var respecConfig = {
          publisher:"Web Semantics: Science, Services and Agents on the World Wide Web, 17:25-32 ",
          date:"December 2012"
       },
+      "vocab-ssn": {
+         authors: ["Armin Haller", "Krzysztof Janowicz", "Simon Cox", "Danh Le Phuoc", "Kerry Taylor", "Maxime Lefrançois", "(editors)"],
+         title:"Semantic Sensor Network Ontology",
+         href:"https://www.w3.org/TR/vocab-ssn/",
+         publisher:"W3C Candidate Recommendation",
+         date:"July 11, 2017"
+      },
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
