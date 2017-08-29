@@ -10,6 +10,9 @@
 
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix old-ssn: <http://purl.oclc.org/NET/ssnx/ssn#> .
+
+
 
 <http://www.w3.org/ns/ssn/dul> rdf:type owl:Ontology ;
   owl:imports <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl> ;
@@ -82,13 +85,13 @@ sosa:Observation
   rdfs:subClassOf dul:Event ;
   rdfs:isDefinedBy sosa: .
 
- [ owl:intersectionOf  ( not(old-ssn:Observation)
-   [
-   rdf:type            owl:Restriction ;
-   owl:onProperty      old-ssn:observationResult ;
-   owl:someValuesFrom  owl:Thing
- ]) 
- ] rdfs:subClassOf sosa:Observation.
+ [ owl:intersectionOf  ( 
+    [ owl:complementOf old-ssn:Observation ]
+    [
+      rdf:type            owl:Restriction ;
+      owl:onProperty      old-ssn:observationResult ;
+      owl:someValuesFrom  owl:Thing
+    ] ) ] rdfs:subClassOf sosa:Observation.
 
 sosa:madeObservation
   rdfs:subPropertyOf dul:associatedWith ;
