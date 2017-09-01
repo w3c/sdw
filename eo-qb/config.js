@@ -141,13 +141,13 @@ var respecConfig = {
             href: "https://github.com/ANU-Linked-Earth-Data",
             title: "ANU Linked Earth Data",
             authors: ["Dmitry Brizhinev", "Mike Ledger", "Yadunandan Sannappa", "Sam Toyer", "Zhiduo Zhang"]
-        }
+        },
 		"OGC-15-104r5": {
 			href: "http://docs.opengeospatial.org/as/15-104r5/15-104r5.html",
 			title: "Topic 21: Discrete Global Grid Systems Abstract Specification",
 			editors: ["Matthew Purss"],
 			date:"1 August 2017"
-		}
+		},
 		"rHealPIX": {
 			href: "http://iopscience.iop.org/1755-1315/34/1/012012",
 			title: "The rHEALPix Discrete Global Grid System",
