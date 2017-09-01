@@ -120,14 +120,6 @@ var respecConfig = {
             authors: ["JPL"],
             title: "SWEET Overview"
         },
-        "qb4st": {
-          href:"https://www.w3.org/TR/qb4st/",
-          title:"QB4ST: RDF Data Cube extensions for spatio-temporal components",
-          date: "5 January 2017",
-          authors:["Rob Atkinson"],
-          publisher:"W3C/OGC",
-          status:"W3C/OGC Working Draft"
-        },
         "perf-vgraph": {
             href: "http://ceur-ws.org/Vol-248/paper2.pdf",
             title: "A Performance and Scalability Metric for Virtual RDF Graphs",
@@ -150,6 +142,19 @@ var respecConfig = {
             title: "ANU Linked Earth Data",
             authors: ["Dmitry Brizhinev", "Mike Ledger", "Yadunandan Sannappa", "Sam Toyer", "Zhiduo Zhang"]
         }
+		"OGC 15-104r5": {
+			href: "http://docs.opengeospatial.org/as/15-104r5/15-104r5.html",
+			title: "Topic 21: Discrete Global Grid Systems Abstract Specification",
+			editors: ["Matthew Purss"],
+			date:"1 August 2017"
+		}
+		"rHealPIX": {
+			href: "http://iopscience.iop.org/1755-1315/34/1/012012",
+			title: "The rHEALPix Discrete Global Grid System",
+			authors: ["R. G. Gibb"],
+			date: "2016"
+		}
     },
+	
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };
