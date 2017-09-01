@@ -142,7 +142,7 @@ var respecConfig = {
             title: "ANU Linked Earth Data",
             authors: ["Dmitry Brizhinev", "Mike Ledger", "Yadunandan Sannappa", "Sam Toyer", "Zhiduo Zhang"]
         }
-		"OGC 15-104r5": {
+		"OGC-15-104r5": {
 			href: "http://docs.opengeospatial.org/as/15-104r5/15-104r5.html",
 			title: "Topic 21: Discrete Global Grid Systems Abstract Specification",
 			editors: ["Matthew Purss"],
