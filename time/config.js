@@ -39,6 +39,7 @@ var respecConfig = {
     wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
     wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
+    implementationReportURI: "https://www.w3.org/2015/spatial/wiki/OWL_Time_Ontology_adoption",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
