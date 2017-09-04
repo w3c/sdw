@@ -5,7 +5,7 @@ var respecConfig = {
     previousPublishDate: "2016-07-12",
     previousMaturity: "WD",
     previousURI: "https://www.w3.org/TR/2016/WD-owl-time-20160712/",
-    edDraftURI: "http://w3c.github.io/sdw/time/",
+    edDraftURI: "https://w3c.github.io/sdw/time/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
