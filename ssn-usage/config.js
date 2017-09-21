@@ -5,7 +5,7 @@ var respecConfig = {
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-    edDraftURI: "http://w3c.github.io/sdw/ssn-usage/",
+    edDraftURI: "https://w3c.github.io/sdw/ssn-usage/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
@@ -23,9 +23,9 @@ var respecConfig = {
 			companyURL: "http://www.oeg-upm.net/"
 		}],
     wg: "Spatial Data on the Web Working Group",
-    wgURI: "http://www.w3.org/2015/spatial/",
+    wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
-    wgPatentURI: "http://www.w3.org/2004/01/pp-impl/75471/status",
+    wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,

@@ -5,14 +5,14 @@ var respecConfig = {
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-    edDraftURI: "http://w3c.github.io/sdw/ssn/",
+    edDraftURI: "https://w3c.github.io/sdw/ssn/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
 	{
 		name: "Armin Haller",
         company: "Australian National University",
-        companyURL: "http://cbe.anu.edu.au/"
+        companyURL: "https://www.cbe.anu.edu.au/"
 	},
     {
 		name: "Krzysztof Janowicz",
@@ -64,6 +64,7 @@ var respecConfig = {
     wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
     wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
+    implementationReportURI: "https://w3c.github.io/sdw/ssn-usage/",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
