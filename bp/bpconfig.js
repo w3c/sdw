@@ -12,11 +12,11 @@ var respecConfig = {
     {
       name: "Jeremy Tandy",
       company: "Met Office",
-      companyURL: "http://www.metoffice.gov.uk/"
+      companyURL: "https://www.metoffice.gov.uk/"
     }, {
       name: "Linda van den Brink",
       company: "Geonovum",
-      companyURL: "http://www.geonovum.nl/"
+      companyURL: "https://www.geonovum.nl/"
     }, {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
@@ -293,7 +293,7 @@ var respecConfig = {
         authors: ["Mark Harrison", "Ken Traub"],
         "date": "November 2015",
         "publisher": "GS1",
-        href: "http://www.gs1.org/gs1-smartsearch/guideline/gtin-web-implementation-guideline"
+        href: "https://www.gs1.org/gs1-smartsearch/guideline/gtin-web-implementation-guideline"
       },
       "PURI": {
         "authors":["Phil Archer", "Nikos Loutas", "Stijn Goedertier", "Saky Kourtidis"],
