@@ -528,3 +528,119 @@ When operating a GET at http://www.w3.org/ns/ssn/systems/xyz with a Accept heade
 
 When operating a GET at http://www.w3.org/ns/ssn/systems/xyz with a Accept header that is compatible with `text/turtle`, 303 redirect to http://www.w3.org/ns/ssn/systems.ttl
 
+
+# Implementation example: with Apache Server .htaccess
+
+
+```
+DirectoryIndex index.html
+
+RewriteEngine On
+RewriteBase  /ns/sosa/
+
+
+# Documents
+
+<Files ~ "sosa\.rdf$">
+    Header set Content-Type "application/rdf+xml"
+    Header set Content-Disposition "filename= sosa.rdf"
+    Header set Content-Location "http://www.w3.org/ns/sosa/sosa.rdf" env=REDIRECT_redirect
+</Files>
+
+<Files ~ "sosa\.ttl$">
+    Header set Content-Type "text/turtle"
+    Header set Content-Disposition "filename= sosa.ttl"
+    Header set Content-Location "http://www.w3.org/ns/sosa/sosa.ttl" env=REDIRECT_redirect
+</Files>
+
+
+<Files ~ "om\.rdf$">
+    Header set Content-Type "application/rdf+xml"
+    Header set Content-Disposition "filename= sosa-om.rdf"
+    Header set Content-Location "http://www.w3.org/ns/sosa/om.rdf" env=REDIRECT_redirect
+</Files>
+
+<Files ~ "om\.ttl$">
+    Header set Content-Type "text/turtle"
+    Header set Content-Disposition "filename= sosa-om.ttl"
+    Header set Content-Location "http://www.w3.org/ns/sosa/om.ttl" env=REDIRECT_redirect
+</Files>
+
+<Files ~ "oboe\.rdf$">
+    Header set Content-Type "application/rdf+xml"
+    Header set Content-Disposition "filename= sosa-oboe.rdf"
+    Header set Content-Location "http://www.w3.org/ns/sosa/oboe.rdf" env=REDIRECT_redirect
+</Files>
+
+<Files ~ "oboe\.ttl$">
+    Header set Content-Type "text/turtle"
+    Header set Content-Disposition "filename= sosa-oboe.ttl"
+    Header set Content-Location "http://www.w3.org/ns/sosa/oboe.ttl" env=REDIRECT_redirect
+</Files>
+
+
+# Directory index
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/$
+RewriteCond %{HTTP_ACCEPT} !(application/rdf\+xml|text/turtle)
+RewriteRule  ^(.*)$  https://www.w3.org/TR/vocab-ssn/ [R=303,env=redirect:1]
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/$
+RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
+RewriteRule  ^(.*)$  /ns/sosa/sosa.rdf [env=redirect:1]
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/$
+RewriteCond %{HTTP_ACCEPT} text/turtle
+RewriteRule  ^(.*)$  /ns/sosa/sosa.ttl [env=redirect:1]
+
+
+# Resources
+
+## sosa
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/(ActuatableProperty|Actuation|Actuator|FeatureOfInterest|ObservableProperty|Observation|Platform|Procedure|Repeatability|Result|Sample|Sampler|Sampling|Sensor|actsOnProperty|madeByActuator|hasFeatureOfInterest|hasResult|hasResultingSample|hasSample|hosts|isActedOnBy|isFeatureOfInterestOf|isHostedBy|isObservedBy|isResultOf|isSampleOf|isSamplingResultOf|madeActuation|madeBySampler|madeBySensor|madeObservation|madeSampling|observedProperty|observes|phenomenonTime|usedProcedure|hasSimpleResult|hasResultTime)
+RewriteCond %{HTTP_ACCEPT} !(application/rdf\+xml|text/turtle)
+RewriteRule  ^(.*)$  https://www.w3.org/TR/vocab-ssn/#SOSA$1 [R=303,NE,env=html:1]
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/(ActuatableProperty|Actuation|Actuator|FeatureOfInterest|ObservableProperty|Observation|Platform|Procedure|Repeatability|Result|Sample|Sampler|Sampling|Sensor|actsOnProperty|madeByActuator|hasFeatureOfInterest|hasResult|hasResultingSample|hasSample|hosts|isActedOnBy|isFeatureOfInterestOf|isHostedBy|isObservedBy|isResultOf|isSampleOf|isSamplingResultOf|madeActuation|madeBySampler|madeBySensor|madeObservation|madeSampling|observedProperty|observes|phenomenonTime|usedProcedure|hasSimpleResult|hasResultTime)
+RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
+RewriteRule  ^(.*)$  /ns/sosa/sosa.rdf [R=303,env=rdf:1]
+Header always set Content-Type "application/rdf+xml" env=rdf
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/(ActuatableProperty|Actuation|Actuator|FeatureOfInterest|ObservableProperty|Observation|Platform|Procedure|Repeatability|Result|Sample|Sampler|Sampling|Sensor|actsOnProperty|madeByActuator|hasFeatureOfInterest|hasResult|hasResultingSample|hasSample|hosts|isActedOnBy|isFeatureOfInterestOf|isHostedBy|isObservedBy|isResultOf|isSampleOf|isSamplingResultOf|madeActuation|madeBySampler|madeBySensor|madeObservation|madeSampling|observedProperty|observes|phenomenonTime|usedProcedure|hasSimpleResult|hasResultTime)
+RewriteCond %{HTTP_ACCEPT} text/turtle
+RewriteRule  ^(.*)$  /ns/sosa/sosa.ttl [R=303,env=ttl:1]
+Header always set Content-Type "text/turtle" env=ttl
+
+
+## sosa-om
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/om$
+RewriteCond %{HTTP_ACCEPT} !(application/rdf\+xml|text/html)
+RewriteRule  ^(.*)/?$  /ns/sosa/om.ttl [env=redirect:1]
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/om$
+RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
+RewriteRule  ^(.*)/?$  /ns/sosa/om.rdf [env=redirect:1]
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/om$
+RewriteCond %{HTTP_ACCEPT} text/html
+RewriteRule  ^(.*)/?$  https://www.w3.org/TR/vocab-ssn/#OM_Alignment [R=303,NE,env=redirect:1]
+
+
+## sosa-oboe
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/oboe$
+RewriteCond %{HTTP_ACCEPT} !(application/rdf\+xml|text/html)
+RewriteRule  ^(.*)/?$  /ns/sosa/oboe.ttl [env=redirect:1]
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/oboe$
+RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
+RewriteRule  ^(.*)/?$  /ns/sosa/oboe.rdf [env=redirect:1]
+
+RewriteCond  %{REQUEST_URI}  /ns/sosa/oboe$
+RewriteCond %{HTTP_ACCEPT} text/html
+RewriteRule  ^(.*)/?$  https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment [R=303,NE,env=redirect:1]
+
+```
+
