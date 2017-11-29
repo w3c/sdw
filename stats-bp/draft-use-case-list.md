@@ -48,3 +48,50 @@ Example: climatology for a location and a parameter of interest is usually const
 How can such descriptive metadata be constructed for use in a wide variety of domains, and allow rigorous reasoning about the values of interest?
 
 I  hope that is coherent. We tried to do something like this several years ago, put kept putting it further down the priority list!
+
+## Area profile
+
+Contributed by: Bill Roberts
+
+Put together a summary 'picture' of a place by gathering together statistical data on various topics
+
+TO DO: add detail and examples
+
+## Benchmarking
+
+Contributed by: Bill Roberts
+
+Compare one place or organisation against others, in terms of one or more measures
+
+TO DO: add detail and examples
+
+
+## Find places by criteria
+
+Contributed by: Bill Roberts
+
+Find places which satisfy one or more criteria, expressed in terms of values of statistical measures
+
+TO DO: add detail and examples
+
+## Slice and dice a statistical data cube
+
+Contributed by: Bill Roberts
+
+Select a subset of a statistical data cube by fixing the values of some of the dimensions.  Fixing a single value of a dimension creates a slice.  This is generally fairly straightforward.  Another useful but sometimes more complex requirement is to select a list or range of possible values of a dimension.
+
+TO DO: list the various ways in which multiple dimension values might be specified: a list, or a range (if the dimension is 'orderable').
+
+## Manage and share a re-usable codelist
+
+Contributed by: Bill Roberts
+
+Registry/register idea
+
+...
+
+## Verify dimension values against external codelist
+
+Contribteud by: Bill Roberts
+
+Check whether a dimension of a statistical dataset use only values from an externally managed 'official' code list
