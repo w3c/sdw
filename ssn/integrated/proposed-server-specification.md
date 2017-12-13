@@ -12,12 +12,6 @@ This document defines proposed specifications for serving the ontologies develop
 
 ### The ontology document:
 
-
-*HTML representation:* 
-
-When operating a GET at http://www.w3.org/ns/sosa/ with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/
-
-
 *RDF/XML representation:* 
 
 When operating a GET at http://www.w3.org/ns/sosa/ with a Accept header that is compatible with `application/rdf+xml`, serve sosa.rdf, with headers:
@@ -103,18 +97,9 @@ The list of SOSA resource URLs is:
 When operating a GET at http://www.w3.org/ns/sosa/xyz with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#SOSAxyz
 
 
-*RDF/XML representation:* 
+*RDF/XML or Turtle representation:* 
 
-When operating a GET at http://www.w3.org/ns/sosa/xyz with a Accept header that is compatible with `application/rdf+xml`, 303 redirect to http://www.w3.org/ns/sosa/sosa.rdf
-
-
-*Turtle representation:* 
-
-When operating a GET at http://www.w3.org/ns/sosa/xyz with a Accept header that is compatible with `text/turtle`, 303 redirect to http://www.w3.org/ns/sosa/sosa.ttl
-
-
-
-
+When operating a GET at http://www.w3.org/ns/sosa/xyz with a Accept header that does not contain `text/html`, 303 redirect to http://www.w3.org/ns/sosa/
 
 
 ## SSN
@@ -125,11 +110,6 @@ When operating a GET at http://www.w3.org/ns/sosa/xyz with a Accept header that 
 
 
 ### The ontology document:
-
-
-*HTML representation:* 
-
-When operating a GET at http://www.w3.org/ns/ssn/ with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/
 
 
 *RDF/XML representation:* 
@@ -198,14 +178,9 @@ The list of SSN resource URLs is:
 When operating a GET at http://www.w3.org/ns/ssn/xyz with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#SSNxyz
 
 
-*RDF/XML representation:* 
+*RDF/XML or Turtle representation:* 
 
-When operating a GET at http://www.w3.org/ns/ssn/xyz with a Accept header that is compatible with `application/rdf+xml`, 303 redirect to http://www.w3.org/ns/ssn/ssn.rdf
-
-
-*Turtle representation:* 
-
-When operating a GET at http://www.w3.org/ns/ssn/xyz with a Accept header that is compatible with `text/turtle`, 303 redirect to http://www.w3.org/ns/ssn/ssn.ttl
+When operating a GET at http://www.w3.org/ns/ssn/xyz with a Accept header that does not contain `text/html`, 303 redirect to http://www.w3.org/ns/ssn/
 
 
 ## SSNX
@@ -215,7 +190,6 @@ When operating a GET at http://www.w3.org/ns/ssn/xyz with a Accept header that i
 *URI on the W3C Server:* https://www.w3.org/2017/01/ssn-ssnx/
 
 *Version to use for publication:* http://w3c.github.io/sdw/ssn/integrated/ssnx.ttl
-
 
 After having it online, need to ask to change the old redirection to the new location of the document, see https://lists.w3.org/Archives/Public/public-sdw-wg/2017Apr/0124.html 
 
@@ -235,22 +209,17 @@ Basic hash-based content-negotiation.
 ### The ontology document:
 
 
-*HTML representation:* 
-
-When operating a GET at http://www.w3.org/ns/ssn/dul with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#DUL_Alignment
-
-
 *RDF/XML representation:* 
 
-When operating a GET at http://www.w3.org/ns/ssn/dul with a Accept header that is compatible with `application/rdf+xml`, serve ssn-dul.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/ssn/dul with a Accept header that is compatible with `application/rdf+xml`, serve dul.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
-Content-Location: http://www.w3.org/ns/ssn/dul/ssn-dul.rdf
+Content-Location: http://www.w3.org/ns/ssn/dul.rdf
 Content-Disposition: filename= ssn-dul.rdf;
 ```
 
-When operating a GET at http://www.w3.org/ns/ssn/dul/ssn-dul.rdf with a Accept header that is compatible with `application/rdf+xml`, serve ssn-dul.rdf, with headers:
+When operating a GET at http://www.w3.org/ns/ssn/dul.rdf with a Accept header that is compatible with `application/rdf+xml`, serve dul.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
@@ -259,15 +228,15 @@ Content-Disposition: filename= ssn-dul.rdf;
 
 *Turtle representation:* 
 
-When operating a GET at http://www.w3.org/ns/ssn/dul with a Accept header that is compatible with `text/turtle`, serve ssn-dul.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/ssn/dul with a Accept header that is compatible with `text/turtle`, serve dul.ttl, with headers:
 
 ```
 Content-Type: text/turtle
-Content-Location: http://www.w3.org/ns/ssn/dul/ssn-dul.ttl
+Content-Location: http://www.w3.org/ns/ssn/dul.ttl
 Content-Disposition: filename= ssn-dul.ttl;
 ```
 
-When operating a GET at http://www.w3.org/ns/ssn/dul/ssn-dul.ttl with a Accept header that is compatible with `text/turtle`, serve ssn.ttl, with headers:
+When operating a GET at http://www.w3.org/ns/ssn/dul.ttl with a Accept header that is compatible with `text/turtle`, serve dul.ttl, with headers:
 
 ```
 Content-Type: text/turtle
@@ -337,11 +306,6 @@ Content-Disposition: filename= sosa-om.ttl;
 ### The ontology document:
 
 
-*HTML representation:* 
-
-When operating a GET at http://www.w3.org/ns/sosa/oboe with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment
-
-
 *RDF/XML representation:* 
 
 When operating a GET at http://www.w3.org/ns/sosa/oboe with a Accept header that is compatible with `application/rdf+xml`, serve sosa-oboe-mapping.rdf, with headers:
@@ -385,11 +349,6 @@ Content-Disposition: filename= sosa-oboe.ttl;
 
 
 ### The ontology document:
-
-
-*HTML representation:* 
-
-When operating a GET at http://www.w3.org/ns/sosa/prov with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#PROV_Alignment
 
 
 *RDF/XML representation:* 
@@ -438,10 +397,6 @@ Content-Disposition: filename= sosa-prov.ttl;
 ### The ontology document:
 
 
-*HTML representation:* 
-
-When operating a GET at http://www.w3.org/ns/ssn/systems with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#System-capabilities
-
 
 *RDF/XML representation:* 
 
@@ -449,11 +404,11 @@ When operating a GET at http://www.w3.org/ns/ssn/systems with a Accept header th
 
 ```
 Content-Type: application/rdf+xml
-Content-Location: http://www.w3.org/ns/ssn/systems.rdf
+Content-Location: https://www.w3.org/ns/ssn/systems/ssn-system.rdf
 Content-Disposition: filename= ssn-system.rdf;
 ```
 
-When operating a GET at http://www.w3.org/ns/ssn/systems.rdf with a Accept header that is compatible with `application/rdf+xml`, serve ssn-system.rdf, with headers:
+When operating a GET at https://www.w3.org/ns/ssn/systems/ssn-system.rdf with a Accept header that is compatible with `application/rdf+xml`, serve ssn-system.rdf, with headers:
 
 ```
 Content-Type: application/rdf+xml
@@ -466,11 +421,11 @@ When operating a GET at http://www.w3.org/ns/ssn/systems with a Accept header th
 
 ```
 Content-Type: text/turtle
-Content-Location: http://www.w3.org/ns/ssn/systems.ttl
+Content-Location: https://www.w3.org/ns/ssn/systems/ssn-system.ttl
 Content-Disposition: filename= ssn-system.ttl;
 ```
 
-When operating a GET at http://www.w3.org/ns/ssn/systems.ttl with a Accept header that is compatible with `text/turtle`, serve ssn-system.ttl, with headers:
+When operating a GET at https://www.w3.org/ns/ssn/systems/ssn-system.ttl with a Accept header that is compatible with `text/turtle`, serve ssn-system.ttl, with headers:
 
 ```
 Content-Type: text/turtle
@@ -519,128 +474,55 @@ The list of SSN resource URLs is:
 When operating a GET at http://www.w3.org/ns/ssn/systems/xyz with a Accept header that is compatible with `text/html`, 303 redirect to https://www.w3.org/TR/vocab-ssn/#SSNSYSTEMxyz
 
 
-*RDF/XML representation:* 
+*RDF/XML or Turtle representation:* 
 
-When operating a GET at http://www.w3.org/ns/ssn/systems/xyz with a Accept header that is compatible with `application/rdf+xml`, 303 redirect to http://www.w3.org/ns/ssn/systems.rdf
-
-
-*Turtle representation:* 
-
-When operating a GET at http://www.w3.org/ns/ssn/systems/xyz with a Accept header that is compatible with `text/turtle`, 303 redirect to http://www.w3.org/ns/ssn/systems.ttl
+When operating a GET at http://www.w3.org/ns/ssn/systems/xyz with a Accept header that is not compatible with `text/turtle`, 303 redirect to http://www.w3.org/ns/ssn/systems/
 
 
-# Implementation example: with Apache Server .htaccess
+# Implementation example: Apache .htaccess document 
 
+_Preliminary notes_:
+
+* The W3C server automatically add the "Content-Location" HTTP header. So it is returned already, no need to add anything;
+* It also uses option [Multiviews]() with a type-map that recognizes extensions `.ttl` and `.rdf`. 
+
+Below is the content of the .htaccess document in directory `/ns/sosa/`.
 
 ```
-DirectoryIndex index.html
-
 RewriteEngine On
 RewriteBase  /ns/sosa/
-
-
-# Documents
+DirectoryIndex sosa
 
 <Files ~ "sosa\.rdf$">
-    Header set Content-Type "application/rdf+xml"
-    Header set Content-Disposition "filename= sosa.rdf"
-    Header set Content-Location "http://www.w3.org/ns/sosa/sosa.rdf" env=REDIRECT_redirect
+     Header set Content-Disposition "inline; filename=sosa.rdf"
 </Files>
-
 <Files ~ "sosa\.ttl$">
-    Header set Content-Type "text/turtle"
-    Header set Content-Disposition "filename= sosa.ttl"
-    Header set Content-Location "http://www.w3.org/ns/sosa/sosa.ttl" env=REDIRECT_redirect
+     Header set Content-Disposition "inline; filename=sosa.ttl"
 </Files>
-
-
 <Files ~ "om\.rdf$">
-    Header set Content-Type "application/rdf+xml"
-    Header set Content-Disposition "filename= sosa-om.rdf"
-    Header set Content-Location "http://www.w3.org/ns/sosa/om.rdf" env=REDIRECT_redirect
+     Header set Content-Disposition "inline; filename=sosa-om.rdf"
 </Files>
-
 <Files ~ "om\.ttl$">
-    Header set Content-Type "text/turtle"
-    Header set Content-Disposition "filename= sosa-om.ttl"
-    Header set Content-Location "http://www.w3.org/ns/sosa/om.ttl" env=REDIRECT_redirect
+     Header set Content-Disposition "inline; filename=sosa-om.ttl"
 </Files>
-
 <Files ~ "oboe\.rdf$">
-    Header set Content-Type "application/rdf+xml"
-    Header set Content-Disposition "filename= sosa-oboe.rdf"
-    Header set Content-Location "http://www.w3.org/ns/sosa/oboe.rdf" env=REDIRECT_redirect
+     Header set Content-Disposition "inline; filename=sosa-oboe.rdf"
 </Files>
-
 <Files ~ "oboe\.ttl$">
-    Header set Content-Type "text/turtle"
-    Header set Content-Disposition "filename= sosa-oboe.ttl"
-    Header set Content-Location "http://www.w3.org/ns/sosa/oboe.ttl" env=REDIRECT_redirect
+     Header set Content-Disposition "inline; filename=sosa-oboe.ttl"
 </Files>
 
+RewriteCond  %{REQUEST_URI}
+/ns/sosa/(ActuatableProperty|Actuation|Actuator|FeatureOfInterest|ObservableProperty|Observation|Platform|Procedure|Repeatability|Result|Sample|Sampler|Sampling|Sensor|actsOnProperty|madeByActuator|hasFeatureOfInterest|hasResult|hasResultingSample|hasSample|hosts|isActedOnBy|isFeatureOfInterestOf|isHostedBy|isObservedBy|isResultOf|isSampleOf|isSamplingResultOf|madeActuation|madeBySampler|madeBySensor|madeObservation|madeSampling|observedProperty|observes|phenomenonTime|usedProcedure|hasSimpleResult|hasResultTime)$
+RewriteCond  %{HTTP_ACCEPT}  text/html
+RewriteRule  ^(.*)$  https://www.w3.org/TR/vocab-ssn/#SOSA$1 [R=303,NE,env=redirect:1]
 
-# Directory index
+RewriteCond  %{REQUEST_URI}
+/ns/sosa/(ActuatableProperty|Actuation|Actuator|FeatureOfInterest|ObservableProperty|Observation|Platform|Procedure|Repeatability|Result|Sample|Sampler|Sampling|Sensor|actsOnProperty|madeByActuator|hasFeatureOfInterest|hasResult|hasResultingSample|hasSample|hosts|isActedOnBy|isFeatureOfInterestOf|isHostedBy|isObservedBy|isResultOf|isSampleOf|isSamplingResultOf|madeActuation|madeBySampler|madeBySensor|madeObservation|madeSampling|observedProperty|observes|phenomenonTime|usedProcedure|hasSimpleResult|hasResultTime)$
+RewriteCond  %{HTTP_ACCEPT}  !text/html
+RewriteRule  ^(.*)$  /ns/sosa/ [R=303,env=redirect:1]
 
-RewriteCond  %{REQUEST_URI}  /ns/sosa/$
-RewriteCond %{HTTP_ACCEPT} !(application/rdf\+xml|text/turtle)
-RewriteRule  ^(.*)$  https://www.w3.org/TR/vocab-ssn/ [R=303,env=redirect:1]
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/$
-RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
-RewriteRule  ^(.*)$  /ns/sosa/sosa.rdf [env=redirect:1]
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/$
-RewriteCond %{HTTP_ACCEPT} text/turtle
-RewriteRule  ^(.*)$  /ns/sosa/sosa.ttl [env=redirect:1]
-
-
-# Resources
-
-## sosa
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/(ActuatableProperty|Actuation|Actuator|FeatureOfInterest|ObservableProperty|Observation|Platform|Procedure|Repeatability|Result|Sample|Sampler|Sampling|Sensor|actsOnProperty|madeByActuator|hasFeatureOfInterest|hasResult|hasResultingSample|hasSample|hosts|isActedOnBy|isFeatureOfInterestOf|isHostedBy|isObservedBy|isResultOf|isSampleOf|isSamplingResultOf|madeActuation|madeBySampler|madeBySensor|madeObservation|madeSampling|observedProperty|observes|phenomenonTime|usedProcedure|hasSimpleResult|hasResultTime)
-RewriteCond %{HTTP_ACCEPT} !(application/rdf\+xml|text/turtle)
-RewriteRule  ^(.*)$  https://www.w3.org/TR/vocab-ssn/#SOSA$1 [R=303,NE,env=html:1]
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/(ActuatableProperty|Actuation|Actuator|FeatureOfInterest|ObservableProperty|Observation|Platform|Procedure|Repeatability|Result|Sample|Sampler|Sampling|Sensor|actsOnProperty|madeByActuator|hasFeatureOfInterest|hasResult|hasResultingSample|hasSample|hosts|isActedOnBy|isFeatureOfInterestOf|isHostedBy|isObservedBy|isResultOf|isSampleOf|isSamplingResultOf|madeActuation|madeBySampler|madeBySensor|madeObservation|madeSampling|observedProperty|observes|phenomenonTime|usedProcedure|hasSimpleResult|hasResultTime)
-RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
-RewriteRule  ^(.*)$  /ns/sosa/sosa.rdf [R=303,env=rdf:1]
-Header always set Content-Type "application/rdf+xml" env=rdf
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/(ActuatableProperty|Actuation|Actuator|FeatureOfInterest|ObservableProperty|Observation|Platform|Procedure|Repeatability|Result|Sample|Sampler|Sampling|Sensor|actsOnProperty|madeByActuator|hasFeatureOfInterest|hasResult|hasResultingSample|hasSample|hosts|isActedOnBy|isFeatureOfInterestOf|isHostedBy|isObservedBy|isResultOf|isSampleOf|isSamplingResultOf|madeActuation|madeBySampler|madeBySensor|madeObservation|madeSampling|observedProperty|observes|phenomenonTime|usedProcedure|hasSimpleResult|hasResultTime)
-RewriteCond %{HTTP_ACCEPT} text/turtle
-RewriteRule  ^(.*)$  /ns/sosa/sosa.ttl [R=303,env=ttl:1]
-Header always set Content-Type "text/turtle" env=ttl
-
-
-## sosa-om
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/om$
-RewriteCond %{HTTP_ACCEPT} !(application/rdf\+xml|text/html)
-RewriteRule  ^(.*)/?$  /ns/sosa/om.ttl [env=redirect:1]
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/om$
-RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
-RewriteRule  ^(.*)/?$  /ns/sosa/om.rdf [env=redirect:1]
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/om$
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule  ^(.*)/?$  https://www.w3.org/TR/vocab-ssn/#OM_Alignment [R=303,NE,env=redirect:1]
-
-
-## sosa-oboe
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/oboe$
-RewriteCond %{HTTP_ACCEPT} !(application/rdf\+xml|text/html)
-RewriteRule  ^(.*)/?$  /ns/sosa/oboe.ttl [env=redirect:1]
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/oboe$
-RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
-RewriteRule  ^(.*)/?$  /ns/sosa/oboe.rdf [env=redirect:1]
-
-RewriteCond  %{REQUEST_URI}  /ns/sosa/oboe$
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule  ^(.*)/?$  https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment [R=303,NE,env=redirect:1]
+Header always merge Vary "Accept" env=redirect
 
 ```
 
