@@ -5,7 +5,7 @@ var respecConfig = {
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-    edDraftURI: "http://w3c.github.io/sdw/ssn-usage/",
+    edDraftURI: "https://w3c.github.io/sdw/ssn-usage/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
@@ -14,14 +14,18 @@ var respecConfig = {
       company: "Ontology Engineering Group, Universidad Politécnica de Madrid",
       companyURL: "http://www.oeg-upm.net/"
     }, {
+      name: "Armin Haller",
+      company: "Australian National University",
+      companyURL: "http://cbe.anu.edu.au/"
+    }, {
 			name: "Nandana Mihindukulasooriya",
 			company: "Ontology Engineering Group, Universidad Politécnica de Madrid",
 			companyURL: "http://www.oeg-upm.net/"
 		}],
     wg: "Spatial Data on the Web Working Group",
-    wgURI: "http://www.w3.org/2015/spatial/",
+    wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
-    wgPatentURI: "http://www.w3.org/2004/01/pp-impl/75471/status",
+    wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
@@ -52,6 +56,13 @@ var respecConfig = {
          href:"http://www.sciencedirect.com/science/article/pii/S1570826812000571",
          publisher:"Web Semantics: Science, Services and Agents on the World Wide Web, 17:25-32 ",
          date:"December 2012"
+      },
+      "vocab-ssn": {
+         authors: ["Armin Haller", "Krzysztof Janowicz", "Simon Cox", "Danh Le Phuoc", "Kerry Taylor", "Maxime Lefrançois", "(editors)"],
+         title:"Semantic Sensor Network Ontology",
+         href:"https://www.w3.org/TR/vocab-ssn/",
+         publisher:"W3C Candidate Recommendation",
+         date:"July 11, 2017"
       },
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"

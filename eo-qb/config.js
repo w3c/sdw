@@ -46,22 +46,22 @@ var respecConfig = {
     noLegacyStyle: false,
       logos: [
       {
-        src: "http://www.w3.org/Icons/w3c_home",
+        src: "https://www.w3.org/StyleSheets/TR/2016/logos/W3C",
         alt: "W3C",
         height: "48",
         width: "72",
-        url: "http://www.w3.org/"
+        url: "https://www.w3.org/"
       },
       {
-        src: "http://www.w3.org/2015/01/ogc_logo.jpg",
+        src: "https://www.w3.org/2017/01/ogc_logo.png",
         alt: "OGC",
-        height: "48",
-        width: "115",
+        height: "68",
+        width: "147",
         url: "http://www.opengeospatial.org/"
       }
       ],
     noRecTrack: true,
-    overrideCopyright: "<p class='copyright'><a href='http://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2017 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='http://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='http://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
+    overrideCopyright: "<p class='copyright'><a href='http://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2017 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='http://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='https://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.</p>",
 
 
     localBiblio: {
@@ -120,14 +120,6 @@ var respecConfig = {
             authors: ["JPL"],
             title: "SWEET Overview"
         },
-        "qb4st": {
-          href:"https://www.w3.org/TR/qb4st/",
-          title:"QB4ST: RDF Data Cube extensions for spatio-temporal components",
-          date: "5 January 2017",
-          authors:["Rob Atkinson"],
-          publisher:"W3C/OGC",
-          status:"W3C/OGC Working Draft"
-        },
         "perf-vgraph": {
             href: "http://ceur-ws.org/Vol-248/paper2.pdf",
             title: "A Performance and Scalability Metric for Virtual RDF Graphs",
@@ -149,7 +141,20 @@ var respecConfig = {
             href: "https://github.com/ANU-Linked-Earth-Data",
             title: "ANU Linked Earth Data",
             authors: ["Dmitry Brizhinev", "Mike Ledger", "Yadunandan Sannappa", "Sam Toyer", "Zhiduo Zhang"]
-        }
+        },
+		"OGC-15-104r5": {
+			href: "http://docs.opengeospatial.org/as/15-104r5/15-104r5.html",
+			title: "Topic 21: Discrete Global Grid Systems Abstract Specification",
+			editors: ["Matthew Purss"],
+			date:"1 August 2017"
+		},
+		"rHealPIX": {
+			href: "http://iopscience.iop.org/1755-1315/34/1/012012",
+			title: "The rHEALPix Discrete Global Grid System",
+			authors: ["R. G. Gibb"],
+			date: "2016"
+		}
     },
+	
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"
 };

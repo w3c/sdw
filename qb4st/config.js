@@ -12,7 +12,7 @@ var respecConfig = {
     {
       name: "Rob Atkinson",
       company: "Metalinkage, Open Geospatial Consortium",
-      companyURL: "http://opengeospatial.org/"
+      companyURL: "http://www.opengeospatial.org/"
     }],
     otherLinks: [
     {

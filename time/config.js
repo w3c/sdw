@@ -5,14 +5,14 @@ var respecConfig = {
     previousPublishDate: "2016-07-12",
     previousMaturity: "WD",
     previousURI: "https://www.w3.org/TR/2016/WD-owl-time-20160712/",
-    edDraftURI: "http://w3c.github.io/sdw/time/",
+    edDraftURI: "https://w3c.github.io/sdw/time/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
     {
         name: "Simon Cox",
         company: "CSIRO",
-        companyURL: "http://www.csiro.au/", 
+        companyURL: "https://www.csiro.au/",
         w3cid: 1796
       },{
         name: "Chris Little",
@@ -39,6 +39,7 @@ var respecConfig = {
     wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
     wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
+    implementationReportURI: "https://www.w3.org/2015/spatial/wiki/OWL_Time_Ontology_adoption",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
@@ -90,7 +91,7 @@ var respecConfig = {
       "cr-14": {
         authors: ["S.J.D. Cox" , "S.M. Richard"], 
         date: "2014", 
-        href: "http://dx.doi.org/10.1007/s12145-014-0166-2",
+        href: "http://doi.org/10.1007/s12145-014-0170-6",
         title: "A geologic timescale ontology and service. Earth Sci. Informatics.. 8 5–19. "
       },
       "fips": {
@@ -105,7 +106,7 @@ var respecConfig = {
       },
       "iso19108": {
         date: "2002",
-        href: "http://www.iso.org/iso/iso_catalogue/catalogue_detail?csnumber=26013",
+        href: "https://www.iso.org/standard/26013.html",
         title: "ISO 19108:2002 Geographic information -- Temporal schema. "
       },
       "iso-C": {
@@ -153,9 +154,10 @@ var respecConfig = {
         title: "The process file of the OWL-S 0.9 release"
       },
       "rc-14": {
-        href: "https://journals.uair.arizona.edu/index.php/radiocarbon/about/submissionsauthorGuidelines",
-        title: "Guidelines to Authors, Radiocarb. Mag. ",
-        date: "2014"
+        href: "http://nvlpubs.nist.gov/nistpubs/jres/109/2/j92cur.pdf",
+        title: "The Remarkable Metrological History of Radiocarbon Dating [II]",
+        date: "March-April 2004",
+        authors: ["Journal of Research of the National Institute of Standards and Technology"]
       }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"

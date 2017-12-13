@@ -73,12 +73,17 @@ temporal position including date-time information. Time positions and durations 
 </section>
 
 <section id="sotd">
-<p><strong>For OGC -</strong> This is a Public Draft of a document prepared by the Spatial Data on the Web Working Group 
+<p><strong>For OGC -</strong> This is a Public Draft of a document prepared by the Spatial Data on the Web Working Group
 	(<a href="http://www.opengeospatial.org/projects/groups/sdwwg">SDWWG</a>)
-— a joint W3C-OGC project (see <a href="https://www.w3.org/2015/spatial/charter">charter</a>). 
-The document is prepared following W3C conventions. </p>
-<p>The group expects to request transition to Proposed Recommendation once it has reviewed datasets that have adopted the ontology and completed the implementation report</p>
-<p class="note">New classes and properties are introduced in this revision of OWL-Time. The new elements primarily relate to relaxing the limitation that time position uses the Gregorian Calendar, and are placed in a logical hierarchy in relation to the original elements. While there is inevitably less implementation evidence for these than the elements that were introduced in the 2006 version, the new elements are essential to satisfying key requirements in the revision. However, a small number of other new elements - <code><a href="#time:MonthOfYear">:MonthOfYear</a></code>, <code><a href="#time:hasTime">:hasTime</a></code>, <code><a href="#time:hasXSDDuration">:hasXSDDuration</a></code>, <code><a href="#time:monthOfYear">:monthOfYear</a></code> - have been less strongly motivated and tested, so these are formally <i>features at risk</i> pending the accumulation of evidence of implementation. </p>
+— a joint W3C-OGC project (see <a href="https://www.w3.org/2015/spatial/charter">charter</a>).
+The document is prepared following W3C conventions. This document is not an OGC Standard. This document is distributed for review and comment. This document is subject to change without notice and may not be referred to as an OGC Standard. Recipients of this document are invited to submit, with their comments, notification of any relevant patent rights of which they are aware and to provide supporting documentation. </p>
+<p>New classes and properties are introduced in this revision of OWL-Time. The new elements primarily relate to relaxing the limitation that time position uses only the Gregorian Calendar, and are placed in a logical hierarchy in relation to the original elements. While there is less implementation evidence for these than the elements from the 2006 version, the new elements are essential to satisfying key requirements in the revision. </p>
+<p>However, a small number of other new elements merit additional explanation: </p>
+<ol>
+  <li><code><a href="#time:hasXSDDuration">:hasXSDDuration</a></code> allows use of the compact xsd:duration element to describe the extent of a temporal entity. This complements existing predicates used with XSD datatypes, and was an inexplicable omission from the original ontology. </li>
+  <li><code><a href="#time:MonthOfYear">:MonthOfYear</a></code> and <code><a href="#time:monthOfYear">:monthOfYear</a></code> complement :DayOfWeek and :dayOfWeek to support vernacular names for months as well as days. </li>
+  <li><code><a href="#time:hasTime">:hasTime</a></code> is a completely generic predicate for associating a temporal entity with anything. A number of generic predicates suitable for use directly in applications were requested, but in general were deemed undesirable in an ontology dealing with the description of time elements rather than their use. This one only was included for users unwilling or unable to define their own semantics. </li>
+</ol>
 </section>
 
 <section id="motivation">
@@ -114,7 +119,7 @@ The specification document has been completely re-written. </p>
 
 <section id="namespaces">
 <h2>Notation and namespaces</h2>
-	<p>Classes and properties from the Time Ontology are denoted using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[!curie]]. </p>
+	<p>Classes and properties from the Time Ontology are denoted in this specification using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[curie]]. </p>
 <p>The namespace for OWL-Time is <code>http://www.w3.org/2006/time#</code>. OWL-Time does not re-use elements from any other vocabularies, but does use some built-in datatypes from OWL and some additional types from XML Schema Part 2. </p>
 <p>The table below indicates the full list of namespaces and prefixes used in this document.</p>
 <table id="namespacesTable">
@@ -165,7 +170,7 @@ The specification document has been completely re-written. </p>
 </tbody>
 </table>
 
-<p>Where class descriptions include local restrictions on properties, these are described using the <a href="https://www.w3.org/TR/owl2-manchester-syntax/#Descriptions">OWL 2 Manchester Syntax</a> [[!owl2-manchester-syntax]]. </p>
+<p>Where class descriptions include local restrictions on properties, these are described using the <a href="https://www.w3.org/TR/owl2-manchester-syntax/#Descriptions">OWL 2 Manchester Syntax</a> [[owl2-manchester-syntax]]. </p>
 
 <p>Examples and other code fragments are serialized using <a href="https://www.w3.org/TR/turtle/">RDF 1.1 Turtle</a> notation [[!turtle]].</p>
 
@@ -294,7 +299,7 @@ so that you can say "duration of 2.5 years".</p>
 <section id="vocabulary">
 <h2>Vocabulary specification</h2>
 
-<p>In this vocabulary specification, Manchester syntax [[!owl2-manchester-syntax]] is used where the value of a field is not a simple term denoted by a URI or cURI.</p>
+<p>In this vocabulary specification, Manchester syntax [[owl2-manchester-syntax]] is used where the value of a field is not a simple term denoted by a URI or cURI.</p>
 
 <section id="classes">
 <h3>Classes</h3>
@@ -341,7 +346,7 @@ xsd:gDay, respectively. </td>
 </tr>
 <tr>
 <td>Subclass of:</td>
-<td><code><a href="time:hasTRS">time:hasTRS</a> value <a href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian">&lt;http://www.opengis.net/def/uom/ISO-8601/0/Gregorian&gt;</a></code></td>
+<td><code><a href="#time:hasTRS">time:hasTRS</a> value <a href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian">&lt;http://www.opengis.net/def/uom/ISO-8601/0/Gregorian&gt;</a></code></td>
 </tr>
 <tr>
 <td>Subclass of:</td>
@@ -491,9 +496,6 @@ each of the numeric properties is restricted to <a href="https://www.w3.org/TR/x
 </tbody>
 </table>
 <p class="note">In the Gregorian calendar the length of the month is not fixed. Therefore, a value like "2.5 months" cannot be exactly compared with a similar duration expressed in terms of weeks or days.</p>
-<!--
-<p>Other duration concepts can be straightforwardly defined - see <a href="#specialization">examples below</a>.</p>
--->
 </section>
 
 <section>
@@ -572,7 +574,7 @@ Datatypes [[xmlschema11-2]], except that the calendar is not specified in advanc
 through the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property (defined above). </p>
 <p>Some combinations of properties are redundant. For example, within a specified :year if <code><a href="#time:dayOfYear">:dayOfYear</a></code> is provided then <code><a href="#time:day">:day</a></code> and <code><a href="#time:month">:month</a></code> can be computed, and vice versa. 
 Individual values SHOULD be consistent with each other and the calendar, indicated through the value of the <code><a href="#time:hasTRS">:hasTRS</a></code> property.</p>
-<p>Two additional properties <code><a href="#time:week">:week</a></code> and <code><a href="#time:dayOfYear">:dayOfYear</a></code> allow for the the numeric value of the week or day relative to the year. 
+<p>Two additional properties <code><a href="#time:week">:week</a></code> and <code><a href="#time:dayOfYear">:dayOfYear</a></code> allow for the numeric value of the week or day relative to the year. 
 The property <code><a href="#time:dayOfWeek">:dayOfWeek</a></code> provides the name of the day, and the property <code><a href="#time:monthOfYear">:monthOfYear</a></code> provides the name of the month. </p>
 </section>
 
@@ -723,25 +725,21 @@ provide alternative ways to describe the temporal position of an <code><a href="
 <td>Subclass of:</td>
 <td><code><a href="#time:unitType">time:unitType</a> value <a href="#time:unitMonth">time:unitMonth</a></code></td>
 </tr>
-<tr class="note">
-<td>Editorial note:</td>
-<td>Feature at risk - added in 2017 revision, and not yet widely used. </td>
-</tr>
 </tbody>
 </table>
-<p>Twelve individual members of <code><a href="#time:MonthOfYear">:MonthOfYear</a></code> are provided in a <a href="http://www.w3.org/ns/time/gregorian">separate namespace</a>, corresponding to the twelve months used in the Gregorian calendar 
-<code><a href="#greg:January">greg:January</a></code>, 
-<code><a href="#greg:February">greg:February</a></code>, 
-<code><a href="#greg:March">greg:March</a></code>, 
-<code><a href="#greg:April">greg:April</a></code>, 
-<code><a href="#greg:May">greg:May</a></code>, 
-<code><a href="#greg:June">greg:June</a></code>, 
-<code><a href="#greg:July">greg:July</a></code>, 
-<code><a href="#greg:August">greg:August</a></code>, 
-<code><a href="#greg:September">greg:September</a></code>, 
-<code><a href="#greg:October">greg:October</a></code>, 
-<code><a href="#greg:November">greg:November</a></code>, 
-<code><a href="#greg:December">greg:December</a></code>. 
+<p>Twelve individual members of <code><a href="#time:MonthOfYear">:MonthOfYear</a></code> are provided in a <a href="http://www.w3.org/ns/time/gregorian">separate namespace</a>, corresponding to the twelve months used in the Gregorian calendar
+<code><a href="#greg:January">greg:January</a></code>,
+<code><a href="#greg:February">greg:February</a></code>,
+<code><a href="#greg:March">greg:March</a></code>,
+<code><a href="#greg:April">greg:April</a></code>,
+<code><a href="#greg:May">greg:May</a></code>,
+<code><a href="#greg:June">greg:June</a></code>,
+<code><a href="#greg:July">greg:July</a></code>,
+<code><a href="#greg:August">greg:August</a></code>,
+<code><a href="#greg:September">greg:September</a></code>,
+<code><a href="#greg:October">greg:October</a></code>,
+<code><a href="#greg:November">greg:November</a></code>,
+<code><a href="#greg:December">greg:December</a></code>.
 Each month is defined by setting the value of <code><a href="#time:month">time:month</a></code> to the corresponding value.</p>
 <p class="note">Membership of the class <code><a href="#time:MonthOfYear">:MonthOfYear</a></code> is open, to allow for alternative annual calendars and different month names. </p>
 </section>
@@ -1415,10 +1413,6 @@ The range of this property is not specified, so can be replaced by any specific 
 <td>Range:</td>
 <td><code><a href="#time:TemporalEntity">time:TemporalEntity</a></code></td>
 </tr>
-<tr class="note">
-<td>Editorial note:</td>
-<td>Feature at risk - added in 2017 revision, and not yet widely used. </td>
-</tr>
 </tbody>
 </table>
 </section>
@@ -1478,10 +1472,6 @@ The range of this property is not specified, so can be replaced by any specific 
 <tr>
 <td>Range:</td>
 <td><code><a href="https://www.w3.org/TR/xmlschema11-2/#duration">xsd:duration</a></code></td>
-</tr>
-<tr class="note">
-<td>Editorial note:</td>
-<td>Feature at risk - added in 2017 revision, and not yet widely used. </td>
 </tr>
 </tbody>
 </table>
@@ -2094,7 +2084,7 @@ is after the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is before 
 </tr>
 <tr>
 <td>Definition:</td>
-<td>If a proper interval T<sub>1</sub> is <em>intervalStarted </em>another proper interval T<sub>2</sub>,
+<td>If a proper interval T<sub>1</sub> is <em>intervalStartedBy</em> another proper interval T<sub>2</sub>,
 then the beginning of T<sub>1</sub> is coincident with the beginning of T<sub>2</sub>, and the end of T<sub>1</sub> is
 after the end of T<sub>2</sub>. </td>
 </tr>
@@ -2444,10 +2434,6 @@ The range of this property is not specified, so can be replaced by any specific 
 <td>Range:</td>
 <td><code><a href="#time:MonthOfYear">time:MonthOfYear</a></code></td>
 </tr>
-<tr class="note">
-<td>Editorial note:</td>
-<td>Feature at risk - added in 2017 revision, and not yet widely used. </td>
-</tr>
 </tbody>
 </table>
 </section>
@@ -2650,12 +2636,6 @@ The range of this property is not specified, so can be replaced by any specific 
 <p>IANA maintains a <a href="http://www.iana.org/time-zones">database of timezones</a>. These are well maintained and generally considered authoritative, but individual items are not available at individual URIs, so cannot be used directly within data expressed using OWL-Time. </p>
 <p>DBPedia provides a <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">set of resources corresponding to the IANA timezones</a>, with a URI for each (e.g. <a href="http://dbpedia.org/resource/Australia/Eucla">http://dbpedia.org/resource/Australia/Eucla</a>). The World Clock service also provides a <a href="https://www.timeanddate.com/time/zones/">list of time zones</a> with the description of each available as an individual webpage with a convenient individual URI (e.g. <a href="https://www.timeanddate.com/time/zones/acwst">https://www.timeanddate.com/time/zones/acwst</a>). These or other, similar, resources might be used as a value of the <code><a href="#time:timeZone">time:timeZone</a></code> property. </p>
 </div>
-
-<!--        <p>An ontology for time zone descriptions is provided <a href="#timezone">below</a>.</p>
-<p class="issue" data-number="996">(Was local Issue 10) The time zone ontology provided in the Annex is immature and incomplete. Use of a <code>tzont:TimeZone</code> from that ontology as the range of an ObjectProperty in OWL-Time creates an implied dependency which
-is not ideal. We propose adding a stub class <code><a href="#time:TimeZone">:TimeZone</a></code> into the the main namespace (i.e. no
-properties) which can then be a super-class or equivalent class to any time zone formalization.(Compare with <a href="#time:">
-time:TRS</a> which is handled this way.) </p> -->
 </section>
 
 <section>
@@ -3086,22 +3066,22 @@ in OWL as:</p>
   :inXSDDateTimeStamp  2017-04-12T10:30:00+10:00 .
 
 ex:meetingStartDescription
-  a           :DateTimeDescription ;
-  :unitType   :unitMinute ;
-  :minute     30 ;
-  :hour       10 ;
-  :day        "---12"^^xsd:gDay ;
-  :dayOfWeek  :Wednesday ;
-  :dayOfYear  102 ;
-  :week       15 ;
-  :month      "--04"^^xsd:gMonth ;
-  time:monthOfYear greg:April ;
-  :timeZone   &lt;https://www.timeanddate.com/time/zones/aest&gt; ;
-  :year       "2017"^^xsd:gYear .</pre>
+  a             :DateTimeDescription ;
+  :unitType     :unitMinute ;
+  :minute       30 ;
+  :hour         10 ;
+  :day          "---12"^^xsd:gDay ;
+  :dayOfWeek    :Wednesday ;
+  :dayOfYear    102 ;
+  :week         15 ;
+  :month        "--04"^^xsd:gMonth ;
+  :monthOfYear  greg:April ;
+  :timeZone     &lt;https://www.timeanddate.com/time/zones/aest&gt; ;
+  :year         "2017"^^xsd:gYear .</pre>
 
-<p>It is much more concise to use the XML Schema datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>. 
-However, using <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> more information can be included directly in a message, such as the "week", "day of week" and "day of year". 
-In the example we can also see that 12/04/2017 is a Wednesday, the month is April, it is the 102<sup>nd</sup> day of the year, and in the 15<sup>th</sup> week of the year. 
+<p>It is much more concise to use the XML Schema datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>.
+However, using <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> more information can be included directly in a message, such as the "week", "day of week" and "day of year".
+In the example we can also see that 12/04/2017 is a Wednesday, the month is April, it is the 102<sup>nd</sup> day of the year, and in the 15<sup>th</sup> week of the year.
 Since each field of <code><a href="#time:DateTimeDescription">:DateTimeDescription</a></code> is separate no computation is required to get the values of these fields for use in reasoning.
 However, since some calendars, such as religious observationally-based ones, cannot be algorithmically calculated explicit assertion of values for elements of the calendar is required.</p>
 <p>The <code><a href="#time:timeZone">:timeZone</a></code> property points to a definition of Australian Eastern Standard Time. </p>
@@ -3199,7 +3179,7 @@ For the value expressed using <code><a href="https://www.w3.org/TR/xmlschema11-2
 position within the year is set arbitrarily to midnight at the beginning of 1st January. 
 This level of precision in this case is spurious, but is required to satisfy the lexical pattern of the datatype.</p>
 
-<p>Since the <code><a href="#time:numericPosition">:numericPosition</a></code>, <code><a href="#time:second">:second</a></code> properties have the datatype of <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code>, the position of a <code><a href="#time:Instant">:Instant</a></code> or the duration of a <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> may be represented with a precision of fractions of seconds if required. For example a database timestamp with a precision of millseconds can be expressed as follows: </p>
+<p>Since the <code><a href="#time:numericPosition">:numericPosition</a></code>, <code><a href="#time:second">:second</a></code> properties have the datatype of <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code>, the position of a <code><a href="#time:Instant">:Instant</a></code> or the duration of a <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> may be represented with a precision of fractions of seconds if required. For example, a database timestamp with a precision of milliseconds can be expressed as follows: </p>
 
 <pre>ex:DatabaseTimeStamp
   a :Instant ;
@@ -3335,7 +3315,7 @@ This may be represented in multiple ways using OWL-Time, including the following
     ] ;
   ] ;
 .</pre>
-<p>In this formulation, the length of the entity is explict, as the value of the <code><a href="#time:hasDuration">:hasDuration</a></code> property. 
+<p>In this formulation, the length of the entity is explicit, as the value of the <code><a href="#time:hasDuration">:hasDuration</a></code> property. 
 <p>Several other formulations are possible, some of which are shown in the RDF representation is available <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/abraham-lincoln.ttl">here</a>.
 </section>
 
@@ -3422,22 +3402,22 @@ the meeting is specified using the <code><a href="#time:DurationDescription">:Du
       <pre>prov:Activity           rdfs:subClassOf    time:TemporalEntity .
 prov:InstantaneousEvent rdfs:subClassOf    time:Instant .</pre>
 
-<p>The <code><a href="https://www.w3.org/TR/prov-o/#atTime">prov:atTime</a></code> property of an <code><a href="https://www.w3.org/TR/prov-o/#InstantaneousEvent">prov:InstantaneousEvent</a></code> is directly related to <code><a href="#time:inXSDDateTimeStamp">:inXSDDateTimeStamp</a></code>.</p>
+<p>The <code><a href="https://www.w3.org/TR/prov-o/#atTime">prov:atTime</a></code> property of an <code><a href="https://www.w3.org/TR/prov-o/#InstantaneousEvent">prov:InstantaneousEvent</a></code> is directly related to <code><a href="#time:inXSDDateTime">:inXSDDateTime</a></code>.</p>
 
-<pre>prov:atTime             rdfs:subPropertyOf time:inXSDDateTimeStamp .</pre>
+<pre>prov:atTime             rdfs:subPropertyOf time:inXSDDateTime .</pre>
 
 
-<p>However, the Activity start and end properties require a property chain axiom, because the beginning and end of a <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> are <code><a href="#time:Instant">:Instants</a></code> rather than compact <code>xsd:dateTimeStamps</code>.</p>
+<p>However, the Activity start and end properties require a property chain axiom, because the beginning and end of a <code><a href="#time:TemporalEntity">:TemporalEntity</a></code> are <code><a href="#time:Instant">:Instants</a></code> rather than compact <code>xsd:dateTimes</code>.</p>
 
 
 <pre>prov:endedAtTime   owl:propertyChainAxiom (
       time:hasEnd
-      time:inXSDDateTimeStamp
+      time:inXSDDateTime
     ) ;
 .
 prov:startedAtTime owl:propertyChainAxiom (
       time:hasBeginning
-      time:inXSDDateTimeStamp
+      time:inXSDDateTime
     ) ;
 .
 </pre>
@@ -3446,7 +3426,7 @@ prov:startedAtTime owl:propertyChainAxiom (
 
 <section id="dcat-example">
 <h3>Legal interval</h3>
-<p>The <a href="https://www.w3.org/TR/vocab-dcat/#basic-example">basic example</a> in the [[vocab-dcat]] specification described the 'temporal range' of a dataset with reference to the resource <a href="http://reference.data.gov.uk/id/quarter/2006-Q1">http://reference.data.gov.uk/id/quarter/2006-Q1</a> which is one of many available from <code>data.gov.uk</code>. This resource defines a specific legal period - the first quarter of 2006 - formalized using the <a href="http://reference.data.gov.uk/def/intervals/">interval ontology</a> which is (currently) based on the 2006 version of OWL-Time. The period can be fully described using OWL-Time, omitting all elements from the intervals ontology, as follows: </p>
+<p>The <a href="https://www.w3.org/TR/vocab-dcat/#basic-example">basic example</a> in the [[vocab-dcat]] specification described the 'temporal range' of a dataset with reference to the resource <a href="http://reference.data.gov.uk/id/quarter/2006-Q1">http://reference.data.gov.uk/id/quarter/2006-Q1</a> which is one of many available from <code>data.gov.uk</code>. This resource defines a specific legal period - the first quarter of 2006 - formalized using the <a href="http://reference.data.gov.uk/def/intervals">interval ontology</a> which is (currently) based on the 2006 version of OWL-Time. The period can be fully described using OWL-Time, omitting all elements from the intervals ontology, as follows: </p>
 
 <pre>ex:i2006-Q1
   rdf:type :ProperInterval ;
@@ -3885,24 +3865,6 @@ The principal technical changes are as follows: </p>
 	<h3>Wide review</h3>
 	<p>Results of wide review of OWL-Time is <a href="https://www.w3.org/2015/spatial/wiki/Wide_Review#OWL_Time">summarized here</a>.</p>
 
-</section>
-
-<section class="appendix" id="exit">
-<h3>Candidate Recommendation Exit Criteria</h3>
-
-<p>For this specification to be advanced to Proposed Recommendation the following conditions must be demonstrated:</p>
-
-<ul>
-<li>The ontology documents can be parsed without errors by RDF Schema validators.</li>
-<li>The ontology is internally consistent with respect to domains, ranges, inverses, and any other ontology features specified.</li>
-<li>Each class and property must satisfy at least one of: 
-	<ul>
-		<li>Demonstrated use in two external implementations</li>
-		<li>Has a position in the upper levels of a subsumption hierarchy within OWL-Time itself</li>
-		<li>Is required to complete a set where other members of the set meet one of the previous criteria (e.g. days, months, interval-relations).</li>
-	</ul>
-</li>
-</ul>
 </section>
 
 <section class="appendix" id="requirements">

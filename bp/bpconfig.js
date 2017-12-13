@@ -12,11 +12,11 @@ var respecConfig = {
     {
       name: "Jeremy Tandy",
       company: "Met Office",
-      companyURL: "http://www.metoffice.gov.uk/"
+      companyURL: "https://www.metoffice.gov.uk/"
     }, {
       name: "Linda van den Brink",
       company: "Geonovum",
-      companyURL: "http://www.geonovum.nl/"
+      companyURL: "https://www.geonovum.nl/"
     }, {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
@@ -44,7 +44,8 @@ var respecConfig = {
         { value: "Bill Roberts" },
         { value: "Lars G. Svensson" },
         { value: "Kerry Taylor" },
-        { value: "Erik Wilde" }
+        { value: "Erik Wilde" },
+	{ value: "Rob Atkinson" }
       ]
     }, {
       key: "OGC Document Number",
@@ -148,7 +149,7 @@ var respecConfig = {
         date: "2007"
       },
       "OGC-TOPIC-2":{
-        href:"http://portal.opengeospatial.org/files/?artifact_id=39049",
+        href:"http://portal.opengeospatial.org/files/39049",
         title:"OGC Abstract Specification Topic 2 - Spatial referencing by coordinates",
         authors:["Roger Lott"],
         publisher:"OGC",
@@ -254,7 +255,7 @@ var respecConfig = {
         publisher:"OGC",
         authors:["Jeff de la Beaujardiere"],
         date:"15 March 2006",
-        title:"Web Map Server Implementation Specification",
+        title:"Web Map Service Implementation Specification",
         status:"OpenGIS Implementation Standard"
       },
       "WMTS":{
@@ -292,7 +293,7 @@ var respecConfig = {
         authors: ["Mark Harrison", "Ken Traub"],
         "date": "November 2015",
         "publisher": "GS1",
-        href: "http://www.gs1.org/gs1-smartsearch/guideline/gtin-web-implementation-guideline"
+        href: "https://www.gs1.org/gs1-smartsearch/guideline/gtin-web-implementation-guideline"
       },
       "PURI": {
         "authors":["Phil Archer", "Nikos Loutas", "Stijn Goedertier", "Saky Kourtidis"],

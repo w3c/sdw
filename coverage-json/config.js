@@ -5,7 +5,7 @@ var respecConfig = {
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-    edDraftURI: "http://w3c.github.io/sdw/coverage-json/",
+    edDraftURI: "https://w3c.github.io/sdw/coverage-json/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
@@ -100,6 +100,39 @@ var respecConfig = {
          href:"http://ontologydesignpatterns.org/wiki/Ontology:DOLCE+DnS_Ultralite",
          authors: ["Aldo Gangemi"],
          title: "DOLCE+DnS Ultralite (DUL)"
+      },
+      "ISO19123":{
+	     href:"https://www.iso.org/standard/40121.html",
+	     title:"Geographic information -- Schema for coverage geometry and functions",
+	     publisher:"ISO/TC 211"
+      },
+      "NetCDF":{
+	     href:"http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/ncml/",
+	     title:"The NetCDF Markup Language (NcML)",
+	     publisher:"UCAR Community Programs",
+	     authors: ["John Caron", "Luca Cinquini", "Ethan Davis", "Bob Drach", "Stefano Nativi", "Russ Rew"]
+      },
+      "OGC-CIS":{
+	     href:"https://portal.opengeospatial.org/files/?artifact_id=48553",
+	     title:"OGC Coverage Implementation Schema, Version 1.0.1",
+	     authors:["Peter Baumann"],
+         publisher: "Open Geospatial Consortium"
+      },
+      "TimeseriesML":{
+	     href:"http://www.opengeospatial.org/standards/tsml",
+	     title:"TimeseriesML (TSML)",
+         publisher: "Open Geospatial Consortium"
+      },
+      "COV-JSONLD-RDF":{
+        href:"http://ceur-ws.org/Vol-1777/paper2.pdf",
+        title:"Coverages, JSON-LD and RDF Data Cubes",
+        authors:["Jon D. Blower", "Maik Riechert"],
+        publisher:"Proceedings of the Workshop on Spatial Data on the Web (SDW 2016), Montreal, Canada, September 27-30, 2016"
+      },
+      "DCAT":{
+        href:"https://www.w3.org/TR/vocab-dcat/",
+        title:"Data Catalog Vocabulary (DCAT)",
+        authors:["Fadi Maali (ed.)", "John Erickson (ed.)", "Phil Archer"]
       }
     },
     issueBase: "https://www.w3.org/2015/spatial/track/issues/"

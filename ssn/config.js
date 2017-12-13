@@ -5,14 +5,14 @@ var respecConfig = {
     //previousPublishDate: "2014-03-27",
     //previousMaturity: "FPWD",
     //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-    edDraftURI: "http://w3c.github.io/sdw/ssn/",
+    edDraftURI: "https://w3c.github.io/sdw/ssn/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
     editors: [
 	{
 		name: "Armin Haller",
         company: "Australian National University",
-        companyURL: "http://cbe.anu.edu.au/"
+        companyURL: "https://www.cbe.anu.edu.au/"
 	},
     {
 		name: "Krzysztof Janowicz",
@@ -64,6 +64,7 @@ var respecConfig = {
     wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
     wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
+    implementationReportURI: "https://w3c.github.io/sdw/ssn-usage/",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
@@ -169,26 +170,26 @@ var respecConfig = {
         authors: ["S.J.D. Cox"]
       },
       "OMXML": {
-        href: "http://portal.opengeospatial.org/files/?artifact_id=41510",
+        href: "http://portal.opengeospatial.org/files/41510",
         title: "Observations and Measurements - XML Implementation",
         publisher: "Open Geospatial Consortium",
         date: "2010",
         authors: ["S.J.D. Cox"]
       },
        "ISO-19150-2":{
-       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=57466",
+       href: "https://www.iso.org/standard/57466.html",
        title: "Geographic information -- Ontology -- Part 2: Rules for developing ontologies in the Web Ontology Language (OWL)",
        publisher: "ISO",
        date: "July 2015"
       },
        "ISO-19109":{
-       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=59193",
+       href: "https://www.iso.org/standard/59193.html",
        title: "Geographic information -- Rules for application schema",
        publisher: "ISO",
        date: "December 2015"
       },
        "ISO-19156":{
-       href: "http://www.iso.org/iso/catalogue_detail.htm?csnumber=32574",
+       href: "https://www.iso.org/standard/32574.html",
        title: "Geographic information -- Observations and measurements",
        publisher: "ISO",
        date: "December 2011"

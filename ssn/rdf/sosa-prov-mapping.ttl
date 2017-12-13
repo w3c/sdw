@@ -1,15 +1,15 @@
-# baseURI: https://www.w3.org/ns/sosa/prov
+# baseURI: http://www.w3.org/ns/sosa/prov
 # imports: http://www.w3.org/ns/prov-o#
 # imports: http://www.w3.org/ns/sosa/
 
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
-@prefix sp: <https://www.w3.org/ns/sosa/prov/> .
+@prefix sp: <http://www.w3.org/ns/sosa/prov/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 sosa:Actuation
@@ -51,9 +51,6 @@ sosa:Sensor
   rdfs:subClassOf prov:Agent ;
   rdfs:subClassOf prov:Entity ;
 .
-sosa:madeByActuator
-  rdfs:subPropertyOf prov:wasAssociatedWith ;
-.
 sosa:hasFeatureOfInterest
   rdfs:subPropertyOf prov:used ;
 .
@@ -66,33 +63,29 @@ sosa:isResultOf
 sosa:isSampleOf
   rdfs:subPropertyOf prov:wasDerivedFrom ;
 .
+sosa:madeByActuator
+  rdfs:subPropertyOf prov:wasAssociatedWith ;
+.
 sosa:madeBySampler
   rdfs:subPropertyOf prov:wasAssociatedWith ;
 .
 sosa:madeBySensor
   rdfs:subPropertyOf prov:wasAssociatedWith ;
 .
-sosa:resultTime
-  rdfs:subPropertyOf prov:endedAtTime ;
-.
-sosa:usedProcedure
-  owl:propertyChainAxiom (
-      sp:eventAssociation
-      sp:hadProcedure
-    ) ;
-.
-<https://www.w3.org/ns/sosa-prov>
+sosa:prov
   rdf:type owl:Ontology ;
-  dc:creator "Simon J D Cox" ;
   dcterms:created "2016-12-14"^^xsd:date ;
+  dcterms:creator "Simon J D Cox" ;
+  dcterms:creator [
+      rdf:type foaf:Agent ;
+      foaf:name "W3C/OGC Spatial Data on the Web Working Group"@en ;
+    ] ;
+  dcterms:license <http://www.opengeospatial.org/ogc/Software> ;
+  dcterms:license <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
   dcterms:modified "2017-04-13"^^xsd:date ;
+  dcterms:rights "Copyright 2017 W3C/OGC." ;
   rdfs:comment "Alignment of the the W3C/OGC SOSA Ontology with the W3C PROV-O Ontology"@en ;
   rdfs:label "Alignment of SOSA with PROV-O"@en ;
-  owl:imports <http://www.w3.org/ns/prov-o#> ;
-  owl:imports sosa: ;
-.
-<https://www.w3.org/ns/sosa/prov>
-  rdf:type owl:Ontology ;
   owl:imports <http://www.w3.org/ns/prov-o#> ;
   owl:imports sosa: ;
 .
@@ -112,4 +105,13 @@ sp:hadProcedure
   rdf:type owl:ObjectProperty ;
   rdfs:range sosa:Procedure ;
   rdfs:subPropertyOf prov:hadPlan ;
+.
+sosa:resultTime
+  rdfs:subPropertyOf prov:endedAtTime ;
+.
+sosa:usedProcedure
+  owl:propertyChainAxiom (
+      sp:eventAssociation
+      sp:hadProcedure
+    ) ;
 .
