@@ -10,6 +10,8 @@
 ### Organisations
 
 * OGC
+  * Testbed 14 - http://www.opengeospatial.org/projects/initiatives/testbed14 and https://portal.opengeospatial.org/files/77327#NGWFS3.0
+  * WFS 3.0 - https://github.com/opengeospatial/WFS_FES 
 * Data research alliance
 * UNGGIM
 * Academic network
