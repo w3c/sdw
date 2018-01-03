@@ -1,21 +1,21 @@
-#Spatial Data on the Web BP Maintenance Group Ideas, work items and activities
+# Spatial Data on the Web BP Maintenance Group Ideas, work items and activities
 
-##Encouraging Adoption
+## Encouraging Adoption
 
-Audiences:
+### Audiences
 
-*Data Publishers
-*Data users / developers
+* Data Publishers
+* Data users / developers
 
-Organisations:
+### Organisations
 
-*OGC
-*Data research alliance
-*UNGGIM
-*Academic network
-*Developer conferences (AWS, ESRI, Google etc.)
+* OGC
+* Data research alliance
+* UNGGIM
+* Academic network
+* Developer conferences (AWS, ESRI, Google etc.)
 
-Potential activities:
+### Potential activities
 
-*Hall of fame
-*Flipcards - https://www.w3.org/2007/02/mwbp_flip_cards 
+* Hall of fame
+* Flipcards - https://www.w3.org/2007/02/mwbp_flip_cards 
