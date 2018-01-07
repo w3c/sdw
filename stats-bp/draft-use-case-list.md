@@ -104,3 +104,6 @@ In some situations, organisations publish initial estimates of some quantity of 
 
 In cases like this it can be important to make multiple estimates of the same figure available, together with information on the timing, status or methodology used to make each estimate.
 
+## Countries or regions publish consistent data to allow comparisons
+
+Different organisations, for example representing a country or region within a country, agree to share data following a consistent pattern, so that comparisons can be made.  For example, the national statistics institutes of European countries report numerous data to Eurostat, that compiles cross-European figures. See http://ec.europa.eu/eurostat
