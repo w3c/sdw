@@ -92,6 +92,15 @@ Registry/register idea
 
 ## Verify dimension values against external codelist
 
-Contribteud by: Bill Roberts
+Contributed by: Bill Roberts
 
 Check whether a dimension of a statistical dataset use only values from an externally managed 'official' code list
+
+## Revised estimates
+
+Contributed by: Bill Roberts
+
+In some situations, organisations publish initial estimates of some quantity of interest, which are later revised when more detailed or more accurate information becomes available.  This is the case in most countries for estimates of GDP for example.  In the UK, the Office for National Statistics produces preliminary, second and final estimates of [GDP](https://www.ons.gov.uk/economy/grossdomesticproductgdp).
+
+In cases like this it can be important to make multiple estimates of the same figure available, together with information on the timing, status or methodology used to make each estimate.
+
