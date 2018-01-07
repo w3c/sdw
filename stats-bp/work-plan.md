@@ -1,5 +1,7 @@
 # Work plan and milestones
 
+Draft for discussion
+
 ## Use cases document complete
 * By end February 2018
 * Near-final version available for review at face to face meeting, 19-20 Feb in Amersfoort
