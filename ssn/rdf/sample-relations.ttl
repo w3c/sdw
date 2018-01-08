@@ -1,8 +1,8 @@
 # baseURI: http://www.w3.org/ns/sosa/sampling
-# imports: http://www.w3.org/2004/02/skos/core
-# imports: http://www.w3.org/ns/sosa/
+# imports: http://www.w3.org/ns/ssn/
 
-@prefix : <http://www.w3.org/ns/sosa/sampling/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -11,26 +11,19 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/>.
 
-dcterms:creator a owl:AnnotationProperty .
-dcterms:rights a owl:AnnotationProperty .
-dcterms:license a owl:AnnotationProperty .
-foaf:Agent a owl:Class .
-foaf:name a owl:AnnotationProperty .
-
-<http://www.w3.org/ns/sosa/sampling/>
+sosa:sampling
   rdf:type owl:Ontology ;
-  dcterms:creator [ a foaf:Agent ; foaf:name "W3C/OGC Spatial Data on the Web Working Group"@en ] ;
-  dcterms:rights "Copyright 2017 W3C/OGC." ;
-  dcterms:license <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
+  owl:imports <http://www.w3.org/ns/ssn/> ;
+  dcterms:creator [
+      rdf:type foaf:Agent ;
+      foaf:name "W3C/OGC Spatial Data on the Web Working Group"@en ;
+    ] ;
   dcterms:license <http://www.opengeospatial.org/ogc/Software> ;
-  owl:imports <http://www.w3.org/2004/02/skos/core> ;
-  owl:imports <http://www.w3.org/ns/sosa/> ;
+  dcterms:license <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
+  dcterms:rights "Copyright 2017 W3C/OGC." ;
 .
 sampling:RelationshipNature
-  rdf:type rdfs:Class ;
   rdf:type owl:Class ;
   rdfs:label "Nature of relationship (between samples)"@en ;
   rdfs:subClassOf skos:Concept ;
@@ -47,14 +40,13 @@ sampling:RelationshipNature
   skos:example "Sub-sample with grain size smaller than specified seive mesh" ;
 .
 sampling:SampleRelationship
-  rdf:type rdfs:Class ;
   rdf:type owl:Class ;
   rdfs:label "Sample relationship"@en ;
   skos:definition "Members of this class represent a relationship between a sample and another"@en ;
 .
 sampling:hasSampleRelationship
   rdf:type owl:ObjectProperty ;
-  schema:domainIncludes <http://www.w3.org/ns/sosa/Sample> ;
+  schema:domainIncludes sosa:Sample ;
   schema:rangeIncludes sampling:SampleRelationship ;
   rdfs:label "has sample relationship"@en ;
   skos:definition "Links a sample to a sample relationship (which links to a related sample)"@en ;
@@ -69,7 +61,7 @@ sampling:natureOfRelationship
 sampling:relatedSample
   rdf:type owl:ObjectProperty ;
   schema:domainIncludes sampling:SampleRelationship ;
-  schema:rangeIncludes <http://www.w3.org/ns/sosa/Sample> ;
+  schema:rangeIncludes sosa:Sample ;
   rdfs:label "related sample"@en ;
   skos:definition "Links a sample relationship to the related sample"@en ;
 .
