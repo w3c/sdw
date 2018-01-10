@@ -125,3 +125,22 @@ Is there some measure of resolution - for example a 3D model of a house in Arizo
 
 Discovery is the first step, subsetting to access relevant slices will then be necessary, and requires transformation of geographic ranges into the relevant expression for the target dataset dimensions.
 
+## Represent statistical quantities in RDF
+
+Contributed by: Mark Hedley
+
+Provide an RDF graph of statistical entities, simple enough for encoders and developers to read and understand, demonstrating a set of plausible definitions, as described below.
+
+To limit complexity, provide an entity with a single data value and metadata to describe that single value.
+
+Statistical Entities
+
+1. Measured mean sea level at the tide guage in Newlyn Harbour, Cornwall, UK, over a defined time period, with respect to the Airy 1830 ellipsoid vertical datum.
+1. Total global energy change at the top of the atmosphere, over a defined time period, integrated (area weighted sum) over the globe using the WGS84 representation of (longitude, latitude, height)
+1. The 95th percentile value of forecast rainfall rate at a specified ground level location at a specified time, from a discrete probability density function of 15 members
+1. Median household income for the state of Colorado, USA at the time of the last census.
+
+Provide the graph as file available to download.
+
+Ensure that all URLs within this file resolve.
+
