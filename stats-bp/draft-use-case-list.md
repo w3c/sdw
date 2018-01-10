@@ -106,6 +106,8 @@ In cases like this it can be important to make multiple estimates of the same fi
 
 ## Countries or regions publish consistent data to allow comparisons
 
+Contributed by: Bill Roberts
+
 Different organisations, for example representing a country or region within a country, agree to share data following a consistent pattern, so that comparisons can be made.  For example, the national statistics institutes of European countries report numerous data to Eurostat, that compiles cross-European figures. See http://ec.europa.eu/eurostat
 
 ## Comparison and manipulation of geographical dimension ranges between statistical data cubes
