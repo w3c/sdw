@@ -92,6 +92,36 @@ Registry/register idea
 
 ## Verify dimension values against external codelist
 
-Contribteud by: Bill Roberts
+Contributed by: Bill Roberts
 
 Check whether a dimension of a statistical dataset use only values from an externally managed 'official' code list
+
+## Revised estimates
+
+Contributed by: Bill Roberts
+
+In some situations, organisations publish initial estimates of some quantity of interest, which are later revised when more detailed or more accurate information becomes available.  This is the case in most countries for estimates of GDP for example.  In the UK, the Office for National Statistics produces preliminary, second and final estimates of [GDP](https://www.ons.gov.uk/economy/grossdomesticproductgdp).
+
+In cases like this it can be important to make multiple estimates of the same figure available, together with information on the timing, status or methodology used to make each estimate.
+
+## Countries or regions publish consistent data to allow comparisons
+
+Contributed by: Bill Roberts
+
+Different organisations, for example representing a country or region within a country, agree to share data following a consistent pattern, so that comparisons can be made.  For example, the national statistics institutes of European countries report numerous data to Eurostat, that compiles cross-European figures. See http://ec.europa.eu/eurostat
+
+## Comparison and manipulation of geographical dimension ranges between statistical data cubes
+
+Contributed by: Rob Atkinson
+
+The geographic dimension of a data set will be typically one of named areas (countries, states, statistical areas), coordinates (representing regular cells), or named cells - including DGGS ). These may be hierarchical. Discovery of geographically co-located datasets based on geographic dimension requires one of the following:
+1. Common dimension (by dimension descriptor identifier - as supported by RDF-Datacube model of dimensions as named entities)
+2. Equivalent dimension (by commonality of range declaration of different dimension descriptors)
+3. Hierarchy overlap (i.e. dimension of dataset A is contained within the hierarchy of dimension of dataset B - e.g. data for Arizona can be found in a dataset of all countries where the geographic dimension is a hierarchy of countries/states and the range of countries includes USA)
+4. Geographic overlap - a geographic function can be defined that expresses overlap between the ranges of the geographic dimensions.
+
+Are there other ways of discovering overlap? 
+Is there some measure of resolution - for example a 3D model of a house in Arizona is a completely different scale - is it relevant to discover it while looking for statistics about Arizona, and how to discriminate.
+
+Discovery is the first step, subsetting to access relevant slices will then be necessary, and requires transformation of geographic ranges into the relevant expression for the target dataset dimensions.
+
