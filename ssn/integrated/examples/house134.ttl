@@ -1,0 +1,229 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix oldssn: <http://purl.oclc.org/NET/ssnx/ssn#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix ssn-system: <http://www.w3.org/ns/ssn/systems/> .
+@prefix sampling: <http://www.w3.org/ns/sosa/sampling/> .
+@prefix cdt: <http://w3id.org/lindt/custom_datatypes#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix rdfp: <https://w3id.org/rdfp/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix schema: <http://schema.org/> .
+@prefix qudt: <http://qudt.org/schema/qudt#> .
+@prefix qudt-1-1: <http://qudt.org/1.1/schema/qudt> .
+@prefix qudt-unit-1-1: <http://qudt.org/1.1/vocab/unit#> .
+@base  <http://example.org/> .
+
+
+<house/134> a sosa:FeatureOfInterest ;
+	rdfs:comment "House #134."@en .
+
+<floralCouch> a sosa:FeatureOfInterest ;
+	rdfs:comment "The lumpy 2-seater couch with the floral pattern."@en .
+
+<roofInsulation> a sosa:FeatureOfInterest ;
+	rdfs:comment "The insulation material in the roof of house #134."@en .
+
+# the window opening state is an ActuatableProperty.
+# SSN allows to explicitly say that <window/104#state> is a property of <window>
+
+<window> a sosa:FeatureOfInterest ;
+	ssn:hasProperty <window/104#state> .
+
+<window/104#state> a sosa:ActuatableProperty ;
+	sosa:isActedOnBy <actuation/188> .
+
+<house/134/kitchen> a sosa:Sample, sosa:Platform ;
+	rdfs:label "House #134 Kitchen."@en ;
+	rdfs:comment "House #134 Kitchen that hosts PCBoard1 and PCBoard2."@en ;
+	sosa:hosts <PCBBoard1>, <PCBBoard2> ;
+	sosa:isSampleOf <house/134> .
+
+<house/134/bedroom> a sosa:Sample ;
+	sosa:isSampleOf <house/134> .
+
+<AtmosphericTemperature> rdfs:subClassOf sosa:ObservableProperty .
+ 
+<AmbientTemperature> rdfs:subClassOf <AtmosphericTemperature> .
+
+<temperature> a sosa:ObservableProperty, qudt:QuantityKind ;
+	rdfs:label "Thermodynamic Temperature"@en .
+  
+<airTemperature> a ssn:Property, sosa:ObservableProperty, qudt:QuantityKind, <AmbientTemperature> ;
+	qudt:generalization <temperature> ;
+	sosa:isPropertyOf <house/134/bedroom>, <house/134/kitchen> .
+ 
+<soilTemperature> a sosa:ObservableProperty, qudt:QuantityKind ;
+	qudt:generalization <temperature> .
+ 
+<waterTemperature> a sosa:ObservableProperty, qudt:QuantityKind ;
+	qudt:generalization <temperature> .
+ 
+<tapWaterTemperature> a sosa:ObservableProperty, qudt:QuantityKind ;
+	qudt:generalization <waterTemperature> .
+ 
+<poolWaterTemperature> a sosa:ObservableProperty, qudt:QuantityKind ;
+	qudt:generalization <waterTemperature> .
+
+<nest/D1AA22A8211> a sosa:Platform ;
+	rdfs:label "3rd gen Nest Learning Thermostat D1AA22A8211"@en ;
+	rdfs:comment "Nest Thermostat in bedroom of house #134"@en ;
+	sosa:hosts <sensor/926> .
+
+<sensor/926> a sosa:Sensor ;
+	rdfs:label "Nest temperature sensor #1"@en ;
+	sosa:observes  <airTemperature> ;
+	sosa:madeObservation <observation/235714>, <observation/235715>, <observation/235716> .
+  
+<PCBBoard1> a ssn:System ;
+	rdfs:label "PCB Board 1"@en ;
+	rdfs:comment "PCB Board 1 hosts DHT22 temperature sensor #1."@en ;
+	sosa:hosts <DHT22/1> .
+    
+<PCBBoard2> a ssn:System ;
+	rdfs:label "PCB Board 2"@en ;
+	rdfs:comment "PCB Board 2 hosts DHT22 temperature sensor #2."@en ;
+	sosa:hosts <DHT22/2> .
+	
+<DHT22/4578#TemperatureSensor> a sosa:Sensor, ssn:System ;
+	rdfs:comment "The DHT22 #4578 embedded temperature sensor."@en ;
+	ssn-system:hasSystemCapability <DHT22TempCapability> .
+  
+<DHT22TempCapability> a ssn:Property, ssn-system:SystemCapability ;
+	rdfs:comment "The capabilities of the temperature sensor in normal temperature conditions."@en;
+	ssn-system:inCondition <normalTemp> ;
+	ssn-system:hasSystemProperty <DHT22TempSensitivity> .
+  
+<normalTemp> a ssn-system:Condition, schema:PropertyValue ;
+	rdfs:comment "A temperature range of -40 to 80 Celsius."@en ;
+	schema:minValue -40.0 ;
+	schema:maxValue 80.0 ;
+	schema:unitCode qudt-unit-1-1:DegreeCelsius .
+
+<DHT22TempSensitivity> a ssn:Property, ssn-system:Sensitivity, ssn-system:Resolution, schema:PropertyValue ;
+	rdfs:comment "The sensitivity and resolution of the temperature sensor is 0.1 °C in normal temperature and humidity conditions."@en ;
+	schema:value 0.1 ;
+	schema:unitCode qudt-unit-1-1:DegreeCelsius .
+
+<house/134/deployment> a ssn:Deployment ;
+	rdfs:comment "Deployment of PCB Board 1 and 2 in the kitchen for the purpose of observing the temperature."@en ;
+	ssn:deployedOnPlatform <house/134/kitchen> ;
+	ssn:deployedSystem <PCBBoard1>, <PCBBoard2> ;
+	ssn:forProperty <airTemperature> .
+
+<sensor/927> a sosa:Sensor ;
+	ssn:implements <summingHourlyConsumptionProcedure> .
+	
+<summingHourlyConsumptionProcedure> a sosa:Procedure ;
+	ssn:hasOutput <electricityConsumption> ;
+	ssn:hasOutput [
+		rdfp:presentedBy [ 
+			rdfp:validationRule <consumption.schema.json> ;
+			rdfp:liftingRule <lifting-rule.rqg>
+		]
+	] .
+
+<observation/235714> a sosa:Observation ;
+	sosa:hasFeatureOfInterest <house/134/bedroom> ;
+	sosa:observedProperty <airTemperature> ;
+	sosa:madeBySensor <sensor/926> ;
+	sosa:resultTime "2017-04-16T00:00:12+00:00"^^xsd:dateTimeStamp ;
+	sosa:phenomenonTime [
+		a time:Interval ;
+		time:hasBeginning [ 
+			a time:Instant ;
+			time:inXSDDateTimeStamp "2017-04-15T00:00:00+00:00"^^xsd:dateTimeStamp
+		] ;
+    	time:hasEnd [ 
+			a time:Instant ;
+			time:inXSDDateTimeStamp "2017-04-16T00:00:00+00:00"^^xsd:dateTimeStamp
+		]
+	] .
+
+# The air temperature in the kitchen of house #134 was 23.9°C.
+
+<observation/235715> a sosa:Observation ;
+	sosa:resultTime "2017-11-15T14:35:13Z"^^xsd:dateTime ;
+	sosa:hasSimpleResult "23.9 DEG"^^cdt:temperature .
+   
+<observation/235716> a sosa:Observation ;
+	sosa:hasResult [
+		a qudt-1-1:QuantityValue ;
+		qudt-1-1:unit qudt-unit-1-1:DegreeCelsius ;
+		qudt-1-1:numericValue "22.9"^^xsd:double
+	] .
+
+# The electric consumption in the kitchen of house #134 was 22.4 kWh as 
+# observed by sensor #927.
+
+<observation/235727> a sosa:Observation ;
+	sosa:hasFeatureOfInterest <house/134/kitchen> ;
+	sosa:observedProperty <electricConsumption> ;
+	sosa:madeBySensor <sensor/927> ; 
+	sosa:hasSimpleResult "22.4 kWh"^^cdt:ucum ;
+	sosa:hasResult <observation/235727/result> .
+	
+# The air temperature in the kitchen of house #134 was observed by the DHT22 #4578 embedded temperature sensor.
+
+<observation/235728> a sosa:Observation ;
+  sosa:hasFeatureOfInterest <house/134/kitchen> ;
+  sosa:observedProperty <airTemperature> ;
+  sosa:madeBySensor <DHT22/4578#TemperatureSensor> .
+	
+<observation/s1/5> a sosa:Observation ;
+	sosa:hasFeatureOfInterest <sample/134g1> ;
+	sosa:observedProperty <soil-pH> ;
+	sosa:phenomenonTime [ 
+		a time:Instant ; 
+		time:inXSDDateTimeStamp "2017-12-04T08:14:00:00+10:00"^^xsd:dateTimeStamp ;
+	] ;
+	sosa:resultTime "2017-12-12T10:24:00:00+10:00"^^xsd:dateTime ;
+	sosa:hasSimpleResult "6.1"^^cdt:pH .  
+  
+<sampling/4578> a sosa:Sampling ;
+	geo:lat -37.9076 ; 
+	geo:long 145.0294 ;
+	sosa:madeBySampler <trowel> ;
+	sosa:hasFeatureOfInterest <house/134/garden> ;
+	sosa:resultTime "2017-12-04T08:14:00:00+10:00"^^xsd:dateTime ;
+	sosa:hasResult <sample/134g1> .
+  
+<sample/134g1> a sosa:Sample ;
+	sosa:isSampleOf <house/134/garden> ;
+	sosa:isResultOf <sampling/4578> .
+	
+<sample/134g1/organics> a sosa:Sample ;
+	rdfs:label "Soil sample 134g1 organic fraction" ;
+	sampling:hasSampleRelationship [
+		a sampling:SampleRelationship ;
+		sampling:natureOfRelationship <http://soil.example.org/rel/organic-fraction> ;
+		sampling:relatedSample <sample/134g1> ;
+	] ;
+	sosa:isResultOf <sampling/4650> .
+
+<sampling/4650> a sosa:Sampling ;
+    sosa:featureOfInterest <sample/134g1> ;
+    sosa:usedProcedure <procedure/soil-organic-fraction/78> . 
+    
+<procedure/soil-organic-fraction/78> a sosa:Procedure ;
+    rdfs:comment "... details of procedure to separate the organic fraction of a soil sample ..." .
+
+
+# WindowCloser #987 made actuation #188
+# SSN allows to explicitly say that <windowCloser/987> is designed to automatically open and close window #104.
+
+<windowCloser/987> rdf:type sosa:Actuator ;
+	sosa:madeActuation <actuation/188> ;
+	ssn:forProperty <window/104#state> .
+
+# Actuation #188 acted on the state of window #104 and returned 'true'.
+
+<actuation/188> a sosa:Actuation ;
+	sosa:actsOnProperty <window/104#state> ;
+	sosa:actuationMadeBy <windowCloser/987> ;
+	sosa:hasFeatureOfInterest  <window/104> ;
+	sosa:resultTime "2017-04-18T17:24:00+02:00"^^xsd:dateTimeStamp ;
+	sosa:hasSimpleResult true ;
+	sosa:resultTime "2017-04-18T17:24:00+02:00"^^xsd:dateTimeStamp .
