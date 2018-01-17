@@ -17,7 +17,8 @@
   * ...
 * INSPIRE (https://inspire.ec.europa.eu/)
   * [Guidelines on methodologies for the creation of RDF vocabularies representing the INSPIRE data models and the transformation of INSPIRE data into RDF](https://joinup.ec.europa.eu/document/study-rdf-and-pids-inspire-guidelines-methodologies-inspire-data-rdf) (2015). More material here: https://ies-svn.jrc.ec.europa.eu/projects/rdf-pids/wiki/ARE3NA_RDF_+_PIDs_study
-  * [Guidelines for the RDF encoding of spatial data](http://inspire-eu-rdf.github.io/inspire-rdf-guidelines/) (2017)
+  * [Spatial Data on the Web tools and guidance for data providers](https://ies-svn.jrc.ec.europa.eu/attachments/download/2178/DOC-7_ELISE_D2.1.1_Spatial_Data_on_the_Web_tools_and_guidance_for_data_providers_v1.0.pdf)
+  * [Guidelines for the RDF encoding of spatial data](http://inspire-eu-rdf.github.io/inspire-rdf-guidelines/) (2017): latest results at https://github.com/inspire-eu-rdf/
 * UNGGIM
 * Academic network
 * Developer conferences (AWS, ESRI, Google etc.)
