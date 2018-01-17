@@ -13,6 +13,11 @@
   * Testbed 14 - http://www.opengeospatial.org/projects/initiatives/testbed14 and https://portal.opengeospatial.org/files/77327#NGWFS3.0
   * WFS 3.0 - https://github.com/opengeospatial/WFS_FES 
 * Research Data Alliance https://www.rd-alliance.org/ 
+  * [Geospatial IG](https://www.rd-alliance.org/groups/geospatial-ig.html)
+  * ...
+* INSPIRE (https://inspire.ec.europa.eu/)
+  * [Guidelines on methodologies for the creation of RDF vocabularies representing the INSPIRE data models and the transformation of INSPIRE data into RDF](https://joinup.ec.europa.eu/document/study-rdf-and-pids-inspire-guidelines-methodologies-inspire-data-rdf) (2015). More material here: https://ies-svn.jrc.ec.europa.eu/projects/rdf-pids/wiki/ARE3NA_RDF_+_PIDs_study
+  * [Guidelines for the RDF encoding of spatial data](http://inspire-eu-rdf.github.io/inspire-rdf-guidelines/) (2017)
 * UNGGIM
 * Academic network
 * Developer conferences (AWS, ESRI, Google etc.)
