@@ -99,7 +99,7 @@ TO DO: list the various ways in which multiple dimension values might be specifi
 
 Contributed by: Bill Roberts
 
-Registry/register idea
+Registry/register idea (there was some UK gov best practice published for this. See https://github.com/UKGovLD/registry-core/wiki )
 
 ...
 
