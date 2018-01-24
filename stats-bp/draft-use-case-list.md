@@ -55,6 +55,19 @@ Contributed by: Bill Roberts
 
 Put together a summary 'picture' of a place by gathering together statistical data on various topics
 
+An example of this could be the kind of table that appears on this page about [Aberdeen](http://statistics.gov.scot/doc/statistical-geography/S12000033?tab=data).  In this case however, all data is drawn from a single data collection and database, which simplifies the problem a bit.
+
+In general, the following steps might be needed:
+
+* find out a well-used identifier or identifiers for the place of interest
+* understand the definition/geometry of relevant representations of locations to know what data refers to
+* discover sources of relevant data about the place, perhaps from multiple locations across the web
+* assess relevance, trust, quality of data sources
+* select data about the location of interest, from datasets that might hold data about lots of different places - choosing the most appropriate values of other statistical dimensions (such as time period).
+* understand hierarchical relationships between different geographical areas and perhaps aggregate data
+* retrieve data in a form that is easy to process in software
+
+
 TO DO: add detail and examples
 
 ## Benchmarking
