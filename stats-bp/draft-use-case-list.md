@@ -39,7 +39,7 @@ Time is notoriously complicated. As St Augustine said about 400CE  "Si nemo ex m
 
 The standard calendar is the Gregorian, which incorporates leap days almost every 4 years, and also leap seconds as specified by the IERS in Paris. This calendar, and instants and durations can be reasoned about using the W3C Recommendation:  Time Ontology in OWL, https://www.w3.org/TR/owl-time/  and this can also be used as a basis for constructing other calendars.
 
-OGC has a registry of temporal Coordinate Reference Systems, which are more tractable than calendars, such Julian Day Number (days and fractions of days since noon on Monday, January 1, 4713 BCE), Unix time (milliseconds since midnight, 1 Jan 1970), and International Atomic Time (TAI).
+OGC has a registry of temporal Coordinate Reference Systems, which are more tractable than calendars, such Julian Day Number (days and fractions of days since noon on Monday, January 1, 4713 BCE), Unix time (milliseconds since midnight, 1 Jan 1970), and International Atomic Time TAI (a count of SI seconds since midnight 1 January 1977, corrected to Mean Sea Level).
 
 This 'use case' is proposing that some consistent and rigorous structures be built that will allow the construction of a wide variety of durations or periods , relating to a variety of calendar or temporal CRSs for aggregation of statistics.
 
