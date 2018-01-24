@@ -101,6 +101,8 @@ Contributed by: Bill Roberts
 
 Registry/register idea (there was some UK gov best practice published for this. See https://github.com/UKGovLD/registry-core/wiki )
 
+Also, more recently the UK Government Digital Service is working on registers: see https://registers.cloudapps.digital/
+
 ...
 
 ## Verify dimension values against external codelist
@@ -108,6 +110,8 @@ Registry/register idea (there was some UK gov best practice published for this. 
 Contributed by: Bill Roberts
 
 Check whether a dimension of a statistical dataset use only values from an externally managed 'official' code list
+
+Different datasets sharing codelists leads to increased comparability and interoperability of data.  If adherence to a particular recommended or mandated codelist is a measure of data quality, then during the process of preparing or disseminating data, it is necessary to check whether all the dimension values are 'on the list'. 
 
 ## Revised estimates
 
@@ -117,7 +121,7 @@ In some situations, organisations publish initial estimates of some quantity of 
 
 In cases like this it can be important to make multiple estimates of the same figure available, together with information on the timing, status or methodology used to make each estimate.
 
-## Countries or regions publish consistent data to allow comparisons
+## Countries or regions or organisations publish consistent data to allow comparisons
 
 Contributed by: Bill Roberts
 
