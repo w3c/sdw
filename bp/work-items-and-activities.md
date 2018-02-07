@@ -8,7 +8,7 @@ Initial focus for at least first 6 months of 2017 will be on encouraging adoptio
 
 Domain focused messaging:
 
-* Data Publishers
+Data Publishers
 
 - NMAs
 - Space & Met
@@ -19,12 +19,14 @@ Domain focused messaging:
 - Environmental
 - Please add more....
 
-* Data users / developers
+Data users / developers
+
+- Please add more...
 
 ### Specific activities
 
 * Creation of domain specifc messaging using BP use cases - https://www.w3.org/TR/sdw-ucr/
-* Capturing use cases
+* Capturing BP in practice examples
 * Presentation at the INSPIRE Conference in September 2018 (Antwerp) https://inspire.ec.europa.eu/events/inspire-conference-2018
 * Promotion via WFS 3.0 work
 * Presenting at W3C conferences
