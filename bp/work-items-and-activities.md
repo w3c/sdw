@@ -33,6 +33,7 @@ Data users / developers
 * Investigation into compliance testing
 * Hall of fame
 * Flipcards - https://www.w3.org/2007/02/mwbp_flip_cards 
+* [LvdB] Tools for BP conformance testing / validation 
 ....Please add more
 
 ### Potential organisations to engage with
