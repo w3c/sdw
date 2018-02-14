@@ -41,6 +41,7 @@ Data users / developers
 * OGC
   * Testbed 14 - http://www.opengeospatial.org/projects/initiatives/testbed14 and https://portal.opengeospatial.org/files/77327#NGWFS3.0
   * WFS 3.0 - https://github.com/opengeospatial/WFS_FES 
+  * WFS 3.0 Hackathon - http://www.opengeospatial.org/projects/initiatives/wfs3hackathon
 * W3C - W3C Developer meetups
 * Research Data Alliance https://www.rd-alliance.org/ 
   * [Geospatial IG](https://www.rd-alliance.org/groups/geospatial-ig.html)
