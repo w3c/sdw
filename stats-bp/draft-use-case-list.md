@@ -6,7 +6,7 @@ When creating a new use case, follow the style of those in the [SDW use cases](h
 
 ## Representing statistical parameters
 
-Contributed by: Chris Little
+### Contributed by: Chris Little
 
 Many container data formats, and even service APIs and protocols, have controlled lists/taxonomies of parameters/observations/variables/measurements. These values of interest may be scalar, vector or even tensor valued. E.g. surface atmospheric pressure, sub-surface ocean current velocity or wind stress (used to forecast ocean waves), respectively.
 
@@ -26,9 +26,13 @@ The various schemes and the controlled lists are also inconsistent, as, for exam
 
 The use case, or more precisely, a requirement, is to have a standard statistical scheme that allows the consistent and rigorous generation of a variety of statistical qualifiers to create useful and machinable metadata to qualify lists of parameters in a variety of domains.
 
+### Related Deliverables:
+
+### Related Requirements:
+
 ## Representing (and filtering and aggregating) temporal data
 
-Contributed by: Chris Little
+### Contributed by: Chris Little
 
 This use case is really a requirement too. When statistical values are derived from quantities of interest (e.g. climatological mean wind velocity at a location for the month of October), there are a wide variety of time durations and instants that may be underpinning the statistics of interest.
 
@@ -49,9 +53,13 @@ How can such descriptive metadata be constructed for use in a wide variety of do
 
 I  hope that is coherent. We tried to do something like this several years ago, put kept putting it further down the priority list!
 
+### Related Deliverables:
+
+### Related Requirements:
+
 ## Area profile
 
-Contributed by: Bill Roberts
+### Contributed by: Bill Roberts
 
 Put together a summary 'picture' of a place by gathering together statistical data on various topics
 
@@ -67,37 +75,47 @@ In general, the following steps might be needed:
 * understand hierarchical relationships between different geographical areas and perhaps aggregate data
 * retrieve data in a form that is easy to process in software
 
-
 TO DO: add detail and examples
 
 ## Benchmarking
 
-Contributed by: Bill Roberts
+### Contributed by: Bill Roberts
 
 Compare one place or organisation against others, in terms of one or more measures
 
 TO DO: add detail and examples
 
+### Related Deliverables:
+
+### Related Requirements:
 
 ## Find places by criteria
 
-Contributed by: Bill Roberts
+### Contributed by: Bill Roberts
 
 Find places which satisfy one or more criteria, expressed in terms of values of statistical measures
 
 TO DO: add detail and examples
 
+### Related Deliverables:
+
+### Related Requirements:
+
 ## Slice and dice a statistical data cube
 
-Contributed by: Bill Roberts
+### Contributed by: Bill Roberts
 
 Select a subset of a statistical data cube by fixing the values of some of the dimensions.  Fixing a single value of a dimension creates a slice.  This is generally fairly straightforward.  Another useful but sometimes more complex requirement is to select a list or range of possible values of a dimension.
 
 TO DO: list the various ways in which multiple dimension values might be specified: a list, or a range (if the dimension is 'orderable').
 
+### Related Deliverables:
+
+### Related Requirements:
+
 ## Manage and share a re-usable codelist
 
-Contributed by: Bill Roberts
+### Contributed by: Bill Roberts
 
 Registry/register idea (there was some UK gov best practice published for this. See https://github.com/UKGovLD/registry-core/wiki )
 
@@ -105,31 +123,48 @@ Also, more recently the UK Government Digital Service is working on registers: s
 
 ...
 
+### Related Deliverables:
+
+### Related Requirements:
+
 ## Verify dimension values against external codelist
 
-Contributed by: Bill Roberts
+### Contributed by: Bill Roberts
 
 Check whether a dimension of a statistical dataset use only values from an externally managed 'official' code list
 
 Different datasets sharing codelists leads to increased comparability and interoperability of data.  If adherence to a particular recommended or mandated codelist is a measure of data quality, then during the process of preparing or disseminating data, it is necessary to check whether all the dimension values are 'on the list'. 
 
+
+### Related Deliverables:
+
+### Related Requirements:
+
 ## Revised estimates
 
-Contributed by: Bill Roberts
+### Contributed by: Bill Roberts
 
 In some situations, organisations publish initial estimates of some quantity of interest, which are later revised when more detailed or more accurate information becomes available.  This is the case in most countries for estimates of GDP for example.  In the UK, the Office for National Statistics produces preliminary, second and final estimates of [GDP](https://www.ons.gov.uk/economy/grossdomesticproductgdp).
 
 In cases like this it can be important to make multiple estimates of the same figure available, together with information on the timing, status or methodology used to make each estimate.
 
+### Related Deliverables:
+
+### Related Requirements:
+
 ## Countries or regions or organisations publish consistent data to allow comparisons
 
-Contributed by: Bill Roberts
+### Contributed by: Bill Roberts
 
 Different organisations, for example representing a country or region within a country, agree to share data following a consistent pattern, so that comparisons can be made.  For example, the national statistics institutes of European countries report numerous data to Eurostat, that compiles cross-European figures. See http://ec.europa.eu/eurostat
 
+### Related Deliverables:
+
+### Related Requirements:
+
 ## Comparison and manipulation of geographical dimension ranges between statistical data cubes
 
-Contributed by: Rob Atkinson
+### Contributed by: Rob Atkinson
 
 The geographic dimension of a data set will be typically one of named areas (countries, states, statistical areas), coordinates (representing regular cells), or named cells - including DGGS ). These may be hierarchical. Discovery of geographically co-located datasets based on geographic dimension requires one of the following:
 1. Common dimension (by dimension descriptor identifier - as supported by RDF-Datacube model of dimensions as named entities)
@@ -142,9 +177,13 @@ Is there some measure of resolution - for example a 3D model of a house in Arizo
 
 Discovery is the first step, subsetting to access relevant slices will then be necessary, and requires transformation of geographic ranges into the relevant expression for the target dataset dimensions.
 
+### Related Deliverables:
+
+### Related Requirements:
+
 ## Represent statistical quantities in RDF
 
-Contributed by: Mark Hedley
+### Contributed by: Mark Hedley
 
 Provide an RDF graph of statistical entities, simple enough for encoders and developers to read and understand, demonstrating a set of plausible definitions, as described below.
 
@@ -161,3 +200,6 @@ Provide the graph as file available to download.
 
 Ensure that all URLs within this file resolve.
 
+### Related Deliverables:
+
+### Related Requirements:
