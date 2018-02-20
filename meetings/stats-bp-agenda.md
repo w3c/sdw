@@ -21,6 +21,7 @@ Examples of existing work related to statistics:
 * [SSN/SOSA](https://www.w3.org/TR/vocab-ssn)
 * United Nations [GGIM](http://ggim.un.org/meetings/GGIM-committee/documents/GGIM6/Background-Paper-Proposal-for-a-global-statistical-geospatial-framework.pdf)
 * [Eurostat](https://ec.europa.eu/eurostat/cros/content/dime-directors-methodology_en)
+* Australian Bureau of Statistics: [Statistical Spatial Framework](http://www.nss.gov.au/nss/home.nsf/pages/Statistical%20Spatial%20Framework%20Overview)
 * others?
 
 Other related standards and best practices
