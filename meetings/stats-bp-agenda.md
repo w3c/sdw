@@ -18,6 +18,7 @@ Examples of existing work related to statistics:
 * RDF Data Cube
 * SDMX
 * OGC Observations and Measurements
+* [SSN/SOSA](https://www.w3.org/TR/vocab-ssn)
 * United Nations [GGIM](http://ggim.un.org/meetings/GGIM-committee/documents/GGIM6/Background-Paper-Proposal-for-a-global-statistical-geospatial-framework.pdf)
 * [Eurostat](https://ec.europa.eu/eurostat/cros/content/dime-directors-methodology_en)
 * others?
