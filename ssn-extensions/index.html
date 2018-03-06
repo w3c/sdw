@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<title>Extensions to the Semantic Sensor Network Ontology</title>
+<script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
+<script class="remove" src="config.js"></script>
+<style type="text/css">
+/* Force W3C logo to site side by side with OGC logo */
+.head img[src*="logos/W3C"] {
+  display: inherit !important;
+}
+.head a:hover > img[src*='ogc'] {
+  opacity: 0.8;
+}
+
+/* Table styles, March 2016 */
+table {border-collapse:collapse}
+th, td {
+border:thin solid black;
+padding: 0.3em;
+}
+.inlineCode {
+FONT-FAMILY: "courier new"; BACKGROUND-COLOR: #ddf
+}
+PRE.code {
+BORDER-RIGHT: #999999 1pt solid; PADDING-RIGHT: 0.5em; BORDER-TOP: #999999 1pt solid; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; BORDER-LEFT: #999999 1pt solid; PADDING-TOP: 0.5em; BORDER-BOTTOM: #999999 1pt solid; FONT-FAMILY: "courier new"; BACKGROUND-COLOR: #eef
+}
+PRE.code2 {
+BORDER-RIGHT: #999999 1pt solid; PADDING-RIGHT: 0.5em; BORDER-TOP: #999999 1pt solid; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; BORDER-LEFT: #999999 1pt solid; PADDING-TOP: 0.5em; BORDER-BOTTOM: #999999 1pt solid; FONT-FAMILY: "courier new"; BACKGROUND-COLOR: #ffa
+}
+.ednote {
+FONT-STYLE: italic
+}
+PRE.clientmsg {
+BORDER-RIGHT: #999 1px solid; PADDING-RIGHT: 2px; BORDER-TOP: #999 1px solid; PADDING-LEFT: 2px; BACKGROUND: #eee; PADDING-BOTTOM: 2px; MARGIN: 0px; BORDER-LEFT: #999 1px solid; PADDING-TOP: 2px; BORDER-BOTTOM: #999 1px solid
+}
+PRE.servermsg {
+BORDER-RIGHT: #999 1px solid; PADDING-RIGHT: 2px; BORDER-TOP: #999 1px solid; PADDING-LEFT: 2px; BACKGROUND: #eee; PADDING-BOTTOM: 2px; MARGIN: 5px 0px 0px; BORDER-LEFT: #999 1px solid; PADDING-TOP: 2px; BORDER-BOTTOM: #999 1px solid; TEXT-ALIGN: left
+}
+P.msg {
+PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; TEXT-ALIGN: center
+}
+DIV.interaction {
+BORDER-RIGHT: #999 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #999 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 5px; BORDER-LEFT: #999 1px solid; PADDING-TOP: 5px; BORDER-BOTTOM: #999 1px solid
+}
+DIV.interaction H4 {
+MARGIN: 0px 0px 10px
+}
+DIV.interaction P {
+MARGIN: 0px
+}
+DIV.test {
+BORDER-RIGHT: #999 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #999 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 5px; BORDER-LEFT: #999 1px solid; PADDING-TOP: 5px; BORDER-BOTTOM: #999 1px solid
+}
+DIV.test H4 {
+MARGIN: 0px 0px 10px
+}
+</style>
+</head>
+
+<body>
+
+<section id="abstract">
+<p>The Semantic Sensor Network (SSN) ontology is an ontology for describing sensors and their observations, the involved procedures, the studied features of interest, the samples used to do so, and the observed properties, as well as actuators.
+This document describes some extensions to the SSN ontology to enable:</p>
+<ol>
+  <li>
+    linking to the ultimate feature-of-interest for an observation, alongside the link to the proximate feature-of-interest which may be a sample
+  </li>
+  <li>
+    homogeneous collections of observations, in which one or more of the feature-of-interest, observed-property, procedure, sensor, phenomenon-time or result-time may be common for the whole collection
+  </li>
+</ol>
+<p style="text-align: center;">The namespace for SSN terms is <span class="repeated"
+    style="font-family: courier;">http://www.w3.org/ns/ssn/</span>.
+  <br>
+  The namespace for SOSA terms is <span class="repeated" style="font-family: courier;">
+    http://www.w3.org/ns/sosa/</span>.</p>
+<p style="text-align: center;">The suggested prefix for the SSN namespace
+  is <span class="repeated" style="font-family: courier;">ssn</span>.<br>
+  The suggested prefix for the SOSA namespace is <span class="repeated" style="font-family: courier;">sosa</span>.</p>
+<p style="text-align: center;"> The SSN ontology is available at <a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a>.
+  <br>
+  The SOSA ontology is available at <a href="http://www.w3.org/ns/sosa/">http://www.w3.org/ns/sosa/</a>.
+  <br>
+  The SSN-Extensions ontology is available at <a href="http://www.w3.org/ns/ssn-ext/">http://www.w3.org/ns/ssn-ext/</a>.
+</p>
+</section>
+
+<section id="sotd">
+<p><strong>For OGC -</strong> This is a Public Draft of a document prepared by the Spatial Data on the Web Interest Group
+	(<a href="https://www.w3.org/2017/sdwig/">SDWIG</a>)
+— a joint W3C-OGC project (see <a href="https://www.w3.org/2017/sdwig/charter.html">charter</a>).
+The document is prepared following W3C conventions. This document is not an OGC Standard. This document is distributed for review and comment. This document is subject to change without notice and may not be referred to as an OGC Standard. Recipients of this document are invited to submit, with their comments, notification of any relevant patent rights of which they are aware and to provide supporting documentation. </p>
+<p>New classes and properties are introduced in this extension to SSN.
+  The new elements primarily relate to additional requirements for describing observations and collections of observations.
+  The ontology document &lt;owl:imports&gt; the SSN ontology, and adds the new elements and axioms in the original RDF namespaces. </p>
+</section>
+
+<section id="motivation">
+<h2>Motivation and background</h2>
+<p>The Semantic Sensor Network (SSN) ontology is an ontology for describing sensors and their observations, the involved procedures, the studied features of interest, the samples used to do so, and the observed properties, as well as actuators.
+The elements of the ontology are defined in two modules:</p>
+<ol>
+  <li>
+    SOSA - which defines the basic classes and properties, with a weak axiomatization comparable to schema.org
+  </li>
+  <li>
+    SSN - which adds a full axiomatization to the SOSA classes and properties, and adds additional elements relating particularly to sensor descriptions and to support alignment to DUL
+  </li>
+</ol>
+<p>
+  However, a nummber of requirements for describing observations that have been described in the research literature [[OM-Lite]], [[OBOE]] are not supported directly by SSN.
+  In particular:
+</p>
+<ol>
+  <li>
+    discovery and use of observation data typically depends on them being related to an "ultimate" feature-of-interest which is a well-knonw thing in the world, such as a geological formation, or a specific patient, or the state of the atmosphere. However, this may not be directly associated with the individual observations, if the (proximate) feature-of-interest of the observation is a <i>sample</i> of the ultimate feature-of-interest. While the identity of the ultimate feature-of-interest may be obtained by following additional sosa:isSampleOf relationships, chasing down such a path may not be possible in a single request from many data sources. A direct association from the observation to the ultimate feature-of-interest alongside the proximate feature-of-interest would be helpful and would properly reflect the intention of the observation;
+  </li>
+  <li>
+    observations are often made as part of a set or collection in which one or more of the usual observation properties - feature-of-interest, observed-property, sensor, procedure, phenomenon-time, result-time - are common for all members of the collection. It is helpful to be able to package such a homogeneous collection in a standardized way, to support efficient discovery and data transfer.
+  </li>
+</ol>
+
+</section>
+
+<section id="namespaces">
+<h2>Notation and namespaces</h2>
+	<p>Classes and properties from the are denoted in this specification using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[curie]]. </p>
+<p>The namespace for SSN-Extensions is <code>http://www.w3.org/ns/ssn-ext/</code>.
+  SSN-Extension re-uses elements from [[SSN]] and SOSA. </p>
+<p>The table below indicates the full list of namespaces and prefixes used in this document.</p>
+<table id="namespacesTable">
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Namespace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ex</code></td>
+<td><code>http://example.org/ssn/</code></td>
+</tr>
+<tr>
+<td><code>owl</code></td>
+<td><code>http://www.w3.org/2002/07/owl#</code></td>
+</tr>
+<tr>
+<td><code>prov</code></td>
+<td><code>http://www.w3.org/ns/prov#</code></td>
+</tr>
+<tr>
+<td><code>rdf</code></td>
+<td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code></td>
+</tr>
+<tr>
+<td><code>rdfs</code></td>
+<td><code>http://www.w3.org/2000/01/rdf-schema#</code></td>
+</tr>
+<tr>
+<td><code>sosa</code></td>
+<td><code>http://www.w3.org/ns/sosa#</code></td>
+</tr>
+<tr>
+<td><code>ssn</code></td>
+<td><code>http://www.w3.org/ns/ssn#</code></td>
+</tr>
+<tr>
+<td><code>ssn-ext</code></td>
+<td><code>http://www.w3.org/ns/ssn-ext#</code></td>
+</tr>
+<tr>
+<td><code>xsd</code></td>
+<td><code>http://www.w3.org/2001/XMLSchema#</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>Where class descriptions include local restrictions on properties, these are described using the <a href="https://www.w3.org/TR/owl2-manchester-syntax/#Descriptions">OWL 2 Manchester Syntax</a> [[owl2-manchester-syntax]]. </p>
+
+<p>Examples and other code fragments are serialized using <a href="https://www.w3.org/TR/turtle/">RDF 1.1 Turtle</a> notation [[!turtle]].</p>
+
+</section>
+
+<section id="overview" class="informative">
+<h2>Principles and vocabulary overview</h2>
+
+<section id="s1">
+<h3>S1</h3>
+<p></p>
+</section>
+
+</section>
+
+<section id="vocabulary">
+<h2>Vocabulary specification</h2>
+
+<p>In this vocabulary specification, Manchester syntax [[owl2-manchester-syntax]] is used where the value of a field is not a simple term denoted by a URI or cURI.</p>
+
+<section id="classes">
+<h3>Classes</h3>
+
+<p>
+<code><a href="#sosa:ObservationCollection">:ObservationCollection</a></code> |
+<code><a href="#sosa:Other">:Other</a></code>
+</p>
+
+<section>
+<h4 id="sosa:ObservationCollection">Observation Collection</h4>
+<table class="definition" style="width: 812px;">
+<tbody>
+<tr>
+<th style="width: 120px;">Class:</th>
+<th><code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code></th>
+</tr>
+<tr>
+<td>Definition:</td>
+<td>  </td>
+</tr>
+<tr>
+<td>Subclass of:</td>
+<td><code><a href=""> </a></code></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h4 id="sosa:Other">Other</h4>
+<table class="definition" style="width: 812px;">
+<tbody>
+<tr>
+<th style="width: 120px;">Class:</th>
+<th><code><a href="#sosa:Other">sosa:Other</a></code></th>
+</tr>
+<tr>
+<td>Definition:</td>
+<td>... </td>
+</tr>
+<tr>
+<td>Instance of:</td>
+<td><code>owl:Class</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+</section>
+
+<section id="properties">
+<h3>Properties</h3>
+
+<p>
+<code><a href="#sosa:hasUltimateFeatureOfInterest">:hasUltimateFeatureOfInterest</a></code> |
+<code><a href="#sosa:other">:other</a></code>
+</p>
+
+<section>
+<h4 id="sosa:hasUltimateFeatureOfInterest">has ultimate Feature-Of-Interest</h4>
+<table class="definition" style="width: 812px;">
+<thead>
+<tr>
+<th style="width: 120px;">Property:</th>
+<th><code><a href="#sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a></code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Definition:</td>
+<td>...</td>
+</tr>
+<tr>
+<td>Instance of:</td>
+<td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#sosa:Observation">sosa:Observation</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#sosa:FeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+</section>
+
+<section id="Individuals">
+<h3>Individuals</h3>
+
+<p>
+<code><a href="#ssn-ext:Another">:Another</a></code> |
+</p>
+
+<table class="definition" style="width: 812px;">
+<tbody>
+<tr>
+<th style="width: 120px;">Class</th>
+<th>Individual</th>
+</tr>
+<tr id="ssn-ext:Another">
+<td rowspan="1"><code><a href="#ssn-ext:foo">ssn-ext:foo</a></code></td>
+<td><code>ssn-ext:Another</code></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+
+</section>
+
+
+<hr>
+
+
+<section class="appendix" id="implementation">
+	<h3>Implementation report</h3>
+	<p>...</p>
+</section>
+
+<section id="ack">
+<h2>Acknowledgements</h2>
+<p>The editors would like to thank the <a href="https://www.w3.org/2000/09/dbwg/details?group=75471">members of the W3C/OGC Spatial Data on the Web Interest Group</a> for their contributions during the development of this document. </p>
+</section>
+
+</body>
+</html>
