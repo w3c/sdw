@@ -100,36 +100,39 @@ The document is prepared following W3C conventions. This document is not an OGC 
 
 <section id="motivation">
 <h2>Motivation and background</h2>
-<p>The Semantic Sensor Network (SSN) ontology is an ontology for describing sensors and their observations, the involved procedures, the studied features of interest, the samples used to do so, and the observed properties, as well as actuators.
+<p>The Semantic Sensor Network (SSN) ontology is an ontology for describing sensors and their observations, the involved procedures, the studied features of interest, the samples used to do so, and the observed properties, as well as actuators [[vocab-ssn]].
 The elements of the ontology are defined in two modules:</p>
-<ol>
+<ul>
   <li>
     SOSA - which defines the basic classes and properties, with a weak axiomatization comparable to schema.org
   </li>
   <li>
     SSN - which adds a full axiomatization to the SOSA classes and properties, and adds additional elements relating particularly to sensor descriptions and to support alignment to DUL
   </li>
-</ol>
+</ul>
 <p>
-  However, a nummber of requirements for describing observations that have been described in the research literature [[OM-Lite]], [[OBOE]] are not supported directly by SSN.
+  However, a number of requirements for describing observations that have been described in the research literature [[OM-Lite]], [[OBOE]] are not supported directly by SSN.
   In particular:
 </p>
 <ol>
   <li>
-    discovery and use of observation data typically depends on them being related to an "ultimate" feature-of-interest which is a well-knonw thing in the world, such as a geological formation, or a specific patient, or the state of the atmosphere. However, this may not be directly associated with the individual observations, if the (proximate) feature-of-interest of the observation is a <i>sample</i> of the ultimate feature-of-interest. While the identity of the ultimate feature-of-interest may be obtained by following additional sosa:isSampleOf relationships, chasing down such a path may not be possible in a single request from many data sources. A direct association from the observation to the ultimate feature-of-interest alongside the proximate feature-of-interest would be helpful and would properly reflect the intention of the observation;
+    discovery and use of observation data typically depends on their relationship to an "ultimate" feature-of-interest, which is a well-known thing in the world, such as a geological formation, or a specific patient, or the state of the atmosphere. However, if the (proximate) feature-of-interest of the observation is a <i>sample</i> of the ultimate feature-of-interest, the identity of the ultimate feature-of-interest may be obtained only by following a chain of one or more <a href="https://www.w3.org/TR/vocab-ssn/#SOSAisSampleOf">sosa:isSampleOf</a> relationships. This may not be possible in a single request;
   </li>
   <li>
-    observations are often made as part of a set or collection in which one or more of the usual observation properties - feature-of-interest, observed-property, sensor, procedure, phenomenon-time, result-time - are common for all members of the collection. It is helpful to be able to package such a homogeneous collection in a standardized way, to support efficient discovery and data transfer.
+    observations are often made as part of a set or collection in which one or more of the usual observation properties - <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">observedProperty</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">madeBySensor</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">usedProcedure</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">phenomenonTime</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">resultTime</a> - are common for all members of the collection. For efficient discovery and data transfer the set of observation descriptions could be packaged in a standardized way.
   </li>
 </ol>
 
+<p>
+  This Note proposes a standard solution to these requirements.
+</p>
 </section>
 
 <section id="namespaces">
 <h2>Notation and namespaces</h2>
 	<p>Classes and properties from the are denoted in this specification using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[curie]]. </p>
 <p>The namespace for SSN-Extensions is <code>http://www.w3.org/ns/ssn-ext/</code>.
-  SSN-Extension re-uses elements from [[SSN]] and SOSA. </p>
+  SSN-Extension re-uses elements from SSN and SOSA [[vocab-ssn]]. </p>
 <p>The table below indicates the full list of namespaces and prefixes used in this document.</p>
 <table id="namespacesTable">
 <thead>
@@ -187,9 +190,54 @@ The elements of the ontology are defined in two modules:</p>
 <section id="overview" class="informative">
 <h2>Principles and vocabulary overview</h2>
 
-<section id="s1">
-<h3>S1</h3>
-<p></p>
+<section id="ultimate-feature-of-interest">
+<h3>Ultimate feature of interest</h3>
+<p>The object of the <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a> property of an act of observation or sampling is the immediate or proximate <a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">FeatureOfInterest</a>.
+In some cases this is not the the ultimate thing that the observation or act of sampling is concerned with, but is a sample of the ultimate feature of interest, or perhaps a sample of a sample, etc.
+Nevertheless, particularly for discovery purposes, it is the ultimate feature of interest that really matters.
+This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-primer/#Object_Properties">object property</a> called <code>hasUltimateFeatureOfInterest</code> as shown in the figures below.</p>
+
+<figure id="fig-observation-ultimate-foi">
+  <img alt="Observation feature-of-interest patterns" src="./images/observation-foi-patterns.png"/>
+  <figcaption>Patterns for observations that relate to the ultimate feature of interest directly (top), or indirectly via one sample (middle) or a chain of samples (bottom)</figcaption>
+</figure>
+
+<figure id="fig-sampling-ultimate-foi">
+  <img alt="Sampling feature-of-interest patterns" src="./images/sampling-foi-patterns.png"/>
+  <figcaption>Patterns for sampling that relate to the ultimate feature of interest directly (top), or indirectly via one intermediate sample (middle) or a chain of intermediate samples (bottom)</figcaption>
+</figure>
+
+<p>
+  Note that this requirement was addressed in OM-Lite [[om-lite]] a different way, using a different property <code>oml:samplingStrategy</code> to indicate the sample, with <code>oml:featureOfInterest</code> always linking to the <i>ultimate</i> feature-of-interest.
+</p>
+
+</section>
+
+<section id="observation-collection">
+<h3>Homogeneous collection of observations</h3>
+
+<p>
+  A collection of observations may share a common value for one or more of the key observation properties.
+  For example, an <code>oboe:Observation</code> is a collection of <code>oboe:Measurements</code> concerning a common <code>oboe:Entity</code>, with each <code>oboe:Measurement</code> reporting the value of a different <code>oboe:Characteristic</code>.
+  A <a href="https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment">alignment module in SSN</a> [[vocab-ssn]] provided an alignment for the atomic <code>oboe:Measurement</code> to <a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a>, but not for <code>oboe:Observation</code>.
+</p>
+<p>
+  This pattern can be accommodated by introducing a new class <code>sosa:ObservationCollection</code> with the properties <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">observedProperty</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">madeBySensor</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">usedProcedure</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">phenomenonTime</a>, or <a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">resultTime</a>.
+  Where present, the value of these properties of the collection would be shared by all member observations.
+  Only the value of each actual <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasResult">hasResult</a> is not potentially shared by all member observations.
+</p>
+
+
+<figure id="observation-collection">
+  <img alt="Collection of observations sharing one or more key properties" src="./images/observation-collection.png"/>
+  <figcaption>Model for an observation-collection, in which the collection may carry one or more of the properties of its members if they have a shared value for all members</figcaption>
+</figure>
+
+<p>
+  Note that this requirement was addressed in OM-Lite [[om-lite]] follwoing the pattern proposed here.
+</p>
+
+
 </section>
 
 </section>
@@ -254,7 +302,7 @@ The elements of the ontology are defined in two modules:</p>
 
 <p>
 <code><a href="#sosa:hasUltimateFeatureOfInterest">:hasUltimateFeatureOfInterest</a></code> |
-<code><a href="#sosa:other">:other</a></code>
+<code><a href="#sosa:memberObservation">:memberObservation</a></code>
 </p>
 
 <section>
@@ -277,11 +325,45 @@ The elements of the ontology are defined in two modules:</p>
 </tr>
 <tr>
 <td>Domain:</td>
-<td><code><a href="#sosa:Observation">sosa:Observation</a></code></td>
+<td><code><a href="#sosa:Observation">sosa:Observation</a> or <a href="#sosa:Sampling">sosa:Sampling</a></code></td>
 </tr>
 <tr>
 <td>Range:</td>
 <td><code><a href="#sosa:FeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h4 id="sosa:memberObservation">has member observation</h4>
+<table class="definition" style="width: 812px;">
+<thead>
+<tr>
+<th style="width: 120px;">Property:</th>
+<th><code><a href="#sosa:memberObservation">sosa:memberObservation</a></code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Definition:</td>
+<td>...</td>
+</tr>
+<tr>
+<td>Instance of:</td>
+<td><code>owl:ObjectProperty</code></td>
+</tr>
+<tr>
+<td>Sub-property of:</td>
+<td><code><a href="#rdfs:member">rdfs:member</a></code></td>
+</tr>
+<tr>
+<td>Domain:</td>
+<td><code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code></td>
+</tr>
+<tr>
+<td>Range:</td>
+<td><code><a href="#sosa:Observation">sosa:Observation</a></code></td>
 </tr>
 </tbody>
 </table>
