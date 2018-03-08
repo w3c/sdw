@@ -1,0 +1,130 @@
+# baseURI: http://www.w3.org/ns/ssn-ext
+# imports: http://www.w3.org/ns/ssn/
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix ssn-ext: <http://www.w3.org/ns/ssn-ext/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sosa:Observation
+  rdfs:comment """*** TODO ***
+Need to add SPIN rules to populate missing values by copying them down from a parent collection
+e.g. something like (for each of hasFeatureOfInterest, madeBySensor, observedProperty, phenomenonTime, usedProcedure, resultTime
+ 
+CONSTRUCT { ?o sosa:hasFeatureOfInterest ?foi }
+WHERE{
+  ?oc sosa:hasMemberObservation ?o . 
+  ?oc sosa:hasFeatureOfInterest ?foi . 
+  NOT EXISTS { ?o sosa:hasFeatureOfInterest ?x }
+}
+
+... but don't quite grok the SPIN/SPARQL syntax yet""" ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:hasUltimateFeatureOfInterest ;
+    ] ;
+.
+sosa:ObservationCollection
+  rdf:type owl:Class ;
+  rdfs:comment "Collection of observations, typically with one or more property common across all members" ;
+  rdfs:label "Collection of observations" ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:dateTime ;
+      owl:onProperty sosa:resultTime ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom time:TemporalEntity ;
+      owl:onProperty sosa:phenomenonTime ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa:FeatureOfInterest ;
+      owl:onProperty sosa:hasFeatureOfInterest ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa:FeatureOfInterest ;
+      owl:onProperty sosa:hasUltimateFeatureOfInterest ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa:ObservableProperty ;
+      owl:onProperty sosa:observedProperty ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa:Procedure ;
+      owl:onProperty sosa:usedProcedure ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sosa:Sensor ;
+      owl:onProperty sosa:madeBySensor ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:hasMemberObservation ;
+    ] ;
+.
+sosa:Sampling
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:hasUltimateFeatureOfInterest ;
+    ] ;
+.
+sosa:hasFeatureOfInterest
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+sosa:hasMemberObservation
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa:ObservationCollection ;
+  schema:rangeIncludes sosa:Observation ;
+  rdfs:comment "Link to a member of a collection of observations that share the same value for one or more of the characteristic properties" ;
+  rdfs:domain sosa:ObservationCollection ;
+  rdfs:label "member observation" ;
+  rdfs:range sosa:Observation ;
+.
+sosa:hasUltimateFeatureOfInterest
+  rdf:type owl:ObjectProperty ;
+  schema:domainIncludes sosa:Actuation ;
+  schema:domainIncludes sosa:Observation ;
+  schema:domainIncludes sosa:Sampling ;
+  schema:rangeIncludes sosa:FeatureOfInterest ;
+  rdfs:comment "link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or trasntitively." ;
+  rdfs:label "has ultimate feature of interest" ;
+.
+sosa:madeBySensor
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+sosa:observedProperty
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+sosa:phenomenonTime
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+sosa:resultTime
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+sosa:usedProcedure
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+<http://www.w3.org/ns/ssn-ext>
+  rdf:type owl:Ontology ;
+  dcterms:created "2018-03-08" ;
+  dcterms:creator "<http://orcid.org/0000-0002-3884-3420>" ;
+  rdfs:comment "Some extensions to the SSN Ontology" ;
+  rdfs:label "SSN extensions" ;
+  owl:imports ssn: ;
+.
