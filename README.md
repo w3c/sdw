@@ -45,6 +45,16 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
     <br/><a href="https://w3c.github.io/sdw/jwoc/">Draft charter</a>
     <br/><a href="https://www.w3.org/2017/sdwig/charter.html">Approved IG charter</a>
   </dd>
+  
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/meetings">meetings</a></dt>
+  <dd>
+    Logistic and agenda information for face-to-face meetings
+  </dd>
+  
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/proposals">proposals</a></dt>
+  <dd>
+    Container for new topic proposals under discussion in the IG.
+  </dd>
 
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/qb4st">qb4st</a></dt>
   <dd>
