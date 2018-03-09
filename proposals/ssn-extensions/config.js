@@ -1,12 +1,7 @@
 var respecConfig = {
     specStatus: "ED",
     shortName: "ssn-extensions",
-    //publishDate:  "2016-05-18",
-    //previousPublishDate: "2016-07-12",
-    //previousMaturity: "WD",
-    edDraftURI: "https://w3c.github.io/sdw/ssn-extensions/",
-    // lcEnd: "3000-01-01",
-    // crEnd: "3000-01-01",
+    edDraftURI: "https://w3c.github.io/sdw/proposals/ssn-extensions/",
     editors: [
     {
         name: "Simon Cox",
@@ -17,7 +12,7 @@ var respecConfig = {
     wg: "Spatial Data on the Web Interest Group",
     wgURI: "https://www.w3.org/2017/sdwig/",
     wgPublicList: "public-sdwig",
-    wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
+    wgPatentURI: "https://www.w3.org/2004/01/pp-impl/102593/status",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
@@ -57,5 +52,5 @@ var respecConfig = {
         authors: ["S.J.D. Cox"]
       }
     },
-    issueBase: "https://www.w3.org/2015/spatial/track/issues/"
+    github: "https://github.com/w3c/sdw"
 };
