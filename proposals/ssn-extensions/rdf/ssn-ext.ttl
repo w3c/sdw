@@ -1,31 +1,327 @@
 # baseURI: http://www.w3.org/ns/ssn-ext
+# imports: http://spinrdf.org/spin
+# imports: http://www.w3.org/2006/time
 # imports: http://www.w3.org/ns/ssn/
 
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <http://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix ssn-ext: <http://www.w3.org/ns/ssn-ext/> .
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 sosa:Observation
-  rdfs:comment """*** TODO ***
-Need to add SPIN rules to populate missing values by copying them down from a parent collection
-e.g. something like (for each of hasFeatureOfInterest, madeBySensor, observedProperty, phenomenonTime, usedProcedure, resultTime
- 
-CONSTRUCT { ?o sosa:hasFeatureOfInterest ?foi }
-WHERE{
-  ?oc sosa:hasMemberObservation ?o . 
-  ?oc sosa:hasFeatureOfInterest ?foi . 
-  NOT EXISTS { ?o sosa:hasFeatureOfInterest ?x }
-}
-
-... but don't quite grok the SPIN/SPARQL syntax yet""" ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "foi" ;
+              ] ;
+            sp:predicate sosa:hasFeatureOfInterest ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:hasFeatureOfInterest ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            sp:object spin:_this ;
+            sp:predicate sosa:hasMemberObservation ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "foi" ;
+              ] ;
+            sp:predicate sosa:hasFeatureOfInterest ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "foi" ;
+              ] ;
+            sp:predicate sosa:hasUltimateFeatureOfInterest ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:hasUltimateFeatureOfInterest ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            sp:object spin:_this ;
+            sp:predicate sosa:hasMemberObservation ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "foi" ;
+              ] ;
+            sp:predicate sosa:hasUltimateFeatureOfInterest ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "op" ;
+              ] ;
+            sp:predicate sosa:observedProperty ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:observedProperty ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            sp:object spin:_this ;
+            sp:predicate sosa:hasMemberObservation ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "op" ;
+              ] ;
+            sp:predicate sosa:observedProperty ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "pr" ;
+              ] ;
+            sp:predicate sosa:usedProcedure ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:usedProcedure ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            sp:object spin:_this ;
+            sp:predicate sosa:hasMemberObservation ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "pr" ;
+              ] ;
+            sp:predicate sosa:usedProcedure ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "pt" ;
+              ] ;
+            sp:predicate sosa:phenomenonTime ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object spin:_this ;
+            sp:predicate sosa:hasMemberObservation ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "pt" ;
+              ] ;
+            sp:predicate sosa:phenomenonTime ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:phenomenonTime ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "rt" ;
+              ] ;
+            sp:predicate sosa:resultTime ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:resultTime ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            sp:object spin:_this ;
+            sp:predicate sosa:hasMemberObservation ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "rt" ;
+              ] ;
+            sp:predicate sosa:resultTime ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "se" ;
+              ] ;
+            sp:predicate sosa:madeBySensor ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:madeBySensor ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            sp:object spin:_this ;
+            sp:predicate sosa:hasMemberObservation ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "se" ;
+              ] ;
+            sp:predicate sosa:madeBySensor ;
+            sp:subject [
+                sp:varName "oc" ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  rdfs:comment """If values are not provided for the following Observation properties, they may be provided by the ObservationCollection of which it is a member:
+- hasFeatureOfInterest
+- hasUltimateFeatureOfInterest
+- madeBySensor
+- observedProperty
+- phenomenonTime
+- resultTime
+- usedProcedure
+SPIN rules are provided that formalize this rule""" ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
@@ -123,9 +419,11 @@ sosa:usedProcedure
 .
 <http://www.w3.org/ns/ssn-ext>
   rdf:type owl:Ontology ;
-  dcterms:created "2018-03-08" ;
-  dcterms:creator "<http://orcid.org/0000-0002-3884-3420>" ;
+  dcterms:created "2018-03-08"^^xsd:date ;
+  dcterms:creator <http://orcid.org/0000-0002-3884-3420> ;
   rdfs:comment "Some extensions to the SSN Ontology" ;
   rdfs:label "SSN extensions" ;
+  owl:imports <http://spinrdf.org/spin> ;
+  owl:imports <http://www.w3.org/2006/time> ;
   owl:imports ssn: ;
 .
