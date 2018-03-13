@@ -50,7 +50,15 @@ var respecConfig = {
         volume: "8",
         page: "453-470",
         authors: ["S.J.D. Cox"]
-      }
+      },
+      "SPIN" :{
+       href:"https://www.w3.org/Submission/spin-overview/",
+       date: "22 Feb 2011",
+       authors:["Holger Knublauch", "James A Hendler", "Kingsley Idehen"],
+       title: "SPIN - Overview and Motivation",
+       publisher: "W3C",
+       status: "W3C Member Submission"
+      },
     },
     github: "https://github.com/w3c/sdw"
 };
