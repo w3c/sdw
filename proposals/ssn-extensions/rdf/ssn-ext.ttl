@@ -18,6 +18,65 @@
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+sosa:Actuation
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "f" ;
+              ] ;
+            sp:predicate sosa:hasUltimateFeatureOfInterest ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:hasUltimateFeatureOfInterest ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:TriplePath ;
+            sp:object [
+                sp:varName "f" ;
+              ] ;
+            sp:path [
+                rdf:type sp:SeqPath ;
+                sp:path1 sosa:hasFeatureOfInterest ;
+                sp:path2 [
+                    rdf:type sp:ModPath ;
+                    sp:modMax -2 ;
+                    sp:modMin 1 ;
+                    sp:subPath sosa:isSampleOf ;
+                  ] ;
+              ] ;
+            sp:subject spin:_this ;
+          ]
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "y" ;
+                    ] ;
+                  sp:predicate sosa:isSampleOf ;
+                  sp:subject [
+                      sp:varName "f" ;
+                    ] ;
+                ]
+              ) ;
+          ]
+        ) ;
+    ] ;
+.
 sosa:Observation
   spin:rule [
       rdf:type sp:Construct ;
@@ -86,6 +145,18 @@ sosa:Observation
               ) ;
           ]
           [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "s" ;
+                    ] ;
+                  sp:predicate sosa:hasFeatureOfInterest ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
             sp:object spin:_this ;
             sp:predicate sosa:hasMemberObservation ;
             sp:subject [
@@ -99,6 +170,157 @@ sosa:Observation
             sp:predicate sosa:hasUltimateFeatureOfInterest ;
             sp:subject [
                 sp:varName "oc" ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "foi" ;
+              ] ;
+            sp:predicate sosa:hasUltimateFeatureOfInterest ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object sosa:Observation ;
+            sp:predicate rdf:type ;
+            sp:subject spin:_this ;
+          ]
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:hasUltimateFeatureOfInterest ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  rdf:type sp:TriplePath ;
+                  sp:object [
+                      sp:varName "foi1" ;
+                    ] ;
+                  sp:path [
+                      rdf:type sp:SeqPath ;
+                      sp:path1 sosa:hasFeatureOfInterest ;
+                      sp:path2 [
+                          rdf:type sp:ModPath ;
+                          sp:modMax -2 ;
+                          sp:modMin 0 ;
+                          sp:subPath sosa:isSampleOf ;
+                        ] ;
+                    ] ;
+                  sp:subject spin:_this ;
+                ]
+                [
+                  rdf:type sp:NotExists ;
+                  sp:elements (
+                      [
+                        sp:object [
+                            sp:varName "y3" ;
+                          ] ;
+                        sp:predicate sosa:isSampleOf ;
+                        sp:subject [
+                            sp:varName "foi1" ;
+                          ] ;
+                      ]
+                    ) ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object spin:_this ;
+                  sp:predicate sosa:hasMemberObservation ;
+                  sp:subject [
+                      sp:varName "oc" ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "foi2" ;
+                    ] ;
+                  sp:predicate sosa:hasUltimateFeatureOfInterest ;
+                  sp:subject [
+                      sp:varName "oc" ;
+                    ] ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object spin:_this ;
+                  sp:predicate sosa:hasMemberObservation ;
+                  sp:subject [
+                      sp:varName "oc" ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:TriplePath ;
+                  sp:object [
+                      sp:varName "foi3" ;
+                    ] ;
+                  sp:path [
+                      rdf:type sp:SeqPath ;
+                      sp:path1 sosa:hasFeatureOfInterest ;
+                      sp:path2 [
+                          rdf:type sp:ModPath ;
+                          sp:modMax -2 ;
+                          sp:modMin 0 ;
+                          sp:subPath sosa:isSampleOf ;
+                        ] ;
+                    ] ;
+                  sp:subject [
+                      sp:varName "oc" ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:NotExists ;
+                  sp:elements (
+                      [
+                        sp:object [
+                            sp:varName "y3" ;
+                          ] ;
+                        sp:predicate sosa:isSampleOf ;
+                        sp:subject [
+                            sp:varName "foi3" ;
+                          ] ;
+                      ]
+                    ) ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:coalesce ;
+                sp:arg1 [
+                    sp:varName "foi1" ;
+                  ] ;
+                sp:arg2 [
+                    sp:varName "foi2" ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "foi3" ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "foi" ;
               ] ;
           ]
         ) ;
@@ -330,7 +552,64 @@ SPIN rules are provided that formalize this rule""" ;
 .
 sosa:ObservationCollection
   rdf:type owl:Class ;
-  rdfs:comment "Collection of observations, typically with one or more property common across all members" ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "f" ;
+              ] ;
+            sp:predicate sosa:hasUltimateFeatureOfInterest ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:hasUltimateFeatureOfInterest ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:TriplePath ;
+            sp:object [
+                sp:varName "f" ;
+              ] ;
+            sp:path [
+                rdf:type sp:SeqPath ;
+                sp:path1 sosa:hasFeatureOfInterest ;
+                sp:path2 [
+                    rdf:type sp:ModPath ;
+                    sp:modMax -2 ;
+                    sp:modMin 0 ;
+                    sp:subPath sosa:isSampleOf ;
+                  ] ;
+              ] ;
+            sp:subject spin:_this ;
+          ]
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "y" ;
+                    ] ;
+                  sp:predicate sosa:isSampleOf ;
+                  sp:subject [
+                      sp:varName "f" ;
+                    ] ;
+                ]
+              ) ;
+          ]
+        ) ;
+    ] ;
+  rdfs:comment "Collection of observations, typically with one or more property shared by all of its members" ;
   rdfs:label "Collection of observations" ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
@@ -374,6 +653,63 @@ sosa:ObservationCollection
     ] ;
 .
 sosa:Sampling
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "f" ;
+              ] ;
+            sp:predicate sosa:hasUltimateFeatureOfInterest ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "x" ;
+                    ] ;
+                  sp:predicate sosa:hasUltimateFeatureOfInterest ;
+                  sp:subject spin:_this ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:TriplePath ;
+            sp:object [
+                sp:varName "f" ;
+              ] ;
+            sp:path [
+                rdf:type sp:SeqPath ;
+                sp:path1 sosa:hasFeatureOfInterest ;
+                sp:path2 [
+                    rdf:type sp:ModPath ;
+                    sp:modMax -2 ;
+                    sp:modMin 0 ;
+                    sp:subPath sosa:isSampleOf ;
+                  ] ;
+              ] ;
+            sp:subject spin:_this ;
+          ]
+          [
+            rdf:type sp:NotExists ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "y" ;
+                    ] ;
+                  sp:predicate sosa:isSampleOf ;
+                  sp:subject [
+                      sp:varName "f" ;
+                    ] ;
+                ]
+              ) ;
+          ]
+        ) ;
+    ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
@@ -395,14 +731,23 @@ sosa:hasMemberObservation
 .
 sosa:hasUltimateFeatureOfInterest
   rdf:type owl:ObjectProperty ;
-  rdfs:comment """should match a property chain something like this but with sosa:isSampleOf* 
-      owl:propertyChainAxiom ( sosa:hasFeatureOfInterest sosa:isSampleOf )""" ;
   schema:domainIncludes sosa:Actuation ;
   schema:domainIncludes sosa:Observation ;
   schema:domainIncludes sosa:Sampling ;
   schema:rangeIncludes sosa:FeatureOfInterest ;
   rdfs:comment "link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or trasntitively." ;
+  rdfs:comment """should match a property chain something like this but with sosa:isSampleOf* 
+      owl:propertyChainAxiom ( sosa:hasFeatureOfInterest sosa:isSampleOf )""" ;
+  rdfs:domain [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Observation
+          sosa:Sampling
+          sosa:Actuation
+        ) ;
+    ] ;
   rdfs:label "has ultimate feature of interest" ;
+  rdfs:range sosa:FeatureOfInterest ;
 .
 sosa:madeBySensor
   schema:domainIncludes sosa:ObservationCollection ;

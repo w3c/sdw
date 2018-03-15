@@ -362,10 +362,50 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
 </section>
 
 <section>
-  <h3>Rules</h3>
+  <h3 id="rules">Rules</h3>
 
   <section>
-    <h4>Observation</h4>
+    <h4 id="sampling-chain-rule">Finding ultimate feature of interest from a sampling chain</h4>
+    <p>
+      If the ultimate-feature-of-interest of an Observation, Sampling or Actuation, or ObservationCollection is not specified,
+      and the feature-of-interest is a Sample,
+      then the ultimate-feature-of-interest can be found by following a path from the feature-of-interest
+      to the end of a sequence of <code>sosa:isSampleOf</code> relations (see <a href="#fig-observation-ultimate-foi"></a>, <a href="#fig-sampling-ultimate-foi"></a>).
+    </p>
+    <p>
+      The rule can be expressed formally as a SPARQL query expressions [[!sparql11-query]] as follows:
+    </p>
+    <table class="definition" style="width: 812px;">
+    <thead>
+    <tr>
+    <th style="width: 120px;">Property</th>
+    <th>Rule</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <code><a href="sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a></code>
+      </td>
+      <td>
+        <pre>
+CONSTRUCT { ?this sosa:hasUltimateFeatureOfInterest ?f . }
+WHERE {
+    NOT EXISTS { ?this sosa:hasUltimateFeatureOfInterest ?x . } .
+    ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)+ ?f .
+    NOT EXISTS { ?f sosa:isSampleOf ?y . } .
+}        </pre>
+      </td>
+    </tr>
+    </table>
+
+    <p>
+      This is included as a SPIN rule [[SPIN]] in the <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">RDF representation</a> of the SSN extensions ontology.
+    </p>
+  </section>
+
+  <section>
+    <h4 id="container-property-rule">Inheriting observation properties from a collection</h4>
     <p>
       If a <code><a href="#sosa:Observation">sosa:Observation</a></code> is a member of an <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code>,
       the properties of the collection as a whole are associated with all member observations, unless locally overridden.
@@ -377,142 +417,124 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
     <table class="definition" style="width: 812px;">
     <thead>
     <tr>
-    <th style="width: 120px;">Property:</th>
+    <th style="width: 120px;">Property</th>
     <th>Rule</th>
     </tr>
     </thead>
     <tbody>
     <tr>
       <td>
-        <code><a href="sosa:hasFeatureOfInterest">sosa:hasFeatureOfInterest</a>
+        <code><a href="sosa:hasFeatureOfInterest">sosa:hasFeatureOfInterest</a></code>
       </td>
       <td>
         <pre>
-CONSTRUCT {
-    ?this sosa:hasFeatureOfInterest ?foi .
-}
+CONSTRUCT { ?this sosa:hasFeatureOfInterest ?foi . }
 WHERE {
-    NOT EXISTS {
-        ?this sosa:hasFeatureOfInterest ?x .
-    } .
+    NOT EXISTS { ?this sosa:hasFeatureOfInterest ?x . } .
     ?oc sosa:hasMemberObservation ?this .
     ?oc sosa:hasFeatureOfInterest ?foi .
-}
-</pre>
+}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <code><a href="sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a>
+        <code><a href="sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a></code>
+        <br /><br />This rule combines the <a href="#sampling-chain-rule">sampling-chain rule</a> and the look-on-the-container rule used in the rest of this section, with the following order of precedence:
+        <br />1. the (proximate) feature-of-interest of the observation, or the end of its sampling-chain;
+        <br />2. the explicit ultimate-feature-of-interest of the container collections
+        <br />3. the (proximate) feature-of-interest of the container collection, or the end of its sampling-chain;
       </td>
       <td>
         <pre>
-CONSTRUCT {
-    ?this sosa:hasUltimateFeatureOfInterest ?foi .
-}
+CONSTRUCT { ?this sosa:hasUltimateFeatureOfInterest ?foi . }
 WHERE {
-    NOT EXISTS {
-        ?this sosa:hasUltimateFeatureOfInterest ?x .
+    ?this a sosa:Observation .
+    NOT EXISTS { ?this sosa:hasUltimateFeatureOfInterest ?x . } .
+    OPTIONAL {
+        ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)* ?foi1 .
+        NOT EXISTS { ?foi1 sosa:isSampleOf ?y3 . } .
     } .
-    ?oc sosa:hasMemberObservation ?this .
-    ?oc sosa:hasUltimateFeatureOfInterest ?foi .
-}
-</pre>
+    OPTIONAL {
+        ?oc sosa:hasMemberObservation ?this .
+        ?oc sosa:hasUltimateFeatureOfInterest ?foi2 .
+    } .
+    OPTIONAL {
+        ?oc sosa:hasMemberObservation ?this .
+        ?oc sosa:hasFeatureOfInterest/(sosa:isSampleOf)* ?foi3 .
+        NOT EXISTS { ?foi3 sosa:isSampleOf ?y3 . } .
+    } .
+    BIND (COALESCE(?foi1, ?foi2, ?foi3) AS ?foi) .
+}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <code><a href="sosa:madeBySensor">sosa:madeBySensor</a>
+        <code><a href="sosa:madeBySensor">sosa:madeBySensor</a></code>
       </td>
       <td>
         <pre>
-CONSTRUCT {
-    ?this sosa:madeBySensor ?se .
-}
+CONSTRUCT { ?this sosa:madeBySensor ?se . }
 WHERE {
-    NOT EXISTS {
-        ?this sosa:madeBySensor ?x .
-    } .
+    NOT EXISTS { ?this sosa:madeBySensor ?x . } .
     ?oc sosa:hasMemberObservation ?this .
     ?oc sosa:madeBySensor ?se .
-}
-</pre>
+}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <code><a href="sosa:observedProperty">sosa:observedProperty</a>
+        <code><a href="sosa:observedProperty">sosa:observedProperty</a></code>
       </td>
       <td>
         <pre>
-CONSTRUCT {
-    ?this sosa:observedProperty ?op .
-}
+CONSTRUCT { ?this sosa:observedProperty ?op . }
 WHERE {
-    NOT EXISTS {
-        ?this sosa:observedProperty ?x .
-    } .
+    NOT EXISTS { ?this sosa:observedProperty ?x . } .
     ?oc sosa:hasMemberObservation ?this .
     ?oc sosa:observedProperty ?op .
-}
-</pre>
+}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <code><a href="sosa:phenomenonTime">sosa:phenomenonTime</a>
+        <code><a href="sosa:phenomenonTime">sosa:phenomenonTime</a></code>
       </td>
       <td>
         <pre>
-CONSTRUCT {
-    ?this sosa:phenomenonTime ?pt .
-}
+CONSTRUCT { ?this sosa:phenomenonTime ?pt . }
 WHERE {
-    NOT EXISTS {
-        ?this sosa:phenomenonTime ?x .
-    } .
+    NOT EXISTS { ?this sosa:phenomenonTime ?x . } .
     ?oc sosa:hasMemberObservation ?this .
     ?oc sosa:phenomenonTime ?pt .
-}
-</pre>
+}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <code><a href="sosa:resultTime">sosa:resultTime</a>
+        <code><a href="sosa:resultTime">sosa:resultTime</a></code>
       </td>
       <td>
         <pre>
-CONSTRUCT {
-    ?this sosa:resultTime ?rt .
-}
+CONSTRUCT { ?this sosa:resultTime ?rt . }
 WHERE {
-    NOT EXISTS {
-        ?this sosa:resultTime ?x .
-    } .
+    NOT EXISTS { ?this sosa:resultTime ?x . } .
     ?oc sosa:hasMemberObservation ?this .
     ?oc sosa:resultTime ?rt .
-}
-</pre>
+}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <code><a href="sosa:usedProcedure">sosa:usedProcedure</a>
+        <code><a href="sosa:usedProcedure">sosa:usedProcedure</a></code>
       </td>
       <td>
         <pre>
-CONSTRUCT {
-    ?this sosa:usedProcedure ?pr .
-}
+CONSTRUCT { ?this sosa:usedProcedure ?pr . }
 WHERE {
-    NOT EXISTS {
-        ?this sosa:usedProcedure ?x .
-    } .
+    NOT EXISTS { ?this sosa:usedProcedure ?x . } .
     ?oc sosa:hasMemberObservation ?this .
     ?oc sosa:usedProcedure ?pr .
-}
-</pre>
+}</pre>
       </td>
     </tr>
     </tbody>
