@@ -66,10 +66,10 @@ MARGIN: 0px 0px 10px
 This document describes some extensions to the SSN ontology to enable:</p>
 <ol>
   <li>
-    linking to the ultimate feature-of-interest for an observation, alongside the link to the proximate feature-of-interest which may be a sample
+    linking to the ultimate feature-of-interest for an observation, act of sampling, or actuation, alongside the link to the proximate feature-of-interest which may be a sample
   </li>
   <li>
-    homogeneous collections of observations, in which one or more of the feature-of-interest, observed-property, procedure, sensor, phenomenon-time or result-time may be common for the whole collection
+    homogeneous collections of observations, in which one or more of the feature-of-interest, ultimate feature-of-interest, observed-property, procedure, sensor, phenomenon-time or result-time may be common for the whole collection
   </li>
 </ol>
 <p style="text-align: center;">The namespace for SSN terms is <span class="repeated"
@@ -84,7 +84,7 @@ This document describes some extensions to the SSN ontology to enable:</p>
   <br>
   The SOSA ontology is available at <a href="http://www.w3.org/ns/sosa/">http://www.w3.org/ns/sosa/</a>.
   <br>
-  The SSN-Extensions ontology is available at <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/">https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/</a>.
+  The SSN-Extensions ontology is available at <a href="https://github.com/w3c/sdw/tree/gh-pages/proposals/ssn-extensions/rdf">https://github.com/w3c/sdw/tree/gh-pages/proposals/ssn-extensions/rdf</a>.
 </p>
 </section>
 
@@ -124,7 +124,7 @@ The elements of the ontology are defined in two modules:</p>
 </ol>
 
 <p>
-  This Note proposes a standard solution to these requirements.
+  This Note proposes a solution to these requirements.
 </p>
 </section>
 
@@ -192,10 +192,11 @@ The elements of the ontology are defined in two modules:</p>
 
 <section id="ultimate-feature-of-interest">
 <h3>Ultimate feature of interest</h3>
-<p>The object of the <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a> property of an act of observation or sampling is the immediate or proximate <a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">FeatureOfInterest</a>.
-In some cases this is not the the ultimate thing that the observation or act of sampling is concerned with, but is a sample of the ultimate feature of interest, or perhaps a sample of a sample, etc.
-Nevertheless, particularly for discovery purposes, it is the ultimate feature of interest that really matters.
-This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-primer/#Object_Properties">object property</a> called <code>hasUltimateFeatureOfInterest</code> as shown in the figures below.</p>
+<p>The object of the <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a> property of an observation, act of sampling or actuation is the immediate or proximate <a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">FeatureOfInterest</a>.
+In some cases this is not the the ultimate thing that the observation, act of sampling or actuation is concerned with, but is a sample of the ultimate feature of interest, or perhaps a sample of a sample, etc.
+Nevertheless, particularly for discovery purposes, it is usually the ultimate feature of interest that really matters to the data user.
+It is proposed that this requirement be satisfied by a new <a href="https://www.w3.org/TR/owl2-primer/#Object_Properties">object property</a> called <code>hasUltimateFeatureOfInterest</code>.
+The relationship of the ultimate feature of interest to observations and acts of sampling is illustrated in the figures below.</p>
 
 <figure id="fig-observation-ultimate-foi">
   <img alt="Observation feature-of-interest patterns" src="./images/observation-foi-patterns.png"/>
@@ -208,7 +209,8 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
 </figure>
 
 <p>
-  Note that this requirement was addressed in OM-Lite [[OM-Lite]] a different way, using a different property <code>oml:samplingStrategy</code> to indicate the sample, with <code>oml:featureOfInterest</code> always linking to the <i>ultimate</i> feature-of-interest.
+  This requirement was addressed in OM-Lite [[OM-Lite]], but using a different pattern in which the property <code>oml:featureOfInterest</code> always links to the <i>ultimate</i> feature-of-interest, and an additional property <code>oml:samplingStrategy</code> links to the sample or some other description of the sampling arrangements.
+  On reflection that approach was unnecessarily coy about satisfying the principle requirement, which is to know the ultimate feature of interest.
 </p>
 
 </section>
@@ -217,7 +219,7 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
 <h3>Homogeneous collection of observations</h3>
 
 <p>
-  A collection of observations may share a common value for one or more of the key observation properties.
+  A collection of observations may share a common value for one or more of the characteristic observation properties.
   For example, an <code>oboe:Observation</code> is a collection of <code>oboe:Measurements</code> concerning a common <code>oboe:Entity</code>, with each <code>oboe:Measurement</code> reporting the value of a different <code>oboe:Characteristic</code>.
   A <a href="https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment">alignment module in SSN</a> [[vocab-ssn]] provided an alignment for the atomic <code>oboe:Measurement</code> to <a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a>, but not for <code>oboe:Observation</code>.
 </p>
@@ -256,15 +258,29 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
 
 <section>
 <h4 id="sosa:ObservationCollection">Collection of observations</h4>
+
+<p>
+  An ObservationCollection has at least one member, and may have one of any of the other seven properties mentioned in restrictions.
+</p>
 <table class="definition" style="width: 812px;">
-<tbody>
+<thead>
 <tr>
 <th style="width: 120px;">Class:</th>
 <th><code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code></th>
 </tr>
+</thead>
+<tbody>
+<tr>
+  <td>
+    IRI:
+  </td>
+  <td>
+    <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/ObservationCollection</a></code>
+  </td>
+</tr>
 <tr>
 <td>Definition:</td>
-<td>Collection of observations, typically with one or more property shared by all of its members</td>
+<td>Collection of one or more observations, typically with one or more property shared by all of its members</td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -272,17 +288,31 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
 </tr>
 <tr>
 <td>Restrictions:</td>
-<td><code><a href="sosa:hasMemberObservation">sosa:hasMemberObservation</a> min 1</code>
-<br /><code><a href="sosa:hasFeatureOfInterest">sosa:hasFeatureOfInterest</a> only <a href="sosa:FeatureOfInterest">sosa:FeatureOfInterest</a>
-<br /><code><a href="sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a> only <a href="sosa:FeatureOfInterest">sosa:FeatureOfInterest</a>
-<br /><code><a href="sosa:madeBySensor">sosa:madeBySensor</a> only <a href="sosa:Sensor">sosa:Sensor</a>
-<br /><code><a href="sosa:observedProperty">sosa:observedProperty</a> only <a href="sosa:ObservableProperty">sosa:ObservableProperty</a>
-<br /><code><a href="sosa:phenomenonTime">sosa:phenomenonTime</a> only <a href="time:TemporalEntity">time:TemporalEntity</a>
-<br /><code><a href="sosa:resultTime">sosa:resultTime</a> only <a href="xsd:dateTime">xsd:dateTime</a>
-<br /><code><a href="sosa:usedProcedure">sosa:usedProcedure</a> only <a href="sosa:Procedure">sosa:Procedure</a></td>
+<td>
+  <code><a href="sosa:hasMemberObservation">sosa:hasMemberObservation</a> min 1</code>
+<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a> max 1</code>
+<br /><code><a href="sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a> max 1</code>
+<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a> max 1</code>
+<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a> max 1</code>
+<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a> max 1</code>
+<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">sosa:resultTime</a> max 1</code>
+<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">sosa:usedProcedure</a> max 1</code>
+</td>
 </tr>
 </tbody>
 </table>
+
+<p>
+  If present, the value of any of <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a></code>,
+<code><a href="sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a></code>,
+<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a></code>,
+<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a></code>,
+<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a></code>,
+<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">sosa:resultTime</a></code>, or
+<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">sosa:usedProcedure</a></code>
+apply to all member observations, unless overridden by a value attached directly to the member observation.
+See <a href="#container-property-rule">Inheriting observation properties from a collection</a> for a formal definition of the rule.
+</p>
 </section>
 
 </section>
@@ -305,6 +335,14 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
 </tr>
 </thead>
 <tbody>
+  <tr>
+    <td>
+      IRI:
+    </td>
+    <td>
+      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/hasMemberObservation</a></code>
+    </td>
+  </tr>
 <tr>
 <td>Definition:</td>
 <td>Link to a member of a collection of observations that share the same value for one or more of the characteristic properties</td>
@@ -323,10 +361,16 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="#sosa:Observation">sosa:Observation</a></code></td>
+<td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code></td>
 </tr>
 </tbody>
 </table>
+
+<p>
+  The global domain and range constraints mean that any appearance of <code><a href="#sosa:hasMemberObservation">sosa:hasMemberObservation</a></code>
+  in a dataset entails that the subject of the statement is a <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code>
+  and the object of the statement is a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code>.
+</p>
 </section>
 
 <section>
@@ -339,6 +383,14 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
 </tr>
 </thead>
 <tbody>
+  <tr>
+    <td>
+      IRI:
+    </td>
+    <td>
+      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest</a></code>
+    </td>
+  </tr>
 <tr>
 <td>Definition:</td>
 <td>link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or trasntitively.</td>
@@ -348,15 +400,42 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
-<td>Domain:</td>
-<td><code><a href="#sosa:Observation">sosa:Observation</a> or <a href="#sosa:Sampling">sosa:Sampling</a> or <a href="#sosa:Actuation">sosa:Actuation</a></code></td>
-</tr>
-<tr>
 <td>Range:</td>
-<td><code><a href="#sosa:FeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
+<td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
 </tr>
 </tbody>
 </table>
+
+<p>
+  No global domain constraints are specified for this property, so its appearance in a data set does not entail that the subject is a member of any particular class.
+  However, the ssn-ext vocabulary adds the following guarded constraint to the <code><a href="#sosa:Observation">sosa:Observation</a></code> class:
+</p>
+
+<table class="definition" style="width: 812px;">
+<thead>
+<tr>
+<th style="width: 120px;">Class:</th>
+<th><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code></th>
+</tr>
+</thead>
+<tbody>
+  <tr>
+    <td>
+      Restrictions:
+    </td>
+    <td>
+      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">sosa:hasUltimateFeatureOfInterest</a> min 1</code>
+    </td>
+  </tr>
+</tbody>
+</table>
+
+<p>
+  This constraint says that at least one ultimate-feature-of-interest is expected for each individual observation.
+  Typically an observation concerns one ultimate feature-of-interest but in some cases the proximate feature-of-interest is a sample of more than one ultimate feature of interest.
+  The explanation of relationships between multiple ultimate features of interest are beyond the scope of this vocabulary.
+</p>
+
 </section>
 
 </section>
@@ -370,7 +449,7 @@ This requirement can be satisfied by a new <a href="https://www.w3.org/TR/owl2-p
       If the ultimate-feature-of-interest of an Observation, Sampling or Actuation, or ObservationCollection is not specified,
       and the feature-of-interest is a Sample,
       then the ultimate-feature-of-interest can be found by following a path from the feature-of-interest
-      to the end of a sequence of <code>sosa:isSampleOf</code> relations (see <a href="#fig-observation-ultimate-foi"></a>, <a href="#fig-sampling-ultimate-foi"></a>).
+      to the end of a sequence of <code>sosa:isSampleOf</code> relations (see <a href="#fig-observation-ultimate-foi">Figure 1</a>, <a href="#fig-sampling-ultimate-foi">Figure 2</a>).
     </p>
     <p>
       The rule can be expressed formally as a SPARQL query expressions [[!sparql11-query]] as follows:
@@ -407,7 +486,7 @@ WHERE {
   <section>
     <h4 id="container-property-rule">Inheriting observation properties from a collection</h4>
     <p>
-      If a <code><a href="#sosa:Observation">sosa:Observation</a></code> is a member of an <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code>,
+      If a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> is a member of an <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code>,
       the properties of the collection as a whole are associated with all member observations, unless locally overridden.
       Associating properties with the collection provides for efficiencies in both discovery and encoding.
     </p>
@@ -424,7 +503,7 @@ WHERE {
     <tbody>
     <tr>
       <td>
-        <code><a href="sosa:hasFeatureOfInterest">sosa:hasFeatureOfInterest</a></code>
+        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a></code>
       </td>
       <td>
         <pre>
@@ -433,6 +512,76 @@ WHERE {
     NOT EXISTS { ?this sosa:hasFeatureOfInterest ?x . } .
     ?oc sosa:hasMemberObservation ?this .
     ?oc sosa:hasFeatureOfInterest ?foi .
+}</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a></code>
+      </td>
+      <td>
+        <pre>
+CONSTRUCT { ?this sosa:madeBySensor ?se . }
+WHERE {
+    NOT EXISTS { ?this sosa:madeBySensor ?x . } .
+    ?oc sosa:hasMemberObservation ?this .
+    ?oc sosa:madeBySensor ?se .
+}</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a></code>
+      </td>
+      <td>
+        <pre>
+CONSTRUCT { ?this sosa:observedProperty ?op . }
+WHERE {
+    NOT EXISTS { ?this sosa:observedProperty ?x . } .
+    ?oc sosa:hasMemberObservation ?this .
+    ?oc sosa:observedProperty ?op .
+}</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a></code>
+      </td>
+      <td>
+        <pre>
+CONSTRUCT { ?this sosa:phenomenonTime ?pt . }
+WHERE {
+    NOT EXISTS { ?this sosa:phenomenonTime ?x . } .
+    ?oc sosa:hasMemberObservation ?this .
+    ?oc sosa:phenomenonTime ?pt .
+}</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">sosa:resultTime</a></code>
+      </td>
+      <td>
+        <pre>
+CONSTRUCT { ?this sosa:resultTime ?rt . }
+WHERE {
+    NOT EXISTS { ?this sosa:resultTime ?x . } .
+    ?oc sosa:hasMemberObservation ?this .
+    ?oc sosa:resultTime ?rt .
+}</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">sosa:usedProcedure</a></code>
+      </td>
+      <td>
+        <pre>
+CONSTRUCT { ?this sosa:usedProcedure ?pr . }
+WHERE {
+    NOT EXISTS { ?this sosa:usedProcedure ?x . } .
+    ?oc sosa:hasMemberObservation ?this .
+    ?oc sosa:usedProcedure ?pr .
 }</pre>
       </td>
     </tr>
@@ -467,76 +616,6 @@ WHERE {
 }</pre>
       </td>
     </tr>
-    <tr>
-      <td>
-        <code><a href="sosa:madeBySensor">sosa:madeBySensor</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:madeBySensor ?se . }
-WHERE {
-    NOT EXISTS { ?this sosa:madeBySensor ?x . } .
-    ?oc sosa:hasMemberObservation ?this .
-    ?oc sosa:madeBySensor ?se .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="sosa:observedProperty">sosa:observedProperty</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:observedProperty ?op . }
-WHERE {
-    NOT EXISTS { ?this sosa:observedProperty ?x . } .
-    ?oc sosa:hasMemberObservation ?this .
-    ?oc sosa:observedProperty ?op .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="sosa:phenomenonTime">sosa:phenomenonTime</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:phenomenonTime ?pt . }
-WHERE {
-    NOT EXISTS { ?this sosa:phenomenonTime ?x . } .
-    ?oc sosa:hasMemberObservation ?this .
-    ?oc sosa:phenomenonTime ?pt .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="sosa:resultTime">sosa:resultTime</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:resultTime ?rt . }
-WHERE {
-    NOT EXISTS { ?this sosa:resultTime ?x . } .
-    ?oc sosa:hasMemberObservation ?this .
-    ?oc sosa:resultTime ?rt .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="sosa:usedProcedure">sosa:usedProcedure</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:usedProcedure ?pr . }
-WHERE {
-    NOT EXISTS { ?this sosa:usedProcedure ?x . } .
-    ?oc sosa:hasMemberObservation ?this .
-    ?oc sosa:usedProcedure ?pr .
-}</pre>
-      </td>
-    </tr>
     </tbody>
     </table>
 
@@ -547,12 +626,11 @@ WHERE {
 
 </section>
 
-<section id="ack">
+<hr />
+<section class="appendix" id="ack">
 <h2>Acknowledgements</h2>
 <p>The editors would like to thank the <a href="https://www.w3.org/2000/09/dbwg/details?group=75471">members of the W3C/OGC Spatial Data on the Web Interest Group</a> for their contributions during the development of this document. </p>
 </section>
-
-<hr />
 
 </body>
 </html>
