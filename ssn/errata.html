@@ -13,7 +13,7 @@
   <body>
     <section>
       <h1>Errata for Semantic Sensor Network Ontology</h1>
-      <h2><a name="w3c-doctype" id="w3c-doctype"></a>16 January 2018</h2>
+      <h2><a name="w3c-doctype" id="w3c-doctype"></a>15 March 2018</h2>
       <p class="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a>&nbsp;©&nbsp;2018&nbsp;<a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.
      </p>
       <hr/>
@@ -41,6 +41,10 @@
           <li><a href="#entry-3">"Specifically" misspelled as "secifically"</a></li>
           <li><a href="#entry-4">Wrong domain/range for <code>actsOnProperty</code> and <code>isActedOnBy</code> in Actuation diagrams</a></li>
           <li><a href="#entry-5">Inexistent <code>sosa:actuationMadeBy</code> property used in apartment 134 example</a></li>
+          <li><a href="#entry-6">Unsatisfiable classes in SSNX alignment module</a></li>
+          <li><a href="#entry-7">Unsatisfiable classes in DUL and SSNX alignment modules</a></li>
+          <li><a href="#entry-8">Use of <code>qudt-1-1:numericalValue</code> instead of <code>qudt-1-1:numericValue</code> in Examples 12 and 13</a></li>
+          <li><a href="#entry-9">Syntax error in apartment 134 examples</a></li>
         </ol>
 
         <p>Entries are detailed below:</p>
@@ -102,13 +106,72 @@
           <dd>Correction: Update the figures to connect the <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#SOSAactsOnProperty"><code>sosa:actsOnProperty</code></a> and <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#SOSAisActedOnBy"><code>sosa:isActedOnBy</code></a> property links with the <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#SOSAActuation"><code>sosa:Actuation</code></a> class.</dd>
           <dd>Note: the normative definitions of these classes and properties are correct.</dd>
 
-          <dt><a id="entry-5">5. Inexistent <code>sosa:actuationMadeBy</code> property used in apartment 134 example</dt>
+          <dt><a id="entry-5">5. Inexistent <code>sosa:actuationMadeBy</code> property used in apartment 134 example</a></dt>
           <dd>Added: 16 January 2018</dd>
           <dd>Type: Editorial</dd>
           <dd>Refers to: <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#apartment-134">B.3 apartment 134</a></dd>
           <dd>Description: The <code>sosa:actuationMadeBy</code> property, which used to exist in previous versions of the specification, was renamed into <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#SOSAmadeByActuator"><code>sosa:madeByActuator</code></a>. The apartment 134 still uses the old property name.</dd>
           <dd>Correction: Replace the occurrence of <code>sosa:actuationMadeBy</code> by <code>sosa:madeByActuator</code> in the example.</dd>
           <dd>Note: the same error exists in the file containing a <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/integrated/examples/apartment-134-sosa.ttl">graph corresponding to this example</a>.</dd>
+
+          <dt><a id="entry-6">6. Unsatisfiable classes in SSNX alignment module</a></dt>
+          <dd>Added: 26 February 2018</dd>
+          <dd>Type: Editorial</dd>
+          <dd>Refers to: <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#SSNX_Alignment">6.2 SSNX Alignment Module</a></dd>
+          <dd>Description: Unsatisfiability of some classes due to axioms (1) and (2) being too strict:
+            <pre>sosa:hasResult ≡ oldssn:hasValue (1)
+sosa:hasResult ≡ oldssn:observationResult (2)</pre>
+            <ul>
+              <li>Axiom (1) is causing the following problem: <code>oldssn:hasValue</code> is a sub-property of <code>dul:hasRegion</code>, whose range in DUL has <code>dul:Abstract</code> as a super-class. Yet, a <code>sosa:Sampling</code> procedure has only <code>sosa:Sample</code> as a result, and <code>sosa:Sample</code> is a sub-class of <code>( dul:Event or dul:Object or dul:Quality )</code></li>
+              <li>Axiom (2) is causing problems in combination to both:
+                <ul>
+                  <li>disjunction between <code>dul:SocialObject</code> and <code>dul:PhysicalObject</code> , and</li>
+                  <li>disjunctions between <code>dul:Event</code> and <code>dul:Object</code> .</li>
+                </ul>
+              </li>
+            </ul>
+          </dd>
+          <dd>Correction: Axioms (1) and (2) are relaxed to (1') and (2')
+            <pre>oldssn:hasValue ⊑ sosa:hasResult (1')
+oldssn:observationResult ⊑ sosa:hasResult (2')</pre>
+          </dd>
+          <dd>Note: <code>≡</code> means <em>equivalent class</em>, <code>⊑</code> means <em>subclass of</em></dd>
+          <dd>Note: the change is made both in the specification and in the file containing <a href="http://www.w3.org/2017/01/ssn-ssnx/">SSN-SSNX</a>.</dd>
+
+          <dt><a id="entry-7">7. Unsatisfiable classes in DUL and SSNX alignment modules</a></dt>
+          <dd>Added: 26 February 2018</dd>
+          <dd>Type: Editorial</dd>
+          <dd>Refers to: <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#DUL_Alignment">6.1 Dolce-Ultralite Alignment Module</a> and <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#SSNX_Alignment">6.2 SSNX Alignment Module</a></dd>
+          <dd>Description: Unsatisfiability of some classes, ex. Survival classes:
+            <ul>
+              <li>class <code>ssn-system:SurvivalProperty</code> is a sub-class of <code>ssn:Property</code>, and has for <code>inverseof( ssn-system:hasSurvivalProperty )</code> only (and at least one) <code>ssn-system:SurvivalRange</code>, that is a sub-class of <code>ssn:Property</code></li>
+              <li><code>inverseof( ssn-system:hasSurvivalProperty )</code> is a sub-property of <code>ssn:isPropertyOf</code><br>
+                <code>ssn:Property</code> has for <code>ssn:isPropertyOf</code> only <code>sosa:FeatureOfInterest</code></li>
+            </ul>
+            So some instance of <code>ssn-system:SurvivalRange</code> would be both a <code>ssn:Property</code> and a <code>sosa:FeatureOfInterest</code>, which is forbidden.
+          </dd>
+          <dd>Correction: A feature of interest can also be a quality, so axioms (1) and (2) are relaxed to (1') and (2')
+            <pre>sosa:FeatureOfInterest rdfs:subClassOf [ owl:unionOf ( dul:Event dul:Object dul:InformationEntity ) ] (1)
+oldssn:FeatureOfInterest owl:equivalentClass sosa:FeatureOfInterest (2)</pre>
+            <pre>sosa:FeatureOfInterest rdfs:subClassOf dul:Entity (1')
+oldssn:FeatureOfInterest rdfs:subClassOf sosa:FeatureOfInterest (2')</pre>
+          <dd>Note: the change is made both in the specification and in the files containing <a href="http://www.w3.org/ns/ssn/dul">the DUL alignment</a> and <a href="http://www.w3.org/2017/01/ssn-ssnx/">SSN-SSNX</a>.</dd>
+
+          <dt><a id="entry-8">8. Use of <code>qudt-1-1:numericalValue</code> instead of <code>qudt-1-1:numericValue</code> in Examples 12 and 13</a></dt>
+          <dd>Added: 15 March 2018</dd>
+          <dd>Type: Editorial</dd>
+          <dd>Refers to: Example <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#tree-height">B.4 Tree height measurement</a></dd>
+          <dd>Description: Use of <code>qudt-1-1:numericalValue</code> instead of <code>qudt-1-1:numericValue</code> in the referred examples.</dd>
+          <dd>Correction: change <code>qudt-1-1:numericalValue</code> to <code>qudt-1-1:numericValue</code>.</dd>
+          <dd>Note: the same syntax error exists in the specification and in the RDF files containing a <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/integrated/examples/tree-height.ttl">graph corresponding to Example 12</a> and a <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/integrated/examples/tree-height-sosa.ttl">graph corresponding to Example 11</a>.</dd>
+          
+          <dt><a id="entry-9">9. Syntax error in apartment 134 examples</a></dt>
+          <dd>Added: 15 March 2018</dd>
+          <dd>Type: Editorial</dd>
+          <dd>Refers to: <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/#apartment-134">B.3 apartment 134</a></dd>
+          <dd>Description: The examples reference a non-existing <code>sosa:hasSimplResult</code> predicate.</dd>
+          <dd>Correction: Replace <code>sosa:hasSimplResult</code> with <code>sosa:hasSimpleResult</code> in Example 10 and Example 11.</dd>
+          <dd>Note: the same syntax error exists in the specification and in the RDF files containing a <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/integrated/examples/seismograph.ttl">graph corresponding to Example 10</a> and a <a href="https://www.w3.org/TR/2017/REC-vocab-ssn-20171019/integrated/examples/apartment-134-sosa.ttl">graph corresponding to Example 11</a>.</dd>
         </dl>
       </section>
     </section>
