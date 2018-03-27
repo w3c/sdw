@@ -148,6 +148,19 @@ They post their video to a website and share their experience with the online co
           <li>Autonomous swarm monitoring.</li>
         </ul>
       </section>
+      <section id='crisisresponse'>
+        <h2>Crisis Response</h2>
+        <p>
+          Disaster strikes, e.g. hurricane, tsunami, and emergency response teams are deployed to the affected area. However, it is difficult to verify which problems people are facing, what resources would help them and exactly where these events are occurring. Maps are unreliable as the infrastructure has been damaged, though people on the ground have the relevant knowledge if it could be reliably recorded and shared.
+        </p>
+        <p>
+          Anyone with a basic smartphone could video events with reliable geospatial data, as GPS receivers can operate without the need for a mobile phone signal by using satellite data, to accurately document the problems they face. Even if the cell network is not operational, this information can be physically delivered to crisis coordinators to notify them of the issues that need to be addressed, including an accurate location in a common format. Crisis events can be reliably recorded, knowledge can be shared and aggregated, and relief resources can be accurately targeted and deployed to the correct locations.
+        </p>
+        <ul class='note' title='Benefits'>
+          <li>Reliable dispersed information gathering and sharing;</li>
+          <li>Accurate resource deployment.</li>
+        </ul>
+      </section>
     </section>
     <section class='informative' id='stateoftheart'>
       <h2>State of the Art</h2>
@@ -188,7 +201,7 @@ They post their video to a website and share their experience with the online co
         WebVMT (Web Video Map Tracks) format is intended for marking up external map track resources, and its main use is for files synchronising video content with an annotated map presentation. Ideas have been borrowed from existing W3C standards, including WebVTT's HTML binding and its block and cue structures, and SVG's approach to drawing and animation, in order to display output on an electronic map.
       </p>
       <p>
-        The protocol mimics WebVTT's structure and syntax for video synchronisation, with cue details listed in an accessible text-based file linked to the &lt;video&gt; DOM element by a child &lt;track&gt; element in an HTML document.
+        The format mimics WebVTT's structure and syntax for video synchronisation, with cue details listed in an accessible text-based file linked to the &lt;video&gt; DOM element by a child &lt;track&gt; element in an HTML document.
       </p>
       <pre class='nohighlight example' title='WebVMT Basic HTML'>
 &lt;!doctype html&gt;
@@ -200,7 +213,7 @@ They post their video to a website and share their experience with the online co
     &lt;!-- Video display --&gt;
     &lt;video controls width="640" height="360"&gt;
       &lt;source src="video.mp4" type="video/mp4"&gt;
-      &lt;track src="maptrack.vmt" kind="map"&gt;
+      &lt;track src="maptrack.vmt" kind="map" map-id="vmt-map" tile-url="https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY"&gt;
       Your browser does not support the video tag.
     &lt;/video&gt;
     &lt;!-- Map display --&gt;
@@ -226,8 +239,6 @@ The end cue time may be omitted to signify the end time of the video, which may 
 WEBVMT
 
 MAP {
-  tile-url: https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY;
-  div-id: vmt-map;
   centre: 51.506 -0.076;
   zoom: 16;
 }
@@ -249,8 +260,6 @@ MAP {
 WEBVMT
 
 MAP {
-  tile-url: https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY;
-  div-id: vmt-map;
   centre: 51.162 -0.143;
   zoom: 10;
 }
@@ -279,8 +288,6 @@ WEBVMT
 NOTE Map config
 
 MAP {
-  tile-url: https://api2.ordnancesurvey.co.uk/mapping_api/v1/\service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?\key=VALID_OS_KEY;
-  div-id: vmt-map;
   centre: 51.506 -0.076;
   zoom: 16;
 }
@@ -329,7 +336,7 @@ This line is also part of the comment
   &lt;body&gt;
     &lt;video controls width="640" height="360"&gt;
       &lt;source src="video.mp4" type="video/mp4"&gt;
-      &lt;track src="maptrack.vmt" kind="map"&gt;
+      &lt;track src="maptrack.vmt" kind="map" map-id="vmt-map" tile-url="https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY"&gt;
       Your browser does not support the video tag.
     &lt;/video&gt;
     &lt;div id="vmt-map" style="height: 360px; width:640px;"&gt;&lt;/div&gt;
@@ -352,8 +359,6 @@ This line is also part of the comment
 WEBVMT
 
 MAP {
-  tile-url: https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY;
-  div-id: vmt-map;
   centre: 51.478 -0.001;
   zoom: 18;
 }
@@ -405,8 +410,6 @@ WEBVMT
 NOTE Map config
 
 MAP {
-  tile-url: https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY;
-  div-id: vmt-map;
   centre: 51.1618 -0.1428;
   zoom: 10;
 }
@@ -448,8 +451,6 @@ WEBVMT
 NOTE Map config
 
 MAP {
-  tile-url: https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY;
-  div-id: vmt-map;
   centre: 51.0130 -0.0015;
   zoom: 10;
 }
@@ -476,6 +477,38 @@ NOTE Drone arrives at (51.0090, -0.0017)
 
 NOTE Drone ends at (51.0070, -0.0020)
           </pre>
+        </section>
+      </section>
+      <section id='youtubeintegration'>
+        <h2>YouTube Integration</h2>
+        <p>
+          Embedded YouTube content can be displayed using an &lt;iframe&gt; element, specifying the unique 10-character content identifier for the posted video, using the official <a href="https://developers.google.com/youtube/iframe_api_reference">YouTube IFrame API</a> with the Javascript API enabled.
+        </p>
+          
+        <section id='helloyoutube'>
+          <h2>Hello YouTube</h2>
+          <p>          
+            A child &lt;track&gt; pseudo-element within the &lt;iframe&gt; links it with WebVMT using the same syntax as for the &lt;video&gt; DOM element.
+          </p>
+          <pre class='nohighlight example' title='WebVMT YouTube HTML'>
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;WebVMT YouTube Example&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!-- Video display --&gt;
+    &lt;iframe src="http://www.youtube.com/embed/YOUTUBE_VIDEO_ID?enablejsapi=1" width="640" height="360" frameborder="0"&gt;
+      &lt;track src="maptrack.vmt" kind="map" map-id="vmt-map" tile-url="https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY"&gt;
+    &lt;/iframe&gt;
+    &lt;!-- Map display --&gt;
+    &lt;div id="vmt-map" style="height: 360px; width:640px;"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+          </pre>
+          <p>
+          Note that the &lt;track&gt; pseudo-element is actually replaced by the &lt;iframe&gt; content when the page is loaded.
+          </p>
         </section>
       </section>
     </section>
