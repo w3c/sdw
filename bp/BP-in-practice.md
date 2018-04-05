@@ -209,8 +209,7 @@ https://www.ldproxy.nrw.de/topographie/AX_Vegetationsmerkmal/DENWAT01D000BAoT/?f
 #### EXAMPLE 16: [GML] description of a building, with detailed geometry
 
 >The [GML] representation of Anne Frank's house building (taken from the BAG WFS endpoint):
-><pre>
-<bagwfs:pand gml:id="pand.3323294">
+><pre>&lt;bagwfs:pand gml:id="pand.3323294">
   <bagwfs:identificatie>363100012169587</bagwfs:identificatie>
   <bagwfs:bouwjaar>1635</bagwfs:bouwjaar>
   <bagwfs:status>Pand in gebruik (niet ingemeten)</bagwfs:status>
