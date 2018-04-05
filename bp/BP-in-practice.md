@@ -209,35 +209,38 @@ https://www.ldproxy.nrw.de/topographie/AX_Vegetationsmerkmal/DENWAT01D000BAoT/?f
 #### EXAMPLE 16: [GML] description of a building, with detailed geometry
 
 >The [GML] representation of Anne Frank's house building (taken from the BAG WFS endpoint):
-><pre>&lt;bagwfs:pand gml:id="pand.3323294">
-  <bagwfs:identificatie>363100012169587</bagwfs:identificatie>
-  <bagwfs:bouwjaar>1635</bagwfs:bouwjaar>
-  <bagwfs:status>Pand in gebruik (niet ingemeten)</bagwfs:status>
-  <bagwfs:gebruiksdoel>woonfunctie</bagwfs:gebruiksdoel>
-  <bagwfs:oppervlakte_min>1</bagwfs:oppervlakte_min>
-  <bagwfs:oppervlakte_max>21</bagwfs:oppervlakte_max>
-  <bagwfs:aantal_verblijfsobjecten>20</bagwfs:aantal_verblijfsobjecten>
-  <bagwfs:geometrie>
-    <gml:MultiSurface srsDimension="2" axisLabels="east north"
+
+<pre>
+  &lt;bagwfs:pand gml:id="pand.3323294">
+  &lt;bagwfs:identificatie>363100012169587&lt;/bagwfs:identificatie>
+  &lt;bagwfs:bouwjaar>1635&lt;/bagwfs:bouwjaar>
+  &lt;bagwfs:status>Pand in gebruik (niet ingemeten)&lt;/bagwfs:status>
+  &lt;bagwfs:gebruiksdoel>woonfunctie&lt;/bagwfs:gebruiksdoel>
+  &lt;bagwfs:oppervlakte_min>1&lt;/bagwfs:oppervlakte_min>
+  &lt;bagwfs:oppervlakte_max>21&lt;/bagwfs:oppervlakte_max>
+  &lt;bagwfs:aantal_verblijfsobjecten>20&lt;/bagwfs:aantal_verblijfsobjecten>
+  &lt;bagwfs:geometrie>
+    &lt;gml:MultiSurface srsDimension="2" axisLabels="east north"
                          srsName="urn:ogc:def:crs:EPSG::28992">
-      <gml:surfaceMember>
-        <gml:Polygon srsDimension="2">
-          <gml:exterior>
-            <gml:LinearRing>
-              <gml:posList>
+      &lt;gml:surfaceMember>
+        &lt;gml:Polygon srsDimension="2">
+          &lt;gml:exterior>
+            &lt;gml:LinearRing>
+              &lt;gml:posList>
                 120749.725 487589.422  120752.55  487594.375  120751.227 487595.129
                 120732.539 487605.788  120723.505 487589.745  120721.387 487585.939
                 120740.668 487575.07   120743.316 487573.589  120747.735 487581.337
                 120751.564 487579.154  120755.411 487576.96   120750.935 487569.172
                 120755.941 487566.288  120764.369 487581.066  120749.725 487589.422
-                </gml:posList>
-            </gml:LinearRing>
-          </gml:exterior>
-        </gml:Polygon>
-      </gml:surfaceMember>
-    </gml:MultiSurface>
-  </bagwfs:geometrie>
-</bagwfs:pand></pre>
+                &lt;/gml:posList>
+            &lt;/gml:LinearRing>
+          &lt;/gml:exterior>
+        &lt;/gml:Polygon>
+      &lt;/gml:surfaceMember>
+    &lt;/gml:MultiSurface>
+  &lt;/bagwfs:geometrie>
+&lt;/bagwfs:pand>
+</pre>
 
 >The corresponding RDF representation is provided in the following [TURTLE] snippet (taken from the BAG Linked Data service). NB: The RDF representation below has been complemented with additional properties (marked with # Added) for demonstration purposes.
 
@@ -400,7 +403,8 @@ None.
 >There are four common ways that this information can be provided:
 >
 >Describe the coordinate reference system in the dataset metadata.
-><pre>
+>
+<pre>
 
 @prefix ex:      <http://data.example.org/datasets/> .
 @prefix dcat:    <http://www.w3.org/ns/dcat#> .
@@ -416,7 +420,8 @@ ex:ExampleDataset
   dcterms:type <http://inspire.ec.europa.eu/glossary/SpatialReferenceSystem> ;
   dcterms:identifier "http://www.opengis.net/def/crs/EPSG/0/32630"^^xsd:anyURI ;
   skos:prefLabel "WGS 84 / UTM zone 30N"@en ;
-  skos:inScheme <http://www.opengis.net/def/crs/EPSG/0/> .</pre>
+  skos:inScheme <http://www.opengis.net/def/crs/EPSG/0/> .
+  </pre>
 >The example above illustrates how to describe the coordinate reference system used for a dataset within [GeoDCAT-AP] metadata. The conformsTo property from [DCTERMS] is used to assert the relationship between dataset and CRS in the same way that conformance with a standard is expressed in [VOCAB-DQV].
 >
 >Dataset metadata for spatial data should always provide details of the CRS used. For more information about dataset metadata, please refer to Best Practice 13: Include spatial metadata in dataset metadata.
