@@ -1,5 +1,7 @@
 # Spatial Data on the Web Interest Group
 
+[![Join the chat at https://gitter.im/w3c/sdw](https://badges.gitter.im/w3c/sdw.svg)](https://gitter.im/w3c/sdw?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is the repository for the <a href="https://www.w3.org/2017/sdwig/">Spatial Data on the Web Interest Group</a>, a collaborative project between <a href="http://www.w3.org/">W3C</a> and <a href="http://www.opengeospatial.org/">OGC</a>.
 
 The repo is used for developing editors drafts of the Interest Group's <a href="http://www.w3.org/2017/sdwig/charter.html#deliverables">deliverables</a> and related resources.
