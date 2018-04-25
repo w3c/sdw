@@ -8,7 +8,7 @@ To get acquainted with our activities we invite you to look at our current work 
 
 Most work takes place in our [GitHub repository][4] which has subfolders for the different work items (it was used for the former Working Group as well as the current Interest Group). Feel free to create or respond to Github issues. You may also always send your feedback to the group's [mailing list][3] that is used for technical discussions. The mailing list is automatically notified of relevant activity in GitHub.
 
-We do not have regular teleconferences (due to the distribution around the world of our members) but use Github, the mailing list, face to face meetings as well as ad hoc teleconferences as needed. 
+We do not have regular teleconferences (due to the distribution around the world of our members) but use Github, the mailing list, face to face meetings (which are extra important because of the absence of regular teleconferences!), a few days each month where we aim to work on SDW things at the same time, as well as ad hoc teleconferences if we need them. This way of working is described in [this email ][9] in more detail.
 
 To summarize the key resources:
 
@@ -35,3 +35,4 @@ Linda & Jeremy (SDWIG Chairs)
 [6]: https://github.com/w3c/sdw/blob/gh-pages/bp/work-items-and-activities.md
 [7]: https://github.com/w3c/sdw/tree/gh-pages/stats-bp
 [8]: https://www.w3.org/TR/vocab-ssn/
+[9]: https://lists.w3.org/Archives/Public/public-sdwig/2018Apr/0026.html
