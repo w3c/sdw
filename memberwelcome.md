@@ -6,7 +6,7 @@ Please note that the Interest Group follows in the footsteps of the [Spatial Dat
 
 To get acquainted with our activities we invite you to look at our current work items. We are currently actively working on [maintenance and ways to encourage adoption][6] of the Spatial Data on the Web Best Practices and on a new [Statistical Data on the Web Best Practices document][7]. There are also plans to start work on a primer for [SOSA/SSN][8] and there is ongoing maintenance of SOSA/SSN as well as OWL Time, the two Recommendations published by the previous working group. Our charter also mentions other work items, but work on these has not started. Please let us know if you are interested in those!
 
-Most work takes place in our [GitHub repository][4] which has subfolders for the different work items (of the former Working Group as well as the Interest Group). Feel free to create or respond to Github issues. You may also always send your feedback to the group's mailing list [3] that is used for technical discussions. The mailing list is automatically notified of relevant activity in GitHub.
+Most work takes place in our [GitHub repository][4] which has subfolders for the different work items (it was used for the former Working Group as well as the current Interest Group). Feel free to create or respond to Github issues. You may also always send your feedback to the group's [mailing list][3] that is used for technical discussions. The mailing list is automatically notified of relevant activity in GitHub.
 
 We do not have regular teleconferences (due to the distribution around the world of our members) but use Github, the mailing list, face to face meetings as well as ad hoc teleconferences as needed. 
 
