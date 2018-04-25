@@ -1,6 +1,6 @@
 Welcome to the Spatial Data on the Web Interest Group (SDWIG)!
 
-From the group's [home page][1] you can find pointers to relevant resources, including our meeting schedule. Please review the [Charter][2], note the group's prior discussions are available via the mailing list archive [3], and see the [Github repository][4] for the group's ongoing work.
+From the group's [home page][1] you can find pointers to relevant resources, including our meeting schedule. Please review the [Charter][2], note the group's prior discussions are available via the [mailing list archive][3], and see the [Github repository][4] for the group's ongoing work.
 
 Please note that the Interest Group follows in the footsteps of the [Spatial Data on the Web Working Group][5], and some of the material in this repository was initially developed and published by the Working Group. The Working Group published several Recommendations and Notes you are encouraged to read (if you have not already done so). These are all listed on the landing page of our [Github repository][4], which also states how to provides comments.
 
