@@ -6,7 +6,7 @@ Please note that the Interest Group follows in the footsteps of the [Spatial Dat
 
 To get acquainted with our activities we invite you to look at our current work items. We are currently actively working on [maintenance and ways to encourage adoption][6] of the Spatial Data on the Web Best Practices and on a new [Statistical Data on the Web Best Practices document][7]. There are also plans to start work on a primer for [SOSA/SSN][8] and there is ongoing maintenance of SOSA/SSN as well as OWL Time, the two Recommendations published by the previous working group. Our charter also mentions other work items, but work on these has not started. Please let us know if you are interested in those!
 
-In addition, we are vetting new possible standardization items related to spatial data and the web. We are using the [W3C strategy funnel][10] for this. Items we are looking at are tagged ['geospatial'][11].  
+In addition, we are vetting new possible standardization items related to spatial data and the web. We are using the [W3C strategy funnel][10] for this. Items we are looking at are tagged ['geospatial'][11]. One of the things this group does is recommend where these items should be standardized (W3C or OGC or both). 
 
 Most work takes place in our [GitHub repository][4] which has subfolders for the different work items (it was used for the former Working Group as well as the current Interest Group). Feel free to create or respond to Github issues. You may also always send your feedback to the group's [mailing list][3] that is used for technical discussions. The mailing list is automatically notified of relevant activity in GitHub.
 
@@ -18,6 +18,7 @@ To summarize the key resources:
 * [Charter][2] - goals, scope, deliverables, patent policy
 * [Mailing list][3] - public archived mailing list for technical discussions
 * [Github repository][4] - the Github repository where all our work is managed
+* [Funnel][11] - possible new standardization items we are vetting 
 
 Please feel free to introduce yourself on the mailing list, share your interests toward the Working Group, and areas where you might want to contribute. Also, please do not hesitate to contact us, Francois (the W3C team contact for the group, cc'd) and Scott (the OGC team contact for the group, cc'd) if you have any questions.
 
