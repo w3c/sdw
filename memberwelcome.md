@@ -6,6 +6,8 @@ Please note that the Interest Group follows in the footsteps of the [Spatial Dat
 
 To get acquainted with our activities we invite you to look at our current work items. We are currently actively working on [maintenance and ways to encourage adoption][6] of the Spatial Data on the Web Best Practices and on a new [Statistical Data on the Web Best Practices document][7]. There are also plans to start work on a primer for [SOSA/SSN][8] and there is ongoing maintenance of SOSA/SSN as well as OWL Time, the two Recommendations published by the previous working group. Our charter also mentions other work items, but work on these has not started. Please let us know if you are interested in those!
 
+In addition, we are vetting new possible standardization items related to spatial data and the web. We are using the [W3C strategy funnel][10] for this. Items we are looking at are tagged ['geospatial'][11].  
+
 Most work takes place in our [GitHub repository][4] which has subfolders for the different work items (it was used for the former Working Group as well as the current Interest Group). Feel free to create or respond to Github issues. You may also always send your feedback to the group's [mailing list][3] that is used for technical discussions. The mailing list is automatically notified of relevant activity in GitHub.
 
 We do not have regular teleconferences (due to the distribution around the world of our members) but use Github, the mailing list, face to face meetings (which are extra important because of the absence of regular teleconferences!), a few days each month where we aim to work on SDW things at the same time, as well as ad hoc teleconferences if we need them. This way of working is described in [this email ][9] in more detail.
@@ -36,3 +38,5 @@ Linda & Jeremy (SDWIG Chairs)
 [7]: https://github.com/w3c/sdw/tree/gh-pages/stats-bp
 [8]: https://www.w3.org/TR/vocab-ssn/
 [9]: https://lists.w3.org/Archives/Public/public-sdwig/2018Apr/0026.html
+[10]: https://github.com/w3c/strategy/projects/2
+[11]: https://github.com/w3c/strategy/projects/2?card_filter_query=label%3Ageospatial
