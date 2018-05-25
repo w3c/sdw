@@ -1,7 +1,5 @@
 # Spatial Data on the Web Best Practices in Practice 
 
-- In progress - examples from best practices already, OGC Testbed 14 etc
-
 ## [Best Practice 1: Use globally unique persistent HTTP URIs for Spatial Things](https://www.w3.org/TR/sdw-bp/#globally-unique-ids)
 
 ### Examples from Best Practices
