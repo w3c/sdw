@@ -88,7 +88,7 @@ https://www.ldproxy.nrw.de/topographie/AX_Vegetationsmerkmal/DENWAT01D000BAoT/?f
 
 - [EXAMPLE 19: Point coordinates as Geohash](https://www.w3.org/TR/sdw-bp/#ex-anne-frank-address-geohash)
 - [EXAMPLE 20: Admin areas at different resolutions](https://www.w3.org/TR/sdw-bp/#ex-admin-areas-at-different-resolution)
-- [EXAMPLE 21: W3C Basic Geo and GeoRSS to specify centroid and bounding box]((https://www.w3.org/TR/sdw-bp/#ex-anne-frank-building-centroid-and-bbox)
+- [EXAMPLE 21: W3C Basic Geo and GeoRSS to specify centroid and bounding box](https://www.w3.org/TR/sdw-bp/#ex-anne-frank-building-centroid-and-bbox)
 
 ### Other Examples
 
