@@ -1,5 +1,7 @@
 # Spatial Data on the Web Best Practices in Practice 
 
+This list is intended to aid people looking to implement the [Spatial Data on the Web Best Practice](https://www.w3.org/TR/sdw-bp) by providing quick links to the examples within the Best Practices and additional examples of implementations.
+
 ## [Best Practice 1: Use globally unique persistent HTTP URIs for Spatial Things](https://www.w3.org/TR/sdw-bp/#globally-unique-ids)
 
 ### Examples from Best Practices
