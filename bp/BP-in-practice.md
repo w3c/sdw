@@ -47,27 +47,7 @@ This list is intended to aid people looking to implement the [Spatial Data on th
 
 ### Other Examples
 
-#### LDProxy WFS 3.0 JSON Encoding
-
-This example implementation of a WFS 3.0 provides a JSON-LD encoding using <code>@context</code> to provide semantics from schema.org
-
-https://www.ldproxy.nrw.de/topographie/AX_Vegetationsmerkmal/DENWAT01D000BAoT/?f=jsonld
-
-<pre>
-{
-  "@context" : {
-    "@vocab" : "http://schema.org"
-  },
-  "@type" : "Place",
-  "id" : "https://www.ldproxy.nrw.de/topographie/AX_Vegetationsmerkmal/DENWAT01D000BAoT",
-  "url" : "https://www.ldproxy.nrw.de/topographie/AX_Vegetationsmerkmal/DENWAT01D000BAoT",
-  "geo" : {
-    "@type" : "GeoShape",
-    "line" : "6.410075411601025,50.326107831017666 6.409635231068937,50.323045007336866"
-  },
-  "bewuchs" : "1100"
-}
-</pre>
+- TBD
 
 ## [Best Practice 5: Provide geometries on the Web in a usable way](https://www.w3.org/TR/sdw-bp/#describe-geometry)
 
@@ -176,7 +156,27 @@ Basic Registers for Addresses and Buildings and INSPIRE Directive CRS
 
 ### Other Examples
 
-- TBD
+#### LDProxy WFS 3.0 JSON Encoding
+
+This example implementation of a WFS 3.0 provides a JSON-LD encoding using <code>@context</code> to provide semantics from schema.org
+
+https://www.ldproxy.nrw.de/topographie/AX_Vegetationsmerkmal/DENWAT01D000BAoT/?f=jsonld
+
+<pre>
+{
+  "@context" : {
+    "@vocab" : "http://schema.org"
+  },
+  "@type" : "Place",
+  "id" : "https://www.ldproxy.nrw.de/topographie/AX_Vegetationsmerkmal/DENWAT01D000BAoT",
+  "url" : "https://www.ldproxy.nrw.de/topographie/AX_Vegetationsmerkmal/DENWAT01D000BAoT",
+  "geo" : {
+    "@type" : "GeoShape",
+    "line" : "6.410075411601025,50.326107831017666 6.409635231068937,50.323045007336866"
+  },
+  "bewuchs" : "1100"
+}
+</pre>
 
 ## [Best Practice 13: Include spatial metadata in dataset metadata](https://www.w3.org/TR/sdw-bp/#spatial-info-dataset-metadata)
 
