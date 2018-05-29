@@ -220,7 +220,11 @@ A global atmospheric reanalysis project is then used to re-calculate atmospheric
 
 It is envisaged that each of these partitions of data would have a persistent URI to allow cacheing to lighten the load on backend servcers and improve responsiveness and scalability for clients.
 
-The requirements are to have a consistent terminology and ontology to describe these differing patterns of 'batching' data for use processing
+The requirements are to have a consistent terminology and ontology to describe these differing patterns of 'batching' or 'paging' data for processing. 
+
+There are also requirements for describing the 'next' tile and 'previous' tile in the different dimensions.
+
+The structure of each tile may be need to be described, and its relationship to the underlying RDF DataCube definitions. There may be drastically different partitioning schemes, such as a constant count along a dimension, or a quantative partioning based on data volume for a sparse data cube. the 'observations' of the data cube may be scalars, vectors, or even more complex entities (geometries?)
 
 ### Related Deliverables:
 
