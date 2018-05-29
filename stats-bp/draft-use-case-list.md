@@ -210,7 +210,17 @@ Ensure that all URLs within this file resolve.
 
 Many statistical data cubes are too voluminous to process locally. They may be in an archive that only offers data retrieval, but no commensurate processing service, or may be required in a local client that has intermittent or low bandwidth connectivity.
 
-1. Archived timeseries of wnin speed and direction, for many locations, with observation several time per minute,  for many decades, need to be re-processed to re-calcualte a more accurate climatology of average, extreme and gust speeds. The timesereis should be partitioned into, say, 1 month 'slices'.
+1. Archived timeseries of wind speed and direction, for many locations, with observations several times per minute,  for many decades, need to be re-processed to re-calculate a more accurate climatology of average, extreme and gust speeds. The timeseries should be partitioned into, say, 1 month 'slices' of about nearly a million values.
+
+2. A global archive of wave observations dating back to 1853, grouped into 5 degree lat-long rectangles needs to be processed to give more modern estimates of extreme wave heights and periods. There may be tens of thousands of observations in each rectangle. The data needs to processed one 'tile' or 2D partition, at a time. Each wave observation is accompanied by some metadata on quality used to weight the statistical processing.
+
+A global atmospheric reanalysis project is then used to re-calculate atmospheric parameters modelled for the globe on an approximately 5Km grid. In particular, the surface wind stress (a nine parameter, 3x3, tensor) is of interest to predict wave heights and compare to the observed climatology of wave heights.
+
+3. A regional atmospheric archive is processed to produce a climatology of turbulence and atmospheric wave motion near orography, such as affects gliders and light aircraft. The data is retrieved in 2D tiles for several levels of the atmosphere, and used produce a new data store of 3D partitions or tiles or cubelets for atmospheric 'boxes'. There will be separate boxes for different times of the year.
+
+It is envisaged that each of these partitions of data would have a persistent URI to allow cacheing to lighten the load on backend servcers and improve responsiveness and scalability for clients.
+
+The requirements are to have a consistent terminology and ontology to describe these differing patterns of 'batching' data for use processing
 
 ### Related Deliverables:
 
