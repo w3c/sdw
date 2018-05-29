@@ -203,3 +203,16 @@ Ensure that all URLs within this file resolve.
 ### Related Deliverables:
 
 ### Related Requirements:
+
+## Data Partitioning/Tiling
+
+### Contributed by: Chris Little
+
+Many statistical data cubes are too voluminous to process locally. They may be in an archive that only offers data retrieval, but no commensurate processing service, or may be required in a local client that has intermittent or low bandwidth connectivity.
+
+1. Archived timeseries of wnin speed and direction, for many locations, with observation several time per minute,  for many decades, need to be re-processed to re-calcualte a more accurate climatology of average, extreme and gust speeds. The timesereis should be partitioned into, say, 1 month 'slices'.
+
+### Related Deliverables:
+
+### Related Requirements:
+
