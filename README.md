@@ -8,6 +8,14 @@ The repo is used for developing editors drafts of the Interest Group's <a href="
 
 Please note that the Interest Group follows in the footsteps of the <a href="https://www.w3.org/2015/spatial/">Spatial Data on the Web Working Group</a>, and some of the material in this repository was initially developed and published by the Working Group.
 
+## References
+
+| Name | URL |
+| --- | --- |
+| SDW Strategy Funnel | https://github.com/w3c/strategy/projects/2?card_filter_query=label%3Ageospatial |
+| SDW Projects | https://github.com/w3c/sdw/projects |
+| OGC Technology Trends | https://github.com/opengeospatial/OGC-Technology-Trends/ |
+
 ## Folder structure
 
 Each deliverable has its own folder. The issue tracker uses labels to distinguish between work items. The current structure is as follows:
