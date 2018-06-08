@@ -15,7 +15,7 @@ https://gnafld.net
     </tr>
     <tr>
         <td width="50"><a href="https://www.w3.org/TR/sdw-bp/#globally-unique-ids">01 Use globally unique persistent HTTP URIs for Spatial Things</a></td>
-        <td><ul><li>- [x]</li></ul></td>
+        <td><ul><li>- [x] </li></ul></td>
         <td></td>
     </tr>
     <tr>
@@ -30,6 +30,8 @@ https://gnafld.net
     </tr>
 </table>
 
+test | blah
+x | <ul><li>- [x] </li></ul>
 
 ## Implementation Report
 
