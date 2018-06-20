@@ -54,6 +54,7 @@ Relevant developments at OGC
 -	[WFS 3.0](https://cdn.rawgit.com/opengeospatial/WFS_FES/3.0.0-draft.1/docs/17-069.html)
 -	[Vector tiling](http://docs.opengeospatial.org/per/17-041.html) (very early development, link is to ER) 
 - Raster tiling (link?)
+- [Cesium 3D tiles](https://github.com/AnalyticalGraphicsInc/3d-tiles)
 
 Relevant developments at W3C
 -	[Geolocation API](https://www.w3.org/TR/geolocation-API/)
@@ -79,6 +80,7 @@ Relevant developments elsewhere
 -	[MapML](https://maps4html.github.io/MapML/spec/)
 - [CityJSON](http://www.cityjson.org/)
 -	[Video geotagging (WebVMT)](https://w3c.github.io/sdw/proposals/geotagging/webvmt/)
+- OMLite (link? I only have a link to a [paper](https://content.iospress.com/articles/semantic-web/sw214))
 
 ## Step 2: Grouping 
 _This is a first attempt at grouping. Problem is, group 1 is much bigger than the others._
