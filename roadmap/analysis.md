@@ -27,8 +27,9 @@ _To help me get a complete list I listed the features by their SDO context._
 
 From SDWWG/IG
 - [SDW BP](https://www.w3.org/TR/sdw-bp/)
--	[Sosa](https://www.w3.org/TR/vocab-ssn/)
+-	[Sosa](https://www.w3.org/TR/vocab-ssn/) (note: SOSA and SSN can be mentioned in the roadmap as two features of the same spec)
 -	[SSN](https://www.w3.org/TR/vocab-ssn/)
+- [SSN extensions](https://w3c.github.io/sdw/proposals/ssn-extensions/)
 - [Time ontology in OWL](https://www.w3.org/TR/owl-time/)
 -	[Coverage JSON](http://w3c.github.io/sdw/coverage-json/)
 -	[EO-QB](https://www.w3.org/TR/eo-qb/)
@@ -44,6 +45,7 @@ Relevant developments at OGC
 -	[GeoSPARQL](http://www.opengeospatial.org/standards/geosparql)
 -	[GML + Simple Features](http://www.opengeospatial.org/standards/gml)
 - [KML (including KMZ)](http://www.opengeospatial.org/standards/kml): list or not? 
+-	[GeoRSS](https://www.w3.org/2005/Incubator/geo/XGR-geo/)
 - [OpenSearch Geo and Time Extensions](http://www.opengeospatial.org/standards/opensearchgeo)
 - [moving features XML and CSV](http://www.opengeospatial.org/standards/movingfeatures)
 - [WKT](https://www.iso.org/standard/63094.html)
@@ -51,18 +53,19 @@ Relevant developments at OGC
 - "old" WFS/WMS/WMTS/WCS/SOS/CSW etc: propose to not list these in the roadmap
 -	[WFS 3.0](https://cdn.rawgit.com/opengeospatial/WFS_FES/3.0.0-draft.1/docs/17-069.html)
 -	[Vector tiling](http://docs.opengeospatial.org/per/17-041.html) (very early development, link is to ER) 
+- Raster tiling (link?)
 
 Relevant developments at W3C
 -	[Geolocation API](https://www.w3.org/TR/geolocation-API/)
 - [Generic Sensor API](https://www.w3.org/TR/generic-sensor/)
 -	[Basic Geo Vocab](https://www.w3.org/2003/01/geo/)
--	[GeoRSS](https://www.w3.org/2005/Incubator/geo/XGR-geo/)
 - [DWBP](https://www.w3.org/TR/dwbp/) (should we reference?) 
 - [DCAT](https://www.w3.org/TR/vocab-dcat/)
 -	[Linked Building Data](https://w3c-lbd-cg.github.io/lbd/charter/) (possible plans,  reference is to a proposed WG charter, not a tech)
+- [Data cubes](https://www.w3.org/TR/vocab-data-cube/)
 
 Relevant developments elsewhere
--	Schema .org [Place](http://schema.org/Place) and [Event](http://schema.org/Event)
+-	Schema.org [Place](http://schema.org/Place) and [Event](http://schema.org/Event)
 -	[GeoJSON](https://tools.ietf.org/html/rfc7946)
 - [Spatial things in DBpedia](http://dbpedia.org)
 - [Spatial things in Wikidata](https://www.wikidata.org/)
