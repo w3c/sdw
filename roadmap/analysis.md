@@ -83,72 +83,76 @@ Relevant developments elsewhere
 - OMLite (link? I only have a link to a [paper](https://content.iospress.com/articles/semantic-web/sw214))
 
 ## Step 2: Grouping 
-_This is a first attempt at grouping. Problem is, group 1 is much bigger than the others._
-### Group 1: Features for any data with a spatial component
+_This is the second attempt at grouping. For earlier attempt see github history._
+### Group 1: capture spatial/sensor data
+- to get a device's location
+  - Geolocation API
+- relevant parts of SensorThingsAPI: Sensing, Tasking (?)
+- APIs based on the Generic Sensor API
+- relevant Web of Things work
 
-- **general guidelines** for sharing spatial data on the web
-  - SDWBP
-  - DWBP
-  - Stats BP
-  - SSN primer
-  - Sensors & observations note
-  - Linked Building Data
-- to **represent** spatial data: vocabularies / encodings
+### Group 2: represent spatial data
+- to represent spatial data: vocabularies / encodings
   - GeoJSON
-  - GML + Simple Features
-  - GeoSPARQL (vocab part)
-  - Schema.org spatial part 
-  - KML
-  - Basic Geo Vocab
-  - GeoRSS
-  - ISA Location Core Vocabulary 
-  - vCard ontology
-  - TopoJSON
+  - GML + simple features
+  - GeoSPARQL ontology
+  - Schema.org place and event
+  - CoverageJSON
   - CityJSON
-- To **describe** a spatial dataset
-  - DCAT
-  - GeoDCAT-AP 
-- To **represent geometry**:
+  - ISA core location vocabulary
+  - Vcard ontology
+  - TopoJSON
+  - Building ontology
+  - GeoRSS
+  - KML
+  - Basic geo
+- To represent sensor data
+  - SOSA / SSN
+  - O&M
+- To represent temporal data
+  - OWL Time
+  - TimeseriesML
+- To represent moving features: moving features XML and CSV
+- WoT Thing Description
+- to represent geometry
   - WKT
   - GeoHash
-- To **reference a location**:
-  - by **coordinates**: 
-    - OGC Topic 2 (spatial referencing by coordinates)
-  - by **name**:  
-    - Spatial things in DBpedia http://dbpedia.org
-    - Spatial things in Wikidata https://www.wikidata.org/
-    - Geonames http://www.geonames.org
- 
-- To **work with** spatial data on the web
-  - To **get** a device's location
-    - Geolocation API
-  - To **provide access**
-    - WFS 3.0
-  - To **present a view**    
-    - Vector tiling
-    - MapML
-  - To **query** using spatial operators
-     - GeoSPARQL
-      - OpenSearch Geo and Time Extensions
+- to reference a location
+  - By coordinates
+  - By name
+   - Dbpedia
+   - Wikidata
+   - geonames
+- to geotag video: WebVMT
 
-### Group 2: Features specifically for sharing sensor data
-- to **represent**: vocabularies / encodings
-  - SOSA/SSN
-  - Observations & Measurements
-  - CovJSON
+### Group 3: publish spatial data on the Web
+- general guidelines
+  - SDWBP
+  - DWBP
+- Guidelines for stats
+  - Stats BP
+- Guidelines for sensor data
+  - SSN primer
+  - Sensors & observations note (?)
+- to describe a spatial dataset
+  - DCAT
+  - Geo-DCAT-AP
+- to present a view
+  - MapML
+  - WMS
+  - WMTS
+- to provide access
+  - WFS 3.0
+  - WCS
+- to query using spatial operators
+  - GeoSPARQL
+  - Opensearch geo and time extensions
+
+### Group 4: transform spatial data (before / after publication)
+- Partitioning data for the web 
+  - Vector tiles
+  - Raster tiles
+  - Data cubes
   - EO-QB
-- to **work with**:
-  - SensorThingsAPI
-  - Generic Sensor API
-
-### Group 3: Features specifically for sharing temporal data 
-- to **represent**: vocabularies / encodings
-  - OWL Time
-  - QB4ST
-  - TimeseriesML
- 
-### Group 4: Features specifically for sharing moving object data
-- to **represent**: vocabularies / encodings
-  - moving features XML and CSV 
-- To **geotag video**
-    - WebVMT
+   - QB4ST
+- WPS
