@@ -206,9 +206,12 @@ Spatial Things could be published via the API, too.
 Conforms
 
 #### How-to
-As diescribed in Best Practice 4, the data is provided for general use. For this purpose, 
+As described in Best Practice 4, the data is provided for general use. For this purpose, 
 the current WFS-3.0-based API so far seems to be an appropriate API. It supports all 
 aspects listed in "possible approaches to implementation" in the Best Practice document.
+
+In addition, the relevant API best practices from the Data on the Web Best Practices are 
+supported, too. The use of OpenAPI is a key aspect of this.
 
 ### [Best Practice 13: Include spatial metadata in dataset metadata](https://www.w3.org/TR/sdw-bp/#spatial-info-dataset-metadata)
 
