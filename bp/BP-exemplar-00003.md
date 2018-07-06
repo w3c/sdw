@@ -1,4 +1,4 @@
-# Spatial Data on the Web Best Practice Exemplar
+# Spatial Data on the Web Best Practice Implementation Report
 
 ## Title
 Spatial Data on the Web Demonstrator for Cadastral and Topographic data in North-Rhine Westphalia
