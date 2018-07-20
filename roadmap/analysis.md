@@ -79,7 +79,7 @@ Relevant developments elsewhere
 - (not a standard: [GPX](http://www.topografix.com/gpx.asp)
 -	[Map Markup Language (MapML)](https://maps4html.github.io/MapML/spec/)
 - [CityJSON](http://www.cityjson.org/)
--	[Video geotagging (WebVMT)](https://w3c.github.io/sdw/proposals/geotagging/webvmt/)
+-	[WebVMT (Video Map Tracks)](https://w3c.github.io/sdw/proposals/geotagging/webvmt/)
 - OMLite (link? I only have a link to a [paper](https://content.iospress.com/articles/semantic-web/sw214))
 
 ## Step 2: Grouping 
@@ -90,7 +90,8 @@ _This is the second attempt at grouping. For earlier attempt see github history.
 - relevant parts of SensorThingsAPI: Sensing, Tasking (?)
 - APIs based on the Generic Sensor API
 - relevant Web of Things work
-- [GeoWeb input forms in MapML](https://github.com/opengeospatial/D012-MapML_Engineering_Report/issues/19)
+- [GeoWeb input forms in MapML](https://github.com/opengeospatial/D012-MapML_Engineering_Report/issues/26)
+- to synchronise a device's location with sensor data
 
 ### Group 2: represent spatial data
 - to represent spatial data: vocabularies / encodings
@@ -125,7 +126,8 @@ _This is the second attempt at grouping. For earlier attempt see github history.
    - Dbpedia
    - Wikidata
    - geonames
-- to geotag video: WebVMT
+- to synchronise location with sensor data
+  - WebVMT
 
 ### Group 3: publish spatial data on the Web
 - general guidelines
