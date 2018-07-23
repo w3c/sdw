@@ -1,4 +1,4 @@
-# Spatial Data on the Web Best Practice Exemplar
+# Spatial Data on the Web Best Practice Implementation Report
 
 ## Title
 Geocoded National Address File (G-NAF) Linked Data Demonstrator
@@ -166,7 +166,12 @@ Due to the close relationship between this best practice and [Best Practice 5: P
 #### Conformance statement
 Conforms
 
+Test | Conforms
+---|---
+For a given [spatial data](https://www.w3.org/TR/sdw-bp/#dfn-spatial-data) publication, check that users can find information about the coordinate axes, their order and unit of measurement, plus the [datum](https://www.w3.org/TR/sdw-bp/#dfn-datum) used | <ul><li>- [x] </li></ul>
+
 #### How-to
+[GeoSPARQL](https://www.w3.org/TR/sdw-bp/#bib-GeoSPARQL)'s extension to Well Known Text ([WKT](https://www.w3.org/TR/sdw-bp/#dfn-well-known-text-(wkt))), it's wktLiteral data type, was used and combined with specifying the [coordinate reference system](https://www.w3.org/TR/sdw-bp/#dfn-coordinate-reference-system-(crs)).
 
 ### [Best Practice 9: Describe relative positioning](https://www.w3.org/TR/sdw-bp/#relative-position)
 
@@ -175,7 +180,59 @@ Conforms
 
 Test | Conforms?
 ---|---
-
+Check that, when positions of entities are described as relative to other entities, these descriptions can be interpreted by a machine as well as humans, and the positions of the reference entities can be retrieved through their link relations. | <ul><li>- [x] </li></ul>
 
 #### How-to
 
+The following relative positions were identified, and encoded into the ontology:
+1. Localities have neighbour, or next to, relationships which were described using the hasNeighbour object property.
+
+### [Best Practice 10: Use appropriate relation types to link Spatial Things](https://www.w3.org/TR/sdw-bp/#entity-level-links)
+
+#### Conformance statement
+Conforms
+
+Test | Conforms?
+---|---
+Check that hyperlinks use typed relationships, and that link relation type can be located in order to determine how to interpret the hyperlink. | <ul><li>- [ ] </li></ul>
+Check that the source and target of the hyperlink are Spatial Things, unless the link relation type definition indicates that this should be otherwise (e.g. when relating a Spatial Thing to its geometry). | <ul><li>- [x] </li></ul>
+
+#### How-to
+
+The following relationships were identified, and encoded into the ontology:
+1. Addresses are within Localities.
+2. Addresses touch Street Localities.
+3. Street Localities are within Localities.
+4. Localities link to GeoNames states.
+
+#### To-do
+
+These relationships are currently not typed using [GeoSPARQL](https://www.w3.org/TR/sdw-bp/#bib-GeoSPARQL) relationships, and should be. sfWithin for points within polygons, sfTouches for neighbour relationships.
+
+### [Best Practice 11: Provide information on the changing nature of spatial things](https://www.w3.org/TR/sdw-bp/#desc-changing-properties)
+
+#### Conformance statement
+Does not conform
+
+### [Best Practice 12: Expose spatial data through 'convenience APIs'](https://www.w3.org/TR/sdw-bp/#convenience-apis)
+
+#### Conformance statement
+Conforms
+
+### [Best Practice 13: Include spatial metadata in dataset metadata](https://www.w3.org/TR/sdw-bp/#spatial-info-dataset-metadata)
+
+#### Conformance statement
+Does not conform
+
+#### To-do
+
+Need to assert spatial metadata in the dataset ontology. Things like geo:hasGeometry could be used in the ontology to define Australia in Geonames as the extent, for example. Perhaps the DCAT revision will provide some guidance on how best to do this.
+
+### [Best Practice 14: Describe the positional accuracy of spatial data](https://www.w3.org/TR/sdw-bp/#desc-accuracy)
+
+#### Conformance statement
+Does not conform
+
+#### To-do
+
+Need to include geocode reliability to be added to the ontology, and to the data set. It further requires a code list to facilitate discovery of meaning.
