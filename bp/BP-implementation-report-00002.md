@@ -7,26 +7,26 @@ Geocoded National Address File (G-NAF) Linked Data Demonstrator
 
 ### About
 
-The [G-NAF Linked Data Demonstrator](http://gnafld.net) is a test [Linked Data](https://en.wikipedia.org/wiki/Linked_data) [API](https://en.wikipedia.org/wiki/Application_programming_interface) delivering data from [G-NAF, the Geocoded National Address File](https://www.psma.com.au/products/g-naf).
+The [G-NAF Linked Data Demonstrator](http://gnafld.net) is a test [Linked Data](https://en.wikipedia.org/wiki/Linked_data) [API](https://en.wikipedia.org/wiki/Application_programming_interface) delivering data from [G-NAF, the Australian Geocoded National Address File](https://www.psma.com.au/products/g-naf).
 
-It is being developed through a joint initiative between [PSMA Australia](https://www.psma.com.au) and [Geoscience Australia](https://www.ga.gov.au) to test the application of [Linked Data](https://en.wikipedia.org/wiki/Linked_data) technologies to large spatial datasets. The hope is that [Linked Data](https://en.wikipedia.org/wiki/Linked_data) will allow new applications of data presentation, access, mining and sharing that improve Australia've value from [G-NAF](https://www.psma.com.au/products/g-naf).
+It is being developed through a joint initiative between [PSMA Australia](https://www.psma.com.au) and [CSIRO](https://csiro.au) to test the application of Linked Data technologies to large spatial datasets. The hope is that Linked Data will allow new applications of data presentation, access, mining and sharing that improve Australia've value from the G-NAF.
 
 ### The Linked Data API
 
-The [API](https://en.wikipedia.org/wiki/Application_programming_interface) is a minimal implementation of a RESTful HTTP [API](https://en.wikipedia.org/wiki/Application_programming_interface) that allows portions of the [G-NAF](https://www.psma.com.au/products/g-naf) dataset to be delivered as human- or machine-readable web resources (web pages and code files). It essentially presents endpoints (URIs- web addresses) for address-related items according to various conceptual models. Conceptual models such as the [ISO's 19160-1:2015 -- Addressing](https://www.iso.org/standard/61710.html) are related to the elements in [G-NAF](https://www.psma.com.au/products/g-naf) through deliberate mappings which are made in the Model portion of this [API](https://en.wikipedia.org/wiki/Application_programming_interface) codebase. The [API](https://en.wikipedia.org/wiki/Application_programming_interface) then extracts data for its various models from the [G-NAF](https://www.psma.com.au/products/g-naf) database using SQL queries that this [API](https://en.wikipedia.org/wiki/Application_programming_interface) applied to a local copy of [G-NAF](https://www.psma.com.au/products/g-naf). It then uses HTML templates or in-memory graphs to generate Views for human or machine reading.
+The API is a minimal implementation of a RESTful HTTP API that allows portions of the G-NAF dataset to be delivered as human- or machine-readable web resources (web pages and code files). It essentially presents endpoints (URIs; web addresses) for G-NAF items according to various conceptual models. Models such as the [ISO's 19160-1:2015 -- Addressing](https://www.iso.org/standard/61710.html) are related to the elements in G-NAF through deliberate mappings made in the *model* portion of this API's codebase. On web address request, the API extracts data for its various models from the G-NAF database using SQL queries. It then uses HTML templates or in-memory RDF graphs to generate *views* for human or machine reading.
 
-The following programming languages and tools are used by this [API](https://en.wikipedia.org/wiki/Application_programming_interface):
+The following programming languages and tools are used by this API:
 
-* Python Linked Data - a tiny [Python](https://www.python.org) module implementing [Linked Data](https://en.wikipedia.org/wiki/Linked_data) [API](https://en.wikipedia.org/wiki/Application_programming_interface) restrictions on [Flask](http://flask.pocoo.org/)
-* [Python Flask framework](http://flask.pocoo.org/) - the lower-level HTTP framework used by this [API](https://en.wikipedia.org/wiki/Application_programming_interface)
-* [Apache web server](https://en.wikipedia.org/wiki/Apache_HTTP_Server) - the web server that allows communication with [Flask](http://flask.pocoo.org/) over the Internet
-* [Postgres database](https://en.wikipedia.org/wiki/PostgreSQL) - an open source relational database containing the data of [G-NAF](https://www.psma.com.au/products/g-naf).
+* [pyLDAPI](https://pypi.org/project/pyldapi/) - a tiny [Python](https://www.python.org) module implementing Linked Data-style functionality on top of the commonly used [Flask](http://flask.pocoo.org/) HTTP framework
+* [Python Flask framework](http://flask.pocoo.org/) - the lower-level Python HTTP framework used by this API
+* [Apache web server](https://en.wikipedia.org/wiki/Apache_HTTP_Server) - the web server that allows communication with [Flask](http://flask.pocoo.org/) over HTTP
+* [Postgres database](https://en.wikipedia.org/wiki/PostgreSQL) - an open source relational database containing the data of the [G-NAF](https://www.psma.com.au/products/g-naf).
 
 ### Documentation root
-http://gnafld.net
+<http://linked.data.gov.au/dataset/gnaf>
 
 ### Example
-http://gnafld.net/address/GAACT714845933
+<http://linked.data.gov.au/address/GAACT714845933>
 
 ## Best Practice Scorecard
 
@@ -40,7 +40,13 @@ Test | Conforms
 Check that within the data [Spatial Things](https://www.w3.org/TR/sdw-bp/#dfn-spatial-thing), such as countries, regions and people, are referred to by HTTP URIs or by short identifiers that can be converted to HTTP URIs. Ideally dereferencing the URIs should return the [Spatial Thing](https://www.w3.org/TR/sdw-bp/#dfn-spatial-thing), however, they have value as globally scoped variables whether they dereference or not | <ul><li>- [x] </li></ul>
 
 #### How-to
-A set of spatial objects was identified during Ontology design (e.g., Address, Street, Locality). Registers were created to identify each instance of the resulting classes. Each register was assigned a unique URI pattern following the rules defined by the [Australian Government Linked Data Working Group](https://linked.data.gov.au) [URI Guidelines](https://github.com/AGLDWG/TR/wiki/URI-Guidelines-for-publishing-linked-datasets-on-data.gov.au-v0.1). In order to ensure persistence, (write something)
+The Linked Data API version of the G-NAF was assigned a URI for identify it, <http://linked.data.gov.au/dataset/gnaf> and, further, spatial objects classes were identified within the dataset according to two main ontologies. One of these ontologies was a seperately published [OWL](https://www.w3.org/2001/sw/wiki/OWL) version of the [ISO's 19160-1:2015 -- Addressing](https://www.iso.org/standard/61710.html), see <http://linked.data.gov.au/def/iso19160-1-address>; the other the G-NAF Ontology <http://linked.data.gov.au/def/gnaf> that was created specifically for this dataset.
+
+Registers of the main items within the G-NAF ontology (e.g. Address, Street, Locality) were created to give access to instances of each class. Each register was assigned a unique URI (e.g. <http://linked.data.gov.au/dataset/gnaf/address/> for Address) and each individual within each Register was assigned a URI based on the Register, e.g. Address 'GAACT714845933' was assigned the URI <http://linked.data.gov.au/dataset/gnaf/address/GAACT714845933>.
+
+Finally, the most significant items classes in the datasets (Address, StreetLocality) were also assigned a second 'top-level' register URI that was not bound to the dataset to highlight the class of items. The URI for the Address register is <http://linked.data.gov.au/address/> which means there are two registers for Address objects resolving to the same API endpoint.
+
+These URIs were all assigned following rules defined by the [Australian Government Linked Data Working Group](http://linked.data.gov.au) which are articulated in their [URI Guidelines](http://linked.data.gov.au/governance).
 
 ### [Best Practice 2: Make your spatial data indexable by search engines](https://www.w3.org/TR/sdw-bp/#indexable-by-search-engines)
 
@@ -54,11 +60,13 @@ Using a Web browser, check that you can browse to human-readable HTML pages for 
 
 #### Evidence
 
-In this implementation, each register is indexable. search [GAACT714845933 in Google](https://www.google.com.au/search?q=GAACT714845933). However, it has not been indexed beyond the first page of the register, so only 50 records can be searched this way at the moment. The register is paginated, and can be browsed or crawled in its entirety.
+In this API implementation, each item class register is indexable by search engined such as Google. [A search for an address key, such as 'GAACT714845933' using Google](https://www.google.com.au/search?q=GAACT714845933) yields multiple 'hits' on the API's web pages; both the Address register containing a link to Address 'GAACT714845933' and also the item page for Address 'GAACT714845933' itself. However, the API has not been indexed beyond the first page of the register, so only 50 records can be searched this way at the moment. The register is paginated (there are 13.5M addresses), and can be browsed or crawled in its entirety by link-following clients.
+
+Note that cached Google results currently refer to a previous version of the API which will eventually be updated.
 
 #### How-to
 
-(write something)
+Each resource defined within the G-NAF dataset (the dataset itself; registers of items; individual items) is delvered online in both RDF and HTMl, as per [Linked Data bast practice](https://www.w3.org/TR/ld-bp/). The HTML delivery ensures that current search engines can 'see' the resources and RDF ensures that Linked Data bots can.
 
 ### [Best Practice 3: Link resources together to create the Web of Data](https://www.w3.org/TR/sdw-bp/#linking)
 
