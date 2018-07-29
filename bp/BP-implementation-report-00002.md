@@ -66,7 +66,7 @@ Note that cached Google results currently refer to a previous version of the API
 
 #### How-to
 
-Each resource defined within the G-NAF dataset (the dataset itself; registers of items; individual items) is delvered online in both RDF and HTMl, as per [Linked Data bast practice](https://www.w3.org/TR/ld-bp/). The HTML delivery ensures that current search engines can 'see' the resources and RDF ensures that Linked Data bots can.
+Each resource defined within the G-NAF dataset (the dataset itself; registers of items; individual items) is delvered online in both RDF and HTML, as per [Linked Data bast practice](https://www.w3.org/TR/ld-bp/). The HTML delivery ensures that current search engines can 'see' the resources and RDF ensures that Linked Data bots can.
 
 ### [Best Practice 3: Link resources together to create the Web of Data](https://www.w3.org/TR/sdw-bp/#linking)
 
