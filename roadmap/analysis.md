@@ -77,7 +77,7 @@ Relevant developments elsewhere
 - [TopoJSON](https://github.com/topojson/topojson)
 - [GeoHash](http://geohash.org)
 - (not a standard: [GPX](http://www.topografix.com/gpx.asp)
--	[MapML](https://maps4html.github.io/MapML/spec/)
+-	[Map Markup Language (MapML)](https://maps4html.github.io/MapML/spec/)
 - [CityJSON](http://www.cityjson.org/)
 -	[WebVMT (Video Map Tracks)](https://w3c.github.io/sdw/proposals/geotagging/webvmt/)
 - OMLite (link? I only have a link to a [paper](https://content.iospress.com/articles/semantic-web/sw214))
@@ -90,6 +90,7 @@ _This is the second attempt at grouping. For earlier attempt see github history.
 - relevant parts of SensorThingsAPI: Sensing, Tasking (?)
 - APIs based on the Generic Sensor API
 - relevant Web of Things work
+- [GeoWeb input forms in MapML](https://github.com/opengeospatial/D012-MapML_Engineering_Report/issues/26)
 - to synchronise a device's location with sensor data
 
 ### Group 2: represent spatial data
@@ -107,6 +108,7 @@ _This is the second attempt at grouping. For earlier attempt see github history.
   - GeoRSS
   - KML
   - Basic geo
+  - MapML ([example](https://geogratis.gc.ca/api/beta/vectors/canvec/50k/features/?zoom=18&xmin=-75.11672187853553&ymin=45.47833545860482&xmax=-75.07651767420697&ymax=45.495476138097445&projection=WGS84&entry-type=full&alt=xml&max-results=5))
 - To represent sensor data
   - SOSA / SSN
   - O&M
@@ -140,7 +142,7 @@ _This is the second attempt at grouping. For earlier attempt see github history.
   - DCAT
   - Geo-DCAT-AP
 - to present a view
-  - MapML
+  - MapML ([example](http://geogratis.gc.ca/api/beta/mapml/))
   - WMS
   - WMTS
 - to provide access
