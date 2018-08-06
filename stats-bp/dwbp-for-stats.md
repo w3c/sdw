@@ -2,6 +2,14 @@ This note considers how the [Data on the Web Best Practices](https://www.w3.org/
 
 
 ## Best Practice 1: Provide metadata
+
+what metadata is most important for statistical data?
+
+https://joinup.ec.europa.eu/solution/statdcat-application-profile-data-portals-europe
+https://www.w3.org/2017/dxwg/wiki/Main_Page
+http://ec.europa.eu/eurostat/data/metadata/metadata-structure
+https://gss.civilservice.gov.uk/guidances/quality/quality-guidelines/#measuring-and-reporting-statistical-quality
+
 ## Best Practice 2: Provide descriptive metadata
 ## Best Practice 3: Provide structural metadata
 
@@ -21,10 +29,15 @@ This is an issue for any type of data, and the question is whether statistical d
     </com:Annotation>
 
 
+http://dublincore.org/documents/dcmi-terms/#terms-license
+
+
 ## Best Practice 5: Provide data provenance information
 
 SDMX covers this with a number of fields - again, by using free text.
 
+which aspects of provenance are most important in a statistical context?
+Suitability of PROV? https://www.w3.org/TR/prov-o/
 
 ## Best Practice 6: Provide data quality information
 
@@ -37,6 +50,12 @@ This is already foreseen in SDMX, where data quality is covered by a number of f
 
 
 The use of version indicators is already a common practice for some organisations. However, I'm not sure about version history ("how the dataset typically changes from version to version and how any two specific versions differ.").
+
+Approach to data revisions: at individual observation level, and/or at whole dataset level.
+
+Corrections or updates to individual estimates as more data comes in.  Also more comprehensive approaches to revision, for example in the series of estimates of GDP that most countries product
+
+Versioning of codelists, eg regular updates to classification schemes such as SIC or SITC
 
 
 ## Best Practice 9: Use persistent URIs as identifiers of datasets
@@ -78,11 +97,18 @@ https://github.com/linked-statistics
 
 The same applies to the conversion of tabular data into RDF. Here, however, the conversion usually requires human intervention because of the lack of standardised structures in the source data.
 
+* CSV on the Web approach.
+* Simple CSV
+* JSON-stat, or other JSON formats
+* 'Tidy data'
+* ...
+
 ## Best Practice 15: Reuse vocabularies, preferably standardized ones
 
 
 Here we already have SDMX and RDF Data Cube. For CSV or other tabular data, the usual issue is that the semantics of the "columns" is not explicit. The specs of the W3C CSV on the Web WG could help address this problem.
 
+Process for agreeing and governance of re-usable codelists and classification schemes between organisations
 
 ## Best Practice 16: Choose the right formalization level
 
@@ -98,6 +124,10 @@ This seems to be already a common practice for statistical data.
 
 
 The "data slice" mechanism may be a way of addressing this. The question is whether it is not covering some use cases.
+
+* filtering of datasets, 'dicing' as well as a pure slice
+* use of hierarchical codelists for subsetting (I just want data zones in Glasgow, or I just want trade data for agricultural products)
+* create subsets based on values of observations (as well as on values of dimensions) - eg find the most deprived areas, or find areas with atmospheric pollutoin measurements above some threshold.
 
 
 ## Best Practice 19: Use content negotiation for serving data available in multiple formats
@@ -123,6 +153,7 @@ This is usually in the mandate of statistical offices.
 
 This is not a common practice, as far as I know.
 
+UK government guidance for 'data markers' (based on Eurostat guidance?) https://gss.civilservice.gov.uk/policy-store/symbols-in-tables-definitions-and-help/
 
 ## Best Practice 23: Make data available through an API
 ## Best Practice 24: Use Web Standards as the foundation of APIs
