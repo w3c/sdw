@@ -12,6 +12,7 @@ Please note that the Interest Group follows in the footsteps of the <a href="htt
 
 | Name | URL |
 | --- | --- |
+| Group homepage | https://www.w3.org/2017/sdwig/ |
 | SDW Strategy Funnel | https://github.com/w3c/strategy/projects/2?card_filter_query=label%3Ageospatial |
 | SDW Projects | https://github.com/w3c/sdw/projects |
 | OGC Technology Trends | https://github.com/opengeospatial/OGC-Technology-Trends/ |
