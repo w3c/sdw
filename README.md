@@ -16,6 +16,7 @@ Please note that the Interest Group follows in the footsteps of the <a href="htt
 | SDW Strategy Funnel | https://github.com/w3c/strategy/projects/2?card_filter_query=label%3Ageospatial |
 | SDW Projects | https://github.com/w3c/sdw/projects |
 | OGC Technology Trends | https://github.com/opengeospatial/OGC-Technology-Trends/ |
+| Intro for new members | https://github.com/w3c/sdw/blob/gh-pages/memberwelcome.md | 
 
 ## Folder structure
 
