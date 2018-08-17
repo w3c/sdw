@@ -1,13 +1,11 @@
-The following is a list of OGC standards wich are well-deployed in the geospatial community but less so on the Web aka 'not yet Web-friendly enough'. In the roadmap I listed these under 'Features not covered by ongoing work' section, for now (we might consider naming this section differently or creating a new one). 
+The following is a list of OGC standards wich are well-deployed in the geospatial community but less so on the Web, or in other words 'not yet Web-friendly enough'. In the [roadmap][2] these are listed under the 'Features not covered by ongoing work' section, for now (we might consider naming this section differently or creating a new one). 
 
-(There are many more OGC standards, but most of these are not especially meant to be used on the web. I'm not listing, for example, standards for data exchange by download/import/export or standards that are conceptual models.)  
+(There are many more OGC standards, but most of these are not meant to be used on the web directly. Not listed are, for example, standards for data exchange by download/import/export or standards that are conceptual models.)  
 
-'Webby' = following the fundamental concepts of the [architecture of the Web][1] 
-
-Criteria in general for ending up on this list: 
-- It uses http only as a transport protocol. In contrast, standards which use http as an interface are considered 'Webby'.
-- It's been replaced with something that's designed to be more web friendly.
-- It's too complicated to be used in a Web context.
+Criteria in general for a standard ending up on this list: 
+- *It needs modernization to fully support and follow the fundamental concepts of current web architectures*. For example, it uses http only as a transport protocol. In contrast, standards which use http as an interface are considered 'Webby'.
+- *It's considered too complex for most non-GI-experts*. This complexity often stems from the fact that it covers a wide range of use cases, many of which are not required by non-GI-experts. 
+- *Its not web-developer-friendly*, i.e. does not meet the expectation of many Web developers. Note that this is is different criterium from the 'too complex' one; for example, it's about developers preferring encodings such as JSON to XML/GML. What's 'developer-friendly' can be a trend sensitive thing.
 
 ## Web Map Service (WMS)
 Rationale: Using http only as a transport protocol, sending XML messages back and forth.
@@ -40,7 +38,7 @@ Rationale: Using http only as a transport protocol, sending XML messages back an
 Rationale: Using http only as a transport protocol, sending XML messages back and forth.
 
 ## Observations and Measurements GML encoding
-Rationale: Superseded by SSN.
+Rationale: not web-developer-friendly. 
 
 ## Timeseries (Profile of Observations and Measurements and the XML Encoding)
 Rationale: The XML encoding is too complex and verbose - not lightweight enough to conduct, for example, enhanced (near) real-time operations involving moving objects, via the Web.
@@ -49,9 +47,10 @@ Rationale: The XML encoding is too complex and verbose - not lightweight enough 
 Rationale: The XML encoding is too complex and verbose - not lightweight enough to conduct, for example, enhanced (near) real-time operations involving moving objects, via the Web.
 
 ## IndoorGML
-Rationale: GML encoding is not web friendly. A JSON encoding could be created from the conceptual model, but we suspect it’s currently too complicated for that. This standard is potentially relevant for mobile web applications, though.
+Rationale: Too complex and the GML encoding is not web-developer friendly. A JSON encoding might be created from the conceptual model, but people have indicated it may currently be too complicated for that. This standard is potentially relevant for mobile web applications, though.
 
 ## CityGML
-Rationale: GML encoding is not web friendly.
+Rationale: GML encoding is not web-developer friendly.
   
 [1]: https://www.w3.org/TR/webarch/
+[2]: https://w3c.github.io/web-roadmaps/sdw/
