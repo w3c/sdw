@@ -1,4 +1,4 @@
-The following is a list of OGC standards wich are well-deployed in the geospatial community but less so on the Web, or in other words 'not yet Web-friendly enough'. In the Spatial Data on the Web [roadmap][2] these are listed under the 'Features not covered by ongoing work' section, for now (we might consider naming this section differently or creating a new one). 
+hThe following is a list of OGC standards which are well-deployed in the geospatial community but less so on the Web, or in other words 'not yet Web-friendly enough'. In the Spatial Data on the Web [roadmap][2] these are listed under the 'Features not covered by ongoing work' section, for now (we might consider naming this section differently or creating a new one). 
 
 (There are many more OGC standards, but most of these are not meant to be used on the web directly. In other words, not all standards need to be "Webby". Not listed are, for example, standards for data exchange by download/import/export or standards that are conceptual models.)  
 
