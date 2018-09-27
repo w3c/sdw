@@ -3,8 +3,8 @@
   <head>
     <meta charset='utf-8'>
     <title>WebVMT: The Web Video Map Tracks Format</title>
-    <script 
-     src='https://www.w3.org/Tools/respec/respec-w3c-common' 
+    <script
+     src='https://www.w3.org/Tools/respec/respec-w3c-common'
      class='remove'></script>
     <script class='remove'>
       var respecConfig = {
@@ -333,7 +333,7 @@ MAP {
         <section id='commentblock'>
           <h2>Comment Block</h2>
           <p>
-            Comment block format is identical to <a data-cite="WEBVTT#introduction-comments">WebVTT</a>.
+            Comment block format is identical to <a data-cite='WEBVTT#introduction-comments'>WebVTT</a>.
           </p>
           <pre class='nohighlight example' title='Tower Landmarks VMT'>
 WEBVMT
@@ -407,7 +407,7 @@ This line is also part of the comment
         <section id='cssstyleblock'>
           <h2>CSS Style Block</h2>
           <p>
-            Style block format is similar to <a data-cite="WEBVTT#styling">WebVTT</a>.
+            Style block format is similar to <a data-cite='WEBVTT#styling'>WebVTT</a>.
           </p>
           <p>
             CSS style sheets can also be embedded in WebVMT files themselves. Style blocks are placed after any headers but before the first cue, and start with the line "STYLE".
@@ -453,7 +453,7 @@ NOTE Style blocks may not appear after the first cue
       <section id='animation'>
         <h2>Animation</h2>
         <p>
-          Map annotations may be animated using an &lt;animate&gt; element, in a similar way to SVG.
+          Map annotations may be animated using an &lt;animate&gt; element, in a similar way to <a data-cite='SVG11'>SVG</a>.
         </p>
         <p>
           Map paths have additional properties to other annotations including a unique identifier, and a drawing animation which can be controlled separately for distance calculation purposes.
@@ -563,10 +563,10 @@ NOTE Drone ends at (51.0070, -0.0020)
         <p>
           Embedded YouTube content can be displayed using an &lt;iframe&gt; element, specifying the unique 10-character content identifier for the posted video, using the official <a href="https://developers.google.com/youtube/iframe_api_reference">YouTube IFrame API</a> with the Javascript API enabled.
         </p>
-          
+
         <section id='helloyoutube'>
           <h2>Hello YouTube</h2>
-          <p>          
+          <p>
             A child &lt;track&gt; pseudo-element within the &lt;iframe&gt; links it with WebVMT using the same syntax as for the &lt;video&gt; DOM element.
           </p>
           <pre class='nohighlight example' title='WebVMT YouTube HTML'>
@@ -604,10 +604,601 @@ TIMELINE {
         </section>
       </section>
     </section>
+    <section class='informative' id='datamodel'>
+      <h2>Data Model</h2>
+      <p class='ednote'>
+        The data model of WebVMT consists of three key elements: the video viewport, cues, and the map viewport. The video viewport is the rendering area for video output. Cues are containers consisting of a set of metadata lines. The map viewport is the rendering area for metadata lines, i.e. graphical annotations overlaid on an online map.
+      </p>
+      <section class='informative' id='overview'>
+        <h2>Overview</h2>
+        <p>
+          The WebVMT file is a container file for chunks of data that are time-aligned with a video or audio resource. It can therefore be regarded as a serialisation format for time-aligned data.
+        </p>
+        <p>
+          A WebVMT file starts with a header and then contains a series of data blocks. If a data block has a start time, it is called a WebVMT cue. A comment is another kind of data block.
+        </p>
+        <p>
+          A WebVMT file carries cues which are identified as <a data-cite='HTML51/semantics-embedded-content.html#attr-valuedef-track-kind-metadata'>metadata</a> and specified in the <a data-cite='HTML51/semantics-embedded-content.html#element-attrdef-track-kind'>kind</a> attribute of the <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'>track</a> element in the <a data-cite='HTML51'>HTML</a> specification.
+        </p>
+        <p>
+          The data kind of a WebVMT file is externally specified, such as in a HTML file’s <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'>track</a> element. The environment is responsible for interpreting the data correctly.
+        </p>
+        <p>
+          A <a>WebVMT cue</a> is rendered as an overlay on top of a metadata viewport.
+        </p>
+      </section>
+      <section id='webvmtcues'>
+        <h2>WebVMT Cues</h2>
+        <p>
+          A <dfn>WebVMT cue</dfn> is a <a data-cite='HTML51/semantics-embedded-content.html#cue'>text track cue</a> with an optional <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-end-time'>end time</a> and that additionally consists of the following:
+        </p>
+        <p>
+        <dt>
+          A <dfn>cue text</dfn>
+        </dt>
+          <dd>
+            The raw text of the cue which is interpreted as time-aligned metadata, and rules for its interpretation.
+          </dd>
+        </p>
+      </section>
+      <section id='webvmtmap'>
+        <h2>WebVMT Map</h2>
+        <p>
+          A <dfn>WebVMT map</dfn> is the map viewport and provides a rendering area for <a>WebVMT cue</a>s.
+        </p>
+      </section>
+    </section>
+    <section id='syntax'>
+      <h2>Syntax</h2>
+      <section id='webvmtfilestructure'>
+        <h2>WebVMT File Structure</h2>
+        <p>
+          A <dfn>WebVMT file</dfn> must consist of a <a>WebVMT file body</a> encoded as <a data-cite='RFC3629'>UTF-8</a> and labeled with the <a data-cite='HTML51/infrastructure.html#mime-type'>MIME type</a> <code>text/vmt</code>.
+        </p>
+        <p>
+          A <dfn>WebVMT file body</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              An optional U+FEFF BYTE ORDER MARK (BOM) character.
+            </li>
+            <li>
+              The string "<code>WEBVMT</code>" (U+0057 LATIN CAPITAL LETTER W, U+0045 LATIN CAPITAL LETTER E, U+0042 LATIN CAPITAL LETTER B, U+0056 LATIN CAPITAL LETTER V, U+004D LATIN CAPITAL LETTER M, U+0054 LATIN CAPITAL LETTER T).
+            </li>
+            <li>
+              Optionally, either a U+0020 SPACE character or a U+0009 CHARACTER TABULATION (tab) character followed by any number of characters that are not U+000A LINE FEED (LF) or U+000D CARRIAGE RETURN (CR) characters.
+            </li>
+            <li>
+              Two or more <a>WebVMT line terminator</a>s to terminate the line with the file magic and separate it from the rest of the body.
+            </li>
+            <li>
+              The following components, in any order, separated from each other by one or more <a>WebVMT line terminator</a>s.
+            </li>
+            <ul>
+              <li>
+                A single <a>WebVMT media definition block</a>.
+              </li>
+              <li>
+                A single <a>WebVMT map initialisation block</a>.
+              </li>
+              <li>
+                Zero or more <a>WebVMT style block</a>s and <a>WebVMT comment block</a>s separated from each other by one or more <a>WebVMT line terminator</a>s.
+              </li>
+            </ul>
+            <li>
+              Zero or more <a>WebVMT line terminator</a>s.
+            </li>
+            <li>
+              Zero or more <a>WebVMT cue block</a>s and <a>WebVMT comment block</a>s separated from each other by one or more <a>WebVMT line terminator</a>s.
+            </li>
+            <li>
+              Zero or more <a>WebVMT line terminator</a>s.
+            </li>
+          </ol>
+        </p>
+        <p>
+          A <dfn>WebVMT line terminator</dfn> consists of one of the following:
+          <ul>
+            <li>
+              A U+000D CARRIAGE RETURN U+000A LINE FEED (CRLF) character pair.
+            </li>
+            <li>
+              A single U+000A LINE FEED (LF) character.
+            </li>
+            <li>
+              A single U+000D CARRIAGE RETURN (CR) character.
+            </li>
+          </ul>
+        </p>
+        <p>
+          A <dfn>WebVMT media definition block</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              The string "<code>MEDIA</code>" (U+004D LATIN CAPITAL LETTER M, U+0045 LATIN CAPITAL LETTER E, U+0044 LATIN CAPITAL LETTER D, U+0049 LATIN CAPITAL LETTER I, U+0041 LATIN CAPITAL LETTER A).
+            </li>
+            <li>
+              Zero or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+            <li>
+              A <a>WebVMT media settings list</a>.
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          A <dfn>WebVMT map initialisation block</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              The string "<code>MAP</code>" (U+004D LATIN CAPITAL LETTER M, U+0041 LATIN CAPITAL LETTER A, U+0050 LATIN CAPITAL LETTER P).
+            </li>
+            <li>
+              Zero or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+            <li>
+              A <a>WebVMT map settings list</a>.
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+          </ol>
+        </p>
+        <p class='note'>
+          The <a>WebVMT map initialisation block</a> defines the state of the <a>WebVMT map</a> before any <a>WebVMT cue</a>s are active.
+        </p>
+        <p>
+          A <dfn>WebVMT style block</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              The string "<code>STYLE</code>" (U+0053 LATIN CAPITAL LETTER S, U+0054 LATIN CAPITAL LETTER T, U+0059 LATIN CAPITAL LETTER Y, U+004C LATIN CAPITAL LETTER L, U+0045 LATIN CAPITAL LETTER E).
+            </li>
+            <li>
+              Zero or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+            <li>
+              Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN). The string represents a CSS style sheet; the requirements given in the relevant <a data-cite="CSS22">CSS</a> specifications apply.
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          A <dfn>WebVMT cue block</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              Optionally, a <a>WebVMT cue identifier</a> followed by a <a>WebVMT line terminator</a>.
+            </li>
+            <li>
+              <a>WebVMT cue timings</a>.
+            <li>
+              Zero or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+            <li>
+              The <dfn>WebVMT cue payload</dfn> consists of a <a>WebVMT metadata text</a>, but it must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+          </ol>
+        </p>
+        <p class='note'>
+          A <a>WebVMT cue block</a> corresponds to one piece of time-aligned data in the <a>WebVMT file</a>, for example one map annotation. The <a>WebVMT cue payload</a> is the data associated with the <a>WebVMT cue</a>.
+        </p>
+        <p>
+          A <dfn>WebVMT cue identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
+        </p>
+        <p>
+          A <a>WebVMT cue identifier</a> must be unique amongst all the <a>WebVMT cue identifier</a>s of all <a>WebVMT cue</a>s of a <a>WebVMT file</a>.
+        </p>
+        <p class='note'>
+          A <a>WebVMT cue identifier</a> can be used to reference a specific cue, for example from script or CSS.
+        </p>
+        <p>
+          The <dfn>WebVMT cue timings</dfn> part of a <a>WebVMT cue block</a> consists of the following components, in the order given:
+        </p>
+        <ol>
+          <li>
+            A <a>WebVMT timestamp</a> representing the start time offset of the cue. The time represented by this <a>WebVMT timestamp</a> must be greater than or equal to the start time offsets of all previous cues in the file.
+          </li>
+          <li>
+            One or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+          </li>
+          <li>
+            The string "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+          </li>
+          <li>
+            One or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+          </li>
+          <li>
+            Optionally, a <a>WebVMT timestamp</a> representing the end time offset of the cue. The time represented by this <a>WebVMT timestamp</a> must be greater than or equal to the start time offset of the cue.
+          </li>
+        </ol>
+        <p class='note'>
+          A <a>WebVMT cue block</a> without an end offset indicates that the <a>WebVMT cue block</a> end offset is equal to the duration of the <a data-cite='HTML51/semantics-embedded-content.html#media-timeline'>media timeline</a>. The duration value may be unknown, for example during media streaming.
+        </p>
+        <p class='note'>
+          The <a>WebVMT cue timings</a> give the start and end offsets of the <a>WebVMT cue block</a>. Different cues can overlap. Cues are always listed ordered by their start time.
+        </p>
+        <p>
+          A <dfn>WebVMT timestamp</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              Optionally (required if <i>hours</i> is non-zero):
+              <ol>
+                <li>
+                  Two or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>, representing the <i>hours</i> as a base ten integer.
+                </li>
+                <li>
+                  A U+003A COLON character (:).
+                </li>
+              </ol>
+            </li>
+            <li>
+              Two <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>, representing the <i>minutes</i> as a base ten integer in the range 0 ≤ <i>minutes</i> ≤ 59.
+            </li>
+            <li>
+              A U+003A COLON character (:).
+            </li>
+            <li>
+              Two <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>, representing the <i>seconds</i> as a base ten integer in the range 0 ≤ <i>seconds</i> ≤ 59.
+            </li>
+            <li>
+              A U+002E FULL STOP character (.).
+            </li>
+            <li>
+              Three <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>, representing the thousandths of a second <i>seconds-frac</i> as a base ten integer.
+            </li>
+          </ol>
+        </p>
+        <p class='note'>
+          A <a>WebVMT timestamp</a> is always interpreted relative to the <a data-cite='HTML51/semantics-embedded-content.html#current-position'>current playback position</a> of the media data that the <a>WebVMT file</a> is to be synchronized with.
+        </p>
+        <p>
+          A <dfn>WebVMT comment block</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              The string "<code>NOTE</code>" (U+004E LATIN CAPITAL LETTER N, U+004F LATIN CAPITAL LETTER O, U+0054 LATIN CAPITAL LETTER T, U+0045 LATIN CAPITAL LETTER E).
+            </li>
+            <li>
+              Optionally, the following components, in the order given:
+              <ol>
+                <li>
+                  Either:
+                  <ul>
+                    <li>
+                      A U+0020 SPACE character or U+0009 CHARACTER TABULATION (tab) character.
+                    </li>
+                    <li>
+                      A <a>WebVMT line terminator</a>.
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+                </li>
+              </ol>
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+          </ol>
+        </p>
+        <p class='note'>
+          A <a>WebVMT comment block</a> is ignored by the parser.
+        </p>
+      </section>
+      <section>
+        <h2>WebVMT Cue Payload</h2>
+        <p>
+          <dfn>WebVMT metadata text</dfn> consists of any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>. (In other words, any text that does not have two consecutive <a>WebVMT line terminator</a>s and does not start or end with a <a>WebVMT line terminator</a>.)
+        </p>
+        <p>
+          The string represents a <a data-cite='ECMA-404'>JSON text</a> for a <a>WebVMT command list</a>; the requirements given in the relevant JSON specifications apply.
+        </p>
+        <p>
+          <a>WebVMT metadata text</a> cues are only useful for scripted applications (e.g. using the <code>metadata</code> text track kind in a HTML text track).
+        </p>
+      </section>
+      <section>
+        <h2>WebVMT Media Settings</h2>
+        <p>
+          The <dfn>WebVMT media settings list</dfn> consists of zero or more of the following components, in any order, separated from each other by one or more U+0020 SPACE characters, U+0009 CHARACTER TABULATION (tab) characters, or </a>WebVMT line terminator</a>s, except that the string must not contain two consecutive <a>WebVMT line terminator</a>s. Each component must not be included more than once per <a>WebVMT media settings list</a> string.
+        </p>
+        <ul>
+          <li>
+            A <a>WebVMT media url setting</a>.
+          </li>
+          <li>
+            A <a>WebVMT media MIME type setting</a>.
+          </li>
+          <li>
+            A <a>WebVMT media start time setting</a>.
+          </li>
+        </ul>
+        <p class='note'>
+          The <a>WebVMT media settings list</a> gives details of the linked media file to which this file is synchronised. For example, it provides media encoding details, enables rapid indexing of archives and allows multiple <a>WebVMT file</a>s to be aggregated.
+        </p>
+        <p>
+          A <dfn>WebVMT media url setting</dfn> consists of the following components, in the order given:
+        </p>
+        <ol>
+          <li>
+            The string "<code>url</code>".
+          </li>
+          <li>
+            A U+003A COLON character (:).
+          </li>
+          <li>
+            A <a data-cite='HTML51/infrastructure.html#valid-url'>valid URL</a>. The string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+          </li>
+        </ol>
+        <p class='note'>
+          The <a>WebVMT media url setting</a> gives the <a data-cite='URL'>URL</a> of the media file associated with the <a>WebVMT file</a>. An empty string indicates that no associated media file exists.
+        </p>
+        <p class='note'>
+          For the purpose of resolving a URL in the MEDIA block of a WebVMT file, or any URLs in resources referenced from MEDIA blocks of a WebVMT file, if the URL’s scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve.
+        </p>
+        <p>
+          A <dfn>WebVMT media MIME type setting</dfn> consists of the following components, in the order given:
+        </p>
+        <ol>
+          <li>
+            The string "<code>mime-type</code>".
+          </li>
+          <li>
+            A U+003A COLON character (:).
+          </li>
+          <li>
+            A <a data-cite='HTML51/infrastructure.html#valid-mime-type'>valid MIME type</a>. The string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+          </li>
+        </ol>
+      </p>
+      <p class='note'>
+        The <a>WebVMT media MIME type setting</a> gives the <a data-cite='RFC2046'>MIME type</a> of the media file associated with the <a>WebVMT file</a>. An empty string indicates that no associated media file exists.
+      </p>
+      <p>
+        A <dfn>WebVMT media start time setting</dfn> consists of the following components, in the order given:
+      </p>
+      <ol>
+        <li>
+          The string "<code>start-time</code>".
+        </li>
+        <li>
+          A U+003A COLON character (:).
+        </li>
+        <li>
+          A <a data-cite='HTML51/infrastructure.html#valid-global-date-and-time-string'>valid global date and time string</a>. The string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+        </li>
+      </ol>
+    </p>
+    <p class='note'>
+      The <a>WebVMT media start time setting</a> gives the <a data-cite='HTML51/infrastructure.html#global-date-and-time'> global date and time</a> of the start time of the media file associated with the <a>WebVMT file</a>, which allows multiple <a>WebVMT file</a>s to be aggregated. An empty string indicates that no start time is associated, for example in the case of an animation.
+    </p>
+      </section>
+      <section>
+        <h2>WebVMT Map Settings</h2>
+        <p>
+          The <dfn>WebVMT map settings list</dfn> consists of zero or more of the following components, in any order, separated from each other by one or more U+0020 SPACE characters, U+0009 CHARACTER TABULATION (tab) characters, or </a>WebVMT line terminator</a>s, except that the string must not contain two consecutive <a>WebVMT line terminator</a>s. Each component must not be included more than once per <a>WebVMT map settings list</a> string.
+        </p>
+        <ul>
+          <li>
+            A <a>WebVMT map center setting</a>.
+          </li>
+          <li>
+            A <a>WebVMT map zoom setting</a>.
+          </li>
+        </ul>
+        <p>
+          A <dfn>WebVMT map center setting</dfn> consists of the following components, in the order given:
+        </p>
+        <ol>
+          <li>
+            The string "<code>center</code>".
+          </li>
+          <li>
+            A U+003A COLON character (:).
+          </li>
+          <li>
+            A <a>WebVMT location</a>.
+          </li>
+        </ol>
+      </p>
+      <p class='note'>
+        The <a>WebVMT map center setting</a> gives the location of the center of the map.
+      </p>
+      <p>
+        A <dfn>WebVMT map zoom setting</dfn> consists of the following components, in the order given:
+      </p>
+      <ol>
+        <li>
+          The string "<code>zoom-radius</code>".
+        </li>
+        <li>
+          A U+003A COLON character (:).
+        </li>
+        <ol>
+          <li>
+            One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+          </li>
+          <li>
+            Optionally:
+            <ol>
+              <li>
+                A U+002E DOT character (.).
+              </li>
+              <li>
+                One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </ol>
+      <p class='note'>
+        The <a>WebVMT map zoom setting</a> gives the minimum  radius in metres of the map visible.
+      </p>
+      <p>
+        A <dfn>WebVMT location</dfn> consists of the following components, in any order:
+      </p>
+      <ul>
+        <li>
+          A <a>WebVMT latitude setting</a>.
+        </li>
+        <li>
+          A <a>WebVMT longitude setting</a>.
+        </li>
+      </ul>
+      <p class='note'>
+        When interpreted as geographic co-ordinates, <a>WebVMT location</a> must be in the range -90..+90.
+      </p>
+      <p>
+        A <dfn>WebVMT latitude setting</dfn> consists of the following components, in the order given:
+      </p>
+      <ol>
+        <li>
+          The string "<code>lat</code>".
+        </li>
+        <li>
+          A U+003A COLON character (:).
+        </li>
+        <li>
+          A <a>WebVMT latitude</a>.
+        </li>
+      </ol>
+      <p>
+        A <dfn>WebVMT latitude</dfn> consists of the following components, in the order given:
+      </p>
+      <ol>
+        <li>
+          Optionally, a U+002D HYPHEN-MINUS character (-).
+        </li>
+        <li>
+          One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+        </li>
+        <li>
+          Optionally:
+          <ol>
+            <li>
+              A U+002E DOT character (.).
+            </li>
+            <li>
+              One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+            </li>
+          </ol>
+        </li>
+      </ol>
+      <p class='note'>
+        When interpreted as a number, a <a>WebVMT latitude</a> must be in the range -90..+90.
+      </p>
+      <p>
+        A <dfn>WebVMT longitude setting</dfn> consists of the following components, in the order given:
+      </p>
+      <ol>
+        <li>
+          The string "<code>lng</code>".
+        </li>
+        <li>
+          A U+003A COLON character (:).
+        </li>
+        <li>
+          A <a>WebVMT longitude</a>.
+        </li>
+      </ol>
+      <p>
+        A <dfn>WebVMT longitude</dfn> consists of the following components, in the order given:
+      </p>
+      <ol>
+        <li>
+          Optionally, a U+002D HYPHEN-MINUS character (-).
+        </li>
+        <li>
+          One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+        </li>
+        <li>
+          Optionally:
+          <ol>
+            <li>
+              A U+002E DOT character (.).
+            </li>
+            <li>
+              One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+            </li>
+          </ol>
+        </li>
+      </ol>
+      <p class='note'>
+        When interpreted as a number, a <a>WebVMT longitude</a> must be in the range -180..+180.
+      </p>
+    </section>
+    <section>
+      <h2>WebVMT Commands</h2>
+      <p>
+        A <dfn>WebVMT command list</dfn> consists of one or more of the following components in any order:
+      </p>
+      <p>
+        #### TO DO ####
+      </p>
+    </section>
+    <section>
+      <h2>Properties Of Cue Sequences</h2>
+      <section>
+        <h2>WebVMT File Using Only Nested Cues</h2>
+        <p>
+          A <a>WebVMT file</a> whose cues all comply with the following rule is said to be a <dfn>WebVMT file using only nested cues</dfn>.
+        </p>
+        <p>
+          Given any two cues <i>cue1</i> and <i>cue2</i> with start and end time offsets <i>(x1, y1)</i> and <i>(x2, y2)</i> respectively:
+          <ul>
+            <li>
+              either <i>cue1</i> lies fully within <i>cue2</i>, i.e. <i>x1 >= x2</i> and <i>y1 <= y2</i>;
+            </li>
+            <li>
+              or <i>cue1</i> fully contains <i>cue2</i>, i.e. <i>x1 <= x2</i> and <i>y1 >= y2</i>.
+            </li>
+          </ul>
+        </p>
+        <p>
+          The following example matches this definition:
+        </p>
+        <pre class='nohighlight example' title='Nested Cues'>
+            #### TO DO ####
+        </pre>
+        <p>
+          Notice how you can express the cues in this WebVMT file as a tree structure:
+        </p>
+        <ul>
+          <li>
+            #### TO DO ####
+          </li>
+        </ul>
+        <p>
+          If the file has cues that can’t be expressed in this fashion, then they don’t match the definition of a <a>WebVMT file using only nested cues</a>. For example:
+        </p>
+        <pre class='nohighlight example' title='Non-Nested Cues'>
+            #### TO DO ####
+        </pre>
+        <p>
+          In this ninety-second example, the two cues partly overlap, with the first ending before the second ends and the second starting before the first ends. This therefore is not a <a>WebVMT file using only nested cues</a>.
+        </p>
+      </section>
+    </section>
+  </section>
     <section class='informative' id='knownissues'>
       <h2>Known Issues</h2>
       <p>
-        This section captures issues which have been identified, but are not fully  documented in this explanatory specification.
+        This section captures issues which have been identified, but are not fully documented in this explanatory specification.
       </p>
       <p class='ednote'>
         As the specification develops, issues will be moved out of this section and included elsewhere in the document, until it is no longer needed and is completely removed.
