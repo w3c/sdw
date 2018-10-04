@@ -241,7 +241,7 @@ Afterwards, they upload the video to share their experience with the online comm
         WebVMT (Web Video Map Tracks) format is intended for marking up external map track resources, and its main use is for files synchronising video content with an annotated map presentation. Ideas have been borrowed from existing W3C formats, including WebVTT's HTML binding and its block and cue structures, and SVG's approach to drawing and animation, in order to display output on an electronic map.
       </p>
       <p>
-        The format mimics WebVTT's structure and syntax for video synchronisation, with cue details listed in an accessible text-based file linked to the &lt;video&gt; DOM element by a child &lt;track&gt; element in an HTML document.
+        The format mimics WebVTT's structure and syntax for video synchronisation, with cue details listed in an accessible text-based file linked to the <code>&lt;video&gt;</code> DOM element by a child <code>&lt;track&gt;</code> element in an HTML document.
       </p>
       <pre class='nohighlight example' title='WebVMT Basic HTML'>
 &lt;!doctype html&gt;
@@ -253,7 +253,7 @@ Afterwards, they upload the video to share their experience with the online comm
     &lt;!-- Video display --&gt;
     &lt;video controls width="640" height="360"&gt;
       &lt;source src="video.mp4" type="video/mp4"&gt;
-      &lt;track src="maptrack.vmt" kind="map" for="vmt-map" tileurl="https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY"&gt;
+      &lt;track src="maptrack.vmt" kind="metadata" for="vmt-map" tileurl="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?key=VALID_OSM_KEY"&gt;
       Your browser does not support the video tag.
     &lt;/video&gt;
     &lt;!-- Map display --&gt;
@@ -265,7 +265,7 @@ Afterwards, they upload the video to share their experience with the online comm
         The VMT (Video Map Track) format file, e.g. maptrack.vmt, contains the map cues associated with the video, e.g. video.mp4.
       </p>
       <p class='ednote'>
-        The meaning of 'for' and 'tileurl' attributes for user agents is an open question. Initial solutions can be built using Javascript, with existing map libraries such as Leaflet, though the vision is that future user agents will handle map rendering in the longer term.
+        The meaning of <code>for</code> and <code>tileurl</code> attributes for user agents is an open question. Initial solutions can be built using Javascript, with existing map libraries such as Leaflet, though the vision is that future user agents will handle map rendering in the longer term.
       </p>
       <section id='mapcues'>
         <h2>Map Cues</h2>
@@ -281,19 +281,23 @@ The end cue time may be omitted to signify the end time of the video, which may 
           <pre class='nohighlight example' title='Tower Bridge VMT'>
 WEBVMT
 
-TIMELINE {
-  uri: TowerBridge.mp4;
-  mime-type: video/mp4;
-}
+MEDIA
+url:TowerBridge.mp4
+mimetype:video/mp4
 
-MAP {
-  centre: 51.506 -0.076;
-  zoom: 16;
-}
+MAP
+lat:51.506,lng:-0.076
+zoomradius:250
 
 00:00:02.000 --&gt; 00:00:05.000
-&lt;moveto latLng="51.504362 -0.076153"/&gt;
-&lt;lineto latLng="51.506646 -0.074651"/&gt;
+{
+  'moveto': {
+    'lat': 51.504362, 'lng': -0.076153
+  },
+  'lineto': {
+    'lat': 51.506646, 'lng': -0.074651
+  }
+}
           </pre>
         </section>
         <section id='mappresentation'>
@@ -307,28 +311,34 @@ MAP {
           <pre class='nohighlight example' title='Tower of London VMT'>
 WEBVMT
 
-TIMELINE {
-  uri: ../movies/TowerOfLondon.webm;
-  mime-type: video/webm;
-}
+MEDIA
+url:../movies/TowerOfLondon.webm
+mimetype:video/webm
 
-MAP {
-  centre: 51.162 -0.143;
-  zoom: 10;
-}
+MAP
+lat:51.162,lng:-0.143
+zoomradius:500
 
 00:00:03.000 --&gt;
-&lt;panto latLng="51.508 -0.077" end="00:00:05.000"/&gt;
+{
+  'panto': {
+    'lat': 51.508, 'lng': -0.077, 'end': '00:00:05.000'
+  }
+}
 
 00:00:06.000 --&gt;
-&lt;zoom level="16"/&gt;
+{
+  'zoom': {
+    'radius': 250
+  }
+}
           </pre>
         </section>
       </section>
       <section id='comments'>
         <h2>Comments</h2>
         <p>
-          Comments are blocks that are preceded by a blank line, start with the word "NOTE" (followed by a space or newline), and end at the first blank line.
+          Comments are blocks that are preceded by a blank line, start with the word <code>NOTE</code> (followed by a space or newline), and end at the first blank line.
         </p>
         <section id='commentblock'>
           <h2>Comment Block</h2>
@@ -340,34 +350,53 @@ WEBVMT
 
 NOTE Associated video
 
-TIMELINE {
-  uri: /home/myuser/movies/TowerLandmarks.ogg;
-  mime-type: video/ogg;
-}
+MEDIA
+url:/home/myuser/movies/TowerLandmarks.ogg
+mimetype:video/ogg
 
 NOTE Map config
 
-MAP {
-  centre: 51.506 -0.076;
-  zoom: 16;
-}
+MAP
+lat:51.506,lng:-0.076
+zoomradius:250
 
 NOTE Tower Bridge
 
 00:00:01.000 --&gt; 00:00:05.000
-&lt;moveto latLng="51.504362 -0.076153"/&gt;
-&lt;lineto latLng="51.506646 -0.074651"/&gt;
+{
+  'moveto': {
+    'lat': 51.504362, 'lng': -0.076153
+  },
+  'lineto': {
+    'lat': 51.506646, 'lng': -0.074651
+  }
+}
 
 NOTE City Hall
 
 00:00:02.000 --&gt;
-&lt;circle latLng="51.504789 -0.078642" rad="20"/&gt;
+{
+  'circle': {
+    'lat': 51.504789, 'lng': -0.078642, 'rad': 20
+  }
+}
 
 NOTE Tower Of London
 This line is also part of the comment
 
 00:00:03.000 --&gt; 00:00:04.000
-&lt;polygon coords="51.507193 -0.074844, 51.508756 -0.074716, 51.509036 -0.075638, 51.508929 -0.077162, 51.507727 -0.077848, 51.507220 -0.075767"/&gt;
+{
+  'polygon': {
+    'points': [
+      {'lat': 51.507193, 'lng': -0.074844},
+      {'lat': 51.508756, 'lng': -0.074716},
+      {'lat': 51.509036, 'lng': -0.075638},
+      {'lat': 51.508929, 'lng': -0.077162},
+      {'lat': 51.507727, 'lng': -0.077848},
+      {'lat': 51.507220, 'lng': -0.075767}
+    ]
+  }
+}
             </pre>
         </section>
       </section>
@@ -379,7 +408,7 @@ This line is also part of the comment
         <section id='cssstylehtml'>
           <h2>CSS Style in HTML</h2>
           <p>
-            In this example, an HTML page has a CSS style sheet in a &lt;style&gt; element that styles map cues for the video, e.g. drawing lines in red.
+            In this example, an HTML page has a CSS style sheet in a <code>&lt;style&gt;</code> element that styles map cues for the video, e.g. drawing lines in red.
           </p>
           <pre class='nohighlight example' title='Style Within HTML'>
 &lt;!doctype html&gt;
@@ -388,7 +417,7 @@ This line is also part of the comment
     &lt;title&gt;WebVMT Style Example&lt;/title&gt;
     &lt;style&gt;
       video::cue-map {
-        stroke-colour: red;
+        stroke-color: red;
         stroke-opacity: 0.9;
       }
     &lt;/style&gt;
@@ -396,7 +425,7 @@ This line is also part of the comment
   &lt;body&gt;
     &lt;video controls width="640" height="360"&gt;
       &lt;source src="video.mp4" type="video/mp4"&gt;
-      &lt;track src="maptrack.vmt" kind="map" for="vmt-map" tileurl="https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY"&gt;
+      &lt;track src="maptrack.vmt" kind="metadata" for="vmt-map" tileurl="https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY"&gt;
       Your browser does not support the video tag.
     &lt;/video&gt;
     &lt;div id="vmt-map" style="height: 360px; width:640px;"&gt;&lt;/div&gt;
@@ -410,7 +439,7 @@ This line is also part of the comment
             Style block format is similar to <a data-cite='WEBVTT#styling'>WebVTT</a>.
           </p>
           <p>
-            CSS style sheets can also be embedded in WebVMT files themselves. Style blocks are placed after any headers but before the first cue, and start with the line "STYLE".
+            CSS style sheets can also be embedded in WebVMT files themselves. Style blocks are placed after any headers but before the first cue, and start with the word <code>STYLE</code>.
           </p>
           <p>
             Comment blocks can be interleaved with style blocks.
@@ -418,19 +447,17 @@ This line is also part of the comment
           <pre class='nohighlight example' title='Greenwich Meridian VMT'>
 WEBVMT
 
-TIMELINE {
-  uri: http://example.com/movies/Greenwich.mp4;
-  mime-type: video/mp4;
-}
+MEDIA
+url:http://example.com/movies/Greenwich.mp4
+mimetype:video/mp4
 
-MAP {
-  centre: 51.478 -0.001;
-  zoom: 18;
-}
+MAP
+lat:51.478,lng:-0.001
+zoomradius:100
 
 STYLE
 ::cue-map {
-  stroke-colour: red;
+  stroke-color: red;
 }
 
 NOTE Comments are allowed between style blocks
@@ -443,8 +470,14 @@ STYLE
 NOTE Prime Meridian marker
 
 00:00:00.000 --&gt;
-&lt;moveto latLng="51.477901 -0.001466"/&gt;
-&lt;lineto latLng="51.477946 -0.001466"/&gt;
+{
+  'moveto': {
+    'lat':51.477901, 'lng': -0.001466
+  }
+  'lineto': {
+    'lat':51.477946, 'lng': -0.001466
+  }
+}
 
 NOTE Style blocks may not appear after the first cue
           </pre>
@@ -453,7 +486,7 @@ NOTE Style blocks may not appear after the first cue
       <section id='animation'>
         <h2>Animation</h2>
         <p>
-          Map annotations may be animated using an &lt;animate&gt; element, in a similar way to <a data-cite='SVG11'>SVG</a>.
+          Map annotations may be animated using an <code>animate</code> command, in a similar way to the <code>&lt;animate&gt;</code> element in <a data-cite='SVG11'>SVG</a>.
         </p>
         <p>
           Map paths have additional properties to other annotations including a unique identifier, and a drawing animation which can be controlled separately for distance calculation purposes.
@@ -461,10 +494,10 @@ NOTE Style blocks may not appear after the first cue
         <section id='animatedpath'>
           <h2>Animated Path</h2>
           <p>
-            A path typically indicates a mobile camera's route, which is defined by a &lt;moveto&gt; element followed by a sequence of &lt;lineto&gt; elements, and may include multiple discrete segments separated by &lt;moveto&gt; elements.
+            A path typically identifies a mobile camera's route, which is defined by a <code>moveto</code> command followed by a sequence of <code>lineto</code> commands, and may include multiple discrete segments separated by <code>moveto</code> commands.
           </p>
           <p>
-            A path should be assigned an identifier using the 'pathId' attribute to discriminate it from other paths. This allow multiple paths to be uniquely identified, for different paths to be styled in different ways, e.g. colour, and also enables speed and distance calculations to be performed for each path during playback.
+            A path should be assigned an identifier using the <code>path</code> attribute to discriminate it from other paths. This allow multiple paths to be uniquely identified, for different paths to be styled in different ways, e.g. colour, and also enables speed and distance calculations to be performed for each path during playback.
           </p>
           <p>
             In this example, an animated path is traced from London to Brighton:
@@ -474,42 +507,64 @@ WEBVMT
 
 NOTE Associated video
 
-TIMELINE {
-  uri: LondonBrighton.mp4;
-  mime-type: video/mp4;
-}
+MEDIA
+url:LondonBrighton.mp4
+mimetype:video/mp4
 
 NOTE Map config
 
-MAP {
-  centre: 51.1618 -0.1428;
-  zoom: 10;
-}
+MAP
+lat:51.1618,lng:-0.1428
+zoomradius:30000;
 
 NOTE London overview
 
 00:00:01.000 --&gt;
-&lt;panto latLng="51.4952 -0.1441"/&gt;
+{
+  'panto': {
+    'lat': 51.4952, 'lng': -0.1441
+  }
+}
 
 00:00:02.000 --&gt;
-&lt;zoom level="13"/&gt;
+{
+  'zoom': {
+    'radius': 3000
+  }
+}
 
 NOTE From London Victoria...
 
 00:00:03.000 --&gt;
-&lt;panto latLng="50.830553 -0.141706" end="00:00:25.000"/&gt;
-&lt;moveto latLng="51.494477 -0.144753" pathId="cam1"/&gt;
-&lt;lineto latLng="51.155958 -0.16089" pathId="cam1" end="00:00:10.000"/&gt;
+{
+  'panto': {
+    'lat': 50.830553, 'lng': -0.141706, end:'00:00:25.000'
+  },
+  'moveto': {
+    'lat': 51.494477, 'lng': -0.144753, 'path': 'cam1'
+  },
+  'lineto': {
+    'lat': 51.155958, 'lng': -0.16089, 'path': 'cam1', 'end':'00:00:10.000'
+  }
+}
 
 NOTE ...via Gatwick Airport...
 
 00:00:10.000 --&gt;
-&lt;lineto latLng="50.830553 -0.141706" pathId="cam1" end="00:00:25.000"/&gt;
+{
+  'lineto': {
+    'lat': 50.830553, 'lng': -0.141706, 'path': 'cam1', 'end': '00:00:25.000'
+  }
+}
 
 NOTE ...to Brighton (at 00:00:25.000)
 
 00:00:27.000 --&gt;
-&lt;zoom level="10"/&gt;
+{
+  'zoom': {
+    'radius': 30000
+  }
+}
           </pre>
         </section>
         <section id='animatedannotation'>
@@ -522,37 +577,62 @@ WEBVMT
 
 NOTE Associated video
 
-TIMELINE {
-  uri: SafeDrone.mp4;
-  mime-type: video/mp4;
-}
+MEDIA
+url:SafeDrone.mp4
+mimetype:video/mp4
 
 NOTE Map config
 
-MAP {
-  centre: 51.0130 -0.0015;
-  zoom: 10;
-}
+MAP
+lat:51.0130,lng:-0.0015
+zoomradius:3000;
 
 NOTE Drone starts at (51.0130, -0.0015)
 
 00:00:05.000 --&gt;
-&lt;panto latLng="51.0070 -0.0020" end="00:00:25.000"/&gt;
-&lt;moveto latLng="51.0130 -0.0015" pathId="drone1"/&gt;
-&lt;lineto latLng="51.0090 -0.0017" pathId="drone1" end="00:00:10.000"/&gt;
+{
+  'panto': {
+    'lat': 51.0070, 'lng': -0.0020, end: '00:00:25.000'
+  },
+  'moveto': {
+    'lat': 51.0130, 'lng': -0.0015, 'path': 'drone1'
+  },
+  'lineto': {
+    'lat': 51.0090, 'lng': -0.0017, 'path': 'drone1', end: '00:00:10.000'
+  }
+}
+
+NOTE Safety zone
 
 00:00:05.000 --&gt; 00:00:10.000
-&lt;circle latLng="51.0130 -0.0015" rad="10"&gt;
-  &lt;animate attribName="latLng" to="51.0090 -0.0017" end="00:00:10.000"/&gt;
-&lt;/circle&gt;
+{
+  'circle': {
+    'lat': 51.0130, 'lng': -0.0015, 'rad': 10,
+    'animate': {
+      'attrib': 'lat', 'to': 51.0090, 'end': '00:00:10.000'
+    },
+    'animate': {
+      'attrib': 'lng', 'to': -0.0017, 'end': '00:00:10.000'
+    }
+  }
+}
 
 NOTE Drone arrives at (51.0090, -0.0017)
 
 00:00:10.000 --&gt;
-&lt;lineto latLng="51.0070 -0.0020" pathId="drone1" end="00:00:25.000" /&gt;
-&lt;circle latLng="51.0090 -0.0017" rad="10"&gt;
-  &lt;animate attribName="latLng" to="51.0070 -0.0020" end="00:00:25.000"/&gt;
-&lt;/circle&gt;
+{
+  'lineto': {
+    'lat': 51.0070, 'lng': -0.0020, 'path': 'drone1', 'end': '00:00:25.000'
+  },
+  'circle': {
+    'lat': 51.0090, 'lng': -0.0017, 'rad': 10,
+    'animate': {
+      'attrib': 'lat', 'to': 51.0070, 'end': '00:00:25.000'
+    },
+    'animate': {
+      'attrib': 'lat', 'to': -0.0020, 'end': '00:00:25.000'
+    }
+}
 
 NOTE Drone ends at (51.0070, -0.0020)
           </pre>
@@ -561,13 +641,13 @@ NOTE Drone ends at (51.0070, -0.0020)
       <section id='youtubeintegration'>
         <h2>YouTube Integration</h2>
         <p>
-          Embedded YouTube content can be displayed using an &lt;iframe&gt; element, specifying the unique 10-character content identifier for the posted video, using the official <a href="https://developers.google.com/youtube/iframe_api_reference">YouTube IFrame API</a> with the Javascript API enabled.
+          Embedded YouTube content can be displayed using an <code>&lt;iframe&gt;</code> element, specifying the unique 10-character content identifier for the posted video, using the official <a href="https://developers.google.com/youtube/iframe_api_reference">YouTube IFrame API</a> with the Javascript API enabled.
         </p>
 
         <section id='helloyoutube'>
           <h2>Hello YouTube</h2>
           <p>
-            A child &lt;track&gt; pseudo-element within the &lt;iframe&gt; links it with WebVMT using the same syntax as for the &lt;video&gt; DOM element.
+            A child <code>&lt;track&gt;</code> pseudo-element within the <code>&lt;iframe&gt;</code> links it with WebVMT using the same syntax as for the <code>&lt;video&gt;</code> DOM element.
           </p>
           <pre class='nohighlight example' title='WebVMT YouTube HTML'>
 &lt;!doctype html&gt;
@@ -578,7 +658,7 @@ NOTE Drone ends at (51.0070, -0.0020)
   &lt;body&gt;
     &lt;!-- Video display --&gt;
     &lt;iframe src="http://www.youtube.com/embed/YOUTUBE_VIDEO_ID?enablejsapi=1" width="640" height="360" frameborder="0"&gt;
-      &lt;track src="maptrack.vmt" kind="map" for="vmt-map" tileurl="https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY"&gt;
+      &lt;track src="maptrack.vmt" kind="metadata" for="vmt-map" tileurl="https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor%203857/\{z}/{x}/{y}.png?key=VALID_OS_KEY"&gt;
     &lt;/iframe&gt;
     &lt;!-- Map display --&gt;
     &lt;div id="vmt-map" style="height: 360px; width:640px;"&gt;&lt;/div&gt;
@@ -586,20 +666,19 @@ NOTE Drone ends at (51.0070, -0.0020)
 &lt;/html&gt;
           </pre>
           <p>
-          Note that the &lt;track&gt; pseudo-element is actually replaced by the &lt;iframe&gt; content when the page is loaded.
+          Note that the <code>&lt;track&gt;</code> pseudo-element is actually replaced by the <code>&lt;iframe&gt;</code> content when the page is loaded.
           </p>
           <p>
-          The uri in the "TIMELINE" block should match the 'src' attribute of the &lt;iframe&gt; element without the query.
+          The <code>url</code> in the <code>MEDIA</code> block should match the <code>src</code> attribute of the <code>&lt;iframe&gt;</code> element without the query.
           </p>
           <pre class='nohighlight example' title='YouTube VMT Fragment'>
 WEBVMT
 
 NOTE Associated YouTube video
 
-TIMELINE {
-  uri: http://www.youtube.com/embed/YOUTUBE_VIDEO_ID;
-  mime-type: video/mp4;
-}
+MEDIA
+url:http://www.youtube.com/embed/YOUTUBE_VIDEO_ID
+mimetype:video/mp4
           </pre>
         </section>
       </section>
@@ -956,7 +1035,7 @@ TIMELINE {
         </p>
         <ol>
           <li>
-            The string "<code>mime-type</code>".
+            The string "<code>mimetype</code>".
           </li>
           <li>
             A U+003A COLON character (:).
@@ -974,7 +1053,7 @@ TIMELINE {
       </p>
       <ol>
         <li>
-          The string "<code>start-time</code>".
+          The string "<code>starttime</code>".
         </li>
         <li>
           A U+003A COLON character (:).
@@ -1002,19 +1081,8 @@ TIMELINE {
           </li>
         </ul>
         <p>
-          A <dfn>WebVMT map center setting</dfn> consists of the following components, in the order given:
+          A <dfn>WebVMT map center setting</dfn> consists of a <a>WebVMT location setting</a>.
         </p>
-        <ol>
-          <li>
-            The string "<code>center</code>".
-          </li>
-          <li>
-            A U+003A COLON character (:).
-          </li>
-          <li>
-            A <a>WebVMT location</a>.
-          </li>
-        </ol>
       </p>
       <p class='note'>
         The <a>WebVMT map center setting</a> gives the location of the center of the map.
@@ -1024,7 +1092,7 @@ TIMELINE {
       </p>
       <ol>
         <li>
-          The string "<code>zoom-radius</code>".
+          The string "<code>zoomradius</code>".
         </li>
         <li>
           A U+003A COLON character (:).
@@ -1050,7 +1118,7 @@ TIMELINE {
         The <a>WebVMT map zoom setting</a> gives the minimum  radius in metres of the map visible.
       </p>
       <p>
-        A <dfn>WebVMT location</dfn> consists of the following components, in any order:
+        A <dfn>WebVMT location setting</dfn> consists of the following components, in any order, separated from each other by a U+002C COMMA character (,). Each component must be included once per <a>WebVMT location setting</a> string.
       </p>
       <ul>
         <li>
@@ -1060,9 +1128,6 @@ TIMELINE {
           A <a>WebVMT longitude setting</a>.
         </li>
       </ul>
-      <p class='note'>
-        When interpreted as geographic co-ordinates, <a>WebVMT location</a> must be in the range -90..+90.
-      </p>
       <p>
         A <dfn>WebVMT latitude setting</dfn> consists of the following components, in the order given:
       </p>
@@ -1173,21 +1238,72 @@ TIMELINE {
           The following example matches this definition:
         </p>
         <pre class='nohighlight example' title='Nested Cues'>
-            #### TO DO ####
+WEBVMT
+
+NOTE Required non-cue blocks omitted for clarity
+
+00:00.000 --> 01:24.000
+{circle: {lat: 0, lng: 0, rad: 2000}}
+
+00:00.000 --> 00:44.000
+{moveto: {lat: 0, lng: 0, path: 'cam1'}}
+{lineto: {lat: 0.12, lng: 0.34, path: 'cam1'}}
+
+00:44.000 --> 01:19.000
+{lineto: {lat: 0.56, lng: 0.78, path: 'cam1'}}
+
+01:24.000 --> 05:00.000
+{circle: {lat: 0, lng: 0, rad: 30000}}
+
+01:35.000 --> 03:00.000
+{moveto: {lat: 0.87, lng: 0.65, path: 'cam2'}}
+{lineto: {lat: 0.43, lng: 0.21, path: 'cam2'}}
+
+03:00.000 --> 05:00.000
+{lineto: {lat: 0, lng: 0, path: 'cam2'}}
         </pre>
         <p>
           Notice how you can express the cues in this WebVMT file as a tree structure:
         </p>
         <ul>
           <li>
-            #### TO DO ####
+            2km Circle at (0, 0)
+            <ul>
+              <li>
+                Line (0, 0) to (0.12, 0.34)
+              </li>
+              <li>
+                Line (0.12, 0.34) to (0.56, 0.78)
+              </li>
+            </ul>
+          </li>
+          <li>
+            30km Circle at (0, 0)
+            <ul>
+              <li>
+                Line (0.87, 0.65) to (0.43, 0.21)
+              </li>
+              <li>
+                Line (0.43, 0.21) to (0, 0)
+              </li>
+            </ul>
           </li>
         </ul>
         <p>
           If the file has cues that can’t be expressed in this fashion, then they don’t match the definition of a <a>WebVMT file using only nested cues</a>. For example:
         </p>
         <pre class='nohighlight example' title='Non-Nested Cues'>
-            #### TO DO ####
+WEBVMT
+
+NOTE Required non-cue blocks omitted for clarity
+
+00:00.000 --> 01:00.000
+{moveto: {lat: 0.12, lng: 0.34, path: 'cam3'}}
+{lineto: {lat: 0.56, lng: 0.78, path: 'cam3'}}
+
+00:30.000 --> 01:30.000
+{moveto: {lat: 0.87, lng: 0.65, path: 'cam4'}}
+{lineto: {lat: 0.43, lng: 0.21, path: 'cam4'}}
         </pre>
         <p>
           In this ninety-second example, the two cues partly overlap, with the first ending before the second ends and the second starting before the first ends. This therefore is not a <a>WebVMT file using only nested cues</a>.
