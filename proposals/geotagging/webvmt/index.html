@@ -484,7 +484,7 @@ NOTE Style blocks may not appear after the first cue
             A path typically identifies a mobile camera's route, which is defined by a <code>moveto</code> command followed by a sequence of <code>lineto</code> commands, and may include multiple discrete segments separated by <code>moveto</code> commands.
           </p>
           <p>
-            A path should be assigned an identifier using the <code>path</code> attribute to discriminate it from other paths. This allow multiple paths to be uniquely identified, for different paths to be styled in different ways, e.g. colour, and also enables speed and distance calculations to be performed for each path during playback.
+            A path may be assigned an identifier using the <code>path</code> attribute to discriminate between and uniquely identify multiple paths. Distinct paths may be styled in different ways, e.g. colour, with separate speed and distance calculations performed during playback.
           </p>
           <p>
             In this example, an animated path is traced from London to Brighton:
@@ -657,7 +657,7 @@ mimetype:video/mp4
     <section class='informative' id='datamodel'>
       <h2>Data Model</h2>
       <p class='ednote'>
-        The data model of WebVMT consists of three key elements: the video viewport, cues, and the map viewport. The video viewport is the rendering area for video output. Cues are containers consisting of a set of metadata lines. The map viewport is the rendering area for metadata lines, i.e. graphical annotations overlaid on an online map.
+        The data model of WebVMT consists of three key elements: the video viewport, cues, and the map viewport. The video viewport is the rendering area for video output. Cues are containers consisting of a set of metadata lines. The map viewport is the rendering area for metadata output, for example graphical annotations overlaid on an online map.
       </p>
       <section class='informative' id='overview'>
         <h2>Overview</h2>
@@ -674,7 +674,7 @@ mimetype:video/mp4
           The data kind of a WebVMT file is externally specified, such as in a HTML file’s <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'>track</a> element. The environment is responsible for interpreting the data correctly.
         </p>
         <p>
-          A <a>WebVMT cue</a> is rendered as an overlay on top of a metadata viewport.
+          A <a>WebVMT cue</a> is rendered as an overlay on top of the map viewport.
         </p>
       </section>
       <section id='webvmtcues'>
@@ -837,7 +837,7 @@ mimetype:video/mp4
               A <a>WebVMT line terminator</a>.
             </li>
             <li>
-              The <dfn>WebVMT cue payload</dfn> consists of a <a>WebVMT metadata text</a>, but it must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+              The <dfn>WebVMT cue payload</dfn> consists of a <a>WebVMT metadata text</a>, but must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
@@ -946,7 +946,7 @@ mimetype:video/mp4
             </li>
           </ol>
         </p>
-        <p class='note' title='Comments'>
+        <p class='note' title='Comment Parsing'>
           A <a>WebVMT comment block</a> is ignored by the parser.
         </p>
       </section>
@@ -959,7 +959,7 @@ mimetype:video/mp4
           The string represents a <a>WebVMT command list</a>.
         </p>
         <p>
-          <a>WebVMT metadata text</a> cues are only useful for scripted applications (e.g. using the <code>metadata</code> text track kind in a HTML text track).
+          <a>WebVMT metadata text</a> cues are only useful for scripted applications (e.g. using the <code>metadata</code> text track <a data-cite='HTML51/semantics-embedded-content.html#kind-of-track'>kind</a> in a HTML <a data-cite='HTML51/semantics-embedded-content.html#text-tracks'>text track</a>).
         </p>
       </section>
       <section>
@@ -979,7 +979,7 @@ mimetype:video/mp4
           </li>
         </ul>
         <p class='note' title='Linked Media'>
-          The <a>WebVMT media settings list</a> gives details of the linked media file to which this file is synchronised. For example, it provides media encoding details, enables rapid indexing of archives and allows multiple <a>WebVMT file</a>s to be aggregated.
+          The <a>WebVMT media settings list</a> gives details of the linked media file with which to synchronise. For example, identifying the media file, providing media encoding details and allowing multiple <a>WebVMT file</a>s to be aggregated.
         </p>
         <p>
           A <dfn>WebVMT media url setting</dfn> consists of the following components, in the order given:
@@ -992,14 +992,14 @@ mimetype:video/mp4
             A U+003A COLON character (:).
           </li>
           <li>
-            A <a data-cite='HTML51/infrastructure.html#valid-url'>valid URL</a>. The string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+            A <a data-cite='HTML51/infrastructure.html#valid-url'>valid URL</a>.
           </li>
         </ol>
         <p class='note' title='Media URL'>
-          The <a>WebVMT media url setting</a> gives the <a data-cite='URL'>URL</a> of the media file associated with the <a>WebVMT file</a>. An empty string indicates that no associated media file exists.
+          The <a>WebVMT media url setting</a> gives the <a data-cite='RFC3986'>URL</a> of the media file associated with the <a>WebVMT file</a>. Omission of the <a>WebVMT media url setting</a> indicates that no linked media file exists.
         </p>
         <p class='note' title='URL Resolution'>
-          For the purpose of resolving a URL in the <code>MEDIA</code> block of a WebVMT file, or any URLs in resources referenced from MEDIA blocks of a WebVMT file, if the URL’s scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve.
+          For the purpose of resolving a URL in the <code>MEDIA</code> block of a WebVMT file, or any URLs in resources referenced from <code>MEDIA</code> blocks of a WebVMT file, if the URL’s scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve.
         </p>
         <p>
           A <dfn>WebVMT media MIME type setting</dfn> consists of the following components, in the order given:
@@ -1012,12 +1012,12 @@ mimetype:video/mp4
             A U+003A COLON character (:).
           </li>
           <li>
-            A <a data-cite='HTML51/infrastructure.html#valid-mime-type'>valid MIME type</a>. The string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+            A <a data-cite='HTML51/infrastructure.html#valid-mime-type'>valid MIME type</a>.
           </li>
         </ol>
       </p>
       <p class='note' title='Media MIME Type'>
-        The <a>WebVMT media MIME type setting</a> gives the <a data-cite='RFC2046'>MIME type</a> of the media file associated with the <a>WebVMT file</a>. An empty string indicates that no associated media file exists.
+        The <a>WebVMT media MIME type setting</a> gives the <a data-cite='RFC2046'>MIME type</a> of the media file associated with the <a>WebVMT file</a>. Omission of <a>WebVMT media MIME type setting</a> indicates that no linked media file exists.
       </p>
       <p>
         A <dfn>WebVMT media start time setting</dfn> consists of the following components, in the order given:
@@ -1030,12 +1030,12 @@ mimetype:video/mp4
           A U+003A COLON character (:).
         </li>
         <li>
-          A <a data-cite='HTML51/infrastructure.html#valid-global-date-and-time-string'>valid global date and time string</a>. The string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+          A <a data-cite='HTML51/infrastructure.html#valid-global-date-and-time-string'>valid global date and time string</a>.
         </li>
       </ol>
     </p>
     <p class='note' title='Media Start Time'>
-      The <a>WebVMT media start time setting</a> gives the <a data-cite='HTML51/infrastructure.html#global-date-and-time'> global date and time</a> of the start time of the media file associated with the <a>WebVMT file</a>, which allows multiple <a>WebVMT file</a>s to be aggregated. An empty string indicates that no start time is associated, for example in the case of an animation.
+      The <a>WebVMT media start time setting</a> gives the <a data-cite='HTML51/infrastructure.html#global-date-and-time'> global date and time</a> of the start time of the media file associated with the <a>WebVMT file</a>, which allows multiple <a>WebVMT file</a>s to be aggregated. Omission of the <a>WebVMT media start time setting</a> indicates that no start time is associated, for example in the case of an animation.
     </p>
       </section>
       <section>
@@ -1067,22 +1067,20 @@ mimetype:video/mp4
           <li>
             A U+003A COLON character (:).
           </li>
-          <ol>
-            <li>
-              One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
-            </li>
-            <li>
-              Optionally:
-              <ol>
-                <li>
-                  A U+002E DOT character (.).
-                </li>
-                <li>
-                  One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
-                </li>
-              </ol>
-            </li>
-          </ol>
+          <li>
+            One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+          </li>
+          <li>
+            Optionally:
+            <ol>
+              <li>
+                A U+002E DOT character (.).
+              </li>
+              <li>
+                One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+              </li>
+            </ol>
+          </li>
         </ol>
       </p>
       <p class='note' title='Zoom Radius'>
@@ -1200,7 +1198,7 @@ mimetype:video/mp4
       <section>
         <h2>WebVMT Map Commands</h2>
         <p>
-          A <dfn>WebVMT map control command</dfn> consists of one or more of the following components:
+          A <dfn>WebVMT map control command</dfn> consists of one of the following components:
           <ul>
             <li>
               A <a>WebVMT pan command</a>.
@@ -1228,7 +1226,7 @@ mimetype:video/mp4
               A <a>WebVMT location attribute list</a>.
             </li>
             <li>
-              Optionally, either:
+              Optionally, one of the following components:
               <ul>
                 <li>
                   A <a>WebVMT end time attribute</a>.
@@ -1376,7 +1374,7 @@ mimetype:video/mp4
           </ul>
         </p>
         <p>
-          A <dfn>WebVMT polygon parameter list</dfn> consists of a <a data-cite='ECMA-404'>JSON text</a> representing the following <a data-cite='ECMA-404'>JSON object</a>:
+          A <dfn>WebVMT polygon parameter list</dfn> consists of the following <a data-cite='ECMA-404'>JSON object</a>:
           <ul>
             <li>
               A <a>WebVMT polygon points list</a>.
@@ -1384,7 +1382,7 @@ mimetype:video/mp4
           </ul>
         </p>
         <p>
-          A <dfn>WebVMT polygon points list</dfn> consists of a <a data-cite='ECMA-404'>JSON text</a> representing the following <a data-cite='ECMA-404'>JSON object</a>:
+          A <dfn>WebVMT polygon points list</dfn> consists of the following <a data-cite='ECMA-404'>JSON object</a>:
           <ul>
             <li>
               The <a data-cite='ECMA-404'>JSON string</a> "<code>points</code>".
@@ -1395,7 +1393,15 @@ mimetype:video/mp4
           </ul>
         </p>
         <p>
-          A <dfn>WebVMT vertices list</dfn> consists of a <a data-cite='ECMA-404'>JSON text</a> representing a <a data-cite='ECMA-404'>JSON array</a> consisting of three or more <a data-cite='ECMA-404'>JSON object</a>s each representing a <a>WebVMT location attribute list</a>.
+          A <dfn>WebVMT vertices list</dfn> consists of a <a data-cite='ECMA-404'>JSON array</a> of three or more <a data-cite='ECMA-404'>JSON object</a>s each representing the following components in any order:
+          <ul>
+            <li>
+              A <a>WebVMT location attribute list</a>.
+            </li>
+            <li>
+              Optionally, a <a>WebVMT animation subcommand</a>.
+            </li>
+          </ul>
         </p>
         <p class='note' title='Polygon Vertices'>
           Components of a <a>WebVMT vertices list</a> are listed in consecutive order around the perimeter of the polygon. The last vertex should not repeat the value of the first, as this is implicit.
@@ -1474,7 +1480,7 @@ mimetype:video/mp4
               Optionally, a <a>WebVMT path identifier attribute</a>.
             </li>
             <li>
-              Optionally, either:
+              Optionally, one of the following components:
               <ul>
                 <li>
                   A <a>WebVMT end time attribute</a>.
@@ -1496,7 +1502,7 @@ mimetype:video/mp4
               The <a data-cite='ECMA-404'>JSON string</a> "<code>animate</code>".
             </li>
             <li>
-              A <a data-cite='ECMA-404'>JSON value</a> consisting of a <a>WebVMT animation list</a>.
+              A <a data-cite='ECMA-404'>JSON value</a> consisting of a <a>WebVMT animation parameter list</a>.
             </li>
           </ul>
         </p>
@@ -1504,10 +1510,10 @@ mimetype:video/mp4
           The <a>WebVMT animation subcommand</a> refers to the attributes of its parent command.
         </p>
         <p>
-          A <dfn>WebVMT animation list</dfn> consists of a <a data-cite='ECMA-404'>JSON text</a> representing a <a data-cite='ECMA-404'>JSON array</a> consisting of one or more <a>WebVMT animation parameter list</a>s.
+          A <dfn>WebVMT animation parameter list</dfn> consists of a <a data-cite='ECMA-404'>JSON array</a> of one or more <a>WebVMT individual animation list</a>s.
         </p>
         <p>
-          A <dfn>WebVMT animation parameter list</dfn> consists of a <a data-cite='ECMA-404'>JSON text</a> representing a <a data-cite='ECMA-404'>JSON object</a> consisting of the following components in any order:
+          A <dfn>WebVMT individual animation list</dfn> consists of a <a data-cite='ECMA-404'>JSON object</a> consisting of the following components in any order:
           <ul>
             <li>
               A <a>WebVMT name attribute</a>.
@@ -1516,7 +1522,7 @@ mimetype:video/mp4
               A <a>WebVMT target value attribute</a>.
             </li>
             <li>
-              Either:
+              One of the following components:
               <ul>
                 <li>
                   A <a>WebVMT end time attribute</a>.
@@ -1757,7 +1763,7 @@ NOTE Required non-cue blocks omitted for clarity
             Mobile video devices often collect additional data, e.g. drones can be used as sensor platforms and dashcams record vehicle telemetry such as speed and acceleration.
           </p>
           <p>
-            Allowing the option to embed XML data within cues would permit synchronisation of arbitrary data with location and video without compromising interoperability, in a similar fashion to the GPX &lt;extension&gt; element.
+            Allowing the option to embed XML data within cues would permit synchronisation of arbitrary data with location and video without compromising interoperability, in a similar fashion to the GPX <code>&lt;extension&gt;</code> element.
           </p>
         </section>
       </section>
