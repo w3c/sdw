@@ -26,7 +26,7 @@ The following programming languages and tools are used by this API:
 <http://linked.data.gov.au/dataset/gnaf>
 
 ### Example
-<http://linked.data.gov.au/address/GAACT714845933>
+<http://linked.data.gov.au/dataset/gnaf/address/GAACT714845933>
 
 ## Best Practice Scorecard
 
