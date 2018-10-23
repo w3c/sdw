@@ -224,7 +224,7 @@ The relationship of the ultimate feature of interest to observations and acts of
 <p class="note">
   This requirement was described in OM-Lite [[OM-Lite]], but was addressed there using a different pattern in which the property <code>oml:featureOfInterest</code> always links to the <i>ultimate</i> feature-of-interest, and an additional property <code>oml:samplingStrategy</code> links to the sample or some other description of the sampling arrangements.
   That approach was unnecessarily coy about satisfying the principle requirement, which is to know the ultimate feature of interest.
-  The solution described here is explicit.
+  The solution described here is explicit, and also applies to acts of sampling and actuation.
 </p>
 
 </section>
@@ -263,16 +263,19 @@ The relationship of the ultimate feature of interest to observations and acts of
 <p>
   Collections may be nested.
   For example, an outer observation-collection may share an observed-property, procedure and sensor, and contain inner observation-collections at different phenomenon-times, each containing a set of observations on different features-of-interest.
-  And since an observation may be a member of more than one observation-collection, more than one sequence of nested observation-collections can collect the same set of observations.
+  An observation may be a member of more than one observation-collection, so more than one sequence of nested observation-collections can collect the same set of observations.
   For example, the same outer collection may contain inner collections concerning different features-of-interests, each containing a set of observations at different phenomenon-times.
-  Effectively each observation-collection corresponds to a <i>slice</i> in a data-cube of the complete set of observations.
-<!--
-  A formal alignment of SSN and this extension to the W3C Datacube vocabulary [[vocab-data-cube]] is provided below.
--->
+</p>
+<p>
+  Effectively, the results of each observation-collection correspond to a <i>slice</i> in a data-cube composed of the results of the complete set of observations (as long as the values of properties inherited from the collection are <i>not</i> overridden on the nested collections or terminal observations).
 </p>
 
-<p>
-  Note that this requirement was addressed in OM-Lite [[OM-Lite]] following the pattern described here.
+<p class="note">
+  This requirement was addressed in OM-Lite [[OM-Lite]] following the pattern described here.
+</p>
+
+<p class="note">
+  This feature might also apply to collections of <i>Actuations</i> but has not yet been properly explored.
 </p>
 
 <figure id="oboe-implementation">
@@ -319,7 +322,7 @@ The relationship of the ultimate feature of interest to observations and acts of
     IRI:
   </td>
   <td>
-    <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/ObservationCollection</a></code>
+    <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/ssn/ext/ObservationCollection</a></code>
   </td>
 </tr>
 <tr>
@@ -327,15 +330,11 @@ The relationship of the ultimate feature of interest to observations and acts of
 <td>Collection of one or more observations, typically with one or more property shared by all of its members</td>
 </tr>
 <tr>
-<td>Instance of:</td>
-<td><code>owl:Class</code></td>
-</tr>
-<tr>
 <td>Restrictions:</td>
 <td>
   <code><a href="ssn-ext:hasMember">ssn-ext:hasMember</a> min 1</code>
 <br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a> max 1</code>
-<br /><code><a href="ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a> max 1</code>
+<br /><code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a> max 1</code>
 <br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a> max 1</code>
 <br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a> max 1</code>
 <br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a> max 1</code>
@@ -348,7 +347,7 @@ The relationship of the ultimate feature of interest to observations and acts of
 
 <p>
   If present, the value of any of <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a></code>,
-<code><a href="ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code>,
+<code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code>,
 <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a></code>,
 <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a></code>,
 <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a></code>,
@@ -384,7 +383,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
       IRI:
     </td>
     <td>
-      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/hasMember</a></code>
+      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/ssn/ext/hasMember</a></code>
     </td>
   </tr>
 <tr>
@@ -432,7 +431,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
       IRI:
     </td>
     <td>
-      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest</a></code>
+      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/ssn/ext/hasUltimateFeatureOfInterest</a></code>
     </td>
   </tr>
 <tr>
@@ -530,14 +529,14 @@ WHERE {
     <h4 id="container-property-rule">Inheriting observation properties from a collection</h4>
     <p>
       If a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> or <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code> is a member of an <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code>,
-      the properties of the collection as a whole are associated with all member observations or collections, unless locally overridden.
+      the properties of the collection as a whole are associated with all member observations or collections, unless locally specified.
       Associating properties with the collection provides for efficiencies in both discovery and encoding.
     </p>
     <p>
       The rules may be defined formally as SPARQL query expressions [[!sparql11-query]] as follows:
     </p>
     <p class="note">
-      Update rules to chase up a chain of observation collections.
+      Rules currently only allow for one level of nesting. Update to chase up a chain of observation collections.
     </p>
     <table class="definition" style="width: 812px;">
     <thead>
@@ -665,8 +664,8 @@ WHERE {
     </tbody>
     </table>
 
-    <p>
-      These are included as SPIN rules [[SPIN]] in the <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">RDF representation</a> of the SSN extensions ontology.
+    <p class="note">
+      These rules are included as SPIN rules [[SPIN]] in the <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">RDF representation</a> of the SSN extensions ontology.
     </p>
   </section>
 
@@ -685,25 +684,28 @@ WHERE {
   <section>
     <h3>RDF Data Cube vocabulary</h3>
     <p>
-      The W3C RDF Data Cube vocabulary [[vocab-data-cube]] provides a means to describe multi-dimensional data according to a 'data cube' model inspired by SDMX. The RDF Data Cube vocabulary uses the term <i>observation</i> for the <b>results</b>, and the <i>dimensions</i> of a data cube indicate the <b>features of interest</b> and <b>phenomenon times</b> of the results, the <i>measures</i> correspond to the <b>observed properties</b>, and the <i>attributes</i> accommodate information about the <b>procedures</b> and <b>sensors</b>.
+      The W3C RDF Data Cube vocabulary [[vocab-data-cube]] provides a means to describe multi-dimensional data according to a 'data cube' model inspired by SDMX.
+      The RDF Data Cube vocabulary uses the term <i>observation</i> for the <b>results</b>, and the <i>dimensions</i> of a data cube indicate the <b>features of interest</b> and <b>phenomenon times</b> of the results, the <i>measures</i> correspond to the <b>observed properties</b>, and the <i>attributes</i> accommodate information about the <b>procedures</b> and <b>sensors</b>.
     </p>
     <p>
-      A <i>slice</i> selects a subset of the 'observations' by fixing a subset of the dimensions, and thus delivers the set of <b>results</b> of <b>observation-collections</b> with fixed <b>features-of-interest</b> or <b>phenomenon-times</b> or both.
+      A <i>slice</i> selects a subset of the 'observations' by fixing a subset of the dimensions, and thus delivers the set of <b>results</b> of an <b>observation-collection</b> with fixed <b>features-of-interest</b> or <b>phenomenon-times</b> or both.
     </p>
   </section>
+  <!--
   <section>
     <h3>W3C PROV-O vocabulary</h3>
     <p>
       TBD
     </p>
   </section>
+-->
 
 </section>
 
 <hr />
 <section class="appendix" id="ack">
 <h2>Acknowledgements</h2>
-<p>The editors would like to thank the <a href="https://www.w3.org/2000/09/dbwg/details?group=75471">members of the W3C/OGC Spatial Data on the Web Interest Group</a> for their contributions during the development of this document. </p>
+<p>The editor would like to thank the <a href="https://www.w3.org/2000/09/dbwg/details?group=75471">members of the W3C/OGC Spatial Data on the Web Interest Group</a> for their contributions during the development of this document. </p>
 </section>
 
 </body>
