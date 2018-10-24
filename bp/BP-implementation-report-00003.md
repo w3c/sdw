@@ -12,17 +12,18 @@ North-Rhine Westphalia, Germany, became open data in 2017. The data is provided 
 
 With the publication of the W3C/OGC Spatial Data on the Web Best Practices an activity was launched to explore how selected datasets could be published in accordance with the best practices and evaluate, if this simplifies the use of the data.
 
-A demonstrator has been developed for this purpose in 2017. It will be updated in 2018 with additional capabilities. The current implementation conforms to the [draft WFS 3.0 Core standard](https://cdn.rawgit.com/opengeospatial/WFS_FES/3.0.0-draft.1/docs/17-069.html) and the development has provided input into the drafting of the specification.
+A demonstrator has been developed for this purpose in 2017. It is currently being updated in 2018 with additional capabilities, for example support for additional coordinate reference systems. The current implementation conforms to the [draft WFS 3.0 Core standard](https://cdn.rawgit.com/opengeospatial/WFS_FES/3.0.0-draft.1/docs/17-069.html) and the development has provided input into the drafting of the specification.
 
 The implementation uses [ldproxy](http://interactive-instruments.github.io/ldproxy/),
 a Spatial Data on the Web / WFS 3.0 proxy on top of WFS 2.0 instances. That is, the
-demonstrator is a facade to the existing WFS 2.0 services for selected open datasets
-in North-Rhine Westphalia.
+demonstrator is a facade to the existing WFS 2.0 services for selected open datasets in 
+North-Rhine Westphalia. The WFS 2.0 services are part of the existing spatial data 
+infrastructure in North-Rhine Westphalia. See the overview figure below.
+
+![Implementing the Best Practies on the basis of the existing infrastructure](http://portele.de/ldproxy-nrw.png "Implementing the Best Practies on the basis of the existing infrastructure")
 
 Some examples and more information is also included in the
 [implementations section in the WFS 3.0 repository](https://github.com/opengeospatial/WFS_FES/blob/master/implementations.md#interactive-instruments).
-
-
 
 Note: As this is a German implementation most of the information is in German.
 
