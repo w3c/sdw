@@ -1,7 +1,4 @@
-# baseURI: http://www.w3.org/ns/ssn-ext/
-# imports: http://www.w3.org/2006/time
-# imports: http://www.w3.org/ns/ssn/
-# prefix: ssn-ext
+# baseURI: http://www.w3.org/ns/ssn/ext
 
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ex: <http://example.org/> .
@@ -176,7 +173,7 @@ sosa:resultTime
 sosa:usedProcedure
   schema:domainIncludes ssn-ext:ObservationCollection ;
 .
-ssn-ext:
+<http://www.w3.org/ns/ssn/ext>
   rdf:type owl:Ontology ;
   dcterms:created "2018-03-08"^^xsd:date ;
   dcterms:creator <http://orcid.org/0000-0002-3884-3420> ;
@@ -258,4 +255,18 @@ ssn-ext:hasUltimateFeatureOfInterest
       owl:propertyChainAxiom ( sosa:hasFeatureOfInterest sosa:isSampleOf )""" ;
   rdfs:label "has ultimate feature of interest" ;
   rdfs:range sosa:FeatureOfInterest ;
+.
+ssn-ext:isMemberOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:comment "indicates a collection of which the context resource is a member" ;
+  rdfs:domain [
+      rdf:type owl:Class ;
+      owl:unionOf (
+          sosa:Observation
+          ssn-ext:ObservationCollection
+        ) ;
+    ] ;
+  rdfs:label "is member of" ;
+  rdfs:range ssn-ext:ObservationCollection ;
+  owl:inverseOf ssn-ext:hasMember ;
 .

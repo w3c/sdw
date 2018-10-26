@@ -1,0 +1,175 @@
+# baseURI: http://www.w3.org/ns/ssn/ext/shacl
+# imports: http://datashapes.org/dash
+# imports: http://www.w3.org/ns/ssn/ext/
+# prefix: ssn-shacl
+
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix ssn-ext: <http://www.w3.org/ns/ssn/ext/> .
+@prefix ssn-shacl: <http://www.w3.org/ns/ssn/ext/shacl/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sosa:Observation
+  rdf:type sh:NodeShape ;
+  sh:rule ssn-shacl:FOI ;
+  sh:rule ssn-shacl:procedure ;
+  sh:rule ssn-shacl:property ;
+  sh:rule ssn-shacl:ptime ;
+  sh:rule ssn-shacl:rtime ;
+  sh:rule ssn-shacl:sensor ;
+  sh:rule ssn-shacl:uFOI ;
+.
+ssn-ext:ObservationCollection
+  rdf:type sh:NodeShape ;
+  sh:rule ssn-shacl:FOI ;
+  sh:rule ssn-shacl:procedure ;
+  sh:rule ssn-shacl:property ;
+  sh:rule ssn-shacl:ptime ;
+  sh:rule ssn-shacl:rtime ;
+  sh:rule ssn-shacl:sensor ;
+  sh:rule ssn-shacl:uFOI ;
+.
+<http://www.w3.org/ns/ssn/ext/shacl>
+  rdf:type owl:Ontology ;
+  rdfs:comment "SHACL implementation of ssn-ext" ;
+  owl:imports <http://datashapes.org/dash> ;
+  owl:imports ssn-ext: ;
+  sh:declare [
+      rdf:type sh:PrefixDeclaration ;
+      sh:namespace "http://www.w3.org/ns/sosa/"^^xsd:anyURI ;
+      sh:prefix "sosa " ;
+    ] ;
+  sh:declare [
+      rdf:type sh:PrefixDeclaration ;
+      sh:namespace "http://www.w3.org/ns/ssn/ext/"^^xsd:anyURI ;
+      sh:prefix "ssn-ext" ;
+    ] ;
+.
+ssn-shacl:FOI
+  rdf:type sh:SPARQLRule ;
+  sh:construct """CONSTRUCT {
+    ?this sosa:hasFeatureOfInterest ?foi .
+}
+WHERE {
+    NOT EXISTS {
+        ?this sosa:hasFeatureOfInterest ?x .
+    } .
+    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:hasFeatureOfInterest ?foi .
+}""" ;
+  sh:prefixes sosa: ;
+  sh:prefixes ssn-ext: ;
+.
+ssn-shacl:procedure
+  rdf:type sh:SPARQLRule ;
+  sh:construct """CONSTRUCT {
+    ?this sosa:usedProcedure ?pr .
+}
+WHERE {
+    NOT EXISTS {
+        ?this sosa:usedProcedure ?x .
+    } .
+    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:usedProcedure ?pr .
+}""" ;
+  sh:prefixes sosa: ;
+  sh:prefixes ssn-ext: ;
+.
+ssn-shacl:property
+  rdf:type sh:SPARQLRule ;
+  sh:construct """CONSTRUCT {
+    ?this sosa:observedProperty ?op .
+}
+WHERE {
+    NOT EXISTS {
+        ?this sosa:observedProperty ?x .
+    } .
+    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:observedProperty ?op .
+}""" ;
+  sh:prefixes sosa: ;
+  sh:prefixes ssn-ext: ;
+.
+ssn-shacl:ptime
+  rdf:type sh:SPARQLRule ;
+  sh:construct """CONSTRUCT {
+    ?this sosa:phenomenonTime ?pt .
+}
+WHERE {
+    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:phenomenonTime ?pt .
+    NOT EXISTS {
+        ?this sosa:phenomenonTime ?x .
+    } .
+}""" ;
+  sh:prefixes sosa: ;
+  sh:prefixes ssn-ext: ;
+.
+ssn-shacl:rtime
+  rdf:type sh:SPARQLRule ;
+  sh:construct """CONSTRUCT {
+    ?this sosa:resultTime ?rt .
+}
+WHERE {
+    NOT EXISTS {
+        ?this sosa:resultTime ?x .
+    } .
+    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:resultTime ?rt .
+}""" ;
+  sh:prefixes sosa: ;
+  sh:prefixes ssn-ext: ;
+.
+ssn-shacl:sensor
+  rdf:type sh:SPARQLRule ;
+  sh:construct """CONSTRUCT {
+    ?this sosa:madeBySensor ?se .
+}
+WHERE {
+    NOT EXISTS {
+        ?this sosa:madeBySensor ?x .
+    } .
+    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:madeBySensor ?se .
+}""" ;
+  sh:prefixes sosa: ;
+  sh:prefixes ssn-ext: ;
+.
+ssn-shacl:uFOI
+  rdf:type sh:SPARQLRule ;
+  sh:construct """CONSTRUCT {
+    ?this ssn-ext:hasUltimateFeatureOfInterest ?foi .
+}
+WHERE {
+    ?this a sosa:Observation .
+    NOT EXISTS {
+        ?this ssn-ext:hasUltimateFeatureOfInterest ?x .
+    } .
+    OPTIONAL {
+        ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)* ?foi1 .
+        NOT EXISTS {
+            ?foi1 sosa:isSampleOf ?y3 .
+        } .
+    } .
+    OPTIONAL {
+        ?oc ssn-ext:hasMember ?this .
+        ?oc ssn-ext:hasUltimateFeatureOfInterest ?foi2 .
+    } .
+    OPTIONAL {
+        ?oc ssn-ext:hasMember ?this .
+        ?oc sosa:hasFeatureOfInterest/(sosa:isSampleOf)* ?foi3 .
+        NOT EXISTS {
+            ?foi3 sosa:isSampleOf ?y3 .
+        } .
+    } .
+    BIND (COALESCE(?foi1, ?foi2, ?foi3) AS ?foi) .
+}""" ;
+  sh:prefixes sosa: ;
+  sh:prefixes ssn-ext: ;
+.
