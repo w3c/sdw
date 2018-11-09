@@ -12,7 +12,7 @@ We discussed how the interest group is working. When we were a working group, th
 - as part of our incubation work, we have helped in gathering support from the right people around the things we are incubating. 
 - we should update the milestones in the charter. Also, we are not working on Describing moving objects or an SSN Primer. 
 - the group could leverage resources available at OGC. If we have a list of top 5 priorities, that helps.
-- we switched from having regular teleconferences to a mode where it runs a focus week the first week of each month. This is sort of working; we are looking for ways to improve.
+- we switched from having regular teleconferences to a mode where it runs a focus week the first week of each month. This is sort of working; we are looking for ways to improve (action on chairs and W3C team contact).
 
 ## project: WebVMT
 - WebVMT project page: https://‌github.com/‌w3c/‌sdw/‌projects/‌8
@@ -34,7 +34,7 @@ In the strategy funnel, WebVMT stays in the incubation phase for now.
 
 MapML is in the incubation stage in the [strategy funnel][1]. It is currently being worked on within an OGC testbed. 
 
-The aim of MapML is to make it easy to create maps within web pages. Assuming that APIs and javascript are harder than HTML, MapML is envisioned as a 'fork' of HTML with its own media type. Native browser support is a goal. This was discussed in the SDWIG and during a breakout session on Wednesday. 
+The aim of MapML is to make it easy to create maps within web pages. Assuming that APIs and javascript are harder than HTML, MapML is envisioned as a 'fork' of HTML with its own media type. Native browser support is a goal. This was discussed in the SDWIG and during a breakout session on Wednesday. Browser vendors indicated that they prefer not to add more things, as browsers are already big pieces of software and there already are enough primitives to build what we need.
 
 There was also relevant guidance by the Technical Architecture Group (TAG): domain specific languages such as existing ones for math, music, chemistry, etc. can be implemented in browsers using Web Components. These are a useful building block that allow the preservation of semantics and no need to wait for browsers to integrate support. 
 
@@ -50,10 +50,38 @@ CityGML 3.0 (under development at OGC) is considered too complex by CityJSON dev
 
 The SDWIG discussed this and came to this resolution: "In principal, the Spatial Data on the Web IG strongly supports the need to create a feedback loop between practical experience implementing a spec and its design to create effective standards implemented by the wider community. The SDW IG will work on a formal response on CityGML v3 raising technical concerns to be sent to the tc-discuss OGC list."
 
-Developing CityJSON against CityGML v2 is a risk. Therefore, CityJSON standardisation will be put on hold pending the outcome of the OGC discussion. 
+Developing CityJSON against CityGML v2 is a risk. Therefore, while CityJSON development will continue, standardisation will be put on hold pending the outcome of the OGC discussion. 
 
 ## project: best practice for statistical data
-TODO finish recap.
+- project page: https://‌github.com/‌w3c/‌sdw/‌projects/‌2
+
+This work item is planned as a Note to be published in Q2 2019 an is supposed to be produced by the SDWIG. Currently, work hasn't progressed far due to a lack of people who are active on this topic. There is a work item in progress to look at all the best practices in the [DWBP][3] and verify whether and how statistical data comply. 
+
+The OGC statistical domain working group, if and when it is established, is seen by the SDWIG as a important group to collaborate with on this topic. The work could, for example, be mainly done within the OGC DWG and the SDWIG used for visibility.
+
+Statistical data as it is currently published could often benefit from a more 'webby' approach. Best practices could include guidance on how to relate statistics to raw data that was used to create it. 
+
+There is work lined up in the UK on agricultural (statistical) data. Stats BP work could be tested and receive feedback from this project. 
+
+## open discussion
+Several people were present from the new [Immersive Web working group](https://www.w3.org/immersive-web/). They are exploring browser primitives to allow use of augmented reality components etc. Spatial data publishing is a big area and relevant to AR, especially moveable, trackable things that are not just fixed places in the world (Current guidelines focus on static things). 
+
+There is an AR experiment in the OGC innovation program, but it's currently on hold. The OGC Moving Features work is also of interest. The SDWIG will get in touch with the OGC Moving Features group to discuss overlap. This is also of interest to the Immersive Web people at W3C.  
+
+## CovJSON
+- project page: https://‌github.com/‌w3c/‌sdw/‌projects/‌11
+- note: https://www.w3.org/TR/covjson-overview/
+
+CovJSON is an item in the investigation phase of the W3C strategy funnel. 
+
+MetOffice have a lot of coverage data and is interested in standardising CovJSON, but seek a partner in this. 
+
+Next steps: 
+- Liaise with OGC and ISO to analyse the harmonisation of ISO19123 and CovJSON. 
+- Develop vocabularies to support the CovJSON encoding. 
+
+TODO finish recap day 2.
 
 [1]: https://‌github.com/‌w3c/‌strategy/‌projects/‌2?card_filter_query=label%3Ageospatial
 [2]: https://‌github.com/‌w3c/‌sdw/‌projects
+[3]: https://www.w3.org/TR/dwbp/
