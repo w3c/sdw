@@ -13,66 +13,13 @@
 @prefix spin: <http://spinrdf.org/spin#> .
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix ssn-ext: <http://www.w3.org/ns/ssn/ext/> .
-@prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 sosa:Actuation
-  spin:rule [
-      rdf:type sp:Construct ;
-      sp:templates (
-          [
-            sp:object [
-                sp:varName "f" ;
-              ] ;
-            sp:predicate ssn-ext:hasUltimateFeatureOfInterest ;
-            sp:subject spin:_this ;
-          ]
-        ) ;
-      sp:where (
-          [
-            rdf:type sp:NotExists ;
-            sp:elements (
-                [
-                  sp:object [
-                      sp:varName "x" ;
-                    ] ;
-                  sp:predicate ssn-ext:hasUltimateFeatureOfInterest ;
-                  sp:subject spin:_this ;
-                ]
-              ) ;
-          ]
-          [
-            rdf:type sp:TriplePath ;
-            sp:object [
-                sp:varName "f" ;
-              ] ;
-            sp:path [
-                rdf:type sp:SeqPath ;
-                sp:path1 sosa:hasFeatureOfInterest ;
-                sp:path2 [
-                    rdf:type sp:ModPath ;
-                    sp:modMax -2 ;
-                    sp:modMin 1 ;
-                    sp:subPath sosa:isSampleOf ;
-                  ] ;
-              ] ;
-            sp:subject spin:_this ;
-          ]
-          [
-            rdf:type sp:NotExists ;
-            sp:elements (
-                [
-                  sp:object [
-                      sp:varName "y" ;
-                    ] ;
-                  sp:predicate sosa:isSampleOf ;
-                  sp:subject [
-                      sp:varName "f" ;
-                    ] ;
-                ]
-              ) ;
-          ]
-        ) ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty ssn-ext:hasUltimateFeatureOfInterest ;
     ] ;
 .
 sosa:Observation
@@ -83,8 +30,7 @@ sosa:Observation
 - observedProperty
 - phenomenonTime
 - resultTime
-- usedProcedure
-SPIN rules are provided that formalize this rule""" ;
+- usedProcedure""" ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
@@ -92,63 +38,6 @@ SPIN rules are provided that formalize this rule""" ;
     ] ;
 .
 sosa:Sampling
-  spin:rule [
-      rdf:type sp:Construct ;
-      sp:templates (
-          [
-            sp:object [
-                sp:varName "f" ;
-              ] ;
-            sp:predicate ssn-ext:hasUltimateFeatureOfInterest ;
-            sp:subject spin:_this ;
-          ]
-        ) ;
-      sp:where (
-          [
-            rdf:type sp:NotExists ;
-            sp:elements (
-                [
-                  sp:object [
-                      sp:varName "x" ;
-                    ] ;
-                  sp:predicate ssn-ext:hasUltimateFeatureOfInterest ;
-                  sp:subject spin:_this ;
-                ]
-              ) ;
-          ]
-          [
-            rdf:type sp:TriplePath ;
-            sp:object [
-                sp:varName "f" ;
-              ] ;
-            sp:path [
-                rdf:type sp:SeqPath ;
-                sp:path1 sosa:hasFeatureOfInterest ;
-                sp:path2 [
-                    rdf:type sp:ModPath ;
-                    sp:modMax -2 ;
-                    sp:modMin 0 ;
-                    sp:subPath sosa:isSampleOf ;
-                  ] ;
-              ] ;
-            sp:subject spin:_this ;
-          ]
-          [
-            rdf:type sp:NotExists ;
-            sp:elements (
-                [
-                  sp:object [
-                      sp:varName "y" ;
-                    ] ;
-                  sp:predicate sosa:isSampleOf ;
-                  sp:subject [
-                      sp:varName "f" ;
-                    ] ;
-                ]
-              ) ;
-          ]
-        ) ;
-    ] ;
   rdfs:subClassOf [
       rdf:type owl:Restriction ;
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
@@ -179,7 +68,6 @@ sosa:usedProcedure
   dcterms:creator <http://orcid.org/0000-0002-3884-3420> ;
   rdfs:comment "Some extensions to the SSN Ontology" ;
   rdfs:label "SSN extensions" ;
-  owl:imports <http://www.w3.org/2006/time> ;
   owl:imports ssn: ;
 .
 ssn-ext:ObservationCollection
