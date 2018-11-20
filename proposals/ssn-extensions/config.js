@@ -1,6 +1,6 @@
 var respecConfig = {
     specStatus: "ED",
-    shortName: "ssn-extensions",
+    shortName: "vocab-ssn-ext",
     edDraftURI: "https://w3c.github.io/sdw/proposals/ssn-extensions/",
     editors: [
     {
