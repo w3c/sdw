@@ -42,7 +42,7 @@ var respecConfig = {
        title: "OBOE: the Extensible Observation Ontology, version 1.1"
       },
       "OM-Lite": {
-        href: "http://content.iospress.com/articles/semantic-web/sw214",
+        href: "https://content.iospress.com/articles/semantic-web/sw214",
         doi: "10.3233/SW-160214",
         title: "Ontology for observations and sampling features, with alignments to existing models",
         publisher: "Semantic Web",
