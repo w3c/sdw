@@ -116,9 +116,9 @@ var respecConfig = {
          title: "DOLCE+DnS Ultralite (DUL)"
       },
         "sweet": {
-            href: "https://sweet.jpl.nasa.gov/",
-            authors: ["JPL"],
-            title: "SWEET Overview"
+            href: "https://sweetontology.net",
+            authors: ["ESIP"],
+            title: "SWEET Home"
         },
         "perf-vgraph": {
             href: "http://ceur-ws.org/Vol-248/paper2.pdf",
