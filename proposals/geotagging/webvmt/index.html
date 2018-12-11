@@ -225,7 +225,7 @@ Afterwards, they upload the video to share their experience with the online comm
       <section id='accessiblestandard'>
         <h2>Accessible Standard Opportunity</h2>
         <p>
-          Using current W3C recommendations, it is possible for an able programmer to synchronise video-geolocation 'metadata' with a &lt;video&gt; element using a &lt;track&gt; child element. However, this is a non-trivial development task which requires an understanding of the video DOM events and Javascript file handling, making it inaccessible to the vast majority of web users. In addition, video map tracks are a clearly identified metadata subclass, which could be isolated in a similar way to video text tracks.
+          Using current W3C recommendations, it is possible for a competent programmer to synchronise video-geolocation 'metadata' with a &lt;video&gt; element using a &lt;track&gt; child element. However, this is a non-trivial development task which requires an understanding of the video DOM events and Javascript file handling, making it inaccessible to the vast majority of web users. In addition, video map tracks are a clearly identified metadata subclass, which could be isolated in a similar way to video text tracks.
         </p>
         <p>
           Establishing a standard file format would allow interoperability and information sharing between the public, the emergency services, police and other mobile video device users, e.g. drone pilots, giving cheaper and easier access to this important source of information. If web browsers supported video geotagging natively using this file format, it would also become accessible to most web users. Current low-end smartphones already provide suitable hardware to concurrently capture video and geolocation streams, which would make this technology easily accessible to the general public, and encourage the user and developer communities to grow rapidly.
@@ -235,7 +235,7 @@ Afterwards, they upload the video to share their experience with the online comm
     <section class='informative' id='proposedsolution'>
       <h2>Proposed Solution</h2>
       <p>
-        This proposal constitutes a lightweight markup language to synchronise video with geolocation data for display on electronic maps, e.g. Google Maps. It offers presentational control of the map display, e.g. pan and zoom, and annotation to highlight map features to the viewer, e.g. markers and labels.
+        This proposal constitutes a lightweight markup language to synchronise video with geolocation data for display on electronic maps, e.g. OpenStreetMaps. It offers presentational control of the map display, e.g. pan and zoom, and annotation to highlight map features to the viewer, e.g. markers and labels.
       </p>
       <p>
         WebVMT (Web Video Map Tracks) format is intended for marking up external map track resources, and its main use is for files synchronising video content with an annotated map presentation. Ideas have been borrowed from existing W3C formats, including WebVTT's HTML binding and its block and cue structures, and SVG's approach to drawing and animation, in order to display output on an electronic map.
@@ -324,7 +324,7 @@ rad:500
 
 00:00:06.000 --&gt;
 { "zoom":
-  { "radius": 250 }
+  { "rad": 250 }
 }
           </pre>
         </section>
@@ -837,6 +837,9 @@ mimetype:video/mp4
             </li>
           </ol>
         </p>
+        <p class="note" title="Media Information Purpose">
+          A <a>WebVMT media</a> stores details required for rapid indexing by web crawlers, i.e. parsing the VMT file provides sufficient information to construct a time-location index without opening the linked media file.
+        </p>
         <p>
           A <dfn>WebVMT map initialisation block</dfn> consists of the following components, in the order given:
           <ol>
@@ -1040,7 +1043,10 @@ mimetype:video/mp4
           </li>
         </ul>
         <p class='note' title='Linked Media'>
-          The <a>WebVMT media settings list</a> gives details of the linked media file with which to synchronise. For example, identifying the media file, providing media encoding details and allowing multiple <a>WebVMT file</a>s to be aggregated.
+          The <a>WebVMT media settings list</a> gives details of the linked media file with which to synchronise. Care should be taken to maintain this information correctly, e.g. when a media file is renamed.
+        </p>
+        <p class='note' title='Search Engines'>
+          The <a>WebVMT media settings list</a> enables a web crawler to rapidly search media metadata, i.e. providing sufficient information to construct a time-metadata index of the linked media file without opening it. Search engine data throughput is reduced as only matching media files selected by the user need be read, and non-matching media files are never read.
         </p>
         <p>
           A <dfn>WebVMT media url setting</dfn> consists of the following components, in the order given:
@@ -1060,7 +1066,7 @@ mimetype:video/mp4
           The <a>WebVMT media url setting</a> gives the <a data-cite='RFC3986'>URL</a> of the media file associated with the <a>WebVMT file</a>. Omission of the <a>WebVMT media url setting</a> indicates that no linked media file exists.
         </p>
         <p class='note' title='URL Resolution'>
-          For the purpose of resolving a URL in the <code>MEDIA</code> block of a WebVMT file, or any URLs in resources referenced from <code>MEDIA</code> blocks of a WebVMT file, if the URL’s scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve.
+          For the purpose of resolving a URL in the <code>MEDIA</code> block of a WebVMT file, or any URLs in resources referenced from <code>MEDIA</code> blocks of a WebVMT file, if the URL’s scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve. If the <code>url</code> value does not match the <code>tileurl</code> attribute of the HTML <code>&lt;track&gt;</code> element, then the <code>tileurl</code> value takes precedence.
         </p>
         <p>
           A <dfn>WebVMT media MIME type setting</dfn> consists of the following components, in the order given:
@@ -1136,7 +1142,6 @@ mimetype:video/mp4
         <p>
           A <dfn>WebVMT map center setting</dfn> consists of a <a>WebVMT location setting</a>.
         </p>
-      </p>
       <p class='note' title='Map Center'>
         The <a>WebVMT map center setting</a> gives the location of the center of the map at the start of the linked media file.
       </p>
@@ -1178,6 +1183,9 @@ mimetype:video/mp4
             A <a>WebVMT longitude setting</a>.
           </li>
         </ul>
+      </p>
+      <p class='note' title='Co-ordinate Reference System'>
+        Location information is provided in terms of World Geodetic System coordinates, WGS84.
       </p>
       <p>
         A <dfn>WebVMT latitude setting</dfn> consists of the following components, in the order given:
@@ -1815,7 +1823,7 @@ NOTE Required non-cue blocks omitted for clarity
         <section id='layer'>
           <h2>Layers</h2>
           <p>
-            Syntax to allow more than one layer of map tiles to be specified, e.g. Google Maps includes 'map' and 'satellite' layers.
+            Syntax to allow more than one layer of map tiles to be specified, e.g. 'map' and 'satellite' layers.
           </p>
           <p>
             This should be functional, but remain lightweight.
@@ -1824,10 +1832,10 @@ NOTE Required non-cue blocks omitted for clarity
         <section id='multipleapis'>
           <h2>Multiple APIs</h2>
           <p>
-            The current tech demo is based on the Leaflet API, but should be broadened to support other web map APIs, e.g. Open Layers and Google Maps.
+            The current tech demo is based on the Leaflet API, but should be broadened to support other web map APIs, e.g. Open Layers.
           </p>
           <p>
-            A hot-swap feature would allow users to switch API on-the-fly to take advantage of the unique features supported by different APIs, e.g. Google Streetview.
+            A hot-swap feature would allow users to switch API on-the-fly to take advantage of the unique features supported by different APIs, e.g. Street View.
           </p>
         </section>
         <section id='cameradirection'>
@@ -1843,6 +1851,54 @@ NOTE Required non-cue blocks omitted for clarity
           </p>
           <p>
             Allowing the option to embed XML data within cues would permit synchronisation of arbitrary data with location and video without compromising interoperability, in a similar fashion to the GPX <code>&lt;extension&gt;</code> element.
+          </p>
+        </section>
+        <section id='coordrefsys'>
+          <h2>Co-ordinate Reference Systems</h2>
+          <p>
+            Although originally conceived for Earth-based use, spatial data in other environments could be accommodated by specifying the co-ordinate reference system. For example, location on another planet, e.g. Mars, or in an artifical environment, e.g. a video game.
+          </p>
+        </section>
+      </section>
+      <section id='plannedinterfaces'>
+        <h2>Planned Interfaces</h2>
+        <p>
+          This section lists interfaces which have been identified during the development process, but have not yet matured to a full design specification.
+        </p>
+        <section id='cueinterface'>
+          <h2>VMTCue Interface</h2>
+          <p>
+            Expose WebVMT Cues in the DOM API, based on the <a data-cite='HTML51#datacue-datacue'>HTML5 DataCue interface</a>. For example:
+            <pre class='nohighlight' title='WebVMT Cue Interface'>
+              [Exposed=Window,
+              Constructor(double startTime, double endTime, DOMString text),
+              Constructor(double startTime, DOMString text)]
+              interface VMTCue : DataCue {
+                attribute boolean noEndTime;
+              };
+            </pre>
+          </p>
+          <p>
+            This is analogous to the <a data-cite='WEBVTT#the-vttcue-interface'>VTTCue</a> interface.
+          </p>
+        </section>
+        <section id='mapinterface'>
+          <h2>VMTMap Interface</h2>
+          <p>
+            Expose WebVMT Maps in the DOM API. For example:
+            <pre class='nohighlight' title='WebVMT Map Interface'>
+              [Exposed=Window,
+              Constructor]
+              interface VMTMap {
+                attribute double centerLat;
+                attribute double centerLng;
+                attribute double zoomRad;
+                attribute object getMap;
+              };
+            </pre>
+          </p>
+          <p>
+            This is analogous to the <a data-cite='WEBVTT#the-vttregion-interface'>VTTRegion</a> interface.
           </p>
         </section>
       </section>
