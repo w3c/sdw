@@ -686,6 +686,9 @@ mimetype:video/mp4
             The raw text of the cue which is interpreted as time-aligned metadata, and rules for its interpretation.
           </dd>
         </dl>
+        <p class='note' title='End Time Omission'>
+          A <a>WebVMT cue</a> without an end time indicates that the cue end time is equal to the duration of the <a data-cite='HTML51/semantics-embedded-content.html#media-timeline'>media timeline</a>. The duration value may be unknown, for example during media streaming.
+        </p>
       </section>
       <section id='webvmtmap'>
         <h2>WebVMT Map</h2>
@@ -697,58 +700,82 @@ mimetype:video/mp4
         </p>
         <dl>
           <dt>
-            An <dfn>initial center latitude</dfn>
+            A <dfn>map center latitude</dfn>
           </dt>
           <dd>
             The latitude of the location at the center of the map.
           </dd>
           <dt>
-            An <dfn>initial center longitude</dfn>
+            A <dfn>map center longitude</dfn>
           </dt>
           <dd>
             The longitude of the location at the center of the map.
           </dd>
           <dt>
-            An <dfn>initial zoom radius</dfn>
+            A <dfn>map zoom radius</dfn>
           </dt>
           <dd>
-            The initial radius in metres of the minimum area visible from the center of the map.
+            The radius in metres of the minimum area visible from the center of the map.
           </dd>
+          <dt>
+            A <dfn>map object</dfn>
+          </dt>
+          <dd>
+            The control interface object for the map.
+          </dd>
+          <p class='note' title='Map Control Object'>
+            The precise format of the <a>map object</a> control interface is implementation dependent, for example the OpenLayers API.
+          </p>
         </dl>
       </section>
       <section id='webvmtmediafile'>
         <h2>WebVMT Media</h2>
         <p>
-          A <dfn>WebVMT media</dfn> is the audio or video with which <a>WebVMT cue</a>s are synchronised.
+          A <dfn>WebVMT media</dfn> is the linked media data with which <a>WebVMT cue</a>s are synchronised, for example audio or video.
+        </p>
+        <p class='note' title='Search Engines'>
+          A <a>WebVMT media</a> enables a web crawler to rapidly search media metadata by providing sufficient information to construct a time-metadata index of the linked media file without opening it. Search engine data throughput is reduced as only matching media files selected by the user need be read, and non-matching media files are not accessed at all. Care should be taken to maintain <a>WebVMT media</a> details correctly, for example when a media file is renamed.
         </p>
         <p>
           A <a>WebVMT media</a> consists of:
         </p>
         <dl>
           <dt>
-            A <dfn>media url</dfn>
+            A <dfn>media URL</dfn>
           </dt>
           <dd>
-            The url of the linked media file.
+            The URL of the linked media file.
           </dd>
+          <p class='note' title='Media URL'>
+            A null <a>media URL</a> indicates that no linked media file exists.
+          </p>
           <dt>
             A <dfn>media MIME type</dfn>
           </dt>
           <dd>
             The MIME type of the linked media file.
           </dd>
+          <p class='note' title='Media MIME Type'>
+            A null <a>media MIME type</a> indicates that no linked media file exists.
+          </p>
           <dt>
             A <dfn>media start time</dfn>
           </dt>
           <dd>
-            The time and date at which the linked media file begins.
+            The global time and date at which the linked media file begins.
           </dd>
+          <p class='note' title='Media Start Time'>
+            The <a>media start time</a> allows multiple <a>WebVMT file</a>s to be aggregated. A null <a>media start time</a> indicates that no start time is associated, for example in the case of an animation.
+          </p>
           <dt>
             A <dfn>media path</dfn>
           </dt>
           <dd>
-            The path identifier which represents the trajectory of the moving object capturing the linked media file.
+            The path identifier which uniquely identifies the moving object capturing the linked media file.
           </dd>
+          <p class='note' title='Media Path'>
+            A null <a>media path</a> indicates that no moving object is associated, for example when no linked media file exists.
+          </p>
         </dl>
       </section>
       <section id='commandstructures'>
@@ -769,6 +796,9 @@ mimetype:video/mp4
               A <a>WebVMT path</a>.
             </li>
           </ul>
+        </p>
+        <p class='note' title='Command Execution Order'>
+          <a>WebVMT command</a>s are executed in order from first to last in the <a>WebVMT file</a>.
         </p>
         <section id='mapcontrols'>
           <h2>Map Controls</h2>
@@ -804,6 +834,15 @@ mimetype:video/mp4
             </dt>
             <dd>
               The longitude in degrees of the map center.
+            </dd>
+            <dt>
+              A <dfn>pan end time</dfn>
+            </dt>
+            <dd>
+              The time at which the new map center is reached.
+            </dd>
+            <dd>
+              The pan end time may be defined as an absolute value, or calculated relative to the cue start time using a duration.
             </dd>
           </dl>
           <p>
@@ -871,29 +910,32 @@ mimetype:video/mp4
           </p>
           <dl>
             <dt>
-              A list of <dfn>WebVMT polygon vertex</dfn> locations
+              A list of <dfn>WebVMT location</dfn>s defining the polygon vertices.
             </dt>
             <dd>
               Vertex locations are listed sequentially around the perimeter of the polygon. The last vertex should not repeat the value of the first, as this is implicit.
             </dd>
           </dl>
           <p>
-            A <a>WebVMT polygon vertex</a> consists of:
+            A <a>WebVMT location</a> consists of:
           </p>
           <dl>
             <dt>
-              A <dfn>polygon vertex latitude</dfn>
+              A <dfn>location latitude</dfn>
             </dt>
             <dd>
-              The latitude in degrees of the polygon vertex.
+              The latitude in degrees of the location.
             </dd>
             <dt>
-              A <dfn>polygon vertex longitude</dfn>
+              A <dfn>location longitude</dfn>
             </dt>
             <dd>
-              The longitude in degrees of the polygon vertex.
+              The longitude in degrees of the location.
             </dd>
           </dl>
+          <p class='note' title='Co-ordinate Reference System'>
+            Location information is provided in terms of World Geodetic System coordinates, WGS84.
+          </p>
         </section>
         <section id='paths'>
           <h2>Paths</h2>
@@ -985,6 +1027,56 @@ mimetype:video/mp4
             A <a>WebVMT line</a> is a straight line between two locations. The trajectory of the moving object can be linearly interpolated between the cue start time and the segment end time.
           </p>
         </section>
+        <section id='animations'>
+          <h2>Animations</h2>
+          <p>
+            A <dfn>WebVMT animation</dfn> changes an object attribute from a start value to an end value over a given time.
+          </p>
+          <p>
+            A <a>WebVMT animation</a> consists of:
+          </p>
+          <dl>
+            <dt>
+              An <dfn>animation object</dfn>
+            </dt>
+            <dd>
+              The parent object of the attribute.
+            </dd>
+            <dt>
+              An <dfn>animation attribute</dfn>
+            </dt>
+            <dd>
+              The attribute of the object to change.
+            </dd>
+            <dt>
+              An <dfn>animation start value</dfn>
+            </dt>
+            <dd>
+              The initial value of the attribute.
+            </dd>
+            <dt>
+              An <dfn>animation end value</dfn>
+            </dt>
+            <dd>
+              The final value of the attribute.
+            </dd>
+            <dt>
+              An <dfn>animation start time</dfn>
+            </dt>
+            <dd>
+              The time at which to begin changing the attribute.
+            </dd>
+            <dt>
+              An <dfn>animation end time</dfn>
+            </dt>
+            <dd>
+              The time at which to finish changing the attribute.
+            </dd>
+            <dd>
+              The animation end time may be defined as an absolute value, or calculated relative to the animation start time using a duration.
+            </dd>
+          </dl>
+        </section>
       </section>
     </section>
     <section id='syntax'>
@@ -1068,9 +1160,6 @@ mimetype:video/mp4
             </li>
           </ol>
         </p>
-        <p class="note" title="Media Information Purpose">
-          A <a>WebVMT media</a> stores details required for rapid indexing by web crawlers, i.e. parsing the VMT file provides sufficient information to construct a time-location index without opening the linked media file.
-        </p>
         <p>
           A <dfn>WebVMT map initialisation block</dfn> consists of the following components, in the order given:
           <ol>
@@ -1137,7 +1226,7 @@ mimetype:video/mp4
           </ol>
         </p>
         <p class='note' title='Cues'>
-          A <a>WebVMT cue block</a> corresponds to one piece of time-aligned data in the <a>WebVMT file</a>, for example one map annotation. The <a>WebVMT cue payload</a> is the data associated with the <a>WebVMT cue</a>.
+          A <a>WebVMT cue block</a> corresponds to one piece of time-aligned data in the <a>WebVMT file</a>. The <a>WebVMT cue payload</a> is the data associated with the <a>WebVMT cue</a>.
         </p>
         <p>
           A <dfn>WebVMT cue identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
@@ -1168,9 +1257,6 @@ mimetype:video/mp4
             Optionally, a <a>WebVMT timestamp</a> representing the end time offset of the cue. The time represented by this <a>WebVMT timestamp</a> must be greater than or equal to the start time offset of the cue.
           </li>
         </ol>
-        <p class='note' title='End Time Omission'>
-          A <a>WebVMT cue block</a> without an end offset indicates that the <a>WebVMT cue block</a> end offset is equal to the duration of the <a data-cite='HTML51/semantics-embedded-content.html#media-timeline'>media timeline</a>. The duration value may be unknown, for example during media streaming.
-        </p>
         <p class='note' title='Cue Timings'>
           The <a>WebVMT cue timings</a> give the start and end offsets of the <a>WebVMT cue block</a>. Different cues can overlap. Cues are always listed ordered by their start time.
         </p>
@@ -1273,12 +1359,6 @@ mimetype:video/mp4
             A <a>WebVMT media path setting</a>.
           </li>
         </ul>
-        <p class='note' title='Linked Media'>
-          The <a>WebVMT media settings list</a> gives details of the linked media file with which to synchronise. Care should be taken to maintain this information correctly, e.g. when a media file is renamed.
-        </p>
-        <p class='note' title='Search Engines'>
-          The <a>WebVMT media settings list</a> enables a web crawler to rapidly search media metadata, i.e. providing sufficient information to construct a time-metadata index of the linked media file without opening it. Search engine data throughput is reduced as only matching media files selected by the user need be read, and non-matching media files are never read.
-        </p>
         <p>
           A <dfn>WebVMT media url setting</dfn> consists of the following components, in the order given:
         </p>
@@ -1293,11 +1373,8 @@ mimetype:video/mp4
             A <a data-cite='HTML51/infrastructure.html#valid-url'>valid URL</a>.
           </li>
         </ol>
-        <p class='note' title='Media URL'>
-          The <a>WebVMT media url setting</a> gives the <a data-cite='RFC3986'>URL</a> of the media file associated with the <a>WebVMT file</a>. Omission of the <a>WebVMT media url setting</a> indicates that no linked media file exists.
-        </p>
         <p class='note' title='URL Resolution'>
-          For the purpose of resolving a URL in the <code>MEDIA</code> block of a WebVMT file, or any URLs in resources referenced from <code>MEDIA</code> blocks of a WebVMT file, if the URL’s scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve. If the <code>url</code> value does not match the <code>tileurl</code> attribute of the HTML <code>&lt;track&gt;</code> element, then the <code>tileurl</code> value takes precedence.
+          For the purpose of resolving a <a data-cite='RFC3986'>URL</a> in the <code>MEDIA</code> block of a WebVMT file, or any URLs in resources referenced from <code>MEDIA</code> blocks of a WebVMT file, if the URL’s scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve. If the <code>url</code> value does not match the <code>tileurl</code> attribute of the HTML <code>&lt;track&gt;</code> element, then the <code>tileurl</code> value takes precedence.
         </p>
         <p>
           A <dfn>WebVMT media MIME type setting</dfn> consists of the following components, in the order given:
@@ -1313,9 +1390,6 @@ mimetype:video/mp4
             A <a data-cite='HTML51/infrastructure.html#valid-mime-type'>valid MIME type</a>.
           </li>
         </ol>
-        <p class='note' title='Media MIME Type'>
-          The <a>WebVMT media MIME type setting</a> gives the <a data-cite='RFC2046'>MIME type</a> of the media file associated with the <a>WebVMT file</a>. Omission of <a>WebVMT media MIME type setting</a> indicates that no linked media file exists.
-        </p>
         <p>
           A <dfn>WebVMT media start time setting</dfn> consists of the following components, in the order given:
         </p>
@@ -1330,9 +1404,6 @@ mimetype:video/mp4
             A <a data-cite='HTML51/infrastructure.html#valid-global-date-and-time-string'>valid global date and time string</a>.
           </li>
         </ol>
-        <p class='note' title='Media Start Time'>
-          The <a>WebVMT media start time setting</a> gives the <a data-cite='HTML51/infrastructure.html#global-date-and-time'> global date and time</a> of the start time of the media file associated with the <a>WebVMT file</a>, which allows multiple <a>WebVMT file</a>s to be aggregated. Omission of the <a>WebVMT media start time setting</a> indicates that no start time is associated, for example in the case of an animation.
-        </p>
         <p>
           A <dfn>WebVMT media path setting</dfn> consists of the following components, in the order given:
         </p>
@@ -1347,15 +1418,6 @@ mimetype:video/mp4
             A <a>WebVMT path identifier</a>.
           </li>
         </ol>
-        <p class='note' title='Media Path'>
-          A <a>WebVMT media path setting</a> uniquely identifies the path of the moving object that is capturing the linked media file, for example a camera. Omission of the <a>WebVMT media path setting</a> indicates that no object is associated, for example when no linked media file exists.
-        </p>
-        <p>
-          A <dfn>WebVMT path identifier</dfn> is any sequence of one or more characters not containing the substring "-->" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
-        </p>
-        <p class='note' title='Path Identification'>
-          A <a>WebVMT path identifier</a> is a string which uniquely identifies a moving object in the <a>WebVMT file</a>, for example a camera.
-        </p>
       </section>
       <section>
         <h2>WebVMT Map Settings</h2>
@@ -1370,11 +1432,11 @@ mimetype:video/mp4
             A <a>WebVMT map zoom setting</a>.
           </li>
         </ul>
+        <p class='note' title='Initial Map State'>
+          The <a>WebVMT map settings list</a> defines the <a>WebVMT map</a> state before the first cue.
+        </p>
         <p>
           A <dfn>WebVMT map center setting</dfn> consists of a <a>WebVMT location setting</a>.
-        </p>
-        <p class='note' title='Map Center'>
-          The <a>WebVMT map center setting</a> gives the location of the center of the map at the start of the linked media file.
         </p>
         <p>
           A <dfn>WebVMT map zoom setting</dfn> consists of the following components, in the order given:
@@ -1402,7 +1464,7 @@ mimetype:video/mp4
           </ol>
         </p>
         <p class='note' title='Zoom Radius'>
-          When interpreted as a number, the <a>WebVMT map zoom setting</a> represents the minimum radius in metres from the central location visible in the <a>WebVMT map</a> at the start of the linked media file.
+          When interpreted as a number, the <a>WebVMT map zoom setting</a> represents the <a>map zoom radius</a>.
         </p>
         <p>
           A <dfn>WebVMT location setting</dfn> consists of the following components, in any order, separated from each other by a U+002C COMMA character (,). Each component must be included once per <a>WebVMT location setting</a> string.
@@ -1414,9 +1476,6 @@ mimetype:video/mp4
               A <a>WebVMT longitude setting</a>.
             </li>
           </ul>
-        </p>
-        <p class='note' title='Co-ordinate Reference System'>
-          Location information is provided in terms of World Geodetic System coordinates, WGS84.
         </p>
         <p>
           A <dfn>WebVMT latitude setting</dfn> consists of the following components, in the order given:
@@ -1512,9 +1571,6 @@ mimetype:video/mp4
               A <a>WebVMT path annotation command</a>.
             </li>
           </ul>
-        </p>
-        <p class='note' title='Command Execution Order'>
-          Components of a <a>WebVMT command list</a> are executed in  order from first to last.
         </p>
         <section>
           <h2>WebVMT Map Commands</h2>
@@ -1624,7 +1680,7 @@ mimetype:video/mp4
             </ul>
           </p>
           <p class='note' title='Zoom Radius'>
-            When interpreted as a number, the <a>WebVMT radius attribute</a> represents the minimum radius in metres from the central location visible in the <a>WebVMT map</a>.
+            When interpreted as a number, the <a>WebVMT map zoom setting</a> represents the <a>map zoom radius</a>.
           </p>
           <p>
             A <dfn>WebVMT radius attribute</dfn> consists of a <a data-cite='ECMA-404'>JSON text</a> consisting of the following components in the order given:
@@ -1724,9 +1780,6 @@ mimetype:video/mp4
               </li>
             </ul>
           </p>
-          <p class='note' title='Polygon Vertices'>
-            Components of a <a>WebVMT vertices list</a> are listed sequentially around the perimeter of the polygon. The last vertex should not repeat the value of the first, as this is implicit.
-          </p>
         </section>
         <section>
           <h2>WebVMT Path Commands</h2>
@@ -1810,6 +1863,12 @@ mimetype:video/mp4
               </li>
             </ul>
           </p>
+          <p>
+            A <dfn>WebVMT path identifier</dfn> is any sequence of one or more characters not containing the substring "-->" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
+          </p>
+          <p class='note' title='Path Identification'>
+            A <a>WebVMT path identifier</a> is a string which uniquely identifies a moving object in the <a>WebVMT file</a>, for example a camera.
+          </p>
         </section>
         <section>
           <h2>WebVMT Animation Subcommand</h2>
@@ -1825,7 +1884,7 @@ mimetype:video/mp4
             </ul>
           </p>
           <p class='note' title='Parent Command'>
-            The <a>WebVMT animation subcommand</a> refers to the attributes of its parent command.
+            The <a>WebVMT animation subcommand</a> refers to the attributes of its parent command. The parent command is the <a>animation object</a>.
           </p>
           <p>
             A <dfn>WebVMT animation parameter list</dfn> consists of a <a data-cite='ECMA-404'>JSON array</a> of one or more <a>WebVMT individual animation list</a>s.
@@ -1867,7 +1926,7 @@ mimetype:video/mp4
             </ol>
           </p>
           <p class='note' title='Animation Name'>
-            A <a>WebVMT name attribute</a> is a string matching an attribute name of the parent of the <a>WebVMT animation subcommand</a>.
+            A <a>WebVMT name attribute</a> represents the name of the <a>animation attribute</a>.
           </p>
           <p>
             A <dfn>WebVMT target value attribute</dfn> consists of a <a data-cite='ECMA-404'>JSON text</a> consisting of the following components in the order given:
@@ -1884,7 +1943,7 @@ mimetype:video/mp4
             </ol>
           </p>
           <p class='note' title='Animation Target Value'>
-            The <a>WebVMT target value attribute</a> represents the value of the <a>WebVMT name attribute</a> at the end of the animation.
+            The <a>WebVMT target value attribute</a> represents the value of the <a>animation end value</a>.
           </p>
           <p>
             A <dfn>WebVMT end time attribute</dfn> consists of a <a data-cite='ECMA-404'>JSON text</a> consisting of the following components in the order given:
@@ -1901,7 +1960,7 @@ mimetype:video/mp4
             </ol>
           </p>
           <p class='note' title='Animation End Time'>
-            A <a>WebVMT end time attribute</a> value represents the elapsed time from the start of the <a>WebVMT file</a> to the end of the animation.
+            A <a>WebVMT end time attribute</a> represents the value of the <a>animation end time</a>.
           </p>
           <p>
             A <dfn>WebVMT duration attribute</dfn> consists of a <a data-cite='ECMA-404'>JSON text</a> consisting of the following components in the order given:
@@ -1918,7 +1977,7 @@ mimetype:video/mp4
             </ol>
           </p>
           <p class='note' title='Animation Duration'>
-            A <a>WebVMT duration attribute</a> value represents the elapsed time from the start of the <a>WebVMT cue timings</a> to the end of the animation.
+            A <a>WebVMT duration attribute</a> represents the difference in value between the <a>animation end time</a> and the <a>animation start time</a>.
           </p>
         </section>
       </section>
