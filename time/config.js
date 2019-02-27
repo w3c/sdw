@@ -22,7 +22,7 @@ var respecConfig = {
     otherLinks: [
     {
       key: "Contributors",
-      data: [ 
+      data: [
       {
         value: "Jerry R. Hobbs"
       },{
@@ -65,32 +65,32 @@ var respecConfig = {
 
     localBiblio: {
       "af-97": {
-        authors: ["J.F. Allen" , "G. Ferguson"], 
-        date: "1997", 
+        authors: ["J.F. Allen" , "G. Ferguson"],
+        date: "1997",
         href: "http://dx.doi.org/10.1007/978-0-585-28322-7_7",
-        title: "Actions and events in interval temporal logic In: Spatial and Temporal Reasoning. O. Stock, ed., Kluwer, Dordrecht, Netherlands, pp. 205-245." 
+        title: "Actions and events in interval temporal logic In: Spatial and Temporal Reasoning. O. Stock, ed., Kluwer, Dordrecht, Netherlands, pp. 205-245."
       },
       "al-84": {
-        authors: ["J.F. Allen"], 
-        date: "1984", 
+        authors: ["J.F. Allen"],
+        date: "1984",
         href: "http://dx.doi.org/10.1016/0004-3702%2884%2990008-0",
         title: "Towards a general theory of action and time. Artificial Intelligence 23, pp. 123-154."
       },
       "co-15": {
-        authors: ["S.J.D. Cox"], 
-        date: "2015", 
+        authors: ["S.J.D. Cox"],
+        date: "2015",
         href: "http://dx.doi.org/10.3233/SW-150187",
         title: "Time Ontology Extended for Non-Gregorian Calendar Applications. Semantic Web Journal 7, pp. 201-209"
       },
       "cr-05": {
-        authors: ["S.J.D. Cox" , "S.M. Richard"], 
-        date: "2005", 
+        authors: ["S.J.D. Cox" , "S.M. Richard"],
+        date: "2005",
         href: "http://dx.doi.org/10.1130/GES00022.1",
         title: "A formal model for the geologic time scale and global stratotype section and point, compatible with geospatial information transfer standards. Geosphere 1 119. "
       },
       "cr-14": {
-        authors: ["S.J.D. Cox" , "S.M. Richard"], 
-        date: "2014", 
+        authors: ["S.J.D. Cox" , "S.M. Richard"],
+        date: "2014",
         href: "http://doi.org/10.1007/s12145-014-0170-6",
         title: "A geologic timescale ontology and service. Earth Sci. Informatics.. 8 5–19. "
       },
@@ -99,8 +99,8 @@ var respecConfig = {
         title: "FIPS 55 County instance file. "
       },
       "hp-04": {
-        authors: ["J. R. Hobbs" , "F. Pan"], 
-        date: "2004", 
+        authors: ["J. R. Hobbs" , "F. Pan"],
+        date: "2004",
         href: "http://dx.doi.org/10.1145/1017068.1017073",
         title: "An Ontology of Time for the Semantic Web. ACM Transactions on Asian Language Processing (TALIP): Special issue on Temporal Information Processing, 3, No. 1, March 2004, pp. 66-85. "
       },
@@ -109,19 +109,43 @@ var respecConfig = {
         href: "https://www.iso.org/standard/26013.html",
         title: "ISO 19108:2002 Geographic information -- Temporal schema. "
       },
+      "iso-19111-2007": {
+        authors: ["ISO/TC 211"],
+        href: "https://www.iso.org/standard/41126.html",
+        title: "Geographic information -- Spatial referencing by coordinates",
+        publisher: "ISO",
+        status: "International Standard",
+        date: "2007",
+        id: "iso-19111-2007"
+      },
+      "iso-19111-2019": {
+        authors: ["ISO/TC 211"],
+        href: "https://www.iso.org/standard/74039.html",
+        title: "Geographic information -- Referencing by coordinates",
+        publisher: "ISO",
+        status: "International Standard",
+        date: "2019",
+        id: "iso-19111-2019"
+      },
       "iso-C": {
         href: "http://www.daml.org/2001/09/countries/iso",
         title: "ISO Country instance file. "
       },
       "mf-13": {
-        authors: ["X. Ma" , "P. Fox"], 
-        date: "2013", 
+        authors: ["X. Ma" , "P. Fox"],
+        date: "2013",
         href: "http://dx.doi.org/10.1007/s12145-013-0110-x",
         title: "Recent progress on geologic time ontologies and considerations for future works, Earth Sci. Informatics. 6 31–46. "
       },
       "oe-06": {
         href: "http://www.w3.org/2006/time-entry",
         title: "OWL code of the entry sub-ontology of time. "
+      },
+      "ogc-topic-2": {
+        authors: [ "Roger Lott" ],
+        title: "OGC Abstract Specification Topic 2 - Geographic information - Referencing by coordinates",
+        date: "2019",
+        href: "http://docs.opengeospatial.org/as/18-005r4/18-005r4.html"
       },
       "ot-06": {
         href: "http://www.w3.org/2006/time",
@@ -132,20 +156,20 @@ var respecConfig = {
         title: "OWL-S homepage. "
       },
       "pa-05": {
-        authors: ["F. Pan"], 
-        date: "2005", 
+        authors: ["F. Pan"],
+        date: "2005",
         href: "https://pdfs.semanticscholar.org/daf3/2ec8803b0749952ee89be3644303cb6b3ff2.pdf",
         title: "A Temporal Aggregates Ontology in OWL for the Semantic Web. In: Proceedings of the AAAI Fall Symposium on Agents and the Semantic Web, Arlington, Virginia, pp. 30-37. "
       },
       "ph-04": {
-        authors: ["F. Pan" , "J.R. Hobbs"], 
-        date: "2004", 
+        authors: ["F. Pan" , "J.R. Hobbs"],
+        date: "2004",
         href: "http://www.isi.edu/%7Ehobbs/time/pub/pan-hobbs-AAAI-SSS04.pdf",
         title: "Time in OWL-S. In: Proceedings of the AAAI Spring Symposium on Semantic Web Services, Stanford University, CA, pp. 29-36. "
       },
       "ph-05": {
-        authors: ["F. Pan" , "J.R. Hobbs"], 
-        date: "2005", 
+        authors: ["F. Pan" , "J.R. Hobbs"],
+        date: "2005",
         href: "http://www.isi.edu/%7Ehobbs/FLAIRS-05.pdf",
         title: "Temporal Aggregates in OWL-Time. In Proceedings of the 18th International Florida Artificial Intelligence Research Society Conference (FLAIRS), Clearwater Beach, Florida, pp. 560-565, AAAI Press. "
       },
