@@ -109,6 +109,24 @@ var respecConfig = {
         href: "https://www.iso.org/standard/26013.html",
         title: "ISO 19108:2002 Geographic information -- Temporal schema. "
       },
+      "iso-19111-2007": {
+        authors: ["ISO/TC 211"],
+        href: "https://www.iso.org/standard/41126.html",
+        title: "Geographic information -- Spatial referencing by coordinates",
+        publisher: "ISO",
+        status: "International Standard",
+        date: "2007",
+        id: "iso-19111-2007"
+      },
+      "iso-19111-2019": {
+        authors: ["ISO/TC 211"],
+        href: "https://www.iso.org/standard/74039.html",
+        title: "Geographic information -- Referencing by coordinates",
+        publisher: "ISO",
+        status: "International Standard",
+        date: "2019",
+        id: "iso-19111-2019"
+      },
       "iso-C": {
         href: "http://www.daml.org/2001/09/countries/iso",
         title: "ISO Country instance file. "
@@ -122,6 +140,12 @@ var respecConfig = {
       "oe-06": {
         href: "http://www.w3.org/2006/time-entry",
         title: "OWL code of the entry sub-ontology of time. "
+      },
+      "ogc-topic-2": {
+        authors: [ "Roger Lott" ],
+        title: "OGC Abstract Specification Topic 2 - Geographic information - Referencing by coordinates",
+        date: "2019",
+        href: "http://docs.opengeospatial.org/as/18-005r4/18-005r4.html"
       },
       "ot-06": {
         href: "http://www.w3.org/2006/time",
