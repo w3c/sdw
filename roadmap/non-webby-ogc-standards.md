@@ -6,131 +6,147 @@ The following is a list of OGC standards which are well-deployed in the geospati
 
 Criteria we use for a standard to be considered *Webby*:
 
-- *`WWW-aligned:` The standard fully supports and follows the [fundamental concepts of current web architecture][1]*. This includes the use of URIs for identification; interaction using HTTP(S), content negotiation, and linking to other resources, including to secondary resources; and formats with agreed syntax and semantics. A representation of a resource is sent together with metadata, identifying the content-type.
-- *`Accessible:` The standard is easy and simple enough for non-experts in geospatial data and geospatial information systems to understand and use*. Complexity in geospatial standards often stems from the fact that they cover a wide range of use cases, many of which are not required by non-experts.
-- *`Web-oriented:` The standard is web-developer-friendly*, i.e. meets the expectations of many Web developers, for example by using encodings that are common on the Web, using HTTP verbs, etc. Note that this is a different criteria from the previous one; for example, it's about developers preferring encodings such as JSON to XML/GML. Note: what's 'developer-friendly' can be a trend sensitive thing.
+- __WWW-aligned:__ The standard fully supports and follows the [fundamental concepts of current web architecture][1]*. This includes the use of URIs for identification; interaction using HTTP(S), content negotiation, and linking to other resources, including to secondary resources; and formats with agreed syntax and semantics. A representation of a resource is sent together with metadata, identifying the content-type.
+- __Accessible:__ The standard is easy and simple enough for non-experts in geospatial data and geospatial information systems to understand and use*. Complexity in geospatial standards often stems from the fact that they cover a wide range of use cases, many of which are not required by non-experts.
+- __Web-oriented:__ The standard is web-developer-friendly*, i.e. meets the expectations of many Web developers, for example by using encodings that are common on the Web, using HTTP verbs, etc. Note that this is a different criteria from the previous one; for example, it's about developers preferring encodings such as JSON to XML/GML. Note: what's 'developer-friendly' can be a trend sensitive thing.
 
 ## Web Map Service (WMS)
 
-| `Scorecard`               |              |                                                                         |
+| __Scorecard__             |              |                                                                         |
 | ------------------------- |:------------:|:------------------------------------------------------------------------|
-| `Criteria`                |    `Rating`  | `Rational`|
+| *__Criteria__*            | *__Rating__* | *__Rational__* |
 | WWW-aligned               |      Yes     | The fundemental concepts are adhered to. One could argue that a more RESTful approach would be a necessary step towards modernization of the standard. |
 | Accessible                |      No      | Many of the required parameters assume a priori knowledge about OGC standards and geospatial concepts such as CRS, BBOX, Layers, Version, Service, etc.  |
 | Web-oriented              |      No      | WMS allows the use of parameterized URLs, but returns XML messages. No support for JSON.|
 
 ## Web Map Tile Service (WMTS)
 
-|       `Scorecard`          | webarch      | simple       | dev-friendly | 
-| ------------               |:------------:|:------------:|:------------:|
-| Web Map Tile Service (WMTS)|      ?       |     ?        |       no     |
-
-Rationale: Using http only as a transport protocol, sending XML messages back and forth.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       ?      |                                                                         |
+| Accessible                |       ?      |                                                                         |
+| Web-oriented              |       No     | Using HTTP only as a transport protocol, sending XML messages back and forth. |
 
 ## Web Coverage Service (WCS)
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| Web Coverage Service (WCS)|      ?       |     no       |       no     |
-
-Rationale: Using http only as a transport protocol, sending XML messages back and forth.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       ?      |                                                                         |
+| Accessible                |       No     |                                                                         |
+| Web-oriented              |       No     | Using HTTP only as a transport protocol, sending XML messages back and forth. |
 
 ## Web Coverage Processing Service
 
-|       `Scorecard`              | webarch      | simple       | dev-friendly | 
-| ------------                   |:------------:|:------------:|:------------:|
-| Web Coverage Processing Service|      ?       |     ?        |       no     |
-
-Rationale: Using http only as a transport protocol, sending XML messages back and forth.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       ?      |                                                                         |
+| Accessible                |       ?      |                                                                         |
+| Web-oriented              |       No     | Using HTTP only as a transport protocol, sending XML messages back and forth. |
 
 ## Catalogue Service (CSW)
 
-|       `Scorecard`          | webarch      | simple       | dev-friendly | 
-| ------------               |:------------:|:------------:|:------------:|
-| Catalogue Service (CSW)    |      no      |     ?        |       no     |
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       No     | Catalogue services cannot be crawled by web indexers.                   |
+| Accessible                |       ?      |                                                                         |
+| Web-oriented              |       No     | Using HTTP only as a transport protocol, sending XML messages back and forth. |
 
-Rationale: Using http only as a transport protocol, sending XML messages back and forth. Catalogue services cannot be crawled by web indexers.  
 
 ## Web Map Context
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| Web Map Context           |      ?       |     ?        |       no     |
-
-Rationale: Using http only as a transport protocol, sending XML messages back and forth.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       ?      |                                                                         |
+| Accessible                |       ?      |                                                                         |
+| Web-oriented              |       No     | Using HTTP only as a transport protocol, sending XML messages back and forth. |
 
 ## Web Processing Service
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| Web Processing Service    |      ?       |     ?        |       no     |
-
-Rationale: Using http only as a transport protocol, sending XML messages back and forth.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       ?      |                                                                         |
+| Accessible                |       ?      |                                                                         |
+| Web-oriented              |       No     | Using HTTP only as a transport protocol, sending XML messages back and forth. |
 
 ## Web Service Common
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| Web Service Common        |      ?       |     ?        |       no     |
-
-Rationale: Using http only as a transport protocol, sending XML messages back and forth.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       ?      |                                                                         |
+| Accessible                |       ?      |                                                                         |
+| Web-oriented              |       No     | Using HTTP only as a transport protocol, sending XML messages back and forth. |
 
 ## Sensor Observation Service
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| Sensor Observation Service|      ?       |     ?        |       no     |
-
-Rationale: Using http only as a transport protocol, sending XML messages back and forth.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       ?      |                                                                         |
+| Accessible                |       ?      |                                                                         |
+| Web-oriented              |       No     | Using HTTP only as a transport protocol, sending XML messages back and forth. |
 
 ## Sensor Planning Service
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| Sensor Planning Service   |      ?       |     ?        |       no     |
-
-Rationale: Using http only as a transport protocol, sending XML messages back and forth.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       ?      |                                                                         |
+| Accessible                |       ?      |                                                                         |
+| Web-oriented              |       No     | Using http only as a transport protocol, sending XML messages back and forth. |
 
 ## Observations and Measurements (O&M) GML encoding
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| O&M GML encoding          |      n.a.    |     ?        |       no     |
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       N/A    |                                                                         |
+| Accessible                |       ?      |                                                                         |
+| Web-oriented              |       No     | The encoding is not web-developer-friendly.                             |
 
-Rationale: The encoding is not web-developer-friendly. 
-
-Note: The concepts of the standard have for a large part been incorporated in SSN.
+> Note: The concepts of the standard have for a large part been incorporated in SSN.
 
 ## Timeseries (Profile of Observations and Measurements and the XML Encoding)
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| Timeseries                |      n.a.    |     no       |       no     |
-
-Rationale: The XML encoding is too complex and verbose - not lightweight enough to conduct, for example, enhanced (near) real-time operations involving moving objects, via the Web.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       N/A    |                                                                         |
+| Accessible                |       No     | The XML encoding is too complex and verbose.                            |
+| Web-oriented              |       No     | Not lightweight enough to conduct, for example, enhanced (near) real-time operations involving moving objects, via the Web. |
 
 ## Moving Features
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| Moving Features           |      n.a.    |     no       |       no     |
-
-Rationale: The XML encoding is too complex and verbose - not lightweight enough to conduct, for example, enhanced (near) real-time operations involving moving objects, via the Web.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       N/A    |                                                                         |
+| Accessible                |       No     | The XML encoding is too complex and verbose.                            |
+| Web-oriented              |       No     | Not lightweight enough to conduct, for example, enhanced (near) real-time operations involving moving objects, via the Web. |
 
 ## IndoorGML
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| IndoorGML                 |      n.a.    |     no       |       no     |
-
-Rationale: Too complex and the GML encoding is not web-developer friendly. A JSON encoding might be created from the conceptual model, but people have indicated it may currently be too complicated for that. This standard is potentially relevant for mobile web applications, though.
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       N/A    |                                                                         |
+| Accessible                |       No     | Too complex and the GML encoding is not web-developer friendly.                            |
+| Web-oriented              |       No     | A JSON encoding might be created from the conceptual model, but people have indicated it may currently be too complicated for that. This standard is potentially relevant for mobile web applications, though. |
 
 ## CityGML
 
-|       `Scorecard`         | webarch      | simple       | dev-friendly | 
-| ------------              |:------------:|:------------:|:------------:|
-| CityGML                   |      n.a.    |     no       |       no     |
-Rationale: The GML encoding is not web-developer friendly. There is a v0.9 JSON encoding (CityJSON).
+| __Scorecard__             |              |                                                                         |
+| ------------------------- |:------------:|:------------------------------------------------------------------------|
+| *__Criteria__*            | *__Rating__* | *__Rational__*                                                          |
+| WWW-aligned               |       N/A    |                                                                         |
+| Accessible                |       No     | The GML encoding is not web-developer friendly.                         |
+| Web-oriented              |       No     | There is a v0.9 JSON encoding (CityJSON).                               |
   
 [1]: https://www.w3.org/TR/webarch/
 [2]: https://w3c.github.io/web-roadmaps/sdw/
