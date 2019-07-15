@@ -4,10 +4,19 @@ var respecConfig = {
     edDraftURI: "https://w3c.github.io/sdw/proposals/time-entity-relations/",
     editors: [
     {
-        name: "Simon Cox",
-        company: "CSIRO",
+        name:       "Simon Cox",
+        orcid:      "0000-0002-3884-3420",
+        company:    "CSIRO",
+        url:        "http://people.csiro.au/Simon-Cox",
         companyURL: "https://www.csiro.au/",
         w3cid: 1796
+      },{
+        name: "Elf Pavlik",
+        url: "https://elf-pavlik.hackers4peace.net/"
+      },{
+        name: "Chris Little",
+        company: "Met Office",
+        companyURL: "http://www.metoffice.gov.uk/"
       }],
     wg: "Spatial Data on the Web Interest Group",
     wgURI: "https://www.w3.org/2017/sdwig/",

@@ -88,51 +88,59 @@ MARGIN: 0px 0px 10px
 <p style="text-align: center;">The OWL-Time ontology with these extensions is available <a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-rel.ttl">here</a>.</p>
 </section>
 
-https://www.w3.org/2006/time
 
 <section id="sotd">
 <p><strong>For OGC -</strong> This is a Public Draft of a document prepared by the Spatial Data on the Web Interest Group
 	(<a href="https://www.w3.org/2017/sdwig/">SDWIG</a>)
 — a joint W3C-OGC project (see <a href="https://www.w3.org/2017/sdwig/charter.html">charter</a>).
 The document is prepared following W3C conventions. This document is not an OGC Standard. This document is distributed for review and comment. This document is subject to change without notice and may not be referred to as an OGC Standard. Recipients of this document are invited to submit, with their comments, notification of any relevant patent rights of which they are aware and to provide supporting documentation. </p>
-<p>New classes and properties are introduced in this extension to SSN.
-  The new elements primarily relate to additional requirements for describing observations and collections of observations.
-  The ontology document &lt;owl:imports&gt; the SSN ontology, and adds the new elements and axioms in a new RDF namespace. </p>
+<p>New properties are introduced in this extension to OWL-Time.
+  The new elements concern relationships between temporal entities which cannot be easily expressed through combination of the predicates provided in OWL-Time using the axiomatization available in OWL2.
+  The ontology document &lt;owl:imports&gt; the OWL-Time, and adds the new elements and axioms. 
+  IRIs denoting the new elements are placed in the OWL-Time namespace since it is expected that they could be added to the normative ontology in a future revision of OWL-Time.</p>
 </section>
 
 <section id="motivation">
 <h2>Motivation and background</h2>
 <p>OWL-Time is an ontology for describing temporal entities and their relationships [[owl-time]].
-  The focus is particularly in the relations between time intervals, originally described by Allen [[?al-84]] [[?af-97]]. 
-  However, a number of relationships involving time instants are not supported directly by OWL-Time.
-  In particular: 
+  The focus is particularly in relationships between time intervals, using the terminology originally defined by Allen [[?al-84]] [[?af-97]]. 
+  However, a number of relationships that are required for some applications are not included in the set defined by Allen and implemented in OWL-Time.
 </p>
-<ol>
-  <li>
-    discovery and use of observation data typically depends on their relationship to an <i>ultimate</i> feature-of-interest, which is a known thing in the world, such as a geological formation, or a specific patient, or the state of the atmosphere. However, if the (proximate) feature-of-interest of the observation is a <i>sample</i> of the ultimate feature-of-interest, the identity of the ultimate feature-of-interest can be obtained only by following a chain of one or more <a href="https://www.w3.org/TR/vocab-ssn/#SOSAisSampleOf">sosa:isSampleOf</a> relationships. This may not be possible in a single request on a data service;
-  </li>
-  <li>
-    observations are usually made as part of a set or collection, in which one or more of the observation properties -
-    <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a>,
-    <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">observedProperty</a>,
-    <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">madeBySensor</a>,
-    <a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">usedProcedure</a>,
-    <a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">phenomenonTime</a>,
-    <a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">resultTime</a>
-    - are shared by all members of the collection. For efficient discovery and data transfer the <i>set</i> of observation descriptions can be packaged in a standard way that captures the common properties at the collection level.
-  </li>
-</ol>
-
 <p>
-  This Note describes solutions to these requirements.
+  While, in principle, any relationship between temporal entities can be built up through logical combination of members of the 15 primitive relations defined by Allen (i.e. before, after, ... - see <a href="https://www.w3.org/TR/owl-time/#topology">OWL-Time Figure 2</a>), in practice, limitations in the expressivity of the RDF implementation of OWL2 [[owl2-direct-semantics]][[owl2-rdf-based-semantics]], particularly around unions and complements of properties, make it convenient to introduce a small set of additional relations explicitly, in order to support applications efficiently. 
+  Two were already included in OWL-Time: 
 </p>
+  <ol>
+    <li><code>time:intervalIn</code> is the the union of 
+      <code>time:intervalDuring</code>, <code>time:intervalStarts</code>,and <code>time:intervalFinishes</code>; </li>
+    <li><code>time:intervalDisjoint</code> is the the union of 
+      <code>time:intervalBefore</code>, and <code>time:intervalAfter</code></li>
+  </ol>
+<p>
+  This note defines a further four relations:  
+</p>
+  <ol>
+    <li><code>time:disjoint</code> is the union of 
+      <code>time:before</code>, <code>time:after</code>, and <code>time:intervalDisjoint</code>; 
+    </li>
+    <li><code>time:equals</code> is the super-property of 
+      <code>time:intervalEquals</code>, not restricted to relations between proper intervals; 
+    </li>
+    <li><code>time:hasInside</code> is the union of 
+      <code>time:inside</code>, <code>time:intervalContains</code>, <code>time:intervalStartedBy</code>,and <code>time:intervalFinishedBy</code>; 
+    </li>
+    <li><code>time:notDisjoint</code> is the union of 
+      <code>time:equals</code>, <code>time:hasInside</code>, <code>time:intervalIn</code>, <code>time:intervalMeets</code>, <code>time:intervalMetBy</code>, <code>time:intervalOverlaps</code>, <code>time:intervalOverlappedBy</code>, 
+      also being the complement of <code>time:disjoint</code>; 
+    </li>
+  </ol>
+<ol>
 </section>
 
 <section id="namespaces">
 <h2>Notation and namespaces</h2>
 	<p>Classes and properties from the are denoted in this specification using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[?curie]]. </p>
-<p>The namespace for the SSN-Extensions graph is <code>http://www.w3.org/ns/ssn/ext/</code>.
-  SSN-Extension re-uses elements from SSN and SOSA [[vocab-ssn]]. </p>
+<p>The namespace for all classes and properties in OWL-Time and this extension is <code>http://www.w3.org/2006/time#</code>. </p>
 <p>The table below indicates the full list of namespaces and prefixes used in this document.</p>
 <table id="namespacesTable">
 <thead>
@@ -159,20 +167,8 @@ The document is prepared following W3C conventions. This document is not an OGC 
 <td><code>http://www.w3.org/2000/01/rdf-schema#</code></td>
 </tr>
 <tr>
-<td><code>sosa</code></td>
-<td><code>http://www.w3.org/ns/sosa/</code></td>
-</tr>
-<tr>
-<td><code>ssn</code></td>
-<td><code>http://www.w3.org/ns/ssn/</code></td>
-</tr>
-<tr>
-<td><code>ssn-ext</code></td>
-<td><code>http://www.w3.org/ns/ssn/ext/</code></td>
-</tr>
-<tr>
-<td><code>xsd</code></td>
-<td><code>http://www.w3.org/2001/XMLSchema#</code></td>
+<td><code>time</code></td>
+<td><code>http://www.w3.org/2006/time#</code></td>
 </tr>
 </tbody>
 </table>
@@ -183,197 +179,29 @@ The document is prepared following W3C conventions. This document is not an OGC 
 
 </section>
 
-<section id="overview" class="informative">
-<h2>Principles and vocabulary overview</h2>
-
-<section id="ultimate-feature-of-interest">
-<h3>Ultimate feature of interest</h3>
-<p>The object of the <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a> property of an observation, act of sampling or actuation is the immediate or proximate <a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">FeatureOfInterest</a>.
-In some cases this is not the the ultimate thing that the observation, act of sampling or actuation is concerned with, but is an intermediate thing, often a sample of the ultimate feature of interest, or perhaps a sample of a sample, etc.
-Nevertheless, particularly for discovery purposes, it is usually the ultimate feature of interest that really matters to the data user.
-This requirement is satisfied by an <a href="https://www.w3.org/TR/owl2-primer/#Object_Properties">object property</a> called <code>hasUltimateFeatureOfInterest</code>.
-The relationship of the ultimate feature of interest to observations and acts of sampling is illustrated in the figures below.</p>
-
-<figure id="fig-observation-ultimate-foi">
-  <img alt="Observation feature-of-interest patterns" src="./images/observation-foi-patterns.png" style="width:75%"/>
-  <figcaption>Patterns for observations that relate to the ultimate feature of interest directly (top),
-    or indirectly via one sample (middle) or a chain of samples (bottom) - new property shown in red</figcaption>
-</figure>
-
-<figure id="fig-sampling-ultimate-foi">
-  <img alt="Sampling feature-of-interest patterns" src="./images/sampling-foi-patterns.png" style="width:75%"/>
-  <figcaption>Patterns for sampling that relate to the ultimate feature of interest directly (top),
-    or indirectly via one intermediate sample (middle) or a chain of intermediate samples (bottom) - new property shown in red</figcaption>
-</figure>
-
-<p class="note">
-  This requirement was described in OM-Lite [[?OM-Lite]], but was addressed there using a different pattern in which the property <code>oml:featureOfInterest</code> always links to the <i>ultimate</i> feature-of-interest, and an additional property <code>oml:samplingStrategy</code> links to the sample or some other description of the sampling arrangements.
-  That approach was unnecessarily coy about satisfying the principle requirement, which is to know the ultimate feature of interest.
-  The solution described here is explicit, and also applies to acts of sampling and actuation.
-</p>
-
-</section>
-
-<section id="observation-collection">
-<h3>Homogeneous collection of observations</h3>
-
-<p>
-  A collection of observations may share a common value for one or more of the characteristic observation properties.
-  For example:
-</p>
-<ul>
-  <li>
-    an <code>oboe:Observation</code> is a collection of <code>oboe:Measurements</code> concerning a common <code>oboe:Entity</code>, with each <code>oboe:Measurement</code> reporting the value of a different <code>oboe:Characteristic</code>.
-    An <a href="https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment">alignment module in SSN</a> [[vocab-ssn]] provided an alignment for the atomic <code>oboe:Measurement</code> to <a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a>, but not for <code>oboe:Observation</code>.
-  </li>
-  <li>
-    many monitoring processes generate a stream of data in which only the (phenomenon-) time changes between consecutive results for the same property on a single feature of interest.
-  </li>
-  <li>
-    a sensor network typically generates a set of results, over the same time interval, for the same property(s), over a suite of features-of-interest.
-  </li>
-</ul>
-</p>
-<p>
-  These patterns can be accommodated with a new class <code>ObservationCollection</code> which may hold one or more of the properties <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">observedProperty</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">madeBySensor</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">usedProcedure</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">phenomenonTime</a>, or <a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">resultTime</a>.
-  Where present, the value of the property(s) of the collection are shared by all member observations.
-  Only the value of each actual <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasResult">hasResult</a> is not potentially shared by all member observations.
-</p>
-
-<figure id="fig-observation-collection">
-  <img alt="Collection of observations sharing one or more key properties" src="./images/observation-collection.png" style="width:75%"/>
-  <figcaption>Model for an observation-collection, in which the collection may carry one or more of the properties of its members if they have a shared value for all members - new properties and classes shown in red</figcaption>
-</figure>
-
-<p>
-  Collections may be nested.
-  For example, an outer observation-collection may share an observed-property, procedure and sensor, and contain inner observation-collections at different phenomenon-times, each containing a set of observations on different features-of-interest.
-  An observation may be a member of more than one observation-collection, so more than one sequence of nested observation-collections can collect the same set of observations.
-  For example, the same outer collection may contain inner collections concerning different features-of-interests, each containing a set of observations at different phenomenon-times.
-</p>
-<p>
-  Effectively, the results of each observation-collection correspond to a <i>slice</i> in a data-cube composed of the results of the complete set of observations (as long as the values of properties inherited from the collection are <i>not</i> overridden on the nested collections or terminal observations).
-</p>
-
-<p class="note">
-  This requirement was addressed in OM-Lite [[?OM-Lite]] following the pattern described here.
-</p>
-
-<p class="note">
-  This feature might also apply to collections of <i>Actuations</i> but has not yet been properly explored.
-</p>
-
-<figure id="oboe-implementation">
-  <img alt="The OBOE core model" src="./images/OBOE-core.png"/ style="width:40%"><img alt="The SSN-ext model arranged to align with OBOE" src="./images/SOSA-ssn-ext.png" style="width:50%"/>
-  <figcaption>
-    The OBOE core model (left), shown alongside the SSN-ext model (right) with comparable classes and properties aligned - new properties and classes shown in red.
-  </figcaption></figcaption>
-</figure>
-
-
-
-</section>
-
-</section>
-
 <section id="vocabulary">
 <h2>Vocabulary specification</h2>
-
-<p>In this vocabulary specification, Manchester syntax [[?owl2-manchester-syntax]] is used where the value of a field is not a simple term denoted by a URI or cURI.</p>
-
-<section id="classes">
-<h3>Classes</h3>
-
-<p>
-<code><a href="#ssn-ext:ObservationCollection">:ObservationCollection</a></code>
-</p>
-
-<section>
-<h4 id="ssn-ext:ObservationCollection">Collection of observations</h4>
-
-<p>
-  An ObservationCollection has at least one member, and may have one of any of the other seven properties mentioned in restrictions.
-</p>
-<table class="definition" style="width: 100%;">
-<thead>
-<tr>
-<th style="width: 120px;">Class:</th>
-<th><code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>
-    IRI:
-  </td>
-  <td>
-    <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/ssn/ext/ObservationCollection</a></code>
-  </td>
-</tr>
-<tr>
-<td>Definition:</td>
-<td>Collection of one or more observations, typically with one or more property shared by all of its members</td>
-</tr>
-<tr>
-<td>Restrictions:</td>
-<td>
-  <code><a href="#ssn-ext:hasMember">ssn-ext:hasMember</a> min 1</code>
-<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a> max 1</code>
-<br /><code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a> max 1</code>
-<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a> max 1</code>
-<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a> max 1</code>
-<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a> max 1</code>
-<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">sosa:resultTime</a> max 1</code>
-<br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">sosa:usedProcedure</a> max 1</code>
-</td>
-</tr>
-</tbody>
-</table>
-
-<p>
-  If present, the value of any of <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a></code>,
-<code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code>,
-<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a></code>,
-<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a></code>,
-<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a></code>,
-<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">sosa:resultTime</a></code>, or
-<code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">sosa:usedProcedure</a></code>
-apply to all member observations, unless overridden by a value attached directly to the member observation.
-See <a href="#container-property-rule">Inheriting observation properties from a collection</a> for a formal definition of the rule.
-</p>
-</section>
-
-</section>
 
 <section id="properties">
 <h3>Properties</h3>
 
-<p>
-  <code><a href="#ssn-ext:hasMember">:hasMember</a></code> |
-<code><a href="#ssn-ext:hasUltimateFeatureOfInterest">:hasUltimateFeatureOfInterest</a></code>
-</p>
-
 <section>
-<h4 id="ssn-ext:hasMember">member observation or collection</h4>
+<h4 id="time:disjoint">disjoint time entity</h4>
 <table class="definition" style="width: 100%;">
 <thead>
 <tr>
 <th style="width: 120px;">Property:</th>
-<th><code><a href="#ssn-ext:hasMember">ssn-ext:hasMember</a></code></th>
+<th><code><a href="#time:disjoint">time:disjoint</a></code></th>
 </tr>
 </thead>
 <tbody>
   <tr>
-    <td>
-      IRI:
-    </td>
-    <td>
-      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/ssn/ext/hasMember</a></code>
-    </td>
+    <td>IRI:</td>
+    <td><code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#disjoint</a></code></td>
   </tr>
 <tr>
 <td>Definition:</td>
-<td>Link to a member of a collection of observations that share the same value for one or more of the characteristic properties</td>
+<td>If a temporal entity T1 is disjoint with another temporal entity T2, then the beginning of T1 is after the end of T2, or the end of T1 is before the beginning of T2, and the beginning of T1 may be coincident with the end of T1, and the beginning of T2 may be coincident with the end of T2, i.e. the two entities do not overlap or coincide in any way, but their ordering relationship is not known.</td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -381,278 +209,183 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
 </tr>
 <tr>
 <td>Sub-property of:</td>
-<td><code><a href="https://www.w3.org/TR/rdf-schema/#ch_member">rdfs:member</a></code></td>
+<td><code><a href=""> </a></code></td>
 </tr>
 <tr>
 <td>Domain:</td>
-<td><code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code></td>
+<td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code></td>
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a> or <a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code></td>
+<td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code></td>
 </tr>
-</tbody>
+<tr>
+  <td>Additional axioms:</td>
+  <td>
+    <code>time:disjoint owl:propertyDisjointWith time:notDisjoint .</code><br/>
+    <code>time:before rdfs:subPropertyOf time:disjoint .</code><br/>
+    <code>time:after rdfs:subPropertyOf time:disjoint .</code><br/>
+    <code>time:intervalDisjoint rdfs:subPropertyOf time:disjoint .</code>
+  </td>
+  </tr>
+  </tbody>
 </table>
 
 <p>
-  The global domain and range constraints mean that any appearance of <code><a href="#ssn-ext:hasMember">ssn-ext:hasMember</a></code>
-  in a dataset entails that the subject of the statement is a <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code>
-  and the object of the statement is a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> or <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code>.
+
 </p>
 </section>
 
 <section>
-<h4 id="ssn-ext:hasUltimateFeatureOfInterest">has ultimate feature of interest</h4>
-<table class="definition" style="width: 100%;">
-<thead>
-<tr>
-<th style="width: 120px;">Property:</th>
-<th><code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code></th>
-</tr>
-</thead>
-<tbody>
-  <tr>
-    <td>
-      IRI:
-    </td>
-    <td>
-      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/ssn/ext/hasUltimateFeatureOfInterest</a></code>
-    </td>
-  </tr>
-<tr>
-<td>Definition:</td>
-<td>link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or trasntitively.</td>
-</tr>
-<tr>
-<td>Instance of:</td>
-<td><code>owl:ObjectProperty</code></td>
-</tr>
-<tr>
-<td>Range:</td>
-<td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
-</tr>
-</tbody>
-</table>
-
-<p>
-  No global domain constraints are specified for this property, so its appearance in a data set does not entail that the subject is a member of any particular class.
-  However, the ssn-ext vocabulary adds the following guarded constraint to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> class:
-</p>
-
-<table class="definition" style="width: 100%;">
-<thead>
-<tr>
-<th style="width: 120px;">Class:</th>
-<th><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code></th>
-</tr>
-</thead>
-<tbody>
-  <tr>
-    <td>
-      Restrictions:
-    </td>
-    <td>
-      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">ssn-ext:hasUltimateFeatureOfInterest</a> min 1</code>
-    </td>
-  </tr>
-</tbody>
-</table>
-
-<p>
-  This constraint says that at least one ultimate-feature-of-interest is expected for each individual observation.
-  Typically an observation concerns one ultimate feature-of-interest but in some cases the proximate feature-of-interest is a sample of more than one ultimate feature of interest.
-  The explanation of relationships between multiple ultimate features of interest are beyond the scope of this vocabulary.
-</p>
-
-</section>
-</section>
-
-<section>
-  <h3 id="rules">Rules</h3>
-
-  <section>
-    <h4 id="sampling-chain-rule">Finding ultimate feature of interest from a sampling chain</h4>
-    <p>
-      If the ultimate feature-of-interest of an Observation, Sampling or Actuation, or ObservationCollection is not specified,
-      and the feature-of-interest is a Sample,
-      then the ultimate-feature-of-interest can be found by following a path from the feature-of-interest
-      to the end of a sequence of <code>sosa:isSampleOf</code> relations (see <a href="#fig-observation-ultimate-foi">Figure 1</a>, <a href="#fig-sampling-ultimate-foi">Figure 2</a>).
-    </p>
-    <p>
-      The rule can be expressed formally as a SPARQL query expression [[?sparql11-query]] as follows:
-    </p>
+    <h4 id="time:equals">equal time entity</h4>
     <table class="definition" style="width: 100%;">
     <thead>
     <tr>
-    <th style="width: 120px;">Property</th>
-    <th>Rule</th>
+    <th style="width: 120px;">Property:</th>
+    <th><code><a href="#time:equals">time:equals</a></code></th>
     </tr>
     </thead>
     <tbody>
+      <tr>
+        <td>IRI:</td>
+        <td><code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#equals</a></code></td>
+      </tr>
     <tr>
-      <td>
-        <code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this ssn-ext:hasUltimateFeatureOfInterest ?f . }
-WHERE {
-    NOT EXISTS { ?this ssn-ext:hasUltimateFeatureOfInterest ?x . } .
-    ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)+ ?f .
-    NOT EXISTS { ?f sosa:isSampleOf ?y . } .
-}        </pre>
-      </td>
+    <td>Definition:</td>
+    <td>If a temporal entity T1 equals another temporal entity T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2, and the beginning of T1 may be coincident with the end of T1. </td>
     </tr>
+    <tr>
+    <td>Instance of:</td>
+    <td><code>owl:ObjectProperty</code></td>
+    </tr>
+    <tr>
+    <td>Sub-property of:</td>
+    <td><code><a href="#time:notDisjoint">time:notDisjoint</a></code></td>
+    </tr>
+    <tr>
+    <td>Domain:</td>
+    <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code></td>
+    </tr>
+    <tr>
+    <td>Range:</td>
+    <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code></td>
+    </tr>
+    <tr>
+      <td>Additional axioms:</td>
+      <td>
+         <code>time:intervalEquals rdfs:subPropertyOf time:equals .</code>
+      </td>
+      </tr>
+      </tbody>
     </table>
-
+    
     <p>
-      This is included as a SPIN rule [[?SPIN]] in the <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">RDF representation</a> of the SSN extensions ontology.
+    
     </p>
-  </section>
+    </section>
+    
+    <section>
+        <h4 id="time:hasInside">has time entity inside</h4>
+        <table class="definition" style="width: 100%;">
+        <thead>
+        <tr>
+        <th style="width: 120px;">Property:</th>
+        <th><code><a href="#time:hasInside">time:hasInside</a></code></th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>IRI:</td>
+            <td><code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#hasInside</a></code></td>
+          </tr>
+        <tr>
+        <td>Definition:</td>
+        <td>If a temporal entity T1 hasInside it another temporal entity T2, then the beginning of T1 is coincident with or before the beginning of T2, and the end of T1 is concident with or after the end of T2, except that end of T1 may not be coincident with the end of T2 if the beginning of T1 is coincident with the beginning of T2. </td>
+        </tr>
+        <tr>
+        <td>Instance of:</td>
+        <td><code>owl:ObjectProperty</code></td>
+        </tr>
+        <tr>
+        <td>Sub-property of:</td>
+        <td><code><a href="#time:notDisjoint">time:notDisjoint</a></code></td>
+        </tr>
+        <tr>
+        <td>Domain:</td>
+        <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code></td>
+        </tr>
+        <tr>
+        <td>Range:</td>
+        <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code></td>
+        </tr>
+        <tr>
+          <td>Additional axioms:</td>
+          <td>
+             <code>time:inside rdfs:subPropertyOf time:hasInside .</code><br/>
+             <code>time:intervalStartedBy rdfs:subPropertyOf time:hasInside .</code><br/>
+             <code>time:intervalContains rdfs:subPropertyOf time:hasInside .</code><br/>
+             <code>time:intervalFinishedBy rdfs:subPropertyOf time:hasInside .</code>
+          </td>
+          </tr>
+          </tbody>
+        </table>
+        
+        <p>
+        
+        </p>
+        </section>
 
-  <section>
-    <h4 id="container-property-rule">Inheriting observation properties from a collection</h4>
-    <p>
-      If a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> or <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code> is a member of an <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code>,
-      the properties of the collection as a whole are associated with all member observations or collections, unless locally specified.
-      Associating properties with the collection provides for efficiencies in both discovery and encoding.
-    </p>
-    <p>
-      The rules may be defined formally as SPARQL query expressions [[?sparql11-query]] as follows:
-    </p>
-    <p class="note">
-      Rules currently only allow for one level of nesting. Update to chase up a chain of observation collections.
-    </p>
-    <table class="definition" style="width: 100%;">
-    <thead>
-    <tr>
-    <th style="width: 120px;">Property</th>
-    <th>Rule</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>
-        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:hasFeatureOfInterest ?foi . }
-WHERE {
-    NOT EXISTS { ?this sosa:hasFeatureOfInterest ?x . } .
-    ?oc ssn-ext:hasMember ?this .
-    ?oc sosa:hasFeatureOfInterest ?foi .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:madeBySensor ?se . }
-WHERE {
-    NOT EXISTS { ?this sosa:madeBySensor ?x . } .
-    ?oc ssn-ext:hasMember ?this .
-    ?oc sosa:madeBySensor ?se .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:observedProperty ?op . }
-WHERE {
-    NOT EXISTS { ?this sosa:observedProperty ?x . } .
-    ?oc ssn-ext:hasMember ?this .
-    ?oc sosa:observedProperty ?op .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:phenomenonTime ?pt . }
-WHERE {
-    NOT EXISTS { ?this sosa:phenomenonTime ?x . } .
-    ?oc ssn-ext:hasMember ?this .
-    ?oc sosa:phenomenonTime ?pt .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">sosa:resultTime</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:resultTime ?rt . }
-WHERE {
-    NOT EXISTS { ?this sosa:resultTime ?x . } .
-    ?oc ssn-ext:hasMember ?this .
-    ?oc sosa:resultTime ?rt .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">sosa:usedProcedure</a></code>
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this sosa:usedProcedure ?pr . }
-WHERE {
-    NOT EXISTS { ?this sosa:usedProcedure ?x . } .
-    ?oc ssn-ext:hasMember ?this .
-    ?oc sosa:usedProcedure ?pr .
-}</pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code>
-        <br /><br />This rule combines the <a href="#sampling-chain-rule">sampling-chain rule</a> and the look-on-the-container rule used in the rest of this section, with the following order of precedence:
-        <br />1. the (proximate) feature-of-interest of the observation, or the end of its sampling-chain;
-        <br />2. the explicit ultimate-feature-of-interest of the container collections
-        <br />3. the (proximate) feature-of-interest of the container collection, or the end of its sampling-chain;
-      </td>
-      <td>
-        <pre>
-CONSTRUCT { ?this ssn-ext:hasUltimateFeatureOfInterest ?foi . }
-WHERE {
-    ?this a sosa:Observation .
-    NOT EXISTS { ?this ssn-ext:hasUltimateFeatureOfInterest ?x . } .
-    OPTIONAL {
-        ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)* ?foi1 .
-        NOT EXISTS { ?foi1 sosa:isSampleOf ?y3 . } .
-    } .
-    OPTIONAL {
-        ?oc ssn-ext:hasMember ?this .
-        ?oc ssn-ext:hasUltimateFeatureOfInterest ?foi2 .
-    } .
-    OPTIONAL {
-        ?oc ssn-ext:hasMember ?this .
-        ?oc sosa:hasFeatureOfInterest/(sosa:isSampleOf)* ?foi3 .
-        NOT EXISTS { ?foi3 sosa:isSampleOf ?y3 . } .
-    } .
-    BIND (COALESCE(?foi1, ?foi2, ?foi3) AS ?foi) .
-}</pre>
-      </td>
-    </tr>
-    </tbody>
-    </table>
-
-    <p class="note">
-      Implementation of these as SPIN rules [[?SPIN]] are provided in the <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.spin.ttl">ssn-ext.spin.ttl</a> alongside the <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">RDF representation of the SSN extensions ontology</a>.
-    </p>
-  </section>
+        <section>
+            <h4 id="time:notDisjoint">not disjoint with time entity</h4>
+            <table class="definition" style="width: 100%;">
+            <thead>
+            <tr>
+            <th style="width: 120px;">Property:</th>
+            <th><code><a href="#time:notDisjoint">time:notDisjoint</a></code></th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>IRI:</td>
+                <td><code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#notDisjoint</a></code></td>
+              </tr>
+            <tr>
+            <td>Definition:</td>
+            <td>If a temporal entity T1 is notDisjoint with another temporal entity T2, then the the two entities not overlap or coincide in some way, but their ordering relationship is not known. This relation is the complement of disjoint and the union of equals, hasInside, in, meets, metBy, overlaps, overlappedBy. . </td>
+            </tr>
+            <tr>
+            <td>Instance of:</td>
+            <td><code>owl:ObjectProperty</code></td>
+            </tr>
+            <tr>
+            <td>Domain:</td>
+            <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code></td>
+            </tr>
+            <tr>
+            <td>Range:</td>
+            <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code></td>
+            </tr>
+            <tr>
+              <td>Additional axioms:</td>
+              <td>
+                <code>time:notDisjoint owl:propertyDisjointWith time:disjoint .</code><br/>
+                <code>time:equals rdfs:subPropertyOf time:notDisjoint .</code><br/>
+                <code>time:hasInside rdfs:subPropertyOf time:notDisjoint .</code><br/>
+                <code>time:intervalIn rdfs:subPropertyOf time:notDisjoint .</code><br/>
+                <code>time:intervalMeets rdfs:subPropertyOf time:notDisjoint .</code>
+                <code>time:intervalMetBy rdfs:subPropertyOf time:notDisjoint .</code>
+                <code>time:intervalOverlaps rdfs:subPropertyOf time:notDisjoint .</code>
+                <code>time:intervalOverlappedBy rdfs:subPropertyOf time:notDisjoint .</code>
+              </td>
+              </tr>
+              </tbody>
+            </table>
+            
+            <p>
+            
+            </p>
+            </section>
+            
 
 </section>
 </section>
@@ -664,29 +397,6 @@ WHERE {
   </p>
 </section>
 
-<section>
-  <h2>Alignments</h2>
-  <section>
-    <h3>RDF Data Cube vocabulary</h3>
-    <p>
-      The W3C RDF Data Cube vocabulary [[?vocab-data-cube]] provides a means to describe multi-dimensional data according to a 'data cube' model inspired by SDMX.
-      The RDF Data Cube vocabulary uses the term <i>observation</i> for the <b>results</b>, and the <i>dimensions</i> of a data cube indicate the <b>features of interest</b> and <b>phenomenon times</b> of the results, the <i>measures</i> correspond to the <b>observed properties</b>, and the <i>attributes</i> accommodate information about the <b>procedures</b> and <b>sensors</b>.
-    </p>
-    <p>
-      A <i>slice</i> selects a subset of the 'observations' by fixing a subset of the dimensions, and thus delivers the set of <b>results</b> of an <b>observation-collection</b> with fixed <b>features-of-interest</b> or <b>phenomenon-times</b> or both.
-    </p>
-    <p class="note">
-      If the value of the sosa:hasFeatureOfInerest, ssn-ext:hasUltimateFeatureOfInterest, or sosa:phenomenonTime is locally specified, and is different to the value on the containing ssn-ext:ObservationCollection, the results of the collection do not correspond with a splice from a data cube.
-    </p>
-  </section>
-  <!--
-  <section>
-    <h3>W3C PROV-O vocabulary</h3>
-    <p>
-      TBD
-    </p>
-  </section>
--->
 
 </section>
 
