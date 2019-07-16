@@ -157,7 +157,7 @@
       relations between time intervals.
       However, there are certain relations between more general temporal entities (in particular, time instants) that
       cannot be expressed using the 15 interval relations defined in OWL-Time.
-      This note adds three new relations: <code>time:equals</code>, <code>time:disjoint</code> and
+      This note adds four new relations: <code>time:equals</code>, <code>time:hasInside</code>, <code>time:disjoint</code> and
       <code>time:notDisjoint</code> which complement the original relations and allow for description of more
       relationships between temporal entities.
     </p>
@@ -203,7 +203,11 @@
         Between time instants and intervals: <code>time:inside</code>
       </li>
       <li>
-        Between proper intervals: <code>time:intervalBefore</code>, <code>time:intervalAfter</code>, <code>time:intervalContains</code>, <code>time:intervalDuring</code>, <code>time:intervalEquals</code>, <code>time:intervalFinishes</code>, <code>time:intervalFinishedBy</code>, <code>time:intervalMeets</code>, <code>time:intervalMetBy</code>, <code>time:intervalOverlaps</code>, <code>time:intervalOverlappedBy</code>, <code>time:intervalStarts</code>, <code>time:intervalStartedBy</code> 
+        Between proper intervals: <code>time:intervalBefore</code>, <code>time:intervalAfter</code>,
+        <code>time:intervalContains</code>, <code>time:intervalDuring</code>, <code>time:intervalEquals</code>,
+        <code>time:intervalFinishes</code>, <code>time:intervalFinishedBy</code>, <code>time:intervalMeets</code>,
+        <code>time:intervalMetBy</code>, <code>time:intervalOverlaps</code>, <code>time:intervalOverlappedBy</code>,
+        <code>time:intervalStarts</code>, <code>time:intervalStartedBy</code>
       </li>
     </ul>
     <p>A summary of the semantics of the intervals relationships is provided in <a
@@ -211,37 +215,45 @@
     <p>
       In principle, any relationship between temporal entities can be built up through logical combination of
       members of these primitive relations.
-      However, in practice, there are limitations in the expressivity of the RDF implementation of OWL2 [[owl2-direct-semantics]][[owl2-rdf-based-semantics]], particularly around unions and complements of properties. 
-      Furthermore most of the relationships are only defined for proper-intervals - i.e. temporal entities of non-zero duration - which cannot be used for relationships involving time instants. 
-      These considerations mena that it is convenient to introduce a small set of additional relations
+      However, in practice, there are limitations in the expressivity of the RDF implementation of OWL2
+      [[owl2-direct-semantics]][[owl2-rdf-based-semantics]], particularly around unions and complements of properties.
+      Furthermore most of the relationships are only defined for proper-intervals - i.e. temporal entities of non-zero
+      duration - which cannot be used for relationships involving time instants.
+      These considerations mean that it is convenient to introduce a small set of additional relations
       explicitly, in order to support some applications more efficiently.
       Two were already included in OWL-Time:
     </p>
     <ol>
-      <li><code>time:intervalIn</code> is the the super-property of
+      <li><code>time:intervalIn</code> is the the union of
         <code>time:intervalDuring</code>, <code>time:intervalStarts</code>,and <code>time:intervalFinishes</code>; </li>
-      <li><code>time:intervalDisjoint</code> is the the super-property of
+      <li><code>time:intervalDisjoint</code> is the the union of
         <code>time:intervalBefore</code>, and <code>time:intervalAfter</code></li>
     </ol>
     <p>
-      This note defines a further four relations, all scoped to general temporal entities (i.e. not restricted to either intervals or instants):
+      Note that in OWL2 the union of properties can only be approximated through a set of sub-property axioms, which
+      link the members up to the union, but does not exclude the possibility of other sub-properties being added to the
+      union.
+    </p>
+    <p>
+      This note defines a further four relations, all scoped to general temporal entities (i.e. not restricted to either
+      intervals or instants):
     </p>
     <ol>
-      <li><code>time:disjoint</code> is the super-property (union) of
+      <li><code>time:disjoint</code> is the union of
         <code>time:before</code>, <code>time:after</code>, and <code>time:intervalDisjoint</code>;
       </li>
       <li><code>time:equals</code> is the super-property of
-        <code>time:intervalEquals</code>, not restricted to relations between proper intervals;
+        <code>time:intervalEquals</code>, but is not restricted to relations between proper intervals;
       </li>
-      <li><code>time:hasInside</code> is the super-property (union) of
+      <li><code>time:hasInside</code> is the union of
         <code>time:inside</code>, <code>time:intervalContains</code>, <code>time:intervalStartedBy</code>,and
         <code>time:intervalFinishedBy</code>;
       </li>
-      <li><code>time:notDisjoint</code> is the super-property (union) of
+      <li><code>time:notDisjoint</code> is the union of
         <code>time:equals</code>, <code>time:hasInside</code>, <code>time:intervalIn</code>,
         <code>time:intervalMeets</code>, <code>time:intervalMetBy</code>, <code>time:intervalOverlaps</code>,
         <code>time:intervalOverlappedBy</code>,
-        also being the complement of <code>time:disjoint</code>;
+        which is the complement of <code>time:disjoint</code>
       </li>
     </ol>
     <ol>
@@ -291,6 +303,8 @@
     <p>Examples and other code fragments are serialized using RDF 1.1 Turtle notation [[?turtle]].</p>
 
   </section>
+
+  <section id="conformance"></section>
 
   <section id="vocabulary">
     <h2>Vocabulary specification</h2>
