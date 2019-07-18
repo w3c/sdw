@@ -12,7 +12,7 @@ The SDW-IG chairs think the SDW-IG should be re-charted, and for it to remain as
 
 SDW-IG will:
 
-* coordinate between OGC and W3C on shared interests (i.e. geospatial Web standards) – monitoring and, where necessary, liaising between groups from OGC and W3C. 
+* coordinate between OGC and W3C on shared interests (e.g. geospatial Web standards) and raise awareness of their complementary strengths (e.g. Web scale architecture, accessibility, privacy, internationalisation, geospatial expertise) – monitor and liaise between groups from OGC and W3C. 
 * identify areas where standards should be developed jointly by both W3C and OGC.
 * respond requests from OGC Architecture Board (OAB) and W3C Technical Architecture Group (TAG) to review materials relating to geospatial Web standards, and bring relevant matters to the attention of the OAB and TAG – [possibly via a quarterly slot on their agendas?]. 
 * periodically review the [OGC Innovation Programme ideas issue tracker](https://github.com/opengeospatial/ideas/issues) to identify and prioritise important ideas relating to the geospatial Web standards. 
