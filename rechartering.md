@@ -1,6 +1,6 @@
 # Rechartering the Spatial Data on the Web Interest Group (SDW-IG)
 
-The Spatial Data on the Web Interest Group will expire on 31-Dec-2019 as per its [Charter](https://www.w3.org/2017/sdwig/charter.html).
+The Spatial Data on the Web Interest Group will expire on 31-March-2020 as per its [Charter](https://www.w3.org/2017/sdwig/charter.html).
 
 There positive impact of collaboration between OGC and W3C is well recognised. The SDW-IG has been successful over the last 2-years in coordinating between OGC and W3C, and connecting people with potential collaborators and stakeholders. However, experience shows that work items of the SDW-IG largely remain “one-task, one-person”. Other than review, there has been very limited group-interaction on work items. The chairs of SDW-IG conclude that the format of SDW-IG isn’t well suited to engage collaborators on work items. Existing mechanisms are available to generate critical mass to develop proposals and contribute to work items: W3C has Community Groups (which require a proposer plus 5 supporting members to establish); OGC has the Innovation Programme and Domain Working Groups. 
 
