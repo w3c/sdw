@@ -78,11 +78,11 @@ MARGIN: 0px 0px 10px
 <body>
 
 <section id="abstract">
-<p>The Semantic Sensor Network (SSN) ontology is an ontology for describing sensors and their observations, the involved procedures, the studied features of interest, the samples used to do so, and the observed properties, as well as actuators.
+<p>The Semantic Sensor Network (SSN) ontology is an ontology for describing sensors and their observations, the procedures used, the features of interest and observed properties that are the subject of observation, samples used in the course of observations, as well as actuators.
 This note describes some extensions to the SSN ontology to enable:</p>
 <ol>
   <li>
-    linking to the ultimate feature-of-interest for an observation, act of sampling, or actuation, alongside the link to the (proximate) feature-of-interest, which might be a sample
+    linking directly to the ultimate feature-of-interest for an act of observation, sampling, or actuation, alongside the link to the (proximate) feature-of-interest, which might be a sample
   </li>
   <li>
     homogeneous collections of observations, in which one or more of the feature-of-interest, ultimate feature-of-interest, observed-property, procedure, sensor, phenomenon-time or result-time may be shared by all members of the collection
@@ -93,20 +93,28 @@ This note describes some extensions to the SSN ontology to enable:</p>
     <br>
     The namespace for SOSA terms is <span class="repeated" style="font-family: courier;">
       http://www.w3.org/ns/sosa/</span>
+      <!--
       <br>
       The namespace for SSN Extension terms is <span class="repeated" style="font-family: courier;">
-        http://www.w3.org/ns/ssn/ext/</span></p>
+        http://www.w3.org/ns/ssn/ext/</span>
+        -->
+</p>
 <p style="text-align: center;">The suggested prefix for the SSN namespace
   is <span class="repeated" style="font-family: courier;">ssn</span>
   <br>
   The suggested prefix for the SOSA namespace is <span class="repeated" style="font-family: courier;">sosa</span>
+  <!--
   <br>
-  The suggested prefix for the SSN Extension namespace is <span class="repeated" style="font-family: courier;">ssn-ext</span></p>
+  The suggested prefix for the SSN Extension namespace is <span class="repeated" style="font-family: courier;">ssn-ext</span>
+  -->
+</p>
 <p style="text-align: center;"> The SSN ontology is available at <a href="http://www.w3.org/ns/ssn/">http://www.w3.org/ns/ssn/</a>.
   <br>
   The SOSA ontology is available at <a href="http://www.w3.org/ns/sosa/">http://www.w3.org/ns/sosa/</a>.
+  <!--
   <br>
   The SSN-Extensions ontology is available at <a href="https://github.com/w3c/sdw/tree/gh-pages/proposals/ssn-extensions/rdf">https://github.com/w3c/sdw/tree/gh-pages/proposals/ssn-extensions/rdf</a>.
+  -->
 </p>
 </section>
 
@@ -138,30 +146,35 @@ The elements of the ontology are defined in two modules:</p>
 </p>
 <ol>
   <li>
-    discovery and use of observation data typically depends on their relationship to an <i>ultimate</i> feature-of-interest, which is a known thing in the world, such as a geological formation, or a specific patient, or the state of the atmosphere. However, if the (proximate) feature-of-interest of the observation is a <i>sample</i> of the ultimate feature-of-interest, the identity of the ultimate feature-of-interest can be obtained only by following a chain of one or more <a href="https://www.w3.org/TR/vocab-ssn/#SOSAisSampleOf">sosa:isSampleOf</a> relationships. This may not be possible in a single request on a data service;
+    discovery and use of observation data typically depends on their relationship to an <i>ultimate</i> feature-of-interest, which is a known thing in the world (such as a geological formation, or a specific patient, or the state of the atmosphere). However, if the (proximate) feature-of-interest of the observation is a <i>sample</i> of the ultimate feature-of-interest (such as a rock specimen, a blood or biopsy sample, or a specific transect through the atmosphere), the identity of the ultimate feature-of-interest can be obtained only by following a chain of one or more <a href="https://www.w3.org/TR/vocab-ssn/#SOSAisSampleOf">sosa:isSampleOf</a> relationships, if they are even recorded. This may not be possible in a single request on a data service
   </li>
   <li>
-    observations are usually made as part of a set or collection, in which one or more of the observation properties -
+    observations are usually made as part of a set or collection, within which variations of the result are of interest. A collection is typically designed so that one or more of the key observation properties are shared by all members of the collection -
     <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a>,
     <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">observedProperty</a>,
     <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">madeBySensor</a>,
     <a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">usedProcedure</a>,
     <a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">phenomenonTime</a>,
     <a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">resultTime</a>
-    - are shared by all members of the collection. For efficient discovery and data transfer the <i>set</i> of observation descriptions can be packaged in a standard way that captures the common properties at the collection level.
+    For efficient discovery and data transfer it is helpful if the <i>set</i> of observation descriptions is packaged in a standard way that captures the common properties at the collection level.
   </li>
 </ol>
 
 <p>
-  This Note describes solutions to these requirements.
+  This Note describes solutions these requirements.
 </p>
 </section>
 
 <section id="namespaces">
 <h2>Notation and namespaces</h2>
-	<p>Classes and properties from the are denoted in this specification using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[?curie]]. </p>
+  <p>Classes and properties in this vocabulary are denoted in this specification using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[?curie]]. 
+  These are in the SOSA namespace which is used for the core elements of SSN, i.e. <code>http://www.w3.org/ns/sosa</code> since they are expected to appear in the same context. 
+  However, these extensions to SOSA/SSN are currently packaged in a separate graph (ontology file) which is denoted <code>http://www.w3.org/ns/ssn/ext/</code>.</p>
+<!--
 <p>The namespace for the SSN-Extensions graph is <code>http://www.w3.org/ns/ssn/ext/</code>.
   SSN-Extension re-uses elements from SSN and SOSA [[vocab-ssn]]. </p>
+-->
+
 <p>The table below indicates the full list of namespaces and prefixes used in this document.</p>
 <table id="namespacesTable">
 <thead>
@@ -206,9 +219,9 @@ The elements of the ontology are defined in two modules:</p>
 </tbody>
 </table>
 
-<p>Where class descriptions include local restrictions on properties, these are described using the OWL 2 Manchester Syntax [[?owl2-manchester-syntax]]. </p>
+<p>Where class descriptions include local restrictions on properties, these are described using the OWL 2 Manchester Syntax [[owl2-manchester-syntax]]. </p>
 
-<p>Examples and other code fragments are serialized using RDF 1.1 Turtle notation [[?turtle]].</p>
+<p>Examples and other code fragments are serialized using RDF 1.1 Turtle notation [[turtle]].</p>
 
 </section>
 
@@ -217,11 +230,15 @@ The elements of the ontology are defined in two modules:</p>
 
 <section id="ultimate-feature-of-interest">
 <h3>Ultimate feature of interest</h3>
-<p>The object of the <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a> property of an observation, act of sampling or actuation is the immediate or proximate <a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">FeatureOfInterest</a>.
-In some cases this is not the the ultimate thing that the observation, act of sampling or actuation is concerned with, but is an intermediate thing, often a sample of the ultimate feature of interest, or perhaps a sample of a sample, etc.
+<p>The object of the <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a> property of an act of observation, sampling, or actuation is the immediate or proximate <a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">FeatureOfInterest</a>.
+In some cases this is not the the ultimate thing that the act of observation, sampling, or actuation is concerned with, but is an intermediate thing, often a sample of the ultimate feature of interest, or perhaps a sample of a sample, etc.
+There will often be a specifiable relationship between the proximate and ultimate feature of interest, such as a sampling-chain. 
+If this relationship is recorded, then an ultimate feature of interest might be inferred.
 Nevertheless, particularly for discovery purposes, it is usually the ultimate feature of interest that really matters to the data user.
-This requirement is satisfied by an <a href="https://www.w3.org/TR/owl2-primer/#Object_Properties">object property</a> called <code>hasUltimateFeatureOfInterest</code>.
-The relationship of the ultimate feature of interest to observations and acts of sampling is illustrated in the figures below.</p>
+This requirement is satisfied by an <a href="https://www.w3.org/TR/owl2-primer/#Object_Properties">object property</a> called <code>hasUltimateFeatureOfInterest</code>. 
+This is complemented by two further <a href="https://www.w3.org/TR/owl2-primer/#Object_Properties">object properties</a> for relationships between samples and features of interest, called <code>hasOriginalSample</code> and <code>isUltimateSampleOf</code>.
+</p>
+<p>Some patterns for the relationship of the ultimate feature of interest to observations and acts of sampling, and within sampling-chains, are illustrated in the figures below.</p>
 
 <figure id="fig-observation-ultimate-foi">
   <img alt="Observation feature-of-interest patterns" src="./images/observation-foi-patterns.png" style="width:75%"/>
@@ -232,7 +249,7 @@ The relationship of the ultimate feature of interest to observations and acts of
 <figure id="fig-sampling-ultimate-foi">
   <img alt="Sampling feature-of-interest patterns" src="./images/sampling-foi-patterns.png" style="width:75%"/>
   <figcaption>Patterns for sampling that relate to the ultimate feature of interest directly (top),
-    or indirectly via one intermediate sample (middle) or a chain of intermediate samples (bottom) - new property shown in red</figcaption>
+    or indirectly via one intermediate sample (middle) or a chain of intermediate samples (bottom) - new properties shown in red</figcaption>
 </figure>
 
 <p class="note">
@@ -252,21 +269,18 @@ The relationship of the ultimate feature of interest to observations and acts of
 </p>
 <ul>
   <li>
-    an <code>oboe:Observation</code> is a collection of <code>oboe:Measurements</code> concerning a common <code>oboe:Entity</code>, with each <code>oboe:Measurement</code> reporting the value of a different <code>oboe:Characteristic</code>.
-    An <a href="https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment">alignment module in SSN</a> [[vocab-ssn]] provided an alignment for the atomic <code>oboe:Measurement</code> to <a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a>, but not for <code>oboe:Observation</code>.
+    many monitoring processes generate a stream of data in which only the (phenomenon-) time changes between consecutive results for the same property on a single feature of interest, observed using the same procedure implemented using the same sensor. 
   </li>
   <li>
-    many monitoring processes generate a stream of data in which only the (phenomenon-) time changes between consecutive results for the same property on a single feature of interest.
-  </li>
-  <li>
-    a sensor network typically generates a set of results, over the same time interval, for the same property(s), over a suite of features-of-interest.
+    a sensor network typically generates a set of results, over the same time interval, for the same property(s), over a suite of features-of-interest. 
+    Imaging sensors could be considered a special case of this, where the proximate features-of-interest correspond with individual pixels in the result. 
   </li>
 </ul>
 </p>
 <p>
-  These patterns can be accommodated with a new class <code>ObservationCollection</code> which may hold one or more of the properties <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">observedProperty</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">madeBySensor</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">usedProcedure</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">phenomenonTime</a>, or <a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">resultTime</a>.
+  These patterns can be accommodated with the class <code>ObservationCollection</code> individuals of which may hold one or more of the properties <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">observedProperty</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">madeBySensor</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">usedProcedure</a>, <a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">phenomenonTime</a>, or <a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">resultTime</a>.
   Where present, the value of the property(s) of the collection are shared by all member observations.
-  Only the value of each actual <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasResult">hasResult</a> is not potentially shared by all member observations.
+  Of the essential properties of an observation, only the value of each actual <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasResult">hasResult</a> is not potentially shared by all member observations, though at least one of the other properties would be expected to vary between members in a typical collection.
 </p>
 
 <figure id="fig-observation-collection">
@@ -276,12 +290,12 @@ The relationship of the ultimate feature of interest to observations and acts of
 
 <p>
   Collections may be nested.
-  For example, an outer observation-collection may share an observed-property, procedure and sensor, and contain inner observation-collections at different phenomenon-times, each containing a set of observations on different features-of-interest.
-  An observation may be a member of more than one observation-collection, so more than one sequence of nested observation-collections can collect the same set of observations.
+  For example, an outer observation-collection may correspond with a shared observed-property, procedure and sensor, and contain inner observation-collections at different phenomenon-times, each containing a set of observations on different features-of-interest.
+  An observation may be a member of more than one observation-collection, so more than one set of nested observation-collections can collect the same set of atomic observations.
   For example, the same outer collection may contain inner collections concerning different features-of-interests, each containing a set of observations at different phenomenon-times.
 </p>
 <p>
-  Effectively, the results of each observation-collection correspond to a <i>slice</i> in a data-cube composed of the results of the complete set of observations (as long as the values of properties inherited from the collection are <i>not</i> overridden on the nested collections or terminal observations).
+  Effectively, the results of each observation-collection correspond to a <i>slice</i> in a data-cube which is composed of the results of the complete set of observations.
 </p>
 
 <p class="note">
@@ -289,7 +303,11 @@ The relationship of the ultimate feature of interest to observations and acts of
 </p>
 
 <p class="note">
-  This feature might also apply to collections of <i>Actuations</i> but has not yet been properly explored.
+  This feature might also apply to collections of <i>Actuations</i> but this application has not yet been explored.
+</p>
+
+<p>The <a href="https://www.w3.org/TR/vocab-ssn/#OBOE_Alignment">OBOE alignment module in SSN</a> [[vocab-ssn]] provided an alignment for the atomic <code>oboe:Measurement</code> to <a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a>, but not for <code>oboe:Observation</code>.
+  The <code>ObservationCollection</code> supports the full encoding of an <code>oboe:Observation</code>, which is a collection of <code>oboe:Measurements</code> concerning a common <code>oboe:Entity</code>, with each <code>oboe:Measurement</code> reporting the value of a different <code>oboe:Characteristic</code>, as shown in <a href="#oboe-implementation"></a>.
 </p>
 
 <figure id="oboe-implementation">
@@ -314,11 +332,11 @@ The relationship of the ultimate feature of interest to observations and acts of
 <h3>Classes</h3>
 
 <p>
-<code><a href="#ssn-ext:ObservationCollection">:ObservationCollection</a></code>
+<code><a href="#sosa:ObservationCollection">:ObservationCollection</a></code>
 </p>
 
 <section>
-<h4 id="ssn-ext:ObservationCollection">Collection of observations</h4>
+<h4 id="sosa:ObservationCollection">Collection of observations</h4>
 
 <p>
   An ObservationCollection has at least one member, and may have one of any of the other seven properties mentioned in restrictions.
@@ -327,7 +345,7 @@ The relationship of the ultimate feature of interest to observations and acts of
 <thead>
 <tr>
 <th style="width: 120px;">Class:</th>
-<th><code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code></th>
+<th><code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code></th>
 </tr>
 </thead>
 <tbody>
@@ -336,19 +354,19 @@ The relationship of the ultimate feature of interest to observations and acts of
     IRI:
   </td>
   <td>
-    <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/ssn/ext/ObservationCollection</a></code>
+    <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/ObservationCollection</a></code>
   </td>
 </tr>
 <tr>
 <td>Definition:</td>
-<td>Collection of one or more observations, typically with one or more property shared by all of its members</td>
+<td>Collection of one or more observations, whose members share a common value for one or more property</td>
 </tr>
 <tr>
 <td>Restrictions:</td>
 <td>
-  <code><a href="#ssn-ext:hasMember">ssn-ext:hasMember</a> min 1</code>
+  <code><a href="#sosa:hasMember">sosa:hasMember</a> min 1</code>
 <br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a> max 1</code>
-<br /><code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a> max 1</code>
+<br /><code><a href="#sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a> max 1</code>
 <br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a> max 1</code>
 <br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a> max 1</code>
 <br /><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a> max 1</code>
@@ -361,13 +379,13 @@ The relationship of the ultimate feature of interest to observations and acts of
 
 <p>
   If present, the value of any of <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">sosa:hasFeatureOfInterest</a></code>,
-<code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code>,
+<code><a href="#sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a></code>,
 <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">sosa:madeBySensor</a></code>,
 <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty">sosa:observedProperty</a></code>,
 <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAphenomenonTime">sosa:phenomenonTime</a></code>,
 <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAresultTime">sosa:resultTime</a></code>, or
 <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAusedProcedure">sosa:usedProcedure</a></code>
-apply to all member observations, unless overridden by a value attached directly to the member observation.
+applies to all member observations.
 See <a href="#container-property-rule">Inheriting observation properties from a collection</a> for a formal definition of the rule.
 </p>
 </section>
@@ -378,17 +396,19 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
 <h3>Properties</h3>
 
 <p>
-  <code><a href="#ssn-ext:hasMember">:hasMember</a></code> |
-<code><a href="#ssn-ext:hasUltimateFeatureOfInterest">:hasUltimateFeatureOfInterest</a></code>
+  <code><a href="#sosa:hasMember">:hasMember</a></code> |
+  <code><a href="#sosa:hasOriginalSample">:hasOriginalSample</a></code> |
+  <code><a href="#sosa:hasUltimateFeatureOfInterest">:hasUltimateFeatureOfInterest</a></code>
+  <code><a href="#sosa:isUltimateSampleOf">:isUltimateSampleOf</a></code>
 </p>
 
 <section>
-<h4 id="ssn-ext:hasMember">member observation or collection</h4>
+<h4 id="sosa:hasMember">member observation or collection</h4>
 <table class="definition" style="width: 100%;">
 <thead>
 <tr>
 <th style="width: 120px;">Property:</th>
-<th><code><a href="#ssn-ext:hasMember">ssn-ext:hasMember</a></code></th>
+<th><code><a href="#sosa:hasMember">sosa:hasMember</a></code></th>
 </tr>
 </thead>
 <tbody>
@@ -397,7 +417,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
       IRI:
     </td>
     <td>
-      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/ssn/ext/hasMember</a></code>
+      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/hasMember</a></code>
     </td>
   </tr>
 <tr>
@@ -414,29 +434,29 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
 </tr>
 <tr>
 <td>Domain:</td>
-<td><code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code></td>
+<td><code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code></td>
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a> or <a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code></td>
+<td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a> or <a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code></td>
 </tr>
 </tbody>
 </table>
 
 <p>
-  The global domain and range constraints mean that any appearance of <code><a href="#ssn-ext:hasMember">ssn-ext:hasMember</a></code>
-  in a dataset entails that the subject of the statement is a <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code>
-  and the object of the statement is a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> or <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code>.
+  The global domain and range constraints mean that any appearance of <code><a href="#sosa:hasMember">sosa:hasMember</a></code>
+  in a dataset entails that the subject of the statement is a <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code>
+  and the object of the statement is a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> or <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code>.
 </p>
 </section>
 
 <section>
-<h4 id="ssn-ext:hasUltimateFeatureOfInterest">has ultimate feature of interest</h4>
+<h4 id="sosa:hasOriginalSample">has original sample</h4>
 <table class="definition" style="width: 100%;">
 <thead>
 <tr>
 <th style="width: 120px;">Property:</th>
-<th><code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code></th>
+<th><code><a href="#sosa:hasOriginalSample">sosa:hasOriginalSample</a></code></th>
 </tr>
 </thead>
 <tbody>
@@ -445,12 +465,12 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
       IRI:
     </td>
     <td>
-      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/ssn/ext/hasUltimateFeatureOfInterest</a></code>
+      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/hasOriginalSample</a></code>
     </td>
   </tr>
 <tr>
 <td>Definition:</td>
-<td>link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or trasntitively.</td>
+<td>link to the original sample that is related to the context sample through a chain of isSampleOf relations</td>
 </tr>
 <tr>
 <td>Instance of:</td>
@@ -458,21 +478,21 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
 </tr>
 <tr>
 <td>Range:</td>
-<td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
+<td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code></td>
 </tr>
 </tbody>
 </table>
 
 <p>
   No global domain constraints are specified for this property, so its appearance in a data set does not entail that the subject is a member of any particular class.
-  However, the ssn-ext vocabulary adds the following guarded constraint to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> class:
+  However, the ssn-ext vocabulary adds the following guarded constraint to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code> class:
 </p>
 
 <table class="definition" style="width: 100%;">
 <thead>
 <tr>
 <th style="width: 120px;">Class:</th>
-<th><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code></th>
+<th><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code></th>
 </tr>
 </thead>
 <tbody>
@@ -481,20 +501,151 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
       Restrictions:
     </td>
     <td>
-      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">ssn-ext:hasUltimateFeatureOfInterest</a> min 1</code>
+      <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">sosa:hasOriginalSample</a> max 1</code>
     </td>
   </tr>
 </tbody>
 </table>
 
 <p>
-  This constraint says that at least one ultimate-feature-of-interest is expected for each individual observation.
-  Typically an observation concerns one ultimate feature-of-interest but in some cases the proximate feature-of-interest is a sample of more than one ultimate feature of interest.
-  The explanation of relationships between multiple ultimate features of interest are beyond the scope of this vocabulary.
+  This constraint says that no more than one original-sample is expected for each individual sample.
 </p>
 
 </section>
+
+<section>
+  <h4 id="sosa:hasUltimateFeatureOfInterest">has ultimate feature of interest</h4>
+  <table class="definition" style="width: 100%;">
+  <thead>
+  <tr>
+  <th style="width: 120px;">Property:</th>
+  <th><code><a href="#sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a></code></th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        IRI:
+      </td>
+      <td>
+        <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest</a></code>
+      </td>
+    </tr>
+  <tr>
+  <td>Definition:</td>
+  <td>link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or trasntitively.</td>
+  </tr>
+  <tr>
+  <td>Instance of:</td>
+  <td><code>owl:ObjectProperty</code></td>
+  </tr>
+  <tr>
+  <td>Range:</td>
+  <td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
+  </tr>
+  </tbody>
+  </table>
+  
+  <p>
+    No global domain constraints are specified for this property, so its appearance in a data set does not entail that the subject is a member of any particular class.
+    However, the ssn-ext vocabulary adds the following guarded constraint to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> class:
+  </p>
+  
+  <table class="definition" style="width: 100%;">
+  <thead>
+  <tr>
+  <th style="width: 120px;">Class:</th>
+  <th><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code></th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Restrictions:
+      </td>
+      <td>
+        <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">sosa:hasUltimateFeatureOfInterest</a> min 1</code>
+      </td>
+    </tr>
+  </tbody>
+  </table>
+  
+  <p>
+    This constraint says that at least one ultimate-feature-of-interest is expected for each individual observation.
+    Typically an observation concerns one ultimate feature-of-interest but in some cases the proximate feature-of-interest is a sample of more than one ultimate feature of interest.
+    The explanation of relationships between multiple ultimate features of interest are beyond the scope of this vocabulary.
+  </p>
+  
+  </section>
+
+  <section>
+    <h4 id="sosa:isUltimateSampleOf">is ultimate sample of</h4>
+    <table class="definition" style="width: 100%;">
+    <thead>
+    <tr>
+    <th style="width: 120px;">Property:</th>
+    <th><code><a href="#sosa:isUltimateSampleOf">sosa:isUltimateSampleOf</a></code></th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          IRI:
+        </td>
+        <td>
+          <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/isUltimateSampleOf</a></code>
+        </td>
+      </tr>
+    <tr>
+    <td>Definition:</td>
+    <td>link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations</td>
+    </tr>
+    <tr>
+    <td>Instance of:</td>
+    <td><code>owl:ObjectProperty</code></td>
+    </tr>
+    <tr>
+    <td>Range:</td>
+    <td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
+    </tr>
+    </tbody>
+    </table>
+    
+    <p>
+      No global domain constraints are specified for this property, so its appearance in a data set does not entail that the subject is a member of any particular class.
+      However, the ssn-ext vocabulary adds the following guarded constraint to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code> class:
+    </p>
+    
+    <table class="definition" style="width: 100%;">
+    <thead>
+    <tr>
+    <th style="width: 120px;">Class:</th>
+    <th><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code></th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          Restrictions:
+        </td>
+        <td>
+          <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">sosa:isUltimateSampleOf</a> min 1</code>
+        </td>
+      </tr>
+    </tbody>
+    </table>
+    
+    <p>
+      This constraint says that at least one ultimate feature-of-interest is expected for each individual sample. 
+      More than one ultimate feature-of-interest may apply when a sample is used in multiple investigations to proxy for different features. 
+    </p>
+    
+    </section>
+    
+  
 </section>
+
+<p>More revisions required below this point.</p>
 
 <section>
   <h3 id="rules">Rules</h3>
@@ -520,13 +671,13 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
     <tbody>
     <tr>
       <td>
-        <code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code>
+        <code><a href="#sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a></code>
       </td>
       <td>
         <pre>
-CONSTRUCT { ?this ssn-ext:hasUltimateFeatureOfInterest ?f . }
+CONSTRUCT { ?this sosa:hasUltimateFeatureOfInterest ?f . }
 WHERE {
-    NOT EXISTS { ?this ssn-ext:hasUltimateFeatureOfInterest ?x . } .
+    NOT EXISTS { ?this sosa:hasUltimateFeatureOfInterest ?x . } .
     ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)+ ?f .
     NOT EXISTS { ?f sosa:isSampleOf ?y . } .
 }        </pre>
@@ -542,7 +693,7 @@ WHERE {
   <section>
     <h4 id="container-property-rule">Inheriting observation properties from a collection</h4>
     <p>
-      If a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> or <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code> is a member of an <code><a href="#ssn-ext:ObservationCollection">ssn-ext:ObservationCollection</a></code>,
+      If a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> or <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code> is a member of an <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code>,
       the properties of the collection as a whole are associated with all member observations or collections, unless locally specified.
       Associating properties with the collection provides for efficiencies in both discovery and encoding.
     </p>
@@ -569,7 +720,7 @@ WHERE {
 CONSTRUCT { ?this sosa:hasFeatureOfInterest ?foi . }
 WHERE {
     NOT EXISTS { ?this sosa:hasFeatureOfInterest ?x . } .
-    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:hasMember ?this .
     ?oc sosa:hasFeatureOfInterest ?foi .
 }</pre>
       </td>
@@ -583,7 +734,7 @@ WHERE {
 CONSTRUCT { ?this sosa:madeBySensor ?se . }
 WHERE {
     NOT EXISTS { ?this sosa:madeBySensor ?x . } .
-    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:hasMember ?this .
     ?oc sosa:madeBySensor ?se .
 }</pre>
       </td>
@@ -597,7 +748,7 @@ WHERE {
 CONSTRUCT { ?this sosa:observedProperty ?op . }
 WHERE {
     NOT EXISTS { ?this sosa:observedProperty ?x . } .
-    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:hasMember ?this .
     ?oc sosa:observedProperty ?op .
 }</pre>
       </td>
@@ -611,7 +762,7 @@ WHERE {
 CONSTRUCT { ?this sosa:phenomenonTime ?pt . }
 WHERE {
     NOT EXISTS { ?this sosa:phenomenonTime ?x . } .
-    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:hasMember ?this .
     ?oc sosa:phenomenonTime ?pt .
 }</pre>
       </td>
@@ -625,7 +776,7 @@ WHERE {
 CONSTRUCT { ?this sosa:resultTime ?rt . }
 WHERE {
     NOT EXISTS { ?this sosa:resultTime ?x . } .
-    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:hasMember ?this .
     ?oc sosa:resultTime ?rt .
 }</pre>
       </td>
@@ -639,14 +790,14 @@ WHERE {
 CONSTRUCT { ?this sosa:usedProcedure ?pr . }
 WHERE {
     NOT EXISTS { ?this sosa:usedProcedure ?x . } .
-    ?oc ssn-ext:hasMember ?this .
+    ?oc sosa:hasMember ?this .
     ?oc sosa:usedProcedure ?pr .
 }</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <code><a href="#ssn-ext:hasUltimateFeatureOfInterest">ssn-ext:hasUltimateFeatureOfInterest</a></code>
+        <code><a href="#sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a></code>
         <br /><br />This rule combines the <a href="#sampling-chain-rule">sampling-chain rule</a> and the look-on-the-container rule used in the rest of this section, with the following order of precedence:
         <br />1. the (proximate) feature-of-interest of the observation, or the end of its sampling-chain;
         <br />2. the explicit ultimate-feature-of-interest of the container collections
@@ -654,20 +805,20 @@ WHERE {
       </td>
       <td>
         <pre>
-CONSTRUCT { ?this ssn-ext:hasUltimateFeatureOfInterest ?foi . }
+CONSTRUCT { ?this sosa:hasUltimateFeatureOfInterest ?foi . }
 WHERE {
     ?this a sosa:Observation .
-    NOT EXISTS { ?this ssn-ext:hasUltimateFeatureOfInterest ?x . } .
+    NOT EXISTS { ?this sosa:hasUltimateFeatureOfInterest ?x . } .
     OPTIONAL {
         ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)* ?foi1 .
         NOT EXISTS { ?foi1 sosa:isSampleOf ?y3 . } .
     } .
     OPTIONAL {
-        ?oc ssn-ext:hasMember ?this .
-        ?oc ssn-ext:hasUltimateFeatureOfInterest ?foi2 .
+        ?oc sosa:hasMember ?this .
+        ?oc sosa:hasUltimateFeatureOfInterest ?foi2 .
     } .
     OPTIONAL {
-        ?oc ssn-ext:hasMember ?this .
+        ?oc sosa:hasMember ?this .
         ?oc sosa:hasFeatureOfInterest/(sosa:isSampleOf)* ?foi3 .
         NOT EXISTS { ?foi3 sosa:isSampleOf ?y3 . } .
     } .
@@ -705,7 +856,7 @@ WHERE {
       A <i>slice</i> selects a subset of the 'observations' by fixing a subset of the dimensions, and thus delivers the set of <b>results</b> of an <b>observation-collection</b> with fixed <b>features-of-interest</b> or <b>phenomenon-times</b> or both.
     </p>
     <p class="note">
-      If the value of the sosa:hasFeatureOfInerest, ssn-ext:hasUltimateFeatureOfInterest, or sosa:phenomenonTime is locally specified, and is different to the value on the containing ssn-ext:ObservationCollection, the results of the collection do not correspond with a splice from a data cube.
+      If the value of the sosa:hasFeatureOfInerest, sosa:hasUltimateFeatureOfInterest, or sosa:phenomenonTime is locally specified, and is different to the value on the containing sosa:ObservationCollection, the results of the collection do not correspond with a splice from a data cube.
     </p>
   </section>
   <!--
