@@ -167,8 +167,8 @@ The elements of the ontology are defined in two modules:</p>
 
 <section id="namespaces">
 <h2>Notation and namespaces</h2>
-  <p>Classes and properties in this vocabulary are denoted in this specification using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[?curie]]. 
-  These are in the SOSA namespace which is used for the core elements of SSN, i.e. <code>http://www.w3.org/ns/sosa</code> since they are expected to appear in the same context. 
+  <p>The classes and properties described in this note are denoted using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[?curie]]. 
+  These classes and properties are put into the RDF namespace for SOSA, i.e. <code>http://www.w3.org/ns/sosa/</code> which is used for the core elements of SSN, since the new classes and properties are expected to be used in the same context. 
   However, these extensions to SOSA/SSN are currently packaged in a separate graph (ontology file) which is denoted <code>http://www.w3.org/ns/ssn/ext/</code>.</p>
 <!--
 <p>The namespace for the SSN-Extensions graph is <code>http://www.w3.org/ns/ssn/ext/</code>.
@@ -230,8 +230,8 @@ The elements of the ontology are defined in two modules:</p>
 
 <section id="ultimate-feature-of-interest">
 <h3>Ultimate feature of interest</h3>
-<p>The object of the <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a> property of an act of observation, sampling, or actuation is the immediate or proximate <a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">FeatureOfInterest</a>.
-In some cases this is not the the ultimate thing that the act of observation, sampling, or actuation is concerned with, but is an intermediate thing, often a sample of the ultimate feature of interest, or perhaps a sample of a sample, etc.
+<p>The object of the original <a href="https://www.w3.org/TR/vocab-ssn/#SOSAhasFeatureOfInterest">hasFeatureOfInterest</a> property of an act of observation, sampling, or actuation is the <i>immediate</i> or <i>proximate</i> <a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">FeatureOfInterest</a>.
+In some cases this is not the the ultimate thing that the act of observation, sampling, or actuation is concerned with, but is an intermediate thing, often a <i>sample</i> of the ultimate feature of interest, or perhaps a sample of a sample, etc.
 There will often be a specifiable relationship between the proximate and ultimate feature of interest, such as a sampling-chain. 
 If this relationship is recorded, then an ultimate feature of interest might be inferred.
 Nevertheless, particularly for discovery purposes, it is usually the ultimate feature of interest that really matters to the data user.
@@ -289,8 +289,10 @@ This is complemented by two further <a href="https://www.w3.org/TR/owl2-primer/#
 </figure>
 
 <p>
-  Collections may be nested.
-  For example, an outer observation-collection may correspond with a shared observed-property, procedure and sensor, and contain inner observation-collections at different phenomenon-times, each containing a set of observations on different features-of-interest.
+  Collections may be nested. 
+  For example, an outer observation-collection might share the observed-property, procedure and sensor, and contain inner observation-collections at different phenomenon-times, each of which contain a set of observations on different features-of-interest.
+</p>
+<p>
   An observation may be a member of more than one observation-collection, so more than one set of nested observation-collections can collect the same set of atomic observations.
   For example, the same outer collection may contain inner collections concerning different features-of-interests, each containing a set of observations at different phenomenon-times.
 </p>
@@ -398,7 +400,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
 <p>
   <code><a href="#sosa:hasMember">:hasMember</a></code> |
   <code><a href="#sosa:hasOriginalSample">:hasOriginalSample</a></code> |
-  <code><a href="#sosa:hasUltimateFeatureOfInterest">:hasUltimateFeatureOfInterest</a></code>
+  <code><a href="#sosa:hasUltimateFeatureOfInterest">:hasUltimateFeatureOfInterest</a></code> | 
   <code><a href="#sosa:isUltimateSampleOf">:isUltimateSampleOf</a></code>
 </p>
 
@@ -645,13 +647,47 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
   
 </section>
 
-<p>More revisions required below this point.</p>
-
 <section>
   <h3 id="rules">Rules</h3>
 
   <section>
-    <h4 id="sampling-chain-rule">Finding ultimate feature of interest from a sampling chain</h4>
+    <h4 id="uso-sampling-chain-rule">Finding the ultimate feature of interest that a Sample represents from a sampling chain</h4>
+    <p>
+      Sometimes it is useful to know what is the ultimate feature-of-interest that a sample represents. 
+      If this is not asserted with a <a href="#sosa:isUltimateSampleOf">sosa:isUltimateSampleOf</a> then it can be found by following a path from the sample to the end of a sequence of <code>sosa:isSampleOf</code> relations (see <a href="#fig-sampling-ultimate-foi">Figure 2</a>).
+    </p>
+    <p>
+      The rule can be expressed formally as a SPARQL query expression [[?sparql11-query]] as follows:
+    </p>
+    <table class="definition" style="width: 100%;">
+    <thead>
+    <tr>
+    <th style="width: 120px;">Property</th>
+    <th>Rule</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <code><a href="#sosa:isUltimateSampleOf">sosa:isUltimateSampleOf</a></code>
+      </td>
+      <td>
+        <pre class="nohighlight turtle">
+          CONSTRUCT { ?this sosa:isUltimateSampleOf ?f . }
+          WHERE {
+            ?this a sosa:Sample
+            NOT EXISTS { ?this sosa:isUltimateSampleOf ?x . } .
+            ?this (sosa:isSampleOf)+ ?f .
+            NOT EXISTS { ?f sosa:isSampleOf ?y . } .
+          }
+        </pre>
+      </td>
+    </tr>
+    </table>
+  </section>
+
+  <section>
+    <h4 id="ufoi-sampling-chain-rule">Finding ultimate feature of interest of an Observation or Sampling from a sampling chain</h4>
     <p>
       If the ultimate feature-of-interest of an Observation, Sampling or Actuation, or ObservationCollection is not specified,
       and the feature-of-interest is a Sample,
@@ -674,28 +710,67 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
         <code><a href="#sosa:hasUltimateFeatureOfInterest">sosa:hasUltimateFeatureOfInterest</a></code>
       </td>
       <td>
-        <pre>
-CONSTRUCT { ?this sosa:hasUltimateFeatureOfInterest ?f . }
-WHERE {
-    NOT EXISTS { ?this sosa:hasUltimateFeatureOfInterest ?x . } .
-    ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)+ ?f .
-    NOT EXISTS { ?f sosa:isSampleOf ?y . } .
-}        </pre>
+        <pre class="nohighlight turtle">
+          CONSTRUCT { ?this sosa:hasUltimateFeatureOfInterest ?f . }
+          WHERE {
+            { ?this a sosa:Observation } UNION { ?this a sosa:ObservationCollection } UNION { ?this a sosa:Sampling }
+            NOT EXISTS { ?this sosa:hasUltimateFeatureOfInterest ?x . } .
+            ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)+ ?f .
+            NOT EXISTS { ?f sosa:isSampleOf ?y . } .
+          }
+        </pre>
       </td>
     </tr>
     </table>
-
-    <p>
-      This is included as a SPIN rule [[?SPIN]] in the <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">RDF representation</a> of the SSN extensions ontology.
-    </p>
   </section>
+
+  <section>
+    <h4 id="os-sampling-chain-rule">Finding the original Sample from a sampling chain</h4>
+    <p>
+      Sometimes it is useful to know what was the original sample taken from the ultimate feature-of-interest that a sample represents. 
+      If this is not asserted with a <a href="#sosa:hasOriginalSample">sosa:hasOriginalSample</a> then it can be found by following a path from the sample through a sequence of <code>sosa:isSampleOf</code> relations until the last sample (see <a href="#fig-sampling-ultimate-foi">Figure 2</a>).
+    </p>
+    <p>
+      The rule can be expressed formally as a SPARQL query expression [[?sparql11-query]] as follows:
+    </p>
+    <table class="definition" style="width: 100%;">
+    <thead>
+    <tr>
+    <th style="width: 120px;">Property</th>
+    <th>Rule</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <code><a href="#sosa:hasOriginalSample">sosa:hasOriginalSample</a></code>
+      </td>
+      <td>
+        <pre class="nohighlight turtle">
+          CONSTRUCT { ?this sosa:hasOriginalSample ?os . }
+          WHERE {
+            ?this a sosa:Sample
+            NOT EXISTS { ?this sosa:hasOriginalSample ?x . } .
+            ?this (sosa:isSampleOf)+ ?f .
+            NOT EXISTS { ?f sosa:isSampleOf ?y . } .
+            ?os sosa:isSampleOf ?f . 
+          }
+        </pre>
+      </td>
+    </tr>
+    </table>
+  </section>
+
+  <p>---- More revisions required below this point. ----</p>
 
   <section>
     <h4 id="container-property-rule">Inheriting observation properties from a collection</h4>
     <p>
       If a <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> or <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code> is a member of an <code><a href="#sosa:ObservationCollection">sosa:ObservationCollection</a></code>,
-      the properties of the collection as a whole are associated with all member observations or collections, unless locally specified.
-      Associating properties with the collection provides for efficiencies in both discovery and encoding.
+      the properties of the collection as a whole are associated with all member observations or collections.
+    </p>
+    <p class="note">
+      Assigning properties to a collection provides for efficiencies in both discovery and encoding.
     </p>
     <p>
       The rules may be defined formally as SPARQL query expressions [[?sparql11-query]] as follows:
