@@ -17,9 +17,9 @@
 
 sosa:Actuation
   rdfs:subClassOf [
-      rdf:type owl:Restriction ;
+      a owl:Restriction ;
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty ssn-ext:hasUltimateFeatureOfInterest ;
+      owl:onProperty sosa:hasUltimateFeatureOfInterest ;
     ] ;
 .
 sosa:Observation
@@ -32,159 +32,126 @@ sosa:Observation
 - resultTime
 - usedProcedure""" ;
   rdfs:subClassOf [
-      rdf:type owl:Restriction ;
+      a owl:Restriction ;
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty ssn-ext:hasUltimateFeatureOfInterest ;
+      owl:onProperty sosa:hasUltimateFeatureOfInterest ;
+    ] ;
+.
+sosa:ObservationCollection
+  a owl:Class ;
+  rdfs:comment "Collection of observations, typically with one or more property shared by all of its members" ;
+  rdfs:label "Collection of observations" ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:allValuesFrom sosa:FeatureOfInterest ;
+      owl:onProperty sosa:hasFeatureOfInterest ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:allValuesFrom sosa:FeatureOfInterest ;
+      owl:onProperty sosa:hasUltimateFeatureOfInterest ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:allValuesFrom sosa:ObservableProperty ;
+      owl:onProperty sosa:observedProperty ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:allValuesFrom sosa:Procedure ;
+      owl:onProperty sosa:usedProcedure ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:allValuesFrom sosa:Sensor ;
+      owl:onProperty sosa:madeBySensor ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:allValuesFrom ssn:Stimulus ;
+      owl:onProperty ssn:wasOriginatedBy ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:hasFeatureOfInterest ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:hasUltimateFeatureOfInterest ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:madeBySensor ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:observedProperty ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:phenomenonTime ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:resultTime ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:usedProcedure ;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:hasMember ;
     ] ;
 .
 sosa:Sample
   rdfs:subClassOf [
       a owl:Restriction ;
-      owl:allValuesFrom sosa:FeatureOfInterest ;
-      owl:onProperty ssn-ext:isUltimateSampleOf ;
-    ] ;
-  rdfs:subClassOf [
-      a owl:Restriction ;
-      owl:allValuesFrom sosa:Sample ;
-      owl:onProperty ssn-ext:hasOriginalSample ;
-    ] ;
-  rdfs:subClassOf [
-      a owl:Restriction ;
-      owl:cardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty ssn-ext:hasOriginalSample ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sosa:hasOriginalSample ;
     ] ;
   rdfs:subClassOf [
       a owl:Restriction ;
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty ssn-ext:isUltimateSampleOf ;
+      owl:onProperty sosa:isUltimateSampleOf ;
     ] ;
 .
 sosa:Sampling
   rdfs:subClassOf [
       a owl:Restriction ;
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty ssn-ext:hasUltimateFeatureOfInterest ;
+      owl:onProperty sosa:hasUltimateFeatureOfInterest ;
     ] ;
 .
 sosa:hasFeatureOfInterest
-  schema:domainIncludes ssn-ext:ObservationCollection ;
+  schema:domainIncludes sosa:ObservationCollection ;
 .
-sosa:madeBySensor
-  schema:domainIncludes ssn-ext:ObservationCollection ;
-.
-sosa:observedProperty
-  schema:domainIncludes ssn-ext:ObservationCollection ;
-.
-sosa:phenomenonTime
-  schema:domainIncludes ssn-ext:ObservationCollection ;
-.
-sosa:resultTime
-  schema:domainIncludes ssn-ext:ObservationCollection ;
-.
-sosa:usedProcedure
-  schema:domainIncludes ssn-ext:ObservationCollection ;
-.
-ssn:ext
-  rdf:type owl:Ontology ;
-  dcterms:created "2018-03-08"^^xsd:date ;
-  dcterms:creator <http://orcid.org/0000-0002-3884-3420> ;
-  rdfs:comment "Some extensions to the SSN Ontology" ;
-  rdfs:label "SSN extensions" ;
-  owl:imports ssn: ;
-.
-ssn-ext:ObservationCollection
-  rdf:type owl:Class ;
-  rdfs:comment "Collection of observations, typically with one or more property shared by all of its members" ;
-  rdfs:label "Collection of observations" ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:allValuesFrom sosa:FeatureOfInterest ;
-      owl:onProperty sosa:hasFeatureOfInterest ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:allValuesFrom sosa:FeatureOfInterest ;
-      owl:onProperty ssn-ext:hasUltimateFeatureOfInterest ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:allValuesFrom sosa:ObservableProperty ;
-      owl:onProperty sosa:observedProperty ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:allValuesFrom sosa:Procedure ;
-      owl:onProperty sosa:usedProcedure ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:allValuesFrom sosa:Sensor ;
-      owl:onProperty sosa:madeBySensor ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:allValuesFrom ssn:Stimulus ;
-      owl:onProperty ssn:wasOriginatedBy ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty sosa:hasFeatureOfInterest ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty sosa:madeBySensor ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty sosa:observedProperty ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty sosa:phenomenonTime ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty sosa:resultTime ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty sosa:usedProcedure ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty ssn-ext:hasUltimateFeatureOfInterest ;
-    ] ;
-  rdfs:subClassOf [
-      rdf:type owl:Restriction ;
-      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-      owl:onProperty ssn-ext:hasMember ;
-    ] ;
-.
-ssn-ext:hasMember
-  rdf:type owl:ObjectProperty ;
-  schema:domainIncludes ssn-ext:ObservationCollection ;
+sosa:hasMember
+  a owl:ObjectProperty ;
+  schema:domainIncludes sosa:ObservationCollection ;
   schema:rangeIncludes sosa:Observation ;
-  schema:rangeIncludes ssn-ext:ObservationCollection ;
+  schema:rangeIncludes sosa:ObservationCollection ;
   rdfs:comment "Link to a member within a collection of (observations) or (collections of observations) that share the same value for one or more of the characteristic properties" ;
-  rdfs:domain ssn-ext:ObservationCollection ;
+  rdfs:domain sosa:ObservationCollection ;
   rdfs:label "member observation" ;
   rdfs:range [
-      rdf:type owl:Class ;
+      a owl:Class ;
       owl:unionOf (
           sosa:Observation
-          ssn-ext:ObservationCollection
+          sosa:ObservationCollection
         ) ;
     ] ;
   rdfs:subPropertyOf rdfs:member ;
 .
-ssn-ext:hasOriginalSample
+sosa:hasOriginalSample
   a owl:ObjectProperty ;
   schema:domainIncludes sosa:Sample ;
   schema:rangeIncludes sosa:Sample ;
@@ -192,7 +159,7 @@ ssn-ext:hasOriginalSample
   rdfs:label "has original sample" ;
   rdfs:range sosa:Sample ;
 .
-ssn-ext:hasUltimateFeatureOfInterest
+sosa:hasUltimateFeatureOfInterest
   a owl:ObjectProperty ;
   schema:domainIncludes sosa:Actuation ;
   schema:domainIncludes sosa:Observation ;
@@ -204,25 +171,34 @@ ssn-ext:hasUltimateFeatureOfInterest
   rdfs:label "has ultimate feature of interest" ;
   rdfs:range sosa:FeatureOfInterest ;
 .
-ssn-ext:isMemberOf
-  rdf:type owl:ObjectProperty ;
-  rdfs:comment "indicates a collection of which the context resource is a member" ;
-  rdfs:domain [
-      rdf:type owl:Class ;
-      owl:unionOf (
-          sosa:Observation
-          ssn-ext:ObservationCollection
-        ) ;
-    ] ;
-  rdfs:label "is member of" ;
-  rdfs:range ssn-ext:ObservationCollection ;
-  owl:inverseOf ssn-ext:hasMember ;
-.
-ssn-ext:isUltimateSampleOf
+sosa:isUltimateSampleOf
   a owl:ObjectProperty ;
   schema:domainIncludes sosa:Sample ;
   schema:rangeIncludes sosa:FeatureOfInterest ;
   rdfs:comment "link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations" ;
   rdfs:label "is ultimate sample of" ;
   rdfs:range sosa:FeatureOfInterest ;
+.
+sosa:madeBySensor
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+sosa:observedProperty
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+sosa:phenomenonTime
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+sosa:resultTime
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+sosa:usedProcedure
+  schema:domainIncludes sosa:ObservationCollection ;
+.
+ssn:ext
+  a owl:Ontology ;
+  dcterms:created "2018-03-08"^^xsd:date ;
+  dcterms:creator <http://orcid.org/0000-0002-3884-3420> ;
+  rdfs:comment "Some extensions to the SSN Ontology" ;
+  rdfs:label "SSN extensions" ;
+  owl:imports ssn: ;
 .
