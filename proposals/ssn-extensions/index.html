@@ -203,7 +203,7 @@ This requirement is satisfied by an <a href="https://www.w3.org/TR/owl2-primer/#
     Many observation workflows rely on a chain of samples, each making a sub-sample of the predecessor sample. 
     Knowing either the original sample or the initial feature of interest at the base of the chain is often useful for both discovery and management purposes. 
     For example, <a href="#fig-sample-chain-geology"></a> shows a scenario from geology involving many samples derived from an initial one, with some relationships that may be useful in processing and discovery of subsequent observations, the intention of which will be to characterize various aspects of the original sample which is representative of an ultimate feature of interest. 
-    This is supported by two further <a href="https://www.w3.org/TR/owl2-primer/#Object_Properties">object properties</a> for relationships between samples and features of interest, called <code>hasOriginalSample</code> and <code>isUltimateSampleOf</code>.
+    This is supported by two further <a href="https://www.w3.org/TR/owl2-primer/#Object_Properties">object properties</a> for relationships between samples and features of interest, called <code>hasOriginalSample</code> and <code>hasSampledFeature</code>.
   </p>
 
   <figure id="fig-sample-chain-geology">
@@ -373,7 +373,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
   <code><a href="#sosa:hasMember">:hasMember</a></code> |
   <code><a href="#sosa:hasOriginalSample">:hasOriginalSample</a></code> |
   <code><a href="#sosa:hasUltimateFeatureOfInterest">:hasUltimateFeatureOfInterest</a></code> | 
-  <code><a href="#sosa:isUltimateSampleOf">:isUltimateSampleOf</a></code>
+  <code><a href="#sosa:hasSampledFeature">:hasSampledFeature</a></code>
 </p>
 
 <section>
@@ -553,12 +553,12 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
   </section>
 
   <section>
-    <h4 id="sosa:isUltimateSampleOf">is ultimate sample of</h4>
+    <h4 id="sosa:hasSampledFeature">has sampled feature</h4>
     <table class="definition" style="width: 100%;">
     <thead>
     <tr>
     <th style="width: 120px;">Property:</th>
-    <th><code><a href="#sosa:isUltimateSampleOf">sosa:isUltimateSampleOf</a></code></th>
+    <th><code><a href="#sosa:hasSampledFeature">sosa:hasSampledFeature</a></code></th>
     </tr>
     </thead>
     <tbody>
@@ -567,7 +567,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
           IRI:
         </td>
         <td>
-          <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/isUltimateSampleOf</a></code>
+          <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">http://www.w3.org/ns/sosa/hasSampledFeature</a></code>
         </td>
       </tr>
     <tr>
@@ -603,7 +603,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
           Restrictions:
         </td>
         <td>
-          <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">sosa:isUltimateSampleOf</a> min 1</code>
+          <code><a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">sosa:hasSampledFeature</a> min 1</code>
         </td>
       </tr>
     </tbody>
@@ -663,11 +663,11 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
   <section>
       <h4 id="uso-sampling-chain-rule">Finding the ultimate feature of interest that a Sample represents from a sampling chain</h4>
       <p>
-        Sometimes it is useful to know what is the ultimate feature-of-interest that a sample represents. 
-        If this is not asserted with a <a href="#sosa:isUltimateSampleOf">sosa:isUltimateSampleOf</a> then it can be found by following a path from the sample to the end of a sequence of <code>sosa:isSampleOf</code> relations (see <a href="#fig-sampling-ultimate-foi">Figure 2</a>).
+        Sometimes it is useful to know what is the actual feature-of-interest that a sample represents. 
+        If this is not asserted with a <a href="#sosa:hasSampledFeature">sosa:hasSampledFeature</a> then a candidate feature may be found by following a path from the sample to the end of a sequence of <code>sosa:isSampleOf</code> relations (see <a href="#fig-sampling-ultimate-foi">Figure 2</a>).
       </p>
       <p>
-        The rule can be expressed formally as a SPARQL query expression [[?sparql11-query]] as follows:
+        This rule can be expressed formally as a SPARQL query expression [[?sparql11-query]] as follows:
       </p>
       <table class="definition" style="width: 100%;">
       <thead>
@@ -679,14 +679,14 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
       <tbody>
       <tr>
         <td>
-          <code><a href="#sosa:isUltimateSampleOf">sosa:isUltimateSampleOf</a></code>
+          <code><a href="#sosa:hasSampledFeature">sosa:hasSampledFeature</a></code>
         </td>
         <td>
           <pre class="nohighlight turtle">
-            CONSTRUCT { ?this sosa:isUltimateSampleOf ?f . }
+            CONSTRUCT { ?this sosa:hasSampledFeature ?f . }
             WHERE {
               ?this a sosa:Sample
-              NOT EXISTS { ?this sosa:isUltimateSampleOf ?x . } .
+              NOT EXISTS { ?this sosa:hasSampledFeature ?x . } .
               ?this (sosa:isSampleOf)+ ?f .
               NOT EXISTS { ?f sosa:isSampleOf ?y . } .
             }
@@ -694,16 +694,18 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
         </td>
       </tr>
       </table>
+
+      <p>Note that a sample might represent more than one feature of interest, different by scale or some other defining property. </p>
     </section>
   
     <section>
     <h4 id="os-sampling-chain-rule">Finding the original Sample from a sampling chain</h4>
     <p>
       Sometimes it is useful to know what was the original sample taken from the ultimate feature-of-interest that a sample represents. 
-      If this is not asserted with a <a href="#sosa:hasOriginalSample">sosa:hasOriginalSample</a> then it can be found by following a path from the sample through a sequence of <code>sosa:isSampleOf</code> relations until the last sample (see <a href="#fig-sampling-ultimate-foi">Figure 2</a>).
+      If this is not asserted with a <a href="#sosa:hasOriginalSample">sosa:hasOriginalSample</a> then a candidate sample may be found by following a path from the sample through a sequence of <code>sosa:isSampleOf</code> relations until the last sample (see <a href="#fig-sampling-ultimate-foi">Figure 2</a>).
     </p>
     <p>
-      The rule can be expressed formally as a SPARQL query expression [[?sparql11-query]] as follows:
+      This rule can be expressed formally as a SPARQL query expression [[?sparql11-query]] as follows:
     </p>
     <table class="definition" style="width: 100%;">
     <thead>
@@ -732,6 +734,9 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
       </td>
     </tr>
     </table>
+    <p>Note that most important original sample might not be the one closest to the domain feature. 
+      For example, in <a href="#fig-sample-chain-geology"></a> for many practical scenarios it will be a sample retrieved from the field that is of interest, and not the outcrop which is also modeled as a sample of the geologic unit. 
+      In such a case an explicit assertion of the original sample will be more relevant than the computed one. </p>
   </section>
 
   <section>
