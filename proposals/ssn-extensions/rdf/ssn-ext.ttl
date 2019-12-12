@@ -156,8 +156,18 @@ sosa:hasOriginalSample
   schema:domainIncludes sosa:Sample ;
   schema:rangeIncludes sosa:Sample ;
   rdfs:comment "link to the original sample that is related to the context sample through a chain of isSampleOf relations" ;
+  rdfs:domain sosa:Sample ;
   rdfs:label "has original sample" ;
   rdfs:range sosa:Sample ;
+.
+sosa:hasSampledFeature
+  a owl:ObjectProperty ;
+  schema:domainIncludes sosa:Sample ;
+  schema:rangeIncludes sosa:FeatureOfInterest ;
+  rdfs:comment "link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations" ;
+  rdfs:domain sosa:Sample ;
+  rdfs:label "is ultimate sample of" ;
+  rdfs:range sosa:FeatureOfInterest ;
 .
 sosa:hasUltimateFeatureOfInterest
   a owl:ObjectProperty ;
@@ -168,15 +178,15 @@ sosa:hasUltimateFeatureOfInterest
   rdfs:comment "link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or trasntitively." ;
   rdfs:comment """should match a property chain something like this but with sosa:isSampleOf*
       owl:propertyChainAxiom ( sosa:hasFeatureOfInterest sosa:isSampleOf )""" ;
+  rdfs:domain [
+      a owl:Class ;
+      owl:unionOf (
+          sosa:Observation
+          sosa:Sampling
+          sosa:Actuation
+        ) ;
+    ] ;
   rdfs:label "has ultimate feature of interest" ;
-  rdfs:range sosa:FeatureOfInterest ;
-.
-sosa:hasSampledFeature
-  a owl:ObjectProperty ;
-  schema:domainIncludes sosa:Sample ;
-  schema:rangeIncludes sosa:FeatureOfInterest ;
-  rdfs:comment "link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations" ;
-  rdfs:label "is ultimate sample of" ;
   rdfs:range sosa:FeatureOfInterest ;
 .
 sosa:madeBySensor
