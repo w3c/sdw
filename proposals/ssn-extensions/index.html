@@ -13,7 +13,7 @@
 
 <section id="abstract">
 <p>The Semantic Sensor Network (SSN) ontology is an ontology for describing sensors and their observations, the procedures used, the features of interest and observed properties that are the subject of observation, samples used in the course of observations, as well as actuators.
-This note describes some extensions to the SSN ontology to enable:</p>
+This document describes some extensions to the SSN ontology to enable:</p>
 <ol>
   <li>
     linking directly to the ultimate feature-of-interest for an act of observation, sampling, or actuation, alongside the link to the (proximate) feature-of-interest, which might be a sample
@@ -71,7 +71,7 @@ The elements of the ontology are defined in two modules:</p>
     SOSA - which defines the basic classes and properties, with a weak axiomatization comparable to schema.org
   </li>
   <li>
-    SSN - which adds a full axiomatization to the SOSA classes and properties, and adds additional elements relating particularly to sensor descriptions and to support alignment to DUL
+    SSN - which adds a full axiomatization to the SOSA classes and properties, and adds additional elements relating particularly to sensor descriptions and to support alignment to <a href="http://ontologydesignpatterns.org/wiki/Ontology:DOLCE+DnS_Ultralite">DOLCE Ultralite</a>
   </li>
 </ul>
 <p>
@@ -98,13 +98,13 @@ The elements of the ontology are defined in two modules:</p>
 </ol>
 
 <p>
-  This Note describes solutions these requirements.
+  This document describes solutions these requirements.
 </p>
 </section>
 
 <section id="namespaces" class="normative">
 <h2>Notation and namespaces</h2>
-  <p>The classes and properties described in this note are denoted using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[curie]]. 
+  <p>The classes and properties described in this document are denoted using <a href="https://www.w3.org/TR/curie/">Compact URIs</a> [[curie]]. 
   These classes and properties are put into the RDF namespace for SOSA, i.e. <code>http://www.w3.org/ns/sosa/</code> which is used for the core elements of SSN [[vocab-ssn]], since the new classes and properties are expected to be used in the same context. 
   However, these extensions to SOSA/SSN are packaged in a separate graph (ontology file) which is denoted <code>http://www.w3.org/ns/ssn/ext/</code>, and is currently available from the <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/proposals/ssn-extensions/rdf/ssn-ext.ttl">GitHub repository</a>. 
 </p>
@@ -191,7 +191,7 @@ This requirement is satisfied by an <a href="https://www.w3.org/TR/owl2-primer/#
 
 <p class="note">
   This requirement was described in OM-Lite [[?OM-Lite]], but was addressed there using a different pattern in which the property <code>oml:featureOfInterest</code> always links to the <i>ultimate</i> feature-of-interest, and an additional property <code>oml:samplingStrategy</code> links to the sample or some other description of the sampling arrangements.
-  That approach was unnecessarily coy about satisfying the principle requirement, which is to know the ultimate feature of interest.
+  However, that approach allowed multiple possible interpretations of ‘featureOfInterest’, and only representated chains of sampling or observation events indirectly.
   The solution described here is explicit, and also applies to acts of sampling and actuation.
 </p>
 
@@ -451,6 +451,10 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
 <td><code>owl:ObjectProperty</code></td>
 </tr>
 <tr>
+  <td>Domain:</td>
+  <td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code></td>
+  </tr>
+<tr>
 <td>Range:</td>
 <td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code></td>
 </tr>
@@ -458,8 +462,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
 </table>
 
 <p>
-  No global domain constraints are specified for this property, so its appearance in a data set does not entail that the subject is a member of any particular class.
-  However, the ssn-ext vocabulary adds the following guarded constraint to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code> class:
+  The following guarded constraint applies to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code> class:
 </p>
 
 <table class="definition" style="width: 100%;">
@@ -514,6 +517,10 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
   <td><code>owl:ObjectProperty</code></td>
   </tr>
   <tr>
+    <td>Domain:</td>
+    <td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a> or <a href="https://www.w3.org/TR/vocab-ssn/#SOSASampling">sosa:Sampling</a> or <a href="https://www.w3.org/TR/vocab-ssn/#SOSAActuation">sosa:Actuation</a></code> </td>
+    </tr>
+    <tr>
   <td>Range:</td>
   <td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
   </tr>
@@ -521,8 +528,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
   </table>
   
   <p>
-    No global domain constraints are specified for this property, so its appearance in a data set does not entail that the subject is a member of any particular class.
-    However, the ssn-ext vocabulary adds the following guarded constraint to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> class:
+    The following guarded constraint applies to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAObservation">sosa:Observation</a></code> class:
   </p>
   
   <table class="definition" style="width: 100%;">
@@ -579,6 +585,10 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
     <td><code>owl:ObjectProperty</code></td>
     </tr>
     <tr>
+      <td>Domain:</td>
+      <td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code></td>
+      </tr>
+      <tr>
     <td>Range:</td>
     <td><code><a href="https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest">sosa:FeatureOfInterest</a></code></td>
     </tr>
@@ -586,8 +596,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
     </table>
     
     <p>
-      No global domain constraints are specified for this property, so its appearance in a data set does not entail that the subject is a member of any particular class.
-      However, the ssn-ext vocabulary adds the following guarded constraint to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code> class:
+      The following guarded constraint applies to the <code><a href="https://www.w3.org/TR/vocab-ssn/#SOSASample">sosa:Sample</a></code> class:
     </p>
     
     <table class="definition" style="width: 100%;">
@@ -610,8 +619,8 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
     </table>
     
     <p>
-      This constraint says that at least one ultimate feature-of-interest is expected for each individual sample. 
-      More than one ultimate feature-of-interest may apply when a sample is used in multiple investigations to proxy for different features. 
+      This constraint says that at least one sampled feature is expected for each individual sample. 
+      More than one sampled feature may apply when a single sample proxies for different ultimate features when used in multiple investigations. 
     </p>
     
     </section>
@@ -649,7 +658,7 @@ See <a href="#container-property-rule">Inheriting observation properties from a 
         <pre class="nohighlight turtle">
           CONSTRUCT { ?this sosa:hasUltimateFeatureOfInterest ?f . }
           WHERE {
-            { ?this a sosa:Observation } UNION { ?this a sosa:ObservationCollection } UNION { ?this a sosa:Sampling }
+            { ?this a sosa:Observation } UNION { ?this a sosa:ObservationCollection } UNION { ?this a sosa:Sampling } UNION { ?this a sosa:Actuation }
             NOT EXISTS { ?this sosa:hasUltimateFeatureOfInterest ?x . } .
             ?this sosa:hasFeatureOfInterest/(sosa:isSampleOf)+ ?f .
             NOT EXISTS { ?f sosa:isSampleOf ?y . } .
@@ -794,14 +803,14 @@ In the above expression, <code>$property</code> is replaced by any one of the se
   <section>
     <h3>RDF Data Cube vocabulary</h3>
     <p>
-      The W3C RDF Data Cube vocabulary [[?vocab-data-cube]] provides a means to describe multi-dimensional data according to a 'data cube' model inspired by SDMX.
-      The RDF Data Cube vocabulary uses the term <i>observation</i> for the <b>results</b>, and the <i>dimensions</i> of a data cube indicate the <b>features of interest</b> and <b>phenomenon times</b> of the results, the <i>measures</i> correspond to the <b>observed properties</b>, and the <i>attributes</i> accommodate information about the <b>procedures</b> and <b>sensors</b>.
+      The W3C RDF Data Cube vocabulary [[?vocab-data-cube]] provides a means to describe multi-dimensional data according to a 'data cube' model inspired by SDMX, from which a 'slice' represents a collection of observations that is homogeneous in some property or dimension.
+      Hence, for a collection of observations the datacube (<code>qb:</code>) model may be used to express aspects of homogeneity - such as whether a set of observations are all related to the same ultimate feature of interest, or the same <i>type</i> of feature of interest etc. Feature of interest, phenomenon time, observation procedure will typically correspond to <code>qb:dimension</code> sub-properties, <code>qb:measures</code> will be the observed properties and <code>qb:ComponentDescriptions</code> for <code>qb:measures</code> may indicate result types. <code>qb:attribute</code> sub-properties may be used for qualifying and annotating information.
     </p>
     <p>
-      A <i>slice</i> selects a subset of the 'observations' by fixing a subset of the dimensions, and thus delivers the set of <b>results</b> of an <b>observation-collection</b> with fixed <b>features-of-interest</b> or <b>phenomenon-times</b> or both.
-    </p>
+In future a general model for the inter-relation of dimensions, sensors, observed properties, phenomena, units of measure, sampling precision, procedures, etc. could use qb:dimension concepts to describe observation and sampling strategies.
+</p>
     <p class="note">
-      If the value of the sosa:hasFeatureOfInerest, sosa:hasUltimateFeatureOfInterest, or sosa:phenomenonTime is locally specified, and is different to the value on the containing sosa:ObservationCollection, the results of the collection do not correspond with a splice from a data cube.
+      If the value of any of the properties such as the <code>sosa:hasFeatureOfInterest</code>, <code>sosa:hasUltimateFeatureOfInterest</code>, or <code>sosa:phenomenonTime</code> is locally specified, and is different to the value on the containing sosa:ObservationCollection, the results of the collection do not correspond with a slice from a data cube.
     </p>
   </section>
   <section>
