@@ -1,0 +1,53 @@
+# baseURI: https://www.w3.org/2006/time/agg
+# imports: http://purl.org/dc/elements/1.1/
+# imports: http://www.w3.org/2006/time
+# prefix: tagg
+
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tagg: <https://www.w3.org/2006/time/agg#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+time:TemporalAggregate
+  a owl:Class ;
+  rdfs:comment """A temporal aggregate is temporal entity that is an aggregation of temporal entities
+
+Note: no ordering relationships are implied amongst the parts. Relationships between temporal entities are supported by explicit properties, such as time:after time:intervalMeets, etc""" ;
+  rdfs:label "Temporal aggregate" ;
+  rdfs:subClassOf time:TemporalEntity ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty time:hasPart ;
+    ] ;
+.
+time:hasPart
+  a owl:ObjectProperty ;
+  rdfs:comment "Link to a temporal entity that is a part of this temporal aggregate" ;
+  rdfs:domain time:TemporalAggregate ;
+  rdfs:label "has a part" ;
+  rdfs:range time:TemporalEntity ;
+  rdfs:subPropertyOf dct:hasPart ;
+  rdfs:subPropertyOf rdfs:member ;
+.
+time:isPartOf
+  a owl:ObjectProperty ;
+  rdfs:comment "Link to a temporal aggregate of which this temporal entity is a part" ;
+  rdfs:domain time:TemporalEntity ;
+  rdfs:label "is a part of" ;
+  rdfs:range time:TemporalAggregate ;
+  owl:inverseOf time:hasPart ;
+.
+<https://www.w3.org/2006/time/agg>
+  a owl:Ontology ;
+  dct:created "2020-01-16"^^xsd:date ;
+  dct:creator <https://orcid.org/0000-0002-3884-3420> ;
+  dct:license <https://creativecommons.org/share-your-work/public-domain/cc0/> ;
+  rdfs:comment "An extension of OWL-Time for temporal aggregates" ;
+  rdfs:label "Temporal aggregates" ;
+  owl:imports <http://purl.org/dc/elements/1.1/> ;
+  owl:imports <http://www.w3.org/2006/time> ;
+.
