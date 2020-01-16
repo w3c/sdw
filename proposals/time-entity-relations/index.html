@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  <title>Extensions to the OWL-Time Ontology - entity relations</title>
+  <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
+  <script class="remove" src="config.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="small.css" media="only all and (max-width: 649px)">
+</head>
+
+<body>
+
+  <section id="abstract">
+    <p>OWL-Time [[owl-time]] is an ontology for temporal entities, with a particular focus on the description of
+      relations between time intervals.
+      However, there are certain relations between more general temporal entities (in particular, time instants) that
+      cannot be expressed using the 15 interval relations defined in OWL-Time.
+      This note adds four new relations: <code>time:equals</code>, <code>time:hasInside</code>, <code>time:disjoint</code> and
+      <code>time:notDisjoint</code> which complement the original relations and allow for description of more
+      relationships between temporal entities.
+    </p>
+    <p style="text-align: center;">The namespace for OWL-Time terms is <code>http://www.w3.org/2006/time#</code></p>
+    <p style="text-align: center;">The suggested prefix for the OWL-Time namespace is <code>time</code></p>
+    <p style="text-align: center;">The OWL-Time ontology is available <a href="https://www.w3.org/2006/time">here</a>.
+    </p>
+    <p style="text-align: center;">The OWL-Time ontology with these extensions is available <a
+        href="https://github.com/w3c/sdw/blob/gh-pages/proposals/time-entity-relations/time-rel.ttl">here</a>.
+    </p>
+  </section>
+
+
+  <section id="sotd">
+    <p><strong>For OGC -</strong> This is a Public Draft of a document prepared by the Spatial Data on the Web Interest
+      Group
+      (<a href="https://www.w3.org/2017/sdwig/">SDWIG</a>)
+      — a joint W3C-OGC project (see <a href="https://www.w3.org/2017/sdwig/charter.html">charter</a>).
+      The document is prepared following W3C conventions. This document is not an OGC Standard. This document is
+      distributed for review and comment. This document is subject to change without notice and may not be referred to
+      as an OGC Standard. Recipients of this document are invited to submit, with their comments, notification of any
+      relevant patent rights of which they are aware and to provide supporting documentation. </p>
+    <p>New properties are introduced in this extension to OWL-Time.
+      The new elements concern relationships between temporal entities which cannot be easily expressed through
+      combination of the predicates provided in OWL-Time using the axiomatization available in OWL2.
+      The ontology document &lt;owl:imports&gt; the OWL-Time, and adds the new elements and axioms.
+      IRIs denoting the new elements are placed in the OWL-Time namespace since it is expected that they could be added
+      to the normative ontology in a future revision of OWL-Time.</p>
+  </section>
+
+  <section id="motivation">
+    <h2>Motivation and background</h2>
+    <p>OWL-Time is an ontology for describing temporal entities and their relationships [[owl-time]].
+      The focus is particularly in relationships between time intervals, using the terminology originally defined by
+      Allen [[?al-84]] [[?af-97]].
+      OWL-Time includes direct implementation of the following basic relationships that were identified by Allen:
+    </p>
+    <ul>
+      <li>
+        Between general temporal entities: <code>time:before</code>, <code>time:after</code>
+      </li>
+      <li>
+        Between time instants and intervals: <code>time:inside</code>
+      </li>
+      <li>
+        Between proper intervals: <code>time:intervalBefore</code>, <code>time:intervalAfter</code>,
+        <code>time:intervalContains</code>, <code>time:intervalDuring</code>, <code>time:intervalEquals</code>,
+        <code>time:intervalFinishes</code>, <code>time:intervalFinishedBy</code>, <code>time:intervalMeets</code>,
+        <code>time:intervalMetBy</code>, <code>time:intervalOverlaps</code>, <code>time:intervalOverlappedBy</code>,
+        <code>time:intervalStarts</code>, <code>time:intervalStartedBy</code>
+      </li>
+    </ul>
+    <p>A summary of the semantics of the intervals relationships is provided in <a
+        href="https://www.w3.org/TR/owl-time/#topology">OWL-Time Figure 2</a>. </p>
+    <p>
+      In principle, any relationship between temporal entities can be built up through logical combination of
+      members of these primitive relations.
+      However, in practice, there are limitations in the expressivity of the RDF implementation of OWL2
+      [[owl2-direct-semantics]][[owl2-rdf-based-semantics]], particularly around unions and complements of properties.
+      Furthermore most of the relationships are only defined for proper-intervals - i.e. temporal entities of non-zero
+      duration - which cannot be used for relationships involving time instants.
+      These considerations mean that it is convenient to introduce a small set of additional relations
+      explicitly, in order to support some applications more efficiently.
+      Two were already included in OWL-Time:
+    </p>
+    <ol>
+      <li><code>time:intervalIn</code> is the the union of
+        <code>time:intervalDuring</code>, <code>time:intervalStarts</code>,and <code>time:intervalFinishes</code>; </li>
+      <li><code>time:intervalDisjoint</code> is the the union of
+        <code>time:intervalBefore</code>, and <code>time:intervalAfter</code></li>
+    </ol>
+    <p>
+      Note that in OWL2 the union of properties can only be <a href="https://stackoverflow.com/questions/26128430/owl-union-of-object-property">approximated through a set of sub-property axioms,</a> which
+      link the members up to the union, but does not exclude the possibility of other sub-properties being added to the
+      union.
+    </p>
+    <p>
+      This note defines a further four relations, all scoped to general temporal entities (i.e. not restricted to either
+      intervals or instants):
+    </p>
+    <ol>
+      <li><code>time:disjoint</code> is the union of
+        <code>time:before</code>, <code>time:after</code>, and <code>time:intervalDisjoint</code>;
+      </li>
+      <li><code>time:equals</code> is the super-property of
+        <code>time:intervalEquals</code>, but is not restricted to relations between proper intervals;
+      </li>
+      <li><code>time:hasInside</code> is the union of
+        <code>time:inside</code>, <code>time:intervalContains</code>, <code>time:intervalStartedBy</code>,and
+        <code>time:intervalFinishedBy</code>;
+      </li>
+      <li><code>time:notDisjoint</code> is the union of
+        <code>time:equals</code>, <code>time:hasInside</code>, <code>time:intervalIn</code>,
+        <code>time:intervalMeets</code>, <code>time:intervalMetBy</code>, <code>time:intervalOverlaps</code>,
+        <code>time:intervalOverlappedBy</code>,
+        which is the complement of <code>time:disjoint</code>
+      </li>
+    </ol>
+    <ol>
+  </section>
+
+  <section id="namespaces">
+    <h2>Notation and namespaces</h2>
+    <p>Classes and properties from the are denoted in this specification using <a
+        href="https://www.w3.org/TR/curie/">Compact URIs</a> [[?curie]]. </p>
+    <p>The namespace for all classes and properties in OWL-Time and this extension is
+      <code>http://www.w3.org/2006/time#</code>. </p>
+    <p>The table below indicates the full list of namespaces and prefixes used in this document.</p>
+    <table id="namespacesTable">
+      <thead>
+        <tr>
+          <th>Prefix</th>
+          <th>Namespace</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ex</code></td>
+          <td><code>http://example.org/ssn/</code></td>
+        </tr>
+        <tr>
+          <td><code>owl</code></td>
+          <td><code>http://www.w3.org/2002/07/owl#</code></td>
+        </tr>
+        <tr>
+          <td><code>rdf</code></td>
+          <td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code></td>
+        </tr>
+        <tr>
+          <td><code>rdfs</code></td>
+          <td><code>http://www.w3.org/2000/01/rdf-schema#</code></td>
+        </tr>
+        <tr>
+          <td><code>time</code></td>
+          <td><code>http://www.w3.org/2006/time#</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Where class descriptions include local restrictions on properties, these are described using the OWL 2 Manchester
+      Syntax [[?owl2-manchester-syntax]]. </p>
+
+    <p>Examples and other code fragments are serialized using RDF 1.1 Turtle notation [[?turtle]].</p>
+
+  </section>
+
+  <section id="conformance"></section>
+
+  <section id="vocabulary">
+    <h2>Vocabulary specification</h2>
+
+    <section id="properties">
+      <h3>Properties</h3>
+
+      <section>
+        <h4 id="time:disjoint">disjoint time entity</h4>
+        <table class="definition" style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="width: 120px;">Property:</th>
+              <th><code><a href="#time:disjoint">time:disjoint</a></code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IRI:</td>
+              <td>
+                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#disjoint</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>If a temporal entity T1 is disjoint with another temporal entity T2, then the beginning of T1 is after
+                the end of T2, or the end of T1 is before the beginning of T2, and the beginning of T1 may be coincident
+                with the end of T1, and the beginning of T2 may be coincident with the end of T2, i.e. the two entities
+                do not overlap or coincide in any way, but their ordering relationship is not known.</td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td><code>owl:ObjectProperty</code></td>
+            </tr>
+            <tr>
+              <td>Sub-property of:</td>
+              <td><code><a href=""> </a></code></td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Additional axioms:</td>
+              <td>
+                <code>time:disjoint owl:propertyDisjointWith time:notDisjoint .</code><br />
+                <code>time:before rdfs:subPropertyOf time:disjoint .</code><br />
+                <code>time:after rdfs:subPropertyOf time:disjoint .</code><br />
+                <code>time:intervalDisjoint rdfs:subPropertyOf time:disjoint .</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+
+        </p>
+      </section>
+
+      <section>
+        <h4 id="time:equals">equal time entity</h4>
+        <table class="definition" style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="width: 120px;">Property:</th>
+              <th><code><a href="#time:equals">time:equals</a></code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IRI:</td>
+              <td>
+                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#equals</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>If a temporal entity T1 equals another temporal entity T2, then the beginning of T1 is coincident with
+                the beginning of T2, and the end of T1 is coincident with the end of T2, and the beginning of T1 may be
+                coincident with the end of T1. </td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td><code>owl:ObjectProperty</code></td>
+            </tr>
+            <tr>
+              <td>Sub-property of:</td>
+              <td><code><a href="#time:notDisjoint">time:notDisjoint</a></code></td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Additional axioms:</td>
+              <td>
+                <code>time:intervalEquals rdfs:subPropertyOf time:equals .</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+
+        </p>
+      </section>
+
+      <section>
+        <h4 id="time:hasInside">has time entity inside</h4>
+        <table class="definition" style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="width: 120px;">Property:</th>
+              <th><code><a href="#time:hasInside">time:hasInside</a></code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IRI:</td>
+              <td>
+                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#hasInside</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>If a temporal entity T1 hasInside it another temporal entity T2, then the beginning of T1 is
+                coincident with or before the beginning of T2, and the end of T1 is concident with or after the end of
+                T2, except that end of T1 may not be coincident with the end of T2 if the beginning of T1 is coincident
+                with the beginning of T2. </td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td><code>owl:ObjectProperty</code></td>
+            </tr>
+            <tr>
+              <td>Sub-property of:</td>
+              <td><code><a href="#time:notDisjoint">time:notDisjoint</a></code></td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Additional axioms:</td>
+              <td>
+                <code>time:inside rdfs:subPropertyOf time:hasInside .</code><br />
+                <code>time:intervalStartedBy rdfs:subPropertyOf time:hasInside .</code><br />
+                <code>time:intervalContains rdfs:subPropertyOf time:hasInside .</code><br />
+                <code>time:intervalFinishedBy rdfs:subPropertyOf time:hasInside .</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+
+        </p>
+      </section>
+
+      <section>
+        <h4 id="time:notDisjoint">not disjoint with time entity</h4>
+        <table class="definition" style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="width: 120px;">Property:</th>
+              <th><code><a href="#time:notDisjoint">time:notDisjoint</a></code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IRI:</td>
+              <td>
+                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#notDisjoint</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>If a temporal entity T1 is notDisjoint with another temporal entity T2, then the the two entities not
+                overlap or coincide in some way, but their ordering relationship is not known. This relation is the
+                complement of disjoint and the union of equals, hasInside, in, meets, metBy, overlaps, overlappedBy.
+              </td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td><code>owl:ObjectProperty</code></td>
+            </tr>
+            <tr>
+              <td>Domain:</td>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Range:</td>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Additional axioms:</td>
+              <td>
+                <code>time:notDisjoint owl:propertyDisjointWith time:disjoint .</code><br />
+                <code>time:equals rdfs:subPropertyOf time:notDisjoint .</code><br />
+                <code>time:hasInside rdfs:subPropertyOf time:notDisjoint .</code><br />
+                <code>time:intervalIn rdfs:subPropertyOf time:notDisjoint .</code><br />
+                <code>time:intervalMeets rdfs:subPropertyOf time:notDisjoint .</code><br />
+                <code>time:intervalMetBy rdfs:subPropertyOf time:notDisjoint .</code><br />
+                <code>time:intervalOverlaps rdfs:subPropertyOf time:notDisjoint .</code><br />
+                <code>time:intervalOverlappedBy rdfs:subPropertyOf time:notDisjoint .</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+
+        </p>
+      </section>
+
+
+    </section>
+  </section>
+
+  <section>
+    <h2>Examples</h2>
+    <p>
+      TBD
+    </p>
+  </section>
+
+
+  </section>
+
+  <hr />
+  <section class="appendix" id="ack">
+    <h2>Acknowledgements</h2>
+    <p>The editor would like to thank the <a href="https://www.w3.org/2000/09/dbwg/details?group=75471">members of the
+        W3C/OGC Spatial Data on the Web Interest Group</a> for their contributions during the development of this
+      document. </p>
+  </section>
+
+</body>
+
+</html>
