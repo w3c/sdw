@@ -6,148 +6,8 @@
   <title>Extensions to the OWL-Time Ontology - temporal aggregates</title>
   <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
   <script class="remove" src="config.js"></script>
-  <style type="text/css">
-    /* Force W3C logo to site side by side with OGC logo */
-    .head img[src*="logos/W3C"] {
-      display: inherit !important;
-    }
-
-    .head a:hover>img[src*='ogc'] {
-      opacity: 0.8;
-    }
-
-    /* Table styles, March 2016 */
-    table {
-      border-collapse: collapse
-    }
-
-    th,
-    td {
-      border: thin solid black;
-      padding: 0.3em;
-    }
-
-    .inlineCode {
-      FONT-FAMILY: "courier new";
-      BACKGROUND-COLOR: #ddf
-    }
-
-    PRE.code {
-      BORDER-RIGHT: #999999 1pt solid;
-      PADDING-RIGHT: 0.5em;
-      BORDER-TOP: #999999 1pt solid;
-      PADDING-LEFT: 0.5em;
-      PADDING-BOTTOM: 0.5em;
-      BORDER-LEFT: #999999 1pt solid;
-      PADDING-TOP: 0.5em;
-      BORDER-BOTTOM: #999999 1pt solid;
-      FONT-FAMILY: "courier new";
-      BACKGROUND-COLOR: #eef
-    }
-
-    PRE.code2 {
-      BORDER-RIGHT: #999999 1pt solid;
-      PADDING-RIGHT: 0.5em;
-      BORDER-TOP: #999999 1pt solid;
-      PADDING-LEFT: 0.5em;
-      PADDING-BOTTOM: 0.5em;
-      BORDER-LEFT: #999999 1pt solid;
-      PADDING-TOP: 0.5em;
-      BORDER-BOTTOM: #999999 1pt solid;
-      FONT-FAMILY: "courier new";
-      BACKGROUND-COLOR: #ffa
-    }
-
-    .ednote {
-      FONT-STYLE: italic
-    }
-
-    PRE.clientmsg {
-      BORDER-RIGHT: #999 1px solid;
-      PADDING-RIGHT: 2px;
-      BORDER-TOP: #999 1px solid;
-      PADDING-LEFT: 2px;
-      BACKGROUND: #eee;
-      PADDING-BOTTOM: 2px;
-      MARGIN: 0px;
-      BORDER-LEFT: #999 1px solid;
-      PADDING-TOP: 2px;
-      BORDER-BOTTOM: #999 1px solid
-    }
-
-    PRE.servermsg {
-      BORDER-RIGHT: #999 1px solid;
-      PADDING-RIGHT: 2px;
-      BORDER-TOP: #999 1px solid;
-      PADDING-LEFT: 2px;
-      BACKGROUND: #eee;
-      PADDING-BOTTOM: 2px;
-      MARGIN: 5px 0px 0px;
-      BORDER-LEFT: #999 1px solid;
-      PADDING-TOP: 2px;
-      BORDER-BOTTOM: #999 1px solid;
-      TEXT-ALIGN: left
-    }
-
-    P.msg {
-      PADDING-RIGHT: 0px;
-      PADDING-LEFT: 0px;
-      PADDING-BOTTOM: 0px;
-      MARGIN: 0px;
-      PADDING-TOP: 0px;
-      TEXT-ALIGN: center
-    }
-
-    DIV.interaction {
-      BORDER-RIGHT: #999 1px solid;
-      PADDING-RIGHT: 5px;
-      BORDER-TOP: #999 1px solid;
-      PADDING-LEFT: 5px;
-      PADDING-BOTTOM: 5px;
-      BORDER-LEFT: #999 1px solid;
-      PADDING-TOP: 5px;
-      BORDER-BOTTOM: #999 1px solid
-    }
-
-    DIV.interaction H4 {
-      MARGIN: 0px 0px 10px
-    }
-
-    DIV.interaction P {
-      MARGIN: 0px
-    }
-
-    DIV.test {
-      BORDER-RIGHT: #999 1px solid;
-      PADDING-RIGHT: 5px;
-      BORDER-TOP: #999 1px solid;
-      PADDING-LEFT: 5px;
-      PADDING-BOTTOM: 5px;
-      BORDER-LEFT: #999 1px solid;
-      PADDING-TOP: 5px;
-      BORDER-BOTTOM: #999 1px solid
-    }
-
-    DIV.test H4 {
-      MARGIN: 0px 0px 10px
-    }
-
-    /* Fix for logos */
-    .head>a.logo {
-      float: right;
-      margin: 0.4rem 0 0.2rem .4rem;
-    }
-
-    .head>a.logo {
-      border: none;
-      text-decoration: none;
-      background: transparent;
-    }
-
-    .head>a.logo:hover {
-      background: none;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="small.css" media="only all and (max-width: 649px)">
 </head>
 
 <body>
@@ -155,14 +15,14 @@
   <section id="abstract">
     <p>OWL-Time [[!owl-time]] is an ontology for temporal entities and relations between them.
       OWL-Time defines simple temporal entities (intervals and instants). 
-      This note adds one new class: <code>time:TemporalAggregate</code> which is composed of an explicit set of individual <code>time:TemporalEntity</code>s, each considered to be a <code>time:member</code> of the aggregate. 
+      This note adds one new class <code>time:TemporalAggregate</code> and two properties <code>time:hasPart</code> and its inverse <code>time:isPartof</code> to allow for the description of arbitrary aggregates of temporal entities. 
     </p>
     <p style="text-align: center;">The namespace for OWL-Time terms is <code>http://www.w3.org/2006/time#</code></p>
     <p style="text-align: center;">The suggested prefix for the OWL-Time namespace is <code>time</code></p>
     <p style="text-align: center;">The OWL-Time ontology is available <a href="https://www.w3.org/2006/time">here</a>.
     </p>
     <p style="text-align: center;">The OWL-Time ontology with these extensions is available <a
-        href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-agg.ttl">here</a>.
+        href="https://github.com/w3c/sdw/blob/gh-pages/proposals/time-aggregates/time-agg.ttl">here</a>.
     </p>
   </section>
 
@@ -183,7 +43,7 @@
       to the normative ontology in a future revision of OWL-Time.</p>
   </section>
 
-  <section id="motivation">
+  <section id="motivation" class="informative">
     <h2>Motivation and background</h2>
     <p>OWL-Time is an ontology for describing temporal entities and their relationships [[owl-time]].
       The focus is particularly in relationships between time intervals, using the terminology originally defined by
@@ -195,43 +55,31 @@
         General temporal entities: <code>time:TemporalEntity</code>
       </li>
       <li>
-        Instants, which are entities whose beginning and end cannot be distinguished: <code>time:Instant</code>
-      </li>
-      <li>
         General intervals: <code>time:Interval</code>
       </li>
       <li>
-        Proper intervals, whose beginning and end are different: <code>time:ProperInterval</code>
+        Proper intervals, whose beginning and end are distinct: <code>time:ProperInterval</code>
+      </li>
+      <li>
+        Instants, which are entities whose beginning and end cannot be distinguished: <code>time:Instant</code>
       </li>
     </ul>
     <p>A summary of the semantics of the temporal entities is provided in <a
         href="https://www.w3.org/TR/owl-time/#topology">OWL-Time Figure 1</a>. 
     </p>
     <p>
-      However, many applications involve multiple time instants and intervals, which it is convenient to identify as a single entity, but is assembled from from multiple member entities. 
+      However, many applications involve multiple time instants and intervals, which it is convenient to identify as a single entity, but which is assembled from from multiple member entities. 
       This note defines an additional temporal entity, the <code>time:TemporalAggregate</code> which is composed of an explicit set of individual <code>time:TemporalEntity</code>s.
+      A summary of the model is shown in <a href="#fig-temporal-aggregate"></a>. 
+    </p>
+    <figure id="fig-temporal-aggregate">
+      <img alt="temporal aggregate" src="./images/TemporalAggregate.png" style="width:75%"/>
+      <figcaption>The new class :TemporalAggregate is composed of one or more :TemporalEntity parts</figcaption>
+    </figure>
+    <p>
       Future extensions may define additional aggregate and composite structures, for example as regular, recurring sequences. 
     </p>
-    <!-- cut and paste from here not yet editted -->
-    <ol>
-      <li><code>time:disjoint</code> is the union of
-        <code>time:before</code>, <code>time:after</code>, and <code>time:intervalDisjoint</code>;
-      </li>
-      <li><code>time:equals</code> is the super-property of
-        <code>time:intervalEquals</code>, but is not restricted to relations between proper intervals;
-      </li>
-      <li><code>time:hasInside</code> is the union of
-        <code>time:inside</code>, <code>time:intervalContains</code>, <code>time:intervalStartedBy</code>,and
-        <code>time:intervalFinishedBy</code>;
-      </li>
-      <li><code>time:notDisjoint</code> is the union of
-        <code>time:equals</code>, <code>time:hasInside</code>, <code>time:intervalIn</code>,
-        <code>time:intervalMeets</code>, <code>time:intervalMetBy</code>, <code>time:intervalOverlaps</code>,
-        <code>time:intervalOverlappedBy</code>,
-        which is the complement of <code>time:disjoint</code>
-      </li>
-    </ol>
-    <ol>
+
   </section>
 
   <section id="namespaces">
@@ -250,8 +98,12 @@
       </thead>
       <tbody>
         <tr>
+          <td><code>dcterms</code></td>
+          <td><code>http://purl.org/dc/terms/</code></td>
+        </tr>
+        <tr>
           <td><code>ex</code></td>
-          <td><code>http://example.org/ssn/</code></td>
+          <td><code>http://example.org/time/</code></td>
         </tr>
         <tr>
           <td><code>owl</code></td>
@@ -273,9 +125,9 @@
     </table>
 
     <p>Where class descriptions include local restrictions on properties, these are described using the OWL 2 Manchester
-      Syntax [[?owl2-manchester-syntax]]. </p>
+      Syntax [[owl2-manchester-syntax]]. </p>
 
-    <p>Examples and other code fragments are serialized using RDF 1.1 Turtle notation [[?turtle]].</p>
+    <p>Examples and other code fragments are serialized using RDF 1.1 Turtle notation [[turtle]].</p>
 
   </section>
 
@@ -284,31 +136,68 @@
   <section id="vocabulary">
     <h2>Vocabulary specification</h2>
 
+    <section id="classes">
+      <h3>Classes</h3>
+
+      <section id="time:TemporalAggregate">
+        <h4>Temporal aggregate</h4>
+        <table class="definition" style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="width: 120px;">Class:</th>
+              <th><code><a href="#time:TemporalAggregate">time:TemporalAggregate</a></code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IRI:</td>
+              <td>
+                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/time-aggregates/time-agg.ttl">http://www.w3.org/2006/time#TemporalAggregate</a></code>
+              </td>
+            </tr>
+            <tr>
+              <td>Definition:</td>
+              <td>A temporal aggregate is temporal entity that is an aggregation of one or more temporal entities</td>
+            </tr>
+            <tr>
+              <td>Instance of:</td>
+              <td><code>owl:Class</code></td>
+            </tr>
+            <tr>
+              <td>Sub-class of:</td>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code></td>
+            </tr>
+            <tr>
+              <td>Sub-class of:</td>
+              <td><code>time:hasPart min 1</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </section>
+    </section>
     <section id="properties">
       <h3>Properties</h3>
 
-      <section>
-        <h4 id="time:disjoint">disjoint time entity</h4>
+      <section id="time:hasPart">
+        <h4>has a part</h4>
         <table class="definition" style="width: 100%;">
           <thead>
             <tr>
               <th style="width: 120px;">Property:</th>
-              <th><code><a href="#time:disjoint">time:disjoint</a></code></th>
+              <th><code><a href="#time:hasPart">time:hasPart</a></code></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>IRI:</td>
               <td>
-                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#disjoint</a></code>
+                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/time-aggregates/time-agg.ttl">http://www.w3.org/2006/time#hasPart</a></code>
               </td>
             </tr>
             <tr>
               <td>Definition:</td>
-              <td>If a temporal entity T1 is disjoint with another temporal entity T2, then the beginning of T1 is after
-                the end of T2, or the end of T1 is before the beginning of T2, and the beginning of T1 may be coincident
-                with the end of T1, and the beginning of T2 may be coincident with the end of T2, i.e. the two entities
-                do not overlap or coincide in any way, but their ordering relationship is not known.</td>
+              <td>Link to a temporal entity that is a part of this temporal aggregate</td>
             </tr>
             <tr>
               <td>Instance of:</td>
@@ -316,68 +205,15 @@
             </tr>
             <tr>
               <td>Sub-property of:</td>
-              <td><code><a href=""> </a></code></td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
-              </td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
-              </td>
-            </tr>
-            <tr>
-              <td>Additional axioms:</td>
-              <td>
-                <code>time:disjoint owl:propertyDisjointWith time:notDisjoint .</code><br />
-                <code>time:before rdfs:subPropertyOf time:disjoint .</code><br />
-                <code>time:after rdfs:subPropertyOf time:disjoint .</code><br />
-                <code>time:intervalDisjoint rdfs:subPropertyOf time:disjoint .</code>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p>
-
-        </p>
-      </section>
-
-      <section>
-        <h4 id="time:equals">equal time entity</h4>
-        <table class="definition" style="width: 100%;">
-          <thead>
-            <tr>
-              <th style="width: 120px;">Property:</th>
-              <th><code><a href="#time:equals">time:equals</a></code></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>IRI:</td>
-              <td>
-                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#equals</a></code>
-              </td>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>If a temporal entity T1 equals another temporal entity T2, then the beginning of T1 is coincident with
-                the beginning of T2, and the end of T1 is coincident with the end of T2, and the beginning of T1 may be
-                coincident with the end of T1. </td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td><code>owl:ObjectProperty</code></td>
+              <td><code><a href="https://www.w3.org/TR/rdf-schema/#ch_member">rdfs:member</a></code></td>
             </tr>
             <tr>
               <td>Sub-property of:</td>
-              <td><code><a href="#time:notDisjoint">time:notDisjoint</a></code></td>
+              <td><code><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#terms-hasPart">dcterms:hasPart</a></code></td>
             </tr>
             <tr>
               <td>Domain:</td>
-              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalAggregate">time:TemporalAggregate</a></code>
               </td>
             </tr>
             <tr>
@@ -385,50 +221,38 @@
               <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
               </td>
             </tr>
-            <tr>
-              <td>Additional axioms:</td>
-              <td>
-                <code>time:intervalEquals rdfs:subPropertyOf time:equals .</code>
-              </td>
-            </tr>
           </tbody>
         </table>
 
-        <p>
-
-        </p>
       </section>
 
-      <section>
-        <h4 id="time:hasInside">has time entity inside</h4>
+      <section id="time:isPartOf">
+        <h4>is a part of</h4>
         <table class="definition" style="width: 100%;">
           <thead>
             <tr>
               <th style="width: 120px;">Property:</th>
-              <th><code><a href="#time:hasInside">time:hasInside</a></code></th>
+              <th><code><a href="#time:isPartOf">time:isPartOf</a></code></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>IRI:</td>
               <td>
-                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#hasInside</a></code>
+                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/time-aggregates/time-agg.ttl">http://www.w3.org/2006/time#isPartOf</a></code>
               </td>
             </tr>
             <tr>
               <td>Definition:</td>
-              <td>If a temporal entity T1 hasInside it another temporal entity T2, then the beginning of T1 is
-                coincident with or before the beginning of T2, and the end of T1 is concident with or after the end of
-                T2, except that end of T1 may not be coincident with the end of T2 if the beginning of T1 is coincident
-                with the beginning of T2. </td>
+              <td>Link to a temporal aggregate of which this temporal entity is a part</td>
             </tr>
             <tr>
               <td>Instance of:</td>
               <td><code>owl:ObjectProperty</code></td>
             </tr>
             <tr>
-              <td>Sub-property of:</td>
-              <td><code><a href="#time:notDisjoint">time:notDisjoint</a></code></td>
+              <td>Inverse of:</td>
+              <td><code><a href="#time:hasPart">time:hasPart</a></code></td>
             </tr>
             <tr>
               <td>Domain:</td>
@@ -437,103 +261,80 @@
             </tr>
             <tr>
               <td>Range:</td>
-              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
-              </td>
-            </tr>
-            <tr>
-              <td>Additional axioms:</td>
-              <td>
-                <code>time:inside rdfs:subPropertyOf time:hasInside .</code><br />
-                <code>time:intervalStartedBy rdfs:subPropertyOf time:hasInside .</code><br />
-                <code>time:intervalContains rdfs:subPropertyOf time:hasInside .</code><br />
-                <code>time:intervalFinishedBy rdfs:subPropertyOf time:hasInside .</code>
+              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalAggregate">time:TemporalAggregate</a></code>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <p>
-
-        </p>
       </section>
-
-      <section>
-        <h4 id="time:notDisjoint">not disjoint with time entity</h4>
-        <table class="definition" style="width: 100%;">
-          <thead>
-            <tr>
-              <th style="width: 120px;">Property:</th>
-              <th><code><a href="#time:notDisjoint">time:notDisjoint</a></code></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>IRI:</td>
-              <td>
-                <code><a href="https://github.com/w3c/sdw/blob/gh-pages/proposals/ssn-extensions/time-entity-relations/time-rel.ttl">http://www.w3.org/2006/time#notDisjoint</a></code>
-              </td>
-            </tr>
-            <tr>
-              <td>Definition:</td>
-              <td>If a temporal entity T1 is notDisjoint with another temporal entity T2, then the the two entities not
-                overlap or coincide in some way, but their ordering relationship is not known. This relation is the
-                complement of disjoint and the union of equals, hasInside, in, meets, metBy, overlaps, overlappedBy.
-              </td>
-            </tr>
-            <tr>
-              <td>Instance of:</td>
-              <td><code>owl:ObjectProperty</code></td>
-            </tr>
-            <tr>
-              <td>Domain:</td>
-              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
-              </td>
-            </tr>
-            <tr>
-              <td>Range:</td>
-              <td><code><a href="https://www.w3.org/TR/owl-time/#time:TemporalEntity">time:TemporalEntity</a></code>
-              </td>
-            </tr>
-            <tr>
-              <td>Additional axioms:</td>
-              <td>
-                <code>time:notDisjoint owl:propertyDisjointWith time:disjoint .</code><br />
-                <code>time:equals rdfs:subPropertyOf time:notDisjoint .</code><br />
-                <code>time:hasInside rdfs:subPropertyOf time:notDisjoint .</code><br />
-                <code>time:intervalIn rdfs:subPropertyOf time:notDisjoint .</code><br />
-                <code>time:intervalMeets rdfs:subPropertyOf time:notDisjoint .</code><br />
-                <code>time:intervalMetBy rdfs:subPropertyOf time:notDisjoint .</code><br />
-                <code>time:intervalOverlaps rdfs:subPropertyOf time:notDisjoint .</code><br />
-                <code>time:intervalOverlappedBy rdfs:subPropertyOf time:notDisjoint .</code>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p>
-
-        </p>
-      </section>
-
 
     </section>
   </section>
 
-  <section>
+  <section class="informative">
     <h2>Examples</h2>
+    <section>
+      <h3>School terms</h3>
     <p>
-      TBD
+      In the Australian state of Victoria, the public school year is composed of four terms. 
+      The beginning and end dates of the terms are different each year, depending on interactions with community holidays and other events. 
+      The school year may be described as a temporal aggregate whose parts are the four terms. 
+      A summary of the description is shown in <a href="#fig-vic-school-2020"></a>. 
     </p>
-  </section>
-
+    <figure id="fig-vic-school-2020">
+      <img alt="Victorian school year 2020" src="./images/VicSchool.png" style="width:75%"/>
+      <figcaption>A :TemporalAggregate describing the school year in Victoria, Australia for 2020</figcaption>
+    </figure>
+    <p>
+      This is encoded using the new elements as follows (incomplete):
+    </p>
+    <pre class="turtle">
+ex:VicSchoolTerms2020
+  a time:TemporalAggregate ;
+  rdfs:label "Public school year - Victoria 2020 " ;
+  time:hasBeginning ex:t1b ;
+  time:hasEnd ex:t4e ;
+  time:hasPart ex:t1 ;
+  time:hasPart ex:t2 ;
+  time:hasPart ex:t3 ;
+  time:hasPart ex:t4 ;
+.
+ex:t1
+  a time:ProperInterval ;
+  rdfs:label "2020 Term 1" ;
+  time:hasBeginning ex:t1b ;
+  time:hasEnd ex:t1e ;
+.
+ex:t1b
+  a time:Instant ;
+  rdfs:label "2020 Term 1 begin" ;
+  time:inXSDDate "2020-01-29"^^xsd:date ;
+.
+ex:t1e
+  a time:Instant ;
+  rdfs:label "2020 Term 1 end" ;
+  time:inXSDDate "2020-03-17"^^xsd:date ;
+.
+ex:t2
+  a time:ProperInterval ;
+  rdfs:label "2020 Term 2" ;
+  time:hasBeginning ex:t2b ;
+  time:hasEnd ex:t2e ;
+  time:intervalAfter ex:t1 ;
+.
+[...]
+    </pre>
+</section>
+</section>
 
   </section>
 
   <hr />
   <section class="appendix" id="ack">
     <h2>Acknowledgements</h2>
-    <p>The editor would like to thank the <a href="https://www.w3.org/2000/09/dbwg/details?group=75471">members of the
-        W3C/OGC Spatial Data on the Web Interest Group</a> for their contributions during the development of this
+    <p>The editors would like to thank the <a href="http://wiki.esipfed.org/index.php/Semantic_Technologies">members of the
+        ESIP Semantic Technologies Committee</a> for their contributions during the development of this
       document. </p>
   </section>
 
