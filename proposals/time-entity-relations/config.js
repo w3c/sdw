@@ -11,14 +11,18 @@ var respecConfig = {
         companyURL: "https://www.csiro.au/",
         w3cid: 1796
       },{
-        name: "Elf Pavlik",
-        url: "https://elf-pavlik.hackers4peace.net/"
-      },{
         name: "Chris Little",
         company: "Met Office",
         companyURL: "http://www.metoffice.gov.uk/"
       }],
-    wg: "Spatial Data on the Web Interest Group",
+      otherLinks: [{
+          key: "Contributors",
+          data: [{
+                value: "Elf Pavlik",
+                href: "https://elf-pavlik.hackers4peace.net/"
+              }],
+            }],
+            wg: "Spatial Data on the Web Interest Group",
     wgURI: "https://www.w3.org/2017/sdwig/",
     wgPublicList: "public-sdwig",
     wgPatentURI: "https://www.w3.org/2004/01/pp-impl/102593/status",
