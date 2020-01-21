@@ -6,11 +6,13 @@ var respecConfig = {
     edDraftURI: "https://w3c.github.io/sdw/ssn-extensions/",
     editors: [
     {
-        name: "Simon Cox",
-        company: "CSIRO",
-        companyURL: "https://www.csiro.au/",
-        w3cid: 1796
-      }],
+      name:       "Simon Cox",
+      orcid:      "0000-0002-3884-3420",
+      company:    "CSIRO",
+      url:        "http://people.csiro.au/Simon-Cox",
+      companyURL: "https://www.csiro.au/",
+      w3cid: 1796
+    }],
     wg: "Spatial Data on the Web Interest Group",
     wgURI: "https://www.w3.org/2017/sdwig/",
     wgPublicList: "public-sdwig",
