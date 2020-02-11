@@ -1,0 +1,156 @@
+# baseURI: http://example.org/tagg/
+# imports: http://purl.org/dc/terms/
+# imports: https://www.w3.org/2006/time/agg
+# prefix: ex
+
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tagg: <https://www.w3.org/2006/time/agg#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.org/tagg/> .
+
+# Semantic Trajectory using OWL-Time, temporal aggregates, and W3c Basic Geo
+# to capture a UAV trajectory.
+# Uses pattern of segment and fix from the semantic trajectory
+# ontology design pattern <http://w3id.org/daselab/onto/trajectory#>
+
+ex:
+  a owl:Ontology ;
+  rdfs:label "Time-aggregates example: Trajectory traversed by UAV" ;
+  dcterms:created "2020-01-24" ;
+  dcterms:contributor "<a href='https://orcid.org/0000-0002-3884-3420'>Simon J D Cox, CSIRO</a>"^^rdf:HTML ;
+  dcterms:creator "<a href='https://orcid.org/0000-0003-4091-6059'>Charles F. Vardeman II, Univesity of Notre Dame</a>"^^rdf:HTML ;
+  owl:imports <http://purl.org/dc/terms/> ;
+  owl:imports <https://www.w3.org/2006/time/agg> ;
+.
+ex:dronetrajectory
+  a  time:TemporalAggregate ;
+  rdfs:label "Trajectory traversed by UAV" ;
+  time:hasBeginning ex:fix1 ;
+  time:hasEnd ex:fix6 ;
+  time:hasPart ex:segment1 ;
+  time:hasPart ex:segment2 ;
+  time:hasPart ex:segment3 ;
+  time:hasPart ex:segment4 ;
+  time:hasPart ex:segment5 ;
+.
+ex:segment1
+  a time:ProperInterval;
+  rdfs:label "First Trajectory Segment" ;
+  time:hasBeginning ex:fix1 ;
+  time:hasEnd ex:fix2 .
+
+ex:segment2
+  a time:ProperInterval;
+  rdfs:label "Second Trajectory Segment" ;
+  time:hasBeginning ex:fix2 ;
+  time:hasEnd ex:fix3 ;
+  time:intervalMetBy ex:segment1 .
+
+ex:segment3
+  a time:ProperInterval;
+  rdfs:label "Third Trajectory Segment" ;
+  time:hasBeginning ex:fix3 ;
+  time:hasEnd ex:fix4 ;
+  time:intervalMetBy ex:segment2 .
+
+ex:segment4
+  a time:ProperInterval;
+  rdfs:label "Fourth Trajectory Segment" ;
+  time:hasBeginning ex:fix4 ;
+  time:hasEnd ex:fix5 ;
+  time:intervalMetBy ex:segment3 .
+
+ex:segment5
+  a time:ProperInterval;
+  rdfs:label "Fifth Trajectory Segment" ;
+  time:hasBeginning ex:fix5 ;
+  time:hasEnd ex:fix6 ;
+  time:intervalMetBy ex:segment4 .
+
+ex:fix1
+  a time:Instant ;
+  wgs:location ex:location1 ;
+  rdfs:label "Spatial-Temporal Fix 1" ;
+  time:inXSDDateTimeStamp "2016-09-28T17:37:11+00:00"^^xsd:dateTimeStamp ;
+.
+
+ex:fix2
+  a time:Instant ;
+  wgs:location ex:location2 ;
+  rdfs:label "Spatial-Temporal Fix 2" ;
+  time:inXSDDateTimeStamp "2016-09-28T17:37:12+00:00"^^xsd:dateTimeStamp ;
+.
+
+ex:fix3
+  a time:Instant ;
+  wgs:location ex:location3 ;
+  rdfs:label "Spatial-Temporal Fix 3" ;
+  time:inXSDDateTimeStamp "2016-09-28T17:37:13+00:00"^^xsd:dateTimeStamp ;
+.
+
+ex:fix4
+  a time:Instant ;
+  wgs:location ex:location4 ;
+  rdfs:label "Spatial-Temporal Fix 4" ;
+  time:inXSDDateTimeStamp "2016-09-28T17:37:14+00:00"^^xsd:dateTimeStamp  ;
+.
+ex:fix5
+  a time:Instant ;
+  wgs:location ex:location5 ;
+  rdfs:label "Spatial-Temporal Fix 5" ;
+  time:inXSDDateTimeStamp "2016-09-28T17:37:15+00:00"^^xsd:dateTimeStamp  ;
+.
+ex:fix6
+  a time:Instant ;
+  wgs:location ex:location6 ;
+  rdfs:label "Spatial-Temporal Fix 6" ;
+  time:inXSDDateTimeStamp "2016-09-28T17:37:16+00:00"^^xsd:dateTimeStamp ;
+.
+
+ex:location1
+  a wgs:Point ;
+  wgs:lat 44.3822137 ;
+  wgs:long -73.258468 ;
+  wgs:alt 66.12 ;
+.
+
+ex:location2
+  a wgs:Point ;
+  wgs:lat 44.3822134 ;
+  wgs:long -73.2584678 ;
+  wgs:alt 66.12 ;
+.
+
+ex:location3
+  a wgs:Point ;
+  wgs:lat 44.3822133 ;
+  wgs:long -73.2584676 ;
+  wgs:alt 66.13 ;
+.
+
+ex:location4
+  a wgs:Point ;
+  wgs:lat 44.3822137 ;
+  wgs:long -73.2584674 ;
+  wgs:alt 66.16 ;
+.
+
+ex:location5
+  a wgs:Point ;
+  wgs:lat 44.3822142 ;
+  wgs:long -73.2584674 ;
+  wgs:alt 66.19 ;
+.
+
+ex:location6
+  a wgs:Point ;
+  wgs:lat 44.3822147 ;
+  wgs:long -73.2584677 ;
+  wgs:alt 66.21 ;
+.

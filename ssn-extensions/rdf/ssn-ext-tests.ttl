@@ -1,0 +1,101 @@
+# baseURI: http://example.org/ssn-ext-examples
+# imports: http://www.w3.org/ns/ssn-ext/shacl/
+# prefix: ssn-ext-examples
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn-ext: <http://www.w3.org/ns/ssn/ext/> .
+@prefix ssn-ext-examples: <http://example.org/ssn-ext-examples#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/O2>
+  rdf:type sosa:Observation ;
+  sosa:hasFeatureOfInterest <http://example.org/foia> ;
+  ssn-ext:hasUltimateFeatureOfInterest <http://example.org/foib> ;
+.
+<http://example.org/O3>
+  rdf:type sosa:Observation ;
+  sosa:hasFeatureOfInterest <http://example.org/foib> ;
+.
+<http://example.org/O4>
+  rdf:type sosa:Observation ;
+  sosa:hasFeatureOfInterest <http://example.org/Sample_3> ;
+.
+<http://example.org/O5>
+  rdf:type sosa:Observation ;
+  sosa:hasResult <http://example.org/r99> ;
+  sosa:resultTime "2018-03-10T15:12:00+10:00"^^xsd:dateTime ;
+.
+<http://example.org/OC0>
+  rdf:type ssn-ext:ObservationCollection ;
+  sosa:madeBySensor <http://example.org/s4> ;
+  sosa:observedProperty <http://example.org/op2> ;
+  sosa:phenomenonTime [
+      rdf:type time:ProperInterval ;
+      time:hasBeginning [
+          rdf:type time:Instant ;
+          time:inXSDDateTime "2018-03-10T15:07:00.00+10:00"^^xsd:dateTime ;
+        ] ;
+    ] ;
+  sosa:usedProcedure <http://example.org/p3> ;
+  ssn-ext:hasMember <http://example.org/OC1> ;
+  ssn-ext:hasMember <http://example.org/OC2> ;
+.
+<http://example.org/OC1>
+  rdf:type ssn-ext:ObservationCollection ;
+  sosa:hasFeatureOfInterest <http://example.org/Sample_1> ;
+  ssn-ext:hasMember <http://example.org/O2> ;
+  ssn-ext:hasMember <http://example.org/O3> ;
+.
+<http://example.org/OC2>
+  rdf:type ssn-ext:ObservationCollection ;
+  sosa:hasFeatureOfInterest <http://example.org/Sample_2> ;
+  ssn-ext:hasMember <http://example.org/O4> ;
+  ssn-ext:hasMember <http://example.org/O5> ;
+.
+<http://example.org/Sample_1>
+  rdf:type sosa:Sample ;
+  sosa:isSampleOf <http://example.org/Sample_2> ;
+.
+<http://example.org/Sample_2>
+  rdf:type sosa:Sample ;
+  sosa:isSampleOf <http://example.org/foia> ;
+.
+<http://example.org/Sample_3>
+  rdf:type sosa:Sample ;
+  sosa:isSampleOf <http://example.org/Sample_1> ;
+.
+<http://example.org/Sampling_1>
+  rdf:type sosa:Sampling ;
+  sosa:hasFeatureOfInterest <http://example.org/Sample_2> ;
+  sosa:hasResult <http://example.org/Sample_1> ;
+.
+<http://example.org/foia>
+  rdf:type sosa:FeatureOfInterest ;
+.
+<http://example.org/foib>
+  rdf:type sosa:FeatureOfInterest ;
+.
+<http://example.org/foic>
+  rdf:type sosa:FeatureOfInterest ;
+.
+<http://example.org/op2>
+  rdf:type sosa:ObservableProperty ;
+.
+<http://example.org/p3>
+  rdf:type sosa:Procedure ;
+.
+<http://example.org/s4>
+  rdf:type sosa:Sensor ;
+.
+<http://example.org/ssn-ext-examples>
+  rdf:type owl:Ontology ;
+  dcterms:created "2018-03-10"^^xsd:date ;
+  dcterms:creator <http://orcid.org/0000-0002-3884-3420> ;
+  rdfs:comment "Small dataset to test rules in ssn-ext" ;
+  owl:imports <http://www.w3.org/ns/ssn-ext/shacl/> ;
+.
