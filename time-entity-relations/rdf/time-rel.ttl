@@ -1,0 +1,88 @@
+# baseURI: https://www.w3.org/2006/time/rel
+# imports: http://www.w3.org/2006/time
+# prefix: rel
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rel: <https://www.w3.org/2006/time/rel#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+time:after
+  rdfs:subPropertyOf time:disjoint ;
+.
+time:before
+  rdfs:subPropertyOf time:disjoint ;
+.
+time:disjoint
+  a owl:ObjectProperty ;
+  rdfs:comment "If a temporal entity T1 is disjoint with another temporal entity T2, then the beginning of T1 is after the end of T2, or the end of T1 is before the beginning of T2, and the beginning of T1 may be coincident with the end of T1, and the beginning of T2 may be coincident with the end of T2, i.e. the two entities do not overlap or coincide in any way, but their ordering relationship is not known."@en ;
+  rdfs:domain time:TemporalEntity ;
+  rdfs:label "disjoint time entity" ;
+  rdfs:range time:TemporalEntity ;
+  owl:propertyDisjointWith time:notDisjoint ;
+.
+time:equals
+  a owl:ObjectProperty ;
+  rdfs:comment "If a temporal entity T1 equals another temporal entity T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2, and the beginning of T1 may be coincident with the end of T1."@en ;
+  rdfs:domain time:TemporalEntity ;
+  rdfs:label "equal time entity" ;
+  rdfs:range time:TemporalEntity ;
+  rdfs:subPropertyOf time:notDisjoint ;
+.
+time:hasInside
+  a owl:ObjectProperty ;
+  rdfs:comment "If a temporal entity T1 hasInside it another temporal entity T2, then the beginning of T1 is coincident with or before the beginning of T2, and the end of T1 is concident with or after the end of T2, except that end of T1 may not be coincident with the end of T2 if the beginning of T1 is coincident with the beginning of T2."@en ;
+  rdfs:domain time:TemporalEntity ;
+  rdfs:label "has time entity inside" ;
+  rdfs:range time:TemporalEntity ;
+  rdfs:subPropertyOf time:notDisjoint ;
+  owl:propertyDisjointWith time:equals ;
+.
+time:inside
+  rdfs:subPropertyOf time:hasInside ;
+.
+time:intervalContains
+  rdfs:subPropertyOf time:hasInside ;
+.
+time:intervalDisjoint
+  rdfs:subPropertyOf time:disjoint ;
+.
+time:intervalEquals
+  rdfs:subPropertyOf time:equals ;
+.
+time:intervalFinishedBy
+  rdfs:subPropertyOf time:hasInside ;
+.
+time:intervalIn
+  rdfs:subPropertyOf time:notDisjoint ;
+.
+time:intervalMeets
+  rdfs:subPropertyOf time:notDisjoint ;
+.
+time:intervalMetBy
+  rdfs:subPropertyOf time:notDisjoint ;
+.
+time:intervalOverlappedBy
+  rdfs:subPropertyOf time:notDisjoint ;
+.
+time:intervalOverlaps
+  rdfs:subPropertyOf time:notDisjoint ;
+.
+time:intervalStartedBy
+  rdfs:subPropertyOf time:hasInside ;
+.
+time:notDisjoint
+  a owl:ObjectProperty ;
+  rdfs:comment "If a temporal entity T1 is notDisjoint with another temporal entity T2, then the the two entities not overlap or coincide in some way, but their ordering relationship is not known. This relation is the complement of disjoint and the union of equals, hasInside, in, meets, metBy, overlaps, overlappedBy."@en ;
+  rdfs:domain time:TemporalEntity ;
+  rdfs:label "not disjoint with time entity" ;
+  rdfs:range time:TemporalEntity ;
+  owl:propertyDisjointWith time:disjoint ;
+.
+<https://www.w3.org/2006/time/rel>
+  a owl:Ontology ;
+  owl:imports <http://www.w3.org/2006/time> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
