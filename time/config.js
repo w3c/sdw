@@ -32,7 +32,7 @@ var respecConfig = {
       key: "OGC Document Number",
       data: [
       {
-        value: "OGC 16-071r2"
+        value: "OGC 16-071r3"
       }]
     }],
     wg: "Spatial Data on the Web Working Group",
