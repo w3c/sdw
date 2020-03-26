@@ -1,7 +1,7 @@
 var respecConfig = {
     specStatus: "ED",
     shortName: "vocab-owl-time-rel",
-    edDraftURI: "https://w3c.github.io/sdw/proposals/time-entity-relations/",
+    edDraftURI: "https://w3c.github.io/sdw/time-entity-relations/",
     editors: [
     {
         name:       "Simon Cox",
