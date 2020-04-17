@@ -1,13 +1,12 @@
 # baseURI: https://www.w3.org/2006/time/agg
 # imports: http://purl.org/dc/elements/1.1/
 # imports: http://www.w3.org/2006/time
-# prefix: tagg
 
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix tagg: <https://www.w3.org/2006/time/agg#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -23,6 +22,18 @@ Note: no ordering relationships are implied amongst the parts. Relationships bet
       owl:minCardinality "1"^^xsd:nonNegativeInteger ;
       owl:onProperty time:hasPart ;
     ] ;
+  skos:example """
+ex:VicSchoolTerms2020
+  a time:TemporalAggregate ;
+  rdfs:label \"Public school year - Victoria 2020 \" ;
+  time:hasBeginning ex:t1b ;
+  time:hasEnd ex:t4e ;
+  time:hasPart ex:t1 ;
+  time:hasPart ex:t2 ;
+  time:hasPart ex:t3 ;
+  time:hasPart ex:t4 ;
+.
+""" ;
 .
 time:hasPart
   a owl:ObjectProperty ;
@@ -32,6 +43,15 @@ time:hasPart
   rdfs:range time:TemporalEntity ;
   rdfs:subPropertyOf dct:hasPart ;
   rdfs:subPropertyOf rdfs:member ;
+  skos:example """
+ex:VicSchoolTerms2020
+  a time:TemporalAggregate ;
+  time:hasPart ex:t1 ;
+.
+ex:t1
+  a time:ProperInterval ;
+.
+""" ;
 .
 time:isPartOf
   a owl:ObjectProperty ;
@@ -40,12 +60,22 @@ time:isPartOf
   rdfs:label "is a part of" ;
   rdfs:range time:TemporalAggregate ;
   owl:inverseOf time:hasPart ;
+  skos:example """
+ex:t1
+  a time:ProperInterval ;
+  time:isPartOf ex:VicSchoolTerms2020 ;
+.
+ex:VicSchoolTerms2020
+  a time:TemporalAggregate ;
+.
+""" ;
 .
 <https://www.w3.org/2006/time/agg>
   a owl:Ontology ;
   dct:created "2020-01-16"^^xsd:date ;
   dct:creator <https://orcid.org/0000-0002-3884-3420> ;
   dct:license <https://creativecommons.org/share-your-work/public-domain/cc0/> ;
+  dct:modified "2020-04-17"^^xsd:date ;
   rdfs:comment "An extension of OWL-Time for temporal aggregates" ;
   rdfs:label "Temporal aggregates" ;
   owl:imports <http://purl.org/dc/elements/1.1/> ;
