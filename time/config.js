@@ -10,18 +10,20 @@ var respecConfig = {
     // crEnd: "3000-01-01",
     editors: [
     {
-        name: "Simon Cox",
-        company: "CSIRO",
+        name:       "Simon Cox",
+        orcid:      "0000-0002-3884-3420",
+        company:    "CSIRO",
+        url:        "http://people.csiro.au/Simon-Cox",
         companyURL: "https://www.csiro.au/",
         w3cid: 1796
-      },{
-        name: "Chris Little",
-        company: "Met Office",
+    },{
+        name:       "Chris Little",
+        company:    "Met Office",
         companyURL: "http://www.metoffice.gov.uk/"
       }],
     otherLinks: [
     {
-      key: "Contributors",
+      key: "Editors of 2006 Working Draft",
       data: [ 
       {
         value: "Jerry R. Hobbs"
