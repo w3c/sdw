@@ -19,7 +19,8 @@ var respecConfig = {
     },{
         name:       "Chris Little",
         company:    "Met Office",
-        companyURL: "http://www.metoffice.gov.uk/"
+        companyURL: "http://www.metoffice.gov.uk/",
+        orcid:      "0000-0002-1442-3712"
       }],
     otherLinks: [
     {

@@ -12,9 +12,10 @@ var respecConfig = {
         companyURL: "https://www.csiro.au/",
         w3cid: 1796
       },{
-        name: "Chris Little",
-        company: "Met Office",
-        companyURL: "http://www.metoffice.gov.uk/"
+        name:       "Chris Little",
+        company:    "Met Office",
+        companyURL: "http://www.metoffice.gov.uk/",
+        orcid:      "0000-0002-1442-3712"
       }
     ],
     otherLinks: [
