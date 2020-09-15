@@ -12,11 +12,17 @@ var respecConfig = {
         companyURL: "https://www.csiro.au/",
         w3cid: 1796
       },{
-        name: "Adam Shepherd",
-        orcid: "0000-0003-4486-9448" 
+        name:       "Adam Shepherd",
+        orcid:      "0000-0003-4486-9448" ,
+        company:    "WHOI" ,
+        url:        "https://directory.whoi.edu/profile/ashepherd/" ,
+        companyURL: "https://www.whoi.edu/"
       },{
-        name: "Charles Vardeman II",
-        orcid: "0000-0003-4091-6059"
+        name:       "Charles Vardeman II",
+        orcid:      "0000-0003-4091-6059" ,
+        company:    "Notre Dame" ,
+        url:        "https://crc.nd.edu/about/people/charles-vardeman/" ,
+        companyURL: "https://crc.nd.edu/"
       }
     ],
     otherLinks: [
