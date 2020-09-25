@@ -29,3 +29,20 @@ SDW-IG will largely work by correspondence (e.g. via mailing list and GitHub iss
 SDW-IG can publish OGC Discussion Papers, OGC White Papers, OGC Best Practices and W3C Notes – subject to the appropriate approvals processes.
 
 SDW-IG will have a designated staff contact from both OGC and W3C.
+
+---
+
+# Draft text for responsibilities of SDW Working Group (Sep 2020 onward)
+
+* coordinate between OGC and W3C on shared interests and raise awareness of their complementary strengths (e.g. Web scale architecture, accessibility, privacy, internationalisation, geospatial expertise) – monitor and liaise between groups from OGC and W3C.
+* identify areas where standards should be developed jointly by both W3C and OGC and make recommendations about this to these standards bodies.
+* respond to requests from OGC Architecture Board (OAB) and W3C Technical Architecture Group (TAG) to review materials relating to Geospatial Web standards.
+* periodically review the OGC Innovation Program ideas issue tracker to identify and prioritise important ideas relating to the geospatial Web standards.
+* periodically review the OGC Technology Trends.
+* provide an open, public forum where early ideas for geospatial Web standards can be shared (e.g. as a GitHub issue) until they migrate into a Community Group, Domain Working Group or Testbed activity for further development << and help them along >>.
+* << merge with previous >> seek out existing forums (e.g. W3C Community Group, OGC Domain Working Group, OGC Testbed / Innovation Programme) where ideas for geospatial Web standards can be developed to the point where they are mature enough to Charter a W3C Working Group and/or an OGC Standards Working Group; where no existing forums are a good fit, SDW-IG will support establishment of the most appropriate forum in OGC or W3C.
+* maintain references to the working resources of designated groups where ideas for geospatial Web standards are being developed, and track progress of development using the W3C’s “strategy funnel”.. << not just reviewing, also putting stuff in >> << merge this point with the 4th one about OGC Innovation Program ideas issue tracker >>
+* provide support to develop SWG Charters and help determine whether the SWG should reside in OGC or W3C, or be a joint SWG. << merge with 2nd point identify areas >>
+* Create and maintain geospatial web standards as enumerated in deliverables.
+* support the creation of OGC profiles of W3C specifications, in cases where spatio-temporal aspects are worth standardising beyond W3C concerns, as the need for such profiles are established.<< merge in with previous one 'standards, including specification OGC profiles' >>
+
