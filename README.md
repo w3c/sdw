@@ -99,6 +99,12 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
     <br/><a href="https://w3c.github.io/sdw/time/">Editor's Draft</a>
     <br/><a href="https://www.w3.org/TR/owl-time/">W3C Recommendation</a>
   </dd>
+  
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/responsible-use">responsible-use</a></dt>
+  <dd>
+    Working folder for the Responsible use of Geo document that will discuss ethic issues of Geo Technology.
+  </dd>
+  
 </dl>
 
 The `published-snapshots` and `subsetting` folder should be considered as historical.
