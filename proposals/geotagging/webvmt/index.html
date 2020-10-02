@@ -2181,7 +2181,7 @@ NOTE Required non-cue blocks omitted for clarity
         <section id='cameradirection'>
           <h2>Camera Direction</h2>
           <p>
-            Camera orientation may not match the direction of travel, or may be dynamic, e.g. for Augmented Reality.
+            Camera orientation may not match the direction of travel, or may be dynamic, e.g. for Augmented Reality. Field of view and zoom level also affect video frame content and may vary over time.
           </p>
         </section>
         <section id='datasync'>
@@ -2190,13 +2190,48 @@ NOTE Required non-cue blocks omitted for clarity
             Mobile video devices often collect additional data, e.g. drones can be used as sensor platforms and dashcams record vehicle telemetry such as speed and acceleration.
           </p>
           <p>
-            Allowing the option to embed XML data within cues would permit synchronisation of arbitrary data with location and video without compromising interoperability, in a similar fashion to the GPX <code>&lt;extension&gt;</code> element.
+            Allowing the option to embed JSON data within cues would permit synchronisation of arbitrary data with location and video without compromising interoperability, in a similar fashion to the GPX <code>&lt;extension&gt;</code> element.
           </p>
         </section>
         <section id='coordrefsys'>
           <h2>Co-ordinate Reference Systems</h2>
           <p>
             Although originally conceived for Earth-based use, spatial data in other environments could be accommodated by specifying the co-ordinate reference system. For example, location on another planet, e.g. Mars, or in an artifical environment, e.g. a video game.
+          </p>
+        </section>
+        <section id='movingobjects'>
+          <h2>Moving Objects</h2>
+          <p>
+            <a>WebVMT paths</a> represent objects moving through the mapped space, though could be extended to support properties associated with motion such as distance travelled, speed, heading, etc. through a defined API.
+          </p>
+          <p>
+            Care should be taken to build a lightweight interface which includes simple, common properties that are useful to most use cases and avoids overloading with unnecessary edge cases, processing overheads and complexity.
+          </p>
+        </section>
+        <section id='interpolation'>
+          <h2>Interpolation</h2>
+          <p>
+            Sensor data could be interpolated between sample points to provide intermediate values where necessary, while retaining the source data sample values.
+          </p>
+          <p>
+            Proposed interpolation schemes include:
+            <ul>
+              <li>Step: values remain constant until the next sample time, e.g. vehicle gear selection;</li>
+              <li>Linear: values are linearly interpolated to the next sample time, e.g. temperature;</li>
+              <li>Discrete: values are only valid instanteously at a sample time, e.g. headcount in a video frame.</li>
+            </ul>
+          </p>
+          <p>
+            An interpolation command could replace the <a>WebVMT animation subcommand</a> which is a specific example of the more general case and could incoporate identified design improvements.
+          </p>
+        </section>
+        <section id='3dcoords'>
+          <h2>3D Co-ordinates</h2>
+          <p>
+            <a>WebVMT locations</a> could be expanded to (optionally) include a third co-ordinate representing height. Omitting height would allow backward compatibility with 2D coordinates.
+          </p>
+          <p>
+            Height could be referenced either from ground level, e.g. for the top of a structure, or from mean sea level, e.g. for an aircraft.
           </p>
         </section>
       </section>
@@ -2208,13 +2243,13 @@ NOTE Required non-cue blocks omitted for clarity
         <section id='cueinterface'>
           <h2>VMTCue Interface</h2>
           <p>
-            Expose WebVMT Cues in the DOM API, based on the <a data-cite='HTML51#datacue-datacue'>HTML5 DataCue interface</a>. For example:
+            Expose WebVMT Cues in the DOM API, based on the <a data-cite='HTML51/semantics-embedded-content.html#datacue-datacue'>HTML5 DataCue interface</a>. For example:
             <pre class='nohighlight' title='WebVMT Cue Interface'>
               [Exposed=Window,
               Constructor(double startTime, double endTime, DOMString text),
               Constructor(double startTime, DOMString text)]
               interface VMTCue : DataCue {
-                attribute boolean noEndTime;
+                attribute unrestricted double endTime;
               };
             </pre>
           </p>
