@@ -103,6 +103,8 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/responsible-use">responsible-use</a></dt>
   <dd>
     Working folder for the Responsible use of Geo document that will discuss ethic issues of Geo Technology.
+    <br/><a href="https://w3c.github.io/sdw/responsible-use/">Editor's Draft</a>
+    <br/><a href="https://www.w3.org/TR/responsible-use-spatial/">W3C Interest Group Note</a>
   </dd>
   
 </dl>
