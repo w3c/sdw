@@ -479,5 +479,5 @@ var respecConfig = {
     },
     github: "https://github.com/w3c/sdw/",
 //    issueBase: "https://github.com/w3c/sdw/issues/",
-//    postProcess: [popCrossrefs]
+//    preProcess: [bpCrossRefs]
 };
