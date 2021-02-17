@@ -183,7 +183,8 @@ function init() {
   // Get list of our BPs and put them in an array of objects
   var BPlist = new Array ();                                      // This will be our array of BPs from the document
   var BPdivs = new Array ();
-  BPdivs = document.getElementsByClassName('practice');           // This is the info we have effectively scraped from the page
+//  BPdivs = document.getElementsByClassName('practice');           // This is the info we have effectively scraped from the page
+  BPdivs = document.getElementsByClassName('practicecontainer');           // Revised as per new practice DIV container
   // Need the title and id of each one
   for (var i = 0; i < BPdivs.length; i++) {
     var t; var id; var b; var reqs;
