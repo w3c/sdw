@@ -2,20 +2,19 @@
 
 [![Join the chat at https://gitter.im/w3c/sdw](https://badges.gitter.im/w3c/sdw.svg)](https://gitter.im/w3c/sdw?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This is the repository for the <a href="https://www.w3.org/2017/sdwig/">Spatial Data on the Web Interest Group</a>, a collaborative project between <a href="http://www.w3.org/">W3C</a> and <a href="http://www.opengeospatial.org/">OGC</a>.
+This is the repository for the <a href="https://www.w3.org/2021/sdw/">Spatial Data on the Web Working Group</a>, a collaborative project between <a href="http://www.w3.org/">W3C</a> and <a href="http://www.opengeospatial.org/">OGC</a>.
 
-The repo is used for developing editors drafts of the Interest Group's <a href="http://www.w3.org/2017/sdwig/charter.html#deliverables">deliverables</a> and related resources.
+The repo is used for developing editors drafts of the Working Group's <a href="http://www.w3.org/2017/sdwig/charter.html#deliverables">deliverables</a> and related resources.
 
-Please note that the Interest Group follows in the footsteps of the <a href="https://www.w3.org/2015/spatial/">Spatial Data on the Web Working Group</a>, and some of the material in this repository was initially developed and published by the Working Group.
+Please note that the Working Group follows in the footsteps of the <a href="https://www.w3.org/2017/sdwig/">Spatial Data on the Web Interest Group</a> and the <a href="https://www.w3.org/2015/spatial/">Spatial Data on the Web Working Group</a>, and some of the material in this repository was initially developed and published by these predecessors.
 
 ## References
 
 | Name | URL |
 | --- | --- |
-| Group homepage | https://www.w3.org/2017/sdwig/ |
+| Group homepage | https://www.w3.org/2021/sdw/ |
 | SDW Strategy Funnel | https://github.com/w3c/strategy/projects/2?card_filter_query=label%3Ageospatial |
 | SDW Projects | https://github.com/w3c/sdw/projects |
-| OGC Technology Trends | https://github.com/opengeospatial/OGC-Technology-Trends/ |
 | Intro for new members | https://github.com/w3c/sdw/blob/gh-pages/memberwelcome.md | 
 
 ## Folder structure
@@ -65,7 +64,7 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
   
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/proposals">proposals</a></dt>
   <dd>
-    Container for new topic proposals under discussion in the IG.
+    Container for new topic proposals under discussion in the WG.
   </dd>
 
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/qb4st">qb4st</a></dt>
@@ -115,4 +114,4 @@ The `published-snapshots` and `subsetting` folder should be considered as histor
 ## How to provide comments
 
 Comments are welcome as issues raised against this repository, or via the <a href="mailto:public-sdw-comments@w3.org">public-sdw-comments@w3.org</a> [<a href="https://lists.w3.org/Archives/Public/public-sdw-comments/">archive</a>].
-WG members should use the primary <a href="mailto:public-sdwig@w3.org">public-sdwig@w3.org</a> mailing list [<a href="https://lists.w3.org/Archives/Public/public-sdwig/">archive</a>].
+WG members should use the primary <a href="mailto:public-sdw-wg@w3.org">public-sdw-wg@w3.org</a> mailing list [<a href="https://lists.w3.org/Archives/Public/public-sdw-wg/">archive</a>].
