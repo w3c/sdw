@@ -4,7 +4,7 @@
 
 This is the repository for the <a href="https://www.w3.org/2021/sdw/">Spatial Data on the Web Working Group</a>, a collaborative project between <a href="http://www.w3.org/">W3C</a> and <a href="http://www.opengeospatial.org/">OGC</a>.
 
-The repo is used for developing editors drafts of the Working Group's <a href="http://www.w3.org/2017/sdwig/charter.html#deliverables">deliverables</a> and related resources.
+The repo is used for developing editors drafts of the Working Group's <a href="https://www.w3.org/2021/10/sdw-charter.html#deliverables">deliverables</a> and related resources.
 
 Please note that the Working Group follows in the footsteps of the <a href="https://www.w3.org/2017/sdwig/">Spatial Data on the Web Interest Group</a> and the <a href="https://www.w3.org/2015/spatial/">Spatial Data on the Web Working Group</a>, and some of the material in this repository was initially developed and published by these predecessors.
 
