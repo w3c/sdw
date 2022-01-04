@@ -60,11 +60,13 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/meetings">meetings</a></dt>
   <dd>
     Logistic and agenda information for face-to-face meetings
+    <br/>Note: current online meeting details are in the <a href="https://www.w3.org/groups/wg/sdw/calendar">W3C SDW calendar</a>.
   </dd>
   
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/proposals">proposals</a></dt>
   <dd>
-    Container for new topic proposals under discussion in the WG.
+    Container for new topic proposals under discussion in the IG.
+    <br/><a href="https://w3c.github.io/sdw/proposals/geotagging/webvmt/">WebVMT: The Web Video Map Tracks Format</a>
   </dd>
 
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/qb4st">qb4st</a></dt>
@@ -72,6 +74,25 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
     The QB4ST: RDF Data Cube extensions for spatio-temporal components document initially developed by the Spatial Data on the Web Working Group.
     <br/><a href="https://w3c.github.io/sdw/qb4st/">Editor's Draft</a>
     <br/><a href="https://www.w3.org/TR/qb4st/">Working Group Note</a>
+  </dd>
+
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/responsible-use">responsible-use</a></dt>
+  <dd>
+    Working folder for the Responsible use of Geo document that discusses ethic issues of Geo Technology.
+    <br/><a href="https://w3c.github.io/sdw/responsible-use/">Editor's Draft</a>
+    <br/><a href="https://www.w3.org/TR/responsible-use-spatial/">W3C Interest Group Note</a>
+  </dd>
+
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/roadmap">roadmap</a></dt>
+  <dd>
+    Working folder for the <a href="https://w3c.github.io/web-roadmaps/sdw/">SDW roadmap</a>. 
+  </dd>
+
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/ssn-extensions">ssn-extensions</a></dt>
+  <dd>
+    Extensions to the SSN ontology to enable linking directly to the ultimate feature-of-interest alongside the link to the (proximate) feature-of-interest; and homogeneous collections of observations.
+    <br/><a href="https://w3c.github.io/sdw/ssn-extensions/">Editor's Draft</a>
+    <br/><a href="https://www.w3.org/TR/vocab-ssn-ext/">Working Draft</a>
   </dd>
 
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/ssn-usage">ssn-usage</a></dt>
@@ -87,31 +108,34 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
     <br/><a href="https://www.w3.org/TR/vocab-ssn/">W3C Recommendation</a>
   </dd>
 
-  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/stats-bp">stats-bp</a></dt>
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/time">time aggregates</a></dt>
   <dd>
-    Working folder for the Statistical Data on the Web Best Practices document that will offer guidance on sharing statistical data.
+    Extension to the Time Ontology in OWL defining a class for temporal aggregates.
+    <br/><a href="https://w3c.github.io/sdw/time-aggregates/">Editor's Draft</a>
+    <br/><a href="https://www.w3.org/TR/vocab-owl-time-agg/">W3C Interest Group Note</a>
   </dd>
-
+  
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/time">time entity relations</a></dt>
+  <dd>
+    Extension to the Time Ontology in OWL defining additional relations between time intervals.
+    <br/><a href="https://w3c.github.io/sdw/time-entity-relations/">Editor's Draft</a>
+    <br/><a href="https://www.w3.org/TR/vocab-owl-time-rel/">W3C Interest Grpup Note</a>
+  </dd>
+    
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/time">time</a></dt>
   <dd>
     The Time Ontology in OWL Recommendation initially developed by the Spatial Data on the Web Working Group.
     <br/><a href="https://w3c.github.io/sdw/time/">Editor's Draft</a>
-    <br/><a href="https://www.w3.org/TR/owl-time/">W3C Recommendation</a>
-  </dd>
-  
-  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/responsible-use">responsible-use</a></dt>
-  <dd>
-    Working folder for the Responsible use of Geo document that will discuss ethic issues of Geo Technology.
-    <br/><a href="https://w3c.github.io/sdw/responsible-use/">Editor's Draft</a>
-    <br/><a href="https://www.w3.org/TR/responsible-use-spatial/">W3C Interest Group Note</a>
+    <br/><a href="https://www.w3.org/TR/owl-time/">W3C Candidate Recommendation</a>
   </dd>
   
 </dl>
 
-The `published-snapshots` and `subsetting` folder should be considered as historical.
+The `published-snapshots`, `stats-bp` and `subsetting` folder should be considered as historical.
 
 
 ## How to provide comments
 
-Comments are welcome as issues raised against this repository, or via the <a href="mailto:public-sdw-comments@w3.org">public-sdw-comments@w3.org</a> [<a href="https://lists.w3.org/Archives/Public/public-sdw-comments/">archive</a>].
+Comments are welcome as issues raised against this repository.
 WG members should use the primary <a href="mailto:public-sdw-wg@w3.org">public-sdw-wg@w3.org</a> mailing list [<a href="https://lists.w3.org/Archives/Public/public-sdw-wg/">archive</a>].
+ 
