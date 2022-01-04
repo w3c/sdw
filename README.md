@@ -119,7 +119,7 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
   <dd>
     Extension to the Time Ontology in OWL defining additional relations between time intervals.
     <br/><a href="https://w3c.github.io/sdw/time-entity-relations/">Editor's Draft</a>
-    <br/><a href="https://www.w3.org/TR/vocab-owl-time-rel/">W3C Interest Grpup Note</a>
+    <br/><a href="https://www.w3.org/TR/vocab-owl-time-rel/">W3C Interest Group Note</a>
   </dd>
     
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/time">time</a></dt>
