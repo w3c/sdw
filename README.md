@@ -108,14 +108,14 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
     <br/><a href="https://www.w3.org/TR/vocab-ssn/">W3C Recommendation</a>
   </dd>
 
-  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/time">time aggregates</a></dt>
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/time">time-aggregates</a></dt>
   <dd>
     Extension to the Time Ontology in OWL defining a class for temporal aggregates.
     <br/><a href="https://w3c.github.io/sdw/time-aggregates/">Editor's Draft</a>
     <br/><a href="https://www.w3.org/TR/vocab-owl-time-agg/">W3C Interest Group Note</a>
   </dd>
   
-  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/time">time entity relations</a></dt>
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/time">time-entity-relations</a></dt>
   <dd>
     Extension to the Time Ontology in OWL defining additional relations between time intervals.
     <br/><a href="https://w3c.github.io/sdw/time-entity-relations/">Editor's Draft</a>
