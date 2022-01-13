@@ -9,3 +9,5 @@ Unfortunately, there is no standard for universally expressing the geographicall
 The purpose of the GeoPose SWG is to develop a standard for geographically-anchored pose (GeoPose) with 6 degrees of freedom referenced to one or more standardized Coordinate Reference Systems (CRSs).
 
 In addition to the standard, the GeoPose SWG is developing guides for reviewers and implementers of GeoPose. 
+
+For more information, the GeoPose SWG description is found [here](https://www.ogc.org/projects/groups/geoposeswg). The [GeoPose web site](http://www.geopose.org) will be published shortly.
