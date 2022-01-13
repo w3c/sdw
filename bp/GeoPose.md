@@ -10,4 +10,4 @@ The purpose of the GeoPose SWG is to develop a standard for geographically-ancho
 
 In addition to the standard, the GeoPose SWG is developing guides for reviewers and implementers of GeoPose. 
 
-For more information, the GeoPose SWG description is found [here](https://www.ogc.org/projects/groups/geoposeswg). The [GeoPose web site](http://www.geopose.org) will be published shortly.
+For more information, the GeoPose SWG description is found [here](https://www.ogc.org/projects/groups/geoposeswg). The draft specification and all work is being conducted in the open on the [GeoPose SWG GitHub repository](https://github.com/opengeospatial/GeoPose). The [GeoPose web site](http://www.geopose.org) will be published shortly.
