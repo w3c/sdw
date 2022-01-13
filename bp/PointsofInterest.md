@@ -15,3 +15,5 @@ When PoI publishers support this PoI standard, they will be able to make availab
 Furthermore, when data are encoded in compliance with the PoI standard, third parties are able to create, interact with, and query across platforms from multiple, diverse sources, to compare, merge, and, at the end of life cycle, to archive, PoI without loss of accuracy, metadata or value.
 
 Finally, as a result of higher confidence in PoI data quality, validity and security, a widely-adopted PoI standard will increase use of and trust in PoI, in general.
+
+More information is available on the [PoI SWG description page](https://www.ogc.org/projects/groups/poiswg) and on the [PoI SWG GitHub repository](https://github.com/opengeospatial/poi).
