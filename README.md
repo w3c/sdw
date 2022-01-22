@@ -34,6 +34,7 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
     The Spatial Data on the Web Best Practices Note initially developed by the Spatial Data on the Web Working Group.
     <br/><a href="https://w3c.github.io/sdw/bp/">Editor's Draft</a>
     <br/><a href="https://www.w3.org/TR/sdw-bp/">Working Group Note</a>
+    <br/><a href="https://docs.google.com/document/d/17OjNIXAzTJTsjx-9-9Kd5ko-OesKtwEGDVdkZD_R-nI/edit#heading=h.sdo6f9qjq42l"/>Meeting minutes</a>
   </dd>
 
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/coverage-json">coverage-json</a></dt>
