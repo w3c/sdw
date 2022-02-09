@@ -251,6 +251,14 @@ var respecConfig = {
         "title": "Web Data",
         "date": "1 November 2016"
       },
+      "OAF2": {
+        "authors": ["Clements Portele", "Panagiotis (Peter) A. Vretanos"],
+        "href": "https://docs.ogc.org/is/18-058/18-058.html",
+        "title": "OGC API - Features - Part 2: Coordinate Reference Systems by Reference",
+        "date": "2 November 2020",
+        "publisher": "OGC",
+        "status": "Approved",
+      },
 
 // ALREADY IN SPECREF
 

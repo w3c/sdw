@@ -2696,6 +2696,28 @@ Content-type: application/geo+json
                   <p>For this reason, whenever using <a>WKT</a> to encode <a>geometries</a>, it is important that the reference <a>WKT</a> specification can be unambiguously determined.</p>
                 </aside>
               </li>
+              <li>
+                <p>Support advertising the used <a>CRS</a> in the endpoint serving the data.</p>
+                <p>Because of the inconsistent provision of CRS metadata in geospatial encodings and the continued confusion caused by the axis order of coordinates, OGC API Features part 2 [[OAF2]] defines a mechanism for a server to clearly and unambiguously assert the CRS and axis order being used in a response document independent of the requested output format. The method used is an HTTP header named <code>Content-Crs</code> containing a URI identifying the <a>CRS</a>. </p>
+                <aside class="example" id="advertise-crs-oaf" title="Advertise CRS using OGC API Features building block">
+                  <pre>
+                    $ curl -i "https://example.com/api/v1/collections/poi/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F3395"
+
+                    HTTP/1.1 200 OK
+                    Date: Sun, 24 May 2020 15:30:56 GMT
+                    Content-Type: application/geo+json
+                    Content-Language: en
+                    Content-Crs: <http://www.opengis.net/def/crs/EPSG/0/3395>
+                    Link: <https://example.com/api/v1/collections/poi/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F3395&f=json>; rel="self"; title="This document"; type="application/geo+json"
+                    Link: <https://example.com/api/v1/collections/poi/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F3395&f=html>; rel="alternate"; title="This document as HTML"; type="text/html"
+                    Link: <https://example.com/api/v1/collections/poi>; rel="collection"; title="The collection the feature belongs to"
+                    Vary: Accept-Language,Accept-Encoding
+                    Content-Length: 1064
+                 
+                    ...
+                  </pre>
+                </aside>
+              </li>
             </ol>
           </section>
           <section class="test">
@@ -3719,6 +3741,193 @@ Content-type: application/geo+json
             </ul>
           </section>
         </div>
+        
+        <div class="practicecontainer">
+          <div class="practice">
+            <p><span id=" " class="practicelab">
+              Support requesting and returning geometries in a specific requested CRS
+            </span></p>
+            <p class="practicedesc">
+              If you expose spatial data in various <a>CRS</a>s via an API or other data access endpoint, offer a way for users to find out which CRSs are available, to do requests, and to access geometries in the CRS of their choice. 
+            </p>
+          </div>
+  
+            <section class="axioms">
+              <h4 class="subhead">Why</h4>
+              <p>
+                It is often useful to make <a>geometries</a> available in different <a>CRS</a>s. <a href="#bp-crs-choice" class="sectionRef"></a> describes why this is a good idea as well as how to decide which CRSs to provide. <a href="#bp-crs" class="sectionRef"></a> explains how the CRS of geometries should be made known. It follows that the default CRS that is offered should be WGS-84; and further that users should be able to find out which other CRSs are available and access geometries in the CRS of their choice.
+              </p>
+            </section>
+            <section class="outcome">
+              <h4 class="subhead">Intended Outcome</h4>
+              <p>
+                The endpoint allows the discovery of the supported <a>CRS</a>s and provides the ability to access geometries in the CRS of the user's choice. 
+              </p>
+            </section>
+            <section class="how">
+              <h4 class="subhead">Possible Approach to Implementation</h4>
+
+              <p>It is generally recommended to limit the number of supported <a>CRS</a>s in a data dissemination endpoint for clarity. Only support <a>CRS</a>s that make sense for the data. If a <a>CRS</a> doesn't cover the data, do not support it.</p>
+
+              <p>Offering geospatial data in different <a>CRS</a> in practice means the data needs to be transformed from the storage <a>CRS</a> to other supported <a>CRS</a>s. Depending on the storage format, it may or may not be possible to let a fast implementation like a database handle the reprojection. When supporting multiple <a>CRS</a>s through the API, it is recommended to have a mechanism in place to do the conversion. Many programming languages support libraries that can handle this. Since geographic data can be large and complex, it is recommended to cache the converted data for reuse by another client, or the same client at a later time. This eliminates the need of reprojecting the same data more than once. </p>
+
+              <p>For Web APIs, CRS support should be offered in conformance to the OGC API building blocks related to CRS [[OAF2]]. These building blocks can be supported in any Web API: </p>
+
+              <ul>
+                <li>Users can discover the supported CRS by going to the collection object of a spatial thing. The collection contains a <code>crs</code> property which contains the identifiers for the list of CRSs supported by the server for that collection.</li>
+                <li>Users can request spatial things by sending a bounding box using coordinates in the <a>CRS</a> of their choice. The API supports a <code>bbox-crs</code> parameter in order to do this.</li>
+                <li>Users can request that spatial things are returned in the <a>CRS</a> of their choice. The API supports a <code>crs</code> parameter to this end. If the <code>crs</code> parameter is absent, spatial features are returned in the default <a>CRS</a>, which is WGS-84 (that is, http://www.opengis.net/def/crs/OGC/1.3/CRS84 for coordinates without ellipsoidal height and http://www.opengis.net/def/crs/OGC/0/CRS84h for coordinates with ellipsoidal height).</li>
+                <li>Not every geometry representation format supports different <a>CRS</a>s. If the user requests a content format that doesn't, the spatial things should not be returned in that format with coordinates in the requested CRS. Note that GeoJSON normatively supports WGS 84, but the "prior arrangement" provision allows other coordinate systems to be used. An explicit request by a client with a query parameter crs establishes a prior arrangement.</li>
+              </ul>
+              <aside class="example" id="example-oaf-collections" title="Example of OGC API Features Collections endpoint">
+                Response body of an OGC API Features /Collections endpoint with support for 5 coordinate reference systems: 
+
+                <pre>
+                  {
+                    "links": [
+                      {
+                        "href": "/collections",
+                        "rel": "self",
+                        "type": "application/json",
+                        "title": "this document"
+                      }
+                    ],
+                    "crs": [
+                      "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+                      "http://www.opengis.net/def/crs/EPSG/0/4326",
+                      "http://www.opengis.net/def/crs/EPSG/0/28992",
+                      "http://www.opengis.net/def/crs/EPSG/0/3857",
+                      "http://www.opengis.net/def/crs/EPSG/0/4258"
+                    ],
+                    "collections": [
+                      {
+                        "id": "Inspire_RCE rce_inspire_points",
+                        "title": "Inspire_RCE rce_inspire_points",
+                        "description": "",
+                        "extent": {
+                          "spatial": {
+                            "bbox": [
+                              [
+                                13854,
+                                306993.058008078,
+                                277502.058333333,
+                                617910
+                              ]
+                            ],
+                            "crs": "http://www.opengis.net/def/crs/EPSG/0/28992"
+                          }
+                        },
+                        "itemType": "feature",
+                        "links": [
+                          {
+                            "href": "/collections/Inspire_RCE rce_inspire_points/items",
+                            "rel": "items",
+                            "type": "application/geo+json",
+                            "title": "Inspire_RCE rce_inspire_points: items"
+                          }
+                        ],
+                        "crs": [
+                          "#/crs"
+                        ]
+                      }
+                    ]
+                  }
+                </pre>
+              </aside>
+              <aside class="example" id="example-oaf-request-crs" title="Example of an OGC API Features CRS request and response">
+                An example request and response for a specific spatial thing in a specific CRS: 
+
+                <pre>
+                  curl -X 'GET' \
+  'https://geoservice-ogc-api.azurewebsites.net/collections/Inspire_RCE%20rce_inspire_points/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F4326' \
+  -H 'accept: application/json'
+
+  Request URL
+https://geoservice-ogc-api.azurewebsites.net/collections/Inspire_RCE%20rce_inspire_points/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F4326
+
+  Response body
+
+  {
+  "links": [
+    {
+      "href": "collections/Inspire_RCE rce_inspire_points/items/1",
+      "rel": "self",
+      "type": "application/json",
+      "title": "this document"
+    },
+    {
+      "href": "collections/Inspire_RCE rce_inspire_points",
+      "rel": "collection",
+      "type": "application/json",
+      "title": "the collection containing this feature"
+    }
+  ],
+  "feature": {
+    "id": "Inspire_RCE rce_inspire_points.1",
+    "bbox": [
+      4.90005196383485,
+      52.3741456950321,
+      4.90005196383485,
+      52.3741456950321
+    ],
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        4.90005196383485,
+        52.3741456950321
+      ]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1,
+      "fid": "1",
+      "localid": "32478",
+      "namespace": "nlps-rijksmonumenten",
+      "versionid": "2021-11-30T15:36:47Z",
+      "legalfoundationdate": "2021-11-30T15:36:47Z",
+      "ci_citation": "https://monumentenregister.cultureelerfgoed.nl/monumenten/1?MonumentId=1",
+      "designationscheme": "https://data.cultureelerfgoed.nl/term/id/rn/b6103f26-22c6-4f0f-b480-0bd44d77c424",
+      "disignation": "onroerend gebouwd",
+      "percentageunderdesignation": "100",
+      "language": "nld",
+      "text": null,
+      "script": "Latn",
+      "siteprotectionclassification": "cultural"
+    },
+    "type": "Feature"
+  }
+}
+                </pre>
+              </aside>
+              
+              <p>In linked data endpoints, [[GeoSPARQL]] can be used to support user-requested <a>CRS</a>s.</p>
+              <p>In [[GeoSPARQL]] the <code>getSRID</code> function returns the spatial reference system of a <a>geometry</a>, thus making it possible to request a specific CRS at a (Geo)SPARQL endpoint. 
+              </p>
+              <aside class="example">
+                <p class="issue">TBD provide an example of requesting a specific CRS using GeoSPARQL</p>
+              </aside>
+            </section>
+            <section class="test">
+              <h4 class="subhead">How to Test</h4>
+              <p>
+                Check if a test client can discover the supported CRSs, request spatial things using a bounding box in one of the supported CRS, and if the spatial things are returned in the requested CRS. 
+              </p>
+            </section>
+            <section class="ucr">
+              <h4 class="subhead">Evidence</h4>
+              <p><span>Relevant requirements</span>: <a href="https://www.w3.org/TR/sdw-ucr/#MultipleCRS">R-MultipleCRSs</a>, <a href="https://www.w3.org/TR/sdw-ucr/#AvoidCoordinateTransformations">R-AvoidCoordinateTransformations</a>, and <a href="https://www.w3.org/TR/sdw-ucr/#DeterminableCRS">R-DeterminableCRS</a>.
+                </p>
+            </section>
+            <section class="benefits">
+              <h4 class="subhead">Benefits</h4>
+              <ul class="benefitsList">
+                <li>Access</li>
+                <li>Discoverability</li>
+                <li>Processability</li>
+                <li>Reuse</li>
+              </ul>
+            </section>
+          </div>
       </section>
       <section id="bp-metadata">
         <h3>Spatial metadata</h3>
