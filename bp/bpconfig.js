@@ -251,6 +251,13 @@ var respecConfig = {
         "title": "Web Data",
         "date": "1 November 2016"
       },
+      "FAIR-XG":{
+	"authors": ["Directorate-General for Research and Innovation"]      
+	"href":"https://doi.org/10.2777/1524",
+	"publisher": "Publications Office",
+	"title":"Turning FAIR into reality. Final report and action plan from the European Commission expert group on FAIR data",
+	"date": "2018"
+      },
 
 // ALREADY IN SPECREF
 
