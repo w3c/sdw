@@ -258,6 +258,12 @@ var respecConfig = {
 	"title":"Turning FAIR into reality. Final report and action plan from the European Commission expert group on FAIR data",
 	"date": "2018"
       },
+      "FAIR-DMM":{
+        "href":"https://doi.org/10.15497/rda00050",
+        "publisher": "Research Data Alliance",
+	"title":"FAIR Data Maturity Model. Specification and Guidelines (1.0)",
+        "date": "2020"
+      },	    
 
 // ALREADY IN SPECREF
 
