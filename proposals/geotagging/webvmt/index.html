@@ -539,6 +539,41 @@ NOTE Style blocks may not appear after the first cue
           </pre>
         </section>
       </section>
+      <section id='datasynchronization'>
+        <h2>Data Synchronization</h2>
+        <p>
+          Arbitrary data may be associated with a <a>WebVMT cue</a> using a <code>sync</code> command, in a similar fashion to the GPX <code>&lt;extension&gt;</code> element.
+        </p>
+        <pre class='nohighlight example' title='AI Training VMT'>
+WEBVMT
+
+NOTE Associated video
+
+MEDIA
+url:Animals.mp4
+mimetype:video/mp4
+
+NOTE Map config
+
+MAP
+lat:51.1618 lng:-0.1428
+rad:200
+
+NOTE Cat, top left, after 5 secs until 25 secs
+
+00:00:05.000 —> 00:00:25.000
+{“sync”: {“type”: “org.ogc.geoai.example”, “data”:
+  {“animal”:”cat”, “frame-zone”:”top-left"}
+}}
+
+NOTE Dog, mid right, after 10 secs until 40 secs
+
+00:00:10.000 —> 00:00:40.000
+{“sync”: {“type”: “org.ogc.geoai.example”, “data”:
+  {“animal”:”dog”, “frame-zone”:”middle-right"}
+}}
+        </pre>
+      </section>
       <section id='animation'>
         <h2>Animation</h2>
         <p>
@@ -1100,6 +1135,41 @@ mimetype:video/mp4
             A <a>WebVMT line</a> is a straight line between two locations. The trajectory of the moving object can be linearly interpolated between the cue start time and the segment end time.
           </p>
         </section>
+        <section id='synchronizeddata'>
+          <h2>Synchronized Data</h2>
+          <p>
+            A <dfn>WebVMT synced data</dfn> synchronizes data sampled from a data source with a given cue.
+          </p>
+          <p>
+            A <a>WebVMT synced data</a> consists of:
+          </p>
+          <dl>
+            <dt>
+              A <dfn>synced data object</dfn>
+            </dt>
+            <dd>
+              An arbitrary object representing the raw data from the data source.
+            </dd>
+            <dt>
+              A <dfn>synced data type</dfn>
+            </dt>
+            <dd>
+              An associated data type, e.g. org.geojson.
+            </dd>
+            <dt>
+              Optionally, a <dfn>synced data identifier</dfn>
+            </dt>
+            <dd>
+              An identifier shared by all <a>WebVMT synced data</a> from the same data source over time, e.g. for interpolation.
+            </dd>
+            <dt>
+              Optionally, a <dfn>synced path identifier</dfn>
+            </dt>
+            <dd>
+              A <a>path identifier</a> associated with the data source, e.g. a sensor moving through space.
+            </dd>
+          </dl>
+        </section>
         <section id='animations'>
           <h2>Animations</h2>
           <p>
@@ -1638,6 +1708,9 @@ mimetype:video/mp4
             <li>
               A <a>WebVMT path annotation command</a>.
             </li>
+            <li>
+              A <a>WebVMT synced data command</a>.
+            </li>
           </ul>
         </p>
         <section>
@@ -1939,6 +2012,93 @@ mimetype:video/mp4
           </p>
         </section>
         <section>
+          <h2>WebVMT Synchronization Command</h2>
+          <p>
+            A <dfn>WebVMT synced data command</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
+            <ul>
+              <li>
+                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>sync</code>".
+              </li>
+              <li>
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a>WebVMT synced parameter list</a>.
+              </li>
+            </ul>
+          </p>
+          <p>
+            A <dfn>WebVMT synced parameter list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing the following components in any order:
+            <ul>
+              <li>
+                A <a>WebVMT synced type attribute</a>.
+              </li>
+              <li>
+                A <a>WebVMT synced data attribute</a>.
+              </li>
+              <li>
+                Optionally, a <a>WebVMT synced identifier attribute</a>.
+              </li>
+              <li>
+                Optionally, a <a>WebVMT synced path attribute</a>.
+              </li>
+            </ul>
+          </p>
+          <p>
+            A <dfn>WebVMT synced type attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            <ol>
+              <li>
+                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>type</code>".
+              </li>
+              <li>
+                A U+003A COLON character (:).
+              </li>
+              <li>
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synced data type</a>.
+              </li>
+            </ol>
+          </p>
+          <p>
+            A <dfn>WebVMT synced data attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            <ol>
+              <li>
+                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>data</code>".
+              </li>
+              <li>
+                A U+003A COLON character (:).
+              </li>
+              <li>
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing a <a>synced data object</a>.
+              </li>
+            </ol>
+          </p>
+          <p>
+            A <dfn>WebVMT synced identifier attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            <ol>
+              <li>
+                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>id</code>".
+              </li>
+              <li>
+                A U+003A COLON character (:).
+              </li>
+              <li>
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synced data identifier</a>.
+              </li>
+            </ol>
+          </p>
+          <p>
+            A <dfn>WebVMT synced path attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            <ol>
+              <li>
+                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>path</code>".
+              </li>
+              <li>
+                A U+003A COLON character (:).
+              </li>
+              <li>
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synced path identifier</a>.
+              </li>
+            </ol>
+          </p>
+        </section>
+        <section>
           <h2>WebVMT Animation Subcommand</h2>
           <p>
             A <dfn>WebVMT animation subcommand</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
@@ -2200,15 +2360,6 @@ NOTE Required non-cue blocks omitted for clarity
           <h2>Camera Direction</h2>
           <p>
             Camera orientation may not match the direction of travel, or may be dynamic, e.g. for Augmented Reality. Field of view and zoom level also affect video frame content and may vary over time.
-          </p>
-        </section>
-        <section id='datasync'>
-          <h2>Data Sync</h2>
-          <p>
-            Mobile video devices often collect additional data, e.g. drones can be used as sensor platforms and dashcams record vehicle telemetry such as speed and acceleration.
-          </p>
-          <p>
-            Allowing the option to embed JSON data within cues would permit synchronisation of arbitrary data with location and video without compromising interoperability, in a similar fashion to the GPX <code>&lt;extension&gt;</code> element.
           </p>
         </section>
         <section id='coordrefsys'>
