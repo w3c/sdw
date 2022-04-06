@@ -28,7 +28,7 @@
   <body>
     <section id='abstract'>
       <p>
-        This specification defines WebVMT, the Web Video Map Tracks format, which is an enabling technology whose main use is for marking up external map track resources in connection with the HTML &lt;track&gt; element. WebVMT files provide map presentation and annotation synchronised to video content, including animation support, and more generally any form of geolocation data that is time-aligned with audio or video content.
+        This specification defines WebVMT, the Web Video Map Tracks format, which is an enabling technology whose main use is for marking up external map track resources in connection with the HTML &lt;track&gt; element. WebVMT files provide map presentation and annotation synchronised to video content, including interpolation, and more generally any form of geolocation data that is time-aligned with audio or video content.
       </p>
     </section>
     <section id='sotd'>
@@ -308,7 +308,7 @@
         This proposal constitutes a lightweight markup language to synchronise video with geolocation data for display on electronic maps, e.g. OpenStreetMaps. It offers presentational control of the map display, e.g. pan and zoom, and annotation to highlight map features to the viewer, e.g. markers and labels.
       </p>
       <p>
-        WebVMT (Web Video Map Tracks) format is intended for marking up external map track resources, and its main use is for files synchronising video content with an annotated map presentation. Ideas have been borrowed from existing W3C formats, including WebVTT's HTML binding and its block and cue structures, and SVG's approach to drawing and animation, in order to display output on an electronic map.
+        WebVMT (Web Video Map Tracks) format is intended for marking up external map track resources, and its main use is for files synchronising video content with an annotated map presentation. Ideas have been borrowed from existing W3C formats, including WebVTT's HTML binding and its block and cue structures, and SVG's approach to drawing and interpolation, in order to display output on an electronic map.
       </p>
       <p>
         The format mimics WebVTT's structure and syntax for video synchronisation, with cue details listed in an accessible text-based file linked to the <code>&lt;video&gt;</code> DOM element by a child <code>&lt;track&gt;</code> element in an HTML document.
@@ -340,7 +340,7 @@
       <section id='mapcues'>
         <h2>Map Cues</h2>
         <p>
-          Map cues display their payload between a start time and end time. The end cue time may be omitted to signify the end time of the video, which may be unknown in the case of streamed video.
+          Map cues display their payload between a start time and end time. The end cue time may be omitted to represent an unknown time.
         </p>
         <section id='helloworld'>
           <h2>Hello World</h2>
@@ -562,36 +562,228 @@ rad:200
 NOTE Cat, top left, after 5 secs until 25 secs
 
 00:00:05.000 —> 00:00:25.000
-{“sync”: {“type”: “org.ogc.geoai.example”, “data”:
-  {“animal”:”cat”, “frame-zone”:”top-left"}
-}}
+{ “sync”: { “type”: “org.ogc.geoai.example”, “data”:
+  { “animal”:”cat”, “frame-zone”:”top-left" }
+} }
 
 NOTE Dog, mid right, after 10 secs until 40 secs
 
 00:00:10.000 —> 00:00:40.000
-{“sync”: {“type”: “org.ogc.geoai.example”, “data”:
-  {“animal”:”dog”, “frame-zone”:”middle-right"}
-}}
+{ “sync”: { “type”: “org.ogc.geoai.example”, “data”:
+  { “animal”: ”dog”, “frame-zone”: ”middle-right" }
+} }
         </pre>
       </section>
-      <section id='animation'>
-        <h2>Animation</h2>
+      <section id='interpolation'>
+        <h2>Interpolation</h2>
         <p>
-          Map annotations may be animated using an <code>animate</code> command, in a similar way to the <code>&lt;animate&gt;</code> element in <a data-cite='SVG11' data-no-xref=''>SVG</a>.
+          Data values may be interpolated using an <code>interp</code> command, in a similar way to the <code>&lt;animate&gt;</code> element in <a data-cite='SVG11' data-no-xref=''>SVG</a>.
         </p>
         <p>
-          Paths have additional properties to other annotations including a unique identifier, and an animation which can be controlled separately for distance calculation purposes.
+          Sensor data can be interpolated between sample points to provide intermediate values where necessary, while retaining the original source data sample values.
         </p>
-        <section id='animatedpath'>
-          <h2>Animated Path</h2>
+        <p>
+          Three interpolation schemes are supported:
+          <ul>
+            <li><b>Step:</b> the value remains constant until the next sample time, e.g. vehicle gear selection;</li>
+            <li><b>Linear:</b> the value is linearly interpolated to the next sample time, e.g. temperature;</li>
+            <li><b>Discrete:</b> the value is only valid instanteously at the sample time, e.g. headcount in a video frame.</li>
+          </ul>
+        </p>
+        <section id='stepinterpolation'>
+          <h2>Step Interpolation</h2>
           <p>
-            A path typically identifies a mobile camera's route, which is defined by a <code>moveto</code> command followed by a sequence of <code>lineto</code> commands, and may include multiple discrete segments separated by <code>moveto</code> commands.
+            A stepwise-interpolated value remains constant until the next sample time, e.g. vehicle gear selection
+          </p>
+          <pre class='nohighlight example' title='Step Interpolation VMT'>
+WEBVMT
+
+NOTE Required blocks omitted for clarity
+
+NOTE Step interpolation of sensor1 data
+     gear = 4 after 2 secs until 6 secs
+
+00:00:02.000 --> 00:00:06.000
+{ "sync":
+  { "type": "org.webvmt.example", "id": "sensor1", "data":
+    { "gear": "4" }
+  }
+}
+
+NOTE Step interpolation of sensor1 data
+     gear = 5 after 6 secs until 9 secs
+
+00:00:06.000 --> 00:00:09.000
+{ "sync":
+  { "id": "sensor1", "data":
+    { "gear": "5" }
+  }
+}
+          </pre>
+        </section>
+        <section id='linearinterpolation'>
+          <h2>Linear Interpolation</h2>
+          <p>
+            A linearly-interpolated value changes to a final value at the next sample time in direct proportion to the elapsed sample interval, e.g. temperature.
+          </p>
+          <pre class='nohighlight example' title='Linear Interpolation VMT'>
+WEBVMT
+
+NOTE Required blocks omitted for clarity
+
+NOTE Linear interpolation of sensor2 data
+     temperature = 14 -> 16 after 4 secs until 6 secs
+
+00:00:04.000 --> 00:00:06.000
+{ "sync":
+  { "type": "org.webvmt.example", "id": "sensor2", "data":
+    { "temperature": "14" }
+  }
+}
+{ "interp": { "to":
+  { "data": { "temperature": "16" } }
+} }
+
+NOTE Linear interpolation of sensor2 data
+     temperature = 16 -> 19 after 6 secs until 9 secs
+
+00:00:06.000 --> 00:00:09.000
+{ "sync":
+  { "id": "sensor2" }
+}
+{ "interp": { "to":
+  { "data": { "temperature": "19" } }
+} }
+          </pre>
+        </section>
+        <section id='discreteinterpolation'>
+          <h2>Discrete Interpolation</h2>
+          <p>
+            A discretely-interpolated value is only valid instanteously at the sample time, e.g. headcount in a video frame.
+          </p>
+          <pre class='nohighlight example' title='Discrete Interpolation VMT'>
+WEBVMT
+
+NOTE Required blocks omitted for clarity
+
+NOTE Discrete interpolation of sensor3 data
+     headcount = 12 at 4 secs
+
+00:00:04.000 --> 00:00:04.000
+{ "sync":
+  { "type": "org.webvmt.example", "id": "sensor3", "data":
+    { "headcount": "12" }
+  }
+}
+
+NOTE Discrete interpolation of sensor3 data
+     headcount = 34 at 6 secs
+
+00:00:06.000 --> 00:00:06.000
+{ "sync":
+  { "id": "sensor3", "data":
+    { "headcount": "34" }
+  }
+}
+          </pre>
+        </section>
+        <section id='livestreaminterpolation'>
+          <h2>Live Stream Interpolation</h2>
+          <p>
+            Live streams can be recorded with interpolation using unbounded cues, i.e. a cue with an unknown end time.
           </p>
           <p>
-            A path may be assigned an identifier using the <code>path</code> attribute to discriminate between and uniquely identify multiple paths. Distinct paths may be styled in different ways, e.g. colour, with separate speed and distance calculations performed during playback.
+            In this example, an identical net result to the <a href="#stepinterpolation">previous step interpolation example</a>  is produced but without knowledge of any future data values during the live capture process.
+          </p>
+          <pre class='nohighlight example' title='Live Step Interpolation VMT'>
+WEBVMT
+
+NOTE Required blocks omitted for clarity
+
+NOTE Step interpolation of live1 data
+
+{ "sync":
+  { "type": "org.webvmt.example", "id": "live1", "data":
+    { "gear": "4" }
+  }
+}
+
+NOTE Step interpolation of live1 data
+     gear = 5 after 6 secs until next update
+
+00:00:06.000 -->
+{ "sync":
+  { "id": "live1", "data":
+    { "gear": "5" }
+  }
+}
+
+NOTE End (step) interpolation of live1 data
+     gear = 5 at 9 secs
+
+00:00:09.000 --> 00:00:09.000
+{ "sync":
+  { "id": "live1", "data":
+    { "gear": "5" }
+  }
+}
+          </pre>
+          <p>
+            In the next example, an identical net result to the <a href="#linearinterpolation">previous linear interpolation example</a> is produced but without knowledge of any future data values during the live capture process.
+          </p>
+          <pre class='nohighlight example' title='Live Linear Interpolation VMT'>
+WEBVMT
+
+NOTE Required blocks omitted for clarity
+
+NOTE Linear interpolation of live2 data
+     temperature = 14 after 4 secs until next update
+
+00:00:04.000 -->
+{ "sync":
+  { "type": "org.webvmt.example", "id": "live2", "data":
+    { "temperature": "14" }
+  }
+}
+{ "interp": { "end": "00:00:06.000", "to":
+  { "data": { "temperature": "16" } }
+} }
+
+NOTE Linear interpolation of live2 data
+     temperature = 16 after 6 secs until next update
+
+00:00:06.000 -->
+{ "sync":
+  { "id": "live2"}
+}
+{ "interp": { "end": "00:00:09.000", "to":
+  { "data": { "temperature": "19" } }
+} }
+
+NOTE End (linear) interpolation of live2 data
+     temperature = 19 at 9 secs
+
+00:00:09.000 --> 00:00:09.000
+{ "sync":
+  { "id": "live2", "data":
+    { "temperature": "19" }
+  }
+}
+          </pre>
+          <p class='note' title='Interpolation During Live Capture'>
+            Values may not be interpolated <i>during</i> capture as future data are unknown, e.g. for linear interpolation, though can be correctly interpolated <i>after</i> capture once end values are known during subsequent playbacks.
+          </p>
+        </section>
+        <section id='interpolatedpath'>
+          <h2>Interpolated Path</h2>
+          <p>
+            A <a>WebVMT path</a> describes the trajectory of a moving object which consists of a timed sequence of <a>WebVMT location</a>s. Path location may be interpolated over time to calculate the distance travelled.
           </p>
           <p>
-            In this example, an animated path is traced from London to Brighton:
+            The <code>path</code> attribute may be set to identify an individual path. This allows a path to be styled, e.g. colour, and the speed and distance attributes to be identified during playback.
+          </p>
+          <p>
+            In this example, an interpolated path is traced from London to Brighton:
           </p>
           <pre class='nohighlight example' title='London to Brighton VMT'>
 WEBVMT
@@ -648,8 +840,11 @@ NOTE ...to Brighton (at 00:00:25.000)
 }
           </pre>
         </section>
-        <section id='animatedannotation'>
-          <h2>Animated Annotation</h2>
+        <section id='interpolatedannotation'>
+          <h2>Interpolated Annotation</h2>
+          <p>
+            Interpolation can also be applied to the attributes of a <a>WebVMT command</a> and a map annotation may be animated in this way.
+          </p>
           <p>
             This example tracks a drone with a circular 10-metre safety zone around it.
           </p>
@@ -678,20 +873,17 @@ NOTE Drone starts at (51.0130, -0.0015)
   { "lat": 51.0130, "lng": -0.0015, "path": "drone1" }
 }
 { "lineto":
-  { "lat": 51.0090, "lng": -0.0017, "path": "drone1",
-    "end": "00:00:10.000" }
+  { "lat": 51.0090, "lng": -0.0017, "path": "drone1", "end": "00:00:10.000" }
 }
 
 NOTE Safety zone
 
 00:00:05.000 --&gt; 00:00:10.000
 { "circle":
-  { "lat": 51.0130, "lng": -0.0015, "rad": 10,
-    "animate":
-    [ { "name": "lat", "to": 51.0090, "end": "00:00:10.000" },
-      { "name": "lng", "to": -0.0017, "end": "00:00:10.000" }
-    ]
-  }
+  { "lat": 51.0130, "lng": -0.0015, "rad": 10 }
+}
+{ "interp":
+  { "to": { "lat": 51.0090, "lng": -0.0017 } }
 }
 
 NOTE Drone arrives at (51.0090, -0.0017)
@@ -701,12 +893,10 @@ NOTE Drone arrives at (51.0090, -0.0017)
   { "lat": 51.0070, "lng": -0.0020, "path": "drone1", "end": "00:00:25.000" }
 }
 { "circle":
-  { "lat": 51.0090, "lng": -0.0017, "rad": 10,
-    "animate":
-    [ { "name": "lat", "to": 51.0070, "end": "00:00:25.000" },
-      { "name": "lng", "to": -0.0020, "end": "00:00:25.000" }
-    ]
-  }
+  { "lat": 51.0090, "lng": -0.0017, "rad": 10 }
+}
+{ "interp":
+  { "end": "00:00:25.000", "to": { "lat": 51.0070, "lng": -0.0020 } }
 }
 
 NOTE Drone ends at (51.0070, -0.0020)
@@ -784,7 +974,7 @@ mimetype:video/mp4
       <section id='webvmtcues'>
         <h2>WebVMT Cues</h2>
         <p>
-          A <dfn>WebVMT cue</dfn> is a <a data-cite='HTML51/semantics-embedded-content.html#cue'>text track cue</a> with an optional <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-end-time'>end time</a> and that additionally consists of the following:
+          A <dfn>WebVMT cue</dfn> is a <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>text track cue</a> that additionally consists of the following:
         </p>
         <dl>
           <dt>
@@ -794,8 +984,8 @@ mimetype:video/mp4
             The raw text of the cue which is interpreted as time-aligned metadata, and rules for its interpretation.
           </dd>
         </dl>
-        <p class='note' title='End Time Omission'>
-          A <a>WebVMT cue</a> without an end time indicates that the cue end time is unbounded, for example during live streaming when the time of the next data sample is unknown or when the duration of the media is unknown.
+        <p class='note' title='Cue End Time Omission'>
+          A <a>WebVMT cue</a> without an end time indicates that the cue is an <a data-cite='HTML51/semantics-embedded-content.html#unbounded-text-track-cue'>unbounded text track cue</a>, for example during live streaming when the time of the next data sample is unknown or when the duration of the media is unknown.
         </p>
       </section>
       <section id='webvmtmap'>
@@ -901,7 +1091,7 @@ mimetype:video/mp4
               A <a>WebVMT shape annotation</a> command;
             </li>
             <li>
-              A <a>WebVMT path</a>.
+              A <a>WebVMT path fragment</a> command.
             </li>
           </ul>
         </p>
@@ -1048,10 +1238,13 @@ mimetype:video/mp4
         <section id='paths'>
           <h2>Paths</h2>
           <p>
-            A <dfn>WebVMT path</dfn> consists of all the <a>path segment</a>s with the same unique <dfn>path identifier</dfn>.
+            A <dfn>WebVMT path</dfn> consists of all the <a>path segment</a>s with the same <dfn>path identifier</dfn>.
           </p>
           <p>
-            A <dfn>path segment</dfn> describes the trajectory of the identified object moving through the mapped space.
+            A <dfn>path segment</dfn> consists of a sequence of contiguous <a>WebVMT path fragment</a>s that describe the trajectory of an object moving through the mapped space.
+          </p>
+          <p class='note' title='Non-Contiguous Segments'>
+            A <a>WebVMT path</a> may include non-contiguous <a>path segment</a>s, but each <a>path segment</a> must contain a sequence of <i>contiguous</i> <a>WebVMT path fragment</a>s.
           </p>
           <p>
             A <a>path segment</a> consists of the following components, in the order given:
@@ -1065,7 +1258,18 @@ mimetype:video/mp4
             </li>
           </ol>
           <p>
-            A <dfn>WebVMT move</dfn> is a command to set the start location of the <a>path segment</a>.
+            A <dfn>WebVMT path fragment</dfn> command consists of the one of the following components:
+          </p>
+          <ul>
+            <li>
+              One <a>WebVMT move</a> command;
+            </li>
+            <li>
+              One <a>WebVMT line</a> command.
+            </li>
+          </ul>
+          <p>
+            A <dfn>WebVMT move</dfn> command sets the start location of the first <a>WebVMT path fragment</a> in a <a>path segment</a>.
           </p>
           <p>
             A <a>WebVMT move</a> consists of:
@@ -1078,23 +1282,26 @@ mimetype:video/mp4
               The identifier shared by all the <a>path segment</a>s in the <a>WebVMT path</a>.
             </dd>
             <dd>
-              By default, the path identifier is set to null.
+              By default, the <a>path identifier</a> is set to null.
             </dd>
             <dt>
-              A <dfn class="export">segment start latitude</dfn>
+              A <dfn class="export">fragment start time</dfn>
             </dt>
             <dd>
-              The latitude in degrees of the path segment start.
+              The time at which the <a>WebVMT path fragment</a> starts.
+            </dd>
+            <dd>
+              By default, the <a>fragment start time</a> is set to the cue start time.
             </dd>
             <dt>
-              A <dfn class="export">segment start longitude</dfn>
+              A <dfn class="export">fragment start location</dfn>
             </dt>
             <dd>
-              The longitude in degrees of the path segment start.
+              The <a>WebVMT location</a> at the <a>fragment start time</a>.
             </dd>
           </dl>
           <p>
-            A <dfn>WebVMT line</dfn> is a command to set the end location of the <a>path segment</a>.
+            A <dfn>WebVMT line</dfn> command sets the end location of the <a>WebVMT path fragment</a>. The <a>fragment start location</a> is set by the preceding <a>WebVMT path fragment</a> in the <a>WebVMT path</a>.
           </p>
           <p>
             A <a>WebVMT line</a> consists of:
@@ -1107,118 +1314,127 @@ mimetype:video/mp4
               The identifier shared by all the <a>path segment</a>s in the <a>WebVMT path</a>.
             </dd>
             <dd>
-              By default, the path identifier is set to null.
+              By default, the <a>path identifier</a> is set to null.
             </dd>
             <dt>
-              A <dfn class="export">segment end latitude</dfn>
+              A <dfn class="export">fragment end time</dfn>
             </dt>
             <dd>
-              The latitude in degrees of the path segment end.
+              The time at which the <a>WebVMT path fragment</a> ends.
+            </dd>
+            <dd>
+              By default, the <a>fragment end time</a> is set to the cue end time.
+            </dd>
+            <dd>
+              The <a>fragment end time</a> may be defined as an absolute value, or calculated relative to the cue start time using a duration.
             </dd>
             <dt>
-              A <dfn class="export">segment end longitude</dfn>
+              A <dfn class="export">fragment end location</dfn>
             </dt>
             <dd>
-              The longitude in degrees of the path segment end.
-            </dd>
-            <dt>
-              A <dfn class="export">segment end time</dfn>
-            </dt>
-            <dd>
-              The time at which the path segment end location is reached.
-            </dd>
-            <dd>
-              The segment end time may be defined as an absolute value, or calculated relative to the cue start time using a duration.
+              The <a>WebVMT location</a> at the <a>fragment end time</a>.
             </dd>
           </dl>
           <p class="note" title="Path Interpolation">
-            A <a>WebVMT line</a> is a straight line between two locations. The trajectory of the moving object can be linearly interpolated between the cue start time and the segment end time.
+            A <a>WebVMT line</a> is a straight line from the start location to the end location. The location of the moving object can be linearly interpolated between the <a>fragment start time</a> and the <a>fragment end time</a>.
           </p>
         </section>
         <section id='synchronizeddata'>
           <h2>Synchronized Data</h2>
           <p>
-            A <dfn>WebVMT synced data</dfn> synchronizes data sampled from a data source with a given cue.
+            A <dfn>WebVMT synchronized data</dfn> synchronizes a sample from a data source with a <a>WebVMT cue</a>.
           </p>
           <p>
-            A <a>WebVMT synced data</a> consists of:
+            A <a>WebVMT synchronized data</a> command consists of:
           </p>
           <dl>
             <dt>
-              A <dfn>synced data object</dfn>
+              A <dfn>synchronized data object</dfn>
             </dt>
             <dd>
-              An arbitrary object representing the raw data from the data source.
+              An arbitrary object representing the raw sample from the data source.
             </dd>
             <dt>
-              A <dfn>synced data type</dfn>
+              A <dfn>synchronized data type</dfn>
             </dt>
             <dd>
               An associated data type, e.g. org.geojson.
             </dd>
             <dt>
-              Optionally, a <dfn>synced data identifier</dfn>
+              Optionally, a <dfn>synchronized data identifier</dfn>
             </dt>
             <dd>
-              An identifier shared by all <a>WebVMT synced data</a> from the same data source over time, e.g. for interpolation.
+              An identifier shared by all samples from the same data source over time, e.g. for interpolation.
             </dd>
             <dt>
-              Optionally, a <dfn>synced path identifier</dfn>
+              Optionally, a <dfn>synchronized path identifier</dfn>
             </dt>
             <dd>
-              A <a>path identifier</a> associated with the data source, e.g. a sensor moving through space.
+              A <a>path identifier</a> associated with the data source, e.g. a moving sensor.
             </dd>
           </dl>
         </section>
-        <section id='animations'>
-          <h2>Animations</h2>
+        <section id='attributeinterpolation'>
+          <h2>Attribute Interpolation</h2>
           <p>
-            A <dfn>WebVMT animation</dfn> changes an object attribute from a start value to an end value over a given time.
+            A <dfn>WebVMT interpolation</dfn> changes an object attribute from a start value to an end value over a time interval.
           </p>
           <p>
-            A <a>WebVMT animation</a> consists of:
+            A <a>WebVMT interpolation</a> consists of:
           </p>
           <dl>
             <dt>
-              An <dfn>animation object</dfn>
+              An <dfn>interpolation object</dfn>
             </dt>
             <dd>
               The parent object of the attribute.
             </dd>
             <dt>
-              An <dfn>animation attribute</dfn>
+              An <dfn>interpolation attribute</dfn>
             </dt>
             <dd>
-              The attribute of the object to change.
+              The name of the attribute to change.
             </dd>
             <dt>
-              An <dfn class="export">animation start value</dfn>
+              An <dfn class="export">interpolation start value</dfn>
             </dt>
             <dd>
               The initial value of the attribute.
             </dd>
             <dt>
-              An <dfn>animation end value</dfn>
+              An <dfn>interpolation start time</dfn>
+            </dt>
+            <dd>
+              The time at which the interpolation starts.
+            </dd>
+            <dd>
+              By default, the <a>interpolation start time</a> is set to the cue start time.
+            </dd>
+            <dd>
+              The <a>interpolation start time</a> may be defined as an absolute value, or calculated relative to the cue start time using a delay.
+            </dd>
+            <dt>
+              An <dfn>interpolation end value</dfn>
             </dt>
             <dd>
               The final value of the attribute.
             </dd>
             <dt>
-              An <dfn>animation start time</dfn>
+              An <dfn>interpolation end time</dfn>
             </dt>
             <dd>
-              The time at which to begin changing the attribute.
-            </dd>
-            <dt>
-              An <dfn>animation end time</dfn>
-            </dt>
-            <dd>
-              The time at which to finish changing the attribute.
+              The time at which the interpolation ends.
             </dd>
             <dd>
-              The animation end time may be defined as an absolute value, or calculated relative to the animation start time using a duration.
+              By default, the <a>interpolation end time</a> is set to the cue end time.
+            </dd>
+            <dd>
+              The <a>interpolation end time</a> may be defined as an absolute value, or calculated relative to the interpolation start time using a duration.
             </dd>
           </dl>
+          <p>
+            A <a>WebVMT interpolation subcommand</a> consists of one or more <a>WebVMT interpolation</a>s with all interpolation objects set to the preceding <a>WebVMT command</a>.
+          </p>
         </section>
       </section>
     </section>
@@ -1709,7 +1925,7 @@ mimetype:video/mp4
               A <a>WebVMT path annotation command</a>.
             </li>
             <li>
-              A <a>WebVMT synced data command</a>.
+              A <a>WebVMT synchronized data command</a>.
             </li>
           </ul>
         </p>
@@ -1874,7 +2090,7 @@ mimetype:video/mp4
                 A <a>WebVMT radius attribute</a>.
               </li>
               <li>
-                Optionally, a <a>WebVMT animation subcommand</a>.
+                Optionally, a <a>WebVMT interpolation subcommand</a>.
               </li>
             </ul>
           </p>
@@ -1917,7 +2133,7 @@ mimetype:video/mp4
                 A <a>WebVMT location attribute list</a>.
               </li>
               <li>
-                Optionally, a <a>WebVMT animation subcommand</a>.
+                Optionally, a <a>WebVMT interpolation subcommand</a>.
               </li>
             </ul>
           </p>
@@ -1972,6 +2188,12 @@ mimetype:video/mp4
             </ol>
           </p>
           <p>
+            A <dfn>WebVMT path identifier</dfn> is any sequence of one or more characters not containing the substring "-->" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
+          </p>
+          <p class='note' title='Path Identification'>
+            A <a>WebVMT path identifier</a> is a string which uniquely identifies a moving object in the <a>WebVMT file</a>, for example a camera.
+          </p>
+          <p>
             A <dfn>WebVMT line command</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
             <ul>
               <li>
@@ -2004,45 +2226,39 @@ mimetype:video/mp4
               </li>
             </ul>
           </p>
-          <p>
-            A <dfn>WebVMT path identifier</dfn> is any sequence of one or more characters not containing the substring "-->" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
-          </p>
-          <p class='note' title='Path Identification'>
-            A <a>WebVMT path identifier</a> is a string which uniquely identifies a moving object in the <a>WebVMT file</a>, for example a camera.
-          </p>
         </section>
         <section>
           <h2>WebVMT Synchronization Command</h2>
           <p>
-            A <dfn>WebVMT synced data command</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
+            A <dfn>WebVMT synchronized data command</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
             <ul>
               <li>
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>sync</code>".
               </li>
               <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a>WebVMT synced parameter list</a>.
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a>WebVMT synchronized parameter list</a>.
               </li>
             </ul>
           </p>
           <p>
-            A <dfn>WebVMT synced parameter list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing the following components in any order:
+            A <dfn>WebVMT synchronized parameter list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing the following components in any order:
             <ul>
               <li>
-                A <a>WebVMT synced type attribute</a>.
+                A <a>WebVMT synchronized type attribute</a>.
               </li>
               <li>
-                A <a>WebVMT synced data attribute</a>.
+                A <a>WebVMT synchronized data attribute</a>.
               </li>
               <li>
-                Optionally, a <a>WebVMT synced identifier attribute</a>.
+                Optionally, a <a>WebVMT synchronized identifier attribute</a>.
               </li>
               <li>
-                Optionally, a <a>WebVMT synced path attribute</a>.
+                Optionally, a <a>WebVMT synchronized path attribute</a>.
               </li>
             </ul>
           </p>
           <p>
-            A <dfn>WebVMT synced type attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            A <dfn>WebVMT synchronized type attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
             <ol>
               <li>
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>type</code>".
@@ -2051,12 +2267,12 @@ mimetype:video/mp4
                 A U+003A COLON character (:).
               </li>
               <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synced data type</a>.
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synchronized data type</a>.
               </li>
             </ol>
           </p>
           <p>
-            A <dfn>WebVMT synced data attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            A <dfn>WebVMT synchronized data attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
             <ol>
               <li>
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>data</code>".
@@ -2065,12 +2281,12 @@ mimetype:video/mp4
                 A U+003A COLON character (:).
               </li>
               <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing a <a>synced data object</a>.
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing a <a>synchronized data object</a>.
               </li>
             </ol>
           </p>
           <p>
-            A <dfn>WebVMT synced identifier attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            A <dfn>WebVMT synchronized identifier attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
             <ol>
               <li>
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>id</code>".
@@ -2079,12 +2295,12 @@ mimetype:video/mp4
                 A U+003A COLON character (:).
               </li>
               <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synced data identifier</a>.
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synchronized data identifier</a>.
               </li>
             </ol>
           </p>
           <p>
-            A <dfn>WebVMT synced path attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            A <dfn>WebVMT synchronized path attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
             <ol>
               <li>
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>path</code>".
@@ -2093,41 +2309,35 @@ mimetype:video/mp4
                 A U+003A COLON character (:).
               </li>
               <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synced path identifier</a>.
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synchronized path identifier</a>.
               </li>
             </ol>
           </p>
         </section>
         <section>
-          <h2>WebVMT Animation Subcommand</h2>
+          <h2>WebVMT Interpolation Subcommand</h2>
           <p>
-            A <dfn>WebVMT animation subcommand</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
+            A <dfn>WebVMT interpolation subcommand</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
             <ul>
               <li>
-                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>animate</code>".
+                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>interp</code>".
               </li>
               <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a>WebVMT animation parameter list</a>.
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a>WebVMT interpolation parameter list</a>.
               </li>
             </ul>
           </p>
           <p class='note' title='Parent Command'>
-            The <a>WebVMT animation subcommand</a> refers to the attributes of its parent command. The parent command is the <a>animation object</a>.
+            The <a>WebVMT interpolation subcommand</a> refers to the attributes of its parent command. The parent command is the <a>interpolation object</a>.
           </p>
           <p>
-            A <dfn>WebVMT animation parameter list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON array</a> of one or more <a>WebVMT individual animation list</a>s.
-          </p>
-          <p>
-            A <dfn>WebVMT individual animation list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> consisting of the following components in any order:
+            A <dfn>WebVMT interpolation parameter list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> consisting of the following components in any order:
             <ul>
               <li>
-                A <a>WebVMT name attribute</a>.
+                A <a>WebVMT interpolation target attribute</a>.
               </li>
               <li>
-                A <a>WebVMT target value attribute</a>.
-              </li>
-              <li>
-                One of the following components:
+                Optionally, one of the following components:
                 <ul>
                   <li>
                     A <a>WebVMT end time attribute</a>.
@@ -2140,24 +2350,7 @@ mimetype:video/mp4
             </ul>
           </p>
           <p>
-            A <dfn>WebVMT name attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
-            <ol>
-              <li>
-                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>name</code>".
-              </li>
-              <li>
-                A U+003A COLON character (:).
-              </li>
-              <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a data-cite='ECMA-404' data-no-xref=''>JSON string</a>.
-              </li>
-            </ol>
-          </p>
-          <p class='note' title='Animation Name'>
-            A <a>WebVMT name attribute</a> represents the name of the <a>animation attribute</a>.
-          </p>
-          <p>
-            A <dfn>WebVMT target value attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            A <dfn>WebVMT interpolation target attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
             <ol>
               <li>
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>to</code>".
@@ -2166,12 +2359,15 @@ mimetype:video/mp4
                 A U+003A COLON character (:).
               </li>
               <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a>.
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing a <a>WebVMT interpolation target parameter list</a>.
               </li>
             </ol>
           </p>
-          <p class='note' title='Animation Target Value'>
-            The <a>WebVMT target value attribute</a> represents the value of the <a>animation end value</a>.
+          <p>
+            A <dfn>WebVMT interpolation target parameter list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing the <a>interpolation attributes</a> set to <a>interpolation end values</a>.
+          </p>
+          <p class='note' title='Interpolation Target Omissions'>
+            Attributes of the <a>interpolation object</a> omitted from a <a>WebVMT interpolation target parameter list</a> are not affected by that subcommand.
           </p>
           <p>
             A <dfn>WebVMT end time attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
@@ -2187,8 +2383,11 @@ mimetype:video/mp4
               </li>
             </ol>
           </p>
-          <p class='note' title='Animation End Time'>
-            A <a>WebVMT end time attribute</a> represents the value of the <a>animation end time</a>.
+          <p>
+            By default, the <a>WebVMT end time attribute</a> is set to the <a>WebVMT cue</a> end time value.
+          </p>
+          <p class='note' title='End Time'>
+            A <a>WebVMT end time attribute</a> represents the time at which a process ends.
           </p>
           <p>
             A <dfn>WebVMT duration attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
@@ -2200,12 +2399,15 @@ mimetype:video/mp4
                 A U+003A COLON character (:).
               </li>
               <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>WebVMT timestamp</a>.
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>WebVMT timespan</a>.
               </li>
             </ol>
           </p>
-          <p class='note' title='Animation Duration'>
-            A <a>WebVMT duration attribute</a> represents the difference in value between the <a>animation end time</a> and the <a>animation start time</a>.
+          <p class='note' title='Duration'>
+            A <a>WebVMT duration attribute</a> represents the time interval for which a process lasts and supersedes the default value of the <a>WebVMT end time attribute</a>.
+          </p>
+          <p>
+            A <dfn>WebVMT timespan</dfn> is the positive time offset between two <a>WebVMT timestamp</a>s and is represented in <a>WebVMT timestamp</a> format.
           </p>
         </section>
       </section>
@@ -2233,7 +2435,7 @@ mimetype:video/mp4
           <pre class='nohighlight example' title='Nested Cues'>
 WEBVMT
 
-NOTE Required non-cue blocks omitted for clarity
+NOTE Required blocks omitted for clarity
 
 00:00.000 --> 01:24.000
 { "circle": { "lat": 0, "lng": 0, "rad": 2000 } }
@@ -2288,7 +2490,7 @@ NOTE Required non-cue blocks omitted for clarity
           <pre class='nohighlight example' title='Non-Nested Cues'>
 WEBVMT
 
-NOTE Required non-cue blocks omitted for clarity
+NOTE Required blocks omitted for clarity
 
 00:00.000 --> 01:00.000
 { "moveto": { "lat": 0.12, "lng": 0.34, "path": "cam3" } }
@@ -2375,23 +2577,6 @@ NOTE Required non-cue blocks omitted for clarity
           </p>
           <p>
             Care should be taken to build a lightweight interface which includes simple, common properties that are useful to most use cases and avoids overloading with unnecessary edge cases, processing overheads and complexity.
-          </p>
-        </section>
-        <section id='interpolation'>
-          <h2>Interpolation</h2>
-          <p>
-            Sensor data could be interpolated between sample points to provide intermediate values where necessary, while retaining the source data sample values.
-          </p>
-          <p>
-            Proposed interpolation schemes include:
-            <ul>
-              <li>Step: values remain constant until the next sample time, e.g. vehicle gear selection;</li>
-              <li>Linear: values are linearly interpolated to the next sample time, e.g. temperature;</li>
-              <li>Discrete: values are only valid instanteously at a sample time, e.g. headcount in a video frame.</li>
-            </ul>
-          </p>
-          <p>
-            An interpolation command could replace the <a>WebVMT animation subcommand</a> which is a specific example of the more general case and could incorporate identified design improvements.
           </p>
         </section>
         <section id='3dcoords'>
