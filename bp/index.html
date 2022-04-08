@@ -2418,7 +2418,7 @@ Connection: close
               <p>In practice, a publisher not documenting their <a>CRS</a> and presuming that <a>latitude</a> and <a>longitude</a> can be treated as cartesian is often bailed out by fuzzy use cases and software that takes care of projections. However, CRS and coordinate <a>axis order</a> ambiguity leads sooner or later to serious and avoidable errors, while ignorance of <a>datums</a> and <a>map projections</a> leads to broken applications. Furthermore, these practices will also become less and less tenable as new applications such as Augmented Reality require higher data precision and accuracy.</p>
             </aside>
 
-            <p>There are four common ways that this information can be provided:</p>
+            <p>There are five common ways that this information can be provided:</p>
             <ol>
               <li>
                 <p>Describe the <a>coordinate reference system</a> in the dataset metadata.</p>
@@ -2708,6 +2708,28 @@ Content-type: application/geo+json
                 <aside class="note">
                   <p>It is worth noting that, in the [[SIMPLE-FEATURES]] definition of <a>WKT</a>, the coordinate axis-order is by default longitude / latitude, irrespective of the <a>coordinate reference system</a> used. The same applies to <a href="http://www.postgis.net/docs/ST_AsEWKT.html">EWKT</a> (<em>Extended WKT</em>) &mdash; a PostGIS extension to <a>WKT</a> supported also by other <a>GIS</a> tools -, which includes a parameter (<code>SRID</code>) for specifying the coordinate reference system.</p>
                   <p>For this reason, whenever using <a>WKT</a> to encode <a>geometries</a>, it is important that the reference <a>WKT</a> specification can be unambiguously determined.</p>
+                </aside>
+              </li>
+              <li>
+                <p>Support advertising the used <a>CRS</a> in the endpoint serving the data.</p>
+                <p>Because of the inconsistent provision of CRS metadata in geospatial encodings and the continued confusion caused by the axis order of coordinates, OGC API Features part 2 [[OAF2]] defines a mechanism for a server to clearly and unambiguously assert the CRS and axis order being used in a response document independent of the requested output format. The method used is an HTTP header named <code>Content-Crs</code> containing a URI identifying the <a>CRS</a>. </p>
+                <aside class="example" id="advertise-crs-oaf" title="Advertise CRS using OGC API Features building block">
+                  <pre>
+                    $ curl -i "https://example.com/api/v1/collections/poi/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F3395"
+
+                    HTTP/1.1 200 OK
+                    Date: Sun, 24 May 2020 15:30:56 GMT
+                    Content-Type: application/geo+json
+                    Content-Language: en
+                    Content-Crs: <http://www.opengis.net/def/crs/EPSG/0/3395>
+                    Link: <https://example.com/api/v1/collections/poi/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F3395&f=json>; rel="self"; title="This document"; type="application/geo+json"
+                    Link: <https://example.com/api/v1/collections/poi/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F3395&f=html>; rel="alternate"; title="This document as HTML"; type="text/html"
+                    Link: <https://example.com/api/v1/collections/poi>; rel="collection"; title="The collection the feature belongs to"
+                    Vary: Accept-Language,Accept-Encoding
+                    Content-Length: 1064
+                 
+                    ...
+                  </pre>
                 </aside>
               </li>
             </ol>
@@ -3734,6 +3756,198 @@ Content-type: application/geo+json
             </ul>
           </section>
         </div>
+        
+        <div class="practicecontainer">
+          <div class="practice">
+            <p><span id="request-return-crs" class="practicelab">
+              Support requesting and returning geometries in a specific CRS
+            </span></p>
+            <p class="practicedesc">
+              If you expose spatial data in various <a>CRS</a>s via an API or other data access endpoint, offer a way for users to find out which CRSs are available, to do requests, and to access geometries in the CRS of their choice. 
+            </p>
+          </div>
+  
+            <section class="axioms">
+              <h4 class="subhead">Why</h4>
+              <p>
+                It is often useful to make <a>geometries</a> available in different <a>CRS</a>s. <a href="#bp-crs-choice" class="sectionRef"></a> describes why this is a good idea as well as how to decide which CRSs to provide. <a href="#bp-crs" class="sectionRef"></a> explains how the CRS of geometries should be made known. It follows that the default CRS that is offered should be WGS-84; and further that users should be able to find out which other CRSs are available and access geometries in the CRS of their choice.
+              </p>
+            </section>
+            <section class="outcome">
+              <h4 class="subhead">Intended Outcome</h4>
+              <p>
+                The endpoint allows the discovery of the supported <a>CRS</a>s and provides the ability to access geometries in the CRS of the user's choice. 
+              </p>
+            </section>
+            <section class="how">
+              <h4 class="subhead">Possible Approach to Implementation</h4>
+
+              <p>It is generally recommended to limit the number of supported <a>CRS</a>s in a data dissemination endpoint for clarity. Only support <a>CRS</a>s that make sense for the data. If a <a>CRS</a> doesn't cover the data, do not support it.</p>
+
+              <p>Offering geospatial data in different <a>CRS</a> in practice means the data needs to be transformed from the orinigal CRS to other supported CRSs. Database software and libraries for most programming languages are available which can do this. Reprojection can be done in advance and stored, or calculated at the time of a request. If reprojecting on request, since geographic data can be large and complex, it is recommended to cache the converted data to eliminate the need of reprojecting the same data more than once.</p>
+
+              <p>For Web APIs, CRS support should be offered in conformance to the OGC API building blocks related to CRS [[OAF2]]. These building blocks can be supported in any Web API: </p>
+
+              <ul>
+                <li>Users can discover the supported CRS by going to the collection object of a spatial thing. The collection contains a <code>crs</code> property which contains the identifiers for the list of CRSs supported by the server for that collection.</li>
+                <li>Users can request spatial things by sending a bounding box using coordinates in the <a>CRS</a> of their choice. The API supports a <code>bbox-crs</code> parameter in order to do this.</li>
+                <li>Users can request that spatial things are returned in the <a>CRS</a> of their choice. The API supports a <code>crs</code> parameter to this end. If the <code>crs</code> parameter is absent, spatial features are returned in the default <a>CRS</a>, which is WGS-84 (that is, http://www.opengis.net/def/crs/OGC/1.3/CRS84 for coordinates without ellipsoidal height and http://www.opengis.net/def/crs/OGC/0/CRS84h for coordinates with ellipsoidal height).</li>
+                <li>Not every geometry representation format supports different <a>CRS</a>s. If the user requests a content format that doesn't, the spatial things should not be returned in that format with coordinates in the requested CRS. Note that GeoJSON normatively supports WGS 84, but the "prior arrangement" provision allows other coordinate systems to be used. An explicit request by a client with a query parameter crs establishes a prior arrangement.</li>
+              </ul>
+              <aside class="example" id="example-oaf-collections" title="Example of OGC API Features Collections endpoint">
+                Response body of an OGC API Features /Collections endpoint with support for 5 coordinate reference systems: 
+
+                <pre>
+                  {
+                    "links": [
+                      {
+                        "href": "/collections",
+                        "rel": "self",
+                        "type": "application/json",
+                        "title": "this document"
+                      }
+                    ],
+                    "crs": [
+                      "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+                      "http://www.opengis.net/def/crs/EPSG/0/4326",
+                      "http://www.opengis.net/def/crs/EPSG/0/28992",
+                      "http://www.opengis.net/def/crs/EPSG/0/3857",
+                      "http://www.opengis.net/def/crs/EPSG/0/4258"
+                    ],
+                    "collections": [
+                      {
+                        "id": "Inspire_RCE rce_inspire_points",
+                        "title": "Inspire_RCE rce_inspire_points",
+                        "description": "",
+                        "extent": {
+                          "spatial": {
+                            "bbox": [
+                              [
+                                13854,
+                                306993.058008078,
+                                277502.058333333,
+                                617910
+                              ]
+                            ],
+                            "crs": "http://www.opengis.net/def/crs/EPSG/0/28992"
+                          }
+                        },
+                        "itemType": "feature",
+                        "links": [
+                          {
+                            "href": "/collections/Inspire_RCE rce_inspire_points/items",
+                            "rel": "items",
+                            "type": "application/geo+json",
+                            "title": "Inspire_RCE rce_inspire_points: items"
+                          }
+                        ],
+                        "crs": [
+                          "#/crs"
+                        ]
+                      }
+                    ]
+                  }
+                </pre>
+              </aside>
+              <aside class="example" id="example-oaf-request-crs" title="Example of an OGC API Features CRS request and response">
+                An example request and response for a specific spatial thing in a specific CRS: 
+
+                <pre>
+                  curl -X 'GET' \
+  'https://geoservice-ogc-api.azurewebsites.net/collections/Inspire_RCE%20rce_inspire_points/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F4326' \
+  -H 'accept: application/json'
+
+  Request URL
+https://geoservice-ogc-api.azurewebsites.net/collections/Inspire_RCE%20rce_inspire_points/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F4326
+
+  Response body
+
+  {
+  "links": [
+    {
+      "href": "collections/Inspire_RCE rce_inspire_points/items/1",
+      "rel": "self",
+      "type": "application/json",
+      "title": "this document"
+    },
+    {
+      "href": "collections/Inspire_RCE rce_inspire_points",
+      "rel": "collection",
+      "type": "application/json",
+      "title": "the collection containing this feature"
+    }
+  ],
+  "feature": {
+    "id": "Inspire_RCE rce_inspire_points.1",
+    "bbox": [
+      4.90005196383485,
+      52.3741456950321,
+      4.90005196383485,
+      52.3741456950321
+    ],
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        4.90005196383485,
+        52.3741456950321
+      ]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1,
+      "fid": "1",
+      "localid": "32478",
+      "namespace": "nlps-rijksmonumenten",
+      "versionid": "2021-11-30T15:36:47Z",
+      "legalfoundationdate": "2021-11-30T15:36:47Z",
+      "ci_citation": "https://monumentenregister.cultureelerfgoed.nl/monumenten/1?MonumentId=1",
+      "designationscheme": "https://data.cultureelerfgoed.nl/term/id/rn/b6103f26-22c6-4f0f-b480-0bd44d77c424",
+      "disignation": "onroerend gebouwd",
+      "percentageunderdesignation": "100",
+      "language": "nld",
+      "text": null,
+      "script": "Latn",
+      "siteprotectionclassification": "cultural"
+    },
+    "type": "Feature"
+  }
+}
+                </pre>
+              </aside>
+              
+              <p>In linked data endpoints, [[GeoSPARQL]] can be used to support user-requested <a>CRS</a>s.</p>
+              <p>In [[GeoSPARQL]] the <code>getSRID</code> function returns the spatial reference system of a <a>geometry</a>, thus making it possible to request a specific CRS at a (Geo)SPARQL endpoint. 
+              </p>
+              <aside class="example">
+                <pre>
+                  SELECT ?geo_wkt WHERE {
+                  ?geo geo:asWKT ?geo_wkt .
+                  FILTER(geof:getSRID(?geo_wkt)==http://www.opengis.net/def/crs/OGC/1.3/CRS84)
+                  }
+                </pre>
+              </aside>
+            </section>
+            <section class="test">
+              <h4 class="subhead">How to Test</h4>
+              <p>
+                Check if a test client can discover the supported CRSs, request spatial things using a bounding box in one of the supported CRS, and if the spatial things are returned in the requested CRS. 
+              </p>
+            </section>
+            <section class="ucr">
+              <h4 class="subhead">Evidence</h4>
+              <p><span>Relevant requirements</span>: <a href="https://www.w3.org/TR/sdw-ucr/#MultipleCRS">R-MultipleCRSs</a>, <a href="https://www.w3.org/TR/sdw-ucr/#AvoidCoordinateTransformations">R-AvoidCoordinateTransformations</a>, and <a href="https://www.w3.org/TR/sdw-ucr/#DeterminableCRS">R-DeterminableCRS</a>.
+                </p>
+            </section>
+            <section class="benefits">
+              <h4 class="subhead">Benefits</h4>
+              <ul class="benefitsList">
+                <li>Access</li>
+                <li>Discoverability</li>
+                <li>Processability</li>
+                <li>Reuse</li>
+              </ul>
+            </section>
+          </div>
       </section>
       <section id="bp-metadata">
         <h3>Spatial metadata</h3>
@@ -4179,21 +4393,10 @@ resource:d45678 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
       </p>
       <section id="c-geometrycrs">
         <h3>Requesting different representations of geometries</h3>
-        <p>There are several aspects to representing <a>geometries</a> on the Web. First, there is the question of different serialization formats to choose from. The different formats are described in <a href="#describe-geometry" class="sectionRef"></a>, but the Best Practice does not make a definitive choice as to which format is best. Although having only one format for geometries on the Web would reduce complexity, the currently available formats reflect different requirements with respect to data complexity and manipulation.  </p>
-        <p>A second, related aspect is whether to publish <a>geometries</a> on the Web in self-contained files such as [[GML]] or GeoJSON [[RFC7946]], or rather to embed geometries as structured data markup in HTML, or in an <a>RDF</a> [[RDF11-PRIMER]] based way i.e. as <a>Linked Data</a>. Choosing between these approaches &mdash; or not choosing but rather offering a combination of these &mdash; depends largely on the intended audience.</p>
+        <p>Different use cases may require geometries at different levels of accuracy, precision, and size. <a href="#multiplegeometries" class="sectionRef"></a> outlines some of the approaches to address this requirement, considering general application scenarios and providing guidance on the criteria to be taken into account for choosing the appropriate technique (e.g., compress geometry data, use compact formats, apply geometry generalization mechanisms). The overall recommendation is to make available multiple representations of geometry data, and to give data consumers the ability to identify those most fit for purpose. A variety of mechanisms can be used to achieve this, as publishing different geometry representations at different URIs, and accompanying them with a human- and/or machine-readable description of their characteristics (e.g., format, spatial resolution, scale, level of generalization). However, the lack of common practices in this area makes it difficult to provide consistent guidelines on how to publish and access different geometry representations.</p>        
         
-        <p>Another issue is about the fact that different use cases may require geometries at different levels of accuracy, precision, and size. <a href="#multiplegeometries" class="sectionRef"></a> outlines some of the approaches to address this requirement, considering general application scenarios and providing guidance on the criteria to be taken into account for choosing the appropriate technique (e.g., compress geometry data, use compact formats, apply geometry generalization mechanisms). The overall recommendation is to make available multiple representations of geometry data, and to give data consumers the ability to identify those most fit for purpose. A variety of mechanisms can be used to achieve this, as publishing different geometry representations at different URIs, and accompanying them with a human- and/or machine-readable description of their characteristics (e.g., format, spatial resolution, scale, level of generalization). However, the lack of common practices in this area makes it difficult to provide consistent guidelines on how to publish and access different geometry representations.</p>        
-        
-        <p>Finally, there is a question of how to make <a>geometries</a> available in different <a>CRS</a>s. <a href="#bp-crs-choice" class="sectionRef"></a> describes why this is a good idea as well as how to decide which CRSs to provide. <a href="#bp-crs" class="sectionRef"></a> explains how the CRS of geometries should be made known. It follows that users should be able to find out which CRSs are available and access geometries in the CRS of their choice. In an OGC <a>WFS</a> [[WFS]] request, users can specify the CRS they wish to use by specifying the srsName parameter. In [[GeoSPARQL]] the getSRID function returns the spatial reference system of a <a>geometry</a>, thus making it possible to request a specific CRS at a (Geo)SPARQL endpoint. However, these options require the user to be proficient in either Geospatial Web services or <a>Linked Data</a>. A best practice for requesting and returning geometries in a specific requested CRS has not yet emerged. Many options can be found in current practice, including  creating CRS-specific geometry properties (for example, the Dutch Land Registry does this), and supporting an option for requesting a specific CRS in a convenience API; but one best practice cannot yet be identified. </p>
-        <p>An option we considered was the use of content negotiation i.e. negotiate <a>CRS</a> as part of the content format for the geometry. A <a href="https://github.com/w3c/sdw/issues/757">concrete proposal</a> for this suggests the following:</p>
-        <ul>
-          <li>Servers can tell clients which CRS is used in the response using a new Content-Crs response header.</li>
-          <li>clients can tell servers which CRS is used in the request using a new Content-Crs request header.</li>
-          <li>clients can tell servers which CRS is preferred in the response using a new Accept-Crs request header.</li>
-        </ul>
-        <p>However, providing different <a>CRS</a> might be too complicated to handle in the HTTP protocol. For example, multidimensional datasets will in general use multiple CRSs (e.g. horizontal, vertical and temporal, maybe more), and conversion between CRSs will in general introduce errors, so data in one CRS are not exactly the same as data in another CRS. It might therefore be more appropriate to handle this in the application layer. Generally, choosing among various parameters options of data objects such as <a>geometries</a> would be an overloading of HTTP content negotiation protocols. </p>
         <aside class="note">
-          <p>On a more general level, content negotiation (as recommended in <a href="https://www.w3.org/TR/dwbp/#Conneg">DWBP Best Practice 19: Use content negotiation for serving data available in multiple formats</a>)  could be expanded to enable its use for choosing a 'profile' concerning the semantics and structure of the data, such as a data vocabulary. The <a href="https://www.w3.org/2017/dxwg/charter">Dataset Exchange WG (DXWG)</a> aspires to provide a REC for "content negotiation by profile" (see also [[RFC6906]] "profile" Link Relation Type).</p>
+          <p>On a more general level, content negotiation (as recommended in <a href="https://www.w3.org/TR/dwbp/#Conneg">DWBP Best Practice 19: Use content negotiation for serving data available in multiple formats</a>)  could be a way to deal with requesting different representations of geometries - be it different data formats, CRSs, levels of accuracy, etc. Content negotiation could be expanded to enable its use for choosing a 'profile' concerning the semantics and structure of the data, such as a data vocabulary. The <a href="https://www.w3.org/2017/dxwg/charter">Dataset Exchange WG (DXWG)</a> aspires to provide a REC for "content negotiation by profile" (see also [[RFC6906]] "profile" Link Relation Type).</p>
         </aside>
 
 <div class="issue" data-number="757"></div>
