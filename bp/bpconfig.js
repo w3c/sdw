@@ -251,6 +251,14 @@ var respecConfig = {
         "title": "Web Data",
         "date": "1 November 2016"
       },
+      "OAF1": {
+        "authors": ["Clemens Portele", "Panagiotis (Peter) A. Vretanos", "Charles Heazel"],
+        "href": "http://docs.ogc.org/is/17-069r3/17-069r3.html",
+        "title": "OGC API - Features - Part 1: Core",
+        "date": "14 October 2019",
+        "publisher": "OGC",
+        "status": "Approved",
+      },
       "OAF2": {
         "authors": ["Clemens Portele", "Panagiotis (Peter) A. Vretanos"],
         "href": "https://docs.ogc.org/is/18-058/18-058.html",
