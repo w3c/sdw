@@ -656,7 +656,7 @@ function bpCrossRefs() {
           <li>plain text documents; e.g. historical texts, government reports, blog posts etc.</li>
           <li>data files containing structured content or markup; e.g. geospatial vector data in <a href="https://en.wikipedia.org/wiki/Shapefile">Shapefile</a> or [[GML]] format, statistical data in tabular <a>CSV</a> format or a spreadsheet, as <a href="https://it.wikipedia.org/wiki/GPS_eXchange_Format"><abbr title="GPS eXchange Format">GPX</abbr></a> data with “waypoints” and “tracks”, satellite imagery in <a href="https://en.wikipedia.org/wiki/GeoTIFF">GeoTIFF</a>, climate simulations in <a href="https://en.wikipedia.org/wiki/NetCDF#Conventions"><abbr title="netCDF Climate and Forecast Metadata Conventions">CF-NetCDF</abbr></a> etc.</li>
           <li>a data repository; e.g. <a href="https://postgis.net/">PostGIS</a> (a spatially enabled relational database), <a href="https://en.wikipedia.org/wiki/Elasticsearch">Elasticsearch</a> (a document-oriented noSQL repository based on Apache Lucene), <a href="https://jena.apache.org/documentation/tdb/">Apache Jena’s TDB</a> (an RDF <a>triple store</a>)</li>
-          <li>exposed via an existing <abbr title="Application Programming Interface">API</abbr>; including OGC-compliant Web services such as <a>WFS</a> [[WFS]] and <a>WCS</a> [[WCS]].</li>
+          <li>exposed via an existing <abbr title="Application Programming Interface">API</abbr>; including OGC-compliant Web services and API's such as <a>WFS</a> [[WFS]], <a>WCS</a> [[WCS]] and <a>OGC API - Features</a> [[OAF1]].</li>
         </ol>
         <p>If your <a>spatial data</a> is managed within a software system it is likely that you will be able to access that data through one or more of the methods identified above; as structured data from a bulk extract (e.g. a “data dump”), via direct access to the underpinning data repository or through a bespoke or standards-compliant API provided by the system.</p>
 
@@ -670,7 +670,8 @@ function bpCrossRefs() {
 	    there is a lot of overlap between the FAIR Principles and the best practices described in this paper.</p>
 	  <p>Similarly, although not currently expressed in terms of the FAIR Principles,
 	    the Data on the Web Best Practices are also designed to make it easier for "data consumers to find, use and link to the data".</p>
-	  <p>There have also been some suggestions for improvement on the FAIR principles, and these are also discussed <a href="#FAIRPrinciples" class="sectionRef"></a>.</p>
+	  <p>The OGC is developing a new generation of resource-oriented HTTP APIs (e.g. <a>OGC API - Features</a> [[OAF1]]) for spatial data that align closely with FAIR principles.</p>
+    <p>There have also been some suggestions for improvement on the FAIR principles, and these are also discussed <a href="#FAIRPrinciples" class="sectionRef"></a>.</p>
 	</section>
       <section id="best-practice-criteria">
         <h3>Best practice criteria</h3>
@@ -2118,7 +2119,7 @@ Connection: close
 <p>Other issues to be taken into account are network bandwidth and the processing capabilities of the target tools. For instance, a <a>geometry</a> of a total size of 1GB or more, could be more efficiently transmitted after being compressed. On the other hand, a tool with limited processing capabilities (as a Web browser) may not be able to efficiently handle such geometry (e.g., for displaying it on a Web map).</p>
 <p>This best practice complements <a href="#describe-geometry"></a> by outlining some of the approaches that can be used to publish alternative versions of <a>geometry</a> data, with respect to the level of accuracy, precision, and size, fit for the most general use cases and the reference target communities.</p>
 <aside class="note">
-<p>This best practice is not meant to provide detailed guidelines on (a) which is the right level of accuracy and precision for different use cases, or (b) how to generate and publish alternative <a>geometries</a> for <a>Spatial Things</a>. On these specific topics, we refer the reader to, respectively, <a href="#convenience-apis"></a> and <a href="#desc-accuracy"></a>.</p>
+<p>This best practice is not meant to provide detailed guidelines on which is the right level of accuracy and precision, file size or geometry simplification for different use cases. For more on these topics, see <a href="#convenience-apis"></a> and <a href="#desc-accuracy"></a>.</p>
 </aside>
 </section>
 <section class="outcome">
@@ -2298,7 +2299,12 @@ Connection: close
                 <p>The Earth is a complicated shape (neither spherical nor flat!):</p>
                 <p>For each (Earth-based) <a>coordinate reference system</a>, the topographical surface of the Earth is approximated to a <em>geodetic <a>datum</a></em> that is described using an <a>ellipsoid</a>. The trouble with approximation is that nothing is perfect everywhere, which means that compromise is inevitable. Some datums, like WGS 84, provide a reasonable (but not highly accurate) fit everywhere on the Earth, while other datums (such as the European Terrestrial Reference System 1989 &mdash; as used by <a href="https://epsg.org/crs_4258/ETRS89.html">ETRS89 / EPSG:4258</a>) provide a better fit in a given region at the expense of accuracy elsewhere.</p>
                 <p><a>Spatial data</a> is often <em>projected</em> from the curved surface of the Earth onto a flat plane (e.g. a computer screen or a topographical map) to make it easier to compute distances between positions and calculate areas. There are many choices of projection (e.g. equirectangular, mercator, stereographic, orthographic etc.), each of which is designed for particular tasks. As with <a>datums</a>, projections are often chosen to better support regional, national or local needs.</p>
+	      </li>
+	      <li>
                 <p>It is also worth noting that as a living planet, the Earth continues to change its shape; for example, continental drift moves Australia north-eastwards several centimeters each year and New Zealand shifts in multiple directions. To retain accuracy, <a>datums</a> need to be adjusted from time to time &mdash; as is the case of the New Zealand Geodetic Datum (NZGD2000) that is frequently revised to take account of earth deformations.</p>
+		<p>Geodesists refer to those coordinate reference systems which are continually updated so that the same set of coordinates refers to the same place on (or near) the surface of the earth as 'plate-fixed' or 'static coordinate reference systems'; others (such as WGS 84) are 'earth-fixed' or 'dynamic' (a set of coordinates will not resolve to the same spot on the moving surface of the earth).</p>
+		<p>If your intended application requires a combination of positional accuracy and persistence over time, then use a static coordinate reference system or ensure that each set of coordinates is accompanied by the date it was measured.</p>
+		<p>See https://www.youtube.com/watch?v=IKM-bR6SwVs for further explanation.</p>
               </li>
               <li>
                 <p>Sometimes we don't want to measure relative to the surface of the Earth at all:</p>
@@ -2400,6 +2406,7 @@ Connection: close
           <section class="axioms">
             <h4 class="subhead">Why</h4>
             <p>The <a>geometry</a> of <a>Spatial Things</a> is described using position coordinates; for example, <a>latitude</a> and <a>longitude</a>. Because coordinates describe a position relative to a <a>datum</a> (e.g. zero latitude is the equator and zero longitude is the prime meridian &mdash; often the Greenwich Meridian), it is important to understand both the datum and the units that are used for coordinates along with the order which the coordinate axes are defined: the <a>coordinate reference system</a> (CRS). <a>Spatial data</a> is published in a wide variety of CRS. This variety can create confusion and inconsistencies in using and interpreting spatial data. Unless the CRS is known, errors are likely to be introduced when determining the position and extent of a <a>Spatial Thing</a> on the Earth and this makes comparing or combining spatial data from different sources extremely problematic.</p>
+	    <p>Where the application requires accuracy over time but the data uses a dynamic coordinate system, you will also need to provide the 'epoch' - the data the coordinates were recorded; see <a href="bp-crs-choice">Best Practice 7</a>.
           </section>
           <section class="outcome">
             <h4 class="subhead">Intended Outcome</h4>
@@ -2716,8 +2723,8 @@ Content-type: application/geo+json
               </li>
               <li>
                 <p>Support advertising the used <a>CRS</a> in the endpoint serving the data.</p>
-                <p>Because of the inconsistent provision of CRS metadata in geospatial encodings and the continued confusion caused by the axis order of coordinates, OGC API Features part 2 [[OAF2]] defines a mechanism for a server to clearly and unambiguously assert the CRS and axis order being used in a response document independent of the requested output format. The method used is an HTTP header named <code>Content-Crs</code> containing a URI identifying the <a>CRS</a>. </p>
-                <aside class="example" id="advertise-crs-oaf" title="Advertise CRS using OGC API Features building block">
+                <p>Because of the inconsistent provision of CRS metadata in geospatial encodings and the continued confusion caused by the axis order of coordinates, OGC API - Features part 2 [[OAF2]] defines a mechanism for a server to clearly and unambiguously assert the CRS and axis order being used in a response document independent of the requested output format. The method used is an HTTP header named <code>Content-Crs</code> containing a URI identifying the <a>CRS</a>. </p>
+                <aside class="example" id="advertise-crs-oaf" title="Advertise CRS using OGC API - Features building block">
                   <pre>
                     $ curl -i "https://example.com/api/v1/collections/poi/items/1?crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F3395"
 
@@ -3098,10 +3105,6 @@ Content-type: application/geo+json
                     <li>
                       <p><a href="http://open.vocab.org/terms/similarTo"><code>ov:similarTo</code></a> defined by <a href="http://vocab.org/open/">Open.vocab.org</a>, with the description:</p>
                       <blockquote>Having two things that are not the owl:sameAs but are similar to a certain extent. It is thought of being used where owl:sameAs is too strong but rdfs:seeAlso is too loose.</blockquote>
-                    </li>
-                    <li>
-                      <p><a href="http://www.bbc.co.uk/ontologies/coreconcepts#terms_sameAs"><code>http://www.bbc.co.uk/ontologies/coreconcepts/sameAs</code></a>, defined by the <a href="https://www.bbc.co.uk/">BBC</a>, whose description states that the property:</p>
-                      <blockquote>Indicates that something is the same as something else, but in a way that is slightly weaker than owl:sameAs. Its purpose is to connect separate identities of the same thing, whilst keeping separation between the original statements of each.</blockquote>
                     </li>
                   </ul>
 
@@ -3498,7 +3501,8 @@ Content-type: application/geo+json
           Observation Service</a>, <a>SensorThings</a> [[SENSORTHINGS]] or [[GeoSPARQL]] for access to data, or <a>Web Map Service</a> [[WMS]] 
           and <a>Web Map Tile Service</a> [[WMTS]] for access to data rendered as map. Apart from 
           the <a>Web Map Service</a>, the OGC standards have not seen widespread adoption 
-          beyond the geospatial expert community.</p>
+          beyond the geospatial expert community, however this is expected to change with the release of a number of resource oriented OGC APIs (e.g. OGC API - Features [[OAF1]]), which are more aligned to generally accepted patterns and practices in the web community. </p>
+          <p></p>
         <p>In addition, commercial offerings for publishing <a>spatial data</a> on the Web often provide
           access via product-specific APIs, too. These APIs are typically not restricted to 
           HTTP-based Web service APIs in the sense of [[DWBP]] <a 
@@ -3798,8 +3802,8 @@ Content-type: application/geo+json
                 <li>Users can request that spatial things are returned in the <a>CRS</a> of their choice. The API supports a <code>crs</code> parameter to this end. If the <code>crs</code> parameter is absent, spatial features are returned in the default <a>CRS</a>, which is WGS-84 (that is, http://www.opengis.net/def/crs/OGC/1.3/CRS84 for coordinates without ellipsoidal height and http://www.opengis.net/def/crs/OGC/0/CRS84h for coordinates with ellipsoidal height).</li>
                 <li>Not every geometry representation format supports different <a>CRS</a>s. If the user requests a content format that doesn't, the spatial things should not be returned in that format with coordinates in the requested CRS. Note that GeoJSON normatively supports WGS 84, but the "prior arrangement" provision allows other coordinate systems to be used. An explicit request by a client with a query parameter crs establishes a prior arrangement.</li>
               </ul>
-              <aside class="example" id="example-oaf-collections" title="Example of OGC API Features Collections endpoint">
-                Response body of an OGC API Features /Collections endpoint with support for 5 coordinate reference systems: 
+              <aside class="example" id="example-oaf-collections" title="Example of OGC API - Features Collections endpoint">
+                Response body of an OGC API - Features [[OAF1]] /Collections endpoint with support for 5 coordinate reference systems: 
 
                 <pre>
                   {
@@ -3853,7 +3857,7 @@ Content-type: application/geo+json
                   }
                 </pre>
               </aside>
-              <aside class="example" id="example-oaf-request-crs" title="Example of an OGC API Features CRS request and response">
+              <aside class="example" id="example-oaf-request-crs" title="Example of an OGC API - Features CRS request and response">
                 An example request and response for a specific spatial thing in a specific CRS: 
 
                 <pre>
@@ -4395,39 +4399,32 @@ resource:d45678 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
       <h2>Gaps in current practice</h2>
       <p>The best practices described in this best practice document are compiled based on evidence of real-world application, as described in <a href="#best-practice-criteria" class="sectionRef"></a>. However, there are several issues that inhibit the use or interoperability of <a>spatial data</a> on the Web, for which no evidence of real-world applied solutions is available. These issues are denoted “gaps in current practice”. In the case of gaps, there might be emerging practice i.e. a solution that has been theorized for a certain issue and has possibly been experimented on in beta settings, but not in production environments. Gaps and emerging practices in the area of publishing spatial data on the Web are discussed in this section.
       </p>
+
+      <p>The best practices, and also the gaps described in this document, focus on geometry-based spatial data i.e. vector data. There are other types of spatial data like coverages and meshes, but we do not discuss those in this section.</p>
+
       <section id="c-geometrycrs">
         <h3>Requesting different representations of geometries</h3>
         <p>Different use cases may require geometries at different levels of accuracy, precision, and size. <a href="#multiplegeometries" class="sectionRef"></a> outlines some of the approaches to address this requirement, considering general application scenarios and providing guidance on the criteria to be taken into account for choosing the appropriate technique (e.g., compress geometry data, use compact formats, apply geometry generalization mechanisms). The overall recommendation is to make available multiple representations of geometry data, and to give data consumers the ability to identify those most fit for purpose. A variety of mechanisms can be used to achieve this, as publishing different geometry representations at different URIs, and accompanying them with a human- and/or machine-readable description of their characteristics (e.g., format, spatial resolution, scale, level of generalization). However, the lack of common practices in this area makes it difficult to provide consistent guidelines on how to publish and access different geometry representations.</p>        
         
+        <p>A standardized way of requesting a geometry in a different CRS is decribed in OGC API Features part 2: Coordinate Reference Systems by Reference [[OAF2]]. This is done using parameters, which are defined in the standard, and with a <code>Content-Crs</code> response header to tell the client which CRS was used with the geometries in the response. </p>
+
         <aside class="note">
           <p>On a more general level, content negotiation (as recommended in <a href="https://www.w3.org/TR/dwbp/#Conneg">DWBP Best Practice 19: Use content negotiation for serving data available in multiple formats</a>)  could be a way to deal with requesting different representations of geometries - be it different data formats, CRSs, levels of accuracy, etc. Content negotiation could be expanded to enable its use for choosing a 'profile' concerning the semantics and structure of the data, such as a data vocabulary. The <a href="https://www.w3.org/2017/dxwg/charter">Dataset Exchange WG (DXWG)</a> aspires to provide a REC for "content negotiation by profile" (see also [[RFC6906]] "profile" Link Relation Type).</p>
         </aside>
-
-<div class="issue" data-number="757"></div>
-
-<div class="issue" data-number="1044"></div>
 
       </section>
       <section id="c-spatialdatavoc">
         <h3>Spatial data vocabulary</h3>
         <p>Although a large amount of <a>spatial data</a> has been published on the Web,  so far there are few authoritative datasets containing geometrical descriptions of their boundaries. Their number is growing (e.g. at the time of writing there are three authoritative spatial datasets publicly available as <a>linked data</a> in the Netherlands containing topographic, cadastral, and address data), but currently there is no common practice in the sense of the same spatial vocabulary being used by most spatial data publishers. Direct georeferencing of data implies representing coordinates or <a>geometries</a> and associating them to a <a>CRS</a>. This requires vocabularies for geometries and CRSs. The consequence is the lack of a baseline during the mapping process for application developers trying to consume specific incoming data. Datasets describing administrative units, points of interest or postal addresses with their labels and geometries, and identifying these <a>Spatial Things</a> with URIs could be beneficial not only for georeferencing other datasets, but also for interlinking datasets georeferenced by direct and indirect location information. </p>
-        <p>Currently, no single standardized vocabulary is available that covers all needs. A possible way forward is an update for the [[GeoSPARQL]] spatial ontology. This will provide an agreed spatial ontology, i.e. a bridge or common ground between geographical and non-geographical <a>spatial data</a> and between W3C and OGC standards; conformant to the [[ISO-19107]] abstract model and based on existing available ontologies such as [[GeoSPARQL]], the [[W3C-BASIC-GEO]] vocabulary, [[NeoGeo]] and the ISA Programme Location Core Vocabulary [[LOCN]]. </p>
-        <p>This vocabulary would define basic semantics for the concept of a reference system for spatial coordinates, a basic datatype, or basic datatypes for <a>geometry</a>, how geometry and real world objects are related and how different versions of <a>geometries</a> for a single real world object can be distinguished. For example, it makes sense to publish different geometric representations of a spatial object that can be used for different purposes. The same object could be modelled as a point, a 2D polygon or a 3D polygon. The polygons could have different versions with different resolutions (generalization levels). And all those different geometries could be published with different <a>coordinate reference systems</a>. Thus, the vocabulary would provide a foundation for harmonization of the many different geometry encodings that exist today.</p>
-
-<aside class="ednote">
-<p>To be verified if any update is needed, based on current work around the new version of [[GeoSPARQL]] (<a href="https://github.com/opengeospatial/ogc-geosparql">opengeospatial/ogc-geosparql</a>).</p>
-</aside>
+        <p>Currently, no single standardized vocabulary is available that covers all needs. Version 1.0 of the [[GeoSPARQL]] vocabulary is too limited to provide a good basis, but work to update the [[GeoSPARQL]] spatial ontology is underway. The first iteration of this update includes the addition of common classes for spatial object collections, and common properties for spatial object size, centroid, bounding box, etc. A companion CRS ontology is also on the way. This work will provide an agreed spatial ontology, i.e. a bridge or common ground between geographical and non-geographical <a>spatial data</a> and between W3C and OGC standards; conformant to the [[ISO-19107]] abstract model and aligned to existing available ontologies such as [[GeoSPARQL]] 1.0, the [[W3C-BASIC-GEO]] vocabulary, [[NeoGeo]] and the ISA Programme Location Core Vocabulary [[LOCN]]. </p>
+        <p>The ideal vocabulary would define basic semantics for the concept of a reference system for spatial coordinates, a basic datatype, or basic datatypes for <a>geometry</a>, how geometry and real world objects are related and how different versions of <a>geometries</a> for a single real world object can be distinguished. For example, it makes sense to publish different geometric representations of a spatial object that can be used for different purposes. The same object could be modelled as a point, a 2D polygon or a 3D polygon. The polygons could have different versions with different resolutions (generalization levels). And all those different geometries could be published with different <a>coordinate reference systems</a>. Thus, the vocabulary would provide a foundation for harmonization of the many different geometry encodings that exist today.</p>
 
       </section>
       <section>
         <h3>Describing dataset structure and service behaviors</h3>
-        <p>Even if all <a>spatial data</a> should become findable directly through search engines, data portals would still remain important hubs for data discovery &mdash; for example, because the metadata records registered there can be made crawlable. But in addition, different data portals can harvest each other's information provided there is consistency in the types and meaning of included information, even if structures and technologies vary. In the eGovernment sector, [[VOCAB-DCAT]] is a standard for dataset metadata publication and harvesting implemented by these portals. Because it is lacking in possibilities for describing some specific characteristics spatial datasets, an application profile for <a>spatial data</a>, [[GeoDCAT-AP]], has been developed in the framework of <a href="https://ec.europa.eu/isa2/">ISA Programme of the European Union</a>, with the primary purpose of enabling the sharing of spatial metadata across domains and catalogue platforms. [[GeoDCAT-AP]] is mentioned in the "Possible approach" section of several Best Practices in this document. </p>
-          <p>With the goal of sharing spatial metadata, [[GeoDCAT-AP]] defined <a>RDF</a> bindings covering the core profile of [[ISO-19115]] and the INSPIRE metadata schema [[INSPIRE-MD]], enabling the harmonized <a>RDF</a> representation of existing spatial metadata. The reason of this choice was to focus first on the most used metadata elements, whereas additional mappings could be defined in future versions of the specification, based on users’ and implementation feedback.</p>
-         <p>The next step is evolution towards a single standard for metadata as it is used in data portals, without loss of relevant metadata, while still understandable and not too complicated. A working group in the Open Geospatial Consortium is currently working on this.</p>
-
-<aside class="ednote">
-<p>To be updated, based on [[VOCAB-DCAT-2]] and [[GeoDCAT-AP-20201223]].</p>
-</aside>
+        <p>Even if all <a>spatial data</a> should become findable directly through search engines, data portals would still remain important hubs for data discovery &mdash; for example, because the metadata records registered there can be made crawlable. But in addition, different data portals can harvest each other's information provided there is consistency in the types and meaning of included information, even if structures and technologies vary. In the eGovernment sector, [[VOCAB-DCAT-2]] is a standard for dataset metadata publication and harvesting implemented by these portals. Because it is lacking in possibilities for describing some specific characteristics spatial datasets, an application profile for <a>spatial data</a>, [[GeoDCAT-AP-20201223]], has been developed in the framework of <a href="https://ec.europa.eu/isa2/">ISA Programme of the European Union</a>, with the primary purpose of enabling the sharing of spatial metadata across domains and catalogue platforms. [[GeoDCAT-AP-20201223]] is mentioned in the "Possible approach" section of several Best Practices in this document. </p>
+          <p>With the goal of sharing spatial metadata, [[GeoDCAT-AP-20201223]] defined <a>RDF</a> bindings covering the core profile of [[ISO-19115]] and the INSPIRE metadata schema [[INSPIRE-MD]], enabling the harmonized <a>RDF</a> representation of existing spatial metadata. The reason of this choice was to focus first on the most used metadata elements, whereas additional mappings could be defined in future versions of the specification, based on users’ and implementation feedback.</p>
+         <p>The next step is evolution towards a single standard for metadata as it is used in data portals, without loss of relevant metadata, while still understandable and not too complicated. A working group in the Open Geospatial Consortium is currently working on a standardized Web API, <a href="https://ogcapi.ogc.org/records/">OGC API Records</a>, for metadata publication and discovery. It offers the capability to create, modify, and query metadata on the Web by providing a simple, extendable record schema for describing datasets and other resources, a way to organize records in collections, and an API to access and interact with these collections. When finished, this standard will support the publication of metadata catalogs in conformance to the best practices in this document.</p>
 
       </section>
       <section id="c-dynamicdata">
@@ -4537,7 +4534,6 @@ resource:d45678 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
         <p>However, the current definition of <a href="http://schema.org/Place"><code>schema:Place</code></a> is a little too general:</p>
         <blockquote>Entities that have a somewhat fixed, physical extension.</blockquote>
         <p>This definition includes <em>anything</em> with spatial extent (i.e. all <a>Spatial Things</a>); we would consider "my car keys" to be a Spatial Thing, but not a place.</p>
-        <p>A continuation of the <a href="http://www.opengeospatial.org/projects/groups/sdwwg">SDW WG</a> intends to formally define <code>samePlaceAs</code>.</p>
       </section>
       <section id="c-inboundlinks">
         <h3>Discovering what refers <em>to</em> a Spatial Thing</h3>
@@ -5052,6 +5048,7 @@ There are a variety of approaches in use to try to match users with data that wi
       <p><dfn>Linked data</dfn>: The term ‘Linked Data’ refers to an approach to publishing data that puts linking at the heart of the notion of data, and uses the linking technologies provided by the Web to enable the weaving of a global distributed database [[LDP-PRIMER]].</p>
       <p><dfn data-lt="longitude|long|lon">Longitude</dfn>: The angular distance east or west of the prime meridian. Often abbreviated to <em>Long</em>.</p>
       <p><dfn data-lt="map projection|map projections">Map Projection</dfn>: A coordinate conversion from an ellipsoidal coordinate system to a plane, e.g. Transverse Mercator.</p>
+      <p><dfn>OGC API - Features</dfn>: A set of resource-oriented API building blocks for creating, modifying, and querying geographical features.</p>
       <p><dfn data-lt="Open-world assumption|open world assumption|OWA">Open-world assumption (OWA)</dfn>: In a formal system of logic used for knowledge representation, the open-world assumption asserts that the truth value of a statement may be true irrespective of whether or not it is known to be true. This assumption codifies the informal notion that in general no single agent or observer has complete knowledge. In essence, from the absence of a statement alone, a deductive reasoner cannot (and must not) infer that the statement is false. That is, a valid response to a logical query may be: true, false or unknown.</p>
       <p><dfn data-lt="Projected CRS|Projected Coordinate Reference Systems">Projected Coordinate Reference System</dfn>: A <a>coordinate reference system</a> derived from a two-dimensional geodetic coordinate reference system by applying a <a>map projection</a>.</p>
       <p><dfn data-lt="Resource description framework|RDF">Resource Description Framework (RDF)</dfn>: A directed, labeled graph data model for representing information in the Web. It may be serialized in several data formats such as N-Triples [[N-TRIPLES]], XML [[RDF-SYNTAX-GRAMMAR]], Terse Triple Language (“turtle” or TTL) [[TURTLE]] and [[JSON-LD]].</p>
