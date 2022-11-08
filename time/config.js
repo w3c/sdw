@@ -1,10 +1,11 @@
 var respecConfig = {
     specStatus: "ED",
+    // crEnd: "2023-02-15",
     shortName: "owl-time",
-    //publishDate:  "2016-05-18",
-    previousPublishDate: "2016-07-12",
-    previousMaturity: "WD",
-    previousURI: "https://www.w3.org/TR/2016/WD-owl-time-20160712/",
+    // publishDate:  "2022-11-15",
+    previousPublishDate: "2020-03-26",
+    previousMaturity: "CR",
+    previousURI: "https://www.w3.org/TR/2020/CR-owl-time-20200326/",
     edDraftURI: "https://w3c.github.io/sdw/time/",
     // lcEnd: "3000-01-01",
     // crEnd: "3000-01-01",
@@ -20,7 +21,8 @@ var respecConfig = {
         name:       "Chris Little",
         company:    "Met Office",
         companyURL: "http://www.metoffice.gov.uk/",
-        orcid:      "0000-0002-1442-3712"
+        orcid:      "0000-0002-1442-3712",
+        w3cid:      59886
       }],
     otherLinks: [
     {
@@ -38,24 +40,16 @@ var respecConfig = {
         value: "OGC 16-071r3"
       }]
     }],
-    wg: "Spatial Data on the Web Working Group",
-    wgURI: "https://www.w3.org/2015/spatial/",
+    group: "wg/sdw",
     wgPublicList: "public-sdw-comments",
-    wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
+    discussionUrl: "https://github.com/w3c/sdw/issues",
     implementationReportURI: "https://www.w3.org/2015/spatial/wiki/OWL_Time_Ontology_adoption",
     inlineCSS: true,
     noIDLIn: true,
     noLegacyStyle: false,
       logos: [
       {
-        src: "https://www.w3.org/StyleSheets/TR/2016/logos/W3C",
-        alt: "W3C",
-        height: "48",
-        width: "72",
-        url: "https://www.w3.org/"
-      },
-      {
-        src: "https://www.w3.org/2017/01/ogc_logo.png",
+        src: "ogc_logo.png",
         alt: "OGC",
         height: "68",
         width: "147",
@@ -180,7 +174,7 @@ var respecConfig = {
         title: "The process file of the OWL-S 0.9 release"
       },
       "rc-14": {
-        href: "http://nvlpubs.nist.gov/nistpubs/jres/109/2/j92cur.pdf",
+        // href: "http://nvlpubs.nist.gov/nistpubs/jres/109/2/j92cur.pdf",
         title: "The Remarkable Metrological History of Radiocarbon Dating [II]",
         date: "March-April 2004",
         authors: ["Journal of Research of the National Institute of Standards and Technology"]
