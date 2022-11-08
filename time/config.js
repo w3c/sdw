@@ -174,7 +174,7 @@ var respecConfig = {
         title: "The process file of the OWL-S 0.9 release"
       },
       "rc-14": {
-        // href: "http://nvlpubs.nist.gov/nistpubs/jres/109/2/j92cur.pdf",
+        href: "http://nvlpubs.nist.gov/nistpubs/jres/109/2/j92cur.pdf",
         title: "The Remarkable Metrological History of Radiocarbon Dating [II]",
         date: "March-April 2004",
         authors: ["Journal of Research of the National Institute of Standards and Technology"]
