@@ -19,11 +19,39 @@
         charterDisclosureURI: "https://www.w3.org/2017/sdwig/charter.html#patentpolicy",
         edDraftURI: "https://w3c.github.io/sdw/proposals/geotagging/webvmt/",
         shortName: "webvmt",
-        group: "sdw",
+        group: "wg/sdw",
         wgPublicList: "public-sdwig",
         github: "https://github.com/w3c/sdw"
       };
     </script>
+    <style>
+      .css.css {
+        color: #005a9c;
+        font-size: inherit;
+        font-family: inherit;
+      }
+      .css::before {
+        content: "‘";
+      }
+      .css::after {
+        content: "’";
+      }
+      .css-selector-table {
+        border-collapse: collapse;
+      }
+      .css-selector-table tr {
+        vertical-align: top;
+      }
+      .css-selector-table td {
+        border-top:1px solid silver;
+      }
+      .css-selector-table th, td {
+        padding: 0.5em 1em;
+      }
+      .css-selector-table pre {
+        background-color: inherit;
+      }
+    </style>
   </head>
   <body>
     <section id='abstract'>
@@ -1570,7 +1598,7 @@ mimetype:video/mp4
               A <a>WebVMT line terminator</a>.
             </li>
             <li>
-              Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN). The string represents a CSS style sheet; the requirements given in the relevant <a data-cite="CSS22" data-no-xref=''>CSS</a> specifications apply.
+              Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN). The string represents a CSS style sheet; the requirements given in the relevant <a data-cite='CSS22' data-no-xref=''>CSS</a> specifications apply.
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
@@ -2640,6 +2668,174 @@ NOTE Required blocks omitted for clarity
             In this ninety-second example, the two cues partly overlap, with the first ending before the second ends and the second starting before the first ends. This therefore is not a <a>WebVMT file using only nested cues</a>.
           </p>
         </section>
+      </section>
+    </section>
+    <section id='parsing'>
+      <h2>Parsing</h2>
+      <p>
+        WebVMT file parsing is the same for all types of WebVMT files. This is similar to <a data-cite="WEBVTT/#parsing">WebVTT parsing</a>, though most of the steps will be skipped as WebVMT files are metadata files.
+      </p>
+      <section id='node-objects'>
+        <h2>WebVMT Node Objects</h2>
+        <p>
+          A <dfn>WebVMT Node Object</dfn> is a conceptual construct used to represent components of cue text so that its processing can be described without reference to the underlying syntax.
+        </p>
+        <p>
+          There are two broad classes of <a>WebVMT Node Objects</a>: <a>WebVMT Internal Node Objects</a> and <a>WebVMT Leaf Node Objects</a>.
+        </p>
+        <p>
+          <dfn>WebVMT Internal Node Objects</dfn> are those that can contain further <a>WebVMT Node Objects</a>. They are conceptually similar to elements in HTML or the DOM. <a>WebVMT Internal Node Objects</a> have an ordered list of child <a>WebVMT Node Objects</a>. The <a>WebVMT Internal Node Object</a> is said to be the parent of the children. Cycles do not occur; the parent-child relationships so constructed form a tree structure.
+        </p>
+        <p>
+          There is one concrete class of <a>WebVMT Internal Node Objects</a>:
+        </p>
+        <dl>
+          <dt>
+            <dfn class='export'>Lists of WebVMT Node Objects</dfn>
+          </dt>
+          <dd>
+            These are used as root nodes for trees of <a>WebVMT Node Objects</a>.
+          </dd>
+        </dl>
+        <p>
+          <dfn>WebVMT Leaf Node Objects</dfn> are those that contain data, such as text, and cannot contain child <a>WebVMT Node Objects</a>.
+        </p>
+        <p>
+          There is one concrete class of <a>WebVMT Leaf Node Objects</a>:
+        </p>
+        <dl>
+          <dt>
+            <dfn>WebVMT Text Objects</dfn>
+          </dt>
+          <dd>
+            A fragment of text. A <a>WebVMT Text Object</a> has a value, which is the text it represents.
+          </dd>
+        </dl>
+      </section>
+    </section>
+    <section class='informative' id='css-extensions'>
+      <h2>CSS Extensions</h2>
+      <p class='note'>
+        This section specifies some CSS pseudo-elements and pseudo-classes and how they apply to WebVMT. This section does not apply to user agents that do not support CSS.
+      </p>
+      <section id='css-extensions-intro'>
+        <h2>Introduction</h2>
+        <p>
+          The <span class='css'>::cue-map</span> pseudo-element represents a map viewport.
+        </p>
+        <p>
+          The <span class='css'>::cue-map(<var>selector</var>)</span> pseudo-element represents an element inside a map viewport that matches the given selector.
+        </p>
+        <p class='note'>
+          Similarly to all other pseudo-elements, these pseudo-elements are not directly present in the <code>&lt;video&gt;</code> element’s document tree.
+        </p>
+        <aside class='example'>
+          The following table shows examples of what can be selected with a given selector, together with WebVMT syntax to produce the relevant objects.
+          <table class='css-selector-table'>
+            <tr>
+              <th>
+                Selector<br />(CSS syntax example)
+              </th>
+              <th>
+                Matches<br />(WebVMT syntax example)
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <span class='css'>::cue-map</span>
+                <pre class='nohighlight'>
+video::cue‑map {
+  stroke‑color: red;
+}
+                </pre>
+              </td>
+              <td>
+                Any <a>WebVMT Node Object</a> in the <a>WebVMT Map</a> Object.
+                <pre class='nohighlight'>
+WEBVMT
+
+NOTE Red
+
+00:00:00.000 --> 00:00:08.000
+{ "moveto":
+  { "lat": 51.504362, "lng": -0.076153 } }
+{ "lineto":
+  { "lat": 51.506646, "lng": -0.074651 } }
+
+NOTE Also red!
+
+00:00:08.000 --> 00:00:16.000
+{ "circle":
+  { "lat": 51.504789, "lng": -0.078642,
+    "rad": 20 } }
+                </pre>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a data-cite='SELECTORS4/#id-selector'>ID selector</a> in <span class='css'>::cue-map()</span>
+                <pre class='nohighlight'>
+video::cue‑map(#cue1) {
+  stroke‑color: red;
+}
+                </pre>
+              </td>
+              <td>
+                Any <a>WebVMT Node Object</a> in the <a>WebVMT Map</a> Object with the cue's <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>text track cue</a> identifier matching the given ID, e.g. cue1.
+                <pre class='nohighlight'>
+WEBVMT
+
+NOTE Red
+
+cue1
+00:00:00.000 --> 00:00:08.000
+{ "moveto":
+  { "lat": 51.504362, "lng": -0.076153 } }
+{ "lineto":
+  { "lat": 51.506646, "lng": -0.074651 } }
+
+NOTE Not red
+
+00:00:08.000 --> 00:00:16.000
+{ "circle":
+  { "lat": 51.504789, "lng": -0.078642,
+    "rad": 20 } }
+                </pre>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a data-cite='SELECTORS4/#attribute-selector'>Attribute selector</a> in <span class="css">::cue‑map()</span>
+                <pre class='nohighlight'>
+video::cue‑map([rad="20"]) {
+  stroke‑color: red;
+}
+                </pre>
+              </td>
+              <td>
+                Any <a>WebVMT Node Object</a> in the <a>WebVMT Map</a> Object with the cue’s <a>WebVMT command</a> attribute matching the given value, e.g. rad="20".
+                <pre class='nohighlight'>
+WEBVMT
+
+NOTE Not red
+
+00:00:00.000 --> 00:00:08.000
+{ "moveto":
+  { "lat": 51.504362, "lng": -0.076153 } }
+{ "lineto":
+  { "lat": 51.506646, "lng": -0.074651 } }
+
+NOTE Red
+
+00:00:08.000 --> 00:00:16.000
+{ "circle":
+  { "lat": 51.504789, "lng": -0.078642,
+    "rad": 20 } }
+                </pre>
+              </td>
+            </tr>
+          </table>
+        </aside>
       </section>
     </section>
     <section class='informative' id='knownissues'>
