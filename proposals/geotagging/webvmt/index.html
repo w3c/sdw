@@ -2673,45 +2673,598 @@ NOTE Required blocks omitted for clarity
     <section id='parsing'>
       <h2>Parsing</h2>
       <p>
-        WebVMT file parsing is the same for all types of WebVMT files. This is similar to <a data-cite="WEBVTT/#parsing">WebVTT parsing</a>, though most of the steps will be skipped as WebVMT files are metadata files.
+        WebVMT file parsing is the same for all types of WebVMT files. This is similar to <a data-cite='WEBVTT/#parsing'>WebVTT parsing</a>, though most of the steps will be skipped as WebVMT files are metadata files.
       </p>
-      <section id='node-objects'>
-        <h2>WebVMT Node Objects</h2>
+      <section id='file-parsing'>
+        <h2>WebVMT File Parsing</h2>
         <p>
-          A <dfn>WebVMT Node Object</dfn> is a conceptual construct used to represent components of cue text so that its processing can be described without reference to the underlying syntax.
+          A <dfn>WebVMT parser</dfn>, given an input byte stream, a <a data-cite='HTML51/semantics-embedded-content.html#text-track-list-of-cues'>text track list of cues</a> |output|, and a collection of <a data-cite='CSSOM-1/#css-style-sheets'>CSS style sheets</a> |stylesheets|, must decode the byte stream using the UTF-8 decode algorithm, and then must parse the resulting string according to the <a>WebVMT parser algorithm</a>. This results in <a>WebVMT cues</a> being added to |output|, and <a data-cite='CSSOM-1/#css-style-sheets'>CSS style sheets</a> being added to |stylesheets|.
         </p>
         <p>
-          There are two broad classes of <a>WebVMT Node Objects</a>: <a>WebVMT Internal Node Objects</a> and <a>WebVMT Leaf Node Objects</a>.
+          A <a>WebVMT parser</a>, specifically its conversion and parsing steps, is typically run asynchronously, with the input byte stream being updated incrementally as the resource is downloaded; this is called an <dfn>incremental WebVMT parser</dfn>.
         </p>
         <p>
-          <dfn>WebVMT Internal Node Objects</dfn> are those that can contain further <a>WebVMT Node Objects</a>. They are conceptually similar to elements in HTML or the DOM. <a>WebVMT Internal Node Objects</a> have an ordered list of child <a>WebVMT Node Objects</a>. The <a>WebVMT Internal Node Object</a> is said to be the parent of the children. Cycles do not occur; the parent-child relationships so constructed form a tree structure.
+          A <a>WebVMT parser</a> verifies a file signature before parsing the provided byte stream. If the stream lacks this WebVMT file signature, then the parser aborts.
         </p>
         <p>
-          There is one concrete class of <a>WebVMT Internal Node Objects</a>:
-        </p>
-        <dl>
-          <dt>
-            <dfn class='export'>Lists of WebVMT Node Objects</dfn>
-          </dt>
-          <dd>
-            These are used as root nodes for trees of <a>WebVMT Node Objects</a>.
-          </dd>
-        </dl>
-        <p>
-          <dfn>WebVMT Leaf Node Objects</dfn> are those that contain data, such as text, and cannot contain child <a>WebVMT Node Objects</a>.
+          The <dfn>WebVMT parser algorithm</dfn> is as follows:
         </p>
         <p>
-          There is one concrete class of <a>WebVMT Leaf Node Objects</a>:
+          <ol>
+            <li>
+              Let |input| be the string being parsed, after conversion to Unicode, and with the following transformations applied:
+            </li>
+            <ul>
+              <li>
+                Replace all U+0000 NULL characters by U+FFFD REPLACEMENT CHARACTERs.
+              </li>
+              <li>
+                Replace each U+000D CARRIAGE RETURN U+000A LINE FEED (CRLF) character pair by a single U+000A LINE FEED (LF) character.
+              </li>
+              <li>
+                Replace all remaining U+000D CARRIAGE RETURN characters by U+000A LINE FEED (LF) characters.
+              </li>
+            </ul>
+            <li>
+              Let |position| be a pointer into |input|, initially pointing at the start of the string. In an <a>incremental WebVMT parser</a>, when this algorithm (or further algorithms that it uses) moves the |position| pointer, the user agent must wait until appropriate further characters from the byte stream have been added to |input| before moving the pointer, so that the algorithm never reads past the end of the |input| string. Once the byte stream has ended, and all characters have been added to |input|, then the |position| pointer may, when so instructed by the algorithms, be moved past the end of |input|.
+            </li>
+            <li>
+              Let |seen cue| be false.
+            </li>
+            <li>
+              If |input| is less than six characters long, then abort these steps. The file does not start with the correct <a>WebVMT file</a> signature and was therefore not successfully processed.
+            </li>
+            <li>
+              If |input| is exactly six characters long but does not exactly equal "<code>WEBVMT</code>", then abort these steps. The file does not start with the correct <a>WebVMT file</a> signature and was therefore not successfully processed.
+            </li>
+            <li>
+              If |input| is more than six characters long but the first six characters do not exactly equal "<code>WEBVMT</code>", or the seventh character is not a U+0020 SPACE character, a U+0009 CHARACTER TABULATION (tab) character, or a U+000A LINE FEED (LF) character, then abort these steps. The file does not start with the correct <a>WebVMT file</a> signature and was therefore not successfully processed.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are not U+000A LINE FEED (LF) characters.
+            </li>
+            <li>
+              If |position| is past the end of |input|, then abort these steps. The file was successfully processed, but it contains no useful data and so no <a>WebVMT cues</a> were added to |output|.
+            </li>
+            <li>
+              The character indicated by |position| is a U+000A LINE FEED (LF) character. Advance |position| to the next character in |input|.
+            </li>
+            <li>
+              If |position| is past the end of |input|, then abort these steps. The file was successfully processed, but it contains no useful data and so no <a>WebVMT cues</a> were added to output.
+            </li>
+            <li>
+              <i>Header:</i> If the character indicated by |position\ is not a U+000A LINE FEED (LF) character, then <a>collect a WebVMT block</a> with the |in header| flag set. Otherwise, advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are U+000A LINE FEED (LF) characters.
+            </li>
+            <li>
+              Let |map| be null.
+            </li>
+            <li>
+              <i>Block loop:</i> While |position| doesn’t point past the end of |input|:
+              <ol>
+                <li>
+                  <a>Collect a WebVMT block</a>, and let |block| be the returned value.
+                </li>
+                <li>
+                  If |block| is a <a>WebVMT cue</a>, add |block| to the text track list of cues |output|.
+                </li>
+                <li>
+                  Otherwise, if |block| is a CSS style sheet, add |block| to |stylesheets|.
+                </li>
+                <li>
+                  Otherwise, if |block| is a <a>WebVMT map object</a>, let |map| be |block|.
+                </li>
+                <li>
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are U+000A LINE FEED (LF) characters.
+                </li>
+              </ol>
+            </li>
+            <li>
+              <i>End:</i> The file has ended. Abort these steps. The <a>WebVMT parser</a> has finished. The file was successfully processed.
+            </li>
+          </ol>
         </p>
-        <dl>
-          <dt>
-            <dfn>WebVMT Text Objects</dfn>
-          </dt>
-          <dd>
-            A fragment of text. A <a>WebVMT Text Object</a> has a value, which is the text it represents.
-          </dd>
-        </dl>
+        <p>
+          When the algorithm above says to <dfn>collect a WebVMT block</dfn>, optionally with a flag |in header| set, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |seen cue| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |line count| be zero.
+            </li>
+            <li>
+              Let |previous position| be |position|.
+            </li>
+            <li>
+              Let |line| be the empty string.
+            </li>
+            <li>
+              Let |buffer| be the empty string.
+            </li>
+            <li>
+              Let |seen EOF| be false.
+            </li>
+            <li>
+              Let |seen arrow| be false.
+            </li>
+            <li>
+              Let |cue| be null.
+            </li>
+            <li>
+              Let |stylesheet| be null.
+            </li>
+            <li>
+              Let |map| be null.
+            </li>
+            <li>
+              Let |media metadata| be null.
+            </li>
+            <li>
+              <i>Loop:</i> Run these substeps in a loop:
+              <ol>
+                <li>
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <i>not</i> U+000A LINE FEED (LF) characters. Let |line| be those characters, if any.
+                </li>
+                <li>
+                  Increment |line count| by 1.
+                </li>
+                <li>
+                  If |position| is past the end of |input|, let |seen EOF| be true. Otherwise, the character indicated by |position| is a U+000A LINE FEED (LF) character; advance |position| to the next character in |input|.
+                </li>
+                <li>
+                  If |line| contains the three-character substring "-->" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), then run these substeps:
+                  <ol>
+                    <li>
+                      If |in header| is not set and at least one of the following conditions are true:
+                      <ul>
+                        <li>
+                          |line count| is 1
+                        </li>
+                        <li>
+                          |line count| is 2 and |seen arrow| is false
+                        </li>
+                      </ul>
+                      ...then run these substeps:
+                      <ol>
+                        <li>
+                          Let |seen arrow| be true.
+                        </li>
+                        <li>
+                          Let |previous position| be |position|.
+                        </li>
+                        <li>
+                          <i>Cue creation:</i> Let |cue| be a new <a>WebVMT cue</a> and initialize it as follows:
+                          <ol>
+                            <li>
+                              Let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-identifier'>text track cue identifier</a> be |buffer|.
+                            </li>
+                            <li>
+                              Let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-pause-on-exit-flag'>text track cue pause-on-exit flag</a> be false.
+                            </li>
+                            <li>
+                              Let |cue|'s <a>cue text</a> be the empty string.
+                            </li>
+                          </ol>
+                        </li>
+                        <li>
+                          <a>Collect WebVMT cue timings</a> from |line| for |cue|. If that fails, let |cue| be null. Otherwise, let |buffer| be the empty string and let |seen cue| be true.
+                        </li>
+                      </ol>
+                      Otherwise, let |position| be |previous position| and break out of <i>loop</i>.
+                    </li>
+                  </ol>
+                  <li>
+                    Otherwise, if |line| is the empty string, break out of <i>loop</i>.
+                  </li>
+                  <li>
+                    Otherwise, run these substeps:
+                    <ol>
+                      <li>
+                        If |in header| is not set and |line count| is 2, run these substeps:
+                        <ol>
+                          <li>
+                            If |seen cue| is false and |buffer| starts with the substring "<code>STYLE</code>" (U+0053 LATIN CAPITAL LETTER S, U+0054 LATIN CAPITAL LETTER T, U+0059 LATIN CAPITAL LETTER Y, U+004C LATIN CAPITAL LETTER L, U+0045 LATIN CAPITAL LETTER E), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
+                            <ol>
+                              <li>
+                                <p>
+                                  Let |stylesheet| be the result of <a data-cite='CSSOM-1/#create-a-css-style-sheet'>creating a CSS style sheet</a>, with the following properties:
+                                </p>
+                                <dl>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-location'>location</a>
+                                  </dt>
+                                  <dd>
+                                    null
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-parent-css-style-sheet'>parent CSS style sheet</a>
+                                  </dt>
+                                  <dd>
+                                    null
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-owner-node'>owner node</a>
+                                  </dt>
+                                  <dd>
+                                    null
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-owner-css-rule'>owner CSS rule</a>
+                                  </dt>
+                                  <dd>
+                                    null
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-media'>media</a>
+                                  </dt>
+                                  <dd>
+                                    The empty string.
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-title'>title</a>
+                                  </dt>
+                                  <dd>
+                                    The empty string.
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-alternate-flag'>alternate flag</a>
+                                  </dt>
+                                  <dd>
+                                    Unset.
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-origin-clean-flag'>origin-clean flag</a>
+                                  </dt>
+                                  <dd>
+                                    Set.
+                                  </dd>
+                                </dl>
+                              </li>
+                              <li>
+                                Let |buffer| be the empty string.
+                              </li>
+                            </ol>
+                          </li>
+                          <li>
+                            Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>MAP</code>" (U+004D LATIN CAPITAL LETTER M, U+0041 LATIN CAPITAL LETTER A, U+0050 LATIN CAPITAL LETTER P), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
+                            <ol>
+                              <li>
+                                <i>Map creation:</i> Let |map| be a new <a>WebVMT map</a>.
+                              </li>
+                              <li>
+                                Let |buffer| be the empty string.
+                              </li>
+                            </ol>
+                          </li>
+                          <li>
+                            Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>MEDIA</code>" (U+004D LATIN CAPITAL LETTER M, U+0045 LATIN CAPITAL LETTER E, U+0044 LATIN CAPITAL LETTER D, U+0049 LATIN CAPITAL LETTER I, U+0041 LATIN CAPITAL LETTER A), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
+                            <ol>
+                              <li>
+                                <i>Media creation:</i> Let |media metadata| be a new <a>WebVMT media</a>.
+                              </li>
+                              <li>
+                                Let |buffer| be the empty string.
+                              </li>
+                            </ol>
+                          </li>
+                        </ol>
+                      </li>
+                      <li>
+                        If |buffer| is not the empty string, append a U+000A LINE FEED (LF) character to |buffer|.
+                      </li>
+                      <li>
+                        Append |line| to |buffer|.
+                      </li>
+                      <li>
+                        Let |previous position| be |position|.
+                      </li>
+                    </ol>
+                  </li>
+                </li>
+                <li>
+                  If |seen EOF| is true, break out of <i>loop</i>.
+                </li>
+              </ol>
+            </li>
+            <li>
+              If |cue| is not null, let the <a>cue text</a> of |cue| be |buffer|, and return |cue|.
+            </li>
+            <li>
+              Otherwise, if |stylesheet| is not null, then <a data-cite='CSS-SYNTAX-3/#parse-a-stylesheet'>parse a stylesheet</a> from |buffer|. If it returned a list of rules, assign the list as |stylesheet|'s <a data-cite='CSSOM-1/#concept-css-style-sheet-css-rules'>CSS rules</a>; otherwise, set |stylesheet|'s <a data-cite='CSSOM-1/#concept-css-style-sheet-css-rules'>CSS rules</a> to an empty list. Finally, return |stylesheet|.
+            </li>
+            <li>
+              Otherwise, if |map| is not null, then <a>collect WebVMT map settings</a> from |buffer| using |map| for the results. Construct a <a>WebVMT map object</a> from |map|, and return it.
+            </li>
+            <li>
+              Otherwise, if |media metadata| is not null, then <a>collect WebVMT media settings</a> from |buffer| using |media metadata| for the results. Construct a <a>WebVMT media object</a> from |media metadata|, and return it.
+            </li>
+            <li>
+              Otherwise, return null.
+            </li>
+
+
+          </ol>
+        </p>
       </section>
+      <section id='map-settings-parsing'>
+        <h2>WebVMT Map Settings Parsing</h2>
+        <p>
+          When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT map settings</dfn> from a string input for a text track, the user agent must run the following algorithm.
+        </p>
+        <p>
+          A <dfn>WebVMT map object</dfn> is a conceptual construct to represent a <a>WebVMT map</a> that is used as a root node for <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT map object</a>.
+        </p>
+        <p>
+          #### TO DO 3 ####
+        </p>
+      </section>
+      <section id='media-settings-parsing'>
+        <h2>WebVMT Media Settings Parsing</h2>
+        <p>
+          When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT media settings</dfn> from a string input for a text track, the user agent must run the following algorithm.
+        </p>
+        <p>
+          A <dfn>WebVMT media object</dfn> is a conceptual construct to represent a <a>WebVMT media</a> that is used as a root node for <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT media object</a>.
+        </p>
+        <p>
+          #### TO DO 3a ####
+        </p>
+      </section>
+      <section id='cue-timings-parsing'>
+        <h2>WebVMT Cue Timings Parsing</h2>
+        <p>
+          When the algorithm above says to <dfn>collect WebVMT cue timings</dfn> from a string input using a text track list of maps |maps| for a <a>WebVMT cue</a> |cue|, the user agent must run the following algorithm.
+        </p>
+        <p>
+          #### TO DO 4 ####
+        </p>
+        <p>
+          When the user agent is to <dfn>parse the WebVMT cue settings</dfn> from a string input using a text track list of maps |maps| for a text track cue |cue|, the user agent must run the following steps:
+        </p>
+        <p>
+          #### TO DO 5 ####
+        </p>
+      </section>
+      <section id='cue-text-parsing'>
+        <h2>WebVMT Cue Text Parsing</h2>
+        <p>
+          A <dfn>WebVMT node object</dfn> is a conceptual construct used to represent components of cue text so that its processing can be described without reference to the underlying syntax.
+        </p>
+        <p>
+          There are two broad classes of <a>WebVMT node objects</a>: <a>WebVMT internal node objects</a> and <a>WebVMT leaf node objects</a>.
+        </p>
+        <p>
+          <dfn>WebVMT internal node objects</dfn> are those that can contain further <a>WebVMT node objects</a>. They are conceptually similar to elements in HTML or the DOM. <a>WebVMT internal node objects</a> have an ordered list of child <a>WebVMT node objects</a>. The <a>WebVMT internal node object</a> is said to be the parent of the children. Cycles do not occur; the parent-child relationships so constructed form a tree structure.
+        </p>
+        <p>
+          There is one concrete class of <a>WebVMT internal node objects</a>:
+        </p>
+        <dl>
+          <dt>
+            <dfn>List of WebVMT node objects</dfn>
+          </dt>
+          <dd>
+            This is used as a root node for trees of <a>WebVMT node objects</a>.
+          </dd>
+        </dl>
+        <p>
+          <dfn>WebVMT leaf node objects</dfn> are those that contain data, such as text, and cannot contain child <a>WebVMT node objects</a>.
+        </p>
+        <p>
+          There is one concrete class of <a>WebVMT leaf node objects</a>:
+        </p>
+        <dl>
+          <!--dt>
+            <dfn>WebVMT text objects</dfn>
+          </dt>
+          <dd>
+            A fragment of text. A <a>WebVMT text object</a> has a value, which is the text it represents.
+          </dd-->
+          <dt>
+            <dfn>WebVMT data objects</dfn>
+          </dt>
+          <dd>
+            A fragment of structured data. A <a>WebVMT data object</a> is an array of objects, which is a list of the data structures and values it represents.
+          </dd>
+        </dl>
+        <p>
+          The <dfn>WebVMT cue text parsing rules</dfn> consist of the following algorithm. The input is a string |input| supposedly containing <a>WebVMT metadata text</a>. This algorithm returns a <a>list of WebVMT node objects</a>.
+        </p>
+        <p>
+          #### TO DO 6 ####
+        </p>
+        <p>
+          The <dfn>WebVMT cue text tokenizer</dfn> is as follows. It emits a token, which is a string (whose value is a sequence of characters).
+        </p>
+        <p>
+          #### TO DO 7 ####
+        </p>
+      </section>
+    </section>
+    <section id='rendering'>
+      <h2>Rendering</h2>
+      <p class='note'>
+        This section describes how to visually render WebVMT cues in a user agent. The processing model is quite tightly linked to media elements in HTML, where CSS is available. User agents that do not support CSS are expected to render cues without styling features. User agents that do not support a full HTML CSS engine are expected to render an equivalent visual representation to what a user agent with a full CSS engine would render.
+      </p>
+      <section id='processing-model'>
+        <h2>Processing Model</h2>
+        <p>
+          The <dfn>rules for updating the display of WebVMT text tracks</dfn> render the <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> of a <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a> (either a <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'>&lt;video&gt;</a> or <a data-cite='HTML51/semantics-embedded-content.html#the-audio-element'>&lt;audio&gt;</a> element), or of another playback mechanism, by applying the steps below.
+        </p>
+        <p class='note'>
+          When authors create WebVMT metadata, they need to publish them with a <a data-cite='HTML51/semantics-embedded-content.html#the-div-element'>&lt;div&gt;</a> element for rendering the map viewport by the user agent. This is associated using the <code>for</code> attribute of the <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'>&lt;track&gt;</a> element.
+        </p>
+        <p>
+          The output of the steps below is a set of CSS boxes that covers the rendering area of the <a data-cite='HTML51/semantics-embedded-content.html#the-div-element'>&lt;div&gt; element</a>, which user agents are expected to render in a manner suiting the user.
+        </p>
+        <p>
+          The rules are as follows:
+          <ol>
+            <li>
+              Let |media| be the <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a> or other playback mechanism.
+            </li>
+            <li>
+              Let |output| be an empty list of absolutely positioned CSS block boxes.
+            </li>
+            <li>
+              Let |tracks| be the subset of |media|'s <a data-cite='HTML51/semantics-embedded-content.html#list-of-text-tracks'>list of text tracks</a> that have as their <a data-cite='HTML51/semantics-embedded-content.html#rules-for-updating-the-text-track-rendering'>rules for updating the text track rendering</a> these <a>rules for updating the display of WebVMT text tracks</a>, and whose <a data-cite='HTML51/semantics-embedded-content.html#text-track-mode'>text track mode</a> is <a data-cite='HTML51/semantics-embedded-content.html#text-track-showing'>showing</a>.
+            </li>
+            <li>
+              Let |cues| be an empty list of <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>text track cues</a>.
+            </li>
+            <li>
+              For each track |track| in |tracks|, append to |cues| all the <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>cues</a> from track’s <a data-cite='HTML51/semantics-embedded-content.html#text-track-list-of-cues'>list of cues</a> that have their <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-active-flag'>text track cue active flag</a> set.
+            </li>
+            <li>
+              Let |maps| be an empty list of <a>WebVMT maps</a>.
+            </li>
+            <li>
+              For each track |track| in |tracks|, append to |maps| the map with an identifier equal to the |track|'s <a>map object</a>.
+            </li>
+            <li>
+              If the user agent is <a data-cite='HTML51/semantics-embedded-content.html#expose-a-user-interface-to-the-user'>exposing a user interface</a> for |media|, add to |output| one or more completely transparent positioned CSS block boxes that cover the same region as the <a>map objects</a> in |maps|.
+            </li>
+            <li>
+              If the last time these rules were run, the user agent was not <a data-cite='HTML51/semantics-embedded-content.html#expose-a-user-interface-to-the-user'>exposing a user interface</a> for |media|, but now it is, optionally let |reset| be true. Otherwise, let |reset| be false.
+            </li>
+            <li>
+              If |reset| is false, then, for each <a>WebVMT map</a> |map| in |maps| let |mapNode| be a <a>WebVMT map object</a>.
+            </li>
+            <li>
+              Apply the following steps for each |mapNode|:
+              <ol>
+                <li>
+                  Apply the terms of the CSS specifications to |mapNode| within the following constraints, thus obtaining a CSS box |box| positioned relative to an initial containing block:
+                </li>
+                <ol>
+                  <li>
+                    No style sheets are associated with |mapNode|. (The mapNodes are subsequently restyled using style sheets after their boxes are generated, as described below.)
+                  </li>
+                  <li>
+                    Properties on |mapNode| have their values set as defined in the next section. (That section uses some of the variables whose values were calculated earlier in this algorithm.)
+                  </li>
+                  <li>
+                    The map viewport (and initial containing block) is map rendering area.
+                  </li>
+                </ol>
+                <li>
+                  Add the CSS box |box| to |output|.
+                </li>
+              </ol>
+            </li>
+            <li>
+              If |reset| is false, then, for each <a>WebVMT cue</a> |cue| in |cues|: if |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-display-state'>text track cue display state</a> has a set of CSS boxes, then add those boxes to that map's |box| and remove |cue| from |cues|.
+            </li>
+            <li>
+              For each <a>WebVMT cue</a> |cue| in |cues| that has not yet had corresponding CSS boxes added to |output|, in <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-order'>text track cue order</a>, run the following substeps:
+              <ol>
+                <li>
+                  Let |nodes| be the <a>list of WebVMT node objects</a> obtained by applying the <a>WebVMT cue text parsing rules</a>, to the |cue|'s <a>cue text</a>.
+                </li>
+                <li>
+                  Run the following substeps:
+                  <ol>
+                    <li>
+                      Let |map| be |cue|'s <a>map object</a>.
+                    </li>
+                    <li>
+                      <a>Obtain a set of CSS boxes</a> |boxes| positioned relative to an initial containing block.
+                    </li>
+                    <li>
+                      Let |cue|’s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-display-state'>text track cue display state</a> have the CSS boxes in |boxes|.
+                    </li>
+                    <li>
+                      Add the CSS boxes in |boxes| to |map|.
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+            <li>
+              Return |output|.
+            </li>
+          </ol>
+        </p>
+      </section>
+      <section id='obtaining-css-boxes'>
+        <h2>Obtaining CSS Boxes</h2>
+        <p>
+          When the processing algorithm above requires that the user agent <dfn>obtain a set of CSS boxes</dfn> |boxes|, then apply the terms of the <a data-cite='CSS22' data-no-xref=''>CSS</a> specifications to |nodes| within the following constraints:
+          <ul>
+            <li>
+              The |document tree| is the tree of <a>WebVMT node objects</a> rooted at |nodes|.
+            </li>
+            <li>
+              For the purpose of selectors in <code>STYLE</code> blocks of a WebVMT file, the style sheet must apply to a hypothetical document that contains a single empty element with no explicit name, no namespace, no attributes, no classes, and no IDs, that acts like the <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a> for the <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> that were sourced from the given WebVMT file. The selectors must not match other <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> for the same <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a>. In this hypothetical document, the element must not match any selector that would match the element itself.
+            </li>
+            <li class='note'>
+              This element exists only to be the originating element for the <span class='css'>::cue-map</span> and <span class='css'>::cue-map()</span> pseudo-elements.
+            </li>
+            <li>
+              For the purpose of determining the cascade of the declarations in <code>STYLE</code> blocks of a WebVMT file, the relative order of appearance of the style sheets must be the same order as they were added to the collection, and the order of appearance of the collection must be after any style sheets that apply to the associated video element’s document.
+            </li>
+            <p>
+              For example, given the following (invalid) HTML document:
+            </p>
+            <pre class='nohighlight example' title='Cascade Style HTML'>
+&lt;!doctype html&gt;
+&lt;title&gt;Invalid cascade example&lt;/title&gt;
+&lt;video controls autoplay src="video.webm"&gt;
+  &lt;track default src="cascade.vmt"&gt;
+&lt;/video&gt;
+&lt;style&gt;
+  ::cue { color:red }
+&lt;/style&gt;
+            </pre>
+            <p>
+              And the "cascade.vmt" file contains:
+            </p>
+            <pre class='nohighlight example' title='Cascade Style VMT'>
+WEBVMT
+
+STYLE
+::cue { color:lime }
+
+00:00:00.000 --> 00:00:25.000
+Red or green?
+            </pre>
+            <p>
+              The <span class='css'>color:lime</span> declaration would win, because it is last in the <a data-cite='CSS-CASCADE-4/#cascade'>cascade</a>, even though the style element is after the <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'>&lt;video&gt;</a> element in the document order.
+            </p>
+            <li>
+              For the purpose of resolving URLs in <code>STYLE</code> blocks of a WebVMT file, or any URLs in resources referenced from <code>STYLE</code> blocks of a WebVMT file, if the URL's scheme is not "data", then the user agent must act as if the URL failed to resolve.
+            </li>
+            <li>
+              For the purposes of processing by the CSS specification, <a>WebVMT internal node objects</a> are equivalent to elements with the same contents.
+            </li>
+            <li>
+              For the purposes of processing by the CSS specification, <a>WebVMT data objects</a> are equivalent to elements representing the same data structures.
+            </li>
+            <li>
+              No style sheets are associated with |nodes|. (The nodes are subsequently restyled using style sheets after their boxes are generated, as described below.)
+            </li>
+            <li>
+              The children of the |nodes| must be wrapped in an anonymous box whose <a data-cite='CSS-DISPLAY-3/#propdef-display'>display</a> property has the value <a data-cite='CSS-DISPLAY-3/#valdef-display-inline'>inline</a>. This is the <dfn>WebVMT cue background box</dfn>.
+            </li>
+            <li>
+              Properties on <a>WebVMT node objects</a> have their values set as defined in the next section. (That section uses some of the variables whose values were calculated earlier in this algorithm.)
+            </li>
+            <li>
+              The map viewport (and initial containing block) is |map|'s rendering area.
+            </li>
+            <p>
+              Let |boxes| be the boxes generated as descendants of the initial containing block, along with their positions.
+            </p>
+          </ul>
+        </p>
+      </section>
+
+
     </section>
     <section class='informative' id='css-extensions'>
       <h2>CSS Extensions</h2>
@@ -2750,7 +3303,7 @@ video::cue‑map {
                 </pre>
               </td>
               <td>
-                Any <a>WebVMT Node Object</a> in the <a>WebVMT Map</a> Object.
+                Any <a>WebVMT node object</a> in the <a>WebVMT map object</a>.
                 <pre class='nohighlight'>
 WEBVMT
 
@@ -2781,7 +3334,7 @@ video::cue‑map(#cue1) {
                 </pre>
               </td>
               <td>
-                Any <a>WebVMT Node Object</a> in the <a>WebVMT Map</a> Object with the cue's <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>text track cue</a> identifier matching the given ID, e.g. cue1.
+                Any <a>WebVMT node object</a> in the <a>WebVMT map object</a> with the cue's <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>text track cue</a> identifier matching the given ID, e.g. cue1.
                 <pre class='nohighlight'>
 WEBVMT
 
@@ -2813,7 +3366,7 @@ video::cue‑map([rad="20"]) {
                 </pre>
               </td>
               <td>
-                Any <a>WebVMT Node Object</a> in the <a>WebVMT Map</a> Object with the cue’s <a>WebVMT command</a> attribute matching the given value, e.g. rad="20".
+                Any <a>WebVMT node object</a> in the <a>WebVMT map object</a> with the cue’s <a>WebVMT command</a> attribute matching the given value, e.g. rad="20".
                 <pre class='nohighlight'>
 WEBVMT
 
@@ -2959,6 +3512,51 @@ NOTE Red
             This is analogous to the <a data-cite='WEBVTT#the-vttregion-interface'>VTTRegion</a> interface.
           </p>
         </section>
+      </section>
+    </section>
+    <section class='informative, appendix' id='privacy-security'>
+      <h2>Privacy and Security Considerations</h2>
+      <section class='information' id='text-security'>
+        <h2>Text-Based Format Security</h2>
+        <p>
+          As with any text-based format, it is possible to construct malicious content that might cause buffer over-runs, value overflows (e.g. string representations of integers that overflow a given word length), and the like. Implementers should take care in implementing a parser that over-long lines, field values, or encoded values do not cause security problems.
+        </p>
+      </section>
+      <section class='information' id='style-security'>
+        <h2>Styling-Related Privacy and Security</h2>
+        <p>
+          WebVMT can embed CSS style sheets, which will be applied in user agents that support CSS. Under these circumstances, the privacy and security considerations of CSS apply, with the following caveats.
+        </p>
+        <p>
+          Such style sheets cannot fetch any external resources, and it is important for privacy that user agents do not allow this. Otherwise, WebVMT files could be authored such that a third party is notified when the user watches a particular video, and even the current time in that video.
+        </p>
+        <p>
+          It is possible for a user agent to offer user style sheets, but their presence and nature will not be detectable by scripts running in the same user agent (e.g. browser) since the CSS object model for such style sheets is not exposed to script and there is no way to get the computed style for pseudo-elements other than ::before and ::after with the getComputedStyle() API. [CSSOM]
+        </p>
+      </section>
+      <section class='information' id='script-security'>
+        <h2>Scripting-Related Security</h2>
+        <p>
+          WebVMT does not include or enable scripting. It is important that user agents do not support a way to execute script embedded in a WebVMT file.
+        </p>
+        <p>
+          However, it is possible to construct and deliver a file that is designed not to present timed metadata, but instead to provide timed input (‘triggers’) to a script system. A poorly-written script or script system might then cause security, privacy or other problems; however, this consideration really applies to the script system. Since WebVMT supplies these triggers at their timestamps, a malicious file might present such triggers very rapidly, perhaps causing undue resource consumption.
+        </p>
+      </section>
+      <section class='information' id='location-security'>
+        <h2>Location-Related Security</h2>
+        <p>
+          WebVMT provides a common format in which to share location data synchronized with video for the web. Proper consideration should be given to any sensitive details that may be revealed as a result of sharing such personal information. For example, posting a geotagged image online can reveal the location of the content creator at a particular time which can infer their absence from distant locations since travelling takes time. The identities of people who appear in video frames may be determined visually to also reveal their presence at a nearby location or their absence from a distant one.
+        </p>
+        <p>
+          In order to share content responsibly, users should consider:
+          <ol>
+            <li>What is included?</li>
+            <li>How can it be used?</li>
+            <li>What can it tell others?</li>
+          </ol>
+          Further guidance for users, developers and regulators can be found in the W3C Note: <a data-cite='RESPONSIBLE-USE-SPATIAL' data-no-xref=''>The Responsible Use of Spatial Data</a>.
+        </p>
       </section>
     </section>
   </body>
