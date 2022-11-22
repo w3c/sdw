@@ -2986,8 +2986,6 @@ NOTE Required blocks omitted for clarity
             <li>
               Otherwise, return null.
             </li>
-
-
           </ol>
         </p>
       </section>
@@ -3000,7 +2998,57 @@ NOTE Required blocks omitted for clarity
           A <dfn>WebVMT map object</dfn> is a conceptual construct to represent a <a>WebVMT map</a> that is used as a root node for <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT map object</a>.
         </p>
         <p>
-          #### TO DO 3 ####
+          <ol>
+            <li>
+              Let |settings| be the result of <a data-cite='HTML51/infrastructure.html#split-a-string-on-spaces'>splitting |input| on spaces</a>.
+            </li>
+            <li>
+              For each token |setting| in the list |settings|, run the following substeps:
+              <ol>
+                <li>
+                  If |setting| does not contain a U+003A COLON character (:), or if the first U+003A COLON character (:) in |setting| is either the first or last character of |setting|, then jump to the step labeled <i>next setting</i>.
+                </li>
+                <li>
+                  Let |name| be the leading substring of |setting| up to and excluding the first U+003A COLON character (:) in that string.
+                </li>
+                <li>
+                  Let |value| be the trailing substring of |setting| starting from the character immediately after the first U+003A COLON character (:) in that string.
+                </li>
+                <li>
+                  Run the appropriate substeps that apply for the value of |name|, as follows:
+                </li>
+                <dl>
+                  <dt>
+                    If |name| is a case-sensitive match for "<code>lat</code>"
+                  </dt>
+                  <dd>
+                    Let |map|'s <a>location latitude</a> of the <a>map center location</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>lng</code>"
+                  </dt>
+                  <dd>
+                    Let |map|'s <a>location longitude</a> of the <a>map center location</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>alt</code>"
+                  </dt>
+                  <dd>
+                    Let |map|'s <a>location altitude</a> of the <a>map center location</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>rad</code>"
+                  </dt>
+                  <dd>
+                    Let |map|'s <a>map zoom radius</a> be |value|.
+                  </dd>
+                </dl>
+                <li>
+                  <i>Next setting:</i> Continue to the next setting, if any.
+                </li>
+              </ol>
+            </li>
+          </ol>
         </p>
       </section>
       <section id='media-settings-parsing'>
@@ -3012,22 +3060,179 @@ NOTE Required blocks omitted for clarity
           A <dfn>WebVMT media object</dfn> is a conceptual construct to represent a <a>WebVMT media</a> that is used as a root node for <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT media object</a>.
         </p>
         <p>
-          #### TO DO 3a ####
+          <ol>
+            <li>
+              Let |settings| be the result of <a data-cite='HTML51/infrastructure.html#split-a-string-on-spaces'>splitting |input| on spaces</a>.
+            </li>
+            <li>
+              For each token |setting| in the list |settings|, run the following substeps:
+              <ol>
+                <li>
+                  If |setting| does not contain a U+003A COLON character (:), or if the first U+003A COLON character (:) in |setting| is either the first or last character of |setting|, then jump to the step labeled <i>next setting</i>.
+                </li>
+                <li>
+                  Let |name| be the leading substring of |setting| up to and excluding the first U+003A COLON character (:) in that string.
+                </li>
+                <li>
+                  Let |value| be the trailing substring of |setting| starting from the character immediately after the first U+003A COLON character (:) in that string.
+                </li>
+                <li>
+                  Run the appropriate substeps that apply for the value of |name|, as follows:
+                </li>
+                <dl>
+                  <dt>
+                    If |name| is a case-sensitive match for "<code>url</code>"
+                  </dt>
+                  <dd>
+                    Let |media metadata|'s <a>media URL</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>mimetype</code>"
+                  </dt>
+                  <dd>
+                    Let |media metadata|'s <a>media MIME type</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>starttime</code>"
+                  </dt>
+                  <dd>
+                    Let |media metadata|'s <a>media start time</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>path</code>"
+                  </dt>
+                  <dd>
+                    Let |media metadata|'s <a>media path</a> be |value|.
+                  </dd>
+                </dl>
+                <li>
+                  <i>Next setting:</i> Continue to the next setting, if any.
+                </li>
+              </ol>
+            </li>
+          </ol>
         </p>
       </section>
       <section id='cue-timings-parsing'>
         <h2>WebVMT Cue Timings Parsing</h2>
         <p>
-          When the algorithm above says to <dfn>collect WebVMT cue timings</dfn> from a string input using a text track list of maps |maps| for a <a>WebVMT cue</a> |cue|, the user agent must run the following algorithm.
+          When the algorithm above says to <dfn>collect WebVMT cue timings</dfn> from a string input using a text track map |map| for a <a>WebVMT cue</a> |cue|, the user agent must run the following algorithm.
         </p>
         <p>
-          #### TO DO 4 ####
+          <ol>
+            <li>
+              Let |input| be the string being parsed.
+            </li>
+            <li>
+              Let |position| be a pointer into |input|, initially pointing at the start of the string.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace</a>.
+            </li>
+            <li>
+              <a>Collect a WebVMT timestamp</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-start-time'>text track cue start time</a> be the collected time.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace</a>.
+            </li>
+            <li>
+              If the character at |position| is not a U+002D HYPHEN-MINUS character (-) then abort these steps and return failure. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              If the character at |position| is not a U+002D HYPHEN-MINUS character (-) then abort these steps and return failure. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              If the character at |position| is not a U+003E GREATER-THAN SIGN character (>) then abort these steps and return failure. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace.</a>
+            </li>
+            <li>
+              If |position| is not past the end of |input| and the character at |position| is an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>, <a>collect a WebVMT timestamp</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-end-time'>text track cue end time</a> be the collected time.
+            </li>
+            <li>
+              Otherwise (|position| is past the end of |input| or the character at |position| is not an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>), let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-end-time'>text track cue end time</a> be the value positive Infinity.
+            </li>
+          </ol>
         </p>
         <p>
-          When the user agent is to <dfn>parse the WebVMT cue settings</dfn> from a string input using a text track list of maps |maps| for a text track cue |cue|, the user agent must run the following steps:
+          When this specification says that a user agent is to <dfn>collect a WebVMT timestamp</dfn>, the user agent must run the following steps:
         </p>
         <p>
-          #### TO DO 5 ####
+          <ol>
+            <li>
+              Let |input| and |position| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |most significant units| be <i>minutes</i>.
+            </li>
+            <li>
+              If |position| is past the end of |input|, return an error and abort these steps.
+            </li>
+            <li>
+              If the character indicated by |position| is not an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>, then return an error and abort these steps.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
+            </li>
+            <li>
+              Interpret |string| as a base-ten integer. Let |value_1| be that integer.
+            </li>
+            <li>
+              If |string| is not exactly two characters in length, or if |value_1| is greater than 59, let |most significant units| be <i>hours</i>.
+            </li>
+            <li>
+              If |position| is beyond the end of |input| or if the character at |position| is not a U+003A COLON character (:), then return an error and abort these steps. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
+            </li>
+            <li>
+              If |string| is not exactly two characters in length, return an error and abort these steps.
+            </li>
+            <li>
+              Interpret |string| as a base-ten integer. Let |value_2| be that integer.
+            </li>
+            <li>
+              If |most significant units| is <i>hours</i>, or if |position| is not beyond the end of |input| and the character at |position| is a U+003A COLON character (:), run these substeps:
+              <ol>
+                <li>
+                  If |position| is beyond the end of |input| or if the character at |position| is not a U+003A COLON character (:), then return an error and abort these steps. Otherwise, move |position| forwards one character.
+                </li>
+                <li>
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
+                </li>
+                <li>
+                  If |string| is not exactly two characters in length, return an error and abort these steps.
+                </li>
+                <li>
+                  Interpret |string| as a base-ten integer. Let |value_3| be that integer.
+                </li>
+              </ol>
+              Otherwise (if |most significant units| is not <i>hours</i>, and either |position| is beyond the end of |input|, or the character at |position| is not a U+003A COLON character (:)), let |value_3| have the value of |value_2|, then |value_2| have the value of |value_1|, then let |value_1| equal zero.
+            </li>
+            <li>
+              If |position| is beyond the end of |input| or if the character at |position| is not a U+002E FULL STOP character (.), then return an error and abort these steps. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
+            </li>
+            <li>
+              If |string| is not exactly three characters in length, return an error and abort these steps.
+            </li>
+            <li>
+              Interpret |string| as a base-ten integer. Let |value_4| be that integer.
+            </li>
+            <li>
+              If |value_2| is greater than 59 or if |value_3| is greater than 59, return an error and abort these steps.
+            </li>
+            <li>
+              Let |result| be |value_1|×60×60 + |value_2|×60 + |value_3| + |value_4|∕1000.
+            </li>
+            <li>
+              Return |result|.
+            </li>
+          </ol>
         </p>
       </section>
       <section id='cue-text-parsing'>
@@ -3059,18 +3264,18 @@ NOTE Required blocks omitted for clarity
           There is one concrete class of <a>WebVMT leaf node objects</a>:
         </p>
         <dl>
-          <!--dt>
+          <dt>
             <dfn>WebVMT text objects</dfn>
           </dt>
           <dd>
             A fragment of text. A <a>WebVMT text object</a> has a value, which is the text it represents.
-          </dd-->
-          <dt>
+          </dd>
+          <!--dt>
             <dfn>WebVMT data objects</dfn>
           </dt>
           <dd>
             A fragment of structured data. A <a>WebVMT data object</a> is an array of objects, which is a list of the data structures and values it represents.
-          </dd>
+          </dd-->
         </dl>
         <p>
           The <dfn>WebVMT cue text parsing rules</dfn> consist of the following algorithm. The input is a string |input| supposedly containing <a>WebVMT metadata text</a>. This algorithm returns a <a>list of WebVMT node objects</a>.
@@ -3243,7 +3448,7 @@ Red or green?
               For the purposes of processing by the CSS specification, <a>WebVMT internal node objects</a> are equivalent to elements with the same contents.
             </li>
             <li>
-              For the purposes of processing by the CSS specification, <a>WebVMT data objects</a> are equivalent to elements representing the same data structures.
+              For the purposes of processing by the CSS specification, <a>WebVMT text objects</a> are equivalent to elements representing the same data structures.
             </li>
             <li>
               No style sheets are associated with |nodes|. (The nodes are subsequently restyled using style sheets after their boxes are generated, as described below.)
