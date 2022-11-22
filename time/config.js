@@ -42,7 +42,7 @@ var respecConfig = {
     }],
     group: "wg/sdw",
     wgPublicList: "public-sdw-comments",
-    discussionUrl: "https://github.com/w3c/sdw/issues",
+    github: "w3c/sdw",
     implementationReportURI: "https://www.w3.org/2015/spatial/wiki/OWL_Time_Ontology_adoption",
     inlineCSS: true,
     noIDLIn: true,
