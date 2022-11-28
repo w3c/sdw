@@ -3281,13 +3281,307 @@ NOTE Required blocks omitted for clarity
           The <dfn>WebVMT cue text parsing rules</dfn> consist of the following algorithm. The input is a string |input| supposedly containing <a>WebVMT metadata text</a>. This algorithm returns a <a>list of WebVMT node objects</a>.
         </p>
         <p>
-          #### TO DO 6 ####
+          <ol>
+            <li>
+              Let |input| be the string being parsed.
+            </li>
+            <li>
+              Let |position| be a pointer into |input|, initially pointing at the start of the string.
+            </li>
+            <li>
+              Let |json| be an empty string.
+            </li>
+            <li>
+              Let |result| be a <a>list of WebVMT node objects</a>, initially empty.
+            </li>
+            <li>
+              Let |current| be the <a>WebVMT internal node object</a> |result|.
+            </li>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |result| and abort these steps.
+            </li>
+            <li>
+              <a>Collect a JSON element text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, let |json| be the collected string.
+            </li>
+            <li>
+              Create a <a>WebVMT text object</a> whose value is the value of the string |json|.
+            </li>
+            <li>
+              Append the newly created <a>WebVMT text object</a> to |current|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
         </p>
         <p>
-          The <dfn>WebVMT cue text tokenizer</dfn> is as follows. It emits a token, which is a string (whose value is a sequence of characters).
+          When this specification says that a user agent is to <dfn>collect a JSON element text</dfn>, the user agent must run the following steps:
         </p>
         <p>
-          #### TO DO 7 ####
+          <ol>
+            <li>
+              Let |input| and |position| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |string| be an empty string.
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              <p>
+                Jump to the entry that matches the value of |c|:
+              </p>
+              <dl>
+                <dt>
+                  U+007B LEFT CURLY BRACKET character ({)
+                </dt>
+                <dd>
+                  <a>Collect a JSON object text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+                </dd>
+                <dt>
+                  U+005B LEFT SQUARE BRACKET character ([)
+                </dt>
+                <dd>
+                  <a>Collect a JSON array text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+                </dd>
+                <dt>
+                  Anything else
+                </dt>
+                <dd>
+                  Advance |position| to the next character in |input|.
+                </dd>
+              </dl>
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a JSON object text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+007B LEFT CURLY BRACKET character ({) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace.</a>
+            </li>
+            <li>
+              <a>Collect a JSON string text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, append the collected string to |string|.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace.</a>
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+003A COLON character (:) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <a>Collect a JSON value text</a>. If that algorithm fails, then abort these steps and return failure.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is a U+007D RIGHT CURLY BRACKET character (}) then append |c| to |string|, advance |position| to the next character in |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Otherwise, if |c| is not a U+002C COMMA character (,) then return failure and abort these steps.
+            </li>
+            <li>
+              Append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a JSON array text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+005B LEFT BRACKET character ([) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              <a>Collect a JSON value text</a>. If that algorithm fails, then abort these steps and return failure.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is a U+005D RIGHT BRACKET character (]) then append |c| to |string|, advance |position| to the next character in |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Otherwise, if |c| is not a U+002C COMMA character (,) then return failure and abort these steps.
+            </li>
+            <li>
+              Append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a JSON value text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace.</a>
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <dl>
+              Jump to the entry that matches the value of |c|:
+              <dt>
+                U+0022 QUOTATION MARK character (")
+              </dt>
+              <dd>
+                <a>Collect a JSON string text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+              </dd>
+              <dt>
+                U+007B LEFT CURLY BRACKET character ({)
+              </dt>
+              <dd>
+                <a>Collect a JSON object text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+              </dd>
+              <dt>
+                U+005B LEFT SQUARE BRACKET character ([)
+              </dt>
+              <dd>
+                <a>Collect a JSON array text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+              </dd>
+              <dt>
+                Anything else
+              </dt>
+              <dd>
+                Jump to the step labeled <i>loop</i>.
+              </dd>
+            </dl>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              If |c| is <a data-cite='HTML51/infrastructure.html#ascii-whitespace'>ASCII whitespace</a> character then <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>skip whitespace</a>, return |string| and abort these steps.
+            </li>
+            <li>
+              Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a JSON string text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+0022 QUOTATION MARK character (") then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is a U+0022 QUOTATION MARK character (") then append |c| to |string| and advance |position| to the next character in |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Otherwise, if |c| is a U+005C REVERSE SOLIDUS character (\) then <a>collect JSON escape text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, append the collected string to |string|.
+            </li>
+            <li>
+              Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect JSON escape text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+005C REVERSE SOLIDUS character (\) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              Append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              If |c| is a U+0075 LATIN SMALL LETTER U character (u) then run the following substeps:
+              <ol>
+                <li>
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-hex-digits'>ASCII hex digits</a> and no more than four characters in length, and let |hex| be the collected substring.
+                </li>
+                <li>
+                  If |hex| is not exactly four characters in length, return an error and abort these steps.
+                </li>
+                <li>
+                  Append |hex| to |string|.
+                </li>
+              </ol>
+            </li>
+            <li>
+              Return |string|.
+            </li>
+          </ol>
         </p>
       </section>
     </section>
@@ -3468,8 +3762,6 @@ Red or green?
           </ul>
         </p>
       </section>
-
-
     </section>
     <section class='informative' id='css-extensions'>
       <h2>CSS Extensions</h2>
