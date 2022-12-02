@@ -503,7 +503,7 @@ This line is also part of the comment
     &lt;title&gt;WebVMT Style Example&lt;/title&gt;
     &lt;style&gt;
       video::cue-map {
-        stroke-color: red;
+        stroke: red;
         stroke-opacity: 0.9;
       }
     &lt;/style&gt;
@@ -543,7 +543,7 @@ rad:50
 
 STYLE
 ::cue-map {
-  stroke-color: red;
+  stroke: red;
 }
 
 NOTE Comments are allowed between style blocks
@@ -1154,7 +1154,10 @@ mimetype:video/mp4
               A <a>WebVMT zone annotation</a> command;
             </li>
             <li>
-              A <a>WebVMT path fragment</a> command.
+              A <a>WebVMT path fragment</a> command;
+            </li>
+            <li>
+              A <a>WebVMT synchronized data</a> command.
             </li>
           </ul>
         </p>
@@ -2995,7 +2998,7 @@ NOTE Required blocks omitted for clarity
           When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT map settings</dfn> from a string input for a text track, the user agent must run the following algorithm.
         </p>
         <p>
-          A <dfn>WebVMT map object</dfn> is a conceptual construct to represent a <a>WebVMT map</a> that is used as a root node for <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT map object</a>.
+          A <dfn>WebVMT map object</dfn> is a conceptual construct to represent a <a>WebVMT map</a> that is used as a root node for the <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT map object</a>.
         </p>
         <p>
           <ol>
@@ -3057,7 +3060,7 @@ NOTE Required blocks omitted for clarity
           When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT media settings</dfn> from a string input for a text track, the user agent must run the following algorithm.
         </p>
         <p>
-          A <dfn>WebVMT media object</dfn> is a conceptual construct to represent a <a>WebVMT media</a> that is used as a root node for <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT media object</a>.
+          A <dfn>WebVMT media object</dfn> is a conceptual construct to represent a <a>WebVMT media</a>. This algorithm returns a <a>WebVMT media object</a>.
         </p>
         <p>
           <ol>
@@ -3768,7 +3771,7 @@ Red or green?
       <p class='note'>
         This section specifies some CSS pseudo-elements and pseudo-classes and how they apply to WebVMT. This section does not apply to user agents that do not support CSS.
       </p>
-      <section id='css-extensions-intro'>
+      <section id='css-extensions-introduction'>
         <h2>Introduction</h2>
         <p>
           The <span class='css'>::cue-map</span> pseudo-element represents a map viewport.
@@ -3794,8 +3797,8 @@ Red or green?
               <td>
                 <span class='css'>::cue-map</span>
                 <pre class='nohighlight'>
-video::cue‑map {
-  stroke‑color: red;
+video::cue-map {
+  stroke: red;
 }
                 </pre>
               </td>
@@ -3825,8 +3828,8 @@ NOTE Also red!
               <td>
                 <a data-cite='SELECTORS4/#id-selector'>ID selector</a> in <span class='css'>::cue-map()</span>
                 <pre class='nohighlight'>
-video::cue‑map(#cue1) {
-  stroke‑color: red;
+video::cue-map(#cue1) {
+  stroke: red;
 }
                 </pre>
               </td>
@@ -3855,10 +3858,10 @@ NOTE Not red
             </tr>
             <tr>
               <td>
-                <a data-cite='SELECTORS4/#attribute-selector'>Attribute selector</a> in <span class="css">::cue‑map()</span>
+                <a data-cite='SELECTORS4/#attribute-selector'>Attribute selector</a> in <span class="css">::cue-map()</span>
                 <pre class='nohighlight'>
-video::cue‑map([rad="20"]) {
-  stroke‑color: red;
+video::cue-map([rad="20"]) {
+  stroke: red;
 }
                 </pre>
               </td>
@@ -3886,6 +3889,143 @@ NOTE Red
             </tr>
           </table>
         </aside>
+      </section>
+      <section id='css-extensions-processing-model'>
+        <h2>Processing Model</h2>
+        <p>
+          When a user agent is rendering one or more WebVMT cues according to the <a>rules for updating the display of WebVMT text tracks</a>, <a>WebVMT node objects</a> in the <a>list of WebVMT node objects</a> used in the rendering can be matched by certain pseudo-selectors as defined below. These selectors can begin or stop matching individual <a>WebVMT node objects</a> while a <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>cue</a> is being rendered, even in between applications of the <a>rules for updating the display of WebVMT text tracks</a> (which are only run when the set of active cues changes). User agents that support the pseudo-element described below must dynamically update renderings accordingly.
+        </p>
+        <p>
+          Pseudo-elements apply to elements that are matched by selectors. For the purpose of this section, that element is the <i>matched element</i>. The pseudo-elements defined in the following sections affect the styling of parts of WebVMT cues that are being rendered for the <i>matched element</i>.
+        </p>
+        <p>
+          A CSS user agent that implements the <a data-cite='HTML51/semantics-embedded-content.html#text-tracks'>text tracks</a> model must implement the <span class='css'>::cue-map</span> and <span class='css'>::cue-map(selector)</span> pseudo-elements.
+        </p>
+        <section id='cue-pseudo-element'>
+          <h2>The <span class='css'>::cue</span> pseudo-element</h2>
+          <p>
+            The <span class='css'><dfn class='export'>::cue</dfn></span> pseudo-element (with no argument) matches any <a>list of WebVMT node objects</a> constructed for the <i>matched element</i>.
+          </p>
+          <p>
+            The following properties apply to the <span class='css'>::cue</span> pseudo-element with no argument; other properties set on the pseudo-element must be ignored:
+          </p>
+          <p>
+            <ul>
+              <li>
+                <span class='css'>stroke</span>
+              </li>
+              <li>
+                <span class='css'>stroke-opacity</span>
+              </li>
+              <li>
+                <span class='css'>stroke-width</span>
+              </li>
+              <li>
+                <span class='css'>fill</span>
+              </li>
+              <li>
+                <span class='css'>fill-opacity</span>
+              </li>
+            </ul>
+          </p>
+          <p>
+            The <span class='css'><dfn class='export'>::cue(<var>selector</var>)</dfn></span> pseudo-element with an argument must have an argument that consists of a <a data-cite='SELECTORS4/#selector'>CSS selector</a>. It matches any <a>WebVMT internal node object</a> constructed for the <i>matched element</i> that also matches the given CSS selector, with the nodes being treated as follows:
+          </p>
+          <p>
+            <ul>
+              <li>
+                The document tree against which the selectors are matched is the tree of <a>WebVMT node objects</a> rooted at the <a>list of WebVMT node objects</a> for the cue.
+              </li>
+              <li>
+                <a>WebVMT internal node objects</a> are elements in the tree.
+              </li>
+              <li>
+                <a>WebVMT leaf node objects</a> cannot be matched.
+              </li>
+              <li>
+                For the purposes of element type and universal selectors, <a>WebVMT internal node objects</a> are considered as being in the namespace expressed as the empty string.
+              </li>
+              <li>
+                <!-- how to access attributes? -->
+                For the purposes of attribute selector matching, a <a>WebVMT internal node object</a> has attributes as given by the following table:
+                <table>
+                  <thead>
+                    <tr>
+                      <td>
+                        <b>WebVMT command object</b>
+                      </td>
+                      <td>
+                        <b>Attribute name</b>
+                      </td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a>WebVMT zone object</a>
+                      </td>
+                      <td>
+                        <code>zone</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a>WebVMT path object</a>
+                      </td>
+                      <td>
+                        <code>path</code>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+              <li>
+                For the purposes of ID selector matching, a <a>list of WebVMT node objects</a> has the ID given by the cue’s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-identifier'>text track cue identifier</a>, if any.
+              </li>
+            </ul>
+          </p>
+          <p>
+            The following properties apply to the <span class='css'>::cue()</span> pseudo-element with an argument:
+            <ul>
+              <li>
+                <span class='css'>stroke</span>
+              </li>
+              <li>
+                <span class='css'>stroke-opacity</span>
+              </li>
+              <li>
+                <span class='css'>stroke-width</span>
+              </li>
+              <li>
+                <span class='css'>fill</span>
+              </li>
+              <li>
+                <span class='css'>fill-opacity</span>
+              </li>
+            </ul>
+          </p>
+          <p>
+            Properties that do not apply must be ignored.
+          </p>
+          <!--p>
+            As a special exception, the properties corresponding to the background shorthand, when they would have been applied to the list of WebVTT Node Objects, must instead be applied to the WebVTT cue background box.
+          </p-->
+        </section>
+        <section id='cue-map-pseudo-element'>
+          <h2>The <span class='css'>::cue-map</span> pseudo-element</h2>
+          <p>
+            Pseudo-elements apply to elements that are matched by selectors. For the purpose of this section, that element is the <i>matched element</i>. The pseudo-element defined below affects the styling of text track regions that are being rendered for the <i>matched element</i>.
+          </p>
+          <p>
+            The <span class='css'><dfn class='export'>::cue-map</dfn></span> pseudo-element (with no argument) matches the <a>WebVMT map object</a> constructed for the <i>matched element</i>.
+          </p>
+          <p>
+            The same properties that apply to <span class='css'>::cue</span> apply to the <span class='css'>::cue-map</span> pseudo-element; other properties set on the pseudo-element must be ignored.
+          </p>
+          <p>
+            When a user agent is rendering a text track map according to the <a>rules for updating the display of WebVMT text tracks</a>, the <a>WebVMT map object</a> used in the rendering can be matched by the above pseudo-element. User agents that support the pseudo-element must dynamically update renderings accordingly.
+          </p>
+        </section>
       </section>
     </section>
     <section class='informative' id='knownissues'>
