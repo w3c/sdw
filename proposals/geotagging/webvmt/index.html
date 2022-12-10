@@ -502,7 +502,7 @@ This line is also part of the comment
   &lt;head&gt;
     &lt;title&gt;WebVMT Style Example&lt;/title&gt;
     &lt;style&gt;
-      video::cue-map {
+      video::cue {
         stroke: red;
         stroke-opacity: 0.9;
       }
@@ -542,14 +542,14 @@ lat:51.478 lng:-0.001
 rad:50
 
 STYLE
-::cue-map {
+::cue {
   stroke: red;
 }
 
 NOTE Comments are allowed between style blocks
 
 STYLE
-::cue-map {
+::cue {
   stroke-opacity: 0.9;
 }
 
@@ -1087,6 +1087,21 @@ mimetype:video/mp4
           <p class='note' title='Map Control Object'>
             The precise format of the <a>map object</a> control interface is implementation dependent, for example the OpenLayers API.
           </p>
+          <p>
+            For parsing, we also need the following:
+          </p>
+          <dt>
+            A <dfn>text track map</dfn>
+          </dt>
+          <dd>
+            A <a>WebVMT map</a> associated with the text track.
+          </dd>
+          <dt>
+            A <dfn>text track map identifier</dfn>
+          </dt>
+          <dd>
+            An identifier for the <a>WebVMT map</a>.
+          </dd>
         </dl>
       </section>
       <section id='webvmtmediafile'>
@@ -2998,7 +3013,7 @@ NOTE Required blocks omitted for clarity
           When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT map settings</dfn> from a string input for a text track, the user agent must run the following algorithm.
         </p>
         <p>
-          A <dfn>WebVMT map object</dfn> is a conceptual construct to represent a <a>WebVMT map</a> that is used as a root node for the <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT map object</a>.
+          A <dfn>WebVMT map object</dfn> is a conceptual construct to represent a <a>WebVMT map</a> that is used as a root node for a <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT map object</a>.
         </p>
         <p>
           <ol>
@@ -3591,27 +3606,36 @@ NOTE Required blocks omitted for clarity
     <section id='rendering'>
       <h2>Rendering</h2>
       <p class='note'>
-        This section describes how to visually render WebVMT cues in a user agent. The processing model is quite tightly linked to media elements in HTML, where CSS is available. User agents that do not support CSS are expected to render cues without styling features. User agents that do not support a full HTML CSS engine are expected to render an equivalent visual representation to what a user agent with a full CSS engine would render.
+        This section describes how to visually render <a>WebVMT cues</a> in a user agent. The processing model is quite tightly linked to media elements in HTML, where CSS is available. <a>User agents that do not support CSS</a> are expected to render cues without styling features. <a>User agents that do not support a full HTML CSS engine</a> are expected to render an equivalent visual representation to what a user agent with a full CSS engine would render.
       </p>
       <section id='processing-model'>
         <h2>Processing Model</h2>
         <p>
-          The <dfn>rules for updating the display of WebVMT text tracks</dfn> render the <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> of a <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a> (either a <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'>&lt;video&gt;</a> or <a data-cite='HTML51/semantics-embedded-content.html#the-audio-element'>&lt;audio&gt;</a> element), or of another playback mechanism, by applying the steps below.
+          The <dfn>rules for updating the display of WebVMT text tracks</dfn> render the <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> of a <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a> (either a <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'><code>&lt;video&gt;</code></a> or <a data-cite='HTML51/semantics-embedded-content.html#the-audio-element'><code>&lt;audio&gt;</code></a> element), or of another playback mechanism, by applying the steps below.
         </p>
         <p class='note'>
-          When authors create WebVMT metadata, they need to publish them with a <a data-cite='HTML51/semantics-embedded-content.html#the-div-element'>&lt;div&gt;</a> element for rendering the map viewport by the user agent. This is associated using the <code>for</code> attribute of the <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'>&lt;track&gt;</a> element.
+          When authors create WebVMT metadata, they need to publish them with a <a data-cite='HTML51/semantics-embedded-content.html#the-div-element'><code>&lt;div&gt;</code></a> element for rendering the map viewport by the user agent. This is associated using the <code>for</code> attribute of the <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'><code>&lt;track&gt;</code></a> element.
         </p>
         <p>
-          The output of the steps below is a set of CSS boxes that covers the rendering area of the <a data-cite='HTML51/semantics-embedded-content.html#the-div-element'>&lt;div&gt; element</a>, which user agents are expected to render in a manner suiting the user.
+          The output of the steps below is a set of CSS boxes that covers the rendering area of the <a data-cite='HTML51/semantics-embedded-content.html#the-div-element'><code>&lt;div&gt;</code></a> element, which user agents are expected to render in a manner suiting the user.
         </p>
         <p>
           The rules are as follows:
           <ol>
+            <!--li>
+              If the <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a> has no associated <a data-cite='HTML51/semantics-embedded-content.html#the-div-element'><code>&lt;div&gt;</code></a> element for rendering the map viewport, abort these steps.
+            </li-->
             <li>
               Let |media| be the <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a> or other playback mechanism.
             </li>
             <li>
               Let |output| be an empty list of absolutely positioned CSS block boxes.
+            </li>
+            <!--li>
+              If the user agent is <a data-cite='HTML51/semantics-embedded-content.html#expose-a-user-interface-to-the-user'>exposing a user interface</a> for |media|, add to |output| one or more completely transparent positioned CSS block boxes that cover the same region as the <a>WebVMT maps</a> in |maps|.
+            </li-->
+            <li>
+              If the last time these rules were run, the user agent was not <a data-cite='HTML51/semantics-embedded-content.html#expose-a-user-interface-to-the-user'>exposing a user interface</a> for |media|, but now it is, optionally let |reset| be true. Otherwise, let |reset| be false.
             </li>
             <li>
               Let |tracks| be the subset of |media|'s <a data-cite='HTML51/semantics-embedded-content.html#list-of-text-tracks'>list of text tracks</a> that have as their <a data-cite='HTML51/semantics-embedded-content.html#rules-for-updating-the-text-track-rendering'>rules for updating the text track rendering</a> these <a>rules for updating the display of WebVMT text tracks</a>, and whose <a data-cite='HTML51/semantics-embedded-content.html#text-track-mode'>text track mode</a> is <a data-cite='HTML51/semantics-embedded-content.html#text-track-showing'>showing</a>.
@@ -3620,19 +3644,13 @@ NOTE Required blocks omitted for clarity
               Let |cues| be an empty list of <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>text track cues</a>.
             </li>
             <li>
-              For each track |track| in |tracks|, append to |cues| all the <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>cues</a> from track’s <a data-cite='HTML51/semantics-embedded-content.html#text-track-list-of-cues'>list of cues</a> that have their <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-active-flag'>text track cue active flag</a> set.
+              For each track |track| in |tracks|, append to |cues| all the <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>cues</a> from |track|’s <a data-cite='HTML51/semantics-embedded-content.html#text-track-list-of-cues'>list of cues</a> that have their <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-active-flag'>text track cue active flag</a> set.
             </li>
             <li>
               Let |maps| be an empty list of <a>WebVMT maps</a>.
             </li>
             <li>
-              For each track |track| in |tracks|, append to |maps| the map with an identifier equal to the |track|'s <a>map object</a>.
-            </li>
-            <li>
-              If the user agent is <a data-cite='HTML51/semantics-embedded-content.html#expose-a-user-interface-to-the-user'>exposing a user interface</a> for |media|, add to |output| one or more completely transparent positioned CSS block boxes that cover the same region as the <a>map objects</a> in |maps|.
-            </li>
-            <li>
-              If the last time these rules were run, the user agent was not <a data-cite='HTML51/semantics-embedded-content.html#expose-a-user-interface-to-the-user'>exposing a user interface</a> for |media|, but now it is, optionally let |reset| be true. Otherwise, let |reset| be false.
+              For each track |track| in |tracks|, append to |maps| the map equal to the |track|'s <a>text track map</a>.
             </li>
             <li>
               If |reset| is false, then, for each <a>WebVMT map</a> |map| in |maps| let |mapNode| be a <a>WebVMT map object</a>.
@@ -3651,7 +3669,7 @@ NOTE Required blocks omitted for clarity
                     Properties on |mapNode| have their values set as defined in the next section. (That section uses some of the variables whose values were calculated earlier in this algorithm.)
                   </li>
                   <li>
-                    The map viewport (and initial containing block) is map rendering area.
+                    The map viewport (and initial containing block) is map's rendering area.
                   </li>
                 </ol>
                 <li>
@@ -3705,15 +3723,16 @@ NOTE Required blocks omitted for clarity
               For the purpose of selectors in <code>STYLE</code> blocks of a WebVMT file, the style sheet must apply to a hypothetical document that contains a single empty element with no explicit name, no namespace, no attributes, no classes, and no IDs, that acts like the <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a> for the <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> that were sourced from the given WebVMT file. The selectors must not match other <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> for the same <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a>. In this hypothetical document, the element must not match any selector that would match the element itself.
             </li>
             <li class='note'>
-              This element exists only to be the originating element for the <span class='css'>::cue-map</span> and <span class='css'>::cue-map()</span> pseudo-elements.
+              This element exists only to be the <a data-cite='SELECTORS4/#originating-element'>originating element</a> for the <span class='css'>::cue</span>, <span class='css'>::cue()</span>, <span class='css'>::cue-map</span> and <span class='css'>::cue-map()</span> pseudo-elements.
             </li>
             <li>
-              For the purpose of determining the cascade of the declarations in <code>STYLE</code> blocks of a WebVMT file, the relative order of appearance of the style sheets must be the same order as they were added to the collection, and the order of appearance of the collection must be after any style sheets that apply to the associated video element’s document.
+              For the purpose of determining the <a data-cite='CSS-CASCADE-4/#cascade'>cascade</a> of the declarations in <code>STYLE</code> blocks of a WebVMT file, the relative order of appearance of the style sheets must be the same order as they were added to the collection, and the order of appearance of the collection must be after any style sheets that apply to the associated <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'><code>&lt;video&gt;</code></a> or <a data-cite='HTML51/semantics-embedded-content.html#the-audio-element'><code>&lt;audio&gt;</code></a> element’s document.
             </li>
-            <p>
-              For example, given the following (invalid) HTML document:
-            </p>
-            <pre class='nohighlight example' title='Cascade Style HTML'>
+            <aside class='example' title='Invalid Cascade'>
+              <p>
+                For example, given the following (invalid) HTML document:
+              </p>
+              <pre class='nohighlight'>
 &lt;!doctype html&gt;
 &lt;title&gt;Invalid cascade example&lt;/title&gt;
 &lt;video controls autoplay src="video.webm"&gt;
@@ -3722,11 +3741,11 @@ NOTE Required blocks omitted for clarity
 &lt;style&gt;
   ::cue { color:red }
 &lt;/style&gt;
-            </pre>
-            <p>
-              And the "cascade.vmt" file contains:
-            </p>
-            <pre class='nohighlight example' title='Cascade Style VMT'>
+              </pre>
+              <p>
+                And the "cascade.vmt" file contains:
+              </p>
+              <pre class='nohighlight'>
 WEBVMT
 
 STYLE
@@ -3734,12 +3753,13 @@ STYLE
 
 00:00:00.000 --> 00:00:25.000
 Red or green?
-            </pre>
-            <p>
-              The <span class='css'>color:lime</span> declaration would win, because it is last in the <a data-cite='CSS-CASCADE-4/#cascade'>cascade</a>, even though the style element is after the <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'>&lt;video&gt;</a> element in the document order.
-            </p>
+              </pre>
+              <p>
+                The <span class='css'>color:lime</span> declaration would win, because it is last in the <a data-cite='CSS-CASCADE-4/#cascade'>cascade</a>, even though the <a data-cite='HTML51/semantics-embedded-content.html#the-style-element'><code>&lt;style&gt;</code></a> element is after the <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'><code>&lt;video&gt;</code></a> element in the document order.
+              </p>
+            </aside>
             <li>
-              For the purpose of resolving URLs in <code>STYLE</code> blocks of a WebVMT file, or any URLs in resources referenced from <code>STYLE</code> blocks of a WebVMT file, if the URL's scheme is not "data", then the user agent must act as if the URL failed to resolve.
+              For the purpose of resolving URLs in <code>STYLE</code> blocks of a WebVMT file, or any URLs in resources referenced from <code>STYLE</code> blocks of a WebVMT file, if the URL's scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve.
             </li>
             <li>
               For the purposes of processing by the CSS specification, <a>WebVMT internal node objects</a> are equivalent to elements with the same contents.
@@ -3751,7 +3771,7 @@ Red or green?
               No style sheets are associated with |nodes|. (The nodes are subsequently restyled using style sheets after their boxes are generated, as described below.)
             </li>
             <li>
-              The children of the |nodes| must be wrapped in an anonymous box whose <a data-cite='CSS-DISPLAY-3/#propdef-display'>display</a> property has the value <a data-cite='CSS-DISPLAY-3/#valdef-display-inline'>inline</a>. This is the <dfn>WebVMT cue background box</dfn>.
+              The children of the |nodes| must be wrapped in an anonymous box whose <a data-cite='CSS-DISPLAY-3/#propdef-display'><span class='css'>display</span></a> property has the value <a data-cite='CSS-DISPLAY-3/#valdef-display-inline'><span class='css'>inline</span></a>. This is the <dfn>WebVMT cue background box</dfn>.
             </li>
             <li>
               Properties on <a>WebVMT node objects</a> have their values set as defined in the next section. (That section uses some of the variables whose values were calculated earlier in this algorithm.)
@@ -3780,7 +3800,7 @@ Red or green?
           The <span class='css'>::cue-map(<var>selector</var>)</span> pseudo-element represents an element inside a map viewport that matches the given selector.
         </p>
         <p class='note'>
-          Similarly to all other pseudo-elements, these pseudo-elements are not directly present in the <code>&lt;video&gt;</code> element’s document tree.
+          Similarly to all other pseudo-elements, these pseudo-elements are not directly present in the <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'><code>&lt;video&gt;</code></a> or <a data-cite='HTML51/semantics-embedded-content.html#the-audio-element'><code>&lt;audio&gt;</code></a> element’s document tree.
         </p>
         <aside class='example'>
           The following table shows examples of what can be selected with a given selector, together with WebVMT syntax to produce the relevant objects.
@@ -3795,15 +3815,15 @@ Red or green?
             </tr>
             <tr>
               <td>
-                <span class='css'>::cue-map</span>
+                <span class='css'>::cue</span>
                 <pre class='nohighlight'>
-video::cue-map {
+video::cue {
   stroke: red;
 }
                 </pre>
               </td>
               <td>
-                Any <a>WebVMT node object</a> in the <a>WebVMT map object</a>.
+                Any <a>list of WebVMT node objects</a>.
                 <pre class='nohighlight'>
 WEBVMT
 
@@ -3826,15 +3846,15 @@ NOTE Also red!
             </tr>
             <tr>
               <td>
-                <a data-cite='SELECTORS4/#id-selector'>ID selector</a> in <span class='css'>::cue-map()</span>
+                <a data-cite='SELECTORS4/#id-selector'>ID selector</a> in <span class='css'>::cue()</span>
                 <pre class='nohighlight'>
-video::cue-map(#cue1) {
+video::cue(#cue1) {
   stroke: red;
 }
                 </pre>
               </td>
               <td>
-                Any <a>WebVMT node object</a> in the <a>WebVMT map object</a> with the cue's <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>text track cue</a> identifier matching the given ID, e.g. cue1.
+                Any <a>list of WebVMT node objects</a> with the cue’s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>text track cue</a> identifier matching the given ID, e.g. cue1.
                 <pre class='nohighlight'>
 WEBVMT
 
@@ -3858,15 +3878,15 @@ NOTE Not red
             </tr>
             <tr>
               <td>
-                <a data-cite='SELECTORS4/#attribute-selector'>Attribute selector</a> in <span class="css">::cue-map()</span>
+                <a data-cite='SELECTORS4/#attribute-selector'>Attribute selector</a> in <span class="css">::cue()</span>
                 <pre class='nohighlight'>
-video::cue-map([rad="20"]) {
+video::cue([rad="20"]) {
   stroke: red;
 }
                 </pre>
               </td>
               <td>
-                Any <a>WebVMT node object</a> in the <a>WebVMT map object</a> with the cue’s <a>WebVMT command</a> attribute matching the given value, e.g. rad="20".
+                For "path", the root <a>list of WebVMT node objects</a> or <a>WebVMT path object</a> with the given <a>path identifier</a>; for "zone", the <a>WebVMT zone object</a> with the given <a>zone identifier</a>.
                 <pre class='nohighlight'>
 WEBVMT
 
@@ -4011,7 +4031,7 @@ NOTE Red
             As a special exception, the properties corresponding to the background shorthand, when they would have been applied to the list of WebVTT Node Objects, must instead be applied to the WebVTT cue background box.
           </p-->
         </section>
-        <section id='cue-map-pseudo-element'>
+        <!--section id='cue-map-pseudo-element'>
           <h2>The <span class='css'>::cue-map</span> pseudo-element</h2>
           <p>
             Pseudo-elements apply to elements that are matched by selectors. For the purpose of this section, that element is the <i>matched element</i>. The pseudo-element defined below affects the styling of text track regions that are being rendered for the <i>matched element</i>.
@@ -4025,7 +4045,7 @@ NOTE Red
           <p>
             When a user agent is rendering a text track map according to the <a>rules for updating the display of WebVMT text tracks</a>, the <a>WebVMT map object</a> used in the rendering can be matched by the above pseudo-element. User agents that support the pseudo-element must dynamically update renderings accordingly.
           </p>
-        </section>
+        </section-->
       </section>
     </section>
     <section class='informative' id='knownissues'>
