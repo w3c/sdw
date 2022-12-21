@@ -21,7 +21,12 @@ var respecConfig = {
 			name: "Payam Barnaghi",
 			company: "University of Surrey",
 			companyURL: "https://www.surrey.ac.uk/"
-		}],
+    }, {
+      name: "Timo Homburg",
+      company: "Hochschule Mainz University Of Applied Sciences",
+      companyURL: "https://www.hs-mainz.de/"
+    }, 
+    ],
     otherLinks: [
     {
       key: "Contributors",
@@ -33,6 +38,7 @@ var respecConfig = {
         { value: "Simon Cox" },
         { value: "François Daoust" },
         { value: "Andreas Harth" },
+        { value: "Iza Hurst" },
         { value: "Bart van Leeuwen" },
         { value: "Josh Lieberman" },
         { value: "Chris Little" },
