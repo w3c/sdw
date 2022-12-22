@@ -656,7 +656,7 @@ function bpCrossRefs() {
           <li>plain text documents; e.g. historical texts, government reports, blog posts etc.</li>
           <li>data files containing structured content or markup; e.g. geospatial vector data in <a href="https://en.wikipedia.org/wiki/Shapefile">Shapefile</a> or [[GML]] format, statistical data in tabular <a>CSV</a> format or a spreadsheet, as <a href="https://it.wikipedia.org/wiki/GPS_eXchange_Format"><abbr title="GPS eXchange Format">GPX</abbr></a> data with “waypoints” and “tracks”, satellite imagery in <a href="https://en.wikipedia.org/wiki/GeoTIFF">GeoTIFF</a>, climate simulations in <a href="https://en.wikipedia.org/wiki/NetCDF#Conventions"><abbr title="netCDF Climate and Forecast Metadata Conventions">CF-NetCDF</abbr></a> etc.</li>
           <li>a data repository; e.g. <a href="https://postgis.net/">PostGIS</a> (a spatially enabled relational database), <a href="https://en.wikipedia.org/wiki/Elasticsearch">Elasticsearch</a> (a document-oriented noSQL repository based on Apache Lucene), <a href="https://jena.apache.org/documentation/tdb/">Apache Jena’s TDB</a> (an RDF <a>triple store</a>)</li>
-          <li>exposed via an existing <abbr title="Application Programming Interface">API</abbr>; including OGC-compliant Web services and API's such as <a>WFS</a> [[WFS]], <a>WCS</a> [[WCS]] and <a>OGC API - Features</a> [[OAF1]].</li>
+          <li>exposed via an existing <abbr title="Application Programming Interface">API</abbr>; including OGC-compliant Web services and API's such as <a>OGC API - Features</a> [[OAF1]].</li>
         </ol>
         <p>If your <a>spatial data</a> is managed within a software system it is likely that you will be able to access that data through one or more of the methods identified above; as structured data from a bulk extract (e.g. a “data dump”), via direct access to the underpinning data repository or through a bespoke or standards-compliant API provided by the system.</p>
 
@@ -910,7 +910,7 @@ function bpCrossRefs() {
             <th>Source</th>
           </tr>
           <tr>
-            <td><code>bagwfs</code></td>
+            <td><code>bag</code></td>
             <td>http://bag.geonovum.nl</td>
             <td><a href="http://geodata.nationaalgeoregister.nl/bag/wfs?service=WFS&amp;version=2.0.0&amp;request=DescribeFeatureType&amp;typeName=bag%3Apand">XML schema</a> for the <a href="http://bag.basisregistraties.overheid.nl">Dutch Government Base Registry Adressen en Gebouwen (BAG)</a></td>
           </tr>
@@ -1358,7 +1358,7 @@ function bpCrossRefs() {
             
             <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a> notes that URIs can be long. You may need to define identifiers that are locally unique within your spatial dataset and provide a mechanism to programmatically convert each local identifier to a URI. For example, the Metadata Vocabulary for Tabular Data [[TABULAR-METADATA]] achieves this using URI Templates as described in [[RFC6570]].</p>
             
-            <p>It is also good practice to use a redirection service to hide complex and potentially changing service end-point URLs, such as for a <a>Web Feature Service</a> [[WFS]] behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API or changes in endpoint URIs or API versions to request information about a particular <a>Spatial Thing</a>. For example, the URI <code>http://data.example.org/aan/id/perceel/aan.2528</code> could be used as proxy for the WFS GetFeature request <a href="http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;RESOURCEID=aan.2528"><code>http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;RESOURCEID=aan.2528</code></a>.</p>
+            <p>It is also good practice to use a redirection service to hide complex and potentially changing service end-point URLs, such as for an <a>OGC API Features</a> [[OAF1]] behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API or changes in endpoint URIs or API versions to request information about a particular <a>Spatial Thing</a>. For example, the URI <code>http://data.example.org/nlsfi/id/roads/road.11</code> could be used as proxy for the OGC API Features request <a href="https://geoe3platform.eu/geoe3/roads/collections/roads_FI/items/11?f=json"><code>https://geoe3platform.eu/geoe3/roads/collections/roads_FI/items/11?f=json</code></a>.</p>
             
             <p>Finally, while it is simple to use a query-pattern URL to serve information about a resource identified with a URI from a third-party internet domain, e.g. <code>http://example.org/museums?q=http://sws.geonames.org/6618987/</code>, these URLs are unsuitable as persistent identifiers. More often than not, your intended users will dereference the "official" URI, e.g. <code>http://sws.geonames.org/6618987/</code>. That said, this kind of search operation does provide a useful mechanism to find particular <a>Spatial Things</a>. See <a href="#convenience-apis" class="practiceRef"></a> for further details.</p>
             
@@ -1946,17 +1946,17 @@ Connection: close
             <p>Always with reference to <a href="#ex-schemaorg-dataset-and-place" class="exampleRef"></a>, the following snippet shows the [[GML]] and the <a>RDF</a> [[RDF11-PRIMER]] representations of the entry in the BAG Dutch register concerning the building where Anne Frank's house is located. For the corresponding GeoJSON [[RFC7946]] representation, see the relevant <a href="#ex-crs-geojson">example</a> in <a href="#bp-crs"></a>.</p>
 
             <aside class="example" id="ex-anne-frank-building-gml" title="[GML] description of a building, with detailed geometry">
-              <p>The [[GML]] representation of Anne Frank's house building (taken from the <a href="http://geodata.nationaalgeoregister.nl/bag/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;typeName=pand&amp;cql_filter=bag:identificatie=363100012169587">BAG WFS endpoint</a>):</p>
+              <p>A [[GML]] representation of Anne Frank's house building:</p>
               <pre>
-&lt;bagwfs:pand gml:id=&quot;pand.3323294&quot;&gt;
-  &lt;bagwfs:identificatie&gt;363100012169587&lt;/bagwfs:identificatie&gt;
-  &lt;bagwfs:bouwjaar&gt;1635&lt;/bagwfs:bouwjaar&gt;
-  &lt;bagwfs:status&gt;Pand in gebruik (niet ingemeten)&lt;/bagwfs:status&gt;
-  &lt;bagwfs:gebruiksdoel&gt;woonfunctie&lt;/bagwfs:gebruiksdoel&gt;
-  &lt;bagwfs:oppervlakte_min&gt;1&lt;/bagwfs:oppervlakte_min&gt;
-  &lt;bagwfs:oppervlakte_max&gt;21&lt;/bagwfs:oppervlakte_max&gt;
-  &lt;bagwfs:aantal_verblijfsobjecten&gt;20&lt;/bagwfs:aantal_verblijfsobjecten&gt;
-  &lt;bagwfs:geometrie&gt;
+&lt;bag:pand gml:id=&quot;pand.3323294&quot;&gt;
+  &lt;bag:identificatie&gt;363100012169587&lt;/bag:identificatie&gt;
+  &lt;bag:bouwjaar&gt;1635&lt;/bag:bouwjaar&gt;
+  &lt;bag:status&gt;Pand in gebruik (niet ingemeten)&lt;/bag:status&gt;
+  &lt;bag:gebruiksdoel&gt;woonfunctie&lt;/bag:gebruiksdoel&gt;
+  &lt;bag:oppervlakte_min&gt;1&lt;/bag:oppervlakte_min&gt;
+  &lt;bag:oppervlakte_max&gt;21&lt;/bag:oppervlakte_max&gt;
+  &lt;bag:aantal_verblijfsobjecten&gt;20&lt;/bag:aantal_verblijfsobjecten&gt;
+  &lt;bag:geometrie&gt;
     &lt;gml:MultiSurface srsDimension=&quot;2&quot; axisLabels="east north"
                          srsName=&quot;urn:ogc:def:crs:EPSG::28992&quot;&gt;
       &lt;gml:surfaceMember&gt;
@@ -1975,8 +1975,8 @@ Connection: close
         &lt;/gml:Polygon&gt;
       &lt;/gml:surfaceMember&gt;
     &lt;/gml:MultiSurface&gt;
-  &lt;/bagwfs:geometrie&gt;
-&lt;/bagwfs:pand&gt;
+  &lt;/bag:geometrie&gt;
+&lt;/bag:pand&gt;
 </pre>
             </aside>
 
