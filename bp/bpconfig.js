@@ -52,7 +52,7 @@ var respecConfig = {
         { value: "Lars G. Svensson" },
         { value: "Kerry Taylor" },
         { value: "Erik Wilde" },
-	{ value: "Rob Atkinson" }
+	{ value: "Rob Atkinson" },
 	{ value: "Edward Lewis" }      
       ]
     }, {
