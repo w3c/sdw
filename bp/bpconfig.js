@@ -53,6 +53,7 @@ var respecConfig = {
         { value: "Kerry Taylor" },
         { value: "Erik Wilde" },
 	{ value: "Rob Atkinson" }
+	{ value: "Edward Lewis" }      
       ]
     }, {
       key: "OGC Document Number",
@@ -99,6 +100,12 @@ var respecConfig = {
         authors: ["Howard Butler", "Martin Daly", "Allan Doyle", "Sean Gillies", "Tim Schaub", "Christopher Schmidt"],
         date: "16 June 2008"
       },
+      "GeoPackage":{
+        href:"http://www.opengis.net/doc/IS/geopackage/1.3",
+        publisher:"OGC",
+	title:"OGC® GeoPackage Encoding Standard",	
+        date: "16 November 2021"
+      },	      
       "SIMPLE-FEATURES":{
         href:"http://www.opengeospatial.org/standards/sfa",
         publisher:"OGC",
