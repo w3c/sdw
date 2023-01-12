@@ -18,10 +18,16 @@ var respecConfig = {
       company: "Geonovum",
       companyURL: "https://www.geonovum.nl/"
     }, {
-			name: "Payam Barnaghi",
-			company: "University of Surrey",
-			companyURL: "https://www.surrey.ac.uk/"
-		}],
+	name: "Payam Barnaghi",
+	company: "University of Surrey",
+	companyURL: "https://www.surrey.ac.uk/"
+    }, {
+      name: "Timo Homburg",
+      company: "Hochschule Mainz University Of Applied Sciences",
+      companyURL: "https://www.hs-mainz.de/",
+      orcid: "0000-0002-9499-5840"
+    }, 
+    ],
     otherLinks: [
     {
       key: "Contributors",
@@ -33,6 +39,7 @@ var respecConfig = {
         { value: "Simon Cox" },
         { value: "François Daoust" },
         { value: "Andreas Harth" },
+        { value: "Iza Hurst" },
         { value: "Bart van Leeuwen" },
         { value: "Josh Lieberman" },
         { value: "Chris Little" },
