@@ -294,7 +294,24 @@ var respecConfig = {
         "title":"FAIR Data Maturity Model. Specification and Guidelines (1.0)",
         "date": "2020"
       },
-
+      "OAEDR": {
+        "href":"https://docs.ogc.org/is/19-086r5/19-086r5.html",
+        "publisher": "OGC",
+        "title":"OGC API - Environmental Data Retrieval Standard",
+        "date": "2022"
+      },
+      "COG": {
+        "href":"https://www.cogeo.org/",
+        "publisher": "COG Geo",
+        "title":"Cloud Optimized GeoTIFF",
+        "date": "2021"
+      },
+      "ZARR": {
+        "href":"https://zarr.dev/",
+        "publisher": "Zarr community",
+        "title":"Zarr",
+        "date": "2022"
+      },
 // ALREADY IN SPECREF
 
 /*
