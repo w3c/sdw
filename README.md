@@ -102,6 +102,12 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
     <br/><a href="https://w3c.github.io/sdw/ssn-usage/">Implementation report</a>
   </dd>
 
+  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/ssn-usecases">ssn-usecases</a></dt>
+  <dd>
+    A use cases document describing the reasons and new use cases for a proposed update to SSN in 2023.
+    <br/><a href="https://w3c.github.io/sdw/ssn-usecases/">SSN Use cases</a>
+  </dd>
+
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/ssn">ssn</a></dt>
   <dd>
     The Semantic Sensor Network Ontology Recommendation initially developed by the Spatial Data on the Web Working Group.
