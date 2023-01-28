@@ -384,15 +384,16 @@ var respecConfig = {
         date:"1 February 2006"
       },
 */
-/*
-      "ISO-19123": {
-        href:"https://www.iso.org/standard/40121.html",
-        title:"ISO 19123:2005 Geographic information -- Schema for coverage geometry and functions",
+
+      "ISO-19123-1:2022": {
+        href:"https://www.iso.org/standard/70743.html",
+        title:"ISO 19123:2022 Geographic information — Schema for coverage geometry and functions — Part 1: Fundamentals",
         authors:["ISO/TC 211"],
         publisher:"ISO",
-        date:"15 August 2005"
+        date:"2022",
+        status: "FDIS"
       },
-*/
+
 /*
       "ISO-19109": {
         href:"https://www.iso.org/standard/59193.html",
