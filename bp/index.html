@@ -654,7 +654,7 @@ function bpCrossRefs() {
         <p>Neither the wider topic of spatial data <em>management</em> nor <a>Spatial Data Infrastructures</a> are covered. We assume that your spatial data already exists and will be available from one of the following places:</p>
         <ol>
           <li>plain text documents; e.g. historical texts, government reports, blog posts etc.</li>
-          <li>data files containing structured content or markup; e.g. geospatial vector data in <a href="https://en.wikipedia.org/wiki/Shapefile">Shapefile</a> or [[GML]] format, statistical data in tabular <a>CSV</a> format or a spreadsheet, as <a href="https://it.wikipedia.org/wiki/GPS_eXchange_Format"><abbr title="GPS eXchange Format">GPX</abbr></a> data with “waypoints” and “tracks”, satellite imagery in <a href="https://en.wikipedia.org/wiki/GeoTIFF">GeoTIFF</a>, climate simulations in <a href="https://en.wikipedia.org/wiki/NetCDF#Conventions"><abbr title="netCDF Climate and Forecast Metadata Conventions">CF-NetCDF</abbr></a> etc.</li>
+          <li>data files containing structured content or markup; e.g. geospatial vector data in [[GeoPackage]] or [[GML]] format, statistical data in tabular <a>CSV</a> format or a spreadsheet, as <a href="https://it.wikipedia.org/wiki/GPS_eXchange_Format"><abbr title="GPS eXchange Format">GPX</abbr></a> data with “waypoints” and “tracks”, satellite imagery in <a href="https://en.wikipedia.org/wiki/GeoTIFF">GeoTIFF</a>, climate simulations in <a href="https://en.wikipedia.org/wiki/NetCDF#Conventions"><abbr title="netCDF Climate and Forecast Metadata Conventions">CF-NetCDF</abbr></a> etc.</li>
           <li>a data repository; e.g. <a href="https://postgis.net/">PostGIS</a> (a spatially enabled relational database), <a href="https://en.wikipedia.org/wiki/Elasticsearch">Elasticsearch</a> (a document-oriented noSQL repository based on Apache Lucene), <a href="https://jena.apache.org/documentation/tdb/">Apache Jena’s TDB</a> (an RDF <a>triple store</a>)</li>
           <li>exposed via an existing <abbr title="Application Programming Interface">API</abbr>; including OGC-compliant Web services and API's such as <a>WFS</a> [[WFS]], <a>WCS</a> [[WCS]] and <a>OGC API - Features</a> [[OAF1]].</li>
         </ol>
@@ -753,7 +753,7 @@ function bpCrossRefs() {
           <tr>
             <td><code>dcat</code></td>
             <td>http://www.w3.org/ns/dcat#</td>
-            <td>Data Catalog Vocabulary (DCAT) [[VOCAB-DCAT]]</td>
+            <td>Data Catalog Vocabulary (DCAT) [[VOCAB-DCAT-2]]</td>
           </tr>
           <tr>
             <td><code>dcterms</code></td>
@@ -1039,14 +1039,80 @@ function bpCrossRefs() {
 
     <section id="coverages">
       <h2>Coverages: describing properties that vary with location (and time)</h2>
-      <p>Many aspects of <a>Spatial Things</a> can be described with single-valued, static properties. However, in some applications it is more useful to describe how values of a property vary across space and time. Such descriptions are formalized as <a>coverages</a>. Users of spatial information may employ both viewpoints.</p>
+      <p>Many aspects of <a>Spatial Things</a> can be described with single-valued, static properties, e.g. the location of buildings, roads, administrative districts, and so on. However, in some applications it is more useful to describe how values of a property vary over space and time, mathematically described by “fields”. Such descriptions are formalized as "<a>coverages</a>". </p>
 
-      <p>So what is a <a>coverage</a>? As defined by [[ISO-19123]] it is a `feature that acts as a function to return values from its range for any direct position within its spatial, temporal or spatiotemporal domain`. That is, the `domain` is the space and/or time over which the values of a property vary, with a `range` of those values.
-	      An example is a satellite image or aerial photograph, using visible light, of an area of the earth. The boundary of the image encompasses the `domain` of the coverage, and the colour values in the image form the `range` of that coverage. Then for any position within the image or photograph, a colour can be assigned, possibly by interpolation between the adjacent pixels of the image.
-	      Another example is a postal region divided into many postal code zones. Any position in the region will have a postcode, but interpolating between zones is nonsensical. The range of values of the coverage is discrete, rather than continuous. Another coverage of the same postal region could be, for each zone, the number of houses, or all their addresses, or even all their geometrical footprints as polygons.     
-	      An example that is not just spatial is a weather forecast that maps points in space and time to values of temperature, wind speed, humidity and so forth.
-	      An even less spatial and more purely temporal example is a time series of observations from a river gauge which maps points/instants in time to water-flow values. 
-	      So a coverage is a data structure with a method to map points in space and time to values of a property.  One way to think of a coverage is as a mathematical function, where data values are a function of coordinates in space and time, but the values may not be just numbers but could be categories or even complex structures such as geometry objects.</p>
+      <p>So what is a <a>coverage</a>? As defined by [[ISO-19123-1:2022]], a coverage contains a set of values, each associated with one of the elements in an array of points or cells. It acts as a function to return values from its range for any direct position within its spatial, temporal or spatiotemporal domain. That is, the `domain` is the space and/or time over which the values of a property vary, with a `range` of those values. Examples include raster data, point clouds, meshes such as triangulated irregular networks, and polygon sets. Coverages are multi-dimensional, including examples like 1D sensor timeseries, 2D satellite images, 3D x/y/t image timeseries and x/y/z geophysical voxel data, and 4D x/y/z/t climate and ocean data. Coordinate axes of such coverages can have spatial, temporal, or any other meaning, and they can be combined freely for n-dimensional coverages.</p>
+
+      <aside class="example" title="grid examples" id="ex-cov-grid">
+        <p>Some examples of coverages include:</p>
+        <figure>
+          <img src="images/cov-reggrid.png"
+            alt="regular 2-dimensional grid" style="width:50%"/>
+          <figcaption>A regular 2-dimensional grid.</figcaption>
+        </figure>
+        
+        <figure>
+          <img src="images/cov-reggrid-3d.png"
+            alt="regular 3-dimensional grid" style="width:50%"/>
+          <figcaption>A regular 3-dimensional grid.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="images/cov-irregulargrids.png"
+            alt="some irregular grids" style="width:50%"/>
+          <figcaption>Some examples of 2-dimensional and 3-dimensional irregular grids.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="images/cov-dem.jpg"
+            alt="digital elevation model" style="width:50%"/>
+          <figcaption>A digital elevation model: a grid of data elements at regular geographic intervals and at prescribed locations; each grid element is associated with an elevation value.</figcaption>
+        </figure>
+
+      </aside>
+      
+      <p>An example is a postal region divided into many postal code zones. Any position in the region will have a postcode, but interpolating between zones is nonsensical. The range of values of the coverage is discrete, rather than continuous. Another coverage of the same postal region could be, for each zone, the number of houses, or all their addresses, or even all their geometrical footprints as polygons.</p>     
+      
+      <p>Another example is a satellite image or aerial photograph, using visible light, of an area of the earth. The boundary of the image encompasses the `domain` of the coverage, and the colour values in the image form the `range` of that coverage. Then for any position within the image or photograph, a colour can be assigned, possibly by interpolation between the adjacent pixels of the image. </p>
+
+      <aside class="example"  title="aereal image" id="ex-cov-aer">
+        <p>A satellite image of Amsterdam Central railway station</p>
+        
+        <figure>
+          <img src="images/cov-aerealimage.png"
+            alt="aereal image" style="width:50%"/>
+          <figcaption>An aereal photograph</figcaption>
+        </figure>
+      </aside>
+      
+      <p>Another example is a point cloud: a set of points in three dimensional space with an optional set of supporting attributes such as intensity, color information, or time. </p>
+
+      <aside class="example" title="point cloud" id="ex-cov-pntcld">
+        <p>The digital elevation map for the Netherlands contains detailed and precise height data for the entire country, with on average eight elevation measurements per square meter. </p>
+        
+        <figure>
+          <img src="images/cov-pointcloud.png"
+            alt="point cloud" style="width:50%"/>
+          <figcaption>Point cloud showing the <a href="https://nl.wikipedia.org/wiki/Knooppunt_Prins_Clausplein">Prins Clausplein</a>, a complex highway intersection. The points are assigned a colour to visualise increasingly high elevation.</figcaption>
+        </figure>
+      </aside>
+
+      <p>A grid of "voxels", 3-dimensional is another example. These are sometimes used, for example, for geophysical data.</p>
+
+      <aside class="example"  title="voxel model" id="ex-cov-voxel">
+        <p>A voxel model using colour to show classes of stone in the near-surface underground. </p>
+        
+        <figure>
+          <img src="images/cov-voxels.png"
+            alt="voxel model" style="width:50%"/>
+          <figcaption><a href="https://basisregistratieondergrond.nl/inhoud-bro/registratieobjecten/modellen/geotop-gtm/">GeoTOP</a> voxel model: a 3-dimensional model showing the Dutch underground in (roughly pizza box shaped) boxes of 100 x 100 x 0,5 meters.</figcaption>
+        </figure>
+      </aside>
+      
+	    <p>An example that is not just spatial is a weather forecast that maps points in space and time to values of temperature, wind speed, humidity and so forth. An even less spatial and more purely temporal example is a time series of observations from a river gauge which maps points/instants in time to water-flow values. </p>
+
+      
+	    <p>So a coverage is a data structure with a method to map points in space and time to values of a property.  One way to think of a coverage is as a mathematical function, where data values are a function of coordinates in space and time, but the values may not be just numbers but could be categories or even complex structures such as geometry objects.</p>
 
       <aside class="note">
         <p>Sometimes you will hear the word “<a>coverage</a>” used synonymously with “gridded data” or “raster data”, as in a satellite image, but this is not really accurate. You can see from the above paragraphs that non-gridded data (like a river gauge measurement, or post codes) can also be presented as coverages. Nevertheless, you will often find a bias toward gridded data in discussions (and software) that concern coverages.</p>
@@ -1270,7 +1336,7 @@ function bpCrossRefs() {
 
           <aside class="note">
             <p>Deciding whether your <a>spatial data</a> is a single dataset or not is somewhat arbitrary. To decide this, it is often useful to consider attributes such as the license under which the data will be made available, the refresh or publication schedules, the quality of the data and the governance regime applied in managing the data. Typically, all of these attributes should be consistent within a single dataset.</p>
-            <p>[[VOCAB-DCAT]] provides a useful definition of dataset that supports this approach: “A collection of data, published or curated by a single agent, and available for access or download in one or more formats.”</p>
+            <p>[[VOCAB-DCAT-2]] provides a useful definition of dataset that supports this approach: “A collection of data, published or curated by a single agent, and available for access or download in one or more representations.”</p>
           </aside>
 
           <p>However, we need to look inside the datasets at the resources described within your data. If you want these resources to be visible within the Web’s information space, by which we mean that others can refer to or talk about those resources, then they must also be assigned URIs (see [[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a>). These URIs are like 'Web-scale foreign keys' that enable information from different sources to be stitched together.</p>
@@ -1897,7 +1963,7 @@ Connection: close
 <p>Moreover, the original GeoJSON datatype URI used in the example (corresponding to <a href="https://www.iana.org/assignments/media-types/application/geo+json">the GeoJSON IANA Media Type URL</a>) has been replaced with <code>geosparql:geoJSONLiteral</code>, included in the draft of the new version of [[GeoSPARQL]] (see issues <a href="https://github.com/opengeospatial/ogc-geosparql/issues/1">opengeospatial/ogc-geosparql/issues/1</a> and  <a href="https://github.com/opengeospatial/ogc-geosparql/issues/48">opengeospatial/ogc-geosparql/issues/48</a>), already adopted in [[GeoDCAT-AP-20201223]].</p>
 </aside>
 
-            <p>The following [[TURTLE]] snippet shows the [[GeoDCAT-AP]] representation of the dataset in <a href="#ex-schemaorg-dataset-and-place"></a>. Here the bounding box is provided in multiple literal encodings (<a>WKT</a>, [[GML]], GeoJSON [[RFC7946]]), by using property <a href="https://www.w3.org/TR/vocab-dcat-2/#Property:location_bbox"><code>dcat:bbox</code></a> [[VOCAB-DCAT]].</p>
+            <p>The following [[TURTLE]] snippet shows the [[GeoDCAT-AP]] representation of the dataset in <a href="#ex-schemaorg-dataset-and-place"></a>. Here the bounding box is provided in multiple literal encodings (<a>WKT</a>, [[GML]], GeoJSON [[RFC7946]]), by using property <a href="https://www.w3.org/TR/vocab-dcat-2/#Property:location_bbox"><code>dcat:bbox</code></a> [[VOCAB-DCAT-2]].</p>
 
 	    <!--<div class="issue" data-number="1252"></div>-->
 
@@ -2214,7 +2280,7 @@ Connection: close
 <p>Added the following example on the use of [[VOCAB-DCAT-2]] for the specification of centroids and bounding boxes.</p>
 </aside>
 
-<p>The same example can be written as follows, using the relevant properties from [[VOCAB-DCAT]] (<a href="https://www.w3.org/TR/vocab-dcat-2/#Property:location_centroid"><code>dcat:centroid</code></a> and <a href="https://www.w3.org/TR/vocab-dcat-2/#Property:location_bbox"><code>dcat:bbox</code></a>):</p>
+<p>The same example can be written as follows, using the relevant properties from [[VOCAB-DCAT-2]] (<a href="https://www.w3.org/TR/vocab-dcat-2/#Property:location_centroid"><code>dcat:centroid</code></a> and <a href="https://www.w3.org/TR/vocab-dcat-2/#Property:location_bbox"><code>dcat:bbox</code></a>):</p>
 <pre>
 @prefix bag:       &lt;http://bag.basisregistraties.overheid.nl/def/bag#&gt; .
 @prefix dcat:      &lt;http://www.w3.org/ns/dcat#&gt; .
@@ -4051,16 +4117,16 @@ a:Dataset a dcat:Dataset ;
               <li>As shown in [[DWBP]] <a
               href="https://www.w3.org/TR/dwbp/#DescriptiveMetadata">Best Practice 2: Provide descriptive metadata</a>:
                 Include the spatial extent of the things described by the dataset using
-                [[VOCAB-DCAT]] and a reference to a named place in a common vocabulary for
+                [[VOCAB-DCAT-2]] and a reference to a named place in a common vocabulary for
                 geospatial semantics (e.g. <a
                   href="http://www.geonames.org/ontology/documentation.html">GeoNames</a>).</li>
               <li>
-                <p>Again, use [[VOCAB-DCAT]], but instead of a reference to a named place, use a set
+                <p>Again, use [[VOCAB-DCAT-2]], but instead of a reference to a named place, use a set
                 of coordinates to specify the boundaries of the area either as a bounding box
                 or a polygon &mdash; see <a href="#ex-geodcat-ap-bag-addresses"></a>.</p>
 <!--
                 <p>This can be done, e.g., by using the approach defined in the spatial extension of 
-                [[VOCAB-DCAT]], [[GeoDCAT-AP]] &mdash; see <a href="#ex-geodcat-ap-bag-addresses"></a>.</p>
+                [[VOCAB-DCAT-2]], [[GeoDCAT-AP]] &mdash; see <a href="#ex-geodcat-ap-bag-addresses"></a>.</p>
                 <aside class="note">
                   <p>[[GeoDCAT-AP]] provides an <a>RDF</a> [[RDF11-PRIMER]]
                     syntax binding for the metadata elements defined in the core profile of [[ISO-19115]]
@@ -4070,7 +4136,7 @@ a:Dataset a dcat:Dataset ;
               </li>
               <li>
                 <p>Use [[GeoDCAT-AP]] to specify spatial
-                attributes that are not available in [[VOCAB-DCAT]] &mdash; 
+                attributes that are not available in [[VOCAB-DCAT-2]] &mdash; 
                 see <a href="#ex-geodcat-ap-dataset-spatial-representation-type"></a>
                 and <a href="#ex-geodcat-ap-spatial-resolution"></a>.</p>
                 <aside class="note">
@@ -4297,9 +4363,9 @@ a:Dataset a dcat:Dataset ;
 <p>The following paragraphs have been added in order to update the BP wrt to [[VOCAB-DCAT-2]] and [[GeoDCAT-AP-20201223]].</p>
 </aside>
 
-<p>The [[VOCAB-DQV]] approach is recommended also in [[VOCAB-DCAT]] as a general solution to specify precision and accuracy. However, in order to address the most common case of spatial resolution (i.e., as horizontal ground distance), [[VOCAB-DCAT]] defines also a specific property, <a href="https://www.w3.org/TR/vocab-dcat-2/#Property:dataset_spatial_resolution"><code>dcat:spatialResolutionInMeters</code></a>. By using this property, <a href="#ex-dqv-dataset-quality" class="exampleRef"></a> can be re-written as follows:</p>
+<p>The [[VOCAB-DQV]] approach is recommended also in [[VOCAB-DCAT-2]] as a general solution to specify precision and accuracy. However, in order to address the most common case of spatial resolution (i.e., as horizontal ground distance), [[VOCAB-DCAT-2]] defines also a specific property, <a href="https://www.w3.org/TR/vocab-dcat-2/#Property:dataset_spatial_resolution"><code>dcat:spatialResolutionInMeters</code></a>. By using this property, <a href="#ex-dqv-dataset-quality" class="exampleRef"></a> can be re-written as follows:</p>
 
-<aside class="example" id="ex-dcat-dataset-quality" title="[VOCAB-DCAT] specification of spatial resolution and accuracy">
+<aside class="example" id="ex-dcat-dataset-quality" title="[VOCAB-DCAT-2] specification of spatial resolution and accuracy">
 <pre>
 :myDataset a dcat:Dataset ;
    dqv:hasQualityMeasurement :myDatasetAccuracy ;
@@ -4324,25 +4390,19 @@ a:Dataset a dcat:Dataset ;
 <p>Finally, [[GeoDCAT-AP]], building upon the [[VOCAB-DQV]] approach, defines specific individuals for the different types of spatial resolution in [[ISO-19115]] and [[ISO-19115-1-2014]] &mdash; namely:</p>
 
 <ul>
-<li>horizontal ground distance (<a href="https://semiceu.github.io/GeoDCAT-AP/releases/#metric-spatial-resolution-as-distance"><code>geodcatap:spatialResolutionAsDistance</code></a>);</li>
 <li>equivalent scale (<a href="https://semiceu.github.io/GeoDCAT-AP/releases/#metric-spatial-resolution-as-scale"><code>geodcatap:spatialResolutionAsScale</code></a>);</li>
 <li>angular distance (<a href="https://semiceu.github.io/GeoDCAT-AP/releases/#metric-spatial-resolution-as-angular-distance"><code>geodcatap:spatialResolutionAsAngularDistance</code></a>);</li>
-<li>vertical distance (<a href="https://semiceu.github.io/GeoDCAT-AP/releases/#metric-spatial-resolution-as-vertical-distance"><code>geodcatap:spatialResolutionAsVerticalDistance</code></a>).</li>
+<li>vertical distance (<a href="https://semiceu.github.io/GeoDCAT-AP/releases/#metric-spatial-resolution-as-vertical-distance"><code>geodcatap:spatialResolutionAsVerticalDistance</code></a>);</li>
+<li>horizontal ground distance (<a href="https://semiceu.github.io/GeoDCAT-AP/releases/#metric-spatial-resolution-as-distance"><code>geodcatap:spatialResolutionAsDistance</code></a>) can be used if the distance isn't expressed in metres.</li>
 </ul>
 
-<p> The use of these individuals is illustrated in the following example:</p>
+<p>These are illustrated in the following example:</p>
 
 <aside class="example" id="ex-geodcat-ap-spatial-resolution" title="[GeoDCAT-AP] specification of different types of spatial resolution">
 <pre>
 resource:a12345 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
       dqv:isMeasurementOf geodcatap:spatialResolutionAsScale ;
       dqv:value "0.000001"^^xsd:decimal ] ;
-.
-
-resource:b23456 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
-      sdmx-attribute:unitMeasure &lt;http://qudt.org/vocab/unit/M&gt; ;
-      dqv:isMeasurementOf geodcatap:spatialResolutionAsDistance ;
-      dqv:value "100.0"^^xsd:decimal ] ;
 .
 
 resource:c34567 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
@@ -4356,6 +4416,10 @@ resource:d45678 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
       dqv:isMeasurementOf geodcatap:spatialResolutionAsVerticalDistance ;
       dqv:value "10.0"^^xsd:decimal ] ;
 .
+resource:b23456 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
+      sdmx-attribute:unitMeasure <http://qudt.org/vocab/unit/MI_N&gt; ;
+      dqv:isMeasurementOf geodcatap:spatialResolutionAsDistance ;
+      dqv:value "0.1"^^xsd:decimal ] ;
 </pre>
 </aside>
 
@@ -4462,17 +4526,27 @@ resource:d45678 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
       </section>
       <section>
         <h3>Describing dataset structure and service behaviors</h3>
-        <p>Even if all <a>spatial data</a> should become findable directly through search engines, data portals would still remain important hubs for data discovery &mdash; for example, because the metadata records registered there can be made crawlable. But in addition, different data portals can harvest each other's information provided there is consistency in the types and meaning of included information, even if structures and technologies vary. In the eGovernment sector, [[VOCAB-DCAT-2]] is a standard for dataset metadata publication and harvesting implemented by these portals. Because it is lacking in possibilities for describing some specific characteristics spatial datasets, an application profile for <a>spatial data</a>, [[GeoDCAT-AP-20201223]], has been developed in the framework of <a href="https://ec.europa.eu/isa2/">ISA Programme of the European Union</a>, with the primary purpose of enabling the sharing of spatial metadata across domains and catalogue platforms. [[GeoDCAT-AP-20201223]] is mentioned in the "Possible approach" section of several Best Practices in this document. </p>
+        <p>Even if all <a>spatial data</a> should become findable directly through search engines, data portals would still remain important hubs for data discovery &mdash; for example, because the metadata records registered there can be made crawlable. But in addition, different data portals can harvest each other's information provided there is consistency in the types and meaning of included information, even if structures and technologies vary. In the eGovernment sector, [[VOCAB-DCAT-2]] is a standard for dataset metadata publication and harvesting implemented by these portals. 
+		Version 1 of DCAT, and therefore it's European Union profile, was not good at describing spatial datasets so [[GeoDCAT-AP]] extended the EU application profile for <a>spatial data</a>.
+		Some of the ideas of GeoDCAT-AP have been adopted in DCAT2 and GeoDCAT-AP has been updated accordingly. [[GeoDCAT-AP-20201223]] is mentioned in the "Possible approach" section of several Best Practices in this document. It still adds some properties beyond DCAT2 that are useful in certain cases.</p>
           <p>With the goal of sharing spatial metadata, [[GeoDCAT-AP-20201223]] defined <a>RDF</a> bindings covering the core profile of [[ISO-19115]] and the INSPIRE metadata schema [[INSPIRE-MD]], enabling the harmonized <a>RDF</a> representation of existing spatial metadata. The reason of this choice was to focus first on the most used metadata elements, whereas additional mappings could be defined in future versions of the specification, based on users’ and implementation feedback.</p>
          <p>The next step is evolution towards a single standard for metadata as it is used in data portals, without loss of relevant metadata, while still understandable and not too complicated. A working group in the Open Geospatial Consortium is currently working on a standardized Web API, <a href="https://ogcapi.ogc.org/records/">OGC API Records</a>, for metadata publication and discovery. It offers the capability to create, modify, and query metadata on the Web by providing a simple, extendable record schema for describing datasets and other resources, a way to organize records in collections, and an API to access and interact with these collections. When finished, this standard will support the publication of metadata catalogs in conformance to the best practices in this document.</p>
 
       </section>
       <section id="c-dynamicdata">
         <h3>Publishing dynamic and large datasets on the Web</h3>
-        <p>Large and complex datasets, for example data gathered using automated sensors, may be impossible to download in their entirety due to their dynamic nature and potential volumes. It is therefore necessary in these cases to be able to adequately describe the structure of such data and how services interact to expose subsets of it &mdash; even individual records in a Linked Data context. Currently, there is no established Best Practice for dealing with this, especially when taking the spatial and temporal dimensions into account.</p>
-        <p>Large, complex datasets are common in the information processing world, and commonly organized in “hypercubes” &mdash; where “data dimensions” are used to locate values holding results. A standard based on this dimensional model of data  is the RDF Data Cube vocabulary [[VOCAB-DATA-CUBE]]. It has been used to publish sensor data, but RDF Data Cube is lacking in possibilities for describing spatio-temporal aspects of data, which are very important for observations. One of the work items in the Spatial Data on the Web working group has been to extend the existing RDF Data Cube ontology to support specification of key metadata required to interpret spatio-temporal data, called [[QB4ST]].</p> 
-        <p>QB4ST is an extension to RDF Data Cube  to provide mechanisms for defining spatio-temporal aspects of dimension and measure descriptions. It is intended to enable the development of semantic descriptions of specific spatio-temporal data elements by appropriate communities of interest, rather than to enumerate a static list of such definitions. It provides a minimal ontology of spatio-temporal properties and defines abstract classes for data cube components (i.e. dimensions and measures) that use these, to allow classification and discovery of specialized component definitions using general terms.</p>
+        <p>Large and complex datasets, for example data gathered using automated sensors, may be impossible to download in their entirety due to their dynamic nature and potential volumes. It is therefore necessary in these cases to be able to adequately describe the structure of such data and how services interact to expose subsets of it &mdash; even individual records. Currently, there is no established Best Practice for dealing with this, especially when taking the spatial and temporal dimensions into account.</p>
+        <p>Several approaches and standards have been recently developed:
+	<ul>
+	    <li>web APIs, such as <a>OGC API - Features</a> [[OAF1]] and <a>OGC API - EDR</a> [[OAEDR]] (Environmental Data Retrieval) will soon have filter capabilities which allow one to extract a small subset of the data (OGC API - Features: Part 3)</li>
+	    <li><a>Cloud Optimised GeoTFF</a> (COG) [[COG]] explains how to optimise a large GeoTIFF file to allow use of the general web architecture HTTP Range Requests. COG is under consideration as an OGC standard, extending OGC's GeoTIFF</li>
+	    <li><a>Zarr</a> [[ZARR]] provides for access to "chunks" within a n-dimensional array. Zarr is under consideration as an OGC Community Standard.</li>
+	    <li>Cloud Optimised Point Cloud (COPC) enhances an LAZ file (LiDAR data) with an index to variable sized chunks. COPC is a community development, published in 2021; LAZ is the compressed form of the LAS format from the American Society for Photogrammetry and Remote Sensing (ASPRS).</li>
+	    <li>the RDF Data Cube vocabulary [[VOCAB-DATA-CUBE]]. Large, complex datasets are common in the information processing world, and commonly organized in “hypercubes” &mdash; where “data dimensions” are used to locate values holding results. RDF Data Cube is based on this dimensional model of data. It has been used to publish sensor data, but lacks a way to describe the spatio-temporal aspects of data, which are very important for observations. One of the work items in the Spatial Data on the Web working group has been to extend the existing RDF Data Cube ontology to support specification of key metadata required to interpret spatio-temporal data, called [[QB4ST]].</p> 
+        <p>QB4ST is an extension to RDF Data Cube to provide mechanisms for defining spatio-temporal aspects of dimension and measure descriptions. It is intended to enable the development of semantic descriptions of specific spatio-temporal data elements by appropriate communities of interest, rather than to enumerate a static list of such definitions. It provides a minimal ontology of spatio-temporal properties and defines abstract classes for data cube components (i.e. dimensions and measures) that use these, to allow classification and discovery of specialized component definitions using general terms.</p>
         <p>QB4ST is designed to support the publication of consistently described re-usable and comparable definitions of spatial and temporal data elements by appropriate communities of practice. One obvious such case is the use of GPS coordinates described as decimal <a>latitude</a> and <a>longitude</a> measures. Another example is the intended publication of a register of <a>Discrete Global Grid Systems</a> (DGGS) by the <a href="http://www.opengeospatial.org/projects/groups/dggsswg">OGC DGGS Working Group</a>. QB4ST is intended to support publication of descriptions of such data using a common set of attributes that can be attached to a property description (extending the available RDF-QB mechanisms for attributes of observations).</p>
+	    </li>
+	</ul></p>
       </section>
       <section id="c-unitofmeasure">
         <h3>Helping software understand units of measure</h3>
@@ -4751,7 +4825,7 @@ resource:d45678 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
           href="http://lov.okfn.org/dataset/lov/vocabs?tag=Time">Time</a>.</p>
 	
 <aside class="ednote">
-<p>Added column for [[VOCAB-DCAT]].</p>
+<p>Added column for [[VOCAB-DCAT-2]].</p>
 </aside>
 
 <table class="simple" id="table-vocabs-matrix">
@@ -4768,7 +4842,7 @@ resource:d45678 dqv:hasQualityMeasurement [ a dqv:QualityMeasurement ;
 <th>[[SCHEMA-ORG]]</th>
 <th>[[GeoSPARQL]]</th>
 <th>[[LOCN]]</th>
-<th>[[VOCAB-DCAT]]</th>
+<th>[[VOCAB-DCAT-2]]</th>
 </tr>
 </thead>
 <tbody>

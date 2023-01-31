@@ -18,10 +18,16 @@ var respecConfig = {
       company: "Geonovum",
       companyURL: "https://www.geonovum.nl/"
     }, {
-			name: "Payam Barnaghi",
-			company: "University of Surrey",
-			companyURL: "https://www.surrey.ac.uk/"
-		}],
+	name: "Payam Barnaghi",
+	company: "University of Surrey",
+	companyURL: "https://www.surrey.ac.uk/"
+    }, {
+      name: "Timo Homburg",
+      company: "Hochschule Mainz University Of Applied Sciences",
+      companyURL: "https://www.hs-mainz.de/",
+      orcid: "0000-0002-9499-5840"
+    }, 
+    ],
     otherLinks: [
     {
       key: "Contributors",
@@ -33,6 +39,7 @@ var respecConfig = {
         { value: "Simon Cox" },
         { value: "François Daoust" },
         { value: "Andreas Harth" },
+        { value: "Iza Hurst" },
         { value: "Bart van Leeuwen" },
         { value: "Josh Lieberman" },
         { value: "Chris Little" },
@@ -45,7 +52,8 @@ var respecConfig = {
         { value: "Lars G. Svensson" },
         { value: "Kerry Taylor" },
         { value: "Erik Wilde" },
-	{ value: "Rob Atkinson" }
+	{ value: "Rob Atkinson" },
+	{ value: "Edward Lewis" }      
       ]
     }, {
       key: "OGC Document Number",
@@ -92,6 +100,12 @@ var respecConfig = {
         authors: ["Howard Butler", "Martin Daly", "Allan Doyle", "Sean Gillies", "Tim Schaub", "Christopher Schmidt"],
         date: "16 June 2008"
       },
+      "GeoPackage":{
+        href:"http://www.opengis.net/doc/IS/geopackage/1.3",
+        publisher:"OGC",
+	title:"OGC® GeoPackage Encoding Standard",	
+        date: "16 November 2021"
+      },	      
       "SIMPLE-FEATURES":{
         href:"http://www.opengeospatial.org/standards/sfa",
         publisher:"OGC",
@@ -280,7 +294,24 @@ var respecConfig = {
         "title":"FAIR Data Maturity Model. Specification and Guidelines (1.0)",
         "date": "2020"
       },
-
+      "OAEDR": {
+        "href":"https://docs.ogc.org/is/19-086r5/19-086r5.html",
+        "publisher": "OGC",
+        "title":"OGC API - Environmental Data Retrieval Standard",
+        "date": "2022"
+      },
+      "COG": {
+        "href":"https://www.cogeo.org/",
+        "publisher": "COG Geo",
+        "title":"Cloud Optimized GeoTIFF",
+        "date": "2021"
+      },
+      "ZARR": {
+        "href":"https://zarr.dev/",
+        "publisher": "Zarr community",
+        "title":"Zarr",
+        "date": "2022"
+      },
 // ALREADY IN SPECREF
 
 /*
@@ -353,15 +384,16 @@ var respecConfig = {
         date:"1 February 2006"
       },
 */
-/*
-      "ISO-19123": {
-        href:"https://www.iso.org/standard/40121.html",
-        title:"ISO 19123:2005 Geographic information -- Schema for coverage geometry and functions",
+
+      "ISO-19123-1:2022": {
+        href:"https://www.iso.org/standard/70743.html",
+        title:"ISO 19123:2022 Geographic information — Schema for coverage geometry and functions — Part 1: Fundamentals",
         authors:["ISO/TC 211"],
         publisher:"ISO",
-        date:"15 August 2005"
+        date:"2022",
+        status: "FDIS"
       },
-*/
+
 /*
       "ISO-19109": {
         href:"https://www.iso.org/standard/59193.html",
