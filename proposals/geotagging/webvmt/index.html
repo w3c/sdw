@@ -988,6 +988,93 @@ mimetype:video/mp4
         </section>
       </section>
     </section>
+    <section id='conformance'>
+      <!--h2>Conformance</h2>
+      <p>
+        All diagrams, examples, and notes in this specification are non-normative, as are all sections explicitly marked non-normative. Everything else in this specification is normative.
+      </p>
+      <p>
+        The key words "MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY", and "OPTIONAL" in the normative parts of this document are to be interpreted as described in RFC2119. The key word "OPTIONALLY" in the normative parts of this document is to be interpreted with the same normative meaning as "MAY" and "OPTIONAL". For readability, these words do not appear in all uppercase letters in this specification.
+      </p>
+      <p>
+        Requirements phrased in the imperative as part of algorithms (such as "strip any leading space characters" or "return false and abort these steps") are to be interpreted with the meaning of the key word ("must", "should", "may", etc) used in introducing the algorithm.
+      </p>
+      <p>
+        Conformance requirements phrased as algorithms or specific steps may be implemented in any manner, so long as the end result is equivalent. (In particular, the algorithms defined in this specification are intended to be easy to follow, and not intended to be performant.)
+      </p-->
+      <section id='conformance-classes'>
+        <h2>Conformance classes</h2>
+        <p>
+          This specification describes the conformance criteria for user agents (relevant to implementors) and <a>WebVMT files</a> (relevant to authors and authoring tool implementors).
+        </p>
+        <p class='note'>
+          <a href='#syntax'>Syntax</a> defines what consists of a valid <a>WebVMT file</a>. Authors need to follow the requirements therein, and are encouraged to use a conformance checker. <a href='#parsing'>Parsing</a> defines how user agents are to interpret a file labelled as <a href='#text-vmt'>text/vmt</a>, for both valid and invalid <a>WebVMT files</a>. The parsing rules are more tolerant to author errors than the syntax allows, in order to provide for extensibility and to still render cues that have some syntax errors.
+        </p>
+        <aside class='example' title='Conformance Error'>
+          For example, the parser will create two cues even if the blank line between them is skipped. This is clearly a mistake, so a conformance checker will flag it as an error, but it is still useful to render the cues to the user.
+        </aside>
+        <p>
+          User agents fall into several (possibly overlapping) categories with different conformance requirements.
+        </p>
+        <dl>
+          <dt>
+            <dfn class='export'>User agents that support scripting</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply. The user agent must also be conforming implementations of the IDL fragments in this specification, as described in the <a data-cite='WEBIDL-1' data-no-xref=''>Web IDL</a> specification.
+          </dd>
+          <dt>
+            <dfn class='export'>User agents with no scripting support</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply, except those in <a href='#plannedinterfaces'>Planned Interfaces</a>.
+            <!--except those in §6.5 WebVTT cue text DOM construction rules and §9 API.-->
+          </dd>
+          <dt>
+            <dfn>User agents that do not support CSS</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply, except parts of <a href='#parsing'>Parsing</a> that relate to stylesheets and CSS, and all of <a href='#rendering'>Rendering</a> and <a href='#css-extensions'>CSS Extensions</a>. The user agent must instead only render the <a>WebVMT cue</a> in an appropriate manner <!--and specifically support the color classes defined in §5 Default classes for WebVTT Caption or Subtitle Cue Components-->. Any other styling instructions are optional.
+          </dd>
+          <dt>
+            <dfn>User agents that do not support a full HTML CSS engine</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply<!--, including the color classes defined in §5 Default classes for WebVTT Caption or Subtitle Cue Components-->. However, the user agent will need to apply the CSS related features in <a href='#parsing'>Parsing</a>, <a href='#rendering'>Rendering</a> and <a href='#css-extensions'>CSS Extensions</a> in such a way that the rendered results are equivalent to what a full CSS supporting renderer produces.
+          </dd>
+          <dt>
+            <dfn class='export'>User agents that support a full HTML CSS engine</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply. However, only a limited set of CSS styles is allowed because <a>user agents that do not support a full HTML CSS engine</a> will need to implement CSS functionality equivalents. User agents that support a full CSS engine must therefore limit the CSS styles they apply for WebVMT so as to enable identical rendering without bleeding in extra CSS styles that are beyond the WebVMT specification.
+          </dd>
+          <dt>
+            <dfn class='export'>Conformance checkers</dfn>
+          </dt>
+          <dd>
+            Conformance checkers must verify that a <a>WebVMT file</a> conforms to the applicable conformance criteria described in this specification. The term "validator" is equivalent to conformance checker for the purpose of this specification.
+          </dd>
+          <dt>
+            <dfn class='export'>Authoring tools</dfn>
+          </dt>
+          <dd>
+            Authoring tools must generate conforming <a>WebVMT files</a>. Tools that convert other formats to WebVMT are also considered to be authoring tools.
+          </dd>
+          <dd>
+            When an authoring tool is used to edit a non-conforming <a>WebVMT file</a>, it may preserve the conformance errors in sections of the file that were not edited during the editing session (i.e. an editing tool is allowed to round-trip erroneous content). However, an authoring tool must not claim that the output is conformant if errors have been so preserved.
+          </dd>
+        </dl>
+      </section>
+      <section id='unicode-normalization'>
+        <h2>Unicode normalization</h2>
+        <p>
+          Implementations of this specification must not normalize Unicode text during processing.
+        </p>
+        <aside class='example' title='Unicode Matching'>
+          For example, a cue with an identifier consisting of the characters U+0041 LATIN CAPITAL LETTER A followed by U+030A COMBINING RING ABOVE (a decomposed character sequence), or the character U+212B ANGSTROM SIGN (a compatibility character), will not match a selector targeting a cue with an ID consisting of the character U+00C5 LATIN CAPITAL LETTER A WITH RING ABOVE (a precomposed character).
+        </aside>
+      </section>
+    </section>
     <section class='informative' id='datamodel'>
       <h2>Data Model</h2>
       <p class='ednote'>
@@ -1079,13 +1166,13 @@ mimetype:video/mp4
             The radius in meters of the minimum area visible from the <a>map center location</a>.
           </dd>
           <dt>
-            A <dfn>map object</dfn>
+            A <dfn>map interface object</dfn>
           </dt>
           <dd>
             The control interface object for the map.
           </dd>
-          <p class='note' title='Map Control Object'>
-            The precise format of the <a>map object</a> control interface is implementation dependent, for example the OpenLayers API.
+          <p class='note' title='Map Interface Object'>
+            The precise format of the <a>map interface object</a> is implementation dependent, for example OpenLayers API or Leaflet API.
           </p>
           <p>
             For parsing, we also need the following:
@@ -1096,12 +1183,15 @@ mimetype:video/mp4
           <dd>
             A <a>WebVMT map</a> associated with the text track.
           </dd>
-          <dt>
+          <dd>
+            By default, the <a>text track map</a> is set to null.
+          </dd>
+          <!--dt>
             A <dfn>text track map identifier</dfn>
           </dt>
           <dd>
             An identifier for the <a>WebVMT map</a>.
-          </dd>
+          </dd-->
         </dl>
       </section>
       <section id='webvmtmediafile'>
@@ -1166,7 +1256,7 @@ mimetype:video/mp4
               A <a>WebVMT map control</a> command;
             </li>
             <li>
-              A <a>WebVMT zone annotation</a> command;
+              A <a>WebVMT zone fragment</a> command;
             </li>
             <li>
               A <a>WebVMT path fragment</a> command;
@@ -1245,10 +1335,10 @@ mimetype:video/mp4
         <section id='shapeannotations' id='zones'>
           <h2>Zones</h2>
           <p>
-            A <dfn>WebVMT zone annotation</dfn> command annotates a geographic area to a map overlay.
+            A <dfn>WebVMT zone</dfn> consists of all the <a>WebVMT zone fragments</a> with the same <dfn>zone identifier</dfn>.
           </p>
           <p>
-            A <a>WebVMT zone annotation</a> command consists of one of the following components:
+            A <dfn>WebVMT zone fragment</dfn> command consists of one of the following components:
           </p>
           <ul>
             <li>
@@ -1265,6 +1355,15 @@ mimetype:video/mp4
             A <a>WebVMT circle</a> consists of:
           </p>
           <dl>
+            <dt>
+              A <a>zone identifier</a>
+            </dt>
+            <dd>
+              The identifier shared by all the <a>WebVMT zone fragments</a> in the <a>WebVMT zone</a>.
+            </dd>
+            <dd>
+              By default, the <a>zone identifier</a> is set to null.
+            </dd>
             <dt>
               A <dfn class='export'>circle location</dfn>
             </dt>
@@ -1285,6 +1384,15 @@ mimetype:video/mp4
             A <a>WebVMT polygon</a> consists of:
           </p>
           <dl>
+            <dt>
+              A <a>zone identifier</a>
+            </dt>
+            <dd>
+              The identifier shared by all the <a>WebVMT zone fragments</a> in the <a>WebVMT zone</a>.
+            </dd>
+            <dd>
+              By default, the <a>zone identifier</a> is set to null.
+            </dd>
             <dt>
               A list of <a>WebVMT locations</a> defining the polygon vertices.
             </dt>
@@ -2691,7 +2799,7 @@ NOTE Required blocks omitted for clarity
     <section id='parsing'>
       <h2>Parsing</h2>
       <p>
-        WebVMT file parsing is the same for all types of WebVMT files. This is similar to <a data-cite='WEBVTT/#parsing'>WebVTT parsing</a>, though most of the steps will be skipped as WebVMT files are metadata files.
+        WebVMT file parsing is similar to <a data-cite='WEBVTT/#parsing'>WebVTT parsing</a>, though most of the steps can be skipped as WebVMT files are metadata files.
       </p>
       <section id='file-parsing'>
         <h2>WebVMT File Parsing</h2>
@@ -2751,7 +2859,7 @@ NOTE Required blocks omitted for clarity
               If |position| is past the end of |input|, then abort these steps. The file was successfully processed, but it contains no useful data and so no <a>WebVMT cues</a> were added to output.
             </li>
             <li>
-              <i>Header:</i> If the character indicated by |position\ is not a U+000A LINE FEED (LF) character, then <a>collect a WebVMT block</a> with the |in header| flag set. Otherwise, advance |position| to the next character in |input|.
+              <i>Header:</i> If the character indicated by |position| is not a U+000A LINE FEED (LF) character, then <a>collect a WebVMT block</a> with the |in header| flag set. Otherwise, advance |position| to the next character in |input|.
             </li>
             <li>
               <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are U+000A LINE FEED (LF) characters.
@@ -2760,19 +2868,25 @@ NOTE Required blocks omitted for clarity
               Let |map| be null.
             </li>
             <li>
+              Let |media metadata| be null.
+            </li>
+            <li>
               <i>Block loop:</i> While |position| doesn’t point past the end of |input|:
               <ol>
                 <li>
                   <a>Collect a WebVMT block</a>, and let |block| be the returned value.
                 </li>
                 <li>
-                  If |block| is a <a>WebVMT cue</a>, add |block| to the text track list of cues |output|.
+                  If |block| is a <a>WebVMT cue</a>, add |block| to the <a data-cite='HTML51/semantics-embedded-content.html#text-track-list-of-cues'>text track list of cues</a> |output|.
                 </li>
                 <li>
-                  Otherwise, if |block| is a CSS style sheet, add |block| to |stylesheets|.
+                  Otherwise, if |block| is a <a data-cite='CSSOM-1/#css-style-sheets'>CSS style sheet</a>, add |block| to |stylesheets|.
                 </li>
                 <li>
                   Otherwise, if |block| is a <a>WebVMT map object</a>, let |map| be |block|.
+                </li>
+                <li>
+                  Otherwise, if |block| is a <a>WebVMT media object</a>, let |media metadata| be |block|.
                 </li>
                 <li>
                   <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are U+000A LINE FEED (LF) characters.
@@ -3010,7 +3124,7 @@ NOTE Required blocks omitted for clarity
       <section id='map-settings-parsing'>
         <h2>WebVMT Map Settings Parsing</h2>
         <p>
-          When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT map settings</dfn> from a string input for a text track, the user agent must run the following algorithm.
+          When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT map settings</dfn> from a string |input| for a <a data-cite='HTML51/semantics-embedded-content.html#text-tracks'>text track</a>, the user agent must run the following algorithm.
         </p>
         <p>
           A <dfn>WebVMT map object</dfn> is a conceptual construct to represent a <a>WebVMT map</a> that is used as a root node for a <a>list of WebVMT node objects</a>. This algorithm returns a <a>WebVMT map object</a>.
@@ -3072,7 +3186,7 @@ NOTE Required blocks omitted for clarity
       <section id='media-settings-parsing'>
         <h2>WebVMT Media Settings Parsing</h2>
         <p>
-          When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT media settings</dfn> from a string input for a text track, the user agent must run the following algorithm.
+          When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT media settings</dfn> from a string |input| for a <a data-cite='HTML51/semantics-embedded-content.html#text-tracks'>text track</a>, the user agent must run the following algorithm.
         </p>
         <p>
           A <dfn>WebVMT media object</dfn> is a conceptual construct to represent a <a>WebVMT media</a>. This algorithm returns a <a>WebVMT media object</a>.
@@ -3134,7 +3248,7 @@ NOTE Required blocks omitted for clarity
       <section id='cue-timings-parsing'>
         <h2>WebVMT Cue Timings Parsing</h2>
         <p>
-          When the algorithm above says to <dfn>collect WebVMT cue timings</dfn> from a string input using a text track map |map| for a <a>WebVMT cue</a> |cue|, the user agent must run the following algorithm.
+          When the algorithm above says to <dfn>collect WebVMT cue timings</dfn> from a string |input| for a <a>WebVMT cue</a> |cue|, the user agent must run the following algorithm.
         </p>
         <p>
           <ol>
@@ -3194,10 +3308,10 @@ NOTE Required blocks omitted for clarity
               <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
             </li>
             <li>
-              Interpret |string| as a base-ten integer. Let |value_1| be that integer.
+              Interpret |string| as a base-ten integer. Let |value1| be that integer.
             </li>
             <li>
-              If |string| is not exactly two characters in length, or if |value_1| is greater than 59, let |most significant units| be <i>hours</i>.
+              If |string| is not exactly two characters in length, or if |value1| is greater than 59, let |most significant units| be <i>hours</i>.
             </li>
             <li>
               If |position| is beyond the end of |input| or if the character at |position| is not a U+003A COLON character (:), then return an error and abort these steps. Otherwise, move |position| forwards one character.
@@ -3209,7 +3323,7 @@ NOTE Required blocks omitted for clarity
               If |string| is not exactly two characters in length, return an error and abort these steps.
             </li>
             <li>
-              Interpret |string| as a base-ten integer. Let |value_2| be that integer.
+              Interpret |string| as a base-ten integer. Let |value2| be that integer.
             </li>
             <li>
               If |most significant units| is <i>hours</i>, or if |position| is not beyond the end of |input| and the character at |position| is a U+003A COLON character (:), run these substeps:
@@ -3224,10 +3338,10 @@ NOTE Required blocks omitted for clarity
                   If |string| is not exactly two characters in length, return an error and abort these steps.
                 </li>
                 <li>
-                  Interpret |string| as a base-ten integer. Let |value_3| be that integer.
+                  Interpret |string| as a base-ten integer. Let |value3| be that integer.
                 </li>
               </ol>
-              Otherwise (if |most significant units| is not <i>hours</i>, and either |position| is beyond the end of |input|, or the character at |position| is not a U+003A COLON character (:)), let |value_3| have the value of |value_2|, then |value_2| have the value of |value_1|, then let |value_1| equal zero.
+              Otherwise (if |most significant units| is not <i>hours</i>, and either |position| is beyond the end of |input|, or the character at |position| is not a U+003A COLON character (:)), let |value3| have the value of |value2|, then |value2| have the value of |value1|, then let |value1| equal zero.
             </li>
             <li>
               If |position| is beyond the end of |input| or if the character at |position| is not a U+002E FULL STOP character (.), then return an error and abort these steps. Otherwise, move |position| forwards one character.
@@ -3239,13 +3353,13 @@ NOTE Required blocks omitted for clarity
               If |string| is not exactly three characters in length, return an error and abort these steps.
             </li>
             <li>
-              Interpret |string| as a base-ten integer. Let |value_4| be that integer.
+              Interpret |string| as a base-ten integer. Let |value4| be that integer.
             </li>
             <li>
-              If |value_2| is greater than 59 or if |value_3| is greater than 59, return an error and abort these steps.
+              If |value2| is greater than 59 or if |value3| is greater than 59, return an error and abort these steps.
             </li>
             <li>
-              Let |result| be |value_1|×60×60 + |value_2|×60 + |value_3| + |value_4|∕1000.
+              Let |result| be |value1|×60×60 + |value2|×60 + |value3| + |value4|∕1000.
             </li>
             <li>
               Return |result|.
@@ -3265,7 +3379,7 @@ NOTE Required blocks omitted for clarity
           <dfn>WebVMT internal node objects</dfn> are those that can contain further <a>WebVMT node objects</a>. They are conceptually similar to elements in HTML or the DOM. <a>WebVMT internal node objects</a> have an ordered list of child <a>WebVMT node objects</a>. The <a>WebVMT internal node object</a> is said to be the parent of the children. Cycles do not occur; the parent-child relationships so constructed form a tree structure.
         </p>
         <p>
-          There is one concrete class of <a>WebVMT internal node objects</a>:
+          There are several concrete classes of <a>WebVMT internal node objects</a>:
         </p>
         <dl>
           <dt>
@@ -3273,6 +3387,18 @@ NOTE Required blocks omitted for clarity
           </dt>
           <dd>
             This is used as a root node for trees of <a>WebVMT node objects</a>.
+          </dd>
+          <dt>
+            A <dfn>WebVMT zone object</dfn>
+          </dt>
+          <dd>
+            This represents the span of a <a>WebVMT zone fragment</a> in a <a>WebVMT cue</a>.
+          </dd>
+          <dt>
+            A <dfn>WebVMT path object</dfn>
+          </dt>
+          <dd>
+            This represents the span of a <a>WebVMT path fragment</a> in a <a>WebVMT cue</a>.
           </dd>
         </dl>
         <p>
@@ -3283,16 +3409,16 @@ NOTE Required blocks omitted for clarity
         </p>
         <dl>
           <dt>
-            <dfn>WebVMT text objects</dfn>
+            <dfn>WebVMT text object</dfn>
           </dt>
           <dd>
-            A fragment of text. A <a>WebVMT text object</a> has a value, which is the text it represents.
+            A text string. A <a>WebVMT text object</a> has a value which is the <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> of a timed metadata object.
           </dd>
           <!--dt>
-            <dfn>WebVMT data objects</dfn>
+            <dfn>WebVMT data object</dfn>
           </dt>
           <dd>
-            A fragment of structured data. A <a>WebVMT data object</a> is an array of objects, which is a list of the data structures and values it represents.
+            A timed metadata object. A <a>WebVMT data object</a> is a JSON object which represents the timed metadata structure and its values.
           </dd-->
         </dl>
         <p>
@@ -3690,7 +3816,7 @@ NOTE Required blocks omitted for clarity
                   Run the following substeps:
                   <ol>
                     <li>
-                      Let |map| be |cue|'s <a>map object</a>.
+                      Let |map| be |track|'s <a>text track map</a>.
                     </li>
                     <li>
                       <a>Obtain a set of CSS boxes</a> |boxes| positioned relative to an initial containing block.
@@ -3723,7 +3849,7 @@ NOTE Required blocks omitted for clarity
               For the purpose of selectors in <code>STYLE</code> blocks of a WebVMT file, the style sheet must apply to a hypothetical document that contains a single empty element with no explicit name, no namespace, no attributes, no classes, and no IDs, that acts like the <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a> for the <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> that were sourced from the given WebVMT file. The selectors must not match other <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> for the same <a data-cite='HTML51/semantics-embedded-content.html#media-element'>media element</a>. In this hypothetical document, the element must not match any selector that would match the element itself.
             </li>
             <li class='note'>
-              This element exists only to be the <a data-cite='SELECTORS4/#originating-element'>originating element</a> for the <span class='css'>::cue</span>, <span class='css'>::cue()</span>, <span class='css'>::cue-map</span> and <span class='css'>::cue-map()</span> pseudo-elements.
+              This element exists only to be the <a data-cite='SELECTORS4/#originating-element'>originating element</a> for the <span class='css'>::cue</span> and <span class='css'>::cue()</span><!--span class='css'>::cue-map</span> and <span class='css'>::cue-map()</span--> pseudo-elements.
             </li>
             <li>
               For the purpose of determining the <a data-cite='CSS-CASCADE-4/#cascade'>cascade</a> of the declarations in <code>STYLE</code> blocks of a WebVMT file, the relative order of appearance of the style sheets must be the same order as they were added to the collection, and the order of appearance of the collection must be after any style sheets that apply to the associated <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'><code>&lt;video&gt;</code></a> or <a data-cite='HTML51/semantics-embedded-content.html#the-audio-element'><code>&lt;audio&gt;</code></a> element’s document.
@@ -3770,9 +3896,9 @@ Red or green?
             <li>
               No style sheets are associated with |nodes|. (The nodes are subsequently restyled using style sheets after their boxes are generated, as described below.)
             </li>
-            <li>
+            <!--li>
               The children of the |nodes| must be wrapped in an anonymous box whose <a data-cite='CSS-DISPLAY-3/#propdef-display'><span class='css'>display</span></a> property has the value <a data-cite='CSS-DISPLAY-3/#valdef-display-inline'><span class='css'>inline</span></a>. This is the <dfn>WebVMT cue background box</dfn>.
-            </li>
+            </li-->
             <li>
               Properties on <a>WebVMT node objects</a> have their values set as defined in the next section. (That section uses some of the variables whose values were calculated earlier in this algorithm.)
             </li>
@@ -3786,7 +3912,7 @@ Red or green?
         </p>
       </section>
     </section>
-    <section class='informative' id='css-extensions'>
+    <section id='css-extensions'>
       <h2>CSS Extensions</h2>
       <p class='note'>
         This section specifies some CSS pseudo-elements and pseudo-classes and how they apply to WebVMT. This section does not apply to user agents that do not support CSS.
@@ -3794,11 +3920,17 @@ Red or green?
       <section id='css-extensions-introduction'>
         <h2>Introduction</h2>
         <p>
+          The <span class='css'>::cue</span> pseudo-element represents a cue.
+        </p>
+        <p>
+          The <span class='css'>::cue(<var>selector</var>)</span> pseudo-element represents a cue or element inside a cue that match the given selector.
+        </p>
+        <!--p>
           The <span class='css'>::cue-map</span> pseudo-element represents a map viewport.
         </p>
         <p>
           The <span class='css'>::cue-map(<var>selector</var>)</span> pseudo-element represents an element inside a map viewport that matches the given selector.
-        </p>
+        </p-->
         <p class='note'>
           Similarly to all other pseudo-elements, these pseudo-elements are not directly present in the <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'><code>&lt;video&gt;</code></a> or <a data-cite='HTML51/semantics-embedded-content.html#the-audio-element'><code>&lt;audio&gt;</code></a> element’s document tree.
         </p>
@@ -3880,7 +4012,7 @@ NOTE Not red
               <td>
                 <a data-cite='SELECTORS4/#attribute-selector'>Attribute selector</a> in <span class="css">::cue()</span>
                 <pre class='nohighlight'>
-video::cue([rad="20"]) {
+video::cue([zone="safe1"]) {
   stroke: red;
 }
                 </pre>
@@ -3903,7 +4035,7 @@ NOTE Red
 00:00:08.000 --> 00:00:16.000
 { "circle":
   { "lat": 51.504789, "lng": -0.078642,
-    "rad": 20 } }
+    "rad": 20, "zone": "safe1" } }
                 </pre>
               </td>
             </tr>
@@ -3919,7 +4051,7 @@ NOTE Red
           Pseudo-elements apply to elements that are matched by selectors. For the purpose of this section, that element is the <i>matched element</i>. The pseudo-elements defined in the following sections affect the styling of parts of WebVMT cues that are being rendered for the <i>matched element</i>.
         </p>
         <p>
-          A CSS user agent that implements the <a data-cite='HTML51/semantics-embedded-content.html#text-tracks'>text tracks</a> model must implement the <span class='css'>::cue-map</span> and <span class='css'>::cue-map(selector)</span> pseudo-elements.
+          A CSS user agent that implements the <a data-cite='HTML51/semantics-embedded-content.html#text-tracks'>text tracks</a> model must implement the <span class='css'>::cue</span> and <span class='css'>::cue(selector)</span> pseudo-elements.
         </p>
         <section id='cue-pseudo-element'>
           <h2>The <span class='css'>::cue</span> pseudo-element</h2>
@@ -3977,6 +4109,9 @@ NOTE Red
                       <td>
                         <b>Attribute name</b>
                       </td>
+                      <td>
+                        <b>Attribute value</b>
+                      </td>
                     </tr>
                   </thead>
                   <tbody>
@@ -3987,6 +4122,9 @@ NOTE Red
                       <td>
                         <code>zone</code>
                       </td>
+                      <td>
+                        <a>zone identifier</a>
+                      </td>
                     </tr>
                     <tr>
                       <td>
@@ -3994,6 +4132,9 @@ NOTE Red
                       </td>
                       <td>
                         <code>path</code>
+                      </td>
+                      <td>
+                        <a>path identifier</a>
                       </td>
                     </tr>
                   </tbody>
@@ -4169,6 +4310,164 @@ NOTE Red
             This is analogous to the <a data-cite='WEBVTT#the-vttregion-interface'>VTTRegion</a> interface.
           </p>
         </section>
+      </section>
+    </section>
+    <section id='privacy-security'>
+      <h2>IANA Considerations</h2>
+      <section id='text-vmt'>
+        <h2>text/vmt</h2>
+        <p>
+          This registration is for community review and will be submitted to the IESG for review, approval, and registration with IANA.
+        </p>
+        <dl>
+          <dt>
+            Type name:
+          </dt>
+          <dd>
+            text
+          </dd>
+          <dt>
+            Subtype name:
+          </dt>
+          <dd>
+            vmt
+          </dd>
+          <dt>
+            Required parameters:
+          </dt>
+          <dd>
+            No parameters
+          </dd>
+          <dt>
+            Optional parameters:
+          </dt>
+          <dd>
+            No parameters
+          </dd>
+          <dt>
+            Encoding considerations:
+          </dt>
+          <dd>
+            8bit (always UTF-8)
+          </dd>
+          <dt>
+            Security considerations:
+          </dt>
+          <dd>
+            Text track files themselves pose no immediate risk unless sensitive information is included within the data. Implementations, however, are required to follow specific rules when processing text tracks, to ensure that certain origin-based restrictions are honored. Failure to correctly implement these rules can result in information leakage, cross-site scripting attacks, and the like.
+          </dd>
+          <dt>
+            Interoperability considerations:
+          </dt>
+          <dd>
+            Rules for processing both conforming and non-conforming content are defined in this specification.
+          </dd>
+          <dt>
+            Published specification:
+          </dt>
+          <dd>
+            This document is the relevant specification.
+          </dd>
+          <dt>
+            Applications that use this media type:
+          </dt>
+          <dd>
+            Web browsers, other media players and location-aware video devices such as drones, dashcams and smartphones.
+          </dd>
+          <dt>
+            Additional information:
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                Magic number(s):
+              </dt>
+              <dd>
+                WebVMT files all begin with one of the following byte sequences (where "EOF" means the end of the file):
+                <ul>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 0A
+                  </li>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 0D
+                  </li>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 20
+                  </li>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 09
+                  </li>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 EOF
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 0A
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 0D
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 20
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 09
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 EOF
+                  </li>
+                </ul>
+                <p class='note' title='Magic Numbers'>
+                  (An optional UTF-8 BOM, the ASCII string "WEBVMT", and finally a space, tab, line break, or the end of the file.)
+                </p>
+              </dd>
+              <dt>
+                File extension(s):
+              </dt>
+              <dd>
+                "vmt"
+              </dd>
+              <dt>
+                Macintosh file type code(s):
+              </dt>
+              <dd>
+                No specific Macintosh file type codes are recommended for this type.
+              </dd>
+            </dl>
+          </dd>
+          <dt>
+            Person & email address to contact for further information:
+          </dt>
+          <dd>
+            Rob Smith &lt;rob.smith@awayteam.co.uk&gt;
+          </dd>
+          <dt>
+            Intended usage:
+          </dt>
+          <dd>
+            Common
+          </dd>
+          <dt>
+            Restrictions on usage:
+          </dt>
+          <dd>
+            No restrictions apply.
+          </dd>
+          <dt>
+            Authors:
+          </dt>
+          <dd>
+            Rob Smith &lt;rob.smith@awayteam.co.uk&gt;
+          </dd>
+          <dt>
+            Change controller:
+          </dt>
+          <dd>
+            W3C
+          </dd>
+        </dl>
+        <p>
+          Fragment identifiers have no meaning with <code>text/vmt</code> resources.
+        </p>
       </section>
     </section>
     <section class='informative, appendix' id='privacy-security'>
