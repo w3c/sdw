@@ -8,7 +8,7 @@
      class='remove'></script>
     <script class='remove'>
       var respecConfig = {
-        specStatus: "ED",
+        specStatus: "DNOTE",
         editors: [{
           name: "Rob Smith",
           mailto: "rob.smith@awayteam.co.uk",
@@ -19,16 +19,44 @@
         charterDisclosureURI: "https://www.w3.org/2017/sdwig/charter.html#patentpolicy",
         edDraftURI: "https://w3c.github.io/sdw/proposals/geotagging/webvmt/",
         shortName: "webvmt",
-        group: "sdw",
+        group: "wg/sdw",
         wgPublicList: "public-sdwig",
         github: "https://github.com/w3c/sdw"
       };
     </script>
+    <style>
+      .css.css {
+        color: #005a9c;
+        font-size: inherit;
+        font-family: inherit;
+      }
+      .css::before {
+        content: "‘";
+      }
+      .css::after {
+        content: "’";
+      }
+      .css-selector-table {
+        border-collapse: collapse;
+      }
+      .css-selector-table tr {
+        vertical-align: top;
+      }
+      .css-selector-table td {
+        border-top:1px solid silver;
+      }
+      .css-selector-table th, td {
+        padding: 0.5em 1em;
+      }
+      .css-selector-table pre {
+        background-color: inherit;
+      }
+    </style>
   </head>
   <body>
     <section id='abstract'>
       <p>
-        This specification defines WebVMT, the Web Video Map Tracks format, which is an enabling technology whose main use is for marking up external map track resources in connection with the HTML &lt;track&gt; element. WebVMT files provide map presentation and annotation synchronized to video content, including interpolation, and more generally any form of geolocation data that is time-aligned with audio or video content.
+        This specification defines WebVMT, the Web Video Map Tracks format, which is an enabling technology whose main use is for marking up external metadata track resources in connection with the HTML <code>&lt;track&gt;</code> element. WebVMT files provide map presentation, annotation and interpolation synchronized to web media content, and more generally any form of data that is time-aligned with audio or video content, including those from location-aware devices such as dashcams, drones and smartphones.
       </p>
     </section>
     <section id='sotd'>
@@ -36,12 +64,12 @@
         This document is an explanatory specification, intended to communicate and develop the draft WebVMT format through discussion with user communities.
       </p>
     </section>
-    <section class='informative' id='usecases'>
+    <section class='informative' id='use-cases'>
       <h2>Use Cases</h2>
       <p>
-        Example scenarios in which WebVMT can add significant value, with a list of identified benefits.
+        This section details example scenarios in which WebVMT can add significant value with identified benefits.
       </p>
-      <section id='mountainrescue'>
+      <section id='mountain-rescue'>
         <h2>Coastguard/Mountain Rescue</h2>
         <p>
           A missing person is reported to the rescue services, who deploy a drone to search inaccessible areas of coastline or moorland for their target. The drone relays back a live video stream from its camera and geolocation data from its GPS receiver to a remote human operator who is piloting it.
@@ -57,16 +85,16 @@
           <li>Effective resource deployment.</li>
         </ul>
       </section>
-      <section id='areasurvey'>
+      <section id='area-survey'>
         <h2>Area Survey</h2>
         <p>
           A survey drone is equipped with a camera which records an image of the ground directly below it. The pilot is a remote human operator, tasked with surveying a defined area from particular height in order to capture the required data.
         </p>
         <p>
-          As the survey progresses, geometric shapes are automatically added to the map to represent areas which have been included. Once the drone has finished its sweep, the operator can quickly confirm whether the required area has been completely covered. If any areas have been missed, the pilot can use the map to navigate and make additional passes to fill the gaps, before returning to base.
+          As the survey progresses, zones are automatically marked on the map to represent areas which have been included. Once the drone has finished its sweep, the operator can quickly confirm whether the required area has been completely covered. If any areas have been missed, the pilot can use the map to navigate and make additional passes to fill the gaps, before returning to base.
         </p>
         <p>
-          Adding map track (VMT) files to the survey archive provides a geospatial index to the videos, allowing a particular geographic location to be found more rapidly by virtue of their small file size. Online video archives can be indexed more quickly using this web-friendly format.
+          Adding WebVMT files to the survey archive provides a geospatial index to the videos, allowing a particular geographic location to be found more rapidly by virtue of their small file size in comparison to their linked media. Online video archives can be indexed more quickly using this web-friendly format.
         </p>
         <p>
           The operator has been easily able to verify the quality of their own work and correct any errors, saving time and additional effort in redeployment. Video footage has been indexed by geolocation rapidly and in a search-engine-friendly format.
@@ -77,10 +105,10 @@
           <li>Rapid archive indexing for search engines.</li>
         </ul>
       </section>
-      <section id='outdoortrails'>
+      <section id='outdoor-trails'>
         <h2>Outdoor Trails</h2>
         <p>
-          An outdoor sportsperson, e.g. snowboarder or cyclist, is equipped with a helmet camera and/or mobile phone to record video footage and GPS data. They set off to find new challenges and practice their skills, e.g. off-piste or on mountain trails, and discover new routes and areas that they would like to explore in future, chatting to the camera as they go. Afterwards, they upload the video to share their experience with the online community, so others can quickly identify locations of particularly interesting sections of the featured trail. Using the synchronized map view in their browser, community members can easily see where they need to go in order to try it for themselves.
+          An outdoor sportsperson, e.g. snowboarder or cyclist, is equipped with a helmet camera and/or mobile phone to record video footage and GPS data. They set off to find new challenges and practice their skills, e.g. off-piste or on mountain trails, and discover new routes and areas that they would like to explore in future, chatting to the camera as they go. Afterwards, they upload the video to share their experience with the online community, so others can quickly identify locations of particularly interesting sections of the featured trail. Using the synchronized map view in their browser, community members can easily see where they need to go in order to explore these places for themselves.
         </p>
         <p>
           The operator has been able to fully engage in their sporting activity, without making any written notes, while simultaneously recording the details needed to guide others to the same locations. Their changing location over time can also be used to calculate speed and distance information, which can be displayed alongside the footage.
@@ -91,7 +119,7 @@
           <li>Speed and distance calculation.</li>
         </ul>
       </section>
-      <section id='tvsportscoverage'>
+      <section id='tv-sports-coverage'>
         <h2>TV Sports Coverage</h2>
         <p>
           A TV production company is covering a sports event that takes place over a large area, e.g. rallying, road cycling or sailing, using a number of mobile video devices including competitor cams, e.g. dash cams or helmet cams, and drones to provide shots of inaccessible areas, e.g. remote terrain or over water.
@@ -107,10 +135,10 @@
           <li>Real time asset management.</li>
         </ul>
       </section>
-      <section id='proxyexplorer'>
+      <section id='proxy-explorer'>
         <h2>Proxy Explorer</h2>
         <p>
-          Important details of a remote area have been captured on video. It is not possible to revisit the location for safety reasons or because it has physically changed in the intervening time. Footage can be retrospectively geotagged against a concurrent map to allow the viewer to better interpret and identify features seen in the footage. Explanatory annotations can be added to the video-map track to help future viewers' understanding and aggregate the collective analysis.
+          Important details of a remote area have been captured on video. It is not possible to revisit the location for safety reasons or because it has physically changed in the intervening time. Footage can be retrospectively geotagged against a concurrent map to allow the viewer to better interpret and identify features seen in the footage. Explanatory annotations can be added to the WebVMT file to help future viewers' understanding and aggregate the collective analysis.
         </p>
         <p>
           Multiple operators can contribute their observations to provide a group analysis, iteratively adding new details and discarding out-of-date information. Experts can offer insight about filmed locations, which would otherwise be inaccessible to them.
@@ -120,7 +148,7 @@
           <li>Knowledge aggregation and sharing for archive footage.</li>
         </ul>
       </section>
-      <section id='treasurehunt'>
+      <section id='treasure-hunt'>
         <h2>Treasure Hunt</h2>
         <p>
           A TV production company designs a new game show which involves competitors searching for targets across a wide area, with an operations centre remotely monitoring their progress and providing updates. Competitors are equipped with body-worn video or helmet cameras to relay footage of their view.
@@ -133,7 +161,7 @@
           <li>Knowledge aggregation and sharing for real-time footage.</li>
         </ul>
       </section>
-      <section id='swarmmonitoring'>
+      <section id='swarm-monitoring'>
         <h2>Swarm Monitoring</h2>
         <p>
           A swarm of drones is deployed to perform a task, and their operations are monitored centrally. Geolocation details of the swarm are automatically collated and broadcast to the drone pilots, showing the locations of all the drones and each is circled with a suitable safety zone to warn their operators in case two units find themselves flying in close proximity.
@@ -147,20 +175,20 @@
           <li>Autonomous swarm monitoring.</li>
         </ul>
       </section>
-      <section id='crisisresponse'>
+      <section id='crisis-response'>
         <h2>Crisis Response</h2>
         <p>
-          Disaster strikes, e.g. hurricane, tsunami, and emergency response teams are deployed to the affected area. However, it is difficult to verify which problems people are facing, what resources would help them and exactly where these events are occurring. Maps are unreliable as the infrastructure has been damaged, though people on the ground have the relevant knowledge if it could be reliably recorded and shared.
+          Disaster strikes, e.g. hurricane or tsunami, and emergency response teams are deployed to the affected area. However, it is difficult to verify which problems people are facing, what resources would help them and exactly where these events are occurring. Maps are unreliable as the infrastructure has been damaged, though people on the ground have the relevant knowledge if it could be reliably recorded and shared.
         </p>
         <p>
-          Anyone with a basic smartphone could video events with reliable geospatial data, as GPS receivers can operate without the need for a mobile phone signal by using satellite data, to accurately document the problems they face. Even if the cell network is not operational, this information can be physically delivered to crisis coordinators to notify them of the issues that need to be addressed, including an accurate location in a common format. Crisis events can be reliably recorded, knowledge can be shared and aggregated, and relief resources can be accurately targeted and deployed to the correct locations.
+          Anyone with a basic smartphone could video events with reliable geospatial data, as GPS receivers can operate without the need for a mobile phone signal by using satellite data, to accurately document the problems they face. Even if the cell network is not operational, this information can be physically delivered to crisis coordinators to notify them of the issues that need to be addressed, including accurate location data in a common format. Response teams can quickly search archived video by location to verify latest updates with recent context. Crisis events can be reliably recorded, knowledge can be shared and aggregated, and relief resources can be accurately targeted and deployed to the correct locations.
         </p>
         <ul class='note' title='Benefits'>
           <li>Reliable dispersed information gathering and sharing;</li>
           <li>Accurate resource deployment.</li>
         </ul>
       </section>
-      <section id='fastestlap'>
+      <!--section id='fastest-lap'>
         <h2>Fastest Lap</h2>
         <p>
           An amateur racer attempts to set a fastest lap time in a vehicle equipped with a dashcam. The film can be reviewed with details of location and vehicle telemetry to analyse its performance, and that of the driver, to identify where improvements can be made. The ideal racing line can be determined and measured against the actual line taken, and optimum braking points can be established by suggesting and testing corrections.
@@ -172,14 +200,14 @@
           <li>Data synchronisation with video and audio;</li>
           <li>Motion analysis using community tools.</li>
         </ul>
-      </section>
-      <section id='policeevidence'>
+      </section-->
+      <section id='police-evidence'>
         <h2>Police Evidence</h2>
         <p>
-          A web-based police system is established to allow dashcam video evidence of driving offences to be submitted digitally by members of the public who have witnessed them. Detectives are able to identify the time and vehicles involved directly from the uploaded footage, and accurately determine the location at which the incident occurred from the digital metadata included.
+          A web-based police system is established to allow dashcam video evidence of driving offences to be submitted digitally by members of the public who have witnessed them. Detectives are able to identify the time and vehicles involved directly from the uploaded footage, and accurately determine the location at which the incident occurred from the digital timed metadata included.
         </p>
         <p>
-          Its ability to accept open format data also makes the system available to cyclists and pedestrians who can record video with location on their helmet cameras and smartphones respectively, providing wider access to the service beyond the dashcam community. Metadata, e.g. location, from different video manufacturers is often recorded in mutually-incompatible formats, but video-map track support enables synchronized location (and other) data to be extracted from recordings using manufacturers' or community tools, without affecting source video integrity, and submitted to the police system in a common format, significantly reducing development costs.
+          The ability to accept open format data also makes the system available to cyclists and pedestrians who can record video with location on their helmet cameras and smartphones respectively, providing wider access to the service beyond the dashcam community. Metadata, e.g. location, from different video manufacturers is often recorded in mutually-incompatible formats, but WebVMT support enables synchronized location (and other) data to be extracted from recordings using manufacturers' or community tools, without affecting source video integrity, and submitted to the police system in a common format, significantly reducing development costs.
         </p>
         <p>
           Officers have been able to identify incident locations quickly and accurately, without sacrificing evidence integrity. The online service has been made available to a wider audience of drivers, cyclists and pedestrians, without incurring additional development costs.
@@ -190,10 +218,10 @@
           <li>Service extended to a wider audience.</li>
         </ul>
       </section>
-      <section id='areamonitoring'>
+      <section id='area-monitoring'>
         <h2>Area Monitoring</h2>
         <p>
-          An area of interest is monitored operationally by a collection of different mobile video devices, e.g. drones, body-worn video, helicopter, etc. Video footage, possibly in different formats, is added to an archive with location (and other) metadata in a common format which forms a time-location index suitable for rapid parsing by a web crawler. Users can submit online queries to search by location and return a time-ordered sequence of video frame stills captured within a radial distance of the chosen location.
+          An area of interest is monitored operationally by a collection of different mobile video devices, e.g. drones, body-worn video, helicopter, etc. Video footage, possibly in different formats, is added to an archive with location (and other) metadata in a common format which forms a time-location index suitable for rapid parsing by a web crawler. Users can submit online queries to search by location and return a time-ordered sequence of video frame stills captured within a radial distance of the chosen location. Alternatively, sensor data can be searched, e.g. for high readings, to return matching geotagged video frames for further analysis.
         </p>
         <p>
           Video archives can be quickly indexed using a common metadata format regardless of video encoding, e.g. MPEG, WebM, OGG, and video files are only accessed in case of a positive search result, which reduces bandwidth in comparison to embedded metadata. Linked files also allow different security permissions to be applied to the crawling and querying processes, so an AI algorithm can be authorised to read metadata without being able to access image content if there are security concerns over data privacy, e.g. illicit facial recognition.
@@ -211,13 +239,13 @@
           Aggregate video footage from disparate sources to create a historical video archive that allows water levels to be monitored at different locations over time to help predict flooding.
         </aside>
       </section>
-      <section id='vehiclecollision'>
+      <section id='vehicle-collision'>
         <h2>Vehicle Collision</h2>
         <p>
           Dashcam footage is searched to automatically identify vehicle collisions from impact acceleration profiles recorded in video metadata. Dashcam manufacturers typically embed metadata in an unpublished format and provide a proprietary video player to allow users to display it. Exporting embedded metadata to a linked file in a web-friendly format enables searchable video archive data to be shared quickly and easily, without affecting evidence integrity, and to be accessed through a common web interface.
         </p>
         <p>
-          Vehicles can be automatically monitored using a low-cost dashcam and web-based tools to ensure that collisions are accurately recorded by drivers and that commercial vehicles remain safe and undamaged. Interoperability means that users are not limited to a particular dashcam brand and can share evidence with insurers and the police in a common format without damaging its integrity.
+          Vehicles can be automatically monitored using a low-cost dashcam and web-based tools to ensure that collisions are accurately recorded by drivers and that commercial vehicles remain safe and undamaged. Interoperability means that users are not limited to a particular brand and can share evidence with insurers and the police in a common format without damaging its integrity.
         </p>
         <ul class='note' title='Benefits'>
           <li>Accurate vehicle collision detection;</li>
@@ -229,7 +257,7 @@
           Automatically identify vehicle collisions in dashcam footage to provide forensic evidence for a police investigation or motor insurance claim.
         </aside>
       </section>
-      <section id='goldentutorial'>
+      <section id='golden-tutorial'>
         <h2>Golden Tutorial</h2>
         <p>
           Augmented reality (AR) software is used to control assets or view content in situ at a particular location. For example, nearby street lights can be switched off or on by a service engineer for maintenance purposes, or an architect can see how their structural design integrates with the surrounding landscape at its proposed location before any building work has started.
@@ -242,7 +270,7 @@
           <li>Improved AR software development.</li>
         </ul>
       </section>
-      <section id='virtualguide'>
+      <section id='virtual-guide'>
         <h2>Virtual Guide</h2>
         <p>
           A user triggers an audio track which provides guidance about the local area or instruction for a known object, e.g. Web of Things (WoT) device at that location. The audio timeline is synchronized with events that can display AR content, control WoT devices and display points of interest on a map which provide guidance with real world context by highlighting places or objects of interest and showing possible actions.
@@ -266,18 +294,18 @@
         </aside>
       </section>
     </section>
-    <section class='informative' id='stateoftheart'>
+    <section class='informative' id='state-of-the-art'>
       <h2>State of the Art</h2>
       <p>
         No standard format currently exists by which web browsers can synchronise geolocation data with video. Though many browser-supported formats exist to present the two data streams separately, e.g. MPEG for video and GPX for geolocation, there is no viable synchronisation mechanism for video playback time with geolocation information.
       </p>
-      <section id='currentsolutions'>
+      <section id='current-solutions'>
         <h2>Current Solutions</h2>
         <p>
           Material Exchange Format (MXF) was developed by the Society of Motion Picture and Television Engineers (SMPTE) to synchronise metadata, including geolocation, with audio and video streams using a register of key-length-value (KLV) triples. The breadth of its scope has resulted in interoperability issues, as different vendors implement different parts of the standard, and has produced implementations from high-profile companies which are mutually incompatible. KLVs can also be embedded within MPEG files, though this does not address the synchronisation issue for other web video formats such as WebM.
         </p>
         <p>
-          Video camera manufacturers have taken various approaches, resulting in a number of non-standard solutions including embedding geolocation data within the MPEG metadata stream in disparate formats, e.g. Go-Pro Metadata Format (GPMF), or recording a separate geolocation file in a proprietary format alongside the associated video file. From a hardware perspective, a few high-end cameras provide geotagging out of the box and all require an add-on device to support this feature.
+          Video camera manufacturers have taken various approaches, resulting in a number of non-standard solutions including embedding geolocation data within the MPEG metadata stream in disparate formats, such as Motion Imagery Standards Board (MISB) or Go-Pro Metadata Format (GPMF), or recording a separate geolocation file in a proprietary format alongside the associated video file. From a hardware perspective, a few high-end cameras provide geotagging out of the box and all require an add-on device to support this feature.
         </p>
         <p>
           Geospatial data are not currently accessible in the video Document Object Model (DOM) in HTML nor via video playback APIs in smartphones, e.g. Android, though their host devices are typically equipped with both a video camera and Global Navigation Satellite System (GNSS) receiver capable of capturing the required information.
@@ -286,32 +314,32 @@
           In sharp contrast, still photos have a well-established geotagging standard called Exif, which was published by the Japan Electronic Industries Development Association (JEIDA) in 1995 and defines a metadata tag to embed geolocation data within TIFF and JPEG images. This is widely supported by manufacturers of photographic equipment and software worldwide, including low-end smartphones, making this feature cheap and accessible to the public.
         </p>
       </section>
-      <section id='growingrequirements'>
+      <section id='growing-requirements'>
         <h2>Growing Requirements</h2>
         <p>
           Historically, there has been no requirement for a comparable video standard, but the urgency for such a standard is growing fast due to the emerging markets for 'mobile video devices,' e.g. drones, dashcams, body-worn video and helmet cameras, as well as the rise in high-quality video and geolocation support in the global smartphone market.
         </p>
       </section>
-      <section id='accessiblestandard'>
+      <section id='accessible-standard'>
         <h2>Accessible Standard Opportunity</h2>
         <p>
-          Using current W3C recommendations, it is possible for a competent programmer to synchronise video-geolocation 'metadata' with a &lt;video&gt; element using a &lt;track&gt; child element. However, this is a non-trivial development task which requires an understanding of the video DOM events and Javascript file handling, making it inaccessible to the vast majority of web users. In addition, video map tracks are a clearly identified metadata subclass, which could be isolated in a similar way to video text tracks.
+          Using current W3C recommendations, it is possible for a programmer to synchronise video-geolocation 'metadata' with a <code>&lt;video&gt;</code> element using a <code>&lt;track&gt;</code> child element. However, this is a non-trivial development task which requires an understanding of the video DOM events and Javascript file handling, making it inaccessible to the vast majority of web users. Video metadata tracks are an identified kind of track data in HTML, though metadata content is difficult to access due to the text-based nature of existing DOM support.
         </p>
         <p>
-          Establishing a standard file format would allow interoperability and information sharing between the public, the emergency services, police and other mobile video device users, e.g. drone pilots, giving cheaper and easier access to this important source of information. If web browsers supported video geotagging natively using this file format, it would also become accessible to most web users. Current low-end smartphones already provide suitable hardware to concurrently capture video and geolocation streams, which would make this technology easily accessible to the general public, and encourage the user and developer communities to grow rapidly.
+          Establishing a standard file format would allow interoperability and information sharing between the public, the emergency services, police and other mobile video device users, e.g. drone pilots, giving cheaper and easier access to this important resource. Native web browser support for geotagged video using this file format would also make this freely accessible to most web users and enable integration with existing web services such as online maps and search engines. Current low-end smartphones already provide suitable hardware to concurrently capture video and geolocation streams, which would make this technology easily accessible to the general public, and encourage the user and developer communities to grow rapidly.
         </p>
       </section>
     </section>
-    <section class='informative' id='proposedsolution'>
+    <section class='informative' id='proposed-solution'>
       <h2>Proposed Solution</h2>
       <p>
-        This proposal constitutes a lightweight markup language to synchronise video with geolocation data for display on electronic maps, e.g. OpenStreetMaps. It offers presentational control of the map display, e.g. pan and zoom, and annotation to highlight map features to the viewer, e.g. markers and labels.
+        This proposal constitutes a lightweight markup language to synchronise video with geolocation data for display on electronic maps, such as OpenStreetMaps. It offers presentational control of the map display, e.g. pan and zoom, and annotation to highlight map features to the viewer, e.g. paths and zones.
       </p>
       <p>
         WebVMT (Web Video Map Tracks) format is intended for marking up external map track resources, and its main use is for files synchronising video content with an annotated map presentation. Ideas have been borrowed from existing W3C formats, including WebVTT's HTML binding and its block and cue structures, and SVG's approach to drawing and interpolation, in order to display output on an electronic map.
       </p>
       <p>
-        The format mimics WebVTT's structure and syntax for video synchronisation, with cue details listed in an accessible text-based file linked to the <code>&lt;video&gt;</code> DOM element by a child <code>&lt;track&gt;</code> element in an HTML document.
+        The format mimics WebVTT's structure and syntax for media synchronisation, with cue details listed in an accessible text-based file linked to a <code>&lt;video&gt;</code> or <code>&lt;audio&gt;</code> DOM element by a child <code>&lt;track&gt;</code> element in an HTML document.
       </p>
       <pre class='nohighlight example' title='WebVMT Basic HTML'>
 &lt;!doctype html&gt;
@@ -332,27 +360,27 @@
 &lt;/html&gt;
       </pre>
       <p>
-        The VMT (Video Map Track) format file, e.g. maptrack.vmt, contains the map cues associated with the video, e.g. video.mp4.
+        The WebVMT format file, e.g. maptrack.vmt, contains the map cues associated with the video, e.g. video.mp4.
       </p>
       <p class='ednote'>
         The meaning of <code>for</code> and <code>tileurl</code> attributes for user agents is an open question. Initial solutions can be built using Javascript, with existing map libraries such as Leaflet, though the vision is that future user agents will handle map rendering in the longer term.
       </p>
-      <section id='mapcues'>
+      <section id='map-cues'>
         <h2>Map Cues</h2>
         <p>
           Map cues display their payload between a start time and end time. The end cue time may be omitted to represent an unknown time.
         </p>
-        <section id='helloworld'>
+        <section id='hello-world'>
           <h2>Hello World</h2>
           <p>
-            Here is a sample VMT file with a cue highlighting Tower Bridge in London on a static map.
+            Here is a sample WebVMT file with a cue highlighting Tower Bridge in London on a static map.
           </p>
-          <pre class='nohighlight example' title='Tower Bridge VMT'>
+          <pre class='nohighlight example' title='Tower Bridge WebVMT'>
 WEBVMT
 
 MEDIA
 url:TowerBridge.mp4
-mimetype:video/mp4
+mime-type:video/mp4
 
 MAP
 lat:51.506 lng:-0.076
@@ -367,7 +395,7 @@ rad:250
 }
           </pre>
         </section>
-        <section id='mappresentation'>
+        <section id='map-presentation'>
           <h2>Map Presentation</h2>
           <p>
             Cues also allow dynamic presentation to pan and zoom the map. This example focusses attention on the Tower of London.
@@ -375,12 +403,12 @@ rad:250
           <p>
             Cues without end times are displayed until the end of the video.
           </p>
-          <pre class='nohighlight example' title='Tower of London VMT'>
+          <pre class='nohighlight example' title='Tower of London WebVMT'>
 WEBVMT
 
 MEDIA
 url:../movies/TowerOfLondon.webm
-mimetype:video/webm
+mime-type:video/webm
 
 MAP
 lat:51.162 lng:-0.143
@@ -403,19 +431,19 @@ rad:20000
         <p>
           Comments are blocks that are preceded by a blank line, start with the word <code>NOTE</code> (followed by a space or newline), and end at the first blank line.
         </p>
-        <section id='commentblock'>
+        <section id='comment-block'>
           <h2>Comment Block</h2>
           <p>
             Comment block format is identical to <a data-cite='WEBVTT#introduction-comments'>WebVTT</a>.
           </p>
-          <pre class='nohighlight example' title='Tower Landmarks VMT'>
+          <pre class='nohighlight example' title='Tower Landmarks WebVMT'>
 WEBVMT
 
 NOTE Associated video
 
 MEDIA
 url:/home/myuser/movies/TowerLandmarks.ogg
-mimetype:video/ogg
+mime-type:video/ogg
 
 NOTE Map config
 
@@ -461,9 +489,9 @@ This line is also part of the comment
       <section id='styling'>
         <h2>Styling</h2>
         <p>
-          Display style is controlled by CSS, which may be embedded in HTML or within the VMT file.
+          Display style is controlled by CSS, which may be embedded in HTML or within the WebVMT file.
         </p>
-        <section id='cssstylehtml'>
+        <section id='css-style-in-html'>
           <h2>CSS Style in HTML</h2>
           <p>
             In this example, an HTML page has a CSS style sheet in a <code>&lt;style&gt;</code> element that styles map cues for the video, e.g. drawing lines in red.
@@ -474,8 +502,8 @@ This line is also part of the comment
   &lt;head&gt;
     &lt;title&gt;WebVMT Style Example&lt;/title&gt;
     &lt;style&gt;
-      video::cue-map {
-        stroke-color: red;
+      video::cue {
+        stroke: red;
         stroke-opacity: 0.9;
       }
     &lt;/style&gt;
@@ -491,39 +519,40 @@ This line is also part of the comment
 &lt;/html&gt;
           </pre>
         </section>
-        <section id='cssstyleblock'>
+        <section id='css-style-block'>
           <h2>CSS Style Block</h2>
           <p>
             Style block format is similar to <a data-cite='WEBVTT#styling'>WebVTT</a>.
           </p>
           <p>
-            CSS style sheets can also be embedded in WebVMT files themselves. Style blocks are placed after any headers but before the first cue, and start with the word <code>STYLE</code>.
+            CSS style sheets can also be embedded within <a>WebVMT files</a>. Style blocks are placed after any headers but before the first cue, and start with the word <code>STYLE</code>.
           </p>
           <p>
             Comment blocks can be interleaved with style blocks.
           </p>
-          <pre class='nohighlight example' title='Greenwich Meridian VMT'>
+          <pre class='nohighlight example' title='Greenwich Meridian WebVMT'>
 WEBVMT
 
 MEDIA
 url:http://example.com/movies/Greenwich.mp4
-mimetype:video/mp4
+mime-type:video/mp4
 
 MAP
 lat:51.478 lng:-0.001
 rad:50
 
 STYLE
-::cue-map {
-  stroke-color: red;
+::cue {
+  stroke: red;
 }
 
 NOTE Comments are allowed between style blocks
 
 STYLE
-::cue-map {
+::cue {
   stroke-opacity: 0.9;
 }
+/* Style blocks cannot use blank lines nor "dash dash greater than" */
 
 NOTE Prime Meridian marker
 
@@ -539,19 +568,19 @@ NOTE Style blocks may not appear after the first cue
           </pre>
         </section>
       </section>
-      <section id='datasynchronization'>
+      <section id='data-synchronization'>
         <h2>Data Synchronization</h2>
         <p>
           Arbitrary data may be associated with a <a>WebVMT cue</a> using a <code>sync</code> command, in a similar fashion to the GPX <code>&lt;extension&gt;</code> element.
         </p>
-        <pre class='nohighlight example' title='AI Training VMT'>
+        <pre class='nohighlight example' title='AI Training WebVMT'>
 WEBVMT
 
 NOTE Associated video
 
 MEDIA
 url:Animals.mp4
-mimetype:video/mp4
+mime-type:video/mp4
 
 NOTE Map config
 
@@ -585,21 +614,21 @@ NOTE Dog, mid right, after 10 secs until 40 secs
         <p>
           Three interpolation schemes are supported:
           <ul>
-            <li><b>Step:</b> the value remains constant until the next sample time, e.g. vehicle gear selection - see <a href='#stepinterp'></a>;</li>
-            <li><b>Linear:</b> the value is linearly interpolated to the next sample time, e.g. temperature - see <a href='#linearinterp'></a>;</li>
-            <li><b>Discrete:</b> the value is only valid instanteously at the sample time, e.g. headcount in a video frame - see <a href='#discreteinterp'></a>.</li>
+            <li><b>Step:</b> the value remains constant until the next sample time, e.g. vehicle gear selection - see <a href='#step-interp'></a>;</li>
+            <li><b>Linear:</b> the value is linearly interpolated to the next sample time, e.g. temperature - see <a href='#linear-interp'></a>;</li>
+            <li><b>Discrete:</b> the value is only valid instanteously at the sample time, e.g. headcount in a video frame - see <a href='#discrete-interp'></a>.</li>
           </ul>
         </p>
-        <section id='stepinterpolation'>
+        <section id='step-interpolation'>
           <h2>Step Interpolation</h2>
           <p>
-            A stepwise-interpolated value remains constant until the next sample time, e.g. vehicle gear selection
-            <figure id="stepinterp">
+            A stepwise-interpolated value, e.g. vehicle gear selection, remains constant until the next sample time.
+            <figure id="step-interp">
               <img src="figures/StepInterp.png" alt="Step Interpolation" />
               <figcaption>Step interpolation.</figcaption>
             </figure>
           </p>
-          <pre class='nohighlight example' title='Step Interpolation VMT'>
+          <pre class='nohighlight example' title='Step Interpolation WebVMT'>
 WEBVMT
 
 NOTE Required blocks omitted for clarity
@@ -607,7 +636,7 @@ NOTE Required blocks omitted for clarity
 NOTE Step interpolation of sensor1 data
      gear = 4 after 2 secs until 6 secs
 
-00:00:02.000 --> 00:00:06.000
+00:00:02.000 --&gt; 00:00:06.000
 { "sync":
   { "type": "org.webvmt.example", "id": "sensor1", "data":
     { "gear": "4" }
@@ -617,7 +646,7 @@ NOTE Step interpolation of sensor1 data
 NOTE Step interpolation of sensor1 data
      gear = 5 after 6 secs until 9 secs
 
-00:00:06.000 --> 00:00:09.000
+00:00:06.000 --&gt; 00:00:09.000
 { "sync":
   { "id": "sensor1", "data":
     { "gear": "5" }
@@ -625,16 +654,16 @@ NOTE Step interpolation of sensor1 data
 }
           </pre>
         </section>
-        <section id='linearinterpolation'>
+        <section id='linear-interpolation'>
           <h2>Linear Interpolation</h2>
           <p>
-            A linearly-interpolated value changes to a final value at the next sample time in direct proportion to the elapsed sample interval, e.g. temperature.
-            <figure id="linearinterp">
+            A linearly-interpolated value, e.g. temperature, changes to a final value at the next sample time in direct proportion to the elapsed sample interval.
+            <figure id="linear-interp">
               <img src="figures/LinearInterp.png" alt="Linear Interpolation" />
               <figcaption>Linear interpolation.</figcaption>
             </figure>
           </p>
-          <pre class='nohighlight example' title='Linear Interpolation VMT'>
+          <pre class='nohighlight example' title='Linear Interpolation WebVMT'>
 WEBVMT
 
 NOTE Required blocks omitted for clarity
@@ -642,7 +671,7 @@ NOTE Required blocks omitted for clarity
 NOTE Linear interpolation of sensor2 data
      temperature = 14 -> 16 after 4 secs until 6 secs
 
-00:00:04.000 --> 00:00:06.000
+00:00:04.000 --&gt; 00:00:06.000
 { "sync":
   { "type": "org.webvmt.example", "id": "sensor2", "data":
     { "temperature": "14" }
@@ -655,7 +684,7 @@ NOTE Linear interpolation of sensor2 data
 NOTE Linear interpolation of sensor2 data
      temperature = 16 -> 19 after 6 secs until 9 secs
 
-00:00:06.000 --> 00:00:09.000
+00:00:06.000 --&gt; 00:00:09.000
 { "sync":
   { "id": "sensor2" }
 }
@@ -664,16 +693,16 @@ NOTE Linear interpolation of sensor2 data
 } }
           </pre>
         </section>
-        <section id='discreteinterpolation'>
+        <section id='discrete-interpolation'>
           <h2>Discrete Interpolation</h2>
           <p>
-            A discretely-interpolated value is only valid instanteously at the sample time, e.g. headcount in a video frame.
-            <figure id="discreteinterp">
+            A discretely-interpolated value, e.g. headcount in a video frame, is only valid instanteously at the sample time.
+            <figure id="discrete-interp">
               <img src="figures/DiscreteInterp.png" alt="Discrete Interpolation" />
               <figcaption>Discrete interpolation.</figcaption>
             </figure>
           </p>
-          <pre class='nohighlight example' title='Discrete Interpolation VMT'>
+          <pre class='nohighlight example' title='Discrete Interpolation WebVMT'>
 WEBVMT
 
 NOTE Required blocks omitted for clarity
@@ -681,7 +710,7 @@ NOTE Required blocks omitted for clarity
 NOTE Discrete interpolation of sensor3 data
      headcount = 12 at 4 secs
 
-00:00:04.000 --> 00:00:04.000
+00:00:04.000 --&gt; 00:00:04.000
 { "sync":
   { "type": "org.webvmt.example", "id": "sensor3", "data":
     { "headcount": "12" }
@@ -691,7 +720,7 @@ NOTE Discrete interpolation of sensor3 data
 NOTE Discrete interpolation of sensor3 data
      headcount = 34 at 6 secs
 
-00:00:06.000 --> 00:00:06.000
+00:00:06.000 --&gt; 00:00:06.000
 { "sync":
   { "id": "sensor3", "data":
     { "headcount": "34" }
@@ -699,15 +728,15 @@ NOTE Discrete interpolation of sensor3 data
 }
           </pre>
         </section>
-        <section id='livestreaminterpolation'>
+        <section id='live-stream-interpolation'>
           <h2>Live Stream Interpolation</h2>
           <p>
-            Live streams can be recorded with interpolation using unbounded cues, i.e. a cue with an unknown end time.
+            Live streams can be recorded with interpolation using <a data-cite='HTML51/semantics-embedded-content.html#unbounded-text-track-cue'>unbounded cues</a>, i.e. a cue with an unknown end time.
           </p>
           <p>
-            In this example, an identical net result to the <a href="#stepinterpolation">previous step interpolation example</a>  is produced but without knowledge of any future data values during the live capture process.
+            In this example, the result is identical to the previous <a href="#example-step-interpolation-webvmt">step interpolation example</a> but without requiring knowledge of any future data values during the live capture process.
           </p>
-          <pre class='nohighlight example' title='Live Step Interpolation VMT'>
+          <pre class='nohighlight example' title='Live Step Interpolation WebVMT'>
 WEBVMT
 
 NOTE Required blocks omitted for clarity
@@ -723,7 +752,7 @@ NOTE Step interpolation of live1 data
 NOTE Step interpolation of live1 data
      gear = 5 after 6 secs until next update
 
-00:00:06.000 -->
+00:00:06.000 --&gt;
 { "sync":
   { "id": "live1", "data":
     { "gear": "5" }
@@ -733,7 +762,7 @@ NOTE Step interpolation of live1 data
 NOTE End (step) interpolation of live1 data
      gear = 5 at 9 secs
 
-00:00:09.000 --> 00:00:09.000
+00:00:09.000 --&gt; 00:00:09.000
 { "sync":
   { "id": "live1", "data":
     { "gear": "5" }
@@ -741,9 +770,9 @@ NOTE End (step) interpolation of live1 data
 }
           </pre>
           <p>
-            In the next example, an identical net result to the <a href="#linearinterpolation">previous linear interpolation example</a> is produced but without knowledge of any future data values during the live capture process.
+            In the next example, the result is identical to the previous <a href="#example-linear-interpolation-webvmt">linear interpolation example</a> but without requiring knowledge of any future data values during the live capture process.
           </p>
-          <pre class='nohighlight example' title='Live Linear Interpolation VMT'>
+          <pre class='nohighlight example' title='Live Linear Interpolation WebVMT'>
 WEBVMT
 
 NOTE Required blocks omitted for clarity
@@ -751,7 +780,7 @@ NOTE Required blocks omitted for clarity
 NOTE Linear interpolation of live2 data
      temperature = 14 after 4 secs until next update
 
-00:00:04.000 -->
+00:00:04.000 --&gt;
 { "sync":
   { "type": "org.webvmt.example", "id": "live2", "data":
     { "temperature": "14" }
@@ -764,7 +793,7 @@ NOTE Linear interpolation of live2 data
 NOTE Linear interpolation of live2 data
      temperature = 16 after 6 secs until next update
 
-00:00:06.000 -->
+00:00:06.000 --&gt;
 { "sync":
   { "id": "live2"}
 }
@@ -775,7 +804,7 @@ NOTE Linear interpolation of live2 data
 NOTE End (linear) interpolation of live2 data
      temperature = 19 at 9 secs
 
-00:00:09.000 --> 00:00:09.000
+00:00:09.000 --&gt; 00:00:09.000
 { "sync":
   { "id": "live2", "data":
     { "temperature": "19" }
@@ -786,25 +815,25 @@ NOTE End (linear) interpolation of live2 data
             Values may not be interpolated <i>during</i> capture as future data are unknown, e.g. for linear interpolation, though can be correctly interpolated <i>after</i> capture, once end values are known during subsequent playbacks.
           </p>
         </section>
-        <section id='interpolatedpath'>
+        <section id='interpolated-path'>
           <h2>Interpolated Path</h2>
           <p>
-            A <a>WebVMT path</a> describes the trajectory of a moving object which consists of a timed sequence of locations. Path location may be interpolated over time to calculate the distance travelled.
+            A <a>WebVMT path</a> describes the trajectory of a moving object which consists of a timed sequence of locations. The object's location may be interpolated between consecutive values in the sequence to calculate the distance travelled over time.
           </p>
           <p>
-            The <code>path</code> attribute may be set to identify an individual path. This allows a path to be styled, e.g. colour, and the speed and distance attributes to be identified during playback.
+            The <code>path</code> attribute may be set to identify an individual path. This allows a path to be styled with CSS, e.g. colour, and the speed and distance attributes to be identified during playback.
           </p>
           <p>
             In this example, an interpolated path is traced from London to Brighton:
           </p>
-          <pre class='nohighlight example' title='London to Brighton VMT'>
+          <pre class='nohighlight example' title='London to Brighton WebVMT'>
 WEBVMT
 
 NOTE Associated video
 
 MEDIA
 url:LondonBrighton.mp4
-mimetype:video/mp4
+mime-type:video/mp4
 
 NOTE Map config
 
@@ -852,7 +881,7 @@ NOTE ...to Brighton (at 00:00:25.000)
 }
           </pre>
         </section>
-        <section id='interpolatedannotation'>
+        <section id='interpolated-annotation'>
           <h2>Interpolated Annotation</h2>
           <p>
             Interpolation can also be applied to the attributes of a <a>WebVMT command</a> and a map annotation may be animated in this way.
@@ -860,14 +889,14 @@ NOTE ...to Brighton (at 00:00:25.000)
           <p>
             This example tracks a drone with a circular 10-meter safety zone around it.
           </p>
-          <pre class='nohighlight example' title='Safe Drone VMT'>
+          <pre class='nohighlight example' title='Safe Drone WebVMT'>
 WEBVMT
 
 NOTE Associated video
 
 MEDIA
 url:SafeDrone.mp4
-mimetype:video/mp4
+mime-type:video/mp4
 
 NOTE Map config
 
@@ -915,13 +944,13 @@ NOTE Drone ends at (51.0070, -0.0020)
           </pre>
         </section>
       </section>
-      <section id='youtubeintegration'>
+      <section id='youtube-integration'>
         <h2>YouTube Integration</h2>
         <p>
           Embedded YouTube content can be displayed using an <code>&lt;iframe&gt;</code> element, specifying the unique 10-character content identifier for the posted video, using the official <a href="https://developers.google.com/youtube/iframe_api_reference">YouTube IFrame API</a> with the Javascript API enabled.
         </p>
 
-        <section id='helloyoutube'>
+        <section id='hello-youtube'>
           <h2>Hello YouTube</h2>
           <p>
             A child <code>&lt;track&gt;</code> pseudo-element within the <code>&lt;iframe&gt;</code> links it with WebVMT using the same syntax as for the <code>&lt;video&gt;</code> DOM element.
@@ -948,19 +977,92 @@ NOTE Drone ends at (51.0070, -0.0020)
           <p>
             The <code>url</code> in the <code>MEDIA</code> block should match the <code>src</code> attribute of the <code>&lt;iframe&gt;</code> element without the query.
           </p>
-          <pre class='nohighlight example' title='YouTube VMT Fragment'>
+          <pre class='nohighlight example' title='YouTube WebVMT Fragment'>
 WEBVMT
 
 NOTE Associated YouTube video
 
 MEDIA
 url:http://www.youtube.com/embed/YOUTUBE_VIDEO_ID
-mimetype:video/mp4
+mime-type:video/mp4
           </pre>
         </section>
       </section>
     </section>
-    <section class='informative' id='datamodel'>
+    <section id='conformance'>
+      <section id='conformance-classes'>
+        <h2>Conformance classes</h2>
+        <p>
+          This specification describes the conformance criteria for user agents (relevant to implementors) and <a>WebVMT files</a> (relevant to authors and authoring tool implementors).
+        </p>
+        <p class='note'>
+          <a href='#syntax'>Syntax</a> defines what consists of a valid <a>WebVMT file</a>. Authors need to follow the requirements therein, and are encouraged to use a conformance checker. <a href='#parsing'>Parsing</a> defines how user agents are to interpret a file labelled as <a href='#text-vmt'>text/vmt</a>, for both valid and invalid <a>WebVMT files</a>. The parsing rules are more tolerant to author errors than the syntax allows, in order to provide for extensibility and to still render cues that have some syntax errors.
+        </p>
+        <aside class='example' title='Conformance Error'>
+          For example, the parser will create two cues even if the blank line between them is skipped. This is clearly a mistake, so a conformance checker will flag it as an error, but it is still useful to render the cues to the user.
+        </aside>
+        <p>
+          User agents fall into several (possibly overlapping) categories with different conformance requirements.
+        </p>
+        <dl>
+          <dt>
+            <dfn class='export'>User agents that support scripting</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply. The user agent must also be conforming implementations of the IDL fragments in this specification, as described in the <a data-cite='WEBIDL-1' data-no-xref=''>Web IDL</a> specification.
+          </dd>
+          <dt>
+            <dfn class='export'>User agents with no scripting support</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply, except those in <a href='#planned-interfaces'>Planned Interfaces</a>.
+          </dd>
+          <dt>
+            <dfn>User agents that do not support CSS</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply, except parts of <a href='#parsing'>Parsing</a> that relate to stylesheets and CSS, and all of <a href='#css-extensions'>CSS Extensions</a>. The user agent must instead only render the <a>WebVMT cue</a> in an appropriate manner. Any other styling instructions are optional.
+          </dd>
+          <dt>
+            <dfn>User agents that do not support a full HTML CSS engine</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply. However, the user agent will need to apply the CSS related features in <a href='#parsing'>Parsing</a>, and <a href='#css-extensions'>CSS Extensions</a> in such a way that the rendered results are equivalent to what a full CSS supporting renderer produces.
+          </dd>
+          <dt>
+            <dfn class='export'>User agents that support a full HTML CSS engine</dfn>
+          </dt>
+          <dd>
+            All processing requirements in this specification apply. However, only a limited set of CSS styles is allowed because <a>user agents that do not support a full HTML CSS engine</a> will need to implement CSS functionality equivalents. User agents that support a full CSS engine must therefore limit the CSS styles they apply for WebVMT so as to enable identical rendering without bleeding in extra CSS styles that are beyond the WebVMT specification.
+          </dd>
+          <dt>
+            <dfn class='export'>Conformance checkers</dfn>
+          </dt>
+          <dd>
+            Conformance checkers must verify that a <a>WebVMT file</a> conforms to the applicable conformance criteria described in this specification. The term "validator" is equivalent to conformance checker for the purpose of this specification.
+          </dd>
+          <dt>
+            <dfn class='export'>Authoring tools</dfn>
+          </dt>
+          <dd>
+            Authoring tools must generate conforming <a>WebVMT files</a>. Tools that convert other formats to WebVMT are also considered to be authoring tools.
+          </dd>
+          <dd>
+            When an authoring tool is used to edit a non-conforming <a>WebVMT file</a>, it may preserve the conformance errors in sections of the file that were not edited during the editing session (i.e. an editing tool is allowed to round-trip erroneous content). However, an authoring tool must not claim that the output is conformant if errors have been so preserved.
+          </dd>
+        </dl>
+      </section>
+      <section id='unicode-normalization'>
+        <h2>Unicode normalization</h2>
+        <p>
+          Implementations of this specification must not normalize Unicode text during processing.
+        </p>
+        <aside class='example' title='Unicode Matching'>
+          For example, a cue with an identifier consisting of the characters U+0041 LATIN CAPITAL LETTER A followed by U+030A COMBINING RING ABOVE (a decomposed character sequence), or the character U+212B ANGSTROM SIGN (a compatibility character), will not match a selector targeting a cue with an ID consisting of the character U+00C5 LATIN CAPITAL LETTER A WITH RING ABOVE (a precomposed character).
+        </aside>
+      </section>
+    </section>
+    <section id='data-model'>
       <h2>Data Model</h2>
       <p class='ednote'>
         The data model of WebVMT consists of four key elements: the linked media file, the video viewport, cues, and the map viewport. The linked media file contains audio or video data with which cues are synchronized. The video viewport is the rendering area for video output. Cues are containers consisting of a set of metadata lines. The map viewport is the rendering area for metadata output, for example graphical annotations overlaid on an online map.
@@ -968,13 +1070,13 @@ mimetype:video/mp4
       <section class='informative' id='overview'>
         <h2>Overview</h2>
         <p>
-          The WebVMT file is a container file for chunks of data that are time-aligned with a video or audio resource. It can therefore be regarded as a serialisation format for time-aligned data.
+          The <a>WebVMT file</a> is a container file for chunks of data that are time-aligned with a video or audio resource. It can therefore be regarded as a serialisation format for time-aligned data.
         </p>
         <p>
           A WebVMT file starts with a header and then contains a series of data blocks. If a data block has a start time, it is called a WebVMT cue. A comment is another kind of data block.
         </p>
         <p>
-          A WebVMT file carries cues which are identified as <a data-cite='HTML51/semantics-embedded-content.html#attr-valuedef-track-kind-metadata'>metadata</a> and specified in the <a data-cite='HTML51/semantics-embedded-content.html#element-attrdef-track-kind'>kind</a> attribute of the <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'>track</a> element in the <a data-cite='HTML51' data-no-xref=''>HTML</a> specification.
+          A WebVMT file carries cues which are identified as <a data-cite='HTML51/semantics-embedded-content.html#attr-track-kind-keyword-metadata'>metadata</a> and specified in the <a data-cite='HTML51/semantics-embedded-content.html#attr-track-kind'>kind</a> attribute of the <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'>track</a> element in the <a data-cite='HTML51' data-no-xref=''>HTML</a> specification.
         </p>
         <p>
           The data kind of a WebVMT file is externally specified, such as in a HTML file’s <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'>track</a> element. The environment is responsible for interpreting the data correctly.
@@ -983,8 +1085,8 @@ mimetype:video/mp4
           A <a>WebVMT cue</a> is rendered as an overlay on top of the map viewport.
         </p>
       </section>
-      <section id='webvmtcues'>
-        <h2>WebVMT Cues</h2>
+      <section id='webvmt-cue'>
+        <h2>WebVMT Cue</h2>
         <p>
           A <dfn>WebVMT cue</dfn> is a <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue'>text track cue</a> that additionally consists of the following:
         </p>
@@ -1000,7 +1102,7 @@ mimetype:video/mp4
           A <a>WebVMT cue</a> without an end time indicates that the cue is an <a data-cite='HTML51/semantics-embedded-content.html#unbounded-text-track-cue'>unbounded text track cue</a>, for example during live streaming when the time of the next data sample is unknown or when the duration of the media is unknown.
         </p>
       </section>
-      <section id='webvmtlocation'>
+      <section id='webvmt-location'>
         <h2>WebVMT Location</h2>
         <p>
           A <dfn>WebVMT location</dfn> consists of:
@@ -1026,10 +1128,10 @@ mimetype:video/mp4
           </dd>
         </dl>
         <p class='note' title='Co-ordinate Reference System'>
-          Location information is provided in terms of World Geodetic System coordinates, WGS84.
+          Location information is provided in terms of World Geodetic System coordinates, WGS84. Altitude is measured in meters above the WGS84 ellipsoid, and should not be confused with the height above mean sea level.
         </p>
       </section>
-      <section id='webvmtmap'>
+      <section id='webvmt-map'>
         <h2>WebVMT Map</h2>
         <p>
           A <dfn>WebVMT map</dfn> is the map viewport and provides a rendering area for <a>WebVMT cues</a>.
@@ -1051,20 +1153,38 @@ mimetype:video/mp4
             The radius in meters of the minimum area visible from the <a>map center location</a>.
           </dd>
           <dt>
-            A <dfn>map object</dfn>
+            A <dfn>map interface object</dfn>
           </dt>
           <dd>
             The control interface object for the map.
           </dd>
-          <p class='note' title='Map Control Object'>
-            The precise format of the <a>map object</a> control interface is implementation dependent, for example the OpenLayers API.
+          <p class='note' title='Map Interface Object'>
+            The precise format of the <a>map interface object</a> is implementation dependent, for example OpenLayers API or Leaflet API.
           </p>
+          <p>
+            For parsing, we also need the following:
+          </p>
+          <dt>
+            A <dfn>text track map</dfn>
+          </dt>
+          <dd>
+            A <a>WebVMT map</a> associated with the text track.
+          </dd>
+          <dd>
+            By default, the <a>text track map</a> is set to null.
+          </dd>
+          <!--dt>
+            A <dfn>text track map identifier</dfn>
+          </dt>
+          <dd>
+            An identifier for the <a>WebVMT map</a>.
+          </dd-->
         </dl>
       </section>
-      <section id='webvmtmediafile'>
+      <section id='webvmt-media'>
         <h2>WebVMT Media</h2>
         <p>
-          A <dfn>WebVMT media</dfn> is the linked media data with which <a>WebVMT cues</a> are synchronized, for example audio or video.
+          A <dfn>WebVMT media</dfn> is metadata for the linked media with which <a>WebVMT cues</a> are synchronized, for example audio or video.
         </p>
         <p class='note' title='Search Engines'>
           A <a>WebVMT media</a> enables a web crawler to rapidly search media metadata by providing sufficient information to construct a time-metadata index of the linked media file without opening it. Search engine data throughput is reduced as only matching media files selected by the user need be read, and non-matching media files are not accessed at all. Care should be taken to maintain <a>WebVMT media</a> details correctly, for example when a media file is renamed.
@@ -1111,7 +1231,7 @@ mimetype:video/mp4
           </p>
         </dl>
       </section>
-      <section id='commandstructures'>
+      <section id='webvmt-command-structures'>
         <h2>WebVMT Command Structures</h2>
         <p>
           A <dfn>WebVMT command</dfn> is an instruction to display WebVMT metadata content.
@@ -1123,17 +1243,20 @@ mimetype:video/mp4
               A <a>WebVMT map control</a> command;
             </li>
             <li>
-              A <a>WebVMT zone annotation</a> command;
+              A <a>WebVMT zone fragment</a> command;
             </li>
             <li>
-              A <a>WebVMT path fragment</a> command.
+              A <a>WebVMT path fragment</a> command;
+            </li>
+            <li>
+              A <a>WebVMT synchronized data</a> command.
             </li>
           </ul>
         </p>
         <p class='note' title='Command Execution Order'>
           <a>WebVMT commands</a> are executed in order from first to last in the <a>WebVMT file</a>.
         </p>
-        <section id='mapcontrols'>
+        <section id='map-controls'>
           <h2>Map Controls</h2>
           <p>
             A <dfn>WebVMT map control</dfn> command controls map presentation.
@@ -1196,13 +1319,13 @@ mimetype:video/mp4
             </dd>
           </dl>
         </section>
-        <section id='shapeannotations' id='zones'>
+        <section id='zones'>
           <h2>Zones</h2>
           <p>
-            A <dfn>WebVMT zone annotation</dfn> command annotates a geographic area to a map overlay.
+            A <dfn>WebVMT zone</dfn> consists of all the <a>WebVMT zone fragments</a> with the same <dfn>zone identifier</dfn>.
           </p>
           <p>
-            A <a>WebVMT zone annotation</a> command consists of one of the following components:
+            A <dfn>WebVMT zone fragment</dfn> command consists of one of the following components:
           </p>
           <ul>
             <li>
@@ -1219,6 +1342,15 @@ mimetype:video/mp4
             A <a>WebVMT circle</a> consists of:
           </p>
           <dl>
+            <dt>
+              A <a>zone identifier</a>
+            </dt>
+            <dd>
+              The identifier shared by all the <a>WebVMT zone fragments</a> in the <a>WebVMT zone</a>.
+            </dd>
+            <dd>
+              By default, the <a>zone identifier</a> is set to null.
+            </dd>
             <dt>
               A <dfn class='export'>circle location</dfn>
             </dt>
@@ -1239,6 +1371,15 @@ mimetype:video/mp4
             A <a>WebVMT polygon</a> consists of:
           </p>
           <dl>
+            <dt>
+              A <a>zone identifier</a>
+            </dt>
+            <dd>
+              The identifier shared by all the <a>WebVMT zone fragments</a> in the <a>WebVMT zone</a>.
+            </dd>
+            <dd>
+              By default, the <a>zone identifier</a> is set to null.
+            </dd>
             <dt>
               A list of <a>WebVMT locations</a> defining the polygon vertices.
             </dt>
@@ -1351,7 +1492,7 @@ mimetype:video/mp4
             A <a>WebVMT line</a> is a straight line from the start location to the end location. The location of the moving object can be linearly interpolated between the <a>fragment start time</a> and the <a>fragment end time</a>.
           </p>
         </section>
-        <section id='synchronizeddata'>
+        <section id='synchronized-data'>
           <h2>Synchronized Data</h2>
           <p>
             A <dfn>WebVMT synchronized data</dfn> synchronizes a sample from a data source with a <a>WebVMT cue</a>.
@@ -1386,7 +1527,7 @@ mimetype:video/mp4
             </dd>
           </dl>
         </section>
-        <section id='attributeinterpolation'>
+        <section id='attribute-interpolation'>
           <h2>Attribute Interpolation</h2>
           <p>
             A <dfn>WebVMT interpolation</dfn> changes an object attribute from a start value to an end value over a time interval.
@@ -1455,7 +1596,7 @@ mimetype:video/mp4
     </section>
     <section id='syntax'>
       <h2>Syntax</h2>
-      <section id='webvmtfilestructure'>
+      <section id='webvmt-file-structure'>
         <h2>WebVMT File Structure</h2>
         <p>
           A <dfn>WebVMT file</dfn> must consist of a <a>WebVMT file body</a> encoded as <a data-cite='RFC3629' data-no-xref=''>UTF-8</a> and labeled with the <a data-cite='HTML51/infrastructure.html#mime-type'>MIME type</a> <code>text/vmt</code>.
@@ -1480,7 +1621,7 @@ mimetype:video/mp4
             </li>
             <ul>
               <li>
-                A <a>WebVMT media definition block</a>.
+                A <a>WebVMT media metadata block</a>.
               </li>
               <li>
                 A <a>WebVMT map initialisation block</a>.
@@ -1515,7 +1656,7 @@ mimetype:video/mp4
           </ul>
         </p>
         <p>
-          A <dfn>WebVMT media definition block</dfn> consists of the following components, in the order given:
+          A <dfn>WebVMT media metadata block</dfn> consists of the following components, in the order given:
           <ol>
             <li>
               The string "<code>MEDIA</code>" (U+004D LATIN CAPITAL LETTER M, U+0045 LATIN CAPITAL LETTER E, U+0044 LATIN CAPITAL LETTER D, U+0049 LATIN CAPITAL LETTER I, U+0041 LATIN CAPITAL LETTER A).
@@ -1533,6 +1674,9 @@ mimetype:video/mp4
               A <a>WebVMT line terminator</a>.
             </li>
           </ol>
+        </p>
+        <p class='note' title='Media Metadata'>
+          The <a>WebVMT media metadata block</a> provides hints about the linked media file for web crawlers and search engines.
         </p>
         <p>
           A <dfn>WebVMT map initialisation block</dfn> consists of the following components, in the order given:
@@ -1570,7 +1714,7 @@ mimetype:video/mp4
               A <a>WebVMT line terminator</a>.
             </li>
             <li>
-              Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN). The string represents a CSS style sheet; the requirements given in the relevant <a data-cite="CSS22" data-no-xref=''>CSS</a> specifications apply.
+              Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN). The string represents a CSS style sheet; the requirements given in the relevant <a data-cite='CSS22' data-no-xref=''>CSS</a> specifications apply.
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
@@ -1592,7 +1736,7 @@ mimetype:video/mp4
               A <a>WebVMT line terminator</a>.
             </li>
             <li>
-              The <dfn>WebVMT cue payload</dfn> consists of a <a>WebVMT metadata text</a>, but must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+              The <dfn>WebVMT cue payload</dfn> consists of a <a>WebVMT metadata text</a>, but must not contain the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
@@ -1603,13 +1747,13 @@ mimetype:video/mp4
           A <a>WebVMT cue block</a> corresponds to one piece of time-aligned data in the <a>WebVMT file</a>. The <a>WebVMT cue payload</a> is the data associated with the <a>WebVMT cue</a>.
         </p>
         <p>
-          A <dfn>WebVMT cue identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
+          A <dfn>WebVMT cue identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
         </p>
         <p>
           A <a>WebVMT cue identifier</a> must be unique amongst all the <a>WebVMT cue identifiers</a> of all <a>WebVMT cues</a> of a <a>WebVMT file</a>.
         </p>
-        <p class='note' title='Cue References'>
-          A <a>WebVMT cue identifier</a> can be used to reference a specific cue, for example from script or CSS.
+        <p class='note' title='Cue Identifers'>
+          A <a>WebVMT cue identifier</a> can be used to identify a specific cue, for example from script or CSS.
         </p>
         <p>
           The <dfn>WebVMT cue timings</dfn> part of a <a>WebVMT cue block</a> consists of the following components, in the order given:
@@ -1622,7 +1766,7 @@ mimetype:video/mp4
             One or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
           </li>
           <li>
-            The string "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+            The string "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
           </li>
           <li>
             One or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
@@ -1689,7 +1833,7 @@ mimetype:video/mp4
                   </ul>
                 </li>
                 <li>
-                  Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--></code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+                  Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
                 </li>
               </ol>
             </li>
@@ -1702,7 +1846,7 @@ mimetype:video/mp4
           A <a>WebVMT comment block</a> is ignored by the parser.
         </p>
       </section>
-      <section>
+      <section id='webvmt-cue-payload'>
         <h2>WebVMT Cue Payload</h2>
         <p>
           <dfn>WebVMT metadata text</dfn> consists of any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>. (In other words, any text that does not have two consecutive <a>WebVMT line terminators</a> and does not start or end with a <a>WebVMT line terminator</a>.)
@@ -1711,13 +1855,13 @@ mimetype:video/mp4
           The string represents a <a>WebVMT command list</a>.
         </p>
         <p>
-          <a>WebVMT metadata text</a> cues are only useful for scripted applications (e.g. using the <code>metadata</code> text track <a data-cite='HTML51/semantics-embedded-content.html#kind-of-track'>kind</a> in a HTML <a data-cite='HTML51/semantics-embedded-content.html#text-tracks'>text track</a>).
+          <a>WebVMT metadata text</a> cues are only useful for scripted applications (e.g. using the <code>metadata</code> <a data-cite='HTML51/semantics-embedded-content.html#attr-track-kind'>text track kind</a> in a HTML <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text track</a>).
         </p>
       </section>
-      <section>
+      <section id='webvmt-media-settings'>
         <h2>WebVMT Media Settings</h2>
         <p>
-          The <dfn>WebVMT media settings list</dfn> consists of zero or more of the following components, in any order, separated from each other by one or more U+0020 SPACE characters, U+0009 CHARACTER TABULATION (tab) characters, or </a>WebVMT line terminators</a>, except that the string must not contain two consecutive <a>WebVMT line terminators</a>. Each component must not be included more than once per <a>WebVMT media settings list</a> string.
+          The <dfn>WebVMT media settings list</dfn> consists of zero or more of the following components, in any order, separated from each other by one or more U+0020 SPACE characters, U+0009 CHARACTER TABULATION (tab) characters, or <a>WebVMT line terminators</a>, except that the string must not contain two consecutive <a>WebVMT line terminators</a>. Each component must not be included more than once per <a>WebVMT media settings list</a> string.
         </p>
         <ul>
           <li>
@@ -1748,20 +1892,20 @@ mimetype:video/mp4
           </li>
         </ol>
         <p class='note' title='URL Resolution'>
-          For the purpose of resolving a <a data-cite='RFC3986' data-no-xref=''>URL</a> in the <code>MEDIA</code> block of a WebVMT file, or any URLs in resources referenced from <code>MEDIA</code> blocks of a WebVMT file, if the URL’s scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve. If the <code>url</code> value does not match the <code>tileurl</code> attribute of the HTML <code>&lt;track&gt;</code> element, then the <code>tileurl</code> value takes precedence.
+          For the purpose of resolving a <a data-cite='RFC3986' data-no-xref=''>URL</a> in the <code>MEDIA</code> block of a WebVMT file, or any URLs in resources referenced from <code>MEDIA</code> blocks of a WebVMT file, if the URL’s scheme is not "<code>data</code>", then the user agent must act as if the URL failed to resolve. If the <code>url</code> value does not match the <code>src</code> attribute of the HTML <code>&lt;track&gt;</code> element, then the <code>src</code> value takes precedence.
         </p>
         <p>
           A <dfn>WebVMT media MIME type setting</dfn> consists of the following components, in the order given:
         </p>
         <ol>
           <li>
-            The string "<code>mimetype</code>".
+            The string "<code>mime-type</code>".
           </li>
           <li>
             A U+003A COLON character (:).
           </li>
           <li>
-            A <a data-cite='HTML51/infrastructure.html#valid-mime-type'>valid MIME type</a>.
+            A valid <a data-cite='HTML51/infrastructure.html#mime-type'>MIME type</a>.
           </li>
         </ol>
         <p>
@@ -1769,7 +1913,7 @@ mimetype:video/mp4
         </p>
         <ol>
           <li>
-            The string "<code>starttime</code>".
+            The string "<code>start-time</code>".
           </li>
           <li>
             A U+003A COLON character (:).
@@ -1793,7 +1937,7 @@ mimetype:video/mp4
           </li>
         </ol>
       </section>
-      <section>
+      <section id='webvmt-map-settings'>
         <h2>WebVMT Map Settings</h2>
         <p>
           The <dfn>WebVMT map settings list</dfn> consists of the following components, in any order, separated from each other by one or more U+0020 SPACE characters, U+0009 CHARACTER TABULATION (tab) characters, or <a>WebVMT line terminators</a>, except that the string must not contain two consecutive <a>WebVMT line terminators</a>. Each component must be included once per <a>WebVMT map settings list</a> string.
@@ -1813,7 +1957,7 @@ mimetype:video/mp4
           </li>
         </ul>
         <p class='note' title='Initial Map State'>
-          The <a>WebVMT map settings list</a> defines the <a>WebVMT map</a> state before the first cue.
+          The <a>WebVMT map settings list</a> defines the <a>WebVMT map</a> state before the first cue is active.
         </p>
         <p>
           A <dfn>WebVMT map center latitude setting</dfn> consists of a <a>WebVMT latitude setting</a>.
@@ -1823,6 +1967,9 @@ mimetype:video/mp4
         </p>
         <p>
           A <dfn>WebVMT map center altitude setting</dfn> consists of a <a>WebVMT altitude setting</a>.
+        </p>
+        <p class='note' title='Map Center Location'>
+          When interpreted as numbers, the <a>WebVMT map center latitude setting</a>, <a>WebVMT map center longitude setting</a> and <a>WebVMT map center altitude setting</a> values represent the <a>map center location</a>.
         </p>
         <p>
           A <dfn>WebVMT latitude setting</dfn> consists of the following components, in the order given:
@@ -1967,10 +2114,10 @@ mimetype:video/mp4
           </ol>
         </p>
         <p class='note' title='Zoom Radius'>
-          When interpreted as a number, the <a>WebVMT map zoom setting</a> represents the <a>map zoom radius</a>.
+          When interpreted as a number, the <a>WebVMT map zoom setting</a> must be positive and represents the <a>map zoom radius</a>.
         </p>
       </section>
-      <section>
+      <section id='webvmt-commands'>
         <h2>WebVMT Commands</h2>
         <p>
           A <dfn>WebVMT command list</dfn> consists of one or more of the following components in any order, separated from each other by a <a>WebVMT line terminator</a>:
@@ -1989,7 +2136,7 @@ mimetype:video/mp4
             </li>
           </ul>
         </p>
-        <section>
+        <section id='webvmt-map-commands'>
           <h2>WebVMT Map Commands</h2>
           <p>
             A <dfn>WebVMT map control command</dfn> consists of one of the following components:
@@ -2095,7 +2242,7 @@ mimetype:video/mp4
             </ol>
           </p>
         </section>
-        <section>
+        <section id='webvmt-zone-commands'>
           <h2>WebVMT Zone Commands</h2>
           <p>
             A <dfn>WebVMT zone annotation command</dfn> consists of one of the following components:
@@ -2134,6 +2281,9 @@ mimetype:video/mp4
               <li>
                 A <a>WebVMT circle radius attribute</a>.
               </li>
+              <li>
+                Optionally, a <a>WebVMT zone attribute</a>.
+              </li>
             </ul>
           </p>
           <p>
@@ -2149,6 +2299,26 @@ mimetype:video/mp4
             A <dfn>WebVMT circle radius attribute</dfn> consists of a <a>WebVMT radius attribute</a>.
           </p>
           <p>
+            A <dfn>WebVMT zone attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            <ol>
+              <li>
+                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>zone</code>".
+              </li>
+              <li>
+                A U+003A COLON character (:).
+              </li>
+              <li>
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>WebVMT zone identifier</a>.
+              </li>
+            </ol>
+          </p>
+          <p>
+            A <dfn>WebVMT zone identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
+          </p>
+          <p class='note' title='Zone Identification'>
+            A <a>WebVMT zone identifier</a> is a string which uniquely identifies a zone in the <a>WebVMT file</a>, for example a safety zone around a moving object.
+          </p>
+          <p>
             A <dfn>WebVMT polygon command</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
           </p>
           <p>
@@ -2158,6 +2328,9 @@ mimetype:video/mp4
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a>WebVMT polygon parameter list</a>.
+              </li>
+              <li>
+                Optionally, a <a>WebVMT zone attribute</a>.
               </li>
             </ul>
           </p>
@@ -2249,7 +2422,7 @@ mimetype:video/mp4
             When interpreted as a number, a <a>WebVMT altitude</a> represents the height in meters above the WGS84 ellipsoid. Care should be taken not to confuse this with the height above mean sea level.
           </p>
         </section>
-        <section>
+        <section id='webvmt-path-commands'>
           <h2>WebVMT Path Commands</h2>
           <p>
             A <dfn>WebVMT path annotation command</dfn> consists of one of the following components:
@@ -2314,7 +2487,7 @@ mimetype:video/mp4
             </ol>
           </p>
           <p>
-            A <dfn>WebVMT path identifier</dfn> is any sequence of one or more characters not containing the substring "-->" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
+            A <dfn>WebVMT path identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
           </p>
           <p class='note' title='Path Identification'>
             A <a>WebVMT path identifier</a> is a string which uniquely identifies a moving object in the <a>WebVMT file</a>, for example a camera.
@@ -2374,7 +2547,7 @@ mimetype:video/mp4
             A <dfn>WebVMT fragment duration attribute</dfn> consisting of a <a>WebVMT duration attribute</a>.
           </p>
         </section>
-        <section>
+        <section id='webvmt-synchronization-commands'>
           <h2>WebVMT Synchronization Command</h2>
           <p>
             A <dfn>WebVMT synchronized data command</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
@@ -2450,7 +2623,7 @@ mimetype:video/mp4
             A <dfn>WebVMT synchronized path attribute</dfn> consists of a <a>WebVMT path attribute</a> representing a <a>synchronized path identifier</a>.
           </p>
         </section>
-        <section>
+        <section id='webvmt-interpolation-subcommand'>
           <h2>WebVMT Interpolation Subcommand</h2>
           <p>
             A <dfn>WebVMT interpolation subcommand</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing the following <a data-cite='ECMA-404' data-no-xref=''>JSON object</a>:
@@ -2547,9 +2720,9 @@ mimetype:video/mp4
           </p>
         </section>
       </section>
-      <section>
+      <section id='properties-of-cue-sequences'>
         <h2>Properties Of Cue Sequences</h2>
-        <section>
+        <section id='webvmt-file-using-only-nested-cues'>
           <h2>WebVMT File Using Only Nested Cues</h2>
           <p>
             A <a>WebVMT file</a> whose cues all comply with the following rule is said to be a <dfn>WebVMT file using only nested cues</dfn>.
@@ -2573,24 +2746,24 @@ WEBVMT
 
 NOTE Required blocks omitted for clarity
 
-00:00.000 --> 01:24.000
+00:00.000 --&gt; 01:24.000
 { "circle": { "lat": 0, "lng": 0, "rad": 2000 } }
 
-00:00.000 --> 00:44.000
+00:00.000 --&gt; 00:44.000
 { "moveto": { "lat": 0, "lng": 0, "path": "cam1" } }
 { "lineto": { "lat": 0.12, "lng": 0.34, "path": "cam1" } }
 
-00:44.000 --> 01:19.000
+00:44.000 --&gt; 01:19.000
 { "lineto": { "lat": 0.56, "lng": 0.78, "path": "cam1" } }
 
-01:24.000 --> 05:00.000
+01:24.000 --&gt; 05:00.000
 { "circle": { "lat": 0, "lng": 0, "rad": 30000 } }
 
-01:35.000 --> 03:00.000
+01:35.000 --&gt; 03:00.000
 { "moveto": { "lat": 0.87, "lng": 0.65, "path": "cam2" } }
 { "lineto": { "lat": 0.43, "lng": 0.21, "path": "cam2" } }
 
-03:00.000 --> 05:00.000
+03:00.000 --&gt; 05:00.000
 { "lineto": { "lat": 0, "lng": 0, "path": "cam2" } }
           </pre>
           <p>
@@ -2628,11 +2801,11 @@ WEBVMT
 
 NOTE Required blocks omitted for clarity
 
-00:00.000 --> 01:00.000
+00:00.000 --&gt; 01:00.000
 { "moveto": { "lat": 0.12, "lng": 0.34, "path": "cam3" } }
 { "lineto": { "lat": 0.56, "lng": 0.78, "path": "cam3" } }
 
-00:30.000 --> 01:30.000
+00:30.000 --&gt; 01:30.000
 { "moveto": { "lat": 0.87, "lng": 0.65, "path": "cam4" } }
 { "lineto": { "lat": 0.43, "lng": 0.21, "path": "cam4" } }
           </pre>
@@ -2642,15 +2815,1200 @@ NOTE Required blocks omitted for clarity
         </section>
       </section>
     </section>
-    <section class='informative' id='knownissues'>
+    <section id='parsing'>
+      <h2>Parsing</h2>
+      <p>
+        WebVMT file parsing is similar to <a data-cite='WEBVTT/#parsing'>WebVTT parsing</a>, though many of those steps can be skipped as WebVMT files are metadata files.
+      </p>
+      <section id='webvmt-file-parsing'>
+        <h2>WebVMT File Parsing</h2>
+        <p>
+          A <dfn>WebVMT parser</dfn>, given an input byte stream, a <a data-cite='HTML51/semantics-embedded-content.html#text-track-list-of-cues'>text track list of cues</a> |output|, and a collection of <a data-cite='CSSOM-1/#css-style-sheets'>CSS style sheets</a> |stylesheets|, must decode the byte stream using the UTF-8 decode algorithm, and then must parse the resulting string according to the <a>WebVMT parser algorithm</a>. This results in <a>WebVMT cues</a> being added to |output|, and <a data-cite='CSSOM-1/#css-style-sheets'>CSS style sheets</a> being added to |stylesheets|.
+        </p>
+        <p>
+          A <a>WebVMT parser</a>, specifically its conversion and parsing steps, is typically run asynchronously, with the input byte stream being updated incrementally as the resource is downloaded; this is called an <dfn>incremental WebVMT parser</dfn>.
+        </p>
+        <p>
+          A <a>WebVMT parser</a> verifies a file signature before parsing the provided byte stream. If the stream lacks this WebVMT file signature, then the parser aborts.
+        </p>
+        <p>
+          The <dfn>WebVMT parser algorithm</dfn> is as follows:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input| be the string being parsed, after conversion to Unicode, and with the following transformations applied:
+              <ul>
+                <li>
+                  Replace all U+0000 NULL characters by U+FFFD REPLACEMENT CHARACTERs.
+                </li>
+                <li>
+                  Replace each U+000D CARRIAGE RETURN U+000A LINE FEED (CRLF) character pair by a single U+000A LINE FEED (LF) character.
+                </li>
+                <li>
+                  Replace all remaining U+000D CARRIAGE RETURN characters by U+000A LINE FEED (LF) characters.
+                </li>
+              </ul>
+            </li>
+            <li>
+              Let |position| be a pointer into |input|, initially pointing at the start of the string. In an <a>incremental WebVMT parser</a>, when this algorithm (or further algorithms that it uses) moves the |position| pointer, the user agent must wait until appropriate further characters from the byte stream have been added to |input| before moving the pointer, so that the algorithm never reads past the end of the |input| string. Once the byte stream has ended, and all characters have been added to |input|, then the |position| pointer may, when so instructed by the algorithms, be moved past the end of |input|.
+            </li>
+            <li>
+              Let |seen cue| be false.
+            </li>
+            <li>
+              If |input| is less than six characters long, then abort these steps. The file does not start with the correct <a>WebVMT file</a> signature and was therefore not successfully processed.
+            </li>
+            <li>
+              If |input| is exactly six characters long but does not exactly equal "<code>WEBVMT</code>", then abort these steps. The file does not start with the correct <a>WebVMT file</a> signature and was therefore not successfully processed.
+            </li>
+            <li>
+              If |input| is more than six characters long but the first six characters do not exactly equal "<code>WEBVMT</code>", or the seventh character is not a U+0020 SPACE character, a U+0009 CHARACTER TABULATION (tab) character, or a U+000A LINE FEED (LF) character, then abort these steps. The file does not start with the correct <a>WebVMT file</a> signature and was therefore not successfully processed.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <i>not</i> U+000A LINE FEED (LF) characters.
+            </li>
+            <li>
+              If |position| is past the end of |input|, then abort these steps. The file was successfully processed, but it contains no useful data and so no <a>WebVMT cues</a> were added to |output|.
+            </li>
+            <li>
+              The character indicated by |position| is a U+000A LINE FEED (LF) character. Advance |position| to the next character in |input|.
+            </li>
+            <li>
+              If |position| is past the end of |input|, then abort these steps. The file was successfully processed, but it contains no useful data and so no <a>WebVMT cues</a> were added to output.
+            </li>
+            <li>
+              <i>Header:</i> If the character indicated by |position| is not a U+000A LINE FEED (LF) character, then <a>collect a WebVMT block</a> with the |in header| flag set. Otherwise, advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are U+000A LINE FEED (LF) characters.
+            </li>
+            <li>
+              Let |map| be null.
+            </li>
+            <li>
+              Let |media metadata| be null.
+            </li>
+            <li>
+              <i>Block loop:</i> While |position| doesn’t point past the end of |input|:
+              <ol>
+                <li>
+                  <a>Collect a WebVMT block</a>, and let |block| be the returned value.
+                </li>
+                <li>
+                  If |block| is a <a>WebVMT cue</a>, add |block| to the <a data-cite='HTML51/semantics-embedded-content.html#text-track-list-of-cues'>text track list of cues</a> |output|.
+                </li>
+                <li>
+                  Otherwise, if |block| is a <a data-cite='CSSOM-1/#css-style-sheets'>CSS style sheet</a>, add |block| to |stylesheets|.
+                </li>
+                <li>
+                  Otherwise, if |block| is a <a>WebVMT map object</a>, let |map| be |block|.
+                </li>
+                <li>
+                  Otherwise, if |block| is a <a>WebVMT media object</a>, let |media metadata| be |block|.
+                </li>
+                <li>
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are U+000A LINE FEED (LF) characters.
+                </li>
+              </ol>
+            </li>
+            <li>
+              <i>End:</i> The file has ended. Abort these steps. The <a>WebVMT parser</a> has finished. The file was successfully processed.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When the algorithm above says to <dfn>collect a WebVMT block</dfn>, optionally with a flag |in header| set, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |seen cue| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |line count| be zero.
+            </li>
+            <li>
+              Let |previous position| be |position|.
+            </li>
+            <li>
+              Let |line| be the empty string.
+            </li>
+            <li>
+              Let |buffer| be the empty string.
+            </li>
+            <li>
+              Let |seen EOF| be false.
+            </li>
+            <li>
+              Let |seen arrow| be false.
+            </li>
+            <li>
+              Let |cue| be null.
+            </li>
+            <li>
+              Let |stylesheet| be null.
+            </li>
+            <li>
+              Let |map| be null.
+            </li>
+            <li>
+              Let |media metadata| be null.
+            </li>
+            <li>
+              <i>Loop:</i> Run these substeps in a loop:
+              <ol>
+                <li>
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <i>not</i> U+000A LINE FEED (LF) characters. Let |line| be those characters, if any.
+                </li>
+                <li>
+                  Increment |line count| by 1.
+                </li>
+                <li>
+                  If |position| is past the end of |input|, let |seen EOF| be true. Otherwise, the character indicated by |position| is a U+000A LINE FEED (LF) character; advance |position| to the next character in |input|.
+                </li>
+                <li>
+                  If |line| contains the three-character substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), then run these substeps:
+                  <ol>
+                    <li>
+                      If |in header| is not set and at least one of the following conditions are true:
+                      <ul>
+                        <li>
+                          |line count| is 1
+                        </li>
+                        <li>
+                          |line count| is 2 and |seen arrow| is false
+                        </li>
+                      </ul>
+                      ...then run these substeps:
+                      <ol>
+                        <li>
+                          Let |seen arrow| be true.
+                        </li>
+                        <li>
+                          Let |previous position| be |position|.
+                        </li>
+                        <li>
+                          <i>Cue creation:</i> Let |cue| be a new <a>WebVMT cue</a> and initialize it as follows:
+                          <ol>
+                            <li>
+                              Let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-identifier'>text track cue identifier</a> be |buffer|.
+                            </li>
+                            <li>
+                              Let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-pause-on-exit-flag'>text track cue pause-on-exit flag</a> be false.
+                            </li>
+                            <li>
+                              Let |cue|'s <a>cue text</a> be the empty string.
+                            </li>
+                          </ol>
+                        </li>
+                        <li>
+                          <a>Collect WebVMT cue timings</a> from |line| for |cue|. If that fails, let |cue| be null. Otherwise, let |buffer| be the empty string and let |seen cue| be true.
+                        </li>
+                      </ol>
+                      Otherwise, let |position| be |previous position| and break out of <i>loop</i>.
+                    </li>
+                  </ol>
+                  <li>
+                    Otherwise, if |line| is the empty string, break out of <i>loop</i>.
+                  </li>
+                  <li>
+                    Otherwise, run these substeps:
+                    <ol>
+                      <li>
+                        If |in header| is not set and |line count| is 2, run these substeps:
+                        <ol>
+                          <li>
+                            If |seen cue| is false and |buffer| starts with the substring "<code>STYLE</code>" (U+0053 LATIN CAPITAL LETTER S, U+0054 LATIN CAPITAL LETTER T, U+0059 LATIN CAPITAL LETTER Y, U+004C LATIN CAPITAL LETTER L, U+0045 LATIN CAPITAL LETTER E), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
+                            <ol>
+                              <li>
+                                <p>
+                                  Let |stylesheet| be the result of <a data-cite='CSSOM-1/#create-a-css-style-sheet'>creating a CSS style sheet</a>, with the following properties:
+                                </p>
+                                <dl>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-location'>location</a>
+                                  </dt>
+                                  <dd>
+                                    null
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-parent-css-style-sheet'>parent CSS style sheet</a>
+                                  </dt>
+                                  <dd>
+                                    null
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-owner-node'>owner node</a>
+                                  </dt>
+                                  <dd>
+                                    null
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-owner-css-rule'>owner CSS rule</a>
+                                  </dt>
+                                  <dd>
+                                    null
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-media'>media</a>
+                                  </dt>
+                                  <dd>
+                                    The empty string.
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-title'>title</a>
+                                  </dt>
+                                  <dd>
+                                    The empty string.
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-alternate-flag'>alternate flag</a>
+                                  </dt>
+                                  <dd>
+                                    Unset.
+                                  </dd>
+                                  <dt>
+                                    <a data-cite='CSSOM-1/#concept-css-style-sheet-origin-clean-flag'>origin-clean flag</a>
+                                  </dt>
+                                  <dd>
+                                    Set.
+                                  </dd>
+                                </dl>
+                              </li>
+                              <li>
+                                Let |buffer| be the empty string.
+                              </li>
+                            </ol>
+                          </li>
+                          <li>
+                            Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>MAP</code>" (U+004D LATIN CAPITAL LETTER M, U+0041 LATIN CAPITAL LETTER A, U+0050 LATIN CAPITAL LETTER P), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
+                            <ol>
+                              <li>
+                                <i>Map creation:</i> Let |map| be a new <a>WebVMT map</a>.
+                              </li>
+                              <li>
+                                Let |buffer| be the empty string.
+                              </li>
+                            </ol>
+                          </li>
+                          <li>
+                            Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>MEDIA</code>" (U+004D LATIN CAPITAL LETTER M, U+0045 LATIN CAPITAL LETTER E, U+0044 LATIN CAPITAL LETTER D, U+0049 LATIN CAPITAL LETTER I, U+0041 LATIN CAPITAL LETTER A), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
+                            <ol>
+                              <li>
+                                <i>Media creation:</i> Let |media metadata| be a new <a>WebVMT media</a>.
+                              </li>
+                              <li>
+                                Let |buffer| be the empty string.
+                              </li>
+                            </ol>
+                          </li>
+                        </ol>
+                      </li>
+                      <li>
+                        If |buffer| is not the empty string, append a U+000A LINE FEED (LF) character to |buffer|.
+                      </li>
+                      <li>
+                        Append |line| to |buffer|.
+                      </li>
+                      <li>
+                        Let |previous position| be |position|.
+                      </li>
+                    </ol>
+                  </li>
+                </li>
+                <li>
+                  If |seen EOF| is true, break out of <i>loop</i>.
+                </li>
+              </ol>
+            </li>
+            <li>
+              If |cue| is not null, let the <a>cue text</a> of |cue| be |buffer|, and return |cue|.
+            </li>
+            <li>
+              Otherwise, if |stylesheet| is not null, then <a data-cite='CSS-SYNTAX-3/#parse-a-stylesheet'>parse a stylesheet</a> from |buffer|. If it returned a list of rules, assign the list as |stylesheet|'s <a data-cite='CSSOM-1/#concept-css-style-sheet-css-rules'>CSS rules</a>; otherwise, set |stylesheet|'s <a data-cite='CSSOM-1/#concept-css-style-sheet-css-rules'>CSS rules</a> to an empty list. Finally, return |stylesheet|.
+            </li>
+            <li>
+              Otherwise, if |map| is not null, then <a>collect WebVMT map settings</a> from |buffer| using |map| for the results. Construct a <a>WebVMT map object</a> from |map|, and return it.
+            </li>
+            <li>
+              Otherwise, if |media metadata| is not null, then <a>collect WebVMT media settings</a> from |buffer| using |media metadata| for the results. Construct a <a>WebVMT media object</a> from |media metadata|, and return it.
+            </li>
+            <li>
+              Otherwise, return null.
+            </li>
+          </ol>
+        </p>
+      </section>
+      <section id='webvmt-map-settings-parsing'>
+        <h2>WebVMT Map Settings Parsing</h2>
+        <p>
+          When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT map settings</dfn> from a string |input| for a <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text track</a>, the user agent must run the following algorithm.
+        </p>
+        <p>
+          A <dfn>WebVMT map object</dfn> is a conceptual construct to represent a <a>WebVMT map</a> that is used as a root node for <a>WebVMT node objects</a>. This algorithm returns a <a>WebVMT map object</a>.
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |settings| be the result of <a data-cite='HTML51/infrastructure.html#split-a-string-on-spaces'>splitting |input| on spaces</a>.
+            </li>
+            <li>
+              For each token |setting| in the list |settings|, run the following substeps:
+              <ol>
+                <li>
+                  If |setting| does not contain a U+003A COLON character (:), or if the first U+003A COLON character (:) in |setting| is either the first or last character of |setting|, then jump to the step labeled <i>next setting</i>.
+                </li>
+                <li>
+                  Let |name| be the leading substring of |setting| up to and excluding the first U+003A COLON character (:) in that string.
+                </li>
+                <li>
+                  Let |value| be the trailing substring of |setting| starting from the character immediately after the first U+003A COLON character (:) in that string.
+                </li>
+                <li>
+                  Run the appropriate substeps that apply for the value of |name|, as follows:
+                </li>
+                <dl>
+                  <dt>
+                    If |name| is a case-sensitive match for "<code>lat</code>"
+                  </dt>
+                  <dd>
+                    Let |map|'s <a>location latitude</a> of the <a>map center location</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>lng</code>"
+                  </dt>
+                  <dd>
+                    Let |map|'s <a>location longitude</a> of the <a>map center location</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>alt</code>"
+                  </dt>
+                  <dd>
+                    Let |map|'s <a>location altitude</a> of the <a>map center location</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>rad</code>"
+                  </dt>
+                  <dd>
+                    Let |map|'s <a>map zoom radius</a> be |value|.
+                  </dd>
+                </dl>
+                <li>
+                  <i>Next setting:</i> Continue to the next setting, if any.
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </p>
+      </section>
+      <section id='webvmt-media-settings-parsing'>
+        <h2>WebVMT Media Settings Parsing</h2>
+        <p>
+          When the <a>WebVMT parser</a> algorithm says to <dfn>collect WebVMT media settings</dfn> from a string |input| for a <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text track</a>, the user agent must run the following algorithm.
+        </p>
+        <p>
+          A <dfn>WebVMT media object</dfn> is a conceptual construct to represent a <a>WebVMT media</a>. This algorithm returns a <a>WebVMT media object</a>.
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |settings| be the result of <a data-cite='HTML51/infrastructure.html#split-a-string-on-spaces'>splitting |input| on spaces</a>.
+            </li>
+            <li>
+              For each token |setting| in the list |settings|, run the following substeps:
+              <ol>
+                <li>
+                  If |setting| does not contain a U+003A COLON character (:), or if the first U+003A COLON character (:) in |setting| is either the first or last character of |setting|, then jump to the step labeled <i>next setting</i>.
+                </li>
+                <li>
+                  Let |name| be the leading substring of |setting| up to and excluding the first U+003A COLON character (:) in that string.
+                </li>
+                <li>
+                  Let |value| be the trailing substring of |setting| starting from the character immediately after the first U+003A COLON character (:) in that string.
+                </li>
+                <li>
+                  Run the appropriate substeps that apply for the value of |name|, as follows:
+                </li>
+                <dl>
+                  <dt>
+                    If |name| is a case-sensitive match for "<code>url</code>"
+                  </dt>
+                  <dd>
+                    Let |media metadata|'s <a>media URL</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>mime-type</code>"
+                  </dt>
+                  <dd>
+                    Let |media metadata|'s <a>media MIME type</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>start-time</code>"
+                  </dt>
+                  <dd>
+                    Let |media metadata|'s <a>media start time</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>path</code>"
+                  </dt>
+                  <dd>
+                    Let |media metadata|'s <a>media path</a> be |value|.
+                  </dd>
+                </dl>
+                <li>
+                  <i>Next setting:</i> Continue to the next setting, if any.
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </p>
+      </section>
+      <section id='webvmt-cue-timings-parsing'>
+        <h2>WebVMT Cue Timings Parsing</h2>
+        <p>
+          When the algorithm above says to <dfn>collect WebVMT cue timings</dfn> from a string |input| for a <a>WebVMT cue</a> |cue|, the user agent must run the following algorithm.
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input| be the string being parsed.
+            </li>
+            <li>
+              Let |position| be a pointer into |input|, initially pointing at the start of the string.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace</a>.
+            </li>
+            <li>
+              <a>Collect a WebVMT timestamp</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-start-time'>text track cue start time</a> be the collected time.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace</a>.
+            </li>
+            <li>
+              If the character at |position| is not a U+002D HYPHEN-MINUS character (-) then abort these steps and return failure. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              If the character at |position| is not a U+002D HYPHEN-MINUS character (-) then abort these steps and return failure. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              If the character at |position| is not a U+003E GREATER-THAN SIGN character (>) then abort these steps and return failure. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace.</a>
+            </li>
+            <li>
+              If |position| is not past the end of |input| and the character at |position| is an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>, <a>collect a WebVMT timestamp</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-end-time'>text track cue end time</a> be the collected time.
+            </li>
+            <li>
+              Otherwise (|position| is past the end of |input| or the character at |position| is not an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>), let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-end-time'>text track cue end time</a> be the value positive Infinity.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a WebVMT timestamp</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input| and |position| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |most significant units| be <i>minutes</i>.
+            </li>
+            <li>
+              If |position| is past the end of |input|, return an error and abort these steps.
+            </li>
+            <li>
+              If the character indicated by |position| is not an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>, then return an error and abort these steps.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
+            </li>
+            <li>
+              Interpret |string| as a base-ten integer. Let |value1| be that integer.
+            </li>
+            <li>
+              If |string| is not exactly two characters in length, or if |value1| is greater than 59, let |most significant units| be <i>hours</i>.
+            </li>
+            <li>
+              If |position| is beyond the end of |input| or if the character at |position| is not a U+003A COLON character (:), then return an error and abort these steps. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
+            </li>
+            <li>
+              If |string| is not exactly two characters in length, return an error and abort these steps.
+            </li>
+            <li>
+              Interpret |string| as a base-ten integer. Let |value2| be that integer.
+            </li>
+            <li>
+              If |most significant units| is <i>hours</i>, or if |position| is not beyond the end of |input| and the character at |position| is a U+003A COLON character (:), run these substeps:
+              <ol>
+                <li>
+                  If |position| is beyond the end of |input| or if the character at |position| is not a U+003A COLON character (:), then return an error and abort these steps. Otherwise, move |position| forwards one character.
+                </li>
+                <li>
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
+                </li>
+                <li>
+                  If |string| is not exactly two characters in length, return an error and abort these steps.
+                </li>
+                <li>
+                  Interpret |string| as a base-ten integer. Let |value3| be that integer.
+                </li>
+              </ol>
+              Otherwise (if |most significant units| is not <i>hours</i>, and either |position| is beyond the end of |input|, or the character at |position| is not a U+003A COLON character (:)), let |value3| have the value of |value2|, then |value2| have the value of |value1|, then let |value1| equal zero.
+            </li>
+            <li>
+              If |position| is beyond the end of |input| or if the character at |position| is not a U+002E FULL STOP character (.), then return an error and abort these steps. Otherwise, move |position| forwards one character.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
+            </li>
+            <li>
+              If |string| is not exactly three characters in length, return an error and abort these steps.
+            </li>
+            <li>
+              Interpret |string| as a base-ten integer. Let |value4| be that integer.
+            </li>
+            <li>
+              If |value2| is greater than 59 or if |value3| is greater than 59, return an error and abort these steps.
+            </li>
+            <li>
+              Let |result| be |value1|×60×60 + |value2|×60 + |value3| + |value4|/1000.
+            </li>
+            <li>
+              Return |result|.
+            </li>
+          </ol>
+        </p>
+      </section>
+    <!--
+      <section id='webvmt-cue-text-parsing'>
+        <h2>WebVMT Cue Text Parsing</h2>
+        <p>
+          A <dfn>WebVMT node object</dfn> is a conceptual construct used to represent components of cue text so that its processing can be described without reference to the underlying syntax.
+        </p>
+        <p>
+          There are two broad classes of <a>WebVMT node objects</a>: <a>WebVMT internal node objects</a> and <a>WebVMT leaf node objects</a>.
+        </p>
+        <p>
+          <dfn>WebVMT internal node objects</dfn> are those that can contain further <a>WebVMT node objects</a>. They are conceptually similar to elements in HTML or the DOM. <a>WebVMT internal node objects</a> have an ordered list of child <a>WebVMT node objects</a>. The <a>WebVMT internal node object</a> is said to be the parent of the children. Cycles do not occur; the parent-child relationships so constructed form a tree structure.
+        </p>
+        <p>
+          There are several concrete classes of <a>WebVMT internal node objects</a>:
+        </p>
+        <dl>
+          <dt>
+            <dfn>List of WebVMT node objects</dfn>
+          </dt>
+          <dd>
+            This is used as a root node for trees of <a>WebVMT node objects</a>.
+          </dd>
+          <dt>
+            A <dfn>WebVMT zone object</dfn>
+          </dt>
+          <dd>
+            This represents the span of a <a>WebVMT zone fragment</a> in a <a>WebVMT cue</a>.
+          </dd>
+          <dt>
+            A <dfn>WebVMT path object</dfn>
+          </dt>
+          <dd>
+            This represents the span of a <a>WebVMT path fragment</a> in a <a>WebVMT cue</a>.
+          </dd>
+        </dl>
+        <p>
+          <dfn>WebVMT leaf node objects</dfn> are those that contain data, such as text, and cannot contain child <a>WebVMT node objects</a>.
+        </p>
+        <p>
+          There is one concrete class of <a>WebVMT leaf node objects</a>:
+        </p>
+        <dl>
+          <dt>
+            <dfn>WebVMT text object</dfn>
+          </dt>
+          <dd>
+            A text string. A <a>WebVMT text object</a> has a value which is the <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> of a timed metadata object.
+          </dd>
+          <!--dt>
+            <dfn>WebVMT data object</dfn>
+          </dt>
+          <dd>
+            A timed metadata object. A <a>WebVMT data object</a> is a JSON object which represents the timed metadata structure and its values.
+          </dd!->
+        </dl>
+        <p>
+          The <dfn>WebVMT cue text parsing rules</dfn> consist of the following algorithm. The input is a string |input| supposedly containing <a>WebVMT metadata text</a>. This algorithm returns a <a>list of WebVMT node objects</a>.
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input| be the string being parsed.
+            </li>
+            <li>
+              Let |position| be a pointer into |input|, initially pointing at the start of the string.
+            </li>
+            <li>
+              Let |json| be an empty string.
+            </li>
+            <li>
+              Let |result| be a <a>list of WebVMT node objects</a>, initially empty.
+            </li>
+            <li>
+              Let |current| be the <a>WebVMT internal node object</a> |result|.
+            </li>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |result| and abort these steps.
+            </li>
+            <li>
+              <a>Collect a JSON element text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, let |json| be the collected string.
+            </li>
+            <li>
+              Create a <a>WebVMT text object</a> whose value is the value of the string |json|.
+            </li>
+            <li>
+              Append the newly created <a>WebVMT text object</a> to |current|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a JSON element text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input| and |position| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |string| be an empty string.
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              <p>
+                Jump to the entry that matches the value of |c|:
+              </p>
+              <dl>
+                <dt>
+                  U+007B LEFT CURLY BRACKET character ({)
+                </dt>
+                <dd>
+                  <a>Collect a JSON object text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+                </dd>
+                <dt>
+                  U+005B LEFT SQUARE BRACKET character ([)
+                </dt>
+                <dd>
+                  <a>Collect a JSON array text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+                </dd>
+                <dt>
+                  Anything else
+                </dt>
+                <dd>
+                  Advance |position| to the next character in |input|.
+                </dd>
+              </dl>
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a JSON object text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+007B LEFT CURLY BRACKET character ({) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace.</a>
+            </li>
+            <li>
+              <a>Collect a JSON string text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, append the collected string to |string|.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace.</a>
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+003A COLON character (:) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <a>Collect a JSON value text</a>. If that algorithm fails, then abort these steps and return failure.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is a U+007D RIGHT CURLY BRACKET character (}) then append |c| to |string|, advance |position| to the next character in |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Otherwise, if |c| is not a U+002C COMMA character (,) then return failure and abort these steps.
+            </li>
+            <li>
+              Append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a JSON array text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+005B LEFT BRACKET character ([) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              <a>Collect a JSON value text</a>. If that algorithm fails, then abort these steps and return failure.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is a U+005D RIGHT BRACKET character (]) then append |c| to |string|, advance |position| to the next character in |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Otherwise, if |c| is not a U+002C COMMA character (,) then return failure and abort these steps.
+            </li>
+            <li>
+              Append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a JSON value text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace.</a>
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <dl>
+              Jump to the entry that matches the value of |c|:
+              <dt>
+                U+0022 QUOTATION MARK character (")
+              </dt>
+              <dd>
+                <a>Collect a JSON string text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+              </dd>
+              <dt>
+                U+007B LEFT CURLY BRACKET character ({)
+              </dt>
+              <dd>
+                <a>Collect a JSON object text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+              </dd>
+              <dt>
+                U+005B LEFT SQUARE BRACKET character ([)
+              </dt>
+              <dd>
+                <a>Collect a JSON array text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
+              </dd>
+              <dt>
+                Anything else
+              </dt>
+              <dd>
+                Jump to the step labeled <i>loop</i>.
+              </dd>
+            </dl>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              If |c| is <a data-cite='HTML51/infrastructure.html#ascii-whitespace'>ASCII whitespace</a> character then <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>skip whitespace</a>, return |string| and abort these steps.
+            </li>
+            <li>
+              Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect a JSON string text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+0022 QUOTATION MARK character (") then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is a U+0022 QUOTATION MARK character (") then append |c| to |string| and advance |position| to the next character in |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Otherwise, if |c| is a U+005C REVERSE SOLIDUS character (\) then <a>collect JSON escape text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, append the collected string to |string|.
+            </li>
+            <li>
+              Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              Jump to the step labeled <i>loop</i>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          When this specification says that a user agent is to <dfn>collect JSON escape text</dfn>, the user agent must run the following steps:
+        </p>
+        <p>
+          <ol>
+            <li>
+              Let |input|, |position| and |string| be the same variables as those of the same name in the algorithm that invoked these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              If |c| is not a U+005C REVERSE SOLIDUS character (\) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              If |position| is past the end of |input|, return |string| and abort these steps.
+            </li>
+            <li>
+              Let |c| be the character in |input| pointed to by |position|.
+            </li>
+            <li>
+              Append |c| to |string| and advance |position| to the next character in |input|.
+            </li>
+            <li>
+              If |c| is a U+0075 LATIN SMALL LETTER U character (u) then run the following substeps:
+              <ol>
+                <li>
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-hex-digits'>ASCII hex digits</a> and no more than four characters in length, and let |hex| be the collected substring.
+                </li>
+                <li>
+                  If |hex| is not exactly four characters in length, return an error and abort these steps.
+                </li>
+                <li>
+                  Append |hex| to |string|.
+                </li>
+              </ol>
+            </li>
+            <li>
+              Return |string|.
+            </li>
+          </ol>
+        </p>
+      </section>
+    -->
+    </section>
+    <section id='css-extensions'>
+      <h2>CSS Extensions</h2>
+      <p class='note'>
+        This section specifies some CSS pseudo-elements and pseudo-classes and how they apply to WebVMT. This section does not apply to <a>user agents that do not support CSS</a>.
+      </p>
+      <section class='informative' id='css-extensions-introduction'>
+        <h2>Introduction</h2>
+        <p>
+          The <span class='css'>::cue</span> pseudo-element represents a cue.
+        </p>
+        <p>
+          The <span class='css'>::cue(<var>selector</var>)</span> pseudo-element represents a cue or element inside a cue that match the given selector.
+        </p>
+        <!--p>
+          The <span class='css'>::cue-map</span> pseudo-element represents a map viewport.
+        </p>
+        <p>
+          The <span class='css'>::cue-map(<var>selector</var>)</span> pseudo-element represents an element inside a map viewport that matches the given selector.
+        </p-->
+        <p class='note'>
+          Similarly to all other pseudo-elements, these pseudo-elements are not directly present in the <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'><code>&lt;video&gt;</code></a> or <a data-cite='HTML51/semantics-embedded-content.html#the-audio-element'><code>&lt;audio&gt;</code></a> element’s document tree.
+        </p>
+        <p>
+          A <dfn>WebVMT node object</dfn> is a conceptual construct used to represent components of cue metadata so that its processing can be described without reference to the underlying syntax.
+        </p>
+        <aside class='example'>
+          The following table shows examples of what can be selected with a given selector, together with WebVMT syntax to produce the relevant objects.
+          <table class='css-selector-table'>
+            <tr>
+              <th>
+                Selector<br />(CSS syntax example)
+              </th>
+              <th>
+                Matches<br />(WebVMT syntax example)
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <span class='css'>::cue</span>
+                <pre class='nohighlight'>
+video::cue {
+  stroke: red;
+}
+                </pre>
+              </td>
+              <td>
+                Any <a>WebVMT node objects</a>.
+                <pre class='nohighlight'>
+WEBVMT
+
+NOTE Red
+
+00:00:00.000 --&gt; 00:00:08.000
+{ "moveto":
+  { "lat": 51.504362, "lng": -0.076153 } }
+{ "lineto":
+  { "lat": 51.506646, "lng": -0.074651 } }
+
+NOTE Also red!
+
+00:00:08.000 --&gt; 00:00:16.000
+{ "circle":
+  { "lat": 51.504789, "lng": -0.078642,
+    "rad": 20 } }
+                </pre>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a data-cite='SELECTORS4/#id-selector'>ID selector</a> in <span class='css'>::cue()</span>
+                <pre class='nohighlight'>
+video::cue(#cue1) {
+  stroke: red;
+}
+                </pre>
+              </td>
+              <td>
+                Any <a>WebVMT node objects</a> constructed for a cue with a <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-identifier'>text track cue identifier</a> matching the given ID, e.g. cue1.
+                <pre class='nohighlight'>
+WEBVMT
+
+NOTE Red
+
+cue1
+00:00:00.000 --&gt; 00:00:08.000
+{ "moveto":
+  { "lat": 51.504362, "lng": -0.076153 } }
+{ "lineto":
+  { "lat": 51.506646, "lng": -0.074651 } }
+
+NOTE Not red
+
+00:00:08.000 --&gt; 00:00:16.000
+{ "circle":
+  { "lat": 51.504789, "lng": -0.078642,
+    "rad": 20 } }
+                </pre>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a data-cite='SELECTORS4/#attribute-selector'>Attribute selector</a> in <span class="css">::cue()</span>
+                <pre class='nohighlight'>
+video::cue([zone="safe1"]) {
+  stroke: red;
+}
+                </pre>
+              </td>
+              <td>
+                For "path", any <a>WebVMT node object</a> with the given <a>path identifier</a>; for "zone", the <a>WebVMT node object</a> with the given <a>zone identifier</a>.
+                <pre class='nohighlight'>
+WEBVMT
+
+NOTE Not red
+
+00:00:00.000 --&gt; 00:00:08.000
+{ "moveto":
+  { "lat": 51.504362, "lng": -0.076153 } }
+{ "lineto":
+  { "lat": 51.506646, "lng": -0.074651 } }
+
+NOTE Red
+
+00:00:08.000 --&gt; 00:00:16.000
+{ "circle":
+  { "lat": 51.504789, "lng": -0.078642,
+    "rad": 20, "zone": "safe1" } }
+                </pre>
+              </td>
+            </tr>
+          </table>
+        </aside>
+      </section>
+      <section id='css-extensions-processing-model'>
+        <h2>Processing Model</h2>
+        <p>
+          Pseudo-elements apply to elements that are matched by selectors. For the purpose of this section, that element is the <i>matched element</i>. The pseudo-elements defined in the following sections affect the styling of parts of WebVMT cues that are being rendered for the <i>matched element</i>.
+        </p>
+        <p>
+          A CSS user agent that implements the <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text tracks</a> model must implement the <span class='css'>::cue</span> and <span class='css'>::cue(selector)</span> pseudo-elements.
+        </p>
+        <section id='cue-pseudo-element'>
+          <h2>The <span class='css'>::cue</span> pseudo-element</h2>
+          <p>
+            The <span class='css'><dfn class='export'>::cue</dfn></span> pseudo-element (with no argument) matches any <a>WebVMT node objects</a> constructed for the <i>matched element</i>.
+          </p>
+          <p>
+            The following properties apply to the <span class='css'>::cue</span> pseudo-element with no argument; other properties set on the pseudo-element must be ignored:
+          </p>
+          <p>
+            <ul>
+              <li>
+                <span class='css'>stroke</span>
+              </li>
+              <li>
+                <span class='css'>stroke-opacity</span>
+              </li>
+              <li>
+                <span class='css'>stroke-width</span>
+              </li>
+              <li>
+                <span class='css'>fill</span>
+              </li>
+              <li>
+                <span class='css'>fill-opacity</span>
+              </li>
+            </ul>
+          </p>
+          <p>
+            The <span class='css'><dfn class='export'>::cue(<var>selector</var>)</dfn></span> pseudo-element with an argument must have an argument that consists of a <a data-cite='SELECTORS4/#selector'>CSS selector</a>. It matches any <a>WebVMT node object</a> constructed for the <i>matched element</i> that also matches the given CSS selector.
+          </p>
+          <p>
+            The following properties apply to the <span class='css'>::cue()</span> pseudo-element with an argument:
+            <ul>
+              <li>
+                <span class='css'>stroke</span>
+              </li>
+              <li>
+                <span class='css'>stroke-opacity</span>
+              </li>
+              <li>
+                <span class='css'>stroke-width</span>
+              </li>
+              <li>
+                <span class='css'>fill</span>
+              </li>
+              <li>
+                <span class='css'>fill-opacity</span>
+              </li>
+            </ul>
+          </p>
+          <p>
+            Properties that do not apply must be ignored.
+          </p>
+        </section>
+        <!--section id='cue-map-pseudo-element'>
+          <h2>The <span class='css'>::cue-map</span> pseudo-element</h2>
+          <p>
+            Pseudo-elements apply to elements that are matched by selectors. For the purpose of this section, that element is the <i>matched element</i>. The pseudo-element defined below affects the styling of text track regions that are being rendered for the <i>matched element</i>.
+          </p>
+          <p>
+            The <span class='css'><dfn class='export'>::cue-map</dfn></span> pseudo-element (with no argument) matches the <a>WebVMT map object</a> constructed for the <i>matched element</i>.
+          </p>
+          <p>
+            The same properties that apply to <span class='css'>::cue</span> apply to the <span class='css'>::cue-map</span> pseudo-element; other properties set on the pseudo-element must be ignored.
+          </p>
+          <p>
+            When a user agent is rendering a text track map according to the <a>rules for updating the display of WebVMT text tracks</a>, the <a>WebVMT map object</a> used in the rendering can be matched by the above pseudo-element. User agents that support the pseudo-element must dynamically update renderings accordingly.
+          </p>
+        </section-->
+        <section id='css-cascades'>
+          <h2>CSS Cascades</h2>
+          <p>
+            For the purpose of determining the <a data-cite='CSS-CASCADE-4/#cascade'>cascade</a> of the declarations in <code>STYLE</code> blocks of a WebVMT file, the relative order of appearance of the style sheets must be the same order as they were added to the collection, and the order of appearance of the collection must be after any style sheets that apply to the associated <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'><code>&lt;video&gt;</code></a> or <a data-cite='HTML51/semantics-embedded-content.html#the-audio-element'><code>&lt;audio&gt;</code></a> element’s document.
+          </p>
+          <aside class='example' title='Cascade Precedence'>
+            <p>
+              For example, given the following (invalid) HTML document:
+            </p>
+            <pre class='nohighlight'>
+&lt;!doctype html&gt;
+&lt;title&gt;Invalid cascade example&lt;/title&gt;
+&lt;video controls autoplay src="video.webm"&gt;
+  &lt;track default src="cascade.vmt"&gt;
+&lt;/video&gt;
+&lt;style&gt;
+  ::cue { fill: red; }
+&lt;/style&gt;
+            </pre>
+            <p>
+              And the "cascade.vmt" file contains:
+            </p>
+            <pre class='nohighlight'>
+WEBVMT
+
+STYLE
+::cue { fill: lime; }
+
+NOTE Red or green?
+
+00:00:00.000 --> 00:00:25.000
+{ "circle": { "lat": 51.504789, "lng": -0.078642, "rad": 20} }
+            </pre>
+            <p>
+              The <span class='css'>fill:lime</span> declaration would win, because it is last in the <a data-cite='CSS-CASCADE-4/#cascade'>cascade</a>, even though the <a data-cite='HTML51/semantics-embedded-content.html#the-style-element'><code>&lt;style&gt;</code></a> element is after the <a data-cite='HTML51/semantics-embedded-content.html#the-video-element'><code>&lt;video&gt;</code></a> element in the document order.
+            </p>
+          </aside>
+        </section>
+      </section>
+    </section>
+    <section class='informative' id='known-issues'>
       <h2>Known Issues</h2>
       <p>
-        This section captures issues which have been identified, but are not fully documented in this explanatory specification.
+        This section captures issues which have been identified, but are not yet fully documented.
       </p>
       <p class='ednote'>
         As the specification develops, issues will be moved out of this section and included elsewhere in the document, until it is no longer needed and is completely removed.
       </p>
-      <section id='plannedfeatures'>
+      <section id='planned-features'>
         <h2>Planned Features</h2>
         <p>
           This section lists potential features which have been identified during the development process, but have not yet matured to a full design specification.
@@ -2658,25 +4016,25 @@ NOTE Required blocks omitted for clarity
         <p class='note'>
           Features which appear in this section warrant further investigation, but are not guaranteed to appear in the final specification.
         </p>
-        <section id='marker'>
+        <section id='markers'>
           <h2>Markers</h2>
           <p>
             An image linked to and displayed at an offset from a geolocation.
           </p>
         </section>
-        <section id='label'>
+        <section id='labels'>
           <h2>Labels</h2>
           <p>
             A text string linked to and displayed at an offset from a geolocation.
           </p>
         </section>
-        <section id='tileshortcut'>
+        <section id='tile-shortcuts'>
           <h2>Tile Shortcuts</h2>
           <p>
             Shortcuts to popular tile URLs for easy access and to help avoid URL syntax errors.
           </p>
         </section>
-        <section id='layer'>
+        <section id='layers'>
           <h2>Layers</h2>
           <p>
             Syntax to allow more than one layer of map tiles to be specified, e.g. 'map' and 'satellite' layers.
@@ -2685,7 +4043,7 @@ NOTE Required blocks omitted for clarity
             This should be functional, but remain lightweight.
           </p>
         </section>
-        <section id='multipleapis'>
+        <section id='multiple-apis'>
           <h2>Multiple APIs</h2>
           <p>
             The current tech demo is based on the Leaflet API, but should be broadened to support other web map APIs, e.g. Open Layers.
@@ -2694,75 +4052,348 @@ NOTE Required blocks omitted for clarity
             A hot-swap feature would allow users to switch API on-the-fly to take advantage of the unique features supported by different APIs, e.g. Street View.
           </p>
         </section>
-        <section id='cameradirection'>
+        <section id='camera-direction'>
           <h2>Camera Direction</h2>
           <p>
             Camera orientation may not match the direction of travel, or may be dynamic, e.g. for Augmented Reality. Field of view and zoom level also affect video frame content and may vary over time.
           </p>
         </section>
-        <section id='coordrefsys'>
+        <section id='coordinate-reference-systems'>
           <h2>Co-ordinate Reference Systems</h2>
           <p>
             Although originally conceived for Earth-based use, spatial data in other environments could be accommodated by specifying the co-ordinate reference system. For example, location on another planet, e.g. Mars, or in an artifical environment, e.g. a video game.
           </p>
         </section>
-        <section id='movingobjects'>
+        <section id='moving-objects'>
           <h2>Moving Objects</h2>
           <p>
             <a>WebVMT paths</a> represent objects moving through the mapped space, though could be extended to support properties associated with motion such as distance travelled, speed, heading, etc. through a defined API.
           </p>
           <p>
+            <a>WebVMT zones</a> represent regions in the mapped space, which could be extended to support <a>WebVMT path</a> properties for their centroid's motion and include dynamic properties such as area and volume.
+          </p>
+          <p>
             Care should be taken to build a lightweight interface which includes simple, common properties that are useful to most use cases and avoids overloading with unnecessary edge cases, processing overheads and complexity.
           </p>
         </section>
-        <section id='3dcoords'>
-          <h2>3D Co-ordinates</h2>
+        <section id='height-reference'>
+          <h2>Height Reference</h2>
           <p>
-            Height could also be referenced either from mean sea level, e.g. for an aircraft, using a suitable Earth Gravitational Model (EGM) or from ground level, e.g. for the top of a structure.
+            In addition to height above the WGS84 ellipsoid, an option could be added to measure altitude from mean sea level, e.g. for an aircraft, using a suitable Earth Gravitational Model (EGM) or from ground level, e.g. for the height of a structure.
           </p>
         </section>
       </section>
-      <section id='plannedinterfaces'>
+      <section id='planned-interfaces'>
         <h2>Planned Interfaces</h2>
         <p>
           This section lists interfaces which have been identified during the development process, but have not yet matured to a full design specification.
         </p>
-        <section id='cueinterface'>
-          <h2>VMTCue Interface</h2>
+        <!--section id='vmtcue-interface' data-dfn-for='VMTCue'>
+          <h2><dfn>VMTCue</dfn> Interface</h2>
           <p>
-            Expose WebVMT Cues in the DOM API, based on the <a data-cite='HTML51/semantics-embedded-content.html#datacue-datacue'>HTML5 DataCue interface</a>. For example:
-            <pre class='nohighlight' title='WebVMT Cue Interface'>
-              [Exposed=Window,
-              Constructor(double startTime, double endTime, DOMString text),
-              Constructor(double startTime, DOMString text)]
-              interface VMTCue : DataCue {
-                attribute unrestricted double endTime;
+            Expose <a>WebVMT cues</a> in the DOM API, based on the <a href='https://wicg.github.io/datacue/#datacue-interface'>DataCue API</a> proposed in WICG. For example:
+            <pre class='idl' title='VMTCue Interface'>
+              [Exposed=Window]
+              interface VMTCue: <a href='https://wicg.github.io/datacue/#datacue-interface'>DataCue</a> {
+                constructor(double startTime, unrestricted double endTime, DOMString text);
               };
             </pre>
           </p>
           <p>
             This is analogous to the <a data-cite='WEBVTT#the-vttcue-interface'>VTTCue</a> interface.
           </p>
-        </section>
-        <section id='mapinterface'>
-          <h2>VMTMap Interface</h2>
+        </section-->
+        <section id='datacue-interface'>
+          <h2>DataCue Interface</h2>
           <p>
-            Expose WebVMT Maps in the DOM API. For example:
-            <pre class='nohighlight' title='WebVMT Map Interface'>
-              [Exposed=Window,
-              Constructor]
+            Expose <a>WebVMT cues</a> in the DOM API, based on the <a href='https://wicg.github.io/datacue/#datacue-interface'>DataCue API</a> proposed in WICG.
+          </p>
+          <p>
+            This is analogous to the <a data-cite='WEBVTT#the-vttcue-interface'>VTTCue</a> interface.
+          </p>
+          <dl>
+            <dt>
+              |cue| = new DataCue(startTime, endTime, value, type);
+            </dt>
+            <dd>
+              Returns a new <a href='https://wicg.github.io/datacue/#datacue'>DataCue</a> object.
+            </dd>
+            <dt>
+              |cue|.value
+            </dt>
+            <dd>
+              Returns the metadata value of a <a>WebVMT cue</a>. Can be set.
+            </dd>
+            <dt>
+              |cue|.type
+            </dt>
+            <dd>
+              Returns the metadata type of a <a>WebVMT cue</a>.
+            </dd>
+          </dl>
+        </section>
+        <section id='vmtmap-interface' data-dfn-for='VMTMap'>
+          <h2><dfn>VMTMap</dfn> Interface</h2>
+          <p>
+            Expose a <a>WebVMT map</a> in the DOM API.
+            <pre class='idl' title='VMTMap Interface'>
+              [Exposed=Window]
               interface VMTMap {
-                attribute double centerLat;
-                attribute double centerLng;
-                attribute double zoomRad;
-                attribute object getMap;
+                constructor(double centerLatitude, double centerLongitude,
+                            optional double centerAltitude, double zoomRadius);
+                attribute double centerLatitude;
+                attribute double centerLongitude;
+                attribute double centerAltitude;
+                attribute double zoomRadius;
+                object getMap();
               };
             </pre>
           </p>
           <p>
             This is analogous to the <a data-cite='WEBVTT#the-vttregion-interface'>VTTRegion</a> interface.
           </p>
+          <dl>
+            <dt>
+              |map| = new VMTMap(centerLatitude, centerLongitude, centerAltitude, zoomRadius);
+            </dt>
+            <dd>
+              Returns a new <a>VMTMap</a> object.
+            </dd>
+            <dt>
+              |map|.<dfn>{{VMTMap/centerLatitude}}</dfn>
+            </dt>
+            <dd>
+              Returns the <a>location latitude</a> of the <a>map center location</a>. Can be set. Throws a <a data-cite='WEBIDL-1#exceptiondef-rangeerror'>RangeError</a> if the new value is not in the range -90..90.
+            </dd>
+            <dt>
+              |map|.<dfn>centerLongitude</dfn>
+            </dt>
+            <dd>
+              Returns the <a>location longitude</a> of the <a>map center location</a>. Can be set. Throws a <a data-cite='WEBIDL-1#exceptiondef-rangeerror'>RangeError</a> if the new value is not in the range -180..180.
+            </dd>
+            <dt>
+              |map|.<dfn>centerAltitude</dfn>
+            </dt>
+            <dd>
+              Returns the <a>location altitude</a> of the <a>map center location</a>. Can be set.
+            </dd>
+            <dt>
+              |map|.<dfn>zoomRadius</dfn>
+            </dt>
+            <dd>
+              Returns the <a>map zoom radius</a>. Can be set. Throws a <a data-cite='WEBIDL-1#exceptiondef-rangeerror'>RangeError</a> if the new value is not positive.
+            </dd>
+            <dt>
+              |map|.<dfn>getMap()</dfn>
+            </dt>
+            <dd>
+              Returns the <a>map interface object</a>.
+            </dd>
+          </dl>
         </section>
+      </section>
+    </section>
+    <section id='iana-considerations'>
+      <h2>IANA Considerations</h2>
+      <section id='text-vmt'>
+        <h2><code>text/vmt</code></h2>
+        <p>
+          This registration is for community review and will be submitted to the IESG for review, approval, and registration with IANA.
+        </p>
+        <dl>
+          <dt>
+            Type name:
+          </dt>
+          <dd>
+            text
+          </dd>
+          <dt>
+            Subtype name:
+          </dt>
+          <dd>
+            vmt
+          </dd>
+          <dt>
+            Required parameters:
+          </dt>
+          <dd>
+            No parameters
+          </dd>
+          <dt>
+            Optional parameters:
+          </dt>
+          <dd>
+            No parameters
+          </dd>
+          <dt>
+            Encoding considerations:
+          </dt>
+          <dd>
+            8bit (always UTF-8)
+          </dd>
+          <dt>
+            Security considerations:
+          </dt>
+          <dd>
+            Text track files themselves pose no immediate risk unless sensitive information is included within the data. Implementations, however, are required to follow specific rules when processing text tracks, to ensure that certain origin-based restrictions are honored. Failure to correctly implement these rules can result in information leakage, cross-site scripting attacks, and the like.
+          </dd>
+          <dt>
+            Interoperability considerations:
+          </dt>
+          <dd>
+            Rules for processing both conforming and non-conforming content are defined in this specification.
+          </dd>
+          <dt>
+            Published specification:
+          </dt>
+          <dd>
+            This document is the relevant specification.
+          </dd>
+          <dt>
+            Applications that use this media type:
+          </dt>
+          <dd>
+            Web browsers, other media players and location-aware video devices such as drones, dashcams and smartphones.
+          </dd>
+          <dt>
+            Additional information:
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                Magic number(s):
+              </dt>
+              <dd>
+                WebVMT files all begin with one of the following byte sequences (where "EOF" means the end of the file):
+                <ul>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 0A
+                  </li>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 0D
+                  </li>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 20
+                  </li>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 09
+                  </li>
+                  <li>
+                    EF BB BF 57 45 42 56 4D 54 EOF
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 0A
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 0D
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 20
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 09
+                  </li>
+                  <li>
+                    57 45 42 56 4D 54 EOF
+                  </li>
+                </ul>
+                <p class='note' title='Magic Numbers'>
+                  (An optional UTF-8 BOM, the ASCII string "WEBVMT", and finally a space, tab, line break, or the end of the file.)
+                </p>
+              </dd>
+              <dt>
+                File extension(s):
+              </dt>
+              <dd>
+                "vmt"
+              </dd>
+              <dt>
+                Macintosh file type code(s):
+              </dt>
+              <dd>
+                No specific Macintosh file type codes are recommended for this type.
+              </dd>
+            </dl>
+          </dd>
+          <dt>
+            Person & email address to contact for further information:
+          </dt>
+          <dd>
+            Rob Smith &lt;rob.smith@awayteam.co.uk&gt;
+          </dd>
+          <dt>
+            Intended usage:
+          </dt>
+          <dd>
+            Common
+          </dd>
+          <dt>
+            Restrictions on usage:
+          </dt>
+          <dd>
+            No restrictions apply.
+          </dd>
+          <dt>
+            Authors:
+          </dt>
+          <dd>
+            Rob Smith &lt;rob.smith@awayteam.co.uk&gt;
+          </dd>
+          <dt>
+            Change controller:
+          </dt>
+          <dd>
+            W3C
+          </dd>
+        </dl>
+        <p>
+          Fragment identifiers have no meaning with <code>text/vmt</code> resources.
+        </p>
+      </section>
+    </section>
+    <section class='informative, appendix' id='privacy-and-security-considerations'>
+      <h2>Privacy and Security Considerations</h2>
+      <section class='information' id='text-based-format-security'>
+        <h2>Text-Based Format Security</h2>
+        <p>
+          As with any text-based format, it is possible to construct malicious content that might cause buffer over-runs, value overflows (e.g. string representations of integers that overflow a given word length), and the like. Implementers should take care in implementing a parser that over-long lines, field values, or encoded values do not cause security problems.
+        </p>
+      </section>
+      <section class='information' id='styling-related-privacy-and-security'>
+        <h2>Styling-Related Privacy and Security</h2>
+        <p>
+          WebVMT can embed CSS style sheets, which will be applied in user agents that support CSS. Under these circumstances, the privacy and security considerations of CSS apply, with the following caveats.
+        </p>
+        <p>
+          Such style sheets cannot fetch any external resources, and it is important for privacy that user agents do not allow this. Otherwise, WebVMT files could be authored such that a third party is notified when the user watches a particular video, and even the current time in that video.
+        </p>
+        <p>
+          It is possible for a user agent to offer user style sheets, but their presence and nature will not be detectable by scripts running in the same user agent (e.g. browser) since the CSS object model for such style sheets is not exposed to script and there is no way to get the computed style for pseudo-elements other than <span class='css'>::before</span> and <span class='css'>::after</span> with the <a data-cite='CSSOM-1#dom-window-getcomputedstyle'>getComputedStyle()</a> API.
+        </p>
+      </section>
+      <section class='information' id='scripting-related-security'>
+        <h2>Scripting-Related Security</h2>
+        <p>
+          WebVMT does not include or enable scripting. It is important that user agents do not support a way to execute script embedded in a WebVMT file.
+        </p>
+        <p>
+          However, it is possible to construct and deliver a file that is designed not to present timed metadata, but instead to provide timed input (‘triggers’) to a script system. A poorly-written script or script system might then cause security, privacy or other problems; however, this consideration really applies to the script system. Since WebVMT supplies these triggers at their timestamps, a malicious file might present such triggers very rapidly, perhaps causing undue resource consumption.
+        </p>
+      </section>
+      <section class='information' id='location-related-security'>
+        <h2>Location-Related Security</h2>
+        <p>
+          WebVMT provides a common format in which to share location data synchronized with video for the web. Proper consideration should be given to any sensitive details that may be revealed as a result of sharing such personal information. For example, posting a geotagged image online can reveal the location of the content creator at a particular time which can infer their absence from distant locations since travelling takes time. The identities of people who appear in video frames may be determined visually to also reveal their presence at a nearby location or their absence from a distant one.
+        </p>
+        <p>
+          In order to share content responsibly, users should consider:
+          <ol>
+            <li>What is included?</li>
+            <li>How can it be used?</li>
+            <li>What can it tell others?</li>
+          </ol>
+          Further guidance for users, developers and regulators can be found in the W3C Note: <a data-cite='RESPONSIBLE-USE-SPATIAL' data-no-xref=''>The Responsible Use of Spatial Data</a>.
+        </p>
       </section>
     </section>
   </body>
