@@ -4,7 +4,7 @@
 Ordnance Survey Names API
 
 ## Documentation root
-[https://apidocs.os.uk/docs/os-names-overview](https://apidocs.os.uk/docs/os-names-overview)
+[https://apidocs.os.uk/docs/os-names-overview](https://osdatahub.os.uk/docs/names/overview)
 
 ## Description of service
 OS Names API provides a geocoding convienience API for the discovery or identification of named places in Great Britain. The API can locate a feature using just its name, or it can find the closest location to a given point.
@@ -249,7 +249,14 @@ The two resources within the API are operations performing a geocoding search, b
 #### To-do
 None.
 
-### [Best Practice 13: Include spatial metadata in dataset metadata](https://www.w3.org/TR/sdw-bp/#spatial-info-dataset-metadata)
+### [Best Practice 13: Support requesting and returning geometries in a specific CRS] (https://w3c.github.io/sdw/bp/#request-return-crs)
+
+#### Conformance statement
+- Does not conform
+
+OS Names API only operates in British National Grid (EPSG::27700)
+
+### [Best Practice 14: Include spatial metadata in dataset metadata](https://www.w3.org/TR/sdw-bp/#spatial-info-dataset-metadata)
 
 #### Conformance statement 
  - Conforms, but could be improved 
@@ -265,16 +272,17 @@ The API itself is purely machine to machine, however the links within it resolve
 #### To-do
 The metadata included the API response could included a human readable description.
 
-### [Best Practice 14: Describe the positional accuracy of spatial data](https://www.w3.org/TR/sdw-bp/#desc-accuracy)
+### [Best Practice 15: Describe the positional accuracy of spatial data](https://www.w3.org/TR/sdw-bp/#desc-accuracy)
 
 #### Conformance statement 
- - Does not conform 
+ - Conforms, but could be improved
 
 Test | Conforms?
 ---|---
-Check if the metadata contains at least one human and machine readable statement regarding positional accuracy | <ul><li>- [ ] </li></ul>
+Check if the metadata contains at least one human and machine readable statement regarding positional accuracy | <ul><li>- [x] </li></ul>
 Check that the kind of statement is relevant to the kind of data, e.g. not an absolute positional accuracy measure for Atlantis | <ul><li>- [ ] </li></ul>
 Checking whether the accuracy statement is actually correct is beyond the scope of this best practice. | <ul><li>- [ ] </li></ul>
 
 #### How-to
-No data is published regarding the positional accuracy in the reference dataset.
+The positional accuracy is expressed in the metadata of the dataset, not that of the service. It is expressed as an equivalent scale (1:25,000) which gives an implied positional accuracy.
+See https://osmetadata.astuntechnology.com/geonetwork/srv/eng/catalog.search#/metadata/d442b64c-c8c8-11e4-8731-1681e6b88ec1
