@@ -102,6 +102,22 @@ A Sample is intended to sample some FatureOfInterest, so there is an expectation
     owl:inverseOf sosa:hasSample ;
     rdfs:isDefinedBy sosa: .
 
+  sosa:hasOriginalSample a owl:ObjectProperty ;
+    rdfs:label "has original sample"@en ;
+    skos:definition "Link to the original sample that is related to the context sample through a chain of isSampleOf relations."@en ;
+    rdfs:comment "Link to the original sample that is related to the context sample through a chain of isSampleOf relations."@en ;
+    schema:domainIncludes sosa:Sample ;
+    schema:rangeIncludes sosa:Sample ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:hasSampledFeature a owl:ObjectProperty ;
+    rdfs:label "has ultimate sampled feature"@en ;
+    skos:definition "Link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations"@en ;
+    rdfs:comment "Link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations"@en ;
+    schema:domainIncludes sosa:Sample ;
+    schema:rangeIncludes sosa:FeatureOfInterest ;
+    rdfs:isDefinedBy sosa: .
+
 
 ## Platform 
 
@@ -211,6 +227,18 @@ sosa:hasFeatureOfInterest a owl:ObjectProperty ;
   schema:rangeIncludes sosa:FeatureOfInterest ;
   schema:rangeIncludes sosa:Sample ;
   owl:inverseOf sosa:isFeatureOfInterestOf ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:hasUltimateFeatureOfInterest a owl:ObjectProperty ;
+  rdfs:label "has ultimate feature of interest"@en  ;
+  skos:definition "Link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or transitively." ;
+  rdfs:comment "Link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or transitively." ;
+  rdfs:comment """should match a property chain something like this but with sosa:isSampleOf*
+      owl:propertyChainAxiom ( sosa:hasFeatureOfInterest sosa:isSampleOf )""" ;
+  schema:domainIncludes sosa:Observation ;
+  schema:domainIncludes sosa:Actuation ;
+  schema:domainIncludes sosa:Sampling ;
+  schema:rangeIncludes sosa:FeatureOfInterest ;
   rdfs:isDefinedBy sosa: .
 
 sosa:isFeatureOfInterestOf a owl:ObjectProperty ;
@@ -337,6 +365,53 @@ sosa:Sampling a rdfs:Class , owl:Class ;
     schema:rangeIncludes sosa:Sampler ;
     owl:inverseOf sosa:madeSampling ;
     rdfs:isDefinedBy sosa: .
+
+## Observation Collection and related stuff
+
+sosa:Observation
+  rdfs:comment """If values are not provided for the following Observation properties, they may be provided by the ObservationCollection of which it is a member:
+  - hasFeatureOfInterest
+  - hasUltimateFeatureOfInterest
+  - madeBySensor
+  - observedProperty
+  - phenomenonTime
+  - resultTime
+  - usedProcedure""" .
+
+sosa:ObservationCollection a rdfs:Class , owl:Class ;
+  rdfs:label "Observation Collection"@en ;
+  skos:definition "A collection of observations, typically with one or more property shared by all of its members."@en ;
+  rdfs:comment "A collection of observations, typically with one or more property shared by all of its members."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:hasMemberObs a owl:ObjectProperty ;
+  rdfs:label "member observation" ;
+  rdfs:comment "Link to a member within a collection of (observations) or (collections of observations) that share the same value for one or more of the characteristic properties" ;
+  schema:domainIncludes sosa:ObservationCollection ;
+  schema:rangeIncludes sosa:Observation ;
+  schema:rangeIncludes sosa:ObservationCollection ;
+  rdfs:subPropertyOf rdfs:member .
+
+sosa:hasFeatureOfInterest
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:hasUltimateFeatureOfInterest
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:madeBySensor
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:observedProperty
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:phenomenonTime
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:resultTime
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:usedProcedure
+  schema:domainIncludes sosa:ObservationCollection .
 
 
 ## Result 
