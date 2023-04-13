@@ -1,3 +1,73 @@
+# SOSA/SSN - OMS Alignment
+
+Notes about the integration of new OMS v3 concepts into the SOSA/SSN ontology (2023).
+
+
+## Design choices:
+
+ - No change to URIs of existing SOSA/SSN classes and properties.
+ - Only allow minor documentation changes or clarifications that don't fundamentally change the meaning of existing concepts.
+ - Keep most notes and examples from OMS
+ - Some changes to relations to better integrate new OMS classes (range or domain)
+ - Rename associations with more specific names since unique URIs are neeeded in RDF
+
+
+## Summary of the changes:
+
+### New concepts introduced from SSN extensions
+
+#### Classes:
+ - ObservationCollection
+
+#### Associations:
+ - hasOriginalSample
+ - hasSampledFeature
+ - hasUltimateFeatureOfInterest
+
+
+### New concepts introduced from OMS
+
+#### Classes:
+ - ObservingProcedure
+ - SamplingProcedure
+ - PreparationProcedure
+ - Observer
+ - Host
+ - SpatialSample
+ - MaterialSample
+ - StatisticalSample
+ - SampleCollection
+
+#### Associations:
+ - ObservingProcedure subclassOf Procedure
+ - SamplingProcedure subclassOf Procedure
+ - PreparationProcedure subclassOf Procedure
+ - Sensor subclassOf Observer
+ - Platform subclassOf Host
+ - SpatialSample subclassOf Sample
+ - MaterialSample subclassOf Sample
+ - StatisticalSample subclassOf Sample 
+ - Observation usedProcedure ObservingProcedure
+ - Observation madeByObserver (but kept madeBySensor)
+ - Observation madeOnHost 
+ - Observer implements ObservingProcedure
+ - Sampling usedProcedure SamplingProcedure
+ - Sampling preparedSample
+ - Sampler implements SamplingProcedure
+
+
+### New concepts introduced for consistency
+
+#### Classes:
+ - ActuationProcedure
+
+#### Associations:
+ - Actuation usedProcedure ActuatingProcedure
+ - Actuator implements ActuatingProcedure
+
+
+
+
 # oldSSN/newSSN/SOSA/alignments Integration
 
 This folder contains a proposal for the various documents that need to be exposed by the W3C server:
