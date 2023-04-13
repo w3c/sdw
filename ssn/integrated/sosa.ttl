@@ -172,6 +172,7 @@ sosa:hasMemberSample a owl:ObjectProperty ;
 ## Platform 
 
 sosa:Platform a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Host ;
   rdfs:label "Platform"@en ;
   skos:definition "A Platform is an entity that hosts other entities, particularly Sensors, Actuators, Samplers, and other Platforms."@en ;
   rdfs:comment "A Platform is an entity that hosts other entities, particularly Sensors, Actuators, Samplers, and other Platforms."@en ;
@@ -182,11 +183,11 @@ sosa:hosts a owl:ObjectProperty ;
   rdfs:label "hosts"@en ;
   skos:definition "Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted or mounted on it."@en ;
   rdfs:comment "Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted or mounted on it."@en ;
-  schema:domainIncludes sosa:Platform ;
+  schema:domainIncludes sosa:Host ;
+  schema:rangeIncludes sosa:Observer ;
   schema:rangeIncludes sosa:Actuator ;
-  schema:rangeIncludes sosa:Sensor ;
   schema:rangeIncludes sosa:Sampler ;
-  schema:rangeIncludes sosa:Platform ;
+  schema:rangeIncludes sosa:Host ;
   owl:inverseOf sosa:isHostedBy ;
   rdfs:isDefinedBy sosa: .
 
@@ -194,12 +195,19 @@ sosa:isHostedBy a owl:ObjectProperty ;
   rdfs:label "is hosted by"@en ;
   skos:definition "Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by."@en ;
   rdfs:comment "Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by."@en ;
+  schema:domainIncludes sosa:Observer ;
   schema:domainIncludes sosa:Actuator ;
-  schema:domainIncludes sosa:Sensor ;
   schema:domainIncludes sosa:Sampler ;
-  schema:domainIncludes sosa:Platform ;
-  schema:rangeIncludes sosa:Platform ;
+  schema:domainIncludes sosa:Host ;
+  schema:rangeIncludes sosa:Host ;
   owl:inverseOf sosa:hosts ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:Host a rdfs:Class , owl:Class ;
+  rdfs:label "Host"@en ;
+  skos:definition "A grouping of Observers for a specific reason."@en ;
+  rdfs:comment "A grouping of Observers for a specific reason."@en ;
+  skos:example "An environmental monitoring facility. A platform that hosts a set of sensors. A team performing a survey, where each team member would be modeled as an Observer."@en ;
   rdfs:isDefinedBy sosa: .
 
 
@@ -216,6 +224,7 @@ sosa:Procedure a rdfs:Class , owl:Class ;
 ## ProcedureExecutors
 
 sosa:Sensor a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Observer ;
   rdfs:label "Sensor"@en ;
   skos:definition "Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior Observations, and generate a Result. Sensors can be hosted by Platforms."@en ;
   rdfs:comment "Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior Observations, and generate a Result. Sensors can be hosted by Platforms."@en ;
@@ -227,6 +236,7 @@ sosa:Sensor a rdfs:Class , owl:Class ;
     skos:definition "Relation between a Sensor and an ObservableProperty that it is capable of sensing."@en ;
     rdfs:comment "Relation between a Sensor and an ObservableProperty that it is capable of sensing."@en ;
     schema:domainIncludes sosa:Sensor ;
+    schema:domainIncludes sosa:Observer ;
     schema:rangeIncludes sosa:ObservableProperty ;
     owl:inverseOf sosa:isObservedBy ;
     rdfs:isDefinedBy sosa: .
@@ -237,6 +247,7 @@ sosa:Sensor a rdfs:Class , owl:Class ;
     rdfs:comment "Relation between an ObservableProperty and the Sensor able to observe it."@en ;
     schema:domainIncludes sosa:ObservableProperty ;
     schema:rangeIncludes sosa:Sensor ;
+    schema:rangeIncludes sosa:Observer ;
     owl:inverseOf sosa:observes ;
     rdfs:isDefinedBy sosa: .
 
@@ -253,6 +264,18 @@ sosa:Sampler a rdfs:Class , owl:Class ;
   rdfs:comment "A device that is used by, or implements, a Sampling Procedure to create or transform one or more samples."@en ;
   skos:example "A ball mill, diamond drill, hammer, hypodermic syringe and needle, image Sensor or a soil auger can all act as sampling devices (i.e., be Samplers). However, sometimes the distinction between the Sampler and the Sensor is not evident, as they are packaged as a unit. A Sampler need not be a physical device."@en ;
   rdfs:isDefinedBy sosa: .
+
+sosa:Observer a rdfs:Class , owl:Class ;
+  rdfs:label "Observer"@en ;
+  skos:definition "An identifiable entity that can generate Observations pertaining to an ObservableProperty by implementing an ObservingProcedure."@en ;
+  rdfs:comment "An identifiable entity that can generate Observations pertaining to an ObservableProperty by implementing an ObservingProcedure."@en ;
+  skos:example "Accelerometers, gyroscopes, barometers, magnetometers, and so forth are Observers that are typically mounted on a modern smartphone (which acts as Host). Other examples of Sensors include the human eyes."@en ;
+  skos:note "Different Observers can follow the same (reusable) observing Procedure for the creation of different Observations."@en ;
+  skos:note "The Observer is the entity instance, not the entity type. Pertaining to sensors, the Observer would reference the explicit sensor, while the Procedure would reference the methodology utilized by that sensor type;"@en ;
+  skos:note "An Observer can be hosted by one or more Host."@en ;
+  skos:note "The Observer is an instance of a sensor, instrument, implementation of an algorithm, or a being such as a person."@en ;
+  rdfs:isDefinedBy sosa: .
+
 
 ## ProcedureExecutions
 
@@ -315,6 +338,7 @@ sosa:Observation a rdfs:Class , owl:Class ;
     skos:definition "Relation between a Sensor and an Observation made by the Sensor."@en ;
     rdfs:comment "Relation between a Sensor and an Observation made by the Sensor."@en ;
     schema:domainIncludes sosa:Sensor ;
+    schema:domainIncludes sosa:Observer ;
     schema:rangeIncludes sosa:Observation ;
     owl:inverseOf sosa:madeBySensor ;
     rdfs:isDefinedBy sosa: .
@@ -326,6 +350,7 @@ sosa:Observation a rdfs:Class , owl:Class ;
    schema:domainIncludes sosa:Observation ;
    schema:rangeIncludes sosa:Sensor ;
    owl:inverseOf sosa:madeObservation ;
+    rdfs:subPropertyOf sosa:madeByObserver ;
     rdfs:isDefinedBy sosa: .
 
   sosa:observedProperty a owl:ObjectProperty ;
@@ -334,6 +359,23 @@ sosa:Observation a rdfs:Class , owl:Class ;
     rdfs:comment "Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest (linked by hasFeatureOfInterest) of this Observation."@en ;
     schema:domainIncludes sosa:Observation ;
     schema:rangeIncludes sosa:ObservableProperty ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:madeByObserver rdf:type owl:ObjectProperty ;
+    rdfs:label "made by observer"@en ;
+    skos:definition "Relation between an Observation and the Observer which made the Observation."@en ;
+    rdfs:comment "Relation between an Observation and the Observer which made the Observation."@en ;
+    schema:domainIncludes sosa:Observation ;
+    schema:rangeIncludes sosa:Observer ;
+    owl:inverseOf sosa:madeObservation ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:madeOnHost rdf:type owl:ObjectProperty ;
+    rdfs:label "made on host"@en ;
+    skos:definition "Relation between an Observation and the Host the Observer was attached to at the time the observation was made."@en ;
+    rdfs:comment "Relation between an Observation and the Host the Observer was attached to at the time the observation was made."@en ;
+    schema:domainIncludes sosa:Observation ;
+    schema:rangeIncludes sosa:Host ;
     rdfs:isDefinedBy sosa: .
 
 sosa:Actuation a rdfs:Class , owl:Class ;
@@ -432,11 +474,15 @@ sosa:PreparationStep a rdfs:Class , owl:Class ;
     rdfs:isDefinedBy sosa: .
 
 
+## Observation Collection
+
 sosa:Observation
   rdfs:comment """If values are not provided for the following Observation properties, they may be provided by the ObservationCollection of which it is a member:
   - hasFeatureOfInterest
   - hasUltimateFeatureOfInterest
   - madeBySensor
+  - madeByObserver
+  - madeOnHost
   - observedProperty
   - phenomenonTime
   - resultTime
@@ -463,6 +509,12 @@ sosa:hasUltimateFeatureOfInterest
   schema:domainIncludes sosa:ObservationCollection .
 
 sosa:madeBySensor
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:madeByObserver
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:madeOnHost
   schema:domainIncludes sosa:ObservationCollection .
 
 sosa:observedProperty
