@@ -656,7 +656,7 @@ function bpCrossRefs() {
           <li>plain text documents; e.g. historical texts, government reports, blog posts etc.</li>
           <li>data files containing structured content or markup; e.g. geospatial vector data in [[GeoPackage]] or [[GML]] format, statistical data in tabular <a>CSV</a> format or a spreadsheet, as <a href="https://it.wikipedia.org/wiki/GPS_eXchange_Format"><abbr title="GPS eXchange Format">GPX</abbr></a> data with “waypoints” and “tracks”, satellite imagery in <a href="https://en.wikipedia.org/wiki/GeoTIFF">GeoTIFF</a>, climate simulations in <a href="https://en.wikipedia.org/wiki/NetCDF#Conventions"><abbr title="netCDF Climate and Forecast Metadata Conventions">CF-NetCDF</abbr></a> etc.</li>
           <li>a data repository; e.g. <a href="https://postgis.net/">PostGIS</a> (a spatially enabled relational database), <a href="https://en.wikipedia.org/wiki/Elasticsearch">Elasticsearch</a> (a document-oriented noSQL repository based on Apache Lucene), <a href="https://jena.apache.org/documentation/tdb/">Apache Jena’s TDB</a> (an RDF <a>triple store</a>)</li>
-          <li>exposed via an existing <abbr title="Application Programming Interface">API</abbr>; including OGC-compliant Web services and API's such as <a>WFS</a> [[WFS]], <a>WCS</a> [[WCS]] and <a>OGC API - Features</a> [[OAF1]].</li>
+          <li>exposed via an existing <abbr title="Application Programming Interface">API</abbr>; including OGC-compliant Web services and API's such as <a>OGC API - Features</a> [[OAF1]].</li>
         </ol>
         <p>If your <a>spatial data</a> is managed within a software system it is likely that you will be able to access that data through one or more of the methods identified above; as structured data from a bulk extract (e.g. a “data dump”), via direct access to the underpinning data repository or through a bespoke or standards-compliant API provided by the system.</p>
 
@@ -905,7 +905,7 @@ function bpCrossRefs() {
             <th>Source</th>
           </tr>
           <tr>
-            <td><code>bagwfs</code></td>
+            <td><code>bag</code></td>
             <td>http://bag.geonovum.nl</td>
             <td><a href="http://geodata.nationaalgeoregister.nl/bag/wfs?service=WFS&amp;version=2.0.0&amp;request=DescribeFeatureType&amp;typeName=bag%3Apand">XML schema</a> for the <a href="http://bag.basisregistraties.overheid.nl">Dutch Government Base Registry Adressen en Gebouwen (BAG)</a></td>
           </tr>
@@ -1325,7 +1325,7 @@ function bpCrossRefs() {
     <section id="bestPractices">
       <h2>The Best Practices</h2>
 
-<!--<div class="issue" data-number="1084"></div>-->
+<div class="issue" data-number="1146"></div>
 
       <section id="bp-webprinciples">
         <h3>Web principles for spatial data</h3>
@@ -1417,7 +1417,7 @@ function bpCrossRefs() {
             
             <p>[[DWBP]] <a href="https://www.w3.org/TR/dwbp/#identifiersWithinDatasets">Best Practice 10: Use persistent URIs as identifiers within datasets</a> notes that URIs can be long. You may need to define identifiers that are locally unique within your spatial dataset and provide a mechanism to programmatically convert each local identifier to a URI. For example, the Metadata Vocabulary for Tabular Data [[TABULAR-METADATA]] achieves this using URI Templates as described in [[RFC6570]].</p>
             
-            <p>It is also good practice to use a redirection service to hide complex and potentially changing service end-point URLs, such as for a <a>Web Feature Service</a> [[WFS]] behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API or changes in endpoint URIs or API versions to request information about a particular <a>Spatial Thing</a>. For example, the URI <code>http://data.example.org/aan/id/perceel/aan.2528</code> could be used as proxy for the WFS GetFeature request <a href="http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;RESOURCEID=aan.2528"><code>http://geodata.nationaalgeoregister.nl/aan/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;RESOURCEID=aan.2528</code></a>.</p>
+            <p>It is also good practice to use a redirection service to hide complex and potentially changing service end-point URLs, such as for an <a>OGC API Features</a> [[OAF1]] behind well-designed URIs. This means that users don’t need to be aware of the complexities of the API or changes in endpoint URIs or API versions to request information about a particular <a>Spatial Thing</a>. For example, the URI <code>http://data.example.org/nlsfi/id/roads/road.11</code> could be used as proxy for the OGC API Features request <a href="https://geoe3platform.eu/geoe3/roads/collections/roads_FI/items/11?f=json"><code>https://geoe3platform.eu/geoe3/roads/collections/roads_FI/items/11?f=json</code></a>.</p>
             
             <p>Finally, while it is simple to use a query-pattern URL to serve information about a resource identified with a URI from a third-party internet domain, e.g. <code>http://example.org/museums?q=http://sws.geonames.org/6618987/</code>, these URLs are unsuitable as persistent identifiers. More often than not, your intended users will dereference the "official" URI, e.g. <code>http://sws.geonames.org/6618987/</code>. That said, this kind of search operation does provide a useful mechanism to find particular <a>Spatial Things</a>. See <a href="#convenience-apis" class="practiceRef"></a> for further details.</p>
             
@@ -1965,8 +1965,6 @@ Connection: close
 
             <p>The following [[TURTLE]] snippet shows the [[GeoDCAT-AP]] representation of the dataset in <a href="#ex-schemaorg-dataset-and-place"></a>. Here the bounding box is provided in multiple literal encodings (<a>WKT</a>, [[GML]], GeoJSON [[RFC7946]]), by using property <a href="https://www.w3.org/TR/vocab-dcat-2/#Property:location_bbox"><code>dcat:bbox</code></a> [[VOCAB-DCAT-2]].</p>
 
-	    <!--<div class="issue" data-number="1252"></div>-->
-
             <aside class="example" id="ex-geodcat-ap-bag-addresses" title="[GeoDCAT-AP] representation of dataset spatial coverage (bounding box) in multiple encodings">
               <pre>
 @prefix dcat:      &lt;http://www.w3.org/ns/dcat#&gt; .
@@ -2005,17 +2003,17 @@ Connection: close
             <p>Always with reference to <a href="#ex-schemaorg-dataset-and-place" class="exampleRef"></a>, the following snippet shows the [[GML]] and the <a>RDF</a> [[RDF11-PRIMER]] representations of the entry in the BAG Dutch register concerning the building where Anne Frank's house is located. For the corresponding GeoJSON [[RFC7946]] representation, see the relevant <a href="#ex-crs-geojson">example</a> in <a href="#bp-crs"></a>.</p>
 
             <aside class="example" id="ex-anne-frank-building-gml" title="[GML] description of a building, with detailed geometry">
-              <p>The [[GML]] representation of Anne Frank's house building (taken from the <a href="http://geodata.nationaalgeoregister.nl/bag/wfs?VERSION=2.0.0&amp;SERVICE=WFS&amp;REQUEST=GetFeature&amp;typeName=pand&amp;cql_filter=bag:identificatie=363100012169587">BAG WFS endpoint</a>):</p>
+              <p>A [[GML]] representation of Anne Frank's house building:</p>
               <pre>
-&lt;bagwfs:pand gml:id=&quot;pand.3323294&quot;&gt;
-  &lt;bagwfs:identificatie&gt;363100012169587&lt;/bagwfs:identificatie&gt;
-  &lt;bagwfs:bouwjaar&gt;1635&lt;/bagwfs:bouwjaar&gt;
-  &lt;bagwfs:status&gt;Pand in gebruik (niet ingemeten)&lt;/bagwfs:status&gt;
-  &lt;bagwfs:gebruiksdoel&gt;woonfunctie&lt;/bagwfs:gebruiksdoel&gt;
-  &lt;bagwfs:oppervlakte_min&gt;1&lt;/bagwfs:oppervlakte_min&gt;
-  &lt;bagwfs:oppervlakte_max&gt;21&lt;/bagwfs:oppervlakte_max&gt;
-  &lt;bagwfs:aantal_verblijfsobjecten&gt;20&lt;/bagwfs:aantal_verblijfsobjecten&gt;
-  &lt;bagwfs:geometrie&gt;
+&lt;bag:pand gml:id=&quot;pand.3323294&quot;&gt;
+  &lt;bag:identificatie&gt;363100012169587&lt;/bag:identificatie&gt;
+  &lt;bag:bouwjaar&gt;1635&lt;/bag:bouwjaar&gt;
+  &lt;bag:status&gt;Pand in gebruik (niet ingemeten)&lt;/bag:status&gt;
+  &lt;bag:gebruiksdoel&gt;woonfunctie&lt;/bag:gebruiksdoel&gt;
+  &lt;bag:oppervlakte_min&gt;1&lt;/bag:oppervlakte_min&gt;
+  &lt;bag:oppervlakte_max&gt;21&lt;/bag:oppervlakte_max&gt;
+  &lt;bag:aantal_verblijfsobjecten&gt;20&lt;/bag:aantal_verblijfsobjecten&gt;
+  &lt;bag:geometrie&gt;
     &lt;gml:MultiSurface srsDimension=&quot;2&quot; axisLabels="east north"
                          srsName=&quot;urn:ogc:def:crs:EPSG::28992&quot;&gt;
       &lt;gml:surfaceMember&gt;
@@ -2034,8 +2032,8 @@ Connection: close
         &lt;/gml:Polygon&gt;
       &lt;/gml:surfaceMember&gt;
     &lt;/gml:MultiSurface&gt;
-  &lt;/bagwfs:geometrie&gt;
-&lt;/bagwfs:pand&gt;
+  &lt;/bag:geometrie&gt;
+&lt;/bag:pand&gt;
 </pre>
             </aside>
 
@@ -3606,12 +3604,8 @@ Content-type: application/geo+json
         <p>For <a>spatial data</a>, <a>SDIs</a> have long been used to provide generalized access to 
           spatial data via Web services, typically using open standard specifications from the 
           <a href="http://www.opengeospatial.org/">Open Geospatial Consortium</a> (OGC). 
-          The main examples are <a>Web Feature Service</a> [[WFS]], <a>Web Coverage Service</a> [[WCS]], <a>Sensor 
-          Observation Service</a>, <a>SensorThings</a> [[SENSORTHINGS]] or [[GeoSPARQL]] for access to data, or <a>Web Map Service</a> [[WMS]] 
-          and <a>Web Map Tile Service</a> [[WMTS]] for access to data rendered as map. Apart from 
-          the <a>Web Map Service</a>, the OGC standards have not seen widespread adoption 
-          beyond the geospatial expert community, however this is expected to change with the release of a number of resource oriented OGC APIs (e.g. OGC API - Features [[OAF1]]), which are more aligned to generally accepted patterns and practices in the web community. </p>
-          <p></p>
+          In traditional SDIs, these web services, such as <a>Web Feature Service</a> [[WFS]], were XML based and difficult for non-expert users. These OGC standards have not seen widespread adoption 
+          beyond the geospatial expert community. This has changed with the release of a number of resource oriented OGC APIs (e.g. OGC API - Features [[OAF1]]), which are aligned to generally accepted patterns and practices in the web community, and specifically to the recommendations described in this Best Practice document. </p>
         <p>In addition, commercial offerings for publishing <a>spatial data</a> on the Web often provide
           access via product-specific APIs, too. These APIs are typically not restricted to 
           HTTP-based Web service APIs in the sense of [[DWBP]] <a 
@@ -3629,7 +3623,7 @@ Content-type: application/geo+json
             the "Time to First Successful Call" (see [[DWBP]] <a 
               href="https://www.w3.org/TR/dwbp/#documentYourAPI">Best Practice 25: Provide 
             complete documentation for your API</a>) may be too high for application 
-            developers. A typical convenience API is a simple API that implements complex requirements
+            developers. A typical convenience API is a simple API that implements frequently asked for, but complex requirements
             and hides the complexity, e.g. <a>coordinate reference system</a> handling, from the 
             application developer.</li>
           <li>Spatial data as it is used by expert users may be complex. As users 
@@ -3640,10 +3634,9 @@ Content-type: application/geo+json
           <li>Spatial datasets tend to be large, often too large for direct use in Web 
             applications.</li> 
         </ul>
-        <p>A useful 'bespoke API' mentioned in the third option provides convenience to 
+        <p>Sharing <a>spatial data</a> on the Web using a spatial data API based on modern OGC API standards, which are based on Spatial Data on the Web Best Practices, is often sufficient for reaching application developers. It provides convenience to 
         developers of the targeted applications, because the API designer has thought about 
         the needs of those developers when consuming the <a>spatial data</a> shared via the API.</p>
-        
         <div class="practicecontainer">
         <div class="practice">
           <p><span id="convenience-apis" class="practicelab">Expose spatial data through
@@ -3652,16 +3645,16 @@ Content-type: application/geo+json
             your data, tailor a spatial data access API to meet that goal.</p>
         </div>
 
-<div class="issue" data-number="1237"></div>
 
 <div class="issue" data-number="1243"></div>
 
           <section class="axioms">
             <h4 class="subhead">Why</h4>
-            <p>Providing access to <a>spatial data</a> via bulk download or generalized spatial 
-              data access APIs may be too complex for application developers with 
-              relatively simple requirements, if the spatial data or the API is complex 
-              to understand or too large to handle in a Web application. 
+            <p>Providing access to <a>spatial data</a> via bulk download would be too complex for application developers with 
+              relatively simple requirements, if the spatial data is complex 
+              to understand or too large to handle in a Web application. Providing access via traditional SDIs is not recommended because they are often not easy to understand and the "Time to First Successful Call" (see [DWBP] <a 
+              href="https://www.w3.org/TR/dwbp/#documentYourAPI">Best Practice 25: Provide 
+            complete documentation for your API</a>) may be too high for application developers.   
               <strong>Convenience APIs</strong> are tailored to meet a specific goal;
               enabling a user to engage with complex data structures using (a set of)
               simple queries, including spatial search.</p>
@@ -3725,6 +3718,8 @@ Content-type: application/geo+json
                 search on the name, label or other property may be useful.</li> 
             </ul>
             
+            <p>The bulk of these recommendations can be satisfied by using <a href="https://ogcapi.ogc.org">OGC API</a> building blocks. For example, if it is convenient for users to be able to search for spatial data using a bounding box, the OGC API Features <a href="https://github.com/opengeospatial/bblocks/blob/master/registereditems/geo/common/json-bbox.adoc">Bounding Box</a> building block can be incorporated into the API.</p>
+
             <aside class="example" id="ex-elda">
               <p>The <a href="http://environment.data.gov.uk/bwq/">Environment Agency Bathing Water
                 Quality API</a> is implemented using the Epimorphic's <a
@@ -3746,105 +3741,18 @@ Content-type: application/geo+json
 				      <p>The APIs of <a href="http://data.ordnancesurvey.co.uk/docs">data.ordnancesurvey.co.uk</a> support both textual and spatial searches.</p>
             </aside>
 
-            <p>In a White Paper about open geospatial APIs [[OGC-API-WP]], the Open Geospatial Consortium (OGC) has defined the concept of the "OGC API Essentials" &mdash; a set of items defined in OGC standards and other open standards that are reusable modules for use in geospatial APIs. The White Paper provides <a href="http://docs.opengeospatial.org/wp/16-019r4/16-019r4.html#_ogc_api_essentials_initial_list">an initial list</a> and many of the identified standards are mentioned in this document. Reuse of standardized building blocks improves consistency and interoperability across APIs. It is recommended to consider the OGC API Essentials when defining an API to access <a>spatial data</a>.</p>
-
-<aside class="ednote">
-<p>To verify if any update is needed, following current state of play of work on OGC API.</p>
-</aside>
+            <p>In a White Paper about open geospatial APIs [[OGC-API-WP]], the Open Geospatial Consortium (OGC) has defined the concept of the "OGC API Essentials" &mdash; a set of items defined in OGC standards and other open standards that are reusable modules for use in geospatial APIs. The White Paper provides <a href="http://docs.opengeospatial.org/wp/16-019r4/16-019r4.html#_ogc_api_essentials_initial_list">an initial list</a> and many of the identified standards are mentioned in this document. Reuse of standardized building blocks improves consistency and interoperability across APIs. It is recommended to consider the OGC API Essentials, and consult the <a href="https://blocks.ogc.org/register.html">OGC API Building Blocks Register</a> when defining an API to access <a>spatial data</a>.</p>
 
             <p>One such essential is a set of well-known spatial predicates for use in queries
               to select <a>Spatial Things</a> based on their <a>geometry</a>. Most commonly supported is 
               the following set: <em>equal</em>, <em>disjoint</em>, <em>touches</em>, 
               <em>within</em>, <em>overlaps</em>, <em>crosses</em>, <em>intersects</em>, 
               <em>contains</em>. These predicates were originally defined in [[SIMPLE-FEATURES]], 
-				  but are also supported by [[GeoSPARQL]], <a>WFS</a> [[WFS]] and others. For more 
+				  but are also supported by [[GeoSPARQL]] and others. For more 
 				  information about the definition of the predicates, see [[SIMPLE-FEATURES]].</p>
-            <p></p>
 
-            <p>If the data is already published in a <a>Spatial Data Infrastructure</a>, 
-              there are basically two options to publish the data via an additional
-              convenience API.</p>
-            <ol>   
-              <li>
-              <p>Reuse your existing spatial data infrastructure</p>
-              <p>Use a RESTful API as a wrapper, proxy or a shim layer can be created 
-                around <a>SDI</a> services. This aims at exposing 'generalized APIs' using 
-                'convenience APIs' to make the data easier to use. 
-                For example, in the geospatial domain there are a 
-                lot of <a>WFS</a> services providing <a>spatial data</a>. Content from the WFS 
-                service can be provided in this way as <a>linked data</a>, <a>JSON</a> [[RFC7159]] or another
-                Web friendly format using simple, navigable resources. 
-                This approach is like the use of Z39.50 in 
-                the library community; that protocol is still used but 'modern' Web sites 
-                and Web services are wrapped around it.</p>
-
-              <aside class="example" id="ex-ldproxy">
-                <p>An example of this approach of creating a convenience API that works 
-                  dynamically on top of <a>WFS</a> is the experimental <a 
-                  href="https://github.com/interactive-instruments/ldproxy">ldproxy</a>. 
-                  This requires relatively little effort and is an attractive option for quickly 
-                  exposing <a>spatial data</a> from existing WFS services on the Web. The approach is 
-                  to create an intermediate layer by introducing a proxy on top of the 
-                  WFS so the contained resources are made available. The proxy maps the 
-                  data and metadata to [[SCHEMA-ORG]] according to a provided mapping scheme; 
-                  assigns URIs to all resources based on a pattern; supports filtering 
-                  based on a property; makes each resource available in HTML, <a>XML</a> [[XML11]], [[JSON-LD]], 
-                  [[GML]], GeoJSON [[RFC7946]]; and generates <a>links</a> to data in other datasets managed in triple 
-                  stores using <a>SPARQL</a> [[SPARQL11-OVERVIEW]] queries. The API is documented and published using 
-                  Swagger.</p>
-              </aside> 
-
-              <aside class="example" id="ex-uri-template">
-                <p>Mapping a URI template (as specified in [[RFC6570]]) to a <a>WFS</a>, <a>WCS</a> or <a
-                    href="https://www.opendap.org/">OPeNDAP</a> end-point is a very simple
-                  way of specifying a set of resources in the existing infrastructure.
-                  This will not address all API aspects described in this best practice,
-                  but it is a simple start.</p>
-                <p>One advantage of this approach is to be able to hide
-                  implementation details of the current backend in the URI. A Web service
-                  URL in general does not provide a good URI for a resource as it is unlikely to be
-                  persistent. A Web service URL is often technology and implementation dependent and
-                  in practice both are likely to change with time.</p>
-                <p>The <a href="#ex-elda">Environment Agency Bathing Water
-                  Quality API</a> example above uses URI templates, too. In this case, 
-                  the Linked Data API configuration uses URI templates to provide RESTful 
-                  access to <a>SPARQL</a> queries thereby taking away from the user the challenge 
-                  of writing generalized SPARQL queries and understanding the underpinning 
-                  data model.</p> 
-              </aside>  
-
-              </li>  
-              
-              <li>
-              <p>Provide parallel Web-friendly access to the data as an alternative</p>
-              <p>A more effective route may be to provide an alternative 'Web friendly' 
-                access path to the <a>spatial data</a> is to create a new, complementary service
-                endpoint on top of the native storage of the dataset. This limits the 
-                load on your <a>SDI</a> compared to the first option, which may matter as the 
-                data access APIs of the SDI will continue to be used by expert users
-                and their complex data management tasks.</p>
-
-              <aside class="example" id="ex-r2rml">
-                <p>Expose the underpinning relational database via a <a>SPARQL</a> endpoint (using
-                something like <a href="https://www.melodiesproject.eu/content/ontop-spatial"
-                  >ontop-spatial</a>) and Linked Data API. The data may be mapped dynamically 
-                to resources on the Web using the [[R2RML]] standard and Linked Data 
-                Publication tools. This process also allows to enrich the data represented
-                in <a>RDF</a> with additional information and <a>links</a>. To maintain a direct link 
-                between the <a>Spatial Things</a> provided through the <a>SDI</a> and as <a>Linked Data</a>, 
-                use properties that link between the [[GML]] and RDF representations, for example,
-                by including an additional property <code>rdf_seealso</code> in the [[GML]] encoding 
-                pointing to the RDF representation of the Spatial Thing.</p>
-                <figure>
-                  <img src="images/bp28-example.PNG"
-                    alt="Example of providing an alternative access path to spatial data" />
-                  <figcaption>Providing an alternative 'Linked Data friendly' access path to a WFS data
-                    source.</figcaption>
-                </figure>
-              </aside>    
-
-              </li>
-            </ol>
+            <p>If the data is already published in a traditional <a>Spatial Data Infrastructure</a>, it is possible to put 
+              OGC API facades on top of WxS as a transitional approach. However, for an OGC Web API in production, it is recommended to directly access the data source, typically some database.</p>
           </section>
           <section class="test">
             <h4 class="subhead">How to Test</h4>
