@@ -1,6 +1,7 @@
 # Spatial Data on the Web Best Practice Implementation Reports
 
-This list is intended to aid people discover reference implementations of the [Spatial Data on the Web Best Practice](https://www.w3.org/TR/sdw-bp). Each record contains an indication of compliance with each [Best Practice](https://www.w3.org/TR/sdw-bp). To view each implementation report, simply click on its link.
+NOTE: This page refers to the previous version of the document (September 2017). 
+This list is intended to aid people discover reference implementations of the [Spatial Data on the Web Best Practice](https://www.w3.org/TR/sdw-bp). Each record contains an indication of compliance with each [Best Practice](https://www.w3.org/TR/sdw-bp). To view each implementation report, simply click on its link. 
 
 | # | Publisher | Implementation | [#1](https://www.w3.org/TR/sdw-bp/#globally-unique-ids) | [#2](https://www.w3.org/TR/sdw-bp/#indexable-by-search-engines) | [#3](https://www.w3.org/TR/sdw-bp/#linking) | [#4](https://www.w3.org/TR/sdw-bp/#semantic-thing) | [#5](https://www.w3.org/TR/sdw-bp/#describe-geometry) | [#6](https://www.w3.org/TR/sdw-bp/#multiplegeometries) | [#7](https://www.w3.org/TR/sdw-bp/#bp-crs-choice) | [#8](https://www.w3.org/TR/sdw-bp/#bp-crs) | [#9](https://www.w3.org/TR/sdw-bp/#relative-position) | [#10](https://www.w3.org/TR/sdw-bp/#entity-level-links) | [#11](https://www.w3.org/TR/sdw-bp/#desc-changing-properties) | [#12](https://www.w3.org/TR/sdw-bp/#convenience-apis) | [#13](https://www.w3.org/TR/sdw-bp/#spatial-info-dataset-metadata) | [#14](https://www.w3.org/TR/sdw-bp/#desc-accuracy)
 ---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
