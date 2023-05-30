@@ -1,6 +1,6 @@
 # Spatial Data On The Web 2022/2023 Revision Changelog
 
-* Added Best Practice On Spatial Data Ehtics (12.6)  [#1284](https://github.com/w3c/sdw/issues/1284) [#1391](https://github.com/w3c/sdw/pull/1391)
+* Added Best Practice On Spatial Data Ethics (12.6)  [#1284](https://github.com/w3c/sdw/issues/1284) [#1391](https://github.com/w3c/sdw/pull/1391)
 * Added Best Practice On Responsible Use Of Spatial Data [#1379](https://github.com/w3c/sdw/pull/1379)
 * Add FAIR principles to the Best Practice Document [#1290](https://github.com/w3c/sdw/issues/1290)
 * Added section on emerging technologies (13.1, 13.2, 13.3) [#1300](https://github.com/w3c/sdw/issues/1300) [#1348](https://github.com/w3c/sdw/issues/1348)
