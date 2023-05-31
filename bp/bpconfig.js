@@ -62,7 +62,7 @@ var respecConfig = {
         value: "OGC 15-107"
       }]
     }],
-    group: "sdw",
+    group: "wg/sdw",
 //    wg: "Spatial Data on the Web Working Group",
 //    wgURI: "https://www.w3.org/2015/spatial/",
     wgPublicList: "public-sdw-comments",
