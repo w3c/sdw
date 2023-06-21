@@ -295,7 +295,8 @@ var respecConfig = {
         "date": "2020"
       },
       "OAEDR": {
-        "href":"https://docs.ogc.org/is/19-086r5/19-086r5.html",
+        "authors": ["Mark Burgoyne", "David Blodgett", "Charles Heazel", "Chris Little"],
+	"href":"https://docs.ogc.org/is/19-086r5/19-086r5.html",
         "publisher": "OGC",
         "title":"OGC API - Environmental Data Retrieval Standard",
         "date": "2022"
