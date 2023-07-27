@@ -1,0 +1,32 @@
+name: 'Submodules sync'
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run once per day
+    - cron: '0 3 * * *'
+
+jobs:
+  sync:
+    name: 'Submodules sync'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Git submodule Update
+      run: |
+        git pull --recurse-submodules
+        git submodule update --remote --recursive
+
+    - name: Add and commit
+      uses: EndBug/add-and-commit@v9
+      with:
+        message: Submodules sync
