@@ -11,18 +11,22 @@ var respecConfig = {
     editors: [
     {
       name: "Jeremy Tandy",
+      w3cid: 65512,
       company: "Met Office",
       companyURL: "https://www.metoffice.gov.uk/"
     }, {
       name: "Linda van den Brink",
+      w3cid: 75920,
       company: "Geonovum",
       companyURL: "https://www.geonovum.nl/"
     }, {
 	name: "Payam Barnaghi",
+	w3cid: 43713 ,
 	company: "University of Surrey",
 	companyURL: "https://www.surrey.ac.uk/"
     }, {
       name: "Timo Homburg",
+      w3cid: 115012,
       company: "Hochschule Mainz University Of Applied Sciences",
       companyURL: "https://www.hs-mainz.de/",
       orcid: "0000-0002-9499-5840"
