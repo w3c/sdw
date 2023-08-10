@@ -89,6 +89,7 @@ ssn:Property a owl:Class ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isActedOnBy ; owl:allValuesFrom sosa:Actuation ] ;
     rdfs:isDefinedBy sosa: .
 
+
 ## Sample
 
 sosa:Sample
@@ -97,7 +98,12 @@ sosa:Sample
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isResultOf ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isSampleOf ; owl:allValuesFrom sosa:FeatureOfInterest ]  ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isSampleOf ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasOriginalSample ; owl:allValuesFrom sosa:Sample ]  ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasOriginalSample ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasSampledFeature ; owl:allValuesFrom sosa:FeatureOfInterest ]  ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasSampledFeature ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isResultOf ; owl:allValuesFrom sosa:Sampling ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasPreparationStep ; owl:allValuesFrom sosa:PreparationStep ] ;
   rdfs:isDefinedBy sosa: .
 
   sosa:hasSample a owl:InverseFunctionalProperty ;
@@ -106,12 +112,38 @@ sosa:Sample
   sosa:isSampleOf a owl:FunctionalProperty ;
     rdfs:isDefinedBy sosa: .
 
+  sosa:hasOriginalSample a owl:FunctionalProperty ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:hasSampledFeature a owl:FunctionalProperty ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:hasPreparationStep a owl:FunctionalProperty ;
+    rdfs:isDefinedBy sosa: .
+
+sosa:SpatialSample
+  rdfs:isDefinedBy sosa: .
+
+sosa:MaterialSample
+  rdfs:isDefinedBy sosa: .
+
+sosa:StatisticalSample
+  rdfs:isDefinedBy sosa: .
+
+sosa:SampleCollection
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasMemberSample ; owl:allValuesFrom sosa:Sample ] ;
+  rdfs:isDefinedBy sosa: .
+
 
 ## Platform
 
-sosa:Platform 
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hosts ; owl:allValuesFrom ssn:System ]  ;
+sosa:Host
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:inDeployment ; owl:allValuesFrom ssn:Deployment ]  ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:Platform 
+  rdfs:subClassOf ssn:System ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hosts ; owl:allValuesFrom ssn:System ]  ;
   rdfs:isDefinedBy sosa: .
 
   sosa:hosts
@@ -122,13 +154,11 @@ sosa:Platform
     rdfs:isDefinedBy sosa: .
 
 
-
 ## Procedures
 
 sosa:Procedure 
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasInput ; owl:allValuesFrom ssn:Input ]  ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:hasOutput ; owl:allValuesFrom ssn:Output ]  ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implementedBy ; owl:allValuesFrom ssn:System ] ;
   rdfs:isDefinedBy sosa: .
 
   ssn:hasInput a owl:ObjectProperty ;
@@ -159,6 +189,22 @@ sosa:Procedure
       rdfs:subClassOf [ a owl:Restriction ; owl:onProperty [ owl:inverseOf ssn:hasOutput ] ; owl:allValuesFrom sosa:Procedure ] ;
       rdfs:isDefinedBy ssn: .
 
+sosa:ObservingProcedure
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implementedBy ; owl:allValuesFrom sosa:Observer ] ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:ActuationProcedure
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implementedBy ; owl:allValuesFrom sosa:Actuator ] ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:SamplingProcedure
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implementedBy ; owl:allValuesFrom sosa:Sampler ] ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:PreparationProcedure
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implementedBy ; owl:allValuesFrom sosa:PreparationStep ] ;
+  rdfs:isDefinedBy sosa: .
+
 
 ## ProcedureExecutors
 
@@ -178,11 +224,16 @@ ssn:implementedBy a owl:ObjectProperty ;
   owl:inverseOf ssn:implements ;
   rdfs:isDefinedBy ssn: .
 
-sosa:Sensor
-  rdfs:subClassOf ssn:System ;
+sosa:Observer
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:allValuesFrom sosa:ObservingProcedure ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:observes ; owl:allValuesFrom sosa:ObservableProperty ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeObservation ; owl:allValuesFrom sosa:Observation ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:isHostedBy ; owl:allValuesFrom sosa:Host ]  ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:Sensor
+  rdfs:subClassOf ssn:System ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:detects ; owl:allValuesFrom ssn:Stimulus ] ;
   rdfs:isDefinedBy sosa: .
 
@@ -196,6 +247,7 @@ sosa:Sensor
 sosa:Actuator
   rdfs:subClassOf ssn:System ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:allValuesFrom sosa:ActuationProcedure ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:forProperty ; owl:allValuesFrom sosa:ActuatableProperty ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeActuation ; owl:allValuesFrom sosa:Actuation ] ;
   rdfs:isDefinedBy sosa: .
@@ -203,6 +255,7 @@ sosa:Actuator
 sosa:Sampler 
   rdfs:subClassOf ssn:System ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:implements ; owl:allValuesFrom sosa:SamplingProcedure ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeSampling ; owl:allValuesFrom sosa:Sampling ] ;
   rdfs:isDefinedBy sosa: .
 
@@ -218,15 +271,24 @@ sosa:usedProcedure
 sosa:hasFeatureOfInterest
   rdfs:isDefinedBy sosa: .
 
+sosa:hasUltimateFeatureOfInterest
+  rdfs:isDefinedBy sosa: .
+
 sosa:isFeatureOfInterestOf
   rdfs:isDefinedBy sosa: .
 
 sosa:Observation a owl:Class ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeByObserver ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeByObserver ; owl:allValuesFrom sosa:Observer ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySensor ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySensor ; owl:allValuesFrom sosa:Sensor ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeOnHost ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeOnHost ; owl:allValuesFrom sosa:Host ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:ObservingProcedure ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasUltimateFeatureOfInterest ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasUltimateFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:observedProperty ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:observedProperty ; owl:allValuesFrom sosa:ObservableProperty ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:wasOriginatedBy ; owl:cardinality "1"^^xsd:nonNegativeInteger] ;
@@ -242,6 +304,12 @@ sosa:Observation a owl:Class ;
     
   sosa:madeBySensor 
     rdfs:isDefinedBy sosa: .
+    
+  sosa:madeByObserver 
+    rdfs:isDefinedBy sosa: .
+    
+  sosa:madeOnHost
+    rdfs:isDefinedBy sosa: .
 
   sosa:observedProperty 
     rdfs:isDefinedBy sosa: .
@@ -249,9 +317,11 @@ sosa:Observation a owl:Class ;
 sosa:Actuation a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeByActuator ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeByActuator ; owl:allValuesFrom sosa:Actuator ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:ActuationProcedure ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasUltimateFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasUltimateFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actsOnProperty ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:actsOnProperty ; owl:allValuesFrom sosa:ActuatableProperty ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
@@ -271,13 +341,14 @@ sosa:Actuation a owl:Class ;
   sosa:isActedOnBy
     rdfs:isDefinedBy sosa: .
 
-
 sosa:Sampling a owl:Class ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySampler ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySampler ; owl:allValuesFrom sosa:Sampler ] ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:Procedure ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:SamplingProcedure ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasUltimateFeatureOfInterest ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasUltimateFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasResult ; owl:allValuesFrom sosa:Sample ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
@@ -288,6 +359,43 @@ sosa:Sampling a owl:Class ;
 
   sosa:madeBySampler 
     rdfs:isDefinedBy sosa: .
+
+sosa:PreparationStep a owl:Class ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:PreparationProcedure ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:preparedSample ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:preparedSample ; owl:allValuesFrom sosa:Sample ] ;
+  rdfs:isDefinedBy sosa: .
+
+  sosa:madeSampling 
+    rdfs:isDefinedBy sosa: .
+
+  sosa:madeBySampler 
+    rdfs:isDefinedBy sosa: .
+
+  sosa:preparedSample a owl:FunctionalProperty ;
+    rdfs:isDefinedBy sosa: .
+
+
+## Observation collection
+
+sosa:ObservationCollection a owl:Class ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeByObserver ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeByObserver ; owl:allValuesFrom sosa:Observer ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySensor ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeBySensor ; owl:allValuesFrom sosa:Sensor ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeOnHost ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:madeOnHost ; owl:allValuesFrom sosa:Host ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:usedProcedure ; owl:allValuesFrom sosa:ObservingProcedure ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasUltimateFeatureOfInterest ; owl:minCardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasUltimateFeatureOfInterest ; owl:allValuesFrom sosa:FeatureOfInterest ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:observedProperty ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:observedProperty ; owl:allValuesFrom sosa:ObservableProperty ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:phenomenonTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:resultTime ; owl:cardinality "1"^^xsd:nonNegativeInteger ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:hasMemberObs ; owl:allValuesFrom sosa:Observation ] ;
+  rdfs:isDefinedBy sosa: .
 
 
 ## Stimulus
@@ -367,15 +475,30 @@ ssn:System a owl:Class ;
 
 ssn:Deployment a owl:Class ;
   rdfs:label "Deployment"@en ;
-  skos:definition "Describes the Deployment of one or more Systems for a particular purpose. Deployment may be done on a Platform."@en ;
-  rdfs:comment "Describes the Deployment of one or more Systems for a particular purpose. Deployment may be done on a Platform."@en ;
+  skos:definition "Describes the Deployment of one or more assets for a particular purpose. Deployment may be done on a Host."@en ;
+  rdfs:comment "Describes the Deployment of one or more assets for a particular purpose. Deployment may be done on a Host."@en ;
   skos:example "For example, a temperature Sensor deployed on a wall, or a whole network of Sensors deployed for an Observation campaign."@en ;
-  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deployedSystem ; owl:allValuesFrom ssn:System ]  ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deployedSystem ; owl:allValuesFrom ssn:System ] ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deployedAsset ; owl:allValuesFrom [ a owl:Class ; owl:unionOf ( sosa:Observer sosa:Host ssn:System ) ] ] ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deployedOnPlatform ; owl:allValuesFrom sosa:Platform ]  ;
+  rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:deployedOnHost ; owl:allValuesFrom sosa:Host ]  ;
   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ssn:forProperty ; owl:allValuesFrom ssn:Property ]  ;
   rdfs:isDefinedBy ssn: .
 
+  ssn:deployedAsset a owl:ObjectProperty ;
+    rdfs:label "deployed asset"@en ;
+    skos:definition "Relation between a Deployment and a deployed asset."@en ;
+    rdfs:comment "Relation between a Deployment and a deployed asset."@en ;
+    rdfs:isDefinedBy ssn: .
+
+  ssn:deployedOnHost a owl:ObjectProperty ;
+    rdfs:label "deployed on host"@en ;
+    skos:definition "Relation between a Deployment and the Host on which the Systems are deployed."@en ;
+    rdfs:comment "Relation between a Deployment and the Host on which the Systems are deployed."@en ;
+    rdfs:isDefinedBy ssn: .
+
   ssn:deployedSystem a owl:ObjectProperty ;
+    rdfs:subPropertyOf ssn:deployedAsset ;
     rdfs:label "deployed system"@en ;
     skos:definition "Relation between a Deployment and a deployed System."@en ;
     rdfs:comment "Relation between a Deployment and a deployed System."@en ;
@@ -390,6 +513,7 @@ ssn:Deployment a owl:Class ;
     rdfs:isDefinedBy ssn: .
 
   ssn:deployedOnPlatform a owl:ObjectProperty ;
+    rdfs:subPropertyOf ssn:deployedOnHost ;
     rdfs:label "deployed on platform"@en ;
     skos:definition "Relation between a Deployment and the Platform on which the Systems are deployed."@en ;
     rdfs:comment "Relation between a Deployment and the Platform on which the Systems are deployed."@en ;

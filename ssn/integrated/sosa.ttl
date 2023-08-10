@@ -102,10 +102,77 @@ A Sample is intended to sample some FatureOfInterest, so there is an expectation
     owl:inverseOf sosa:hasSample ;
     rdfs:isDefinedBy sosa: .
 
+  sosa:hasOriginalSample a owl:ObjectProperty ;
+    rdfs:label "has original sample"@en ;
+    skos:definition "Link to the original sample that is related to the context sample through a chain of isSampleOf relations."@en ;
+    rdfs:comment "Link to the original sample that is related to the context sample through a chain of isSampleOf relations."@en ;
+    schema:domainIncludes sosa:Sample ;
+    schema:rangeIncludes sosa:Sample ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:hasSampledFeature a owl:ObjectProperty ;
+    rdfs:label "has ultimate sampled feature"@en ;
+    skos:definition "Link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations"@en ;
+    rdfs:comment "Link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations"@en ;
+    schema:domainIncludes sosa:Sample ;
+    schema:rangeIncludes sosa:FeatureOfInterest ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:hasPreparationStep a owl:ObjectProperty ;
+    rdfs:label "has preparation step"@en ;
+    skos:definition "Link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations"@en ;
+    rdfs:comment "Link to the ultimate feature of interest of the context sample - i.e. the end of a chain of isSampleOf relations"@en ;
+    schema:domainIncludes sosa:Sample ;
+    schema:rangeIncludes sosa:PreparationStep ;
+    rdfs:isDefinedBy sosa: .
+
+sosa:SpatialSample a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Sample ;
+  rdfs:label "Spatial Sample"@en ;
+  skos:definition "A SpatialSample is a geospatial Sample. When observations are made to estimate properties of a geospatial feature, in particular where the value of a property varies within the scope of the feature, a SpatialSample is used."@en ;
+  rdfs:comment "A SpatialSample is a geospatial Sample. When observations are made to estimate properties of a geospatial feature, in particular where the value of a property varies within the scope of the feature, a SpatialSample is used."@en ;
+  skos:example "Some common names for spatial samples include: borehole, flightline, interval, lidar cloud, map horizon, microscope slide, mine level, mine, observation well, profile, pulp, quadrat, scene, section, ship track, spot, station, swath, trajectory, traverse, etc..."@en ;
+  skos:note "Depending on accessibility and on the nature of the expected property variation, the SpatialSample may be extensive in one, two or three spatial dimensions."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:MaterialSample a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Sample ;
+  rdfs:label "Material Sample"@en ;
+  skos:definition "A MaterialSample is a physical, tangible Sample."@en ;
+  rdfs:comment "A MaterialSample is a physical, tangible Sample."@en ;
+  skos:example "A piece of rock, a blood sample, a water sample, etc."@en ;
+  skos:note "MaterialSamples that are curated and preserved are sometimes known as 'specimens'."@en ;
+  skos:note "MaterialSamples can be destroyed in connexion with the observation act."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:StatisticalSample a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Sample ;
+  rdfs:label "Statistical Sample"@en ;
+  skos:definition "A StatisticalSample is a statistical subset of a feature-of-interest, defined for the purpose of creating Observation(s)."@en ;
+  rdfs:comment "A StatisticalSample is a statistical subset of a feature-of-interest, defined for the purpose of creating Observation(s)."@en ;
+  skos:example "The male or female subset of a population."@en ;
+  skos:note "StatisticalSamples usually apply to populations or other sets, of which certain subset may be of specific interest."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:SampleCollection a rdfs:Class , owl:Class ;
+  rdfs:label "Sample Collection"@en ;
+  skos:definition "A collection of Samples."@en ;
+  rdfs:comment "A collection of Samples."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:hasMemberSample a owl:ObjectProperty ;
+  rdfs:label "member sample" ;
+  rdfs:comment "Link to a member within a collection of samples" ;
+  schema:domainIncludes sosa:SampleCollection ;
+  schema:rangeIncludes sosa:Sample ;
+  schema:rangeIncludes sosa:SampleCollection ;
+  rdfs:subPropertyOf rdfs:member .
+
 
 ## Platform 
 
 sosa:Platform a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Host ;
   rdfs:label "Platform"@en ;
   skos:definition "A Platform is an entity that hosts other entities, particularly Sensors, Actuators, Samplers, and other Platforms."@en ;
   rdfs:comment "A Platform is an entity that hosts other entities, particularly Sensors, Actuators, Samplers, and other Platforms."@en ;
@@ -116,11 +183,11 @@ sosa:hosts a owl:ObjectProperty ;
   rdfs:label "hosts"@en ;
   skos:definition "Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted or mounted on it."@en ;
   rdfs:comment "Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted or mounted on it."@en ;
-  schema:domainIncludes sosa:Platform ;
+  schema:domainIncludes sosa:Host ;
+  schema:rangeIncludes sosa:Observer ;
   schema:rangeIncludes sosa:Actuator ;
-  schema:rangeIncludes sosa:Sensor ;
   schema:rangeIncludes sosa:Sampler ;
-  schema:rangeIncludes sosa:Platform ;
+  schema:rangeIncludes sosa:Host ;
   owl:inverseOf sosa:isHostedBy ;
   rdfs:isDefinedBy sosa: .
 
@@ -128,12 +195,19 @@ sosa:isHostedBy a owl:ObjectProperty ;
   rdfs:label "is hosted by"@en ;
   skos:definition "Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by."@en ;
   rdfs:comment "Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by."@en ;
+  schema:domainIncludes sosa:Observer ;
   schema:domainIncludes sosa:Actuator ;
-  schema:domainIncludes sosa:Sensor ;
   schema:domainIncludes sosa:Sampler ;
-  schema:domainIncludes sosa:Platform ;
-  schema:rangeIncludes sosa:Platform ;
+  schema:domainIncludes sosa:Host ;
+  schema:rangeIncludes sosa:Host ;
   owl:inverseOf sosa:hosts ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:Host a rdfs:Class , owl:Class ;
+  rdfs:label "Host"@en ;
+  skos:definition "A grouping of Observers for a specific reason."@en ;
+  rdfs:comment "A grouping of Observers for a specific reason."@en ;
+  skos:example "An environmental monitoring facility. A platform that hosts a set of sensors. A team performing a survey, where each team member would be modeled as an Observer."@en ;
   rdfs:isDefinedBy sosa: .
 
 
@@ -147,9 +221,41 @@ sosa:Procedure a rdfs:Class , owl:Class ;
   skos:note "Many observations may be created via the same Procedure, the same way as many tables are assembled using the same instructions (as information objects, not their concrete realization)."@en ;
   rdfs:isDefinedBy sosa: .
 
+sosa:ObservingProcedure a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Procedure ;
+  rdfs:label "Observing Procedure"@en ;
+  skos:definition "The description of steps performed in order to determine the value of an ObservableProperty by an Observer."@en ;
+  rdfs:comment "The description of steps performed in order to determine the value of an ObservableProperty by an Observer."@en ;
+  skos:example "A workflow, protocol, plan, algorithm, or computational method specifying how to make an observation; the description of the process utilized by an observer. This could be a chemical analysis method, a protocol for measuring an object, but could also be a checklist utilized by a human observer during a biodiversity campaign."@en ;
+  skos:note "The observing procedure cannot describe a sensor instance, but it can describe the sensor type."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:ActuationProcedure a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Procedure ;
+  rdfs:label "Actuation Procedure"@en ;
+  skos:definition "The description of steps performed by an Actuator to change the ActuableProperty."@en ;
+  rdfs:comment "The description of steps performed by an Actuator to change the ActuableProperty."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:SamplingProcedure a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Procedure ;
+  rdfs:label "Sampling Procedure"@en ;
+  skos:definition "The description of steps performed by a Sampler in order to extract a Sample from its sampled Feature in the frame of a Sampling."@en ;
+  rdfs:comment "The description of steps performed by a Sampler in order to extract a Sample from its sampled Feature in the frame of a Sampling."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:PreparationProcedure a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Procedure ;
+  rdfs:label "Preparation Procedure"@en ;
+  skos:definition "The description of preparation steps performed on a Sample."@en ;
+  rdfs:comment "The description of preparation steps performed on a Sample."@en ;
+  rdfs:isDefinedBy sosa: .
+
+
 ## ProcedureExecutors
 
 sosa:Sensor a rdfs:Class , owl:Class ;
+  rdfs:subClassOf sosa:Observer ;
   rdfs:label "Sensor"@en ;
   skos:definition "Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior Observations, and generate a Result. Sensors can be hosted by Platforms."@en ;
   rdfs:comment "Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior Observations, and generate a Result. Sensors can be hosted by Platforms."@en ;
@@ -161,6 +267,7 @@ sosa:Sensor a rdfs:Class , owl:Class ;
     skos:definition "Relation between a Sensor and an ObservableProperty that it is capable of sensing."@en ;
     rdfs:comment "Relation between a Sensor and an ObservableProperty that it is capable of sensing."@en ;
     schema:domainIncludes sosa:Sensor ;
+    schema:domainIncludes sosa:Observer ;
     schema:rangeIncludes sosa:ObservableProperty ;
     owl:inverseOf sosa:isObservedBy ;
     rdfs:isDefinedBy sosa: .
@@ -171,6 +278,7 @@ sosa:Sensor a rdfs:Class , owl:Class ;
     rdfs:comment "Relation between an ObservableProperty and the Sensor able to observe it."@en ;
     schema:domainIncludes sosa:ObservableProperty ;
     schema:rangeIncludes sosa:Sensor ;
+    schema:rangeIncludes sosa:Observer ;
     owl:inverseOf sosa:observes ;
     rdfs:isDefinedBy sosa: .
 
@@ -187,6 +295,18 @@ sosa:Sampler a rdfs:Class , owl:Class ;
   rdfs:comment "A device that is used by, or implements, a Sampling Procedure to create or transform one or more samples."@en ;
   skos:example "A ball mill, diamond drill, hammer, hypodermic syringe and needle, image Sensor or a soil auger can all act as sampling devices (i.e., be Samplers). However, sometimes the distinction between the Sampler and the Sensor is not evident, as they are packaged as a unit. A Sampler need not be a physical device."@en ;
   rdfs:isDefinedBy sosa: .
+
+sosa:Observer a rdfs:Class , owl:Class ;
+  rdfs:label "Observer"@en ;
+  skos:definition "An identifiable entity that can generate Observations pertaining to an ObservableProperty by implementing an ObservingProcedure."@en ;
+  rdfs:comment "An identifiable entity that can generate Observations pertaining to an ObservableProperty by implementing an ObservingProcedure."@en ;
+  skos:example "Accelerometers, gyroscopes, barometers, magnetometers, and so forth are Observers that are typically mounted on a modern smartphone (which acts as Host). Other examples of Sensors include the human eyes."@en ;
+  skos:note "Different Observers can follow the same (reusable) observing Procedure for the creation of different Observations."@en ;
+  skos:note "The Observer is the entity instance, not the entity type. Pertaining to sensors, the Observer would reference the explicit sensor, while the Procedure would reference the methodology utilized by that sensor type;"@en ;
+  skos:note "An Observer can be hosted by one or more Host."@en ;
+  skos:note "The Observer is an instance of a sensor, instrument, implementation of an algorithm, or a being such as a person."@en ;
+  rdfs:isDefinedBy sosa: .
+
 
 ## ProcedureExecutions
 
@@ -213,6 +333,18 @@ sosa:hasFeatureOfInterest a owl:ObjectProperty ;
   owl:inverseOf sosa:isFeatureOfInterestOf ;
   rdfs:isDefinedBy sosa: .
 
+sosa:hasUltimateFeatureOfInterest a owl:ObjectProperty ;
+  rdfs:label "has ultimate feature of interest"@en  ;
+  skos:definition "Link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or transitively." ;
+  rdfs:comment "Link to the ultimate feature of interest of an observation or act of sampling. This is useful when the proximate feature of interest is a sample of the ultimate feature of interest, directly or transitively." ;
+  rdfs:comment """should match a property chain something like this but with sosa:isSampleOf*
+      owl:propertyChainAxiom ( sosa:hasFeatureOfInterest sosa:isSampleOf )""" ;
+  schema:domainIncludes sosa:Observation ;
+  schema:domainIncludes sosa:Actuation ;
+  schema:domainIncludes sosa:Sampling ;
+  schema:rangeIncludes sosa:FeatureOfInterest ;
+  rdfs:isDefinedBy sosa: .
+
 sosa:isFeatureOfInterestOf a owl:ObjectProperty ;
   rdfs:label "is feature of interest of"@en ;
   skos:definition "A relation between a FeatureOfInterest and an Observation about it, an Actuation acting on it, or an act of Sampling that sampled it."@en ;
@@ -237,17 +369,19 @@ sosa:Observation a rdfs:Class , owl:Class ;
     skos:definition "Relation between a Sensor and an Observation made by the Sensor."@en ;
     rdfs:comment "Relation between a Sensor and an Observation made by the Sensor."@en ;
     schema:domainIncludes sosa:Sensor ;
+    schema:domainIncludes sosa:Observer ;
     schema:rangeIncludes sosa:Observation ;
     owl:inverseOf sosa:madeBySensor ;
     rdfs:isDefinedBy sosa: .
 
   sosa:madeBySensor rdf:type owl:ObjectProperty ;
-   rdfs:label "made by sensor"@en ;
-   skos:definition "Relation between an Observation and the Sensor which made the Observation."@en ;
-   rdfs:comment "Relation between an Observation and the Sensor which made the Observation."@en ;
-   schema:domainIncludes sosa:Observation ;
-   schema:rangeIncludes sosa:Sensor ;
-   owl:inverseOf sosa:madeObservation ;
+    rdfs:label "made by sensor"@en ;
+    skos:definition "Relation between an Observation and the Sensor which made the Observation."@en ;
+    rdfs:comment "Relation between an Observation and the Sensor which made the Observation."@en ;
+    schema:domainIncludes sosa:Observation ;
+    schema:rangeIncludes sosa:Sensor ;
+    owl:inverseOf sosa:madeObservation ;
+    rdfs:subPropertyOf sosa:madeByObserver ;
     rdfs:isDefinedBy sosa: .
 
   sosa:observedProperty a owl:ObjectProperty ;
@@ -256,6 +390,23 @@ sosa:Observation a rdfs:Class , owl:Class ;
     rdfs:comment "Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest (linked by hasFeatureOfInterest) of this Observation."@en ;
     schema:domainIncludes sosa:Observation ;
     schema:rangeIncludes sosa:ObservableProperty ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:madeByObserver rdf:type owl:ObjectProperty ;
+    rdfs:label "made by observer"@en ;
+    skos:definition "Relation between an Observation and the Observer which made the Observation."@en ;
+    rdfs:comment "Relation between an Observation and the Observer which made the Observation."@en ;
+    schema:domainIncludes sosa:Observation ;
+    schema:rangeIncludes sosa:Observer ;
+    owl:inverseOf sosa:madeObservation ;
+    rdfs:isDefinedBy sosa: .
+
+  sosa:madeOnHost rdf:type owl:ObjectProperty ;
+    rdfs:label "made on host"@en ;
+    skos:definition "Relation between an Observation and the Host the Observer was attached to at the time the observation was made."@en ;
+    rdfs:comment "Relation between an Observation and the Host the Observer was attached to at the time the observation was made."@en ;
+    schema:domainIncludes sosa:Observation ;
+    schema:rangeIncludes sosa:Host ;
     rdfs:isDefinedBy sosa: .
 
 sosa:Actuation a rdfs:Class , owl:Class ;
@@ -337,6 +488,77 @@ sosa:Sampling a rdfs:Class , owl:Class ;
     schema:rangeIncludes sosa:Sampler ;
     owl:inverseOf sosa:madeSampling ;
     rdfs:isDefinedBy sosa: .
+
+sosa:PreparationStep a rdfs:Class , owl:Class ;
+  rdfs:label "Preparation Step"@en ;
+  skos:definition "A PreparationStep is an individual step pertaining to a PreparationProcedure."@en ;
+  rdfs:comment "A PreparationStep is an individual step pertaining to a PreparationProcedure."@en ;
+  skos:example "???"@en ;
+  rdfs:isDefinedBy sosa: .
+
+  sosa:preparedSample a owl:ObjectProperty ;
+    rdfs:label "prepared sample"@en ;
+    skos:definition "The Sample on which the PreparationProcedure is performed."@en ;
+    rdfs:comment "The Sample on which the PreparationProcedure is performed."@en ;
+    schema:domainIncludes sosa:PreparationStep ;
+    schema:rangeIncludes sosa:Sample ;
+    rdfs:isDefinedBy sosa: .
+
+
+## Observation Collection
+
+sosa:Observation
+  rdfs:comment """If values are not provided for the following Observation properties, they may be provided by the ObservationCollection of which it is a member:
+  - hasFeatureOfInterest
+  - hasUltimateFeatureOfInterest
+  - madeBySensor
+  - madeByObserver
+  - madeOnHost
+  - observedProperty
+  - phenomenonTime
+  - resultTime
+  - usedProcedure""" .
+
+sosa:ObservationCollection a rdfs:Class , owl:Class ;
+  rdfs:label "Observation Collection"@en ;
+  skos:definition "A collection of observations, typically with one or more property shared by all of its members."@en ;
+  rdfs:comment "A collection of observations, typically with one or more property shared by all of its members."@en ;
+  rdfs:isDefinedBy sosa: .
+
+sosa:hasMemberObs a owl:ObjectProperty ;
+  rdfs:label "member observation" ;
+  rdfs:comment "Link to a member within a collection of (observations) or (collections of observations) that share the same value for one or more of the characteristic properties" ;
+  schema:domainIncludes sosa:ObservationCollection ;
+  schema:rangeIncludes sosa:Observation ;
+  schema:rangeIncludes sosa:ObservationCollection ;
+  rdfs:subPropertyOf rdfs:member .
+
+sosa:hasFeatureOfInterest
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:hasUltimateFeatureOfInterest
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:madeBySensor
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:madeByObserver
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:madeOnHost
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:observedProperty
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:phenomenonTime
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:resultTime
+  schema:domainIncludes sosa:ObservationCollection .
+
+sosa:usedProcedure
+  schema:domainIncludes sosa:ObservationCollection .
 
 
 ## Result 
