@@ -10,7 +10,9 @@ The Working Group follows in the footsteps of the <a href="https://www.w3.org/20
 
 ## SSN New Edition
 
-Work on a **new edition of the [Semantic Sensor Network (SSN) Ontology](https://www.w3.org/TR/vocab-ssn/)** is in a separate repo: [https://github.com/w3c/sdw-sosa-ssn](https://github.com/w3c/sdw-sosa-ssn). 
+Work on a **new edition of the [Semantic Sensor Network (SSN) Ontology](https://www.w3.org/TR/vocab-ssn/)** is recorded in a separate repository: [https://github.com/w3c/sdw-sosa-ssn](https://github.com/w3c/sdw-sosa-ssn). The [editors draft](https://w3c.github.io/sdw-sosa-ssn/ssn/) is available at https://w3c.github.io/sdw-sosa-ssn/ssn/. 
+
+The new edition adds many of the terms from [ssn-extensions](https://www.w3.org/TR/vocab-ssn-ext/) into the core SSN Ontology, as well as functionality from the 2023 Revision of ISO 19156 - Observations, Measurements and Samples (available freely as [OGC Abstract Specification - Topic 20](https://docs.ogc.org/as/20-082r4/20-082r4.html). 
 
 ## References
 
