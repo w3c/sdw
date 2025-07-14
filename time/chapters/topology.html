@@ -1,0 +1,63 @@
+<h3>Topological Temporal Relations</h3>
+<p>
+    The basic structure of the ontology is based on an algebra of binary relations on intervals
+    (e.g., meets, overlaps, during) developed by Allen [[al-84]], [[af-97]] for
+    representing qualitative temporal information, and to address the problem of reasoning about such information.
+</p>
+<p>
+    The ontology starts with a class <a>time:TemporalEntity</a> with properties
+    <a>time:hasBeginning</a> and <a>time:hasEnd</a> that
+    link to the temporal instants that define its limits, and
+    <a>time:hasTemporalDuration</a> to describe its extent.
+    There are two subclasses: <a>time:Interval</a>
+    and <a>time:Instant</a>, and they are the only two subclasses of
+    <a>time:TemporalEntity</a>.
+    Intervals are things with extent.
+    Instants are point-like in that they have no interior points, but it is generally safe to think of an instant as an
+    interval with zero length, where the beginning and end are the same.
+</p>
+<p>
+    This idea - that time intervals are the more general case and time instants are just a limited specialization - is
+    the first key contribution of Allen's analysis. </p>
+<p>
+    The class <a>time:Interval</a> has one subclass
+    <a>time:ProperInterval</a>, which
+    corresponds with the common understanding of intervals, in that the beginning and end are distinct, and whose
+    membership is therefore disjoint from <a>time:Instant</a>.
+</p>
+<figure> <img title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes"
+        src="./images/TemporalEntity.png" width="600">
+    <figcaption>Core model of temporal entities.</figcaption>
+</figure>
+<p>
+    The class <a>time:ProperInterval</a> also has one subclass,
+    <a>time:DateTimeInterval</a>.
+    The position and extent of a <a>time:DateTimeInterval</a> is an element in a
+    <a>time:GeneralDateTimeDescription</a>.
+</p>
+<p>
+    Relations between intervals are the critical logic provided by Allen's analysis, and implemented in the ontology.
+    Relations between intervals can be defined in a relatively straightforward fashion in terms of
+    <a>time:before</a> and identity on the beginning and end points.
+    The thirteen elementary relations shown below are the second key contribution of Allen's analysis.
+    These support unambiguous expression of all possible relations between temporal entities, which allows the
+    computation of any relative position or sequence.
+    Note that the standard interval calculus assumes all intervals are proper, so their beginning and end are different.
+</p>
+<figure> <img style="width: 545px; height: 322px;" title="Allen's Interval Relations"
+        alt="Schematic of Interval Relations" src="./images/IntervalRelations.png">
+    <figcaption>Thirteen elementary possible relations between time periods [[af-97]]. </figcaption>
+</figure>
+<p>
+    Two additional relations: <code>In</code> (the union of <code>During</code>, <code>Starts</code> and
+    <code>Finishes</code>) and <code>Disjoint</code> (the union of <code>Before</code> and <code>After</code>) are not
+    shown in the figure but are included in the ontology.
+</p>
+<p>
+    The properties <a>time:hasTemporalDuration</a>,
+    <a>time:hasBeginning</a> and <a>time:hasEnd</a>,
+    together with a fourth generic property <a>time:hasTime</a>, support the association
+    of temporal information with any temporal entity, such as an activity or event, or other entity.
+    These provide a standard way to attach time information to things, which may be used directly in applications if
+    suitable, or specialized if needed.
+</p>
