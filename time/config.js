@@ -1,6 +1,6 @@
 var respecConfig = {
   specStatus: "ED",
-  shortName: "owl-time-2ed",
+  shortName: "owl-time",
   previousPublishDate: "2022-11-15",
   previousMaturity: "CR",
   previousURI: "https://www.w3.org/TR/2022/CRD-owl-time-20221115/",
