@@ -1124,6 +1124,9 @@ mime-type:video/mp4
         <p class='note' title='Cue End Time Omission'>
           A <a>WebVMT cue</a> without an end time indicates that the cue is an <a data-cite='HTML51/semantics-embedded-content.html#unbounded-text-track-cue'>unbounded text track cue</a>, for example during live streaming when the time of the next data sample is unknown or when the duration of the media is unknown.
         </p>
+        <p class='note' title='Negative Cue Times'>
+          A <a>WebVMT cue</a> with negative cue times maintains timing information prior to the start of the media, for example to preserve speed information for a <a>WebVMT path</a>.
+        </p>
       </section>
       <section id='webvmt-location'>
         <h2>WebVMT Location</h2>
@@ -3347,7 +3350,10 @@ NOTE Required blocks omitted for clarity
               If |position| is past the end of |input|, return an error and abort these steps.
             </li>
             <li>
-              If the character indicated by |position| is not an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>, then return an error and abort these steps.
+              If the character at |position| is a U+002D HYPHEN-MINUS character (-), let |negative| be true and move |position| forwards one character. Otherwise, let |negative| be false.
+            </li>
+            <li>
+              If |position| is beyond the end of |input| or if the character indicated by |position| is not an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>, then return an error and abort these steps.
             </li>
             <li>
               <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
@@ -3405,6 +3411,9 @@ NOTE Required blocks omitted for clarity
             </li>
             <li>
               Let |result| be |value1|×60×60 + |value2|×60 + |value3| + |value4|/1000.
+            </li>
+            <li>
+              If |negative| is true, let |result| be 0 - |result|.
             </li>
             <li>
               Return |result|.
