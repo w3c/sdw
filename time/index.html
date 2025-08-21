@@ -3,74 +3,9 @@
 
 <head>
   <meta content="text/html; charset=utf-8" http-equiv="content-type">
-  <title>Time Ontology in OWL &mdash; Second Edition</title>
+  <title>Time Ontology in OWL</title>
   <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c"></script>
   <script class="remove" src="config.js"></script>
-  <script>
-    addEventListener('load', () => {
-      document.respec.ready.then(() => {
-
-        const sortLabels = {
-          asc: '↑',
-          desc: '↓',
-          no: '—',
-        };
-
-        const sort = (headerMetadata) => {
-          const sortDirection = headerMetadata.sorted === 'asc' ? 'desc' : 'asc';
-
-          const getSortValue = r => r.querySelector(`:scope > td:nth-child(${headerMetadata.idx + 1})`)
-            .textContent.trim().toLowerCase().replace(/[^A-Za-z0-9 :-]/g, '');
-
-          const rows = [...headerMetadata.table.querySelectorAll('tr')].slice(1); // skip header row
-          if (!rows.length) {
-            return;
-          }
-          const tbody = rows[0].parentElement;
-          rows.sort((a, b) => getSortValue(a).localeCompare(getSortValue(b)) * (sortDirection === 'asc' ? 1 : -1))
-            .map(e => e.remove() || e)
-            .forEach(e => tbody.append(e));
-
-          // update sort link labels
-          for (let header of headerMetadata.allHeaders) {
-            header.sorted = header.idx === headerMetadata.idx ? sortDirection : 'no';
-            header.sortLink.textContent = sortLabels[header.sorted];
-          }
-        };
-
-        document.querySelectorAll('table[data-sortable="true"]').forEach(table => {
-          const headers = [], allHeaders = [...table.querySelector('tr').querySelectorAll('th')];
-          for (const [idx, header] of allHeaders.entries()) {
-            if (header.dataset.sortable === 'true') {
-              const sortLink = document.createElement('a');
-
-              const headerMetadata = {
-                idx,
-                header,
-                allHeaders: headers,
-                table,
-                sorted: 'no',
-                sortLink,
-              };
-
-              sortLink.href = "#";
-              sortLink.style.marginLeft = '1em';
-              sortLink.style.textDecoration = 'none';
-              sortLink.classList.add('sort-link');
-              sortLink.textContent = sortLabels.no;
-              sortLink.title = 'Sort';
-              sortLink.addEventListener('click', e => {
-                e.preventDefault();
-                sort(headerMetadata);
-              });
-              header.append(sortLink);
-              headers.push(headerMetadata);
-            }
-          }
-        });
-      });
-    });
-  </script>
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" type="text/css" href="small.css" media="only all and (max-width: 649px)">
 </head>
@@ -80,12 +15,11 @@
   <section id="abstract">
     <p>
       OWL-Time is an OWL-2 DL ontology of temporal concepts, for describing the temporal properties of
-      resources in the world or described in Web pages. The ontology provides a vocabulary for expressing facts about
-      topological (ordering) relations among instants and intervals, together with information about durations, and
-      about
-      temporal position including date-time information. Time positions and durations may be expressed using either the
-      conventional (Gregorian) calendar and clock, or using another temporal reference system such as Unix-time,
-      geologic time, or different calendars.
+      resources in the world or described in Web pages.
+      The ontology provides a vocabulary for expressing facts about topological (ordering) relations among instants and
+      intervals, together with information about durations, and about temporal position including date-time information.
+      Time positions and durations may be expressed using either the conventional (Gregorian) calendar and clock, or
+      using another temporal reference system such as unix-time, geologic time, or different calendars.
     </p>
     <p style="text-align: center;">
       The namespace for OWL-Time terms is <code>http://www.w3.org/2006/time#</code>
@@ -108,35 +42,41 @@
       <b>General Information</b>
     </p>
     <p>
-      <strong>For OGC -</strong> This is a Public Draft of a document prepared by the Spatial Data on the Web Working
-      Group
-      (<a href="https://www.w3.org/2021/sdw/">SDWWG</a>)
-      — a joint W3C-OGC project (see <a href="https://www.w3.org/2021/10/sdw-charter.html">charter</a>).
-      The document is prepared following W3C conventions. Comments regarding this document are welcome - please submit
-      them in the <a href="https://github.com/w3c/sdw/issues">issue tracker</a>.
+      <strong>For OGC -</strong> This is a Public Draft of a document prepared by the Spatio-temporal Data on the Web
+      Working Group (<a href="https://www.w3.org/2021/sdw/">SDW</a>)
+      — a joint W3C-OGC project (see <a href="https://www.w3.org/2024/11/sdw-wg-charter.html">charter</a>).
+      The document is prepared following W3C conventions.
       Recipients of this document are invited to submit, with their comments, notification of any relevant patent rights
       of which they are aware and to provide supporting documentation.
     </p>
 
     <p>
-      New classes and properties are introduced in this revision of OWL-Time. The new elements primarily relate to
-      relaxing the limitation that time position uses only the Gregorian Calendar, and are placed in a logical hierarchy
-      in relation to the original elements. While there is less implementation evidence for these than the elements from
-      the 2006 version, the new elements are essential to satisfying key requirements in the revision. </p>
+      New classes and properties are introduced in this revision of OWL-Time.
+      The new elements primarily relate to relaxing the limitation that time position uses only the Gregorian Calendar,
+      and are placed in a ogical hierarchy in relation to the original elements.
+      While there is less implementation evidence for these than the elements from the 2006 version, the new elements
+      are essential to satisfying key requirements in the revision.
+    </p>
     <p>
-      However, a small number of other new elements merit additional explanation: </p>
+      However, a small number of other new elements merit additional explanation:
+    </p>
     <ol>
-      <li><a>:hasXSDDuration</a> allows use of the compact xsd:duration element
-        to describe the extent of a temporal entity. This complements existing predicates used with XSD datatypes, and
-        was an inexplicable omission from the original ontology. </li>
-      <li><a>:MonthOfYear (class)</a> and
-        <a>:monthOfYear</a> complement :DayOfWeek and :dayOfWeek to support
-        vernacular names for months as well as days.
+      <li>
+        <a>:hasXSDDuration</a> allows use of the compact xsd:duration element to describe the extent of a temporal
+        entity.
+        This complements existing predicates used with XSD datatypes, and was an inexplicable omission from the original
+        ontology.
       </li>
-      <li><a>:hasTime</a> is a completely generic predicate for associating a temporal
-        entity with anything. A number of generic predicates suitable for use directly in applications were requested,
-        but in general were deemed undesirable in an ontology dealing with the description of time elements rather than
-        their use. This one only was included for users unwilling or unable to define their own semantics. </li>
+      <li>
+        <a>:MonthOfYear (class)</a> and <a>:monthOfYear</a> complement :DayOfWeek and :dayOfWeek to support vernacular
+        names for months as well as days.
+      </li>
+      <li>
+        <a>:hasTime</a> is a completely generic predicate for associating a temporal entity with anything.
+        A number of generic predicates suitable for use directly in applications were requested, but in general were
+        deemed undesirable in an ontology dealing with the description of time elements rather than their use.
+        This one only was included for users unwilling or unable to define their own semantics.
+      </li>
     </ol>
   </section>
 
@@ -218,62 +158,71 @@
     </p>
     <h3>2021 update</h3>
     <ul>
-      <li>clarifications to the textual definitions of <a>:after</a> and
-        <a>:before</a>
+      <li>
+        clarifications to the textual definitions of <a>:after</a> and <a>:before</a>
       </li>
-      <li>add temporal units <a>:unitCentury</a>,
-        <a>:unitDecade</a>,
-        <a>:unitMillenium</a>
+      <li>
+        add temporal units <a>:unitCentury</a>, <a>:unitDecade</a>, <a>:unitMillenium</a>
       </li>
-      <li>addition of <a href="#iana-links">IANA Considerations</a> to support registration of link relations</li>
+      <li>
+        addition of <a href="#iana-links">IANA Considerations</a> to support registration of link elations</li>
     </ul>
     <h3>2017 version</h3>
     <p>
       The principal technical changes are as follows:
     </p>
     <ul>
-      <li><a>:GeneralDateTimeDescription</a> and
-        <a>:GeneralDurationDescription</a> are generalizations of
-        the corresponding classes from the 2006 draft, for cases which the temporal reference system is not fixed to the
+      <li>
+        <a>:GeneralDateTimeDescription</a> and <a>:GeneralDurationDescription</a> are generalizations of the
+        corresponding classes from the 2006 draft, for cases which the temporal reference system is not fixed to the
         Gregorian Calendar in advance
       </li>
-      <li>the property <a>:hasTRS</a> enables time values to be associated with a
-        temporal reference system, represented by a new ('stub') class <a>:TRS</a></li>
-      <li><a>:TimePosition</a> and
-        <a>:Duration</a> are new classes to enable position or duration to be
-        described using a number or nominal value
+      <li>
+        the property <a>:hasTRS</a> enables time values to be associated with a temporal reference system, represented
+        by a new ('stub') class <a>:TRS</a>
       </li>
-      <li>the (super-)classes <a>:TemporalPosition</a> and
-        <a>:TemporalDuration</a> are introduced as roots of the position and
-        duration class hierarchies
+      <li>
+        <a>:TimePosition</a> and <a>:Duration</a> are new classes to enable position or duration to be described using a
+        number or nominal value
       </li>
-      <li><a>:TemporalUnit</a> is a subclass of
-        <a>:TemporalDuration</a>
+      <li>
+        the (super-)classes <a>:TemporalPosition</a> and <a>:TemporalDuration</a> are introduced as roots of the
+        position and duration class hierarchies
       </li>
-      <li><a>:inXSDDateTimeStamp</a> added, and
-        <a>:inXSDDateTime</a> deprecated
+      <li>
+        <a>:TemporalUnit</a> is a subclass of <a>:TemporalDuration</a>
       </li>
-      <li><a>:intervalIn</a> and
-        <a>:intervalDisjoint</a> relations added
+      <li>
+        <a>:inXSDDateTimeStamp</a> added, and <a>:inXSDDateTime</a> deprecated
       </li>
-      <li>introduce predicate <a>:hasTime</a> to enable a
-        <a>:TemporalEntity</a> to be associated with anything
+      <li>
+        <a>:intervalIn</a> and <a>:intervalDisjoint</a> relations added
       </li>
-      <li>deprecate the property <code>:xsdDateTime</code> deprecated as used on
-        <a>:DateTimeInterval</a> - difficult/ambiguous encoding
+      <li>
+        introduce predicate <a>:hasTime</a> to enable a <a>:TemporalEntity</a> to be associated with anything
       </li>
-      <li><code>:Year</code> deprecated</li>
-      <li><code>:January</code> deprecated</li>
-      <li><a>:MonthOfYear (class)</a> and
-        <a>:monthOfYear</a> property added. greg:January-greg:December instances
-        added in a separate graph and namespace.
+      <li>
+        deprecate the property <code>:xsdDateTime</code> deprecated as used on <a>:DateTimeInterval</a> -
+        difficult/ambiguous encoding
       </li>
-      <li>the time-zone ontology presented in the 2006 draft has been removed. A new class
-        <a>:TimeZone (class)</a> in the main namespace is used instead. The new class is a
-        'stub' with no properties, to serve as a superclass for any implementation
+      <li>
+        <code>:Year</code> deprecated
       </li>
-      <li>added data-type property <a>:hasXSDDuration</a> with domain
-        <code>:TemporalEntity</code> and range <code>xsd:duration</code>
+      <li>
+        <code>:January</code> deprecated
+      </li>
+      <li>
+        <a>:MonthOfYear (class)</a> and <a>:monthOfYear</a> property added. greg:January-greg:December instances added
+        in a separate graph and namespace.
+      </li>
+      <li>
+        the time-zone ontology presented in the 2006 draft has been removed.
+        A new class <a>:TimeZone (class)</a> in the main namespace is used instead.
+        The new class is a 'stub' with no properties, to serve as a superclass for any implementation
+      </li>
+      <li>
+        added data-type property <a>:hasXSDDuration</a> with domain <code>:TemporalEntity</code> and range
+        <code>xsd:duration</code>
       </li>
     </ul>
   </section>
@@ -290,61 +239,68 @@
   <section class="appendix" id="requirements">
     <h2>Response to Requirements identified in working group analysis</h2>
     <p>
-      A number of requirements relating to Time were identified in the <a href="https://www.w3.org/TR/sdw-ucr/#arTimeOntologyInOWL">Spatial
-Data on the Web Use Cases &amp; Requirements</a> [[sdw-ucr]]. This section provides brief descriptions of how these
-      requirements have been resolved.
+      A number of requirements relating to Time were identified in the
+      <a href="https://www.w3.org/TR/sdw-ucr/#arTimeOntologyInOWL">Spatial Data on the Web Use Cases &amp; Requirements</a>
+      [[sdw-ucr]].
+      This section provides brief descriptions of how these requirements have been resolved.
     </p>
     <ul>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7 Date, time and duration</a>: see
-        <a href="#overview">overview</a>, <a>:TemporalEntity</a>,
-        <a>:TemporalPosition</a>,
-        <a>:TemporalDuration</a>
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#DateTimeDuration">5.7 Date, time and duration</a>: see
+        <a href="#overview">overview</a>, <a>:TemporalEntity</a>, <a>:TemporalPosition</a>, <a>:TemporalDuration</a>
       </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.53 Update datatypes in OWL Time</a>: see
-        <a>:inXSDDateTimeStamp</a> and
-        <a href="#datatypes">Datatypes</a>
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#UpdateDatatypes">5.53 Update datatypes in OWL Time</a>: see
+        <a>:inXSDDateTimeStamp</a> and <a href="#datatypes">Datatypes</a>
       </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#DifferentTimeModels">5.9 Different time models</a>: see
-        <a href="#trs-clock-calendar">trs-clock-calendar</a>, <a>:TRS</a>,
-        <a>:hasTRS</a>
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#DifferentTimeModels">5.9 Different time models</a>: see
+        <a href="#trs-clock-calendar">trs-clock-calendar</a>, <a>:TRS</a>, <a>:hasTRS</a>
       </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#TemporalReferenceSystem">5.48 Temporal reference system</a>: see
-        <code><a href="#trs-clock-calendar">trs-clock-calendar</a></code>,
-        <a>:TRS</a>, <a>:hasTRS</a>
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#TemporalReferenceSystem">5.48 Temporal reference system</a>: see
+        <code><a href="#trs-clock-calendar">trs-clock-calendar</a></code>, <a>:TRS</a>, <a>:hasTRS</a>
       </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#NominalTemporalReferences">5.28 Nominal temporal references</a>: see
-        <a>:TimePosition</a>,
-        <a>:nominalPosition</a>
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#NominalTemporalReferences">5.28 Nominal temporal references</a>: see
+        <a>:TimePosition</a>, <a>:nominalPosition</a>
       </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#ValidTime">5.56 Valid time</a>: not resolved explicitly. A
-        specialization of <a>:hasTime</a> can be used</li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#TemporalVagueness">5.49 Temporal vagueness</a>: not addressed
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#ValidTime">5.56 Valid time</a>: not resolved explicitly.
+        A specialization of <a>:hasTime</a> can be used
+      </li>
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#TemporalVagueness">5.49 Temporal vagueness</a>: not addressed
         explicitly, but <a href="#topology">interval relations</a> single-ended intervals may be used for some cases
       </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#TimeSeries">5.51 Time series</a>: out of scope for OWL-Time which is
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#TimeSeries">5.51 Time series</a>: out of scope for OWL-Time which is
         concerned with the representation of the temporal aspects only.
         <a href="https://www.w3.org/2015/spatial/wiki/Coverages_in_Linked_Data">Coverages in Linked Data</a> provides
         some support
       </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#SpaceTimeMultiScale">5.39 Space-time multi-scale</a>: OWL-Time
-        supports the representation of the temporal properties of things, so may be used as a component of an integrated
-        solution, but the latter is out of scope for this document. </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#4DModelSpaceTime">5.22 4D model of space-time</a>: OWL-Time supports
-        the representation of time that may be used in 4D applications. In particular the classes
-        <a>:Duration</a> and
-        <a>:TimePosition</a> support descriptions of time duration as a
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#SpaceTimeMultiScale">5.39 Space-time multi-scale</a>: OWL-Time supports
+        the representation of the temporal properties of things, so may be used as a component of an integrated
+        solution, but the latter is out of scope for this document.
+      </li>
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#4DModelSpaceTime">5.22 4D model of space-time</a>: OWL-Time supports the
+        representation of time that may be used in 4D applications.
+        In particular the classes <a>:Duration</a> and <a>:TimePosition</a> support descriptions of time duration as a
         scaled number, and time position as a time coordinate.
       </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#Provenance">5.32 Provenance</a>: individuals from classes in the
-        <a>:TemporalEntity</a> hierarchy may be used in the description of
-        activities involved in provenance traces.
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#Provenance">5.32 Provenance</a>: individuals from classes in the
+        <a>:TemporalEntity</a> hierarchy may be used in the description of activities involved in provenance traces.
         <code><a href="https://www.w3.org/TR/prov-o/#Activity">prov:Activity</a></code> could itself be modelled as an
-        <code>rdfs:subClassOf</code> of <a>:TemporalEntity</a>. Allen's
-        interval algebra described in <a href="#topology">topology</a> can support the description of temporal
+        <code>rdfs:subClassOf</code> of <a>:TemporalEntity</a>.
+        Allen's interval algebra described in <a href="#topology">topology</a> can support the description of temporal
         relationships between activities in a provenance trace. However, these applications have not been explicitly
         modelled in this document.
       </li>
-      <li><a href="https://www.w3.org/TR/sdw-ucr/#MultilingualSupport">5.25 Multilingual support</a>: all labels and
+      <li>
+        <a href="https://www.w3.org/TR/sdw-ucr/#MultilingualSupport">5.25 Multilingual support</a>: all labels and
         other annotations in the ontology have correct language tags. Individuals from the classes
         <a>:DayOfWeek (class)</a> and
         <a>:MonthOfYear (class)</a> have labels in several languages in the RDF
