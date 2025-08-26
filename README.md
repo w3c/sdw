@@ -4,9 +4,15 @@
 
 This is the repository for the <a href="https://www.w3.org/2021/sdw/">Spatial Data on the Web Working Group</a>, a collaborative project between <a href="http://www.w3.org/">W3C</a> and <a href="http://www.opengeospatial.org/">OGC</a>.
 
-The repo is used for developing editors drafts of the Working Group's <a href="https://www.w3.org/2021/10/sdw-charter.html#deliverables">deliverables</a> and related resources.
+The repo has been used for developing editors drafts of the Working Group's <a href="https://www.w3.org/2021/10/sdw-charter.html#deliverables">deliverables</a> and related resources.
 
-Please note that the Working Group follows in the footsteps of the <a href="https://www.w3.org/2017/sdwig/">Spatial Data on the Web Interest Group</a> and the <a href="https://www.w3.org/2015/spatial/">Spatial Data on the Web Working Group</a>, and some of the material in this repository was initially developed and published by these predecessors.
+The Working Group follows in the footsteps of the <a href="https://www.w3.org/2017/sdwig/">Spatial Data on the Web Interest Group</a> and the <a href="https://www.w3.org/2015/spatial/">Spatial Data on the Web Working Group</a>, and some of the material in this repository was initially developed and published by these predecessors.
+
+## SSN New Edition
+
+Work on a **new edition of the [Semantic Sensor Network (SSN) Ontology](https://www.w3.org/TR/vocab-ssn/)** is recorded in a separate repository: [https://github.com/w3c/sdw-sosa-ssn](https://github.com/w3c/sdw-sosa-ssn). The [editor's draft](https://w3c.github.io/sdw-sosa-ssn/ssn/) is available at https://w3c.github.io/sdw-sosa-ssn/ssn/. 
+
+The new edition adds many of the terms from [ssn-extensions](https://www.w3.org/TR/vocab-ssn-ext/) into the core SSN Ontology, as well as functionality from the 2023 Revision of ISO 19156 - Observations, Measurements and Samples (available freely as [OGC Abstract Specification - Topic 20](https://docs.ogc.org/as/20-082r4/20-082r4.html)). 
 
 ## References
 
@@ -110,8 +116,8 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
 
   <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/ssn">ssn</a></dt>
   <dd>
-    The Semantic Sensor Network Ontology Recommendation initially developed by the Spatial Data on the Web Working Group.
-    <br/><a href="https://w3c.github.io/sdw/ssn/">Editor's Draft</a>
+    This folder is no longer used actively. It contains the state of things as they were left after SOSA/SSN was published by the Spatial Data on the Web Working Group in October 2017. Development of The Semantic Sensor Network Ontology Recommendation continues in a separate <a href="https://www.github.com/w3c/sdw-sosa-ssn">Github repository "sdw-sosa-ssn"</a>. 
+    <br/><a href="https://w3c.github.io/sdw-sosa-ssn/ssn">Editor's Draft</a>
     <br/><a href="https://www.w3.org/TR/vocab-ssn/">W3C Recommendation</a>
   </dd>
 

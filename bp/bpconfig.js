@@ -11,18 +11,22 @@ var respecConfig = {
     editors: [
     {
       name: "Jeremy Tandy",
+      w3cid: 65512,
       company: "Met Office",
       companyURL: "https://www.metoffice.gov.uk/"
     }, {
       name: "Linda van den Brink",
+      w3cid: 75920,
       company: "Geonovum",
       companyURL: "https://www.geonovum.nl/"
     }, {
 	name: "Payam Barnaghi",
+	w3cid: 43713 ,
 	company: "University of Surrey",
 	companyURL: "https://www.surrey.ac.uk/"
     }, {
       name: "Timo Homburg",
+      w3cid: 115012,
       company: "Hochschule Mainz University Of Applied Sciences",
       companyURL: "https://www.hs-mainz.de/",
       orcid: "0000-0002-9499-5840"
@@ -72,18 +76,12 @@ var respecConfig = {
 //    noLegacyStyle: false,
       logos: [
       {
-        src: "https://www.w3.org/StyleSheets/TR/2016/logos/W3C",
-        alt: "W3C",
-        height: "48",
-        width: "72",
-        url: "https://www.w3.org/"
-      },
-      {
-        src: "https://www.w3.org/2017/01/ogc_logo.png",
+        src: "images/ogc-logo.svg",
         alt: "OGC",
         height: "68",
         width: "147",
-        url: "http://www.opengeospatial.org/"
+        id: "ogc-logo",
+        url: "http://www.opengeospatial.org/",
       }
       ],
     noRecTrack: true,

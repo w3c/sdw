@@ -66,6 +66,9 @@
     </section>
     <section id='sotd'>
       <p>
+        This document is a Note, it has not been widely reviewed and should be considered as experimental only. It may serve as the base for an upcoming W3C Recommendation.
+      </p>
+      <p>
         This document is an explanatory specification, intended to communicate and develop the draft WebVMT format through discussion with user communities.
       </p>
     </section>
@@ -595,14 +598,14 @@ rad:200
 
 NOTE Cat, top left, after 5 secs until 25 secs
 
-00:00:05.000 —> 00:00:25.000
+00:00:05.000 —-&gt; 00:00:25.000
 { “sync”: { “type”: “org.ogc.geoai.example”, “data”:
   { “animal”:”cat”, “frame-zone”:”top-left" }
 } }
 
 NOTE Dog, mid right, after 10 secs until 40 secs
 
-00:00:10.000 —> 00:00:40.000
+00:00:10.000 —-&gt; 00:00:40.000
 { “sync”: { “type”: “org.ogc.geoai.example”, “data”:
   { “animal”: ”dog”, “frame-zone”: ”middle-right" }
 } }
@@ -747,7 +750,9 @@ WEBVMT
 NOTE Required blocks omitted for clarity
 
 NOTE Step interpolation of live1 data
+     gear = 4 after 4 secs until next update
 
+00:00:04.000 --&gt;
 { "sync":
   { "type": "org.webvmt.example", "id": "live1", "data":
     { "gear": "4" }
@@ -826,7 +831,18 @@ NOTE End (linear) interpolation of live2 data
             A <a>WebVMT path</a> describes the trajectory of a moving object which consists of a timed sequence of locations. The object's location may be interpolated between consecutive values in the sequence to calculate the distance travelled over time.
           </p>
           <p>
-            The <code>path</code> attribute may be set to identify an individual path. This allows a path to be styled with CSS, e.g. colour, and the speed and distance attributes to be identified during playback.
+            The <code>path</code> attribute may be set to identify an individual path. This allows a path:
+            <ul>
+              <li>
+                to be styled with CSS, e.g. colour;
+              </li>
+              <li>
+                to be associated with speed and distance attributes during playback;
+              </li>
+              <li>
+                to be uniquely associated with the video footage.
+              </li>
+            </ul>
           </p>
           <p>
             In this example, an interpolated path is traced from London to Brighton:
@@ -839,6 +855,8 @@ NOTE Associated video
 MEDIA
 url:LondonBrighton.mp4
 mime-type:video/mp4
+start-time:2018-02-19T12:34:56.789Z
+path:cam1
 
 NOTE Map config
 
@@ -1063,7 +1081,7 @@ mime-type:video/mp4
           Implementations of this specification must not normalize Unicode text during processing.
         </p>
         <aside class='example' title='Unicode Matching'>
-          For example, a cue with an identifier consisting of the characters U+0041 LATIN CAPITAL LETTER A followed by U+030A COMBINING RING ABOVE (a decomposed character sequence), or the character U+212B ANGSTROM SIGN (a compatibility character), will not match a selector targeting a cue with an ID consisting of the character U+00C5 LATIN CAPITAL LETTER A WITH RING ABOVE (a precomposed character).
+          For example, a cue with an identifier consisting of the characters <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span> followed by <span class="codepoint" translate="no"><bdi lang="no">&#x030A;</bdi> <code class="uname">U+030A COMBINING RING ABOVE</code></span> (a decomposed character sequence), or the character <span class="codepoint" translate="no"><bdi lang="no">&#x212B;</bdi> <code class="uname">U+212B ANGSTROM SIGN</code></span> (a compatibility character), will not match a selector targeting a cue with an ID consisting of the character <span class="codepoint" translate="no"><bdi lang="no">&#x00C5;</bdi> <code class="uname">U+00C5 LATIN CAPITAL LETTER A WITH RING ABOVE</code></span> (a precomposed character).
         </aside>
       </section>
     </section>
@@ -1105,6 +1123,9 @@ mime-type:video/mp4
         </dl>
         <p class='note' title='Cue End Time Omission'>
           A <a>WebVMT cue</a> without an end time indicates that the cue is an <a data-cite='HTML51/semantics-embedded-content.html#unbounded-text-track-cue'>unbounded text track cue</a>, for example during live streaming when the time of the next data sample is unknown or when the duration of the media is unknown.
+        </p>
+        <p class='note' title='Negative Cue Times'>
+          A <a>WebVMT cue</a> with negative cue times maintains timing information prior to the start of the media, for example to preserve speed information for a <a>WebVMT path</a>.
         </p>
       </section>
       <section id='webvmt-location'>
@@ -1610,13 +1631,13 @@ mime-type:video/mp4
           A <dfn>WebVMT file body</dfn> consists of the following components, in the order given:
           <ol>
             <li>
-              An optional U+FEFF BYTE ORDER MARK (BOM) character.
+              An optional <span class="codepoint" translate="no"><bdi lang="en">&#xFEFF;</bdi> <code class="uname">U+FEFF BYTE ORDER MARK</code></span> (BOM) character.
             </li>
             <li>
-              The string "<code>WEBVMT</code>" (U+0057 LATIN CAPITAL LETTER W, U+0045 LATIN CAPITAL LETTER E, U+0042 LATIN CAPITAL LETTER B, U+0056 LATIN CAPITAL LETTER V, U+004D LATIN CAPITAL LETTER M, U+0054 LATIN CAPITAL LETTER T).
+              The string "<code>WEBVMT</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x0057;</bdi> <code class="uname">U+0057 LATIN CAPITAL LETTER W</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0045;</bdi> <code class="uname">U+0045 LATIN CAPITAL LETTER E</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0042;</bdi> <code class="uname">U+0042 LATIN CAPITAL LETTER B</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0056;</bdi> <code class="uname">U+0056 LATIN CAPITAL LETTER V</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x004D;</bdi> <code class="uname">U+004D LATIN CAPITAL LETTER M</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0054;</bdi> <code class="uname">U+0054 LATIN CAPITAL LETTER T</code></span>).
             </li>
             <li>
-              Optionally, either a U+0020 SPACE character or a U+0009 CHARACTER TABULATION (tab) character followed by any number of characters that are not U+000A LINE FEED (LF) or U+000D CARRIAGE RETURN (CR) characters.
+              Optionally, either a <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> character or a <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) character followed by any number of characters that are not <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) or <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters.
             </li>
             <li>
               Two or more <a>WebVMT line terminators</a> to terminate the line with the file magic and separate it from the rest of the body.
@@ -1650,13 +1671,13 @@ mime-type:video/mp4
           A <dfn>WebVMT line terminator</dfn> consists of one of the following:
           <ul>
             <li>
-              A U+000D CARRIAGE RETURN U+000A LINE FEED (CRLF) character pair.
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (CRLF) character pair.
             </li>
             <li>
-              A single U+000A LINE FEED (LF) character.
+              A single <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) character.
             </li>
             <li>
-              A single U+000D CARRIAGE RETURN (CR) character.
+              A single <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) character.
             </li>
           </ul>
         </p>
@@ -1664,10 +1685,10 @@ mime-type:video/mp4
           A <dfn>WebVMT media metadata block</dfn> consists of the following components, in the order given:
           <ol>
             <li>
-              The string "<code>MEDIA</code>" (U+004D LATIN CAPITAL LETTER M, U+0045 LATIN CAPITAL LETTER E, U+0044 LATIN CAPITAL LETTER D, U+0049 LATIN CAPITAL LETTER I, U+0041 LATIN CAPITAL LETTER A).
+              The string "<code>MEDIA</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x004D;</bdi> <code class="uname">U+004D LATIN CAPITAL LETTER M</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0045;</bdi> <code class="uname">U+0045 LATIN CAPITAL LETTER E</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0044;</bdi> <code class="uname">U+0044 LATIN CAPITAL LETTER D</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0049;</bdi> <code class="uname">U+0049 LATIN CAPITAL LETTER I</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span>).
             </li>
             <li>
-              Zero or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+              Zero or more <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> characters or <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) characters.
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
@@ -1687,10 +1708,10 @@ mime-type:video/mp4
           A <dfn>WebVMT map initialisation block</dfn> consists of the following components, in the order given:
           <ol>
             <li>
-              The string "<code>MAP</code>" (U+004D LATIN CAPITAL LETTER M, U+0041 LATIN CAPITAL LETTER A, U+0050 LATIN CAPITAL LETTER P).
+              The string "<code>MAP</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x004D;</bdi> <code class="uname">U+004D LATIN CAPITAL LETTER M</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0050;</bdi> <code class="uname">U+0050 LATIN CAPITAL LETTER P</code></span>).
             </li>
             <li>
-              Zero or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+              Zero or more <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> characters or <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) characters.
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
@@ -1710,16 +1731,16 @@ mime-type:video/mp4
           A <dfn>WebVMT style block</dfn> consists of the following components, in the order given:
           <ol>
             <li>
-              The string "<code>STYLE</code>" (U+0053 LATIN CAPITAL LETTER S, U+0054 LATIN CAPITAL LETTER T, U+0059 LATIN CAPITAL LETTER Y, U+004C LATIN CAPITAL LETTER L, U+0045 LATIN CAPITAL LETTER E).
+              The string "<code>STYLE</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x0053;</bdi> <code class="uname">U+0053 LATIN CAPITAL LETTER S</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0054;</bdi> <code class="uname">U+0054 LATIN CAPITAL LETTER T</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0059;</bdi> <code class="uname">U+0059 LATIN CAPITAL LETTER Y</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x004C;</bdi> <code class="uname">U+004C LATIN CAPITAL LETTER L</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0045;</bdi> <code class="uname">U+0045 LATIN CAPITAL LETTER E</code></span>).
             </li>
             <li>
-              Zero or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+              Zero or more <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> characters or <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) characters.
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
             </li>
             <li>
-              Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN). The string represents a CSS style sheet; the requirements given in the relevant <a data-cite='CSS22' data-no-xref=''>CSS</a> specifications apply.
+              Any sequence of zero or more characters other than <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters and <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>). The string represents a CSS style sheet; the requirements given in the relevant <a data-cite='CSS22' data-no-xref=''>CSS</a> specifications apply.
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
@@ -1735,13 +1756,13 @@ mime-type:video/mp4
             <li>
               <a>WebVMT cue timings</a>.
             <li>
-              Zero or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+              Zero or more <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> characters or <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) characters.
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
             </li>
             <li>
-              The <dfn>WebVMT cue payload</dfn> consists of a <a>WebVMT metadata text</a>, but must not contain the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+              The <dfn>WebVMT cue payload</dfn> consists of a <a>WebVMT metadata text</a>, but must not contain the substring "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>).
             </li>
             <li>
               A <a>WebVMT line terminator</a>.
@@ -1752,7 +1773,7 @@ mime-type:video/mp4
           A <a>WebVMT cue block</a> corresponds to one piece of time-aligned data in the <a>WebVMT file</a>. The <a>WebVMT cue payload</a> is the data associated with the <a>WebVMT cue</a>.
         </p>
         <p>
-          A <dfn>WebVMT cue identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
+          A <dfn>WebVMT cue identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>), nor containing any <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters or <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters.
         </p>
         <p>
           A <a>WebVMT cue identifier</a> must be unique amongst all the <a>WebVMT cue identifiers</a> of all <a>WebVMT cues</a> of a <a>WebVMT file</a>.
@@ -1768,13 +1789,13 @@ mime-type:video/mp4
             A <a>WebVMT timestamp</a> representing the start time offset of the cue. The time represented by this <a>WebVMT timestamp</a> must be greater than or equal to the start time offsets of all previous cues in the file.
           </li>
           <li>
-            One or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+            One or more <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> characters or <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) characters.
           </li>
           <li>
-            The string "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+            The string "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>).
           </li>
           <li>
-            One or more U+0020 SPACE characters or U+0009 CHARACTER TABULATION (tab) characters.
+            One or more <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> characters or <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) characters.
           </li>
           <li>
             Optionally, a <a>WebVMT timestamp</a> representing the end time offset of the cue. The time represented by this <a>WebVMT timestamp</a> must be greater than or equal to the start time offset of the cue.
@@ -1793,7 +1814,7 @@ mime-type:video/mp4
                   Two or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>, representing the <i>hours</i> as a base ten integer.
                 </li>
                 <li>
-                  A U+003A COLON character (:).
+                  A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
                 </li>
               </ol>
             </li>
@@ -1801,13 +1822,13 @@ mime-type:video/mp4
               Two <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>, representing the <i>minutes</i> as a base ten integer in the range 0 ≤ <i>minutes</i> ≤ 59.
             </li>
             <li>
-              A U+003A COLON character (:).
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
             </li>
             <li>
               Two <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>, representing the <i>seconds</i> as a base ten integer in the range 0 ≤ <i>seconds</i> ≤ 59.
             </li>
             <li>
-              A U+002E FULL STOP character (.).
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x002E;</bdi> <code class="uname">U+002E FULL STOP</code></span> character.
             </li>
             <li>
               Three <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>, representing the thousandths of a second <i>seconds-frac</i> as a base ten integer.
@@ -1821,7 +1842,7 @@ mime-type:video/mp4
           A <dfn>WebVMT comment block</dfn> consists of the following components, in the order given:
           <ol>
             <li>
-              The string "<code>NOTE</code>" (U+004E LATIN CAPITAL LETTER N, U+004F LATIN CAPITAL LETTER O, U+0054 LATIN CAPITAL LETTER T, U+0045 LATIN CAPITAL LETTER E).
+              The string "<code>NOTE</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x004E;</bdi> <code class="uname">U+004E LATIN CAPITAL LETTER N</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x004F;</bdi> <code class="uname">U+004F LATIN CAPITAL LETTER O</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0054;</bdi> <code class="uname">U+0054 LATIN CAPITAL LETTER T</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0045;</bdi> <code class="uname">U+0045 LATIN CAPITAL LETTER E</code></span>).
             </li>
             <li>
               Optionally, the following components, in the order given:
@@ -1830,7 +1851,7 @@ mime-type:video/mp4
                   Either:
                   <ul>
                     <li>
-                      A U+0020 SPACE character or U+0009 CHARACTER TABULATION (tab) character.
+                      A <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> character or <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) character.
                     </li>
                     <li>
                       A <a>WebVMT line terminator</a>.
@@ -1838,7 +1859,7 @@ mime-type:video/mp4
                   </ul>
                 </li>
                 <li>
-                  Any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN).
+                  Any sequence of zero or more characters other than <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters and <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>).
                 </li>
               </ol>
             </li>
@@ -1854,7 +1875,7 @@ mime-type:video/mp4
       <section id='webvmt-cue-payload'>
         <h2>WebVMT Cue Payload</h2>
         <p>
-          <dfn>WebVMT metadata text</dfn> consists of any sequence of zero or more characters other than U+000A LINE FEED (LF) characters and U+000D CARRIAGE RETURN (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>. (In other words, any text that does not have two consecutive <a>WebVMT line terminators</a> and does not start or end with a <a>WebVMT line terminator</a>.)
+          <dfn>WebVMT metadata text</dfn> consists of any sequence of zero or more characters other than <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters and <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>. (In other words, any text that does not have two consecutive <a>WebVMT line terminators</a> and does not start or end with a <a>WebVMT line terminator</a>.)
         </p>
         <p>
           The string represents a <a>WebVMT command list</a>.
@@ -1866,7 +1887,7 @@ mime-type:video/mp4
       <section id='webvmt-media-settings'>
         <h2>WebVMT Media Settings</h2>
         <p>
-          The <dfn>WebVMT media settings list</dfn> consists of zero or more of the following components, in any order, separated from each other by one or more U+0020 SPACE characters, U+0009 CHARACTER TABULATION (tab) characters, or <a>WebVMT line terminators</a>, except that the string must not contain two consecutive <a>WebVMT line terminators</a>. Each component must not be included more than once per <a>WebVMT media settings list</a> string.
+          The <dfn>WebVMT media settings list</dfn> consists of zero or more of the following components, in any order, separated from each other by one or more <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> characters, <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) characters, or <a>WebVMT line terminators</a>, except that the string must not contain two consecutive <a>WebVMT line terminators</a>. Each component must not be included more than once per <a>WebVMT media settings list</a> string.
         </p>
         <ul>
           <li>
@@ -1890,7 +1911,7 @@ mime-type:video/mp4
             The string "<code>url</code>".
           </li>
           <li>
-            A U+003A COLON character (:).
+            A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
           </li>
           <li>
             A <a data-cite='HTML51/infrastructure.html#valid-url'>valid URL</a>.
@@ -1907,7 +1928,7 @@ mime-type:video/mp4
             The string "<code>mime-type</code>".
           </li>
           <li>
-            A U+003A COLON character (:).
+            A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
           </li>
           <li>
             A valid <a data-cite='HTML51/infrastructure.html#mime-type'>MIME type</a>.
@@ -1921,12 +1942,15 @@ mime-type:video/mp4
             The string "<code>start-time</code>".
           </li>
           <li>
-            A U+003A COLON character (:).
+            A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
           </li>
           <li>
             A <a data-cite='HTML51/infrastructure.html#valid-global-date-and-time-string'>valid global date and time string</a>.
           </li>
         </ol>
+        <p class='note' title='Media Start Time'>
+          <a>WebVMT media start time setting</a> should include millisecond data in order to allow the <a>WebVMT file</a> to be accurately synchronized with Coordinated Universal Time (UTC).
+        </p>
         <p>
           A <dfn>WebVMT media path setting</dfn> consists of the following components, in the order given:
         </p>
@@ -1935,7 +1959,7 @@ mime-type:video/mp4
             The string "<code>path</code>".
           </li>
           <li>
-            A U+003A COLON character (:).
+            A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
           </li>
           <li>
             A <a>WebVMT path identifier</a>.
@@ -1945,7 +1969,7 @@ mime-type:video/mp4
       <section id='webvmt-map-settings'>
         <h2>WebVMT Map Settings</h2>
         <p>
-          The <dfn>WebVMT map settings list</dfn> consists of the following components, in any order, separated from each other by one or more U+0020 SPACE characters, U+0009 CHARACTER TABULATION (tab) characters, or <a>WebVMT line terminators</a>, except that the string must not contain two consecutive <a>WebVMT line terminators</a>. Each component must be included once per <a>WebVMT map settings list</a> string.
+          The <dfn>WebVMT map settings list</dfn> consists of the following components, in any order, separated from each other by one or more <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> characters, <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) characters, or <a>WebVMT line terminators</a>, except that the string must not contain two consecutive <a>WebVMT line terminators</a>. Each component must be included once per <a>WebVMT map settings list</a> string.
         </p>
         <ul>
           <li>
@@ -1983,7 +2007,7 @@ mime-type:video/mp4
               The string "<code>lat</code>".
             </li>
             <li>
-              A U+003A COLON character (:).
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
             </li>
             <li>
               A <a>WebVMT latitude</a>.
@@ -1994,7 +2018,7 @@ mime-type:video/mp4
           A <dfn>WebVMT latitude</dfn> consists of the following components, in the order given:
           <ol>
             <li>
-              Optionally, a U+002D HYPHEN-MINUS character (-).
+              Optionally, a <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span> character.
             </li>
             <li>
               One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
@@ -2003,7 +2027,7 @@ mime-type:video/mp4
               Optionally:
               <ol>
                 <li>
-                  A U+002E DOT character (.).
+                  A <span class="codepoint" translate="no"><bdi lang="en">&#x002E;</bdi> <code class="uname">U+002E DOT</code></span> character.
                 </li>
                 <li>
                   One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
@@ -2022,7 +2046,7 @@ mime-type:video/mp4
               The string "<code>lng</code>".
             </li>
             <li>
-              A U+003A COLON character (:).
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
             </li>
             <li>
               A <a>WebVMT longitude</a>.
@@ -2033,7 +2057,7 @@ mime-type:video/mp4
           A <dfn>WebVMT longitude</dfn> consists of the following components, in the order given:
           <ol>
             <li>
-              Optionally, a U+002D HYPHEN-MINUS character (-).
+              Optionally, a <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span> character.
             </li>
             <li>
               One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
@@ -2042,7 +2066,7 @@ mime-type:video/mp4
               Optionally:
               <ol>
                 <li>
-                  A U+002E DOT character (.).
+                  A <span class="codepoint" translate="no"><bdi lang="en">&#x002E;</bdi> <code class="uname">U+002E DOT</code></span> character.
                 </li>
                 <li>
                   One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
@@ -2061,7 +2085,7 @@ mime-type:video/mp4
               The string "<code>alt</code>".
             </li>
             <li>
-              A U+003A COLON character (:).
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
             </li>
             <li>
               A <a>WebVMT altitude</a>.
@@ -2072,7 +2096,7 @@ mime-type:video/mp4
           A <dfn>WebVMT altitude</dfn> consists of the following components, in the order given:
           <ol>
             <li>
-              Optionally, a U+002D HYPHEN-MINUS character (-).
+              Optionally, a <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span> character.
             </li>
             <li>
               One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
@@ -2081,7 +2105,7 @@ mime-type:video/mp4
               Optionally:
               <ol>
                 <li>
-                  A U+002E DOT character (.).
+                  A <span class="codepoint" translate="no"><bdi lang="en">&#x002E;</bdi> <code class="uname">U+002E DOT</code></span> character.
                 </li>
                 <li>
                   One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
@@ -2100,7 +2124,7 @@ mime-type:video/mp4
               The string "<code>rad</code>".
             </li>
             <li>
-              A U+003A COLON character (:).
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
             </li>
             <li>
               One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
@@ -2109,7 +2133,7 @@ mime-type:video/mp4
               Optionally:
               <ol>
                 <li>
-                  A U+002E DOT character (.).
+                  A <span class="codepoint" translate="no"><bdi lang="en">&#x002E;</bdi> <code class="uname">U+002E DOT</code></span> character.
                 </li>
                 <li>
                   One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
@@ -2239,7 +2263,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>rad</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a data-cite='ECMA-404' data-no-xref=''>JSON number</a> greater than zero.
@@ -2310,7 +2334,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>zone</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>WebVMT zone identifier</a>.
@@ -2318,7 +2342,7 @@ mime-type:video/mp4
             </ol>
           </p>
           <p>
-            A <dfn>WebVMT zone identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
+            A <dfn>WebVMT zone identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>), nor containing any <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters or <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters.
           </p>
           <p class='note' title='Zone Identification'>
             A <a>WebVMT zone identifier</a> is a string which uniquely identifies a zone in the <a>WebVMT file</a>, for example a safety zone around a moving object.
@@ -2362,7 +2386,7 @@ mime-type:video/mp4
             A <dfn>WebVMT vertices list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON array</a> of three or more <a data-cite='ECMA-404' data-no-xref=''>JSON objects</a> each representing a <a>WebVMT location attribute list</a>.
           </p>
           <p>
-            A <dfn>WebVMT location attribute list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing a list of the following <a data-cite='ECMA-404' data-no-xref=''>JSON values</a> in any order, separated from each other by a U+002C COMMA character (,):
+            A <dfn>WebVMT location attribute list</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> representing a list of the following <a data-cite='ECMA-404' data-no-xref=''>JSON values</a> in any order, separated from each other by a <span class="codepoint" translate="no"><bdi lang="en">&#x002C;</bdi> <code class="uname">U+002C COMMA</code></span> character:
             <ul>
               <li>
                 A <a>WebVMT latitude attribute</a>.
@@ -2382,7 +2406,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>lat</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a data-cite='ECMA-404' data-no-xref=''>JSON number</a>.
@@ -2399,7 +2423,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>lng</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a data-cite='ECMA-404' data-no-xref=''>JSON number</a>.
@@ -2416,7 +2440,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>alt</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a data-cite='ECMA-404' data-no-xref=''>JSON number</a>.
@@ -2484,7 +2508,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>path</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>WebVMT path identifier</a>.
@@ -2492,7 +2516,7 @@ mime-type:video/mp4
             </ol>
           </p>
           <p>
-            A <dfn>WebVMT path identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), nor containing any U+000A LINE FEED (LF) characters or U+000D CARRIAGE RETURN (CR) characters.
+            A <dfn>WebVMT path identifier</dfn> is any sequence of one or more characters not containing the substring "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>), nor containing any <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters or <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters.
           </p>
           <p class='note' title='Path Identification'>
             A <a>WebVMT path identifier</a> is a string which uniquely identifies a moving object in the <a>WebVMT file</a>, for example a camera.
@@ -2589,7 +2613,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>type</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synchronized data type</a>.
@@ -2603,7 +2627,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>data</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing a <a>synchronized data object</a>.
@@ -2617,7 +2641,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>id</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>synchronized data identifier</a>.
@@ -2670,7 +2694,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>to</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing a <a>WebVMT interpolation target parameter list</a>.
@@ -2690,7 +2714,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>end</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>WebVMT timestamp</a>.
@@ -2710,7 +2734,7 @@ mime-type:video/mp4
                 The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>dur</code>".
               </li>
               <li>
-                A U+003A COLON character (:).
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
                 A <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> representing a <a>WebVMT timespan</a>.
@@ -2845,13 +2869,13 @@ NOTE Required blocks omitted for clarity
               Let |input| be the string being parsed, after conversion to Unicode, and with the following transformations applied:
               <ul>
                 <li>
-                  Replace all U+0000 NULL characters by U+FFFD REPLACEMENT CHARACTERs.
+                  Replace all <span class="codepoint" translate="no"><bdi lang="en">&#x0000;</bdi> <code class="uname">U+0000 NULL</code></span> characters by <span class="codepoint" translate="no"><bdi lang="en">&#xFFFD;</bdi> <code class="uname">U+FFFD REPLACEMENT CHARACTER</code></span>s.
                 </li>
                 <li>
-                  Replace each U+000D CARRIAGE RETURN U+000A LINE FEED (CRLF) character pair by a single U+000A LINE FEED (LF) character.
+                  Replace each <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (CRLF) character pair by a single <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) character.
                 </li>
                 <li>
-                  Replace all remaining U+000D CARRIAGE RETURN characters by U+000A LINE FEED (LF) characters.
+                  Replace all remaining <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters by <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters.
                 </li>
               </ul>
             </li>
@@ -2868,25 +2892,25 @@ NOTE Required blocks omitted for clarity
               If |input| is exactly six characters long but does not exactly equal "<code>WEBVMT</code>", then abort these steps. The file does not start with the correct <a>WebVMT file</a> signature and was therefore not successfully processed.
             </li>
             <li>
-              If |input| is more than six characters long but the first six characters do not exactly equal "<code>WEBVMT</code>", or the seventh character is not a U+0020 SPACE character, a U+0009 CHARACTER TABULATION (tab) character, or a U+000A LINE FEED (LF) character, then abort these steps. The file does not start with the correct <a>WebVMT file</a> signature and was therefore not successfully processed.
+              If |input| is more than six characters long but the first six characters do not exactly equal "<code>WEBVMT</code>", or the seventh character is not a <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> character, a <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) character, or a <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) character, then abort these steps. The file does not start with the correct <a>WebVMT file</a> signature and was therefore not successfully processed.
             </li>
             <li>
-              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <i>not</i> U+000A LINE FEED (LF) characters.
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <i>not</i> <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters.
             </li>
             <li>
               If |position| is past the end of |input|, then abort these steps. The file was successfully processed, but it contains no useful data and so no <a>WebVMT cues</a> were added to |output|.
             </li>
             <li>
-              The character indicated by |position| is a U+000A LINE FEED (LF) character. Advance |position| to the next character in |input|.
+              The character indicated by |position| is a <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) character. Advance |position| to the next character in |input|.
             </li>
             <li>
               If |position| is past the end of |input|, then abort these steps. The file was successfully processed, but it contains no useful data and so no <a>WebVMT cues</a> were added to output.
             </li>
             <li>
-              <i>Header:</i> If the character indicated by |position| is not a U+000A LINE FEED (LF) character, then <a>collect a WebVMT block</a> with the |in header| flag set. Otherwise, advance |position| to the next character in |input|.
+              <i>Header:</i> If the character indicated by |position| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) character, then <a>collect a WebVMT block</a> with the |in header| flag set. Otherwise, advance |position| to the next character in |input|.
             </li>
             <li>
-              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are U+000A LINE FEED (LF) characters.
+              <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters.
             </li>
             <li>
               Let |map| be null.
@@ -2913,7 +2937,7 @@ NOTE Required blocks omitted for clarity
                   Otherwise, if |block| is a <a>WebVMT media object</a>, let |media metadata| be |block|.
                 </li>
                 <li>
-                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are U+000A LINE FEED (LF) characters.
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters.
                 </li>
               </ol>
             </li>
@@ -2964,16 +2988,16 @@ NOTE Required blocks omitted for clarity
               <i>Loop:</i> Run these substeps in a loop:
               <ol>
                 <li>
-                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <i>not</i> U+000A LINE FEED (LF) characters. Let |line| be those characters, if any.
+                  <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <i>not</i> <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters. Let |line| be those characters, if any.
                 </li>
                 <li>
                   Increment |line count| by 1.
                 </li>
                 <li>
-                  If |position| is past the end of |input|, let |seen EOF| be true. Otherwise, the character indicated by |position| is a U+000A LINE FEED (LF) character; advance |position| to the next character in |input|.
+                  If |position| is past the end of |input|, let |seen EOF| be true. Otherwise, the character indicated by |position| is a <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) character; advance |position| to the next character in |input|.
                 </li>
                 <li>
-                  If |line| contains the three-character substring "<code>--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS, U+003E GREATER-THAN SIGN), then run these substeps:
+                  If |line| contains the three-character substring "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>), then run these substeps:
                   <ol>
                     <li>
                       If |in header| is not set and at least one of the following conditions are true:
@@ -3024,7 +3048,7 @@ NOTE Required blocks omitted for clarity
                         If |in header| is not set and |line count| is 2, run these substeps:
                         <ol>
                           <li>
-                            If |seen cue| is false and |buffer| starts with the substring "<code>STYLE</code>" (U+0053 LATIN CAPITAL LETTER S, U+0054 LATIN CAPITAL LETTER T, U+0059 LATIN CAPITAL LETTER Y, U+004C LATIN CAPITAL LETTER L, U+0045 LATIN CAPITAL LETTER E), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
+                            If |seen cue| is false and |buffer| starts with the substring "<code>STYLE</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x0053;</bdi> <code class="uname">U+0053 LATIN CAPITAL LETTER S</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0054;</bdi> <code class="uname">U+0054 LATIN CAPITAL LETTER T</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0059;</bdi> <code class="uname">U+0059 LATIN CAPITAL LETTER Y</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x004C;</bdi> <code class="uname">U+004C LATIN CAPITAL LETTER L</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0045;</bdi> <code class="uname">U+0045 LATIN CAPITAL LETTER E</code></span>), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
                             <ol>
                               <li>
                                 <p>
@@ -3087,7 +3111,7 @@ NOTE Required blocks omitted for clarity
                             </ol>
                           </li>
                           <li>
-                            Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>MAP</code>" (U+004D LATIN CAPITAL LETTER M, U+0041 LATIN CAPITAL LETTER A, U+0050 LATIN CAPITAL LETTER P), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
+                            Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>MAP</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x004D;</bdi> <code class="uname">U+004D LATIN CAPITAL LETTER M</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0050;</bdi> <code class="uname">U+0050 LATIN CAPITAL LETTER P</code></span>), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
                             <ol>
                               <li>
                                 <i>Map creation:</i> Let |map| be a new <a>WebVMT map</a>.
@@ -3098,7 +3122,7 @@ NOTE Required blocks omitted for clarity
                             </ol>
                           </li>
                           <li>
-                            Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>MEDIA</code>" (U+004D LATIN CAPITAL LETTER M, U+0045 LATIN CAPITAL LETTER E, U+0044 LATIN CAPITAL LETTER D, U+0049 LATIN CAPITAL LETTER I, U+0041 LATIN CAPITAL LETTER A), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
+                            Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>MEDIA</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x004D;</bdi> <code class="uname">U+004D LATIN CAPITAL LETTER M</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0045;</bdi> <code class="uname">U+0045 LATIN CAPITAL LETTER E</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0044;</bdi> <code class="uname">U+0044 LATIN CAPITAL LETTER D</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0049;</bdi> <code class="uname">U+0049 LATIN CAPITAL LETTER I</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span>), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
                             <ol>
                               <li>
                                 <i>Media creation:</i> Let |media metadata| be a new <a>WebVMT media</a>.
@@ -3111,7 +3135,7 @@ NOTE Required blocks omitted for clarity
                         </ol>
                       </li>
                       <li>
-                        If |buffer| is not the empty string, append a U+000A LINE FEED (LF) character to |buffer|.
+                        If |buffer| is not the empty string, append a <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) character to |buffer|.
                       </li>
                       <li>
                         Append |line| to |buffer|.
@@ -3162,13 +3186,13 @@ NOTE Required blocks omitted for clarity
               For each token |setting| in the list |settings|, run the following substeps:
               <ol>
                 <li>
-                  If |setting| does not contain a U+003A COLON character (:), or if the first U+003A COLON character (:) in |setting| is either the first or last character of |setting|, then jump to the step labeled <i>next setting</i>.
+                  If |setting| does not contain a <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character, or if the first <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character in |setting| is either the first or last character of |setting|, then jump to the step labeled <i>next setting</i>.
                 </li>
                 <li>
-                  Let |name| be the leading substring of |setting| up to and excluding the first U+003A COLON character (:) in that string.
+                  Let |name| be the leading substring of |setting| up to and excluding the first <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character in that string.
                 </li>
                 <li>
-                  Let |value| be the trailing substring of |setting| starting from the character immediately after the first U+003A COLON character (:) in that string.
+                  Let |value| be the trailing substring of |setting| starting from the character immediately after the first <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character in that string.
                 </li>
                 <li>
                   Run the appropriate substeps that apply for the value of |name|, as follows:
@@ -3224,13 +3248,13 @@ NOTE Required blocks omitted for clarity
               For each token |setting| in the list |settings|, run the following substeps:
               <ol>
                 <li>
-                  If |setting| does not contain a U+003A COLON character (:), or if the first U+003A COLON character (:) in |setting| is either the first or last character of |setting|, then jump to the step labeled <i>next setting</i>.
+                  If |setting| does not contain a <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character, or if the first <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character in |setting| is either the first or last character of |setting|, then jump to the step labeled <i>next setting</i>.
                 </li>
                 <li>
-                  Let |name| be the leading substring of |setting| up to and excluding the first U+003A COLON character (:) in that string.
+                  Let |name| be the leading substring of |setting| up to and excluding the first <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character in that string.
                 </li>
                 <li>
-                  Let |value| be the trailing substring of |setting| starting from the character immediately after the first U+003A COLON character (:) in that string.
+                  Let |value| be the trailing substring of |setting| starting from the character immediately after the first <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character in that string.
                 </li>
                 <li>
                   Run the appropriate substeps that apply for the value of |name|, as follows:
@@ -3292,13 +3316,13 @@ NOTE Required blocks omitted for clarity
               <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace</a>.
             </li>
             <li>
-              If the character at |position| is not a U+002D HYPHEN-MINUS character (-) then abort these steps and return failure. Otherwise, move |position| forwards one character.
+              If the character at |position| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span> character then abort these steps and return failure. Otherwise, move |position| forwards one character.
             </li>
             <li>
-              If the character at |position| is not a U+002D HYPHEN-MINUS character (-) then abort these steps and return failure. Otherwise, move |position| forwards one character.
+              If the character at |position| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span> character then abort these steps and return failure. Otherwise, move |position| forwards one character.
             </li>
             <li>
-              If the character at |position| is not a U+003E GREATER-THAN SIGN character (>) then abort these steps and return failure. Otherwise, move |position| forwards one character.
+              If the character at |position| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span> character then abort these steps and return failure. Otherwise, move |position| forwards one character.
             </li>
             <li>
               <a data-cite='HTML51/infrastructure.html#skip-ascii-whitespace'>Skip whitespace.</a>
@@ -3326,7 +3350,10 @@ NOTE Required blocks omitted for clarity
               If |position| is past the end of |input|, return an error and abort these steps.
             </li>
             <li>
-              If the character indicated by |position| is not an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>, then return an error and abort these steps.
+              If the character at |position| is a <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span> character, let |negative| be true and move |position| forwards one character. Otherwise, let |negative| be false.
+            </li>
+            <li>
+              If |position| is beyond the end of |input| or if the character indicated by |position| is not an <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digit</a>, then return an error and abort these steps.
             </li>
             <li>
               <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
@@ -3338,7 +3365,7 @@ NOTE Required blocks omitted for clarity
               If |string| is not exactly two characters in length, or if |value1| is greater than 59, let |most significant units| be <i>hours</i>.
             </li>
             <li>
-              If |position| is beyond the end of |input| or if the character at |position| is not a U+003A COLON character (:), then return an error and abort these steps. Otherwise, move |position| forwards one character.
+              If |position| is beyond the end of |input| or if the character at |position| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character, then return an error and abort these steps. Otherwise, move |position| forwards one character.
             </li>
             <li>
               <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
@@ -3350,10 +3377,10 @@ NOTE Required blocks omitted for clarity
               Interpret |string| as a base-ten integer. Let |value2| be that integer.
             </li>
             <li>
-              If |most significant units| is <i>hours</i>, or if |position| is not beyond the end of |input| and the character at |position| is a U+003A COLON character (:), run these substeps:
+              If |most significant units| is <i>hours</i>, or if |position| is not beyond the end of |input| and the character at |position| is a <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character, run these substeps:
               <ol>
                 <li>
-                  If |position| is beyond the end of |input| or if the character at |position| is not a U+003A COLON character (:), then return an error and abort these steps. Otherwise, move |position| forwards one character.
+                  If |position| is beyond the end of |input| or if the character at |position| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character, then return an error and abort these steps. Otherwise, move |position| forwards one character.
                 </li>
                 <li>
                   <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
@@ -3365,10 +3392,10 @@ NOTE Required blocks omitted for clarity
                   Interpret |string| as a base-ten integer. Let |value3| be that integer.
                 </li>
               </ol>
-              Otherwise (if |most significant units| is not <i>hours</i>, and either |position| is beyond the end of |input|, or the character at |position| is not a U+003A COLON character (:)), let |value3| have the value of |value2|, then |value2| have the value of |value1|, then let |value1| equal zero.
+              Otherwise (if |most significant units| is not <i>hours</i>, and either |position| is beyond the end of |input|, or the character at |position| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character), let |value3| have the value of |value2|, then |value2| have the value of |value1|, then let |value1| equal zero.
             </li>
             <li>
-              If |position| is beyond the end of |input| or if the character at |position| is not a U+002E FULL STOP character (.), then return an error and abort these steps. Otherwise, move |position| forwards one character.
+              If |position| is beyond the end of |input| or if the character at |position| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x002E;</bdi> <code class="uname">U+002E FULL STOP</code></span> character, then return an error and abort these steps. Otherwise, move |position| forwards one character.
             </li>
             <li>
               <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-digit'>ASCII digits</a>, and let |string| be the collected substring.
@@ -3384,6 +3411,9 @@ NOTE Required blocks omitted for clarity
             </li>
             <li>
               Let |result| be |value1|×60×60 + |value2|×60 + |value3| + |value4|/1000.
+            </li>
+            <li>
+              If |negative| is true, let |result| be 0 - |result|.
             </li>
             <li>
               Return |result|.
@@ -3505,13 +3535,13 @@ NOTE Required blocks omitted for clarity
               </p>
               <dl>
                 <dt>
-                  U+007B LEFT CURLY BRACKET character ({)
+                  <span class="codepoint" translate="no"><bdi lang="en">&#x007B;</bdi> <code class="uname">U+007B LEFT CURLY BRACKET</code></span> character ({)
                 </dt>
                 <dd>
                   <a>Collect a JSON object text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
                 </dd>
                 <dt>
-                  U+005B LEFT SQUARE BRACKET character ([)
+                  <span class="codepoint" translate="no"><bdi lang="en">&#x005B;</bdi> <code class="uname">U+005B LEFT SQUARE BRACKET</code></span> character ([)
                 </dt>
                 <dd>
                   <a>Collect a JSON array text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
@@ -3541,7 +3571,7 @@ NOTE Required blocks omitted for clarity
               Let |c| be the character in |input| pointed to by |position|.
             </li>
             <li>
-              If |c| is not a U+007B LEFT CURLY BRACKET character ({) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+              If |c| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x007B;</bdi> <code class="uname">U+007B LEFT CURLY BRACKET</code></span> character ({) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
             </li>
             <li>
               <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
@@ -3559,7 +3589,7 @@ NOTE Required blocks omitted for clarity
               Let |c| be the character in |input| pointed to by |position|.
             </li>
             <li>
-              If |c| is not a U+003A COLON character (:) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+              If |c| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
             </li>
             <li>
               <a>Collect a JSON value text</a>. If that algorithm fails, then abort these steps and return failure.
@@ -3568,10 +3598,10 @@ NOTE Required blocks omitted for clarity
               Let |c| be the character in |input| pointed to by |position|.
             </li>
             <li>
-              If |c| is a U+007D RIGHT CURLY BRACKET character (}) then append |c| to |string|, advance |position| to the next character in |input|, return |string| and abort these steps.
+              If |c| is a <span class="codepoint" translate="no"><bdi lang="en">&#x007D;</bdi> <code class="uname">U+007D RIGHT CURLY BRACKET</code></span> character (}) then append |c| to |string|, advance |position| to the next character in |input|, return |string| and abort these steps.
             </li>
             <li>
-              Otherwise, if |c| is not a U+002C COMMA character (,) then return failure and abort these steps.
+              Otherwise, if |c| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x002C;</bdi> <code class="uname">U+002C COMMA</code></span> character then return failure and abort these steps.
             </li>
             <li>
               Append |c| to |string| and advance |position| to the next character in |input|.
@@ -3593,7 +3623,7 @@ NOTE Required blocks omitted for clarity
               Let |c| be the character in |input| pointed to by |position|.
             </li>
             <li>
-              If |c| is not a U+005B LEFT BRACKET character ([) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+              If |c| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x005B;</bdi> <code class="uname">U+005B LEFT BRACKET</code></span> character ([) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
             </li>
             <li>
               <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
@@ -3605,10 +3635,10 @@ NOTE Required blocks omitted for clarity
               Let |c| be the character in |input| pointed to by |position|.
             </li>
             <li>
-              If |c| is a U+005D RIGHT BRACKET character (]) then append |c| to |string|, advance |position| to the next character in |input|, return |string| and abort these steps.
+              If |c| is a <span class="codepoint" translate="no"><bdi lang="en">&#x005D;</bdi> <code class="uname">U+005D RIGHT BRACKET</code></span> character (]) then append |c| to |string|, advance |position| to the next character in |input|, return |string| and abort these steps.
             </li>
             <li>
-              Otherwise, if |c| is not a U+002C COMMA character (,) then return failure and abort these steps.
+              Otherwise, if |c| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x002C;</bdi> <code class="uname">U+002C COMMA</code></span> character then return failure and abort these steps.
             </li>
             <li>
               Append |c| to |string| and advance |position| to the next character in |input|.
@@ -3635,19 +3665,19 @@ NOTE Required blocks omitted for clarity
             <dl>
               Jump to the entry that matches the value of |c|:
               <dt>
-                U+0022 QUOTATION MARK character (")
+                <span class="codepoint" translate="no"><bdi lang="en">&#x0022;</bdi> <code class="uname">U+0022 QUOTATION MARK</code></span> character (")
               </dt>
               <dd>
                 <a>Collect a JSON string text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
               </dd>
               <dt>
-                U+007B LEFT CURLY BRACKET character ({)
+                <span class="codepoint" translate="no"><bdi lang="en">&#x007B;</bdi> <code class="uname">U+007B LEFT CURLY BRACKET</code></span> character ({)
               </dt>
               <dd>
                 <a>Collect a JSON object text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
               </dd>
               <dt>
-                U+005B LEFT SQUARE BRACKET character ([)
+                <span class="codepoint" translate="no"><bdi lang="en">&#x005B;</bdi> <code class="uname">U+005B LEFT SQUARE BRACKET</code></span> character ([)
               </dt>
               <dd>
                 <a>Collect a JSON array text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, return the collected string and abort these steps.
@@ -3688,7 +3718,7 @@ NOTE Required blocks omitted for clarity
               Let |c| be the character in |input| pointed to by |position|.
             </li>
             <li>
-              If |c| is not a U+0022 QUOTATION MARK character (") then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+              If |c| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x0022;</bdi> <code class="uname">U+0022 QUOTATION MARK</code></span> character (") then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
             </li>
             <li>
               <i>Loop:</i> If |position| is past the end of |input|, return |string| and abort these steps.
@@ -3697,10 +3727,10 @@ NOTE Required blocks omitted for clarity
               Let |c| be the character in |input| pointed to by |position|.
             </li>
             <li>
-              If |c| is a U+0022 QUOTATION MARK character (") then append |c| to |string| and advance |position| to the next character in |input|, return |string| and abort these steps.
+              If |c| is a <span class="codepoint" translate="no"><bdi lang="en">&#x0022;</bdi> <code class="uname">U+0022 QUOTATION MARK</code></span> character (") then append |c| to |string| and advance |position| to the next character in |input|, return |string| and abort these steps.
             </li>
             <li>
-              Otherwise, if |c| is a U+005C REVERSE SOLIDUS character (\) then <a>collect JSON escape text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, append the collected string to |string|.
+              Otherwise, if |c| is a <span class="codepoint" translate="no"><bdi lang="en">&#x005C;</bdi> <code class="uname">U+005C REVERSE SOLIDUS</code></span> character (\) then <a>collect JSON escape text</a>. If that algorithm fails, then abort these steps and return failure. Otherwise, append the collected string to |string|.
             </li>
             <li>
               Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
@@ -3722,7 +3752,7 @@ NOTE Required blocks omitted for clarity
               Let |c| be the character in |input| pointed to by |position|.
             </li>
             <li>
-              If |c| is not a U+005C REVERSE SOLIDUS character (\) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
+              If |c| is not a <span class="codepoint" translate="no"><bdi lang="en">&#x005C;</bdi> <code class="uname">U+005C REVERSE SOLIDUS</code></span> character (\) then return failure and abort these steps. Otherwise, append |c| to |string| and advance |position| to the next character in |input|.
             </li>
             <li>
               If |position| is past the end of |input|, return |string| and abort these steps.
@@ -3734,7 +3764,7 @@ NOTE Required blocks omitted for clarity
               Append |c| to |string| and advance |position| to the next character in |input|.
             </li>
             <li>
-              If |c| is a U+0075 LATIN SMALL LETTER U character (u) then run the following substeps:
+              If |c| is a <span class="codepoint" translate="no"><bdi lang="en">&#x0075;</bdi> <code class="uname">U+0075 LATIN SMALL LETTER U</code></span> character (u) then run the following substeps:
               <ol>
                 <li>
                   <a data-cite='HTML51/infrastructure.html#collect-a-sequence-of-code-points'>Collect a sequence of code points</a> that are <a data-cite='HTML51/infrastructure.html#ascii-hex-digits'>ASCII hex digits</a> and no more than four characters in length, and let |hex| be the collected substring.
@@ -3995,7 +4025,7 @@ STYLE
 
 NOTE Red or green?
 
-00:00:00.000 --> 00:00:25.000
+00:00:00.000 --&gt; 00:00:25.000
 { "circle": { "lat": 51.504789, "lng": -0.078642, "rad": 20 } }
             </pre>
             <p>
