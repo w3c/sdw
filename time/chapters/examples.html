@@ -1,14 +1,14 @@
 <h2>Examples</h2>
 
 <section id="dtd-vs-dt">
-    <h3>DateTimeDescription vs dateTime</h3>
-    <p>
-        The following example illustrates the difference between using <a>:DateTimeDescription</a> and using the XML
-        datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>.
-        An instant that represents the start of a meeting, called <code>ex:meetingStart</code>, happens at 10:30am AEST
-        on 12 Apr 2017 can be expressed using both <a>:inXSDDateTimeStamp</a> and <a>:inDateTime</a> in OWL as:
-    </p>
-    <pre>
+  <h3>DateTimeDescription vs dateTime</h3>
+  <p>
+    The following example illustrates the difference between using <a>:DateTimeDescription</a> and using the XML
+    datatype <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>.
+    An instant that represents the start of a meeting, called <code>ex:meetingStart</code>, happens at 10:30am AEST
+    on 12 Apr 2017 can be expressed using both <a>:inXSDDateTimeStamp</a> and <a>:inDateTime</a> in OWL as:
+  </p>
+  <pre>
 ex:meetingStart
   a                    :Instant ;
   :inDateTime          ex:meetingStartDescription ;
@@ -29,34 +29,33 @@ ex:meetingStartDescription
   :year         "2017"^^xsd:gYear .
 </pre>
 
-    <p>
-        It is much more concise to use the XML Schema datatype
-        <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>.
-        However, using <a>:DateTimeDescription</a> more information can be included directly in a message, such as
-        the "week", "day of week" and "day of year".
-        In the example we can also see that 12/04/2017 is a Wednesday, the month is April, it is the 102<sup>nd</sup>
-        day of the year, and in the 15<sup>th</sup> week of the year.
-        Since each field of <a>:DateTimeDescription</a> is separate no computation is required to get the values of
-        these fields for use in reasoning.
-        However, since some calendars, such as religious observationally-based ones, cannot be algorithmically
-        calculated explicit assertion of values for elements of the calendar is required.
-    </p>
-    <p>
-        The <a>:timeZone</a> property points to a definition of Australian Eastern Standard Time.
-    </p>
+  <p>
+    It is much more concise to use the XML Schema datatype
+    <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code>.
+    However, using <a>:DateTimeDescription</a> more information can be included directly in a message, such as
+    the "week", "day of week" and "day of year".
+    In the example we can also see that 12/04/2017 is a Wednesday, the month is April, it is the 102<sup>nd</sup>
+    day of the year, and in the 15<sup>th</sup> week of the year.
+    Since each field of <a>:DateTimeDescription</a> is separate no computation is required to get the values of
+    these fields for use in reasoning.
+    However, since some calendars, such as religious observationally-based ones, cannot be algorithmically
+    calculated explicit assertion of values for elements of the calendar is required.
+  </p>
+  <p>
+    The <a>:timeZone</a> property points to a definition of Australian Eastern Standard Time.
+  </p>
 </section>
 
 <section id="different-TRS">
-    <h3>Use of temporal reference systems</h3>
-    <p>
-        The use of different temporal reference systems for the same absolute time is illustrated in the following
-        examples. Abby's birthday is an <a>:Instant</a> whose position may be expressed using the conventional
-        XSD <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> type as
-        <code>2001-05-23T08:20:00+08:00</code>:
-    </p>
-    <pre>
+  <h3>Use of temporal reference systems</h3>
+  <p>
+    The use of different temporal reference systems for the same absolute time is illustrated in the following
+    examples.
+    Abby's birthday is <code>2001-05-23T08:20:00+08:00</code> using the conventional ISO 8601 notation.
+    Utilising the various terms from OWL-Time, this can be expressed as follows:
+  </p>
+  <pre>
 ex:AbbyBirthday
-  a               :Instant ;
   :inDateTime     ex:AbbyBirthdayHebrew ;
   :inTimePosition ex:AbbyBirthdayUnix ;
   rdfs:label      "Abby's birthdate"^^xsd:string ;
@@ -64,11 +63,13 @@ ex:AbbyBirthday
   :inXSDDateTimeStamp  "2001-05-23T08:20:00+08:00"^^xsd:dateTimeStamp ;
 .
 </pre>
-    <p>
-        Using the <a>:DateTimeDescription</a> class, the elements of the date and time using the Gregorian Calendar
-        are split out into separate properties:
-    </p>
-    <pre>
+  <p>
+    Using the <a>:DateTimeDescription</a> class, the elements of the date and time using the Gregorian Calendar
+    are split out into separate properties.
+    As noted in the definition of <a>:DateTimeDescription</a>, the precision means that this individual is an interval
+    of duration one minute.
+  </p>
+  <pre>
 ex:AbbyBirthdayGregorian
   a           	:DateTimeDescription ;
   :day        	"---23"^^xsd:gDay ;
@@ -83,10 +84,11 @@ ex:AbbyBirthdayGregorian
   :year       	"2001"^^xsd:gYear ;
 .
 </pre>
-    <p>
-        The <a>:GeneralDateTimeDescription</a> class may be used to express the same date using the Hebrew calendar:
-    </p>
-    <pre>
+  <p>
+    The <a>:GeneralDateTimeDescription</a> class may be used to express the same date using the Hebrew calendar.
+    In this case the precision given means that this individual is an interval of duration one day.
+  </p>
+  <pre>
 ex:AbbyBirthdayHebrew
   a         	:GeneralDateTimeDescription ;
   :day      	"---01"^^:generalDay ;
@@ -97,11 +99,11 @@ ex:AbbyBirthdayHebrew
   :unitType 	:unitDay ;
 .
 </pre>
-    <p>
-        The <a>:TimePosition</a> class may be used to express the same position in Unix time (also known as Posix
-        time or Epoch time) (i.e., the number of seconds since the beginning of 1st January 1970):
-    </p>
-    <pre>
+  <p>
+    The <a>:TimePosition</a> class may be used to express the same position in Unix time (also known as Posix
+    time or Epoch time) (i.e., the number of seconds since the beginning of 1st January 1970):
+  </p>
+  <pre>
 ex:AbbyBirthdayUnix
   a                 :TimePosition ;
   :hasTRS           &lt;http://dbpedia.org/resource/Unix_time&gt; ;
@@ -109,18 +111,19 @@ ex:AbbyBirthdayUnix
   rdfs:label        "Abby's birthdate in Unix time"^^xsd:string ;
 .
 </pre>
-    <p>
-        Each of these examples refers to either a temporal reference system or time zone described externally, using its
-        URI. RDF representations are available from DBPedia (e.g.,
-        <a href="http://dbpedia.org/data/Unix_time.n3">http://dbpedia.org/resource/Unix_time</a>) though these do not
-        have specific time semantics.
-    </p>
-    <p>
-        Similar to the way that <a>:DateTimeDescription</a> is a derived from <a>:GeneralDateTimeDescription</a>
-        by fixing the <a>:TRS</a> to the Gregorian system, a specialized class <code>UnixTime</code> may be derived
-        from <a>:TimePosition</a> by fixing the value of its reference system to the Unix time system:
-    </p>
-    <pre>
+  <p>
+    Each of these examples refers to either a temporal reference system or time zone described externally, using its
+    URI.
+    RDF representations are available from DBPedia (e.g.,
+    <a href="http://dbpedia.org/data/Unix_time.n3">http://dbpedia.org/resource/Unix_time</a>) though these do not have
+    specific time semantics.
+  </p>
+  <p>
+    Similar to the way that <a>:DateTimeDescription</a> is a derived from <a>:GeneralDateTimeDescription</a> by fixing
+    the <a>:TRS</a> to the Gregorian system, a specialized class <code>UnixTime</code> may be derived from
+    <a>:TimePosition</a> by fixing the value of its reference system to the Unix time system:
+  </p>
+  <pre>
 ex:UnixTime
   rdfs:subClassOf time:TimePosition ;
   rdfs:subClassOf [
@@ -130,21 +133,21 @@ ex:UnixTime
     ] ;
 .
 </pre>
-    <p>
-        The RDF representation of this example is available
-        <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/OWL-Time-examples.ttl">here</a>.
-    </p>
+  <p>
+    The RDF representation of this example is available
+    <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/OWL-Time-examples.ttl">here</a>.
+  </p>
 </section>
 
 <section id="temporal-precision">
-    <h3>Temporal precision</h3>
-    <p>
-        For the purposes of radiocarbon dating (which is the technique used in geological age determination for
-        materials up to around 60,000 years old) 'the Present' is conventionally fixed at 1950 [[rc-14]].
-        This can be described as an individual <a>:Instant</a>, with its position expressed using any of the three
-        alternatives:
-    </p>
-    <pre>
+  <h3>Temporal precision</h3>
+  <p>
+    For the purposes of radiocarbon dating (which is the technique used in geological age determination for
+    materials up to around 60,000 years old) 'the Present' is conventionally fixed at 1950 [[rc-14]].
+    This can be described as an individual <a>:Instant</a>, with its position expressed using any of the three
+    alternatives:
+  </p>
+  <pre>
 geol:Present
   a :Instant ;
   :inDateTime [
@@ -161,30 +164,28 @@ geol:Present
   rdfs:label "The present"^^xsd:string ;
 .
 </pre>
-    <p>
-        Expressed using <a>:DateTimeDescription</a> the <a>:unitType</a> &mdash; which determines the precision
-        &mdash; is set to <a>:unitYear</a>, and only the <a>:year</a> element is provided in the value.
-        The TRS value is not provided explicitly, as it is fixed in the ontology description to
-        <a href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian">http://www.opengis.net/def/uom/ISO-8601/0/Gregorian</a>.
-        In the <a>:TimePosition</a> variant, the TRS is given as
-        <a href="http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime">http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime</a>
-        which has units of millions of years, starting from the present, positive backwards.
-        For the value expressed using
-        <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> the position
-        within the year is set arbitrarily to midnight at the beginning of 1st January.
-        This level of precision in this case is spurious, but is required to satisfy the lexical pattern of the
-        datatype.
-    </p>
+  <p>
+    Expressed using <a>:DateTimeDescription</a> the <a>:unitType</a> &mdash; which determines the precision
+    &mdash; is set to <a>:unitYear</a>, and only the <a>:year</a> element is provided in the value.
+    The TRS value is not provided explicitly, as it is fixed in the ontology description to
+    <a href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian">http://www.opengis.net/def/uom/ISO-8601/0/Gregorian</a>.
+    In the <a>:TimePosition</a> variant, the TRS is given as
+    <a href="http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime">http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime</a>
+    which has units of millions of years, starting from the present, positive backwards.
+    For the value expressed using
+    <code><a href="https://www.w3.org/TR/xmlschema11-2/#dateTimeStamp">xsd:dateTimeStamp</a></code> the position
+    within the year is set arbitrarily to midnight at the beginning of 1st January.
+    This level of precision in this case is spurious, but is required to satisfy the lexical pattern of the datatype.
+  </p>
 
-    <p>
-        Since the <a>:numericPosition</a>, <a>:second</a> properties have the datatype of
-        <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code>, the position of a
-        <a>:Instant</a> or the duration of a <a>:TemporalEntity</a> may be represented with a precision of
-        fractions of seconds if required. For example, a database timestamp with a precision of milliseconds can be
-        expressed as follows:
-    </p>
+  <p>
+    Since the <a>:numericPosition</a>, <a>:second</a> properties have the datatype of
+    <code><a href="https://www.w3.org/TR/xmlschema11-2/#decimal">xsd:decimal</a></code>, the position of a
+    <a>:Instant</a> or the duration of a <a>:TemporalEntity</a> may be represented with a precision of fractions of
+    seconds if required. For example, a database timestamp with a precision of milliseconds can be expressed as follows:
+  </p>
 
-    <pre>
+  <pre>
 ex:DatabaseTimeStamp
   a :Instant ;
   :inXSDDateTimeStamp "2015-11-01T17:58:16.102Z"^^xsd:dateTimeStamp ;
@@ -206,13 +207,13 @@ ex:DatabaseTimeStamp
 .
 </pre>
 
-    <p>
-        where <code>ex:GPSTime</code> specializes <a>:GeneralDateTimeDescription</a> by setting the
-        <a>:unitType</a> to <a>:unitSecond</a>, the <a>:hasTRS</a> to the GPS timekeeping system, and
-        suppressing all other properties except for <a>:week</a> and <a>:second</a>:
-    </p>
+  <p>
+    where <code>ex:GPSTime</code> specializes <a>:GeneralDateTimeDescription</a> by setting the
+    <a>:unitType</a> to <a>:unitSecond</a>, the <a>:hasTRS</a> to the GPS timekeeping system, and
+    suppressing all other properties except for <a>:week</a> and <a>:second</a>:
+  </p>
 
-    <pre>
+  <pre>
 ex:GPSTime
   rdf:type owl:Class ;
   rdfs:comment "GPS Time is the number of seconds since an epoch in 1980, encoded as the number of weeks + seconds into the week" ;
@@ -261,32 +262,31 @@ ex:GPSTime
 </section>
 
 <section id="iCal">
-    <h3>iCalendar</h3>
-    <p>
-        iCalendar [[rfc5545]] is a widely supported standard for personal data interchange.
-        It provides the definition of a common format for openly exchanging calendaring and scheduling information
-        across the Internet.
-        The representation of temporal concepts in this time ontology can be straightforwardly mapped to iCalendar.
-        For example, duration of 15 days, 5 hours and 20 seconds is represented in iCalendar as P15DT5H0M20S, which can
-        be represented in the time ontology as:
-    </p>
-    <pre>
+  <h3>iCalendar</h3>
+  <p>
+    iCalendar [[rfc5545]] is a widely supported standard for personal data interchange.
+    It provides the definition of a common format for openly exchanging calendaring and scheduling information
+    across the Internet.
+    The representation of temporal concepts in this time ontology can be straightforwardly mapped to iCalendar.
+    For example, duration of 15 days, 5 hours and 20 seconds is represented in iCalendar as P15DT5H0M20S, which can
+    be represented in the time ontology as:
+  </p>
+  <pre>
 :hasDurationDescription
   a         :DurationDescription ;
   :seconds  20 ;
   :hours    5 ;
   :days     15 .
 </pre>
-    <p>
-        The <a href="https://icalendar.org/">iCalendar homepage</a> features the example of Abraham Lincoln's birthday
-        as celebrated in 2008.
-        This may be represented in multiple ways using OWL-Time, including the following.
-    </p>
-    <p>
-        As a <b><a>:DateTimeInterval</a></b> using the
-        <a>:DateTimeDescription</a> form:
-    </p>
-    <pre>
+  <p>
+    The <a href="https://icalendar.org/">iCalendar homepage</a> features the example of Abraham Lincoln's birthday
+    as celebrated in 2008.
+    This may be represented in multiple ways using OWL-Time, including the following.
+  </p>
+  <p>
+    As a <b><a>:DateTimeInterval</a></b> using the <a>:DateTimeDescription</a> form:
+  </p>
+  <pre>
 _:DTI-1
   rdf:type :DateTimeInterval ;
   dc:coverage """LOCATION:Hodgenville, Kentucky
@@ -308,14 +308,14 @@ _:DTI-1
   ] ;
 .
 </pre>
-    <p>
-        The boundaries of the interval are implicitly the beginning and end of the day specified in the
-        <a>:DateTimeDescription</a>.
-    </p>
-    <p>
-        As a <b><a>:TemporalEntity</a></b> using the <a>:TimePosition</a> to define the beginning and end:
-    </p>
-    <pre>
+  <p>
+    The boundaries of the interval are implicitly the beginning and end of the day specified in the
+    <a>:DateTimeDescription</a>.
+  </p>
+  <p>
+    As a <b><a>:TemporalEntity</a></b> using the <a>:TimePosition</a> to define the beginning and end:
+  </p>
+  <pre>
 _:TE-2
   rdf:type :TemporalEntity ;
   rdfs:label "Abraham Lincoln" ;
@@ -342,38 +342,42 @@ _:TE-2
   ] ;
 .
 </pre>
-    <p>
-        In this formulation, the length of the entity is explicit, as the value of the <a>:hasDuration</a> property.
-    </p>
-    <p>
-        Several other formulations are possible, some of which are shown in the RDF representation is available
-        <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/abraham-lincoln.ttl">here</a>.
-    </p>
+  <p>
+    In this formulation, the length of the entity is explicit, as the value of the <a>:hasDuration</a> property.
+  </p>
+  <p>
+    Several other formulations are possible, some of which are shown in the RDF representation is available
+    <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/abraham-lincoln.ttl">here</a>.
+  </p>
 </section>
 
 <section id="geologictimescale">
-    <h3>Geologic timescale</h3>
-    <p>
-        The geologic timescale is defined as a set of named intervals arranged in a hierarchy, such that there is only
-        one subdivision of the intervals of each rank (e.g.,'Era') by a set of intervals of the next rank (in this case
-        'Period') [[cr-05]].
-        Since the relative ordering is well-defined this graph can therefore serve as an ordinal temporal reference
-        system.
-        Fig. 5 shows how the geologic timescale can be expressed as a set of <a>:ProperInterval</a>s related to each
-        other using only <a>:intervalMetBy</a>, <a>:intervalStartedBy</a>, <a>:intervalFinishedBy</a>.
-        Many other interval relationships follow logically from the ones shown (for example 'Neogene Period'
-        <a>:intervalDuring</a> 'Cenozoic Era') but the ones shown are sufficient to describe the full topology.
-    </p>
-    <figure> <img alt="(Part of) the international chronostratigraphic chart, formalized as a set of proper intervals"
-            title="(Part of) the international chronostratigraphic chart, formalized as a set of proper intervals"
-            src="images/GeologicTimescale.png">
-        <figcaption>Part of the geologic timescale formalized as ProperIntervals, with ordering relationships described
-            using the predicates defined in this ontology.</figcaption>
-    </figure>
-    <p>
-        For example, the 'Archean Eon' is a <a>:ProperInterval</a> described as follows:
-    </p>
-    <pre>
+  <h3>Geologic timescale</h3>
+  <p>
+    The geologic timescale is defined as a set of named intervals arranged in a hierarchy, such that there is only
+    one subdivision of the intervals of each rank (e.g.,'Era') by a set of intervals of the next rank (in this case
+    'Period') [[cr-05]].
+    Since the relative ordering is well-defined this graph can therefore serve as an ordinal temporal reference
+    system.
+    <a href="#GeologicTimescale"></a> shows how the geologic timescale can be expressed as a set of
+    <a>:ProperInterval</a>s related to each
+    other using only <a>:intervalMetBy</a>, <a>:intervalStartedBy</a>, <a>:intervalFinishedBy</a>.
+    Many other interval relationships follow logically from the ones shown (for example 'Neogene Period'
+    <a>:intervalDuring</a> 'Cenozoic Era') but the ones shown are sufficient to describe the full topology.
+  </p>
+  <figure id="GeologicTimescale">
+    <embed alt="(Part of) the international chronostratigraphic chart, formalized as a set of proper intervals"
+      title="(Part of) the international chronostratigraphic chart, formalized as a set of proper intervals"
+      src="images/GeologicTimescale.png" style="width:100%">
+    <figcaption>
+      Part of the geologic timescale formalized as ProperIntervals, with ordering relationships described
+      using the predicates defined in this ontology.
+    </figcaption>
+  </figure>
+  <p>
+    For example, the 'Archean Eon' is a <a>:ProperInterval</a> described as follows:
+  </p>
+  <pre>
 geol:Archean
   rdf:type            :ProperInterval ;
   :hasBeginning       geol:BaseArchean ;
@@ -382,10 +386,10 @@ geol:Archean
   :intervalMetBy      geol:Hadean ;
   rdfs:label          "Archean Eon"^^xsd:string ;
 .</pre>
-    <p>
-        The beginning of the Archean Eon is an <a>:Instant</a>, described as follows:
-    </p>
-    <pre>
+  <p>
+    The beginning of the Archean Eon is an <a>:Instant</a>, described as follows:
+  </p>
+  <pre>
 geol:BaseArchean
   rdf:type :Instant ;
   :inTimePosition [
@@ -395,34 +399,35 @@ geol:BaseArchean
   ] ;
   rdfs:label "Base of Archean Eon"^^xsd:string ;
 . </pre>
-    <p>
-        Note that the position of this <a>:Instant</a> is specified using a <a>:TimePosition</a>, which is a
-        numeric value relative to the temporal coordinate system indicated as the value of the <a>:hasTRS</a>
-        property.
-    </p>
-    <p>
-        The RDF representation of this example is available
-        <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/geologicTimeScale.ttl">here</a>.
-        The complete
-        <a href="http://doi.org/10.4225/08/5914ef9e2c6b5">(2016) International Chronostratigraphic Chart</a> encoded
-        using OWL-Time is available.
-    </p>
+  <p>
+    Note that the position of this <a>:Instant</a> is specified using a <a>:TimePosition</a>, which is a
+    numeric value relative to the temporal coordinate system indicated as the value of the <a>:hasTRS</a>
+    property.
+  </p>
+  <p>
+    The RDF representation of this example is available
+    <a href="https://raw.githubusercontent.com/w3c/sdw/gh-pages/time/rdf/geologicTimeScale.ttl">here</a>.
+    The complete
+    <a href="http://doi.org/10.4225/08/5914ef9e2c6b5">(2016) International Chronostratigraphic Chart</a> encoded
+    using OWL-Time is available.
+  </p>
 </section>
 
 <section id="scheduling">
-    <h3>A Use Case for Scheduling</h3>
-    <!--        <p class="note">This example carried over from [[owl-time-20060927]]. </p> -->
-    <p id="examples0">
-        Suppose someone has a telecon scheduled for 6:00pm EST on November 5, 2006.
-        You would like to make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45
-        minutes.
-        Will there be an overlap?
-    </p>
-    <p>
-        In this use case we can specify the facts about the telecon and the meeting using our ontology in OWL that will
-        allow a temporal reasoner to determine whether there is a conflict:
-    </p>
-    <pre>
+  <h3>A Use Case for Scheduling</h3>
+  <!--        <p class="note">This example carried over from [[owl-time-20060927]].
+</p> -->
+  <p id="examples0">
+    Suppose someone has a telecon scheduled for 6:00pm EST on November 5, 2006.
+    You would like to make an appointment with him for 2:00pm PST on the same day, and expect the meeting to last 45
+    minutes.
+    Will there be an overlap?
+  </p>
+  <p>
+    In this use case we can specify the facts about the telecon and the meeting using our ontology in OWL that will
+    allow a temporal reasoner to determine whether there is a conflict:
+  </p>
+  <pre>
 ex:telecon
   a             :Interval ;
   :hasBeginning ex:teleconStart .
@@ -444,51 +449,51 @@ ex:meetingDuration
   a         :DurationDescription ;
   :minutes  45 .
 </pre>
-    <p>
-        The telecon and the meeting are defined as intervals.
-        <a>:hasBeginning</a> is used for specifying the start times of the meetings.
-        The datetimes are specified using <a>:inXSDDateTimeStamp</a>.
-        The duration of the meeting is specified using the <a>:DurationDescription</a> class.
-    </p>
+  <p>
+    The telecon and the meeting are defined as intervals.
+    <a>:hasBeginning</a> is used for specifying the start times of the meetings.
+    The datetimes are specified using <a>:inXSDDateTimeStamp</a>.
+    The duration of the meeting is specified using the <a>:DurationDescription</a> class.
+  </p>
 </section>
 
 <section id="time-prov">
-    <h3>Alignment of PROV-O with OWL-Time</h3>
+  <h3>Alignment of PROV-O with OWL-Time</h3>
 
-    <p>
-        <a href="https://www.w3.org/TR/prov-dm/">PROV</a> is a process-flow model.
-        The base class <a href="https://www.w3.org/TR/prov-o/#Activity">Activity</a> denotes things that occur over a
-        period of time, and act upon or with entities.
-        Activities are ordered within a provenance trace.
-        Thus, an alignment with OWL-Time is natural.
-    </p>
-    <p>
-        The PROV-O classes <code><a href="https://www.w3.org/TR/prov-o/#Activity">prov:Activity</a></code> and
-        <code><a href="https://www.w3.org/TR/prov-o/#InstantaneousEvent">prov:InstantaneousEvent</a></code> may be
-        conceived as sub-classes of <a>:TemporalEntity</a> and <a>:Instant</a> respectively.
-    </p>
+  <p>
+    <a href="https://www.w3.org/TR/prov-dm/">PROV</a> is a process-flow model.
+    The base class <a href="https://www.w3.org/TR/prov-o/#Activity">Activity</a> denotes things that occur over a
+    period of time, and act upon or with entities.
+    Activities are ordered within a provenance trace.
+    Thus, an alignment with OWL-Time is natural.
+  </p>
+  <p>
+    The PROV-O classes <code><a href="https://www.w3.org/TR/prov-o/#Activity">prov:Activity</a></code> and
+    <code><a href="https://www.w3.org/TR/prov-o/#InstantaneousEvent">prov:InstantaneousEvent</a></code> may be
+    conceived as sub-classes of <a>:TemporalEntity</a> and <a>:Instant</a> respectively.
+  </p>
 
-    <pre>
+  <pre>
 prov:Activity           rdfs:subClassOf    time:TemporalEntity .
 prov:InstantaneousEvent rdfs:subClassOf    time:Instant .
 </pre>
 
-    <p>
-        The <code><a href="https://www.w3.org/TR/prov-o/#atTime">prov:atTime</a></code> property of an
-        <code><a href="https://www.w3.org/TR/prov-o/#InstantaneousEvent">prov:InstantaneousEvent</a></code> is directly
-        related to <a>:inXSDDateTime</a>.
-    </p>
+  <p>
+    The <code><a href="https://www.w3.org/TR/prov-o/#atTime">prov:atTime</a></code> property of an
+    <code><a href="https://www.w3.org/TR/prov-o/#InstantaneousEvent">prov:InstantaneousEvent</a></code> is directly
+    related to <a>:inXSDDateTime</a>.
+  </p>
 
-    <pre>prov:atTime rdfs:subPropertyOf time:inXSDDateTime .</pre>
-
-
-    <p>
-        However, the Activity start and end properties require a property chain axiom, because the beginning and end of
-        a <a>:TemporalEntity</a> are <a>:Instants</a> rather than compact <code>xsd:dateTimes</code>.
-    </p>
+  <pre>prov:atTime rdfs:subPropertyOf time:inXSDDateTime .</pre>
 
 
-    <pre>
+  <p>
+    However, the Activity start and end properties require a property chain axiom, because the beginning and end of
+    a <a>:TemporalEntity</a> are <a>:Instants</a> rather than compact <code>xsd:dateTimes</code>.
+  </p>
+
+
+  <pre>
 prov:endedAtTime   owl:propertyChainAxiom (
       time:hasEnd
       time:inXSDDateTime
@@ -506,7 +511,8 @@ prov:startedAtTime owl:propertyChainAxiom (
 <!--
 <section id="dcat-example">
 <h3>Legal interval</h3>
-<p>The <a href="https://www.w3.org/TR/vocab-dcat/#basic-example">basic example</a> in the [[vocab-dcat]] specification described the 'temporal range' of a dataset with reference to the resource <a href="http://reference.data.gov.uk/id/quarter/2006-Q1">http://reference.data.gov.uk/id/quarter/2006-Q1</a> which is one of many available from <code>data.gov.uk</code>. This resource defines a specific legal period - the first quarter of 2006 - formalized using the <a href="http://reference.data.gov.uk/def/intervals">interval ontology</a> which is (currently) based on the 2006 version of OWL-Time. The period can be fully described using OWL-Time, omitting all elements from the intervals ontology, as follows: </p>
+<p>
+The <a href="https://www.w3.org/TR/vocab-dcat/#basic-example">basic example</a> in the [[vocab-dcat]] specification described the 'temporal range' of a dataset with reference to the resource <a href="http://reference.data.gov.uk/id/quarter/2006-Q1">http://reference.data.gov.uk/id/quarter/2006-Q1</a> which is one of many available from <code>data.gov.uk</code>. This resource defines a specific legal period - the first quarter of 2006 - formalized using the <a href="http://reference.data.gov.uk/def/intervals">interval ontology</a> which is (currently) based on the 2006 version of OWL-Time. The period can be fully described using OWL-Time, omitting all elements from the intervals ontology, as follows: </p>
 
 <pre>ex:i2006-Q1
   rdf:type :ProperInterval ;

@@ -28,34 +28,40 @@ var respecConfig = {
   ],
   editors: [
     {
-      name: "Simon Cox",
-      company: "OGC",
-      companyURL: "https://ogc.org/",
+      name: "Simon J D Cox",
+      company: "Timely Logic, AU",
       orcid: "0000-0002-3884-3420",
       w3cid: 1796
-    }, {
+    }, 
+    {
       name: "Chris Little",
-      company: "Met Office",
+      company: "Met Office, UK",
       companyURL: "http://www.metoffice.gov.uk/",
       orcid: "0000-0002-1442-3712",
       w3cid: 59886
-    }],
+    }
+  ],
   otherLinks: [
     {
       key: "Editors of 2006 Working Draft",
       data: [
         {
           value: "Jerry R. Hobbs"
-        }, {
+        }, 
+        {
           value: "Feng Pan"
-        }]
-    }, {
+        }
+      ]
+    }, 
+    {
       key: "OGC Document Number",
       data: [
         {
-          value: "OGC 16-071r3"
-        }]
-    }],
+          value: "OGC 16-071r4"
+        }
+      ]
+    }
+  ],
   localBiblio: {
     "af-97": {
       authors: ["J.F. Allen", "G. Ferguson"],
