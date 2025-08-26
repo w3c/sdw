@@ -1,74 +1,164 @@
-<h3>Topological Temporal Relations</h3>
+<h3>Temporal entities and relations</h3>
 <p>
-    The basic structure of the ontology is based on an algebra of binary relations on intervals
-    (e.g., meets, overlaps, during) developed by Allen [[al-84]], [[af-97]] for
-    representing qualitative temporal information, and to address the problem of reasoning about such information.
+    The basic structure of the ontology is based on a calculus of binary relations on intervals developed by Allen and
+    Ferguson ([[al-84]], [[af-97]]) for representing qualitative temporal information, and to address the problem of
+    reasoning about such information.
+    The relationships between temporal entities can be defined in terms of <code>before</code> and identity on the
+    beginning and end points.
+</p>
+
+<h4>Temporal entities</h4>
+<p>
+    The ontology starts with a class <a>:TemporalEntity</a> with properties <a>:hasBeginning</a> and <a>:hasEnd</a> that
+    link to the temporal instants that define its limits, and <a>:hasTemporalDuration</a> to describe its extent
+    (<a href="#Fig-temporal-entity"></a>).
+    There are two subclasses: <a>:Interval</a> and <a>:Instant</a>, and they are the only two subclasses of
+    <a>:TemporalEntity</a>.
 </p>
 <p>
-    The ontology starts with a class <a>:TemporalEntity</a> with properties
-    <a>:hasBeginning</a> and <a>:hasEnd</a> that
-    link to the temporal instants that define its limits, and
-    <a>:hasTemporalDuration</a> to describe its extent.
-    There are two subclasses: <a>:Interval</a>
-    and <a>:Instant</a>, and they are the only two subclasses of
-    <a>:TemporalEntity</a>.
-    Intervals are things with extent.
+    Intervals are things with temporal extent.
     Instants are point-like in that they have no interior points, but it is generally safe to think of an instant as an
     interval with zero length, where the beginning and end are the same.
-</p>
-<p>
     This idea - that time intervals are the more general case and time instants are just a limited specialization - is
-    the first key contribution of Allen's analysis.
+    the first key contribution of Allen's analysis ([[al-84]]).
 </p>
 <p>
-    The class <a>:Interval</a> has one subclass
-    <a>:ProperInterval</a>, which
-    corresponds with the common understanding of intervals, in that the beginning and end are distinct, and whose
-    membership is therefore disjoint from <a>:Instant</a>.
+    The class <a>:Interval</a> has one subclass <a>:ProperInterval</a>, which corresponds with the common understanding
+    of intervals, in that the beginning and end are distinct, and whose membership is therefore disjoint from
+    <a>:Instant</a>.
 </p>
-<figure id="TemporalEntity">
-    <embed 
-    title="Temporal Entity and sub-classes" 
-    alt="UML-style diagram of temporal entity classes"
-        src="./images/TemporalEntity.png" style="width:100%">
+<figure id="Fig-temporal-entity">
+    <embed title="Temporal Entity and sub-classes" alt="UML-style diagram of temporal entity classes"
+        src="./images/temporal-entity.svg" style="width:60%">
     <figcaption>
-        Core model of temporal entities.
+        Temporal Entity and sub-classes, with basic relations.
     </figcaption>
 </figure>
+<p>Two basic relations between temporal entities are shown, which are implemented in OWL-Time as:</p>
+<ul>
+    <li>
+        <a>:before</a> &rarr; inverse <a>:after</a>
+    </li>
+</ul>
+
+<h4>Allen and Ferguson's interval relations</h4>
 <p>
-    The class <a>:ProperInterval</a> also has one subclass,
-    <a>:DateTimeInterval</a>.
-    The position and extent of a <a>:DateTimeInterval</a> is an element in a
-    <a>:GeneralDateTimeDescription</a>.
+    Relationships between intervals are the primary focus of Allen and Ferguson's analysis ([[af-97]]).
+    The thirteen elementary relations shown below are the second key contribution
+    (<a href="#Fig-interval-relations"></a>).
+    These relations support unambiguous expression of all possible relationships between temporal entities, which allows
+    the computation of any relative position or sequence.
 </p>
-<p>
-    Relations between intervals are the critical logic provided by Allen's analysis, and implemented in the ontology.
-    Relations between intervals can be defined in a relatively straightforward fashion in terms of
-    <a>:before</a> and identity on the beginning and end points.
-    The thirteen elementary relations shown below are the second key contribution of Allen's analysis.
-    These support unambiguous expression of all possible relations between temporal entities, which allows the
-    computation of any relative position or sequence.
-    Note that the standard interval calculus assumes all intervals are proper, so their beginning and end are different.
-</p>
-<figure id="IntervalRelations">
-    <embed style="width:100%" 
-    title="Allen's Interval Relations"
-        alt="Schematic of Interval Relations" 
+<figure id="Fig-interval-relations">
+    <embed style="width:100%" title="Allen's Interval Relations" alt="Schematic of Interval Relations"
         src="./images/IntervalRelations.png">
     <figcaption>
-        Thirteen elementary possible relations between time periods [[af-97]]. 
+        Thirteen elementary possible relations between time intervals [[af-97]].
     </figcaption>
 </figure>
 <p>
-    Two additional relations: <code>In</code> (the union of <code>During</code>, <code>Starts</code> and
-    <code>Finishes</code>) and <code>Disjoint</code> (the union of <code>Before</code> and <code>After</code>) are not
-    shown in the figure but are included in the ontology.
+    The basic interval relations are implemented in OWL-Time as:
+</p>
+<ul>
+    <li>
+        <a>:intervalBefore</a> &rarr; inverse <a>:intervalAfter</a>
+    </li>
+    <li>
+        <a>:intervalMeets</a> &rarr; inverse <a>:intervalMetBy</a>
+    </li>
+    <li>
+        <a>:intervalOverlaps</a> &rarr; inverse <a>:intervalOverlappedBy</a>
+    </li>
+    <li>
+        <a>:intervalStarts</a> &rarr; inverse <a>:intervalStartedBy</a>
+    </li>
+    <li>
+        <a>:intervalDuring</a> &rarr; inverse <a>:intervalContains</a>
+    </li>
+    <li>
+        <a>:intervalFinishes</a> &rarr; inverse <a>:intervalFinishedBy</a>
+    </li>
+    <li>
+        <a>:intervalEquals</a>
+    </li>
+</ul>
+<p>
+    Note that the standard interval calculus assumes all intervals are proper, so their beginning and end are different.
+</p>
+
+<h4>Additional relations between temporal entities</h4>
+<p>
+    In principle, any relationship between temporal entities can be built up through logical combination of
+    members of the primitive relations.
+    In practice, there are limitations in the expressivity of the RDF implementation of OWL2
+    [[owl2-direct-semantics]][[owl2-rdf-based-semantics]], particularly around unions and complements of properties.
+    In OWL2 the union of properties can only be
+    <a href="https://stackoverflow.com/questions/26128430/owl-union-of-object-property">approximated through a set of sub-property axioms,</a>
+    which link the members up to the union, but does not exclude the possibility of other sub-properties being added to
+    the union.
 </p>
 <p>
-    The properties <a>:hasTemporalDuration</a>,
-    <a>:hasBeginning</a> and <a>:hasEnd</a>,
-    together with a fourth generic property <a>:hasTime</a>, support the association
-    of temporal information with any temporal entity, such as an activity or event, or other entity.
+    Furthermore most of the relationships are only defined for proper-intervals - i.e. temporal entities of non-zero
+    duration - which cannot be used for relationships involving time instants.
+</p>
+<p>
+    Due to these considerations it is convenient to introduce a small set of additional topological relations between
+    temporal entities explicitly.
+    This is in order to support some applications more efficiently, and for interoperability purposes.
+</p>
+<ul>
+    <li>
+        <a>:intervalIn</a>
+        &rarr; union of <a>:intervalDuring</a>, <a>:intervalStarts</a>, <a>:intervalFinishes</a>
+    </li>
+    <li>
+        <a>:intervalDisjoint</a>
+        &rarr;
+        union of <a>:intervalBefore</a>, <a>:intervalAfter</a>
+    </li>
+    <li>
+        <a>:hasInside</a>
+        &rarr;
+        union of <a>:inside</a>, <a>:intervalContains</a>, <a>:intervalStartedBy</a>, <a>:intervalFinishedBy</a>
+    </li>
+    <li>
+        <a>:disjoint</a>
+        &rarr;
+        union of <a>:before</a>, <a>:after</a>, <a>:intervalDisjoint</a>
+    </li>
+    <li>
+        <a>:notDisjoint</a>
+        &rarr;
+        union of <a>:equals</a>, <a>:hasInside</a>, <a>:intervalIn</a>,
+        <a>:intervalMeets</a>, <a>:intervalMetBy</a>, <a>:intervalOverlaps</a>, <a>:intervalOverlappedBy</a>
+        <br><em>complement of <a>:disjoint</a></em>
+    </li>
+    <li>
+        <a>:equals</a>
+        &rarr;
+        super-property of <a>:intervalEquals</a>,
+        <br><em>but not restricted to relations between
+            proper intervals</em>
+    </li>
+</ul>
+
+<p>The complete hierarchy of relations is shown in <a href="#Fig-topology-properties"></a>.</p>
+
+<figure id="Fig-topology-properties">
+    <embed style="width:80%" title="Hierarchy of Temporal Relations" alt="Hierarchy of Temporal Relations"
+        src="./images/topology-properties.svg">
+    <figcaption>
+        Hierarchy of temporal relations, including Allen and Ferguson's elementary relations (<b>bold</b>), with
+        additions
+    </figcaption>
+</figure>
+
+
+<h4>Relating temporal information with any entity</h4>
+<p>
+    The properties <a>:hasTemporalDuration</a>, <a>:hasBeginning</a> and <a>:hasEnd</a>, together with a fourth generic
+    property <a>:hasTime</a>, support the association of temporal information with any temporal entity, such as an
+    activity or event, or other entity.
     These provide a standard way to attach time information to things, which may be used directly in applications if
     suitable, or specialized if needed.
 </p>
