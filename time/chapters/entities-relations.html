@@ -68,22 +68,22 @@
 </p>
 <ul>
     <li>
-        <a>:intervalBefore</a> &rarr; inverse <a>:intervalAfter</a>
+        <a>:intervalBefore</a> &rarr; inverse of <a>:intervalAfter</a>
     </li>
     <li>
-        <a>:intervalMeets</a> &rarr; inverse <a>:intervalMetBy</a>
+        <a>:intervalMeets</a> &rarr; inverse of <a>:intervalMetBy</a>
     </li>
     <li>
-        <a>:intervalOverlaps</a> &rarr; inverse <a>:intervalOverlappedBy</a>
+        <a>:intervalOverlaps</a> &rarr; inverse of <a>:intervalOverlappedBy</a>
     </li>
     <li>
-        <a>:intervalStarts</a> &rarr; inverse <a>:intervalStartedBy</a>
+        <a>:intervalStarts</a> &rarr; inverse of <a>:intervalStartedBy</a>
     </li>
     <li>
-        <a>:intervalDuring</a> &rarr; inverse <a>:intervalContains</a>
+        <a>:intervalDuring</a> &rarr; inverse of <a>:intervalContains</a>
     </li>
     <li>
-        <a>:intervalFinishes</a> &rarr; inverse <a>:intervalFinishedBy</a>
+        <a>:intervalFinishes</a> &rarr; inverse of <a>:intervalFinishedBy</a>
     </li>
     <li>
         <a>:intervalEquals</a>
@@ -97,22 +97,23 @@
 <p>
     In principle, any relationship between temporal entities can be built up through logical combination of
     members of the primitive relations.
-    In practice, there are limitations in the expressivity of the RDF implementation of OWL2
-    [[owl2-direct-semantics]][[owl2-rdf-based-semantics]], particularly around unions and complements of properties.
+    In practice, there are limitations in the expressivity of the RDF implementation of OWL2, particularly around unions and complements of properties [[owl2-direct-semantics]][[owl2-rdf-based-semantics]].
     In OWL2 the union of properties can only be
     <a href="https://stackoverflow.com/questions/26128430/owl-union-of-object-property">approximated through a set of sub-property axioms,</a>
     which link the members up to the union, but does not exclude the possibility of other sub-properties being added to
     the union.
 </p>
 <p>
-    Furthermore most of the relationships are only defined for proper-intervals - i.e. temporal entities of non-zero
-    duration - which cannot be used for relationships involving time instants.
+    Furthermore most of the relationships in OWL-Time were for proper-intervals, i.e. temporal entities of non-zero
+    duration, do not apply to relationships involving time instants.
 </p>
 <p>
     Due to these considerations it is convenient to introduce some additional topological relations between temporal
     entities explicitly.
-    This is in order to support some applications more efficiently, and for interoperability purposes.
-    The additional interval relations are implemented in OWL-Time as:
+    This supports some applications more efficiently, and is useful for interoperability purposes.
+</p>
+<p>
+    The additional relations are implemented in OWL-Time as:
 </p>
 <ul>
     <li>
@@ -130,7 +131,7 @@
     </li>
     <li>
         <a>:notDisjoint</a>
-        &rarr; union of <a>:equals</a>, <a>:hasInside</a>, <a>:intervalIn</a>,
+        &rarr; union of <a>:equals</a>, <a>:hasBeginning</a>, <a>:hasEnd</a>, <a>:hasInside</a>, <a>:intervalIn</a>,
         <a>:intervalMeets</a>, <a>:intervalMetBy</a>, <a>:intervalOverlaps</a>, <a>:intervalOverlappedBy</a>
         <br><em>complement of <a>:disjoint</a></em>
     </li>
@@ -153,10 +154,16 @@
     <embed style="width:80%" title="Hierarchy of Temporal Relations" alt="Hierarchy of Temporal Relations"
         src="./images/topology-properties.svg">
     <figcaption>
-        Hierarchy of temporal relations, including Allen and Ferguson's elementary relations in <b>bold</b>
+        Hierarchy of temporal relations. 
+        Relations whose domain and range are both proper-intervals are prefixed "interval".
+        Allen and Ferguson's elementary relations are in <b>bold</b>. 
     </figcaption>
 </figure>
 
+<p>
+    A test-suite for temporal-entities with positions given using <code>xsd:dateTime</code>, is provided in the <a href="https://github.com/w3c/sdw/tree/gh-pages/time/test">test</a> directory of the repository.
+    A set of queries which compute the relationships between temporal entities using the [[SPARQL-QUERY]] `CONSTRUCT` or `INSERT` operations, is provided. 
+</p>
 
 <h4>Relating temporal information with any entity</h4>
 <p>
