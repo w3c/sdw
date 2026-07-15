@@ -135,10 +135,10 @@ Each deliverable has its own folder. The issue tracker uses labels to distinguis
     <br/><a href="https://www.w3.org/TR/vocab-owl-time-rel/">W3C Interest Group Note</a>
   </dd>
     
-  <dt><a href="https://github.com/w3c/sdw/tree/gh-pages/time">time</a></dt>
+  <dt><a href="https://github.com/w3c/sdw-time">sdw-time</a></dt>
   <dd>
-    The Time Ontology in OWL Recommendation initially developed by the Spatial Data on the Web Working Group.
-    <br/><a href="https://w3c.github.io/sdw/time/">Editor's Draft</a>
+    (Separate repository.) The Time Ontology in OWL Recommendation initially developed by the Spatial Data on the Web Working Group.
+    <br/><a href="https://w3c.github.io/sdw-time/">Editor's Draft</a>
     <br/><a href="https://www.w3.org/TR/owl-time/">W3C Candidate Recommendation</a>
   </dd>
   
