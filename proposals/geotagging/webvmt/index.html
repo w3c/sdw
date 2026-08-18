@@ -1165,9 +1165,18 @@ mime-type:video/mp4
           <dd>
             Optionally, the altitude in meters of the location.
           </dd>
+          <dt>
+            A <dfn class='export'>location heading</dfn>
+          </dt>
+          <dd>
+            Optionally, the heading in degrees associated with the location.
+          </dd>
         </dl>
         <p class='note' title='Co-ordinate Reference System'>
           Location information is provided in terms of World Geodetic System coordinates, WGS84. Altitude is measured in meters above the WGS84 ellipsoid, and should not be confused with the height above mean sea level.
+        </p>
+        <p class='note' title='True North'>
+          Heading is measured clockwise in degrees from true north, which is also called geographical north. True north represents the location of the geographic North Pole or Earth's rotational axis which is used by maps and GNSS devices, and should not be confused with magnetic north which is the direction in which a magnetic compass points.
         </p>
       </section>
       <section id='webvmt-map'>
@@ -1556,13 +1565,19 @@ mime-type:video/mp4
               Optionally, a <dfn>synchronized data identifier</dfn>
             </dt>
             <dd>
-              An identifier shared by all samples from the same data source over time, e.g. for interpolation.
+              An identifier shared by all samples from the same data source over time, e.g. for streaming or interpolation.
             </dd>
             <dt>
               Optionally, a <dfn>synchronized path identifier</dfn>
             </dt>
             <dd>
               A <a>path identifier</a> associated with the data source, e.g. a moving sensor.
+            </dd>
+            <dt>
+              Optionally, a <dfn>synchronized zone identifier</dfn>
+            </dt>
+            <dd>
+              A <a>zone identifier</a> associated with the data source, e.g. a detection zone.
             </dd>
           </dl>
         </section>
@@ -1977,6 +1992,9 @@ mime-type:video/mp4
             Optionally, a <a>WebVMT map center altitude setting</a>.
           </li>
           <li>
+            Optionally, a <a>WebVMT map center heading setting</a>.
+          </li>
+          <li>
             A <a>WebVMT map zoom setting</a>.
           </li>
         </ul>
@@ -1992,8 +2010,11 @@ mime-type:video/mp4
         <p>
           A <dfn>WebVMT map center altitude setting</dfn> consists of a <a>WebVMT altitude setting</a>.
         </p>
+        <p>
+          A <dfn>WebVMT map center heading setting</dfn> consists of a <a>WebVMT heading setting</a>.
+        </p>
         <p class='note' title='Map Center Location'>
-          When interpreted as numbers, the <a>WebVMT map center latitude setting</a>, <a>WebVMT map center longitude setting</a> and <a>WebVMT map center altitude setting</a> values represent the <a>map center location</a>.
+          When interpreted as numbers, the <a>WebVMT map center latitude setting</a>, <a>WebVMT map center longitude setting</a>, <a>WebVMT map center altitude setting</a> and <a>WebVMT map center heading setting</a> values represent the <a>map center location</a>.
         </p>
         <p>
           A <dfn>WebVMT latitude setting</dfn> consists of the following components, in the order given:
@@ -2111,6 +2132,42 @@ mime-type:video/mp4
         </p>
         <p class='note' title='Altitude Zero'>
           When interpreted as a number, a <a>WebVMT altitude</a> represents the height in meters above the WGS84 ellipsoid. Care should be taken not to confuse this with the height above mean sea level.
+        </p>
+        <p>
+          A <dfn>WebVMT heading setting</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              The string "<code>hdg</code>".
+            </li>
+            <li>
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
+            </li>
+            <li>
+              A <a>WebVMT heading</a>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          A <dfn>WebVMT heading</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+            </li>
+            <li>
+              Optionally:
+              <ol>
+                <li>
+                  A <span class="codepoint" translate="no"><bdi lang="en">&#x002E;</bdi> <code class="uname">U+002E DOT</code></span> character.
+                </li>
+                <li>
+                  One or more <a data-cite='HTML51/infrastructure.html#ascii-digits'>ASCII digits</a>.
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </p>
+        <p class='note' title='Heading Range'>
+          When interpreted as a number, a <a>WebVMT heading</a> must be in the range 0..360.
         </p>
         <p>
           A <dfn>WebVMT map zoom setting</dfn> consists of the following components, in the order given:
@@ -2599,6 +2656,9 @@ mime-type:video/mp4
               <li>
                 Optionally, a <a>WebVMT synchronized path attribute</a>.
               </li>
+              <li>
+                Optionally, a <a>WebVMT synchronized zone attribute</a>.
+              </li>
             </ul>
           </p>
           <p>
@@ -2645,6 +2705,9 @@ mime-type:video/mp4
           </p>
           <p>
             A <dfn>WebVMT synchronized path attribute</dfn> consists of a <a>WebVMT path attribute</a> representing a <a>synchronized path identifier</a>.
+          </p>
+          <p>
+            A <dfn>WebVMT synchronized zone attribute</dfn> consists of a <a>WebVMT zone attribute</a> representing a <a>synchronized zone identifier</a>.
           </p>
         </section>
         <section id='webvmt-command-interpolation-attributes'>
@@ -3154,6 +3217,12 @@ NOTE Required blocks omitted for clarity
                   </dt>
                   <dd>
                     Let |map|'s <a>location altitude</a> of the <a>map center location</a> be |value|.
+                  </dd>
+                  <dt>
+                    Otherwise if |name| is a case-sensitive match for "<code>hdg</code>"
+                  </dt>
+                  <dd>
+                    Let |map|'s <a>location heading</a> of the <a>map center location</a> be |value|.
                   </dd>
                   <dt>
                     Otherwise if |name| is a case-sensitive match for "<code>rad</code>"
@@ -4114,10 +4183,12 @@ NOTE Red or green?
               [Exposed=Window]
               interface VMTMap {
                 constructor(double centerLatitude, double centerLongitude,
-                            optional double centerAltitude, double zoomRadius);
+                            double zoomRadius, optional double centerHeading = 0,
+                            optional double centerAltitude);
                 attribute double centerLatitude;
                 attribute double centerLongitude;
                 attribute double centerAltitude;
+                attribute double centerHeading;
                 attribute double zoomRadius;
                 object getMap();
               };
@@ -4128,7 +4199,7 @@ NOTE Red or green?
           </p>
           <dl>
             <dt>
-              |map| = new VMTMap(centerLatitude, centerLongitude, centerAltitude, zoomRadius);
+              |map| = new VMTMap(centerLatitude, centerLongitude, zoomRadius, centerHeading, centerAltitude);
             </dt>
             <dd>
               Returns a new <a>VMTMap</a> object.
@@ -4140,19 +4211,25 @@ NOTE Red or green?
               Returns the <a>location latitude</a> of the <a>map center location</a>. Can be set. Throws a <a data-cite='WEBIDL-1#exceptiondef-rangeerror'>RangeError</a> if the new value is not in the range -90..90.
             </dd>
             <dt>
-              |map|.<dfn>centerLongitude</dfn>
+              |map|.<dfn>{{VMTMap/centerLongitude}}</dfn>
             </dt>
             <dd>
               Returns the <a>location longitude</a> of the <a>map center location</a>. Can be set. Throws a <a data-cite='WEBIDL-1#exceptiondef-rangeerror'>RangeError</a> if the new value is not in the range -180..180.
             </dd>
             <dt>
-              |map|.<dfn>centerAltitude</dfn>
+              |map|.<dfn>{{VMTMap/centerAltitude}}</dfn>
             </dt>
             <dd>
               Returns the <a>location altitude</a> of the <a>map center location</a>. Can be set.
             </dd>
             <dt>
-              |map|.<dfn>zoomRadius</dfn>
+              |map|.<dfn>{{VMTMap/centerHeading}}</dfn>
+            </dt>
+            <dd>
+              Returns the <a>location heading</a> of the <a>map center location</a>. Can be set. Throws a <a data-cite='WEBIDL-1#exceptiondef-rangeerror'>RangeError</a> if the new value is not in the range 0..360.
+            </dd>
+            <dt>
+              |map|.<dfn>{{VMTMap/zoomRadius}}</dfn>
             </dt>
             <dd>
               Returns the <a>map zoom radius</a>. Can be set. Throws a <a data-cite='WEBIDL-1#exceptiondef-rangeerror'>RangeError</a> if the new value is not positive.
