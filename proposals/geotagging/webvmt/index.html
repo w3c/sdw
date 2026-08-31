@@ -61,7 +61,7 @@
   <body>
     <section id='abstract'>
       <p>
-        This specification defines WebVMT, the Web Video Map Tracks format, which is an enabling technology whose main use is for marking up external metadata track resources in connection with the HTML <code>&lt;track&gt;</code> element. WebVMT files provide map presentation, annotation and interpolation synchronized to web media content, and more generally any form of data that is time-aligned with audio or video content, including those from location-aware devices such as dashcams, drones and smartphones.
+        This specification defines WebVMT, the Web Video Map Tracks format, which is an enabling technology whose main use is for marking up external metadata track resources in connection with the HTML <code>&lt;track&gt;</code> element. WebVMT files support any form of metadata, including binary formats, that are either time-aligned or globally-linked with audio or video content, with particular focus on location data.
       </p>
     </section>
     <section id='sotd'>
@@ -305,7 +305,7 @@
     <section class='informative' id='state-of-the-art'>
       <h2>State of the Art</h2>
       <p>
-        No standard format currently exists by which web browsers can synchronise geolocation data with video. Though many browser-supported formats exist to present the two data streams separately, e.g. MPEG for video and GPX for geolocation, there is no viable synchronisation mechanism for video playback time with geolocation information.
+        No standard format currently exists by which web browsers can synchronise data with video agnostically of encoding, and geolocation data in particular. Though many browser-supported formats exist to present the two data streams separately, e.g. MPEG for video and GPX for geolocation, there is no viable synchronisation mechanism for video playback time with geolocation information.
       </p>
       <section id='current-solutions'>
         <h2>Current Solutions</h2>
@@ -313,7 +313,7 @@
           Material Exchange Format (MXF) was developed by the Society of Motion Picture and Television Engineers (SMPTE) to synchronise metadata, including geolocation, with audio and video streams using a register of key-length-value (KLV) triples. The breadth of its scope has resulted in interoperability issues, as different vendors implement different parts of the standard, and has produced implementations from high-profile companies which are mutually incompatible. KLVs can also be embedded within MPEG files, though this does not address the synchronisation issue for other web video formats such as WebM.
         </p>
         <p>
-          Video camera manufacturers have taken various approaches, resulting in a number of non-standard solutions including embedding geolocation data within the MPEG metadata stream in disparate formats, such as Motion Imagery Standards Board (MISB) or Go-Pro Metadata Format (GPMF), or recording a separate geolocation file in a proprietary format alongside the associated video file. From a hardware perspective, a few high-end cameras provide geotagging out of the box and all require an add-on device to support this feature.
+          Video camera manufacturers have taken various approaches, resulting in a number of non-standard solutions including embedding geolocation data within the MPEG metadata stream in binary formats, such as Motion Imagery Standards Board (MISB) or General Purpose Metadata Format (GPMF), or recording a separate geolocation file in a proprietary format alongside the associated video file. From a hardware perspective, a few high-end cameras provide geotagging out of the box and all require an add-on device to support this feature.
         </p>
         <p>
           Geospatial data are not currently accessible in the video Document Object Model (DOM) in HTML nor via video playback APIs in smartphones, e.g. Android, though their host devices are typically equipped with both a video camera and Global Navigation Satellite System (GNSS) receiver capable of capturing the required information.
@@ -331,7 +331,7 @@
       <section id='accessible-standard'>
         <h2>Accessible Standard Opportunity</h2>
         <p>
-          Using current W3C recommendations, it is possible for a programmer to synchronise video-geolocation 'metadata' with a <code>&lt;video&gt;</code> element using a <code>&lt;track&gt;</code> child element. However, this is a non-trivial development task which requires an understanding of the video DOM events and Javascript file handling, making it inaccessible to the vast majority of web users. Video metadata tracks are an identified kind of track data in HTML, though metadata content is difficult to access due to the text-based nature of existing DOM support.
+          Using current W3C recommendations, it is possible for a programmer to synchronise video-geolocation 'metadata' with a <code>&lt;video&gt;</code> element using a <code>&lt;track&gt;</code> child element. However, this is a non-trivial development task which requires an understanding of the video DOM events and JavaScript file handling, making it inaccessible to the vast majority of web users. Video metadata tracks are an identified kind of track data in HTML, though access to metadata content is limited due to the lack of data format identification and the text-based nature of existing DOM support.
         </p>
         <p>
           Establishing a standard file format would allow interoperability and information sharing between the public, the emergency services, police and other mobile video device users, e.g. drone pilots, giving cheaper and easier access to this important resource. Native web browser support for geotagged video using this file format would also make this freely accessible to most web users and enable integration with existing web services such as online maps and search engines. Current low-end smartphones already provide suitable hardware to concurrently capture video and geolocation streams, which would make this technology easily accessible to the general public, and encourage the user and developer communities to grow rapidly.
@@ -341,13 +341,13 @@
     <section class='informative' id='proposed-solution'>
       <h2>Proposed Solution</h2>
       <p>
-        This proposal constitutes a lightweight markup language to synchronise video with geolocation data for display on electronic maps, such as OpenStreetMaps. It offers presentational control of the map display, e.g. pan and zoom, and annotation to highlight map features to the viewer, e.g. paths and zones.
+        This proposal constitutes a lightweight markup language to synchronise video and audio with metadata, agnostically of encoding. Its scope has broadened to encompass metadata in any format, including binary data, though focus on geolocation has been retained to facilitate data display on electronic maps, such as OpenStreetMaps. Simple presentational features provide control of the map display, e.g. pan and zoom, and annotation to highlight map features to the viewer, e.g. paths and zones.
       </p>
       <p>
-        WebVMT (Web Video Map Tracks) format is intended for marking up external map track resources, and its main use is for files synchronising video content with an annotated map presentation. Ideas have been borrowed from existing W3C formats, including WebVTT's HTML binding and its block and cue structures, and SVG's approach to drawing, in order to display output on an electronic map.
+        WebVMT (Web Video Map Tracks) format is intended for marking up external metadata track resources, and making those data accessible to web users with synchronised video content and optional geolocation context. Ideas have been borrowed from existing W3C formats, including WebVTT's HTML binding and its block and cue structures, and SVG's approach to drawing, in order to display output on a web map.
       </p>
       <p>
-        The format mimics WebVTT's structure and syntax for media synchronisation, with cue details listed in an accessible text-based file linked to a <code>&lt;video&gt;</code> or <code>&lt;audio&gt;</code> DOM element by a child <code>&lt;track&gt;</code> element in an HTML document.
+        The format mimics WebVTT's structure and syntax for media synchronisation, with cue details listed in an accessible text-based file linked to a <code>&lt;video&gt;</code> or <code>&lt;audio&gt;</code> DOM element by a child <code>&lt;track&gt;</code> element in an HTML document. HTML cue support has extended beyond that of WebVTT to include unbounded cues for streaming, cue interpolation and negative cue times for non-destructive synchronisation.
       </p>
       <pre class='nohighlight example' title='WebVMT Basic HTML'>
 &lt;!doctype html&gt;
@@ -368,10 +368,10 @@
 &lt;/html&gt;
       </pre>
       <p>
-        The WebVMT format file, e.g. maptrack.vmt, contains the map cues associated with the video, e.g. video.mp4.
+        The WebVMT format file, e.g. metadata.vmt, contains the metadata cues associated with the video, e.g. video.mp4.
       </p>
       <p class='ednote'>
-        The meaning of <code>for</code> and <code>tileurl</code> attributes for user agents is an open question. Initial solutions can be built using Javascript, with existing map libraries such as Leaflet, though the vision is that future user agents will handle map rendering in the longer term.
+        The meaning of <code>for</code> and <code>tileurl</code> attributes for user agents is an open question. Initial solutions can be built using JavaScript, with existing map libraries such as Leaflet, though the vision is that future user agents will handle map rendering in the longer term.
       </p>
       <section id='map-cues'>
         <h2>Map Cues</h2>
@@ -578,10 +578,12 @@ NOTE Style blocks may not appear after the first cue
       </section>
       <section id='data-synchronization'>
         <h2>Data Synchronization</h2>
-        <p>
-          Arbitrary data may be associated with a <a>WebVMT cue</a> using a <code>sync</code> command, in a similar fashion to the GPX <code>&lt;extension&gt;</code> element.
-        </p>
-        <pre class='nohighlight example' title='AI Training WebVMT'>
+        <section id='time-aligned-data'>
+          <h2>Time-Aligned Data</h2>
+          <p>
+            Any type of data may be associated with a <a>WebVMT cue</a> using a <code>sync</code> command, in a similar fashion to the GPX <code>&lt;extension&gt;</code> element.
+          </p>
+          <pre class='nohighlight example' title='AI Training Video Annotation WebVMT'>
 WEBVMT
 
 NOTE Associated video
@@ -599,17 +601,48 @@ rad:200
 NOTE Cat, top left, after 5 secs until 25 secs
 
 00:00:05.000 —-&gt; 00:00:25.000
-{ “sync”: { “type”: “org.ogc.geoai.example”, “data”:
-  { “animal”:”cat”, “frame-zone”:”top-left" }
+{ "sync": { "type": "org.ogc.geoai.example", "data":
+  { "animal":"cat", "frame-zone":"top-left" }
 } }
 
 NOTE Dog, mid right, after 10 secs until 40 secs
 
 00:00:10.000 —-&gt; 00:00:40.000
-{ “sync”: { “type”: “org.ogc.geoai.example”, “data”:
-  { “animal”: ”dog”, “frame-zone”: ”middle-right" }
+{ "sync": { "type": "org.ogc.geoai.example", "data":
+  { "animal": "dog", "frame-zone": "middle-right" }
 } }
-        </pre>
+          </pre>
+        </section>
+        <section id='global-data'>
+          <h2>Global Data</h2>
+          <p>
+            Fixed data may be associated with the entire media file using a <a>WebVMT global data</a> header block. Global data blocks are placed before the first <a>WebVMT cue</a>, and may be represented as a persistent cue in HTML.
+          </p>
+          <pre class='nohighlight example' title='Fixed &amp; Dynamic Camera Data WebVMT'>
+WEBVMT
+
+NOTE Associated video
+
+MEDIA
+url:video.mp4
+mime-type:video/mp4
+
+NOTE Global metadata in header block
+
+DATA type:org.webvmt.camera.fixed.example
+{ "max-resolution": [ 3840, 2160 ],
+  "max-fps": 60,
+  "zoom-range-mm": { "min": 70, "max": 200 },
+  "built-in-light": "true" }
+
+NOTE Timed metadata in cues after header
+
+00:00:00.000 --&gt; 00:05:00.000
+{ "sync": { "type": "org.webvmt.camera.dynamic.example", "data":
+  { "zoom-mm": 100, "resolution": [ 1920, 1080 ], "fps": 30, "light-on": "false" }
+} }
+          </pre>
+        </section>
       </section>
       <section id='interpolation'>
         <h2>Interpolation</h2>
@@ -983,7 +1016,7 @@ NOTE Drone ends at (51.0070, -0.0020)
       <section id='youtube-integration'>
         <h2>YouTube Integration</h2>
         <p>
-          Embedded YouTube content can be displayed using an <code>&lt;iframe&gt;</code> element, specifying the unique 10-character content identifier for the posted video, using the official <a href="https://developers.google.com/youtube/iframe_api_reference">YouTube IFrame API</a> with the Javascript API enabled.
+          Embedded YouTube content can be displayed using an <code>&lt;iframe&gt;</code> element, specifying the unique 10-character content identifier for the posted video, using the official <a href="https://developers.google.com/youtube/iframe_api_reference">YouTube IFrame API</a> with the JavaScript API enabled.
         </p>
 
         <section id='hello-youtube'>
@@ -1101,12 +1134,12 @@ mime-type:video/mp4
     <section id='data-model'>
       <h2>Data Model</h2>
       <p class='ednote'>
-        The data model of WebVMT consists of four key elements: the linked media file, the video viewport, cues, and the map viewport. The linked media file contains audio or video data with which cues are synchronized. The video viewport is the rendering area for video output. Cues are containers consisting of a set of metadata lines. The map viewport is the rendering area for metadata output, for example graphical annotations overlaid on an online map.
+        The data model of WebVMT consists of four key elements: the linked media file, the video viewport, cues, and the map viewport. The linked media file contains audio or video data with which cues are synchronized. The video viewport is the rendering area for video output. Cues are containers consisting of metadata with an identifying data type. The map viewport is the rendering area for geolocation output, for example graphical annotations overlaid on a web map.
       </p>
       <section class='informative' id='overview'>
         <h2>Overview</h2>
         <p>
-          The <a>WebVMT file</a> is a container file for chunks of data that are time-aligned with a video or audio resource. It can therefore be regarded as a serialisation format for time-aligned data.
+          The <a>WebVMT file</a> is a container file for chunks of data that are either time-aligned or globally-linked with a video or audio resource. It can therefore be regarded as a serialisation format for media metadata.
         </p>
         <p>
           A WebVMT file starts with a header and then contains a series of data blocks. If a data block has a start time, it is called a WebVMT cue. A comment is another kind of data block.
@@ -1118,7 +1151,7 @@ mime-type:video/mp4
           The data kind of a WebVMT file is externally specified, such as in a HTML file’s <a data-cite='HTML51/semantics-embedded-content.html#the-track-element'>track</a> element. The environment is responsible for interpreting the data correctly.
         </p>
         <p>
-          A <a>WebVMT cue</a> is rendered as an overlay on top of the map viewport.
+          Metadata are delivered by the user agent as HTML cues or rendered as an overlay on top of the map viewport.
         </p>
       </section>
       <section id='webvmt-cue'>
@@ -1133,6 +1166,18 @@ mime-type:video/mp4
           <dd>
             The raw text of the cue which is interpreted as time-aligned metadata, and rules for its interpretation.
           </dd>
+          <!--dt>
+            A <dfn class='export'>cue data type</dfn>
+          </dt>
+          <dd>
+            The structured data type of the metadata cue.
+          </dd>
+          <dt>
+            A <dfn class='export'>cue data value</dfn>
+          </dt>
+          <dd>
+            The object representing the structured data values of the metadata cue.
+          </dd-->
         </dl>
         <p class='note' title='Cue End Time Omission'>
           A <a>WebVMT cue</a> without an end time indicates that the cue is an <a data-cite='HTML51/semantics-embedded-content.html#unbounded-text-track-cue'>unbounded text track cue</a>, for example during live streaming when the time of the next data sample is unknown or when the duration of the media is unknown.
@@ -1213,13 +1258,13 @@ mime-type:video/mp4
             For parsing, we also need the following:
           </p>
           <dt>
-            A <dfn>text track map</dfn>
+            A <dfn>metadata track map</dfn>
           </dt>
           <dd>
-            A <a>WebVMT map</a> associated with the text track.
+            A <a>WebVMT map</a> associated with the metadata track.
           </dd>
           <dd>
-            By default, the <a>text track map</a> is set to null.
+            By default, the <a>metadata track map</a> is set to null.
           </dd>
           <!--dt>
             A <dfn>text track map identifier</dfn>
@@ -1275,7 +1320,32 @@ mime-type:video/mp4
             The path identifier which uniquely identifies the moving object capturing the linked media file.
           </dd>
           <p class='note' title='Media Path'>
-            A null <a>media path</a> indicates that no moving object is associated, for example when no linked media file exists.
+            A null <a>media path</a> indicates that no moving object is associated, for example when no <a>WebVMT paths</a> are included in metadata content.
+          </p>
+        </dl>
+      </section>
+      <section id='webvmt-global-data'>
+        <h2>WebVMT Global Data</h2>
+        <p>
+          A <dfn>WebVMT global data</dfn> is fixed metadata that applies to the entire linked media file.
+        </p>
+          A <a>WebVMT global data</a> consists of:
+        </p>
+        <dl>
+          <dt>
+            A <dfn>global data type</dfn>
+          </dt>
+          <dd>
+            A type of structured data, e.g. jp.cipa.exif.
+          </dd>
+          <dt>
+            A <dfn>global data value</dfn>
+          </dt>
+          <dd>
+            An object representing structured data values of <a>global data type</a>.
+          </dd>
+          <p class='note' title='Data Encoding'>
+            Data may be stored in their native format, including binary arrays and structured objects such as JSON and XML. Binary data may be represented in <a>WebVMT files</a> using Base64 or hexadecimal encoding.
           </p>
         </dl>
       </section>
@@ -1543,43 +1613,46 @@ mime-type:video/mp4
         <section id='synchronized-data'>
           <h2>Synchronized Data</h2>
           <p>
-            A <dfn>WebVMT synchronized data</dfn> command synchronizes a sample from a data source with a <a>WebVMT cue</a>.
+            A <dfn>WebVMT synchronized data</dfn> command synchronizes structured data of an identified type with a <a>WebVMT cue</a>.
           </p>
           <p>
             A <a>WebVMT synchronized data</a> command consists of:
           </p>
           <dl>
             <dt>
-              A <dfn>synchronized data object</dfn>
-            </dt>
-            <dd>
-              An arbitrary object representing the raw sample from the data source.
-            </dd>
-            <dt>
               A <dfn>synchronized data type</dfn>
             </dt>
             <dd>
-              An associated data type, e.g. org.geojson.
+              A type of structured data, e.g. org.geojson.
+            </dd>
+            <dt>
+              A <dfn>synchronized data value</dfn>
+            </dt>
+            <dd>
+              An object representing structured data values of <a>synchronized data type</a>.
             </dd>
             <dt>
               Optionally, a <dfn>synchronized data identifier</dfn>
             </dt>
             <dd>
-              An identifier shared by all samples from the same data source over time, e.g. for streaming or interpolation.
+              An identifier shared by data from the same source over time, e.g. for streaming or interpolation.
             </dd>
             <dt>
               Optionally, a <dfn>synchronized path identifier</dfn>
             </dt>
             <dd>
-              A <a>path identifier</a> associated with the data source, e.g. a moving sensor.
+              A <a>path identifier</a> associated with a data source, e.g. a moving sensor.
             </dd>
             <dt>
               Optionally, a <dfn>synchronized zone identifier</dfn>
             </dt>
             <dd>
-              A <a>zone identifier</a> associated with the data source, e.g. a detection zone.
+              A <a>zone identifier</a> associated with a data source, e.g. a detection zone.
             </dd>
           </dl>
+          <p class="note" title="Time-Aligned & Global Data">
+            <a>WebVMT synchronized data</a> values may vary over time whereas <a>WebVMT global data</a> have an immutable value linked to the entire media file. Both include a type field so data content may be easily identified and accurately parsed.
+          </p>
         </section>
         <section id='command-interpolation'>
           <h2>Command Interpolation</h2>
@@ -1660,10 +1733,10 @@ mime-type:video/mp4
                 A <a>WebVMT media metadata block</a>.
               </li>
               <li>
-                A <a>WebVMT map initialisation block</a>.
+                Optionally, a <a>WebVMT map initialisation block</a>.
               </li>
               <li>
-                Zero or more <a>WebVMT style blocks</a> and <a>WebVMT comment blocks</a> separated from each other by one or more <a>WebVMT line terminators</a>.
+                Zero or more <a>WebVMT style blocks</a>, <a>WebVMT global metadata blocks</a> and <a>WebVMT comment blocks</a> separated from each other by one or more <a>WebVMT line terminators</a>.
               </li>
             </ul>
             <li>
@@ -1756,6 +1829,56 @@ mime-type:video/mp4
               A <a>WebVMT line terminator</a>.
             </li>
           </ol>
+        </p>
+        <p>
+          A <dfn>WebVMT global metadata block</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              The string "<code>DATA</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x0044;</bdi> <code class="uname">U+0044 LATIN CAPITAL LETTER D</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0054;</bdi> <code class="uname">U+0054 LATIN CAPITAL LETTER T</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span>).
+            </li>
+            <li>
+              One or more <span class="codepoint" translate="no"><bdi lang="en">&#x0020;</bdi> <code class="uname">U+0020 SPACE</code></span> characters or <span class="codepoint" translate="no"><bdi lang="en">&#x0009;</bdi> <code class="uname">U+0009 CHARACTER TABULATION</code></span> (tab) characters followed by a <a>WebVMT type data setting</a>.
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+            <li>
+              Any sequence of zero or more characters other than <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters and <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters, each optionally separated from the next by a <a>WebVMT line terminator</a>, except that the entire resulting string must not contain the substring "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>). The string represents a <a>global data value</a>.
+            </li>
+            <li>
+              A <a>WebVMT line terminator</a>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          A <dfn>WebVMT type data setting</dfn> is a <a>WebVMT data setting</a> that consists of the following components, in the order given:
+          <ol>
+            <li>
+              The string "<code>type</code>" as the <a>WebVMT data setting name</a>.
+            </li>
+            <li>
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
+            </li>
+            <li>
+              As the <a>WebVMT data setting value</a>: a <a>global data type</a>.
+            </li>
+          </ol>
+        <p>
+          A <dfn>WebVMT data setting</dfn> consists of the following components, in the order given:
+          <ol>
+            <li>
+              A <a>WebVMT data setting name</a>.
+            </li>
+            <li>
+              A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
+            </li>
+            <li>
+              A <a>WebVMT data setting value</a>.
+            </li>
+          </ol>
+        </p>
+        <p>
+          A <dfn>WebVMT data setting name</dfn> and a <dfn>WebVMT data setting value</dfn> each consist of any sequence of one or more characters other than <span class="codepoint" translate="no"><bdi lang="en">&#x000A;</bdi> <code class="uname">U+000A LINE FEED</code></span> (LF) characters and <span class="codepoint" translate="no"><bdi lang="en">&#x000D;</bdi> <code class="uname">U+000D CARRIAGE RETURN</code></span> (CR) characters except that the entire resulting string must not contain the substring "<code>--&gt;</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x002D;</bdi> <code class="uname">U+002D HYPHEN-MINUS</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x003E;</bdi> <code class="uname">U+003E GREATER-THAN SIGN</code></span>).
         </p>
         <p>
           A <dfn>WebVMT cue block</dfn> consists of the following components, in the order given:
@@ -1891,7 +2014,7 @@ mime-type:video/mp4
           The string represents a <a>WebVMT command list</a>.
         </p>
         <p>
-          <a>WebVMT metadata text</a> cues are only useful for scripted applications (e.g. using the <code>metadata</code> <a data-cite='HTML51/semantics-embedded-content.html#attr-track-kind'>text track kind</a> in a HTML <a data-cite='HTML51/semantics-embedded-content.html#text-track'>text track</a>).
+          <a>WebVMT metadata text</a> cues are only useful for scripted applications (e.g. using the <code>metadata</code> <a data-cite='HTML51/semantics-embedded-content.html#attr-track-kind'>track kind</a> in a <a data-cite='HTML51/semantics-embedded-content.html#htmltrackelement'>HTML track element</a>).
         </p>
       </section>
       <section id='webvmt-media-settings'>
@@ -1907,10 +2030,10 @@ mime-type:video/mp4
             A <a>WebVMT media MIME type setting</a>.
           </li>
           <li>
-            A <a>WebVMT media start time setting</a>.
+            Optionally, a <a>WebVMT media start time setting</a>.
           </li>
           <li>
-            A <a>WebVMT media path setting</a>.
+            Optionally, a <a>WebVMT media path setting</a>.
           </li>
         </ul>
         <p>
@@ -2254,6 +2377,9 @@ mime-type:video/mp4
                 Optionally, a <a>WebVMT pan altitude attribute</a>.
               </li>
               <li>
+                Optionally, a <a>WebVMT pan heading attribute</a>.
+              </li>
+              <li>
                 Optionally, one of the following components:
                 <ul>
                   <li>
@@ -2274,6 +2400,9 @@ mime-type:video/mp4
           </p>
           <p>
             A <dfn >WebVMT pan altitude attribute</dfn> consists of a <a>WebVMT altitude attribute</a>.
+          </p>
+          <p>
+            A <dfn >WebVMT pan heading attribute</dfn> consists of a <a>WebVMT heading attribute</a>.
           </p>
           <p>
             A <dfn>WebVMT pan end time attribute</dfn> consists of a <a>WebVMT end time attribute</a>.
@@ -2360,6 +2489,9 @@ mime-type:video/mp4
                 Optionally, a <a>WebVMT circle center altitude attribute</a>.
               </li>
               <li>
+                Optionally, a <a>WebVMT circle center heading attribute</a>.
+              </li>
+              <li>
                 A <a>WebVMT circle radius attribute</a>.
               </li>
               <li>
@@ -2375,6 +2507,9 @@ mime-type:video/mp4
           </p>
           <p>
             A <dfn>WebVMT circle center altitude attribute</dfn> consists of a <a>WebVMT altitude attribute</a>.
+          </p>
+          <p>
+            A <dfn>WebVMT circle center heading attribute</dfn> consists of a <a>WebVMT heading attribute</a>.
           </p>
           <p>
             A <dfn>WebVMT circle radius attribute</dfn> consists of a <a>WebVMT radius attribute</a>.
@@ -2502,6 +2637,23 @@ mime-type:video/mp4
           <p class='note' title='Altitude Zero'>
             When interpreted as a number, a <a>WebVMT altitude</a> represents the height in meters above the WGS84 ellipsoid. Care should be taken not to confuse this with the height above mean sea level.
           </p>
+          <p>
+            A <dfn>WebVMT heading attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
+            <ol>
+              <li>
+                The <a data-cite='ECMA-404' data-no-xref=''>JSON string</a> "<code>hdg</code>".
+              </li>
+              <li>
+                A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
+              </li>
+              <li>
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON value</a> consisting of a <a data-cite='ECMA-404' data-no-xref=''>JSON number</a>.
+              </li>
+            </ol>
+          </p>
+          <p class='note' title='Heading Range &amp; Zero'>
+            When interpreted as a number, a <a>WebVMT heading</a> must be in the range 0..360 and represents the heading in degrees measured from true north. Care should be taken not to confuse this with the heading measured from magnetic north.
+          </p>
         </section>
         <section id='webvmt-path-commands'>
           <h2>WebVMT Path Commands</h2>
@@ -2540,6 +2692,9 @@ mime-type:video/mp4
                 Optionally, a <a>WebVMT fragment start altitude attribute</a>.
               </li>
               <li>
+                Optionally, a <a>WebVMT fragment start heading attribute</a>.
+              </li>
+              <li>
                 Optionally, a <a>WebVMT path attribute</a>.
               </li>
             </ul>
@@ -2552,6 +2707,9 @@ mime-type:video/mp4
           </p>
           <p>
             A <dfn>WebVMT fragment start altitude attribute</dfn> consists of a <a>WebVMT altitude attribute</a>.
+          </p>
+          <p>
+            A <dfn>WebVMT fragment start heading attribute</dfn> consists of a <a>WebVMT heading attribute</a>.
           </p>
           <p>
             A <dfn>WebVMT path attribute</dfn> consists of a <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> consisting of the following components in the order given:
@@ -2597,6 +2755,9 @@ mime-type:video/mp4
                 Optionally, a <a>WebVMT fragment end altitude attribute</a>.
               </li>
               <li>
+                Optionally, a <a>WebVMT fragment end heading attribute</a>.
+              </li>
+              <li>
                 Optionally, a <a>WebVMT path attribute</a>.
               </li>
               <li>
@@ -2620,6 +2781,9 @@ mime-type:video/mp4
           </p>
           <p>
             A <dfn>WebVMT fragment end altitude attribute</dfn> consists of a <a>WebVMT altitude attribute</a>.
+          </p>
+          <p>
+            A <dfn>WebVMT fragment end heading attribute</dfn> consists of a <a>WebVMT heading attribute</a>.
           </p>
           <p>
             A <dfn>WebVMT fragment end time attribute</dfn> consisting of a <a>WebVMT end time attribute</a>.
@@ -2685,7 +2849,7 @@ mime-type:video/mp4
                 A <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character.
               </li>
               <li>
-                A <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing a <a>synchronized data object</a>.
+                A <a data-cite='ECMA-404' data-no-xref=''>JSON object</a> representing <a>synchronized data value</a>.
               </li>
             </ol>
           </p>
@@ -2981,6 +3145,9 @@ NOTE Required blocks omitted for clarity
               Let |stylesheet| be null.
             </li>
             <li>
+              Let |global data| be null.
+            </li>
+            <li>
               Let |map| be null.
             </li>
             <li>
@@ -3113,6 +3280,26 @@ NOTE Required blocks omitted for clarity
                             </ol>
                           </li>
                           <li>
+                            Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>DATA</code>" ((<span class="codepoint" translate="no"><bdi lang="en">&#x0044;</bdi> <code class="uname">U+0044 LATIN CAPITAL LETTER D</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0054;</bdi> <code class="uname">U+0054 LATIN CAPITAL LETTER T</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span>), and the remaining characters in |buffer| are not all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a> and are not the empty string, then run these substeps:
+                            <ol>
+                              <li>
+                                <i>Global data creation:</i> Let |global data| be a new <a>WebVMT global data</a>.
+                              </li>
+                              <li>
+                                Let |global data|'s <a>global data type</a> be the empty string.
+                              </li>
+                              <li>
+                                <a>Collect WebVMT data settings</a> from |buffer| for |global data|.
+                              </li>
+                              <li>
+                                If |global data|'s <a>global data type</a> is the empty string, then let |global data| be null.
+                              </li>
+                              <li>
+                                Let |buffer| be the empty string.
+                              </li>
+                            </ol>
+                          </li>
+                          <li>
                             Otherwise, if |seen cue| is false and |buffer| starts with the substring "<code>MAP</code>" (<span class="codepoint" translate="no"><bdi lang="en">&#x004D;</bdi> <code class="uname">U+004D LATIN CAPITAL LETTER M</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0041;</bdi> <code class="uname">U+0041 LATIN CAPITAL LETTER A</code></span>, <span class="codepoint" translate="no"><bdi lang="en">&#x0050;</bdi> <code class="uname">U+0050 LATIN CAPITAL LETTER P</code></span>), and the remaining characters in |buffer| (if any) are all <a data-cite='HTML51/infrastructure.html#space-characters'>ASCII whitespace</a>, then run these substeps:
                             <ol>
                               <li>
@@ -3158,6 +3345,9 @@ NOTE Required blocks omitted for clarity
             </li>
             <li>
               Otherwise, if |stylesheet| is not null, then <a data-cite='CSS-SYNTAX-3/#parse-a-stylesheet'>parse a stylesheet</a> from |buffer|. If it returned a list of rules, assign the list as |stylesheet|'s <a data-cite='CSSOM-1/#concept-css-style-sheet-css-rules'>CSS rules</a>; otherwise, set |stylesheet|'s <a data-cite='CSSOM-1/#concept-css-style-sheet-css-rules'>CSS rules</a> to an empty list. Finally, return |stylesheet|.
+            </li>
+            <li>
+              Otherwise, if |global data| is not null, then let |global data|'s <a>global data value</a> be |buffer|. Construct a <a>WebVMT global data cue</a> from |global data|, and return it.
             </li>
             <li>
               Otherwise, if |map| is not null, then <a>collect WebVMT map settings</a> from |buffer| using |map| for the results. Construct a <a>WebVMT map object</a> from |map|, and return it.
@@ -3300,6 +3490,84 @@ NOTE Required blocks omitted for clarity
             </li>
           </ol>
         </p>
+      </section>
+      <section id='webvmt-data-settings-parsing'>
+        <h2>WebVMT Data Settings Parsing</h2>
+        <p>
+          When the user agent is to <dfn>collect WebVMT data settings</dfn> from a string |input| for a <a>WebVMT global data</a> |data|, the user agent must run the following algorithm.
+        </p>
+        <ol>
+          <li>
+            Let |settings| be the result of splitting |input| on spaces.
+          </li>
+          <li>
+            For each token |setting| in the list |settings|, run the following substeps:
+          </li>
+          <ol>
+            <li>
+              If |setting| does not contain a <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character, or if the first <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character in |setting| is either the first or last character of |setting|, then jump to the step labeled <i>next setting</i>.
+            </li>
+            <li>
+              Let |name| be the leading substring of |setting| up to and excluding the first <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character in that string.
+            </li>
+            <li>
+              Let |value| be the trailing substring of |setting| starting from the character immediately after the first <span class="codepoint" translate="no"><bdi lang="en">&#x003A;</bdi> <code class="uname">U+003A COLON</code></span> character in that string.
+            </li>
+            <li>
+              Run the appropriate substeps that apply for the value of |name|, as follows:
+            </li>
+            <dl>
+              <dt>
+                If |name| is a case-sensitive match for "type"
+              </dt>
+              <dd>
+                Let |data|'s <a>global data type</a> be |value|.
+              </dd>
+            </dl>
+          </ol>
+          <li>
+            <i>Next setting:</i> Continue to the next token, if any.
+          </li>
+        </ol>
+        <p>
+          A <dfn>WebVMT global data cue</dfn> is a conceptual construct to represent a <a>WebVMT global data</a>. This algorithm returns a persistent <a>WebVMT cue</a>.
+        </p>
+        <ol>
+          <li>
+            Let |list| be a new <a>WebVMT synchronized parameter list</a> and initialize it as follows:
+            <ol>
+              <li>
+                Let |list|'s <a>WebVMT synchronized type attribute</a> be |data|'s <a>global data type</a>.
+              </li>
+              <li>
+                Let |list|'s <a>WebVMT synchronized data attribute</a> be |data|'s <a>global data value</a>.
+              </li>
+            </ol>
+          </li>
+          <li>
+            Let |text| be a new <a>WebVMT synchronized data command</a> from |list|.
+          </li>
+          <li>
+            <i>Persistent cue creation:</i> Let |cue| be a new <a>WebVMT cue</a> and initialize it as follows:
+            <ol>
+              <li>
+                Let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-identifier'>text track cue identifier</a> be the empty string.
+              </li>
+              <li>
+                Let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-pause-on-exit-flag'>text track cue pause-on-exit flag</a> be false.
+              </li>
+              <li>
+                Let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-start-time'>text track cue start time</a> be the value negative Infinity.
+              </li>
+              <li>
+                Let |cue|'s <a data-cite='HTML51/semantics-embedded-content.html#text-track-cue-end-time'>text track cue end time</a> be the value positive Infinity.
+              </li>
+              <li>
+                Let |cue|'s <a>cue text</a> be |text|.
+              </li>
+            </ol>
+          </li>
+        </ol>
       </section>
       <section id='webvmt-cue-timings-parsing'>
         <h2>WebVMT Cue Timings Parsing</h2>
@@ -3478,10 +3746,10 @@ NOTE Required blocks omitted for clarity
             A text string. A <a>WebVMT text object</a> has a value which is the <a data-cite='ECMA-404' data-no-xref=''>JSON text</a> of a timed metadata object.
           </dd>
           <!--dt>
-            <dfn>WebVMT data object</dfn>
+            <dfn>WebVMT data value</dfn>
           </dt>
           <dd>
-            A timed metadata object. A <a>WebVMT data object</a> is a JSON object which represents the timed metadata structure and its values.
+            A timed metadata object. A <a>WebVMT data value</a> is a JSON object which represents the timed metadata structure and its values.
           </dd!->
         </dl>
         <p>
