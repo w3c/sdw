@@ -1,11 +1,12 @@
 var respecConfig = {
-  specStatus: "ED",
+  specStatus: "REC",
   shortName: "vocab-ssn",
-  //publishDate:  "2015-05-18",
-  //previousPublishDate: "2014-03-27",
-  //previousMaturity: "FPWD",
-  //previousURI: "http://www.w3.org/TR/2014/WD-tabular-data-model-20140327/",
-  edDraftURI: "https://w3c.github.io/sdw-sosa-ssn/ssn/",
+  // publishDate: to be set to the day the revised Recommendation is published.
+  // Left unset so that the editor's draft keeps rendering with today's date.
+  previousPublishDate: "2017-10-19",
+  previousMaturity: "REC",
+  errata: "https://www.w3.org/2017/10/vocab-ssn-errata.html",
+  edDraftURI: "https://w3c.github.io/sdw/ssn/",
   // lcEnd: "3000-01-01",
   // crEnd: "3000-01-01",
   editors: [
@@ -73,8 +74,8 @@ var respecConfig = {
           value: "Claus Stadler, Universität Leipzig"
         }]
     }],
-  wg: "Spatial Data on the Web Working Group",
-  wgURI: "https://www.w3.org/2015/spatial/",
+  wg: "Spatio-temporal Data on the Web Working Group",
+  wgURI: "https://www.w3.org/groups/wg/sdw/",
   wgPublicList: "public-sdw-comments",
   wgPatentURI: "https://www.w3.org/2004/01/pp-impl/75471/status",
   implementationReportURI: "https://w3c.github.io/sdw/ssn-usage/",
@@ -98,7 +99,7 @@ var respecConfig = {
     }
   ],
   noRecTrack: false,
-  overrideCopyright: "<p class='copyright'><a href='https://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2020 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='https://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='https://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='https://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='https://www.keio.ac.jp/'>Keio</a>, <a href='https://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a>, <a href='https://www.w3.org/Consortium/Legal/copyright-documents'>W3C</a> and <a href='https://www.ogc.org/ogc/document'>OGC</a> document use rules apply.</p>",
+  overrideCopyright: "<p class='copyright'><a href='https://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> © 2026 <a href='http://www.opengeospatial.org/'>OGC</a> &amp; <a href='https://www.w3.org/'> <abbr title='World Wide Web Consortium'>W3C</abbr> </a><sup>®</sup> (<a href='https://www.csail.mit.edu/'><abbr title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='https://www.ercim.eu/'><abbr title='European Research Consortium for Informatics and Mathematics'>ERCIM</abbr></a>, <a href='https://www.keio.ac.jp/'>Keio</a>, <a href='https://ev.buaa.edu.cn/'>Beihang</a>), <abbr title='World Wide Web Consortium'>W3C</abbr> <a href='https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a>, <a href='https://www.w3.org/Consortium/Legal/copyright-documents'>W3C</a> and <a href='https://www.ogc.org/ogc/document'>OGC</a> document use rules apply.</p>",
 
   localBiblio: {
     "GeoJSON": {
