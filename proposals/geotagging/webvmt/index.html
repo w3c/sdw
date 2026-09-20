@@ -1084,7 +1084,7 @@ mime-type:video/mp4
             <dfn class='export'>User agents with no scripting support</dfn>
           </dt>
           <dd>
-            All processing requirements in this specification apply, except those in <a href='#planned-interfaces'>Planned Interfaces</a>.
+            All processing requirements in this specification apply, except those in <a href='#api'>API</a>.
           </dd>
           <dt>
             <dfn>User agents that do not support CSS</dfn>
@@ -1139,7 +1139,7 @@ mime-type:video/mp4
       <section class='informative' id='overview'>
         <h2>Overview</h2>
         <p>
-          The <a>WebVMT file</a> is a container file for chunks of data that are either time-aligned or globally-linked with a video or audio resource. It can therefore be regarded as a serialisation format for media metadata.
+          The <a>WebVMT file</a> is a container file for chunks of data that are either time-aligned or globally-linked with a video or audio resource. It can therefore be regarded as a serialisation format for time-aligned and linked data.
         </p>
         <p>
           A WebVMT file starts with a header and then contains a series of data blocks. If a data block has a start time, it is called a WebVMT cue. A comment is another kind of data block.
@@ -4311,135 +4311,48 @@ NOTE Red or green?
         </section>
       </section>
     </section>
-    <section class='informative' id='known-issues'>
-      <h2>Known Issues</h2>
-      <p>
-        This section captures issues which have been identified, but are not yet fully documented.
-      </p>
-      <p class='ednote'>
-        As the specification develops, issues will be moved out of this section and included elsewhere in the document, until it is no longer needed and is completely removed.
-      </p>
-      <section id='planned-features'>
-        <h2>Planned Features</h2>
-        <p>
-          This section lists potential features which have been identified during the development process, but have not yet matured to a full design specification.
-        </p>
-        <p class='note'>
-          Features which appear in this section warrant further investigation, but are not guaranteed to appear in the final specification.
-        </p>
-        <section id='markers'>
-          <h2>Markers</h2>
-          <p>
-            An image linked to and displayed at an offset from a geolocation.
-          </p>
-        </section>
-        <section id='labels'>
-          <h2>Labels</h2>
-          <p>
-            A text string linked to and displayed at an offset from a geolocation.
-          </p>
-        </section>
-        <section id='tile-shortcuts'>
-          <h2>Tile Shortcuts</h2>
-          <p>
-            Shortcuts to popular tile URLs for easy access and to help avoid URL syntax errors.
-          </p>
-        </section>
-        <section id='layers'>
-          <h2>Layers</h2>
-          <p>
-            Syntax to allow more than one layer of map tiles to be specified, e.g. 'map' and 'satellite' layers.
-          </p>
-          <p>
-            This should be functional, but remain lightweight.
-          </p>
-        </section>
-        <section id='multiple-apis'>
-          <h2>Multiple APIs</h2>
-          <p>
-            The current tech demo is based on the Leaflet API, but should be broadened to support other web map APIs, e.g. Open Layers.
-          </p>
-          <p>
-            A hot-swap feature would allow users to switch API on-the-fly to take advantage of the unique features supported by different APIs, e.g. Street View.
-          </p>
-        </section>
-        <section id='camera-direction'>
-          <h2>Camera Direction</h2>
-          <p>
-            Camera orientation may not match the direction of travel, or may be dynamic, e.g. for Augmented Reality. Field of view and zoom level also affect video frame content and may vary over time.
-          </p>
-        </section>
-        <section id='coordinate-reference-systems'>
-          <h2>Co-ordinate Reference Systems</h2>
-          <p>
-            Although originally conceived for Earth-based use, spatial data in other environments could be accommodated by specifying the co-ordinate reference system. For example, location on another planet, e.g. Mars, or in an artifical environment, e.g. a video game.
-          </p>
-        </section>
-        <section id='moving-objects'>
-          <h2>Moving Objects</h2>
-          <p>
-            <a>WebVMT paths</a> represent objects moving through the mapped space, though could be extended to support properties associated with motion such as distance travelled, speed, heading, etc. through a defined API.
-          </p>
-          <p>
-            <a>WebVMT zones</a> represent regions in the mapped space, which could be extended to support <a>WebVMT path</a> properties for their centroid's motion and include dynamic properties such as area and volume.
-          </p>
-          <p>
-            Care should be taken to build a lightweight interface which includes simple, common properties that are useful to most use cases and avoids overloading with unnecessary edge cases, processing overheads and complexity.
-          </p>
-        </section>
-        <section id='height-reference'>
-          <h2>Height Reference</h2>
-          <p>
-            In addition to height above the WGS84 ellipsoid, an option could be added to measure altitude from mean sea level, e.g. for an aircraft, using a suitable Earth Gravitational Model (EGM) or from ground level, e.g. for the height of a structure.
-          </p>
-        </section>
-      </section>
-      <section id='planned-interfaces'>
-        <h2>Planned Interfaces</h2>
-        <p>
-          This section lists interfaces which have been identified during the development process, but have not yet matured to a full design specification.
-        </p>
-        <!--section id='vmtcue-interface' data-dfn-for='VMTCue'>
+    <section id='api'>
+      <h2>API</h2>
+        <section id='vmtcue-interface' data-dfn-for='VMTCue'>
           <h2><dfn>VMTCue</dfn> Interface</h2>
-          <p>
-            Expose <a>WebVMT cues</a> in the DOM API, based on the <a href='https://wicg.github.io/datacue/#datacue-interface'>DataCue API</a> proposed in WICG. For example:
-            <pre class='idl' title='VMTCue Interface'>
-              [Exposed=Window]
-              interface VMTCue: <a href='https://wicg.github.io/datacue/#datacue-interface'>DataCue</a> {
-                constructor(double startTime, unrestricted double endTime, DOMString text);
-              };
-            </pre>
-          </p>
-          <p>
-            This is analogous to the <a data-cite='WEBVTT#the-vttcue-interface'>VTTCue</a> interface.
-          </p>
-        </section-->
-        <section id='datacue-interface'>
-          <h2>DataCue Interface</h2>
           <p>
             Expose <a>WebVMT cues</a> in the DOM API, based on the <a href='https://wicg.github.io/datacue/#datacue-interface'>DataCue API</a> proposed in WICG.
           </p>
+          <pre class='idl' title='VMTCue Interface' data-cite='datacue'>
+            [Exposed=Window]
+            interface VMTCue : DataCue {
+              constructor(double startTime, unrestricted double endTime,
+                          any value, DOMString type, optional DOMString stream);
+              readonly attribute DOMString stream;
+            };
+          </pre>
           <p>
-            This is analogous to the <a data-cite='WEBVTT#the-vttcue-interface'>VTTCue</a> interface.
+            This is analogous to the <a data-cite='WEBVTT#the-vttcue-interface'>VTTCue</a> interface, though cues are mapped to the <a href='https://wicg.github.io/datacue/#datacue-interface'>DataCue API</a>..
           </p>
           <dl>
             <dt>
-              |cue| = new DataCue(startTime, endTime, value, type);
+              |cue| = new VMTCue(startTime, endTime, value, type, stream);
             </dt>
             <dd>
-              Returns a new <a href='https://wicg.github.io/datacue/#datacue'>DataCue</a> object.
+              Returns a new <a>VMTCue</a> object.
             </dd>
-            <dt>
-              |cue|.value
+            <!--dt>
+              |cue|.<dfn>{{VMTCue/value}}</dfn>
             </dt>
             <dd>
               Returns the metadata value of a <a>WebVMT cue</a>. Can be set.
             </dd>
             <dt>
-              |cue|.type
+              |cue|.<dfn>{{VMTCue/type}}</dfn>
             </dt>
             <dd>
               Returns the metadata type of a <a>WebVMT cue</a>.
+            </dd-->
+            <dt>
+              |cue|.<dfn>{{VMTCue/stream}}</dfn>
+            </dt>
+            <dd>
+              Returns the metadata stream identifier of a <a>WebVMT cue</a>.
             </dd>
           </dl>
         </section>
@@ -4510,7 +4423,6 @@ NOTE Red or green?
             </dd>
           </dl>
         </section>
-      </section>
     </section>
     <section id='iana-considerations'>
       <h2>IANA Considerations</h2>
@@ -4572,7 +4484,7 @@ NOTE Red or green?
             Applications that use this media type:
           </dt>
           <dd>
-            Web browsers, other media players and location-aware video devices such as drones, dashcams and smartphones.
+            Web browsers, other media players, search engines and video devices with associated data streams such as location and/or accelerometer, including drones, dash cams, body cameras and smartphones.
           </dd>
           <dt>
             Additional information:
