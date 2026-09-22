@@ -8,6 +8,16 @@ var respecConfig = {
   edDraftURI: "https://w3c.github.io/sdw-sosa-ssn/ssn/",
   // lcEnd: "3000-01-01",
   // crEnd: "3000-01-01",
+  // Move the "New Version Available" notice directly under the title and the
+  // status line, where W3C puts it on https://www.w3.org/TR/rdf-sparql-query/ .
+  // If the header is not found the notice simply stays where it is authored.
+  postProcess: [function () {
+    var notice = document.getElementById("ssn-2023-notice");
+    var versions = document.querySelector("div.head dl");
+    if (notice && versions) {
+      versions.parentNode.insertBefore(notice, versions);
+    }
+  }],
   editors: [
     {
       name: "Simon J D Cox",
